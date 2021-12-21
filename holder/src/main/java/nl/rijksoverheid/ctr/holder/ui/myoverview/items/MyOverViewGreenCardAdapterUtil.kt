@@ -18,6 +18,9 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
+import java.time.Clock
+import java.time.Instant
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,6 +37,7 @@ interface MyOverViewGreenCardAdapterUtil {
 }
 
 class MyOverViewGreenCardAdapterUtilImpl(
+    private val utcClock: Clock,
     private val context: Context,
     private val credentialUtil: CredentialUtil,
     private val testResultAdapterItemUtil: TestResultAdapterItemUtil,
@@ -185,15 +189,26 @@ class MyOverViewGreenCardAdapterUtilImpl(
             }
         }
 
-        setOriginSubtitle(
-            descriptionLayout = viewBinding.description,
-            originState = originState,
-            showTime = shouldShowTimeSubtitle(originState, greenCardType),
-            subtitle = context.getString(
+        val expirationSecondsFromNow = originState.origin.expirationTime.toInstant().epochSecond - Instant.now(utcClock).epochSecond
+        val expirationYearsFromNow = TimeUnit.SECONDS.toDays(expirationSecondsFromNow) / 365
+        val subtitle = if (expirationYearsFromNow >= 3) {
+            context.getString(
                 R.string.qr_card_validity_future_from,
                 origin.validFrom.toLocalDate().formatDayMonthYear(),
                 ""
             )
+        } else {
+            context.getString(
+                R.string.qr_card_validity_valid,
+                origin.expirationTime.toLocalDate().formatDayShortMonthYear()
+            )
+        }
+
+        setOriginSubtitle(
+            descriptionLayout = viewBinding.description,
+            originState = originState,
+            showTime = shouldShowTimeSubtitle(originState, greenCardType),
+            subtitle = subtitle
         )
     }
 

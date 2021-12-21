@@ -36,6 +36,7 @@ import java.time.ZoneId
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl-land")
 class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
+
     private val context: Context by lazy {
         ApplicationProvider.getApplicationContext()
     }
@@ -43,10 +44,6 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     private val credentialUtil = mockk<CredentialUtil>(relaxed = true)
     private val testResultAdapterItemUtil: TestResultAdapterItemUtil = mockk(relaxed = true)
     private val greenCardUtil: GreenCardUtil = mockk(relaxed = true)
-
-    private val myOverViewGreenCardAdapterUtil: MyOverViewGreenCardAdapterUtil by lazy {
-        MyOverViewGreenCardAdapterUtilImpl(context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
-    }
 
     private val viewBinding = object : ViewBindingWrapper {
 
@@ -70,6 +67,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun europeanTest() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         every { credentialUtil.getTestTypeForEuropeanCredentials(any()) } returns "PCR (NAAT)"
         val greenCard = greenCard(GreenCardType.Eu)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
@@ -80,6 +79,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun domesticTest() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         val greenCard = greenCard(GreenCardType.Domestic)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
@@ -89,6 +90,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun europeanVaccination() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         every { credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any()) } returns "dosis 2 van 2"
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
@@ -99,6 +102,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun europeanVaccinationFuture() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         every { credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any()) } returns "dosis 2 van 2"
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Vaccination)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
@@ -109,8 +114,16 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun domesticVaccination() {
-        val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination)
+    fun `domesticVaccination that expires in 3 years`() {
+        // Today is 2021-01-01
+        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+
+        // Expiration time is three years from today
+        val expirationTime = OffsetDateTime.ofInstant(Instant.parse("2024-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(clock, context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
+        val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination, expirationTime)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Vaccinatiebewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
@@ -119,7 +132,45 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
+    fun `domesticVaccination that has a validity of more than 3 years`() {
+        // Today is 2021-01-01
+        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+
+        // Expiration time is four years from today
+        val expirationTime = OffsetDateTime.ofInstant(Instant.parse("2025-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(clock, context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
+        val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination, expirationTime)
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
+
+        assertEquals("Vaccinatiebewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 2021 ", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals(View.GONE, viewBinding.expiresIn.visibility)
+    }
+
+    @Test
+    fun `domesticVaccination that has a validity of less than 3 years`() {
+        // Today is 2021-01-01
+        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+
+        // Expiration time is two years from today
+        val expirationTime = OffsetDateTime.ofInstant(Instant.parse("2022-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(clock, context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
+        val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination, expirationTime)
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
+
+        assertEquals("Vaccinatiebewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
+        assertEquals("geldig tot 1 jan 2022", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals(View.GONE, viewBinding.expiresIn.visibility)
+    }
+
+    @Test
     fun domesticVaccinationFuture() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
@@ -131,6 +182,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun europeanRecovery() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
@@ -140,6 +193,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun europeanRecoveryFuture() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
@@ -149,6 +204,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun domesticRecovery() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         val greenCard = greenCard(GreenCardType.Domestic, OriginType.Recovery)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
@@ -159,6 +216,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun domesticRecoveryFuture() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         val greenCard = greenCard(GreenCardType.Domestic, OriginType.Recovery)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
@@ -172,7 +231,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         val testResultAdapterItemUtil = TestResultAdapterItemUtilImpl(Clock.fixed(Instant.ofEpochSecond(1627495600), ZoneId.of("UTC")))
         val greenCard = greenCard(GreenCardType.Domestic)
         every { greenCardUtil.getExpireDate(greenCard) } returns greenCard.credentialEntities.first().expirationTime
-        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
 
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
@@ -184,6 +243,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `Title should be specific for EU vaccination card`() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         every {
             credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any())
         } returns "dosis 2 van 2"
@@ -198,6 +259,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `Title should be specific for EU test`() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         val testCard = greenCard(GreenCardType.Eu, OriginType.Test)
 
         myOverViewGreenCardAdapterUtil.setContent(
@@ -208,6 +271,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `Title should be specific for EU recovery`() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         val recoveryCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
 
         myOverViewGreenCardAdapterUtil.setContent(
@@ -218,6 +283,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `Additional cards of the same type should be shown in the description`() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
         every {
             credentialUtil.getVaccinationDosesForEuropeanCredentials(any(), any())
         } returns "dosis 2 van 2"
@@ -259,7 +326,8 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
     private fun greenCard(
         greenCardType: GreenCardType,
-        originType: OriginType = OriginType.Test
+        originType: OriginType = OriginType.Test,
+        expirationTime: OffsetDateTime = OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627499200), ZoneId.of("UTC"))) // 2021-07-28T21:06:20Z
     ): GreenCard {
         // 2021-07-27T09:10Z
         val eventTime =
@@ -267,9 +335,6 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         // 2021-07-27T09:11:40Z
         val validFrom =
             OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627377100), ZoneId.of("UTC")))
-        // 2021-07-28T21:06:20Z
-        val expirationTime =
-            OffsetDateTime.now(Clock.fixed(Instant.ofEpochSecond(1627499200), ZoneId.of("UTC")))
         val credentialEntity = CredentialEntity(
             id = 1,
             greenCardId = 1,
