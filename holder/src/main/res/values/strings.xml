@@ -89,7 +89,7 @@
   <string name="commercial_test_scanner_custom_title">QR-code scannen</string>
   <string name="commercial_test_scanner_custom_message">Richt je telefoon op de QR-code die je van de testlocatie hebt gekregen.</string>
   <string name="your_negative_test_results_title">Kloppen de gegevens?</string>
-  <string name="your_negative_test_results_description"><![CDATA[Deze testuitslag is opgehaald bij de testlocatie. Als de gegevens kloppen kun je een bewijs maken.]]></string>
+  <string name="your_negative_test_results_description"><![CDATA[Kloppen de gegevens? Deze testuitslag is opgehaald bij de testlocatie. Als de gegevens kloppen kun je een bewijs maken.]]></string>
   <string name="your_negative_test_results_header">Opgehaalde testuitslag</string>
   <string name="your_negative_test_results_row_title">Negatieve testuitslag</string>
   <string name="your_negative_test_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Jouw gegevens: %2$s]]></string>
@@ -441,7 +441,7 @@
   <string name="qr_explanation_certificate_issuer">Ministerie van VWS / Ministry of Health, Welfare and Sport</string>
   <string name="qr_code_return_app_button">Terug naar de %s</string>
   <string name="qr_card_validity_future_from">geldig vanaf %1$s %2$s</string>
-  <string name="qr_card_validity_future_until">t/m %1s</string>
+  <string name="qr_card_validity_future_until">tot %1s</string>
   <string name="your_vaccination_explanation_dose">dosis %1s</string>
   <string name="qr_card_validity_future">Wordt automatisch geldig</string>
   <string name="new_in_app_tabs_title">Een Nederlands en internationaal tabblad</string>
