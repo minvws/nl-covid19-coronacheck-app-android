@@ -445,6 +445,22 @@ fun fakePersistenceManager(
         override fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean {
             return true
         }
+
+        override fun getCheckNewValidityInfoCard(): Boolean {
+            return false
+        }
+
+        override fun setCheckNewValidityInfoCard(check: Boolean) {
+
+        }
+
+        override fun getHasDismissedNewValidityInfoCard(): Boolean {
+            return false
+        }
+
+        override fun setHasDismissedNewValidityInfoCard(dismissed: Boolean) {
+
+        }
     }
 }
 
