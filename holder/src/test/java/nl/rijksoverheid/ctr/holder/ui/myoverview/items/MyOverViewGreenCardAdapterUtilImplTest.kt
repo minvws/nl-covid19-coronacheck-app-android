@@ -168,14 +168,39 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun domesticVaccinationFuture() {
-        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+    fun `domesticVaccinationFuture that has a validity of more than 3 years`() {
+        // Today is 2021-01-01
+        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
 
-        val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination)
+        // Expiration time is three years from today
+        val expirationTime = OffsetDateTime.ofInstant(Instant.parse("2024-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(clock, context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
+        val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination, expirationTime)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
         assertEquals("Vaccinatiebewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig vanaf 27 juli 11:11 ", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("Wordt automatisch geldig", viewBinding.expiresIn.text)
+        assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
+    }
+
+    @Test
+    fun `domesticVaccinationFuture that has a validity of 2 years`() {
+        // Today is 2021-01-01
+        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+
+        // Expiration time is three years from today
+        val expirationTime = OffsetDateTime.ofInstant(Instant.parse("2023-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
+
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(clock, context, credentialUtil, testResultAdapterItemUtil, greenCardUtil)
+
+        val greenCard = greenCard(GreenCardType.Domestic, OriginType.Vaccination, expirationTime)
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
+
+        assertEquals("Vaccinatiebewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 11:11 t/m 1 januari 2023", (viewBinding.description.getChildAt(1) as TextView).text)
         assertEquals("Wordt automatisch geldig", viewBinding.expiresIn.text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
