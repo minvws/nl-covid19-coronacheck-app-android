@@ -9,6 +9,7 @@
 package nl.rijksoverheid.ctr.qrscanner
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -22,7 +23,6 @@ import androidx.annotation.StringRes
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
@@ -116,6 +116,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         } ?: run { binding.policyRiskWidget.visibility = View.GONE }
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onStart() {
         super.onStart()
         setUpScanner()
@@ -123,7 +124,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     protected fun setUpScanner(forceCamera: Boolean = false) {
-        if (forceCamera || zebraManager == null || zebraManager.isZebraDevice() == false) {
+        if (forceCamera || zebraManager == null || !zebraManager.isZebraDevice()) {
             setupCamera()
         } else {
             // Enable Zebra scanners
@@ -192,10 +193,6 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         // reopening the scanner in quick succession. Since the CameraProvider has a limit of 3 usecases this
         // can cause crashes otherwise
         cameraProvider.unbindAll()
-
-        val imageAnalyzer = ImageAnalysis.Builder()
-            .setTargetAspectRatio(aspectRatio)
-            .build()
 
         // Bind Usecases for retrieving preview feed from the camera and image processing
         bindPreviewUseCase(cameraProvider, previewView, cameraSelector, aspectRatio)
@@ -368,7 +365,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(rationaleDialog.title)
                 .setMessage(rationaleDialog.description)
-                .setPositiveButton(rationaleDialog.okayButtonText) { dialog, which ->
+                .setPositiveButton(rationaleDialog.okayButtonText) { _, _ ->
                     requestPermission()
                 }
                 .show()

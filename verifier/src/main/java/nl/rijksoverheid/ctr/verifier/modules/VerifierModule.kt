@@ -60,10 +60,8 @@ import java.time.Clock
 
 /**
  * Configure app config dependencies
- *
- * @param path Path for the public keys api, for example "keys" to fetch the config from <baseurl>/keys/public_keys
  */
-fun verifierModule(path: String) = module {
+fun verifierModule() = module {
 
     factory<NewTerms?> {
         NewTerms(version = 1, true)

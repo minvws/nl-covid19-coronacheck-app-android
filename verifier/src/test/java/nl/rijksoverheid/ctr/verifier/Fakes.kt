@@ -13,18 +13,10 @@ import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
-import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
-import nl.rijksoverheid.ctr.verifier.ui.scanner.ScannerViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
-import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody.Companion.toResponseBody
-import okio.BufferedSource
 import org.json.JSONObject
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -112,18 +104,8 @@ fun fakeVerifyQrUseCase(
     }
 }
 
-fun fakeTestResultUtil(
-    isValid: Boolean = true
-) = object : TestResultUtil {
-    override fun isValid(sampleDate: OffsetDateTime, validitySeconds: Long): Boolean {
-        return isValid
-    }
-}
-
 fun fakeCachedAppConfigUseCase(
     appConfig: AppConfig = VerifierConfig.default(),
-    publicKeys: BufferedSource = "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType())
-        .source()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
     override fun isCachedAppConfigValid(): Boolean {
         TODO("Not yet implemented")
@@ -148,7 +130,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ByteArray(0)
         }
 
-        override fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String {
+        override fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String {
             return ""
         }
 
