@@ -14,10 +14,14 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
+import java.time.Clock
+import java.time.Instant
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,6 +38,7 @@ interface MyOverViewGreenCardAdapterUtil {
 }
 
 class MyOverViewGreenCardAdapterUtilImpl(
+    private val utcClock: Clock,
     private val context: Context,
     private val credentialUtil: CredentialUtil,
     private val testResultAdapterItemUtil: TestResultAdapterItemUtil,
@@ -185,16 +190,36 @@ class MyOverViewGreenCardAdapterUtilImpl(
             }
         }
 
-        setOriginSubtitle(
-            descriptionLayout = viewBinding.description,
-            originState = originState,
-            showTime = shouldShowTimeSubtitle(originState, greenCardType),
-            subtitle = context.getString(
+
+        val subtitle = if (originExpirationTimeThreeYearsFromNow(originState.origin)) {
+            context.getString(
                 R.string.qr_card_validity_future_from,
                 origin.validFrom.toLocalDate().formatDayMonthYear(),
                 ""
             )
+        } else {
+            context.getString(
+                R.string.qr_card_validity_valid,
+                origin.expirationTime.toLocalDate().formatDayMonthYear()
+            )
+        }
+
+        setOriginSubtitle(
+            descriptionLayout = viewBinding.description,
+            originState = originState,
+            showTime = shouldShowTimeSubtitle(originState, greenCardType),
+            subtitle = subtitle
         )
+    }
+
+    /**
+     * Returns if the origin will expire in more than three years from now
+     * @param origin The origin to check
+     */
+    private fun originExpirationTimeThreeYearsFromNow(origin: OriginEntity): Boolean {
+        val expirationSecondsFromNow = origin.expirationTime.toInstant().epochSecond - Instant.now(utcClock).epochSecond
+        val expirationYearsFromNow = TimeUnit.SECONDS.toDays(expirationSecondsFromNow) / 365
+        return expirationYearsFromNow >= 3
     }
 
     private fun setRecoveryOrigin(
@@ -344,7 +369,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
 
         when (originState) {
             is OriginState.Future -> {
-                val showUntil = originState.origin.type == OriginType.Recovery
+                val showUntil = originState.origin.type == OriginType.Vaccination && !originExpirationTimeThreeYearsFromNow(originState.origin) || originState.origin.type == OriginType.Recovery
 
                 val validFromDateTime = originState.origin.validFrom
                 val validFrom = if (showTime) {
@@ -354,8 +379,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
                 }
                 textView.text = context.getString(
                     R.string.qr_card_validity_future_from, validFrom, if (showUntil) {
-                        val until =
-                            originState.origin.expirationTime.toLocalDate().formatDayMonthYear()
+                        val until = originState.origin.expirationTime.toLocalDate().formatDayMonthYear()
                         context.getString(R.string.qr_card_validity_future_until, until)
                     } else {
                         ""
