@@ -441,7 +441,7 @@
   <string name="qr_explanation_certificate_issuer">Ministerie van VWS / Ministry of Health, Welfare and Sport</string>
   <string name="qr_code_return_app_button">Terug naar de %s</string>
   <string name="qr_card_validity_future_from">geldig vanaf %1$s %2$s</string>
-  <string name="qr_card_validity_future_until">tot %1s</string>
+  <string name="qr_card_validity_future_until">t/m %1s</string>
   <string name="your_vaccination_explanation_dose">dosis %1s</string>
   <string name="qr_card_validity_future">Wordt automatisch geldig</string>
   <string name="new_in_app_tabs_title">Een Nederlands en internationaal tabblad</string>
