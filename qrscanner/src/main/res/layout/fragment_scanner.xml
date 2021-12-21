@@ -23,6 +23,7 @@
         app:menu="@menu/menu_scanner"
         app:navigationContentDescription="@string/back"
         app:navigationIcon="@drawable/ic_back"
+        android:fitsSystemWindows="true"
         tools:title="QR-Code scannen" />
 
     <androidx.camera.view.PreviewView
@@ -101,7 +102,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/scanner_footer"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/zebra_footer"
