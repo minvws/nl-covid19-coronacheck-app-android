@@ -56,6 +56,12 @@ sealed class DashboardItem {
             hasButton = true,
             buttonText = R.string.recommended_update_card_action
         )
+
+        object NewValidityItem: InfoItem(
+            isDismissible = true,
+            hasButton = true,
+            buttonText = R.string.holder_dashboard_newvaliditybanner_action
+        )
     }
 
     object CoronaMelderItem : DashboardItem()

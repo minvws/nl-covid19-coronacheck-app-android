@@ -4,6 +4,8 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
@@ -522,6 +524,54 @@ class DashboardItemUtilImplTest {
         )
 
         assertFalse(util.isAppUpdateAvailable())
+    }
+
+    @Test
+    fun `shouldShowNewValidityItem returns true if banner needs to be shown`() {
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
+        val persistenceManager = mockk<PersistenceManager>()
+        every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { true }
+        every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { false }
+
+        val util = DashboardItemUtilImpl(
+            mockk(), mockk(), persistenceManager = persistenceManager, mockk(), mockk(),
+            appConfigUseCase = cachedAppConfigUseCase,
+            versionCode = 2
+        )
+
+        assertTrue(util.shouldShowNewValidityItem())
+    }
+
+    @Test
+    fun `shouldShowNewValidityItem returns false if feature not live yet`() {
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
+        val persistenceManager = mockk<PersistenceManager>()
+        every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { false }
+        every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { false }
+
+        val util = DashboardItemUtilImpl(
+            mockk(), mockk(), persistenceManager = persistenceManager, mockk(), mockk(),
+            appConfigUseCase = cachedAppConfigUseCase,
+            versionCode = 2
+        )
+
+        assertFalse(util.shouldShowNewValidityItem())
+    }
+
+    @Test
+    fun `shouldShowNewValidityItem returns false if banner does not need to show`() {
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
+        val persistenceManager = mockk<PersistenceManager>()
+        every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { true }
+        every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { true }
+
+        val util = DashboardItemUtilImpl(
+            mockk(), mockk(), persistenceManager = persistenceManager, mockk(), mockk(),
+            appConfigUseCase = cachedAppConfigUseCase,
+            versionCode = 2
+        )
+
+        assertFalse(util.shouldShowNewValidityItem())
     }
 
     private fun createCardItem(originType: OriginType) = CardItem(

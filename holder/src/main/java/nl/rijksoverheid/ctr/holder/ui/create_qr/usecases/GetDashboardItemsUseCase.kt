@@ -100,6 +100,12 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowNewValidityItem()) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.NewValidityItem
+            )
+        }
+
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCardType = GreenCardType.Domestic,

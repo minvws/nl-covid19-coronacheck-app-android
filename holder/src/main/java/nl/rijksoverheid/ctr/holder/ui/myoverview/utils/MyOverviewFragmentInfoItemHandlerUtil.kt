@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
+import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
@@ -14,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.IntentUtil
 import java.time.Instant
@@ -73,6 +75,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
                 onMissingDutchVaccinationItemClicked(myOverviewFragment)
             DashboardItem.InfoItem.AppUpdate -> openPlayStore(myOverviewFragment)
+            is DashboardItem.InfoItem.NewValidityItem -> {
+                onNewValidityInfoClicked(myOverviewFragment.requireContext())
+            }
         }
     }
 
@@ -201,6 +206,10 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 item.originType, myOverviewFragment
             )
         }
+    }
+
+    private fun onNewValidityInfoClicked(context: Context) {
+        context.getString(R.string.holder_dashboard_newvaliditybanner_url).launchUrl(context)
     }
 
     private fun presentOriginInfoForEuQr(
