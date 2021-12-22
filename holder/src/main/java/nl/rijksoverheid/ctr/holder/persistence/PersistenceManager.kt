@@ -190,7 +190,7 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun setCheckNewValidityInfoCard(check: Boolean) {
-        sharedPreferences.edit().putBoolean(CHECK_VALIDITY_INFO_CARD, true).apply()
+        sharedPreferences.edit().putBoolean(CHECK_VALIDITY_INFO_CARD, check).apply()
     }
 
     override fun getHasDismissedNewValidityInfoCard(): Boolean {

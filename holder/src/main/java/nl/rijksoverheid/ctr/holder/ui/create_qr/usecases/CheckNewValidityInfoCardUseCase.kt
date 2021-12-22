@@ -11,7 +11,6 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 
 interface CheckNewValidityInfoCardUseCase {
@@ -36,7 +35,7 @@ class CheckNewValidityInfoCardUseCaseImpl(
             }
 
             // Only execute this check once
-            persistenceManager.setShouldCheckRecoveryGreenCardRevisedValidity(false)
+            persistenceManager.setCheckNewValidityInfoCard(false)
         }
     }
 }
