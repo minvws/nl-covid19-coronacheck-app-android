@@ -1,7 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -47,6 +49,9 @@ interface DashboardItemUtil {
         databaseSyncerResult: DatabaseSyncerResult
     ): Boolean
     fun shouldShowNewValidityItem(): Boolean
+    fun shouldShowTestCertificate3GValidityItem(
+        domesticGreenCards: List<GreenCard>
+    ): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -55,6 +60,7 @@ class DashboardItemUtilImpl(
     private val persistenceManager: PersistenceManager,
     private val eventGroupEntityUtil: EventGroupEntityUtil,
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
+    private val featureFlagUseCase: FeatureFlagUseCase,
     private val appConfigUseCase: CachedAppConfigUseCase,
     private val versionCode: Int
 ) : DashboardItemUtil {
@@ -189,5 +195,14 @@ class DashboardItemUtilImpl(
     override fun shouldShowNewValidityItem(): Boolean {
         return !persistenceManager.getHasDismissedNewValidityInfoCard()
                 && appConfigUseCase.getCachedAppConfig().showNewValidityInfoCard
+    }
+
+    override fun shouldShowTestCertificate3GValidityItem(domesticGreenCards: List<GreenCard>): Boolean {
+        val isFeatureEnabled = featureFlagUseCase.isVerificationPolicyEnabled()
+        val has3GTest = domesticGreenCards.any { greenCard ->
+            greenCard.origins.any { it.type == OriginType.Test }
+                    && greenCard.credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G }
+        }
+        return isFeatureEnabled && has3GTest
     }
 }

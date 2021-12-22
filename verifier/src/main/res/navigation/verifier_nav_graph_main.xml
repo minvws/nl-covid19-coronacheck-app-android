@@ -12,11 +12,23 @@
     android:id="@+id/main_nav"
     app:startDestination="@+id/nav_scan_qr">
 
+    <argument
+        android:name="returnUri"
+        android:defaultValue="@null"
+        app:argType="string"
+        app:nullable="true" />
+
     <fragment
         android:id="@+id/nav_scan_qr"
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrFragment"
         android:label="@string/scan_qr_title"
         tools:layout="@layout/fragment_scan_qr">
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_scan_instructions"
@@ -25,6 +37,61 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_policy_selection"
+            app:destination="@id/nav_policy_selection"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_policy_selection"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment"
+        android:label="{toolbarTitle}"
+        tools:layout="@layout/fragment_verification_policy_selection">
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/action_scan_instructions"
+            app:destination="@id/nav_scan_instructions"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <argument
+            android:name="selectionType"
+            app:nullable="false"
+            app:argType="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_policy_settings"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyInfoFragment"
+        android:label="@string/verifier_menu_risksetting"
+        tools:layout="@layout/fragment_verification_policy_info">
+
+        <action
+            android:id="@+id/action_policy_selection"
+            app:destination="@id/nav_policy_selection"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
 
@@ -36,7 +103,23 @@
         android:id="@+id/nav_about_this_app"
         android:name="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment"
         android:label="@string/about_this_app"
-        tools:layout="@layout/fragment_about_app" />
+        tools:layout="@layout/fragment_about_app">
+
+        <action
+            android:id="@+id/action_scan_log"
+            app:destination="@id/nav_scan_log"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_scan_log"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogFragment"
+        android:label="@string/verifier_about_this_app_scan_log"
+        tools:layout="@layout/fragment_scan_log"/>
 
     <include app:graph="@navigation/verifier_nav_graph_scanner" />
 
@@ -45,6 +128,21 @@
         android:name="nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsFragment"
         android:label="@string/scan_instructions"
         tools:layout="@layout/fragment_scan_instructions">
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/action_policy_selection"
+            app:destination="@+id/nav_policy_selection"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
     </fragment>
 
 </navigation>

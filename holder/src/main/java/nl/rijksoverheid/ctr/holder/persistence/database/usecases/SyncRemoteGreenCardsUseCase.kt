@@ -35,11 +35,11 @@ class SyncRemoteGreenCardsUseCaseImpl(
             holderDatabase.originDao().deleteAll()
             holderDatabase.credentialDao().deleteAll()
 
-            domesticCredentials?.let { domesticCredentials ->
+            domesticCredentials?.let { it ->
                 remoteGreenCards.domesticGreencard?.let { domesticGreenCard ->
                     createDomesticGreenCardUseCase.create(
                         greenCard = domesticGreenCard,
-                        domesticCredentials = domesticCredentials,
+                        domesticCredentials = it,
                     )
                 }
             }

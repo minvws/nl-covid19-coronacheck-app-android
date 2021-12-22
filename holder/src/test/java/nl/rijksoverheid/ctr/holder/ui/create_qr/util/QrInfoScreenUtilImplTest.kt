@@ -9,6 +9,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import androidx.test.core.app.ApplicationProvider
+import io.mockk.mockk
 import junit.framework.Assert.assertEquals
 import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
 import org.json.JSONObject
@@ -30,6 +31,7 @@ class QrInfoScreenUtilImplTest : AutoCloseKoinTest() {
                 ApplicationProvider.getApplicationContext()
             ),
             CountryUtilImpl(),
+            mockk(),
             fakeCachedAppConfigUseCase(),
         )
 

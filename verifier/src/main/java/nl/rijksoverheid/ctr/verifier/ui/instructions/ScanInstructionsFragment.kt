@@ -5,15 +5,23 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
+import nl.rijksoverheid.ctr.verifier.models.ScannerState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,8 +36,13 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     private val scannerUtil: ScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
+    private val scanInstructionsButtonUtil: ScanInstructionsButtonUtil by inject()
+    private val featureFlagUseCase: FeatureFlagUseCase by inject()
     private var _binding: FragmentScanInstructionsBinding? = null
     private val binding get() = _binding!!
+
+    private val onboardingItems by lazy { instructionsExplanationData(featureFlagUseCase.isVerificationPolicyEnabled()).onboardingItems }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,10 +53,10 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             OnboardingPagerAdapter(
                 childFragmentManager,
                 lifecycle,
-                instructionsExplanationData.onboardingItems
+                onboardingItems
             )
 
-        if (instructionsExplanationData.onboardingItems.isNotEmpty()) {
+        if (onboardingItems.isNotEmpty()) {
             binding.indicators.initIndicator(adapter.itemCount)
             initViewPager(binding, adapter, savedInstanceState?.getInt(indicatorPositionKey))
         }
@@ -51,6 +64,9 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         setBackPressListener(binding)
         setBindings(binding, adapter)
 
+        scanQrViewModel.scannerNavigationStateEvent.observe(viewLifecycleOwner, EventObserver{
+            closeInstructionsAndOpenNextScreen(it)
+        })
     }
 
     private fun setBindings(
@@ -63,8 +79,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                 clearToolbar()
                 // Instructions have been opened, set as seen
                 scanQrViewModel.setScanInstructionsSeen()
-                findNavController().popBackStack(R.id.nav_scan_qr, false)
-                scannerUtil.launchScanner(requireActivity())
+                scanQrViewModel.nextScreen()
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }
@@ -73,16 +88,36 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         setupToolbarMenu()
     }
 
+    private fun closeInstructionsAndOpenNextScreen(state: ScannerNavigationState) {
+        when (state) {
+            is ScannerNavigationState.Scanner -> {
+                if (!state.isLocked) {
+                    findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
+                    scannerUtil.launchScanner(requireActivity(), arguments?.getString("returnUri"))
+                } else {
+                    navigateSafety(R.id.nav_scan_qr, bundleOf("returnUri" to arguments?.getString("returnUri")))
+                }
+            }
+            else -> {
+                navigateSafety(
+                    ScanInstructionsFragmentDirections.actionPolicySelection(
+                        selectionType = VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(VerificationPolicyState.None)),
+                        toolbarTitle = getString(R.string.verifier_menu_risksetting),
+                        returnUri = arguments?.getString("returnUri"),
+                    )
+                )
+            }
+        }
+    }
+
     private fun setBackPressListener(binding: FragmentScanInstructionsBinding) {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val currentItem = binding.viewPager.currentItem
                 if (currentItem == 0) {
-                    findNavController().popBackStack()
+                    findNavControllerSafety()?.popBackStack()
                     clearToolbar()
-                    // Instructions have been opened, set as seen
-                    scanQrViewModel.setScanInstructionsSeen()
                 } else {
                     binding.viewPager.currentItem = binding.viewPager.currentItem - 1
                 }
@@ -102,7 +137,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         adapter: OnboardingPagerAdapter,
         startingItem: Int? = null,
     ) {
-        binding.viewPager.offscreenPageLimit = instructionsExplanationData.onboardingItems.size
+        binding.viewPager.offscreenPageLimit = onboardingItems.size
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
@@ -116,14 +151,13 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                     (position + 1).toString(),
                     adapter.itemCount.toString()
                 )
-
-                if (position == adapter.itemCount - 1) {
+                val isLastItem = position == adapter.itemCount - 1
+                if (isLastItem) {
                     clearToolbar()
-                    binding.button.text = getString(R.string.scan_qr_button)
                 } else {
                     setupToolbarMenu()
-                    binding.button.text = getString(R.string.onboarding_next)
                 }
+                binding.button.text = getString(scanInstructionsButtonUtil.getButtonText(isLastItem))
 
                 // Apply bottom elevation if the view inside the viewpager is scrollable
                 val scrollView =
@@ -154,9 +188,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                                     clearToolbar()
                                     // Instructions have been opened, set as seen
                                     scanQrViewModel.setScanInstructionsSeen()
-                                    if (isAdded) {
-                                        scannerUtil.launchScanner(requireActivity())
-                                    }
+                                    scanQrViewModel.nextScreen()
                                 }
                             }
                             true

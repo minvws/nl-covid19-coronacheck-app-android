@@ -2,10 +2,6 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
-import java.time.ZoneOffset
 
 
 /*
@@ -49,7 +45,8 @@ data class HolderConfig(
     @Json(name = "internationalQRRelevancyDays") val internationalQRRelevancyDays: Int,
     @Json(name = "recoveryGreencardRevisedValidityLaunchDate") val recoveryGreenCardRevisedValidityLaunchDate: String,
     @Json(name = "configAlmostOutOfDateWarningSeconds") val holderConfigAlmostOutOfDateWarningSeconds : Int,
-    @Json(name = "showNewValidityInfoCard") val showNewValidityInfoCard: Boolean
+    @Json(name = "showNewValidityInfoCard") val showNewValidityInfoCard: Boolean,
+    @Json(name = "androidEnableVerificationPolicyVersion") val holderEnableVerificationPolicyVersion: Int
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -61,7 +58,8 @@ data class HolderConfig(
     upgradeRecommendationIntervalHours,
     holderDeeplinkDomains,
     holderClockDeviationThresholdSeconds,
-    holderConfigAlmostOutOfDateWarningSeconds
+    holderConfigAlmostOutOfDateWarningSeconds,
+    holderEnableVerificationPolicyVersion
 ) {
 
     companion object {
@@ -131,7 +129,8 @@ data class HolderConfig(
             internationalQRRelevancyDays = internationalQRRelevancyDays,
             recoveryGreenCardRevisedValidityLaunchDate = "1970-01-01T00:00:00Z",
             holderConfigAlmostOutOfDateWarningSeconds = holderConfigAlmostOutOfDateWarningSeconds,
-            showNewValidityInfoCard = showNewValidityInfoCard
+            showNewValidityInfoCard = showNewValidityInfoCard,
+            holderEnableVerificationPolicyVersion = 0
         )
     }
 }

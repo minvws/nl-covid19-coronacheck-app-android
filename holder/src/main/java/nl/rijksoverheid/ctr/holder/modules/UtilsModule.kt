@@ -24,6 +24,7 @@ fun utilsModule(versionCode: Int) = module {
             androidContext(),
             get(),
             get(),
+            get(),
             get()
         )
     }
@@ -34,7 +35,7 @@ fun utilsModule(versionCode: Int) = module {
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
     factory<RemoteEventUtil> { RemoteEventUtilImpl(get()) }
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
-    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), versionCode) }
+    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get(), versionCode) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }

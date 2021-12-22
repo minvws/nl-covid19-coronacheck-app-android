@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mobilecore.Mobilecore.*
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

@@ -119,7 +119,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
      */
     @SuppressLint("ClickableViewAccessibility")
     private fun dispatchTouchEventDoseInfo() {
-        binding.doseInfo.setOnTouchListener { v, event ->
+        binding.doseInfo.setOnTouchListener { _, event ->
             binding.animation.dispatchTouchEvent(event)
             true
         }
@@ -207,7 +207,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                                     )
 
                                     infoScreenUtil.getForDomesticQr(
-                                        personalDetails = personalDetails
+                                        personalDetails = personalDetails,
+                                        category = qrCodeData.readDomesticCredential.category
                                     )
                                 }
                                 is QrCodeData.European -> {

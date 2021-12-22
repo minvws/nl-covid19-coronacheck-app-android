@@ -51,7 +51,8 @@ class CreateDomesticGreenCardUseCaseImpl(
                 expirationTime = OffsetDateTime.ofInstant(
                     Instant.ofEpochSecond(domesticCredential.attributes.validFrom),
                     ZoneOffset.UTC
-                ).plusHours(domesticCredential.attributes.validForHours)
+                ).plusHours(domesticCredential.attributes.validForHours),
+                category = domesticCredential.attributes.category
             )
         }
 

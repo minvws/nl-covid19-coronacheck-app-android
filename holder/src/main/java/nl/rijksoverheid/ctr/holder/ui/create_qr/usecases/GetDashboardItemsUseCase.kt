@@ -106,6 +106,10 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowTestCertificate3GValidityItem(domesticGreenCards)) {
+            dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
+        }
+
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCardType = GreenCardType.Domestic,
@@ -123,7 +127,11 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(domesticGreenCards, databaseSyncerResult)) {
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(
+                domesticGreenCards,
+                databaseSyncerResult
+            )
+        ) {
             dashboardItems.add(
                 DashboardItem.CoronaMelderItem
             )
@@ -200,7 +208,11 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(internationalGreenCards, databaseSyncerResult)) {
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(
+                internationalGreenCards,
+                databaseSyncerResult
+            )
+        ) {
             dashboardItems.add(
                 DashboardItem.CoronaMelderItem
             )
@@ -250,7 +262,8 @@ class GetDashboardItemsUseCaseImpl(
                 items.add(
                     if (greenCardType == GreenCardType.Domestic
                         && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(
-                            greenCardsForSelectedType, greenCardsForUnselectedType
+                            greenCardsForSelectedType,
+                            greenCardsForUnselectedType
                         )
                     ) {
                         DashboardItem.InfoItem.MissingDutchVaccinationItem

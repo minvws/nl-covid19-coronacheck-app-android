@@ -21,6 +21,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.BaseMainFragment
 import nl.rijksoverheid.ctr.design.ext.isScreenReaderOn
 import nl.rijksoverheid.ctr.design.ext.styleTitle
@@ -31,7 +32,7 @@ import nl.rijksoverheid.ctr.verifier.databinding.FragmentMainBinding
 import org.koin.android.ext.android.inject
 
 class VerifierMainFragment :
-    BaseMainFragment(R.layout.fragment_main, setOf(R.id.nav_scan_qr, R.id.nav_about_this_app)) {
+    BaseMainFragment(R.layout.fragment_main, setOf(R.id.nav_scan_qr, R.id.nav_about_this_app, R.id.nav_policy_settings)) {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
@@ -40,6 +41,7 @@ class VerifierMainFragment :
 
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
+    private val featureFlagUseCase: FeatureFlagUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -72,6 +74,8 @@ class VerifierMainFragment :
                 }
             }
         })
+
+        binding.navView.menu.findItem(R.id.nav_policy_settings).isVisible = featureFlagUseCase.isVerificationPolicyEnabled()
     }
 
     override fun onDestroyView() {
@@ -99,6 +103,8 @@ class VerifierMainFragment :
             .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_scan_instructions)
             .styleTitle(context, R.attr.textAppearanceHeadline6)
+        binding.navView.menu.findItem(R.id.nav_policy_settings)
+                .styleTitle(context, R.attr.textAppearanceHeadline6)
         binding.navView.menu.findItem(R.id.nav_support)
             .styleTitle(context, R.attr.textAppearanceBody1)
         binding.navView.menu.findItem(R.id.nav_about_this_app)
@@ -120,20 +126,43 @@ class VerifierMainFragment :
                         data = AboutThisAppData(
                             versionName = BuildConfig.VERSION_NAME,
                             versionCode = BuildConfig.VERSION_CODE.toString(),
-                            readMoreItems = listOf(
-                                AboutThisAppData.Url(
-                                    text = getString(R.string.privacy_statement),
-                                    url = getString(R.string.url_terms_of_use),
-                                ),
-                                AboutThisAppData.Url(
-                                    text = getString(R.string.about_this_app_accessibility),
-                                    url = getString(R.string.url_accessibility),
-                                ),
-                                AboutThisAppData.Url(
-                                    text = getString(R.string.about_this_app_colofon),
-                                    url = getString(R.string.about_this_app_colofon_url),
-                                ),
-                            ),
+                            sections = mutableListOf(
+                                AboutThisAppData.AboutThisAppSection(
+                                    header = R.string.about_this_app_read_more,
+                                    items = mutableListOf<AboutThisAppData.AboutThisAppItem>(
+                                        AboutThisAppData.Url(
+                                            text = getString(R.string.privacy_statement),
+                                            url = getString(R.string.url_terms_of_use),
+                                        ),
+                                        AboutThisAppData.Url(
+                                            text = getString(R.string.about_this_app_accessibility),
+                                            url = getString(R.string.url_accessibility),
+                                        ),
+                                        AboutThisAppData.Url(
+                                            text = getString(R.string.about_this_app_colofon),
+                                            url = getString(R.string.about_this_app_colofon_url),
+                                        ),
+                                    ).apply {
+                                        if (!BuildConfig.FLAVOR.lowercase().contains("prod")) {
+                                            add(AboutThisAppData.ClearAppData(
+                                                text = getString(R.string.about_this_clear_data)
+                                            ))
+                                        }
+                                    }
+                                )
+                            ).apply {
+                                if (featureFlagUseCase.isVerificationPolicyEnabled()) {
+                                    add(AboutThisAppData.AboutThisAppSection(
+                                        header = R.string.verifier_about_this_app_law_enforcement,
+                                        items = listOf(
+                                            AboutThisAppData.Destination(
+                                                text = getString(R.string.verifier_about_this_app_scan_log),
+                                                destinationId = R.id.action_scan_log
+                                            )
+                                        )
+                                    ))
+                                }
+                            },
                             configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
                             configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
                         )

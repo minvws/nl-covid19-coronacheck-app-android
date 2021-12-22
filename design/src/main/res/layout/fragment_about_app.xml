@@ -30,28 +30,14 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Description" />
 
-        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
-            android:id="@+id/read_more"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@string/about_this_app_read_more"
-            android:textAppearance="?attr/textAppearanceCaption"
-            android:textColor="?android:textColorPrimary"
-            app:layout_constraintEnd_toEndOf="@+id/description"
-            app:layout_constraintStart_toStartOf="@+id/description"
-            app:layout_constraintTop_toBottomOf="@+id/description"
-            tools:text="Lees meer" />
-
         <LinearLayout
-            android:id="@+id/read_more_items"
+            android:id="@+id/sections"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/read_more" />
+            app:layout_constraintTop_toBottomOf="@+id/description" />
 
         <TextView
             android:id="@+id/app_version"
@@ -62,7 +48,7 @@
             android:paddingBottom="16dp"
             app:layout_constraintEnd_toEndOf="@+id/description"
             app:layout_constraintStart_toStartOf="@+id/description"
-            app:layout_constraintTop_toBottomOf="@+id/read_more_items"
+            app:layout_constraintTop_toBottomOf="@+id/sections"
             tools:text="App versie 1.1" />
 
         <TextView
