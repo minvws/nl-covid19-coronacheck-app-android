@@ -20,6 +20,7 @@ import java.time.Clock
 fun utilsModule(versionCode: Int) = module {
     factory<MyOverViewGreenCardAdapterUtil> {
         MyOverViewGreenCardAdapterUtilImpl(
+            Clock.systemUTC(),
             androidContext(),
             get(),
             get(),

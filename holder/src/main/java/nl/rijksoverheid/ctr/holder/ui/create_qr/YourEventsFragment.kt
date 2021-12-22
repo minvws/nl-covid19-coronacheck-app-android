@@ -345,27 +345,22 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private fun presentHeader(binding: FragmentYourEventsBinding) {
         when (val type = args.type) {
             is YourEventsFragmentType.TestResult2 -> {
-                binding.title.setText(R.string.your_negative_test_results_title)
                 binding.description.setHtmlText(R.string.your_negative_test_results_description)
             }
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 when (type.originType) {
                     is OriginType.Test -> {
-                        binding.title.setText(R.string.your_negative_test_results_title)
                         binding.description.setHtmlText(R.string.your_negative_test_results_description)
                     }
                     is OriginType.Vaccination -> {
-                        binding.title.visibility = View.GONE
                         binding.description.setHtmlText(R.string.your_retrieved_vaccinations_description)
                     }
                     is OriginType.Recovery -> {
-                        binding.title.visibility = View.GONE
                         binding.description.setHtmlText(R.string.your_positive_test_description)
                     }
                 }
             }
             is YourEventsFragmentType.DCC -> {
-                binding.title.visibility = View.GONE
                 binding.description.setHtmlText(R.string.your_dcc_event_description)
             }
         }

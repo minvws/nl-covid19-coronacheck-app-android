@@ -89,7 +89,7 @@
   <string name="commercial_test_scanner_custom_title">QR-code scannen</string>
   <string name="commercial_test_scanner_custom_message">Richt je telefoon op de QR-code die je van de testlocatie hebt gekregen.</string>
   <string name="your_negative_test_results_title">Kloppen de gegevens?</string>
-  <string name="your_negative_test_results_description"><![CDATA[Deze testuitslag is opgehaald bij de testlocatie. Als de gegevens kloppen kun je een bewijs maken.]]></string>
+  <string name="your_negative_test_results_description"><![CDATA[Kloppen de gegevens? Deze testuitslag is opgehaald bij de testlocatie. Als de gegevens kloppen kun je een bewijs maken.]]></string>
   <string name="your_negative_test_results_header">Opgehaalde testuitslag</string>
   <string name="your_negative_test_results_row_title">Negatieve testuitslag</string>
   <string name="your_negative_test_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Jouw gegevens: %2$s]]></string>

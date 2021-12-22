@@ -22,26 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/top_barrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="bottom"
-                app:constraint_referenced_ids="title" />
-
-            <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
-                android:id="@+id/title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="48dp"
-                android:textAppearance="?attr/textAppearanceHeadline5"
-                android:textColor="@color/primary_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/commercial_test_code_title" />
-
             <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
                 android:id="@+id/description"
                 android:layout_width="0dp"
@@ -51,7 +31,7 @@
                 android:textAppearance="?attr/textAppearanceBody1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/top_barrier"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/your_retrieved_vaccinations_description" />
 
             <View
