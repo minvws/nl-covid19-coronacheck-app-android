@@ -202,7 +202,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
         assertEquals("Vaccinatiebewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("geldig vanaf 27 juli 11:11 t/m 1 januari 2023", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 11:11 tot 1 januari 2023", (viewBinding.description.getChildAt(1) as TextView).text)
         assertEquals("Wordt automatisch geldig", viewBinding.expiresIn.text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
@@ -225,7 +225,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         val greenCard = greenCard(GreenCardType.Eu, OriginType.Recovery)
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
-        assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 11:11 tot 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
 
@@ -249,7 +249,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Future(greenCard.origins.first())))))
 
         assertEquals("Herstelbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
-        assertEquals("geldig vanaf 27 juli 11:11 t/m 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals("geldig vanaf 27 juli 11:11 tot 28 juli 2021", (viewBinding.description.getChildAt(1) as TextView).text)
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
 

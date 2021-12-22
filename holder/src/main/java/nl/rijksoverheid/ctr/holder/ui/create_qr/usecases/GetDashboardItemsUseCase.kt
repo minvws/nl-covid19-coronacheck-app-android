@@ -100,6 +100,12 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowNewValidityItem()) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.NewValidityItem
+            )
+        }
+
         if (dashboardItemUtil.shouldShowTestCertificate3GValidityItem(domesticGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
         }

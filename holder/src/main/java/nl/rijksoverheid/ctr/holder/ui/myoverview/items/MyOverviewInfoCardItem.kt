@@ -82,6 +82,9 @@ class MyOverviewInfoCardItem(
             is DashboardItem.InfoItem.AppUpdate -> {
                 viewBinding.text.setText(R.string.recommended_update_card_description)
             }
+            is DashboardItem.InfoItem.NewValidityItem -> {
+                viewBinding.text.setText(R.string.holder_dashboard_newvaliditybanner_title)
+            }
         }
 
         viewBinding.button.setOnClickListener {

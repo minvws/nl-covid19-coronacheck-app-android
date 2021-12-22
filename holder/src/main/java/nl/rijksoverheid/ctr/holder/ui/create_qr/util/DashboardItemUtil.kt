@@ -48,6 +48,7 @@ interface DashboardItemUtil {
         greenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult
     ): Boolean
+    fun shouldShowNewValidityItem(): Boolean
     fun shouldShowTestCertificate3GValidityItem(
         domesticGreenCards: List<GreenCard>
     ): Boolean
@@ -189,6 +190,11 @@ class DashboardItemUtilImpl(
         return greenCards.isNotEmpty()
                 && !greenCards.all { greenCardUtil.isExpired(it) }
                 && databaseSyncerResult is DatabaseSyncerResult.Success
+    }
+
+    override fun shouldShowNewValidityItem(): Boolean {
+        return !persistenceManager.getHasDismissedNewValidityInfoCard()
+                && appConfigUseCase.getCachedAppConfig().showNewValidityInfoCard
     }
 
     override fun shouldShowTestCertificate3GValidityItem(domesticGreenCards: List<GreenCard>): Boolean {
