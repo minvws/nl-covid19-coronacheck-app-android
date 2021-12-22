@@ -13,5 +13,5 @@ data class ReadDomesticCredential(
     val isPaperProof: String,
     val validForHours: String,
     val validFrom: String,
-    val category: String
+    val category: String?
 )
