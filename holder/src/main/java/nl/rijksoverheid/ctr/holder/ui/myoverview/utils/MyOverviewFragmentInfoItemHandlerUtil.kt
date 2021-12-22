@@ -301,6 +301,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.RefreshEuVaccinations -> {
                 // NO OP, items can't be dismissed
             }
+            is DashboardItem.InfoItem.NewValidityItem -> {
+                myOverviewFragment.dashboardViewModel.dismissNewValidityInfoCard()
+            }
         }
     }
 }
