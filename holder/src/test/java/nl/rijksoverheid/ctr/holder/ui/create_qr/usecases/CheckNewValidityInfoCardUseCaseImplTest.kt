@@ -180,7 +180,7 @@ class CheckNewValidityInfoCardUseCaseImplTest: AutoCloseKoinTest() {
         usecase.check()
 
         // Expected values
-        assertTrue(persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity())
+        assertFalse(persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity())
         assertTrue(persistenceManager.getHasDismissedNewValidityInfoCard())
     }
 

@@ -30,9 +30,13 @@ class CheckNewValidityInfoCardUseCaseImpl(
             .filter { it.greenCardEntity.type is GreenCardType.Domestic }
             .any { it.origins.any { origin -> origin.type is OriginType.Vaccination || origin.type is OriginType.Recovery } }
 
-        if (showNewValidityInfoCard && checkNewValidityInfoCard && hasDomesticVaccinationOrRecovery) {
+        if (showNewValidityInfoCard && checkNewValidityInfoCard) {
+            if (hasDomesticVaccinationOrRecovery) {
+                persistenceManager.setHasDismissedNewValidityInfoCard(false)
+            }
+
+            // Only execute this check once
             persistenceManager.setShouldCheckRecoveryGreenCardRevisedValidity(false)
-            persistenceManager.setHasDismissedNewValidityInfoCard(false)
         }
     }
 }
