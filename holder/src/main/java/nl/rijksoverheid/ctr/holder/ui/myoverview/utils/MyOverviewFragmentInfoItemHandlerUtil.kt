@@ -72,7 +72,12 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
                 onMissingDutchVaccinationItemClicked(myOverviewFragment)
-            DashboardItem.InfoItem.AppUpdate -> openPlayStore(myOverviewFragment)
+            is DashboardItem.InfoItem.TestCertificate3GValidity -> {
+                onTestCertificate3GValidityClicked(myOverviewFragment)
+            }
+            is DashboardItem.InfoItem.AppUpdate -> {
+                openPlayStore(myOverviewFragment)
+            }
         }
     }
 
@@ -184,6 +189,20 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 descriptionData = DescriptionData(
                     R.string.clock_deviation_explanation_description,
                     customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)
+                ),
+            )
+        )
+    }
+
+
+    private fun onTestCertificate3GValidityClicked(myOverviewFragment: MyOverviewFragment) {
+        infoFragmentUtil.presentAsBottomSheet(
+            myOverviewFragment.childFragmentManager,
+            InfoFragmentData.TitleDescription(
+                title = myOverviewFragment.getString(R.string.holder_my_overview_3g_test_validity_bottom_sheet_title),
+                descriptionData = DescriptionData(
+                    R.string.holder_my_overview_3g_test_validity_bottom_sheet_body,
+                    htmlLinksEnabled = true
                 ),
             )
         )

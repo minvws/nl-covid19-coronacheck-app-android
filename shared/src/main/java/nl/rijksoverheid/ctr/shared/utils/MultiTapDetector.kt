@@ -36,7 +36,7 @@ class MultiTapDetector(view: View, callback: (Int, Boolean) -> Unit) {
 
 
     init {
-        view.setOnTouchListener { v, event ->
+        view.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     if (event.pointerCount == 1) {

@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
@@ -25,7 +24,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -33,8 +31,6 @@ import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
-import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
-import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import org.json.JSONObject
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -94,33 +90,6 @@ fun fakeTokenValidatorUtil(
     }
 }
 
-fun fakeTestResultUtil(
-    isValid: Boolean = true
-) = object : TestResultUtil {
-    override fun isValid(sampleDate: OffsetDateTime, validitySeconds: Long): Boolean {
-        return isValid
-    }
-}
-
-fun fakePersonalDetailsUtil(
-
-): PersonalDetailsUtil = object : PersonalDetailsUtil {
-    override fun getPersonalDetails(
-        firstNameInitial: String,
-        lastNameInitial: String,
-        birthDay: String,
-        birthMonth: String,
-        includeBirthMonthNumber: Boolean
-    ): PersonalDetails {
-        return PersonalDetails(
-            firstNameInitial = firstNameInitial,
-            lastNameInitial = lastNameInitial,
-            birthDay = birthDay,
-            birthMonth = birthMonth
-        )
-    }
-}
-
 fun fakeCachedAppConfigUseCase(
     appConfig: HolderConfig = HolderConfig.default(),
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
@@ -172,16 +141,6 @@ fun fakeCommercialTestResultViewModel(): CommercialTestCodeViewModel {
     }
 }
 
-fun fakeCreateCredentialUseCase(
-    credential: String = ""
-): CreateCredentialUseCase {
-    return object : CreateCredentialUseCase {
-        override fun get(secretKeyJson: String, testIsmBody: String): String {
-            return credential
-        }
-    }
-}
-
 fun fakeSecretKeyUseCase(
     json: String = "{}"
 ): SecretKeyUseCase {
@@ -192,16 +151,6 @@ fun fakeSecretKeyUseCase(
 
         override fun persist() {
 
-        }
-    }
-}
-
-fun fakeCommitmentMessageUsecase(
-    json: String = "{}"
-): CommitmentMessageUseCase {
-    return object : CommitmentMessageUseCase {
-        override suspend fun json(nonce: String): String {
-            return json
         }
     }
 }
@@ -243,81 +192,6 @@ fun fakeConfigProviderUseCase(
 
         override suspend fun testProviders(): TestProvidersResult {
             return TestProvidersResult.Success(testProviders)
-        }
-    }
-}
-
-fun fakeCoronaCheckRepository(
-    testProviders: RemoteConfigProviders = RemoteConfigProviders(listOf(), listOf()),
-    testIsmResult: TestIsmResult = TestIsmResult.Success(""),
-    testIsmExceptionCallback: (() -> Unit)? = null,
-    remoteNonce: RemoteNonce = RemoteNonce("", ""),
-    accessTokens: RemoteAccessTokens = RemoteAccessTokens(tokens = listOf()),
-    remoteCredentials: RemoteGreenCards = RemoteGreenCards(
-        domesticGreencard = null,
-        euGreencards = null
-    ),
-    prepareIssue: RemotePrepareIssue = RemotePrepareIssue(
-        stoken = "",
-        prepareIssueMessage = "".toByteArray()
-    )
-
-): CoronaCheckRepository {
-    return object : CoronaCheckRepository {
-
-        override suspend fun configProviders(): NetworkRequestResult<RemoteConfigProviders> {
-            return NetworkRequestResult.Success(testProviders)
-        }
-
-        override suspend fun accessTokens(jwt: String): NetworkRequestResult<RemoteAccessTokens> {
-            return NetworkRequestResult.Success(accessTokens)
-        }
-
-        override suspend fun getGreenCards(
-            stoken: String,
-            events: List<String>,
-            issueCommitmentMessage: String
-        ): NetworkRequestResult<RemoteGreenCards> {
-            return NetworkRequestResult.Success(remoteCredentials)
-        }
-
-        override suspend fun getPrepareIssue(): NetworkRequestResult<RemotePrepareIssue> {
-            return NetworkRequestResult.Success(prepareIssue)
-        }
-
-        override suspend fun getCoupling(
-            credential: String,
-            couplingCode: String
-        ): NetworkRequestResult<RemoteCouplingResponse> {
-            return NetworkRequestResult.Success(RemoteCouplingResponse(RemoteCouplingStatus.Accepted))
-        }
-    }
-}
-
-fun fakeTestResultAttributesUseCase(
-    sampleTimeSeconds: Long = 0L,
-    testType: String = "",
-    birthDay: String = "",
-    birthMonth: String = "",
-    firstNameInitial: String = "",
-    lastNameInitial: String = "",
-    isSpecimen: String = "0",
-    isPaperProof: String = "0"
-): TestResultAttributesUseCase {
-    return object : TestResultAttributesUseCase {
-        override fun get(credentials: String): TestResultAttributes {
-            return TestResultAttributes(
-                birthDay = birthDay,
-                birthMonth = birthMonth,
-                firstNameInitial = firstNameInitial,
-                lastNameInitial = lastNameInitial,
-                isSpecimen = isSpecimen,
-                isNLDCC = "1",
-                credentialVersion = "1",
-                isPaperProof = "0",
-                validForHours = "24",
-                validFrom = "1622633766",
-            )
         }
     }
 }
@@ -458,7 +332,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ByteArray(0)
         }
 
-        override fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String {
+        override fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String {
             return ""
         }
 
@@ -488,6 +362,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                         isPaperProof = "0",
                         validForHours = 24,
                         validFrom = 1622731645L,
+                        category = "2"
                     ),
                 )
             )
@@ -501,7 +376,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun initializeVerifier(configFilesPath: String) = ""
 
-        override fun verify(credential: ByteArray): VerificationResult {
+        override fun verify(credential: ByteArray, policy: VerificationPolicy): VerificationResult {
             TODO("Not yet implemented")
         }
 
@@ -515,7 +390,8 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 "",
                 "",
                 "24",
-                "1622731645"
+                "1622731645",
+                "2"
             )
         }
     }
@@ -584,34 +460,6 @@ fun fakeGreenCardUtil(
 
     override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
         return hasNoActiveCredentials
-    }
-}
-
-fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object : CredentialUtil {
-    override fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity? {
-        return activeCredential
-    }
-
-    override fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean {
-        return false
-    }
-
-    override fun getTestTypeForEuropeanCredentials(entities: List<CredentialEntity>): String {
-        return ""
-    }
-
-    override fun getVaccinationDosesForEuropeanCredentials(
-        entities: List<CredentialEntity>,
-        getString: (String, String) -> String
-    ): String {
-        return ""
-    }
-
-    override fun vaccinationShouldBeHidden(
-        readEuropeanCredential: List<JSONObject>,
-        index: Int
-    ): Boolean {
-        return false
     }
 }
 
@@ -733,12 +581,6 @@ val fakeGreenCardEntity = GreenCardEntity(
     type = GreenCardType.Domestic
 )
 
-val fakeGreenCard = GreenCard(
-    greenCardEntity = fakeGreenCardEntity,
-    origins = listOf(),
-    credentialEntities = listOf()
-)
-
 fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) =
     RemoteEventVaccination.Vaccination(
         date = date,
@@ -754,7 +596,14 @@ fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) =
         manufacturer = ""
     )
 
-fun fakeGreenCard(greenCardType: GreenCardType, originType: OriginType) = GreenCard(
+fun fakeGreenCard(
+    greenCardType: GreenCardType = GreenCardType.Domestic,
+    originType: OriginType = OriginType.Vaccination,
+    eventTime: OffsetDateTime = OffsetDateTime.now(),
+    expirationTime: OffsetDateTime = OffsetDateTime.now(),
+    validFrom: OffsetDateTime = OffsetDateTime.now(),
+    category: String? = null
+) = GreenCard(
     greenCardEntity = GreenCardEntity(
         id = 0,
         walletId = 0,
@@ -765,9 +614,9 @@ fun fakeGreenCard(greenCardType: GreenCardType, originType: OriginType) = GreenC
             id = 0,
             greenCardId = 0,
             type = originType,
-            eventTime = OffsetDateTime.now(),
-            expirationTime = OffsetDateTime.now(),
-            validFrom = OffsetDateTime.now()
+            eventTime = eventTime,
+            expirationTime = expirationTime,
+            validFrom = validFrom
         )
     ),
     credentialEntities = listOf(
@@ -776,8 +625,9 @@ fun fakeGreenCard(greenCardType: GreenCardType, originType: OriginType) = GreenC
             greenCardId = 0,
             data = "".toByteArray(),
             credentialVersion = 0,
-            validFrom = OffsetDateTime.now(),
-            expirationTime = OffsetDateTime.now()
+            validFrom = validFrom,
+            expirationTime = expirationTime,
+            category = category
         )
     )
 )

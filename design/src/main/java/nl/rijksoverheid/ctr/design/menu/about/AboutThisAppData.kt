@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.design.menu.about
 
 import android.os.Parcelable
+import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 
 /*
@@ -14,12 +15,18 @@ import kotlinx.parcelize.Parcelize
 data class AboutThisAppData(
     val versionName: String,
     val versionCode: String,
-    val readMoreItems: List<AboutThisAppItem> = listOf(),
+    val sections: List<AboutThisAppSection> = listOf(),
     val configVersionHash: String,
     val configVersionTimestamp: Long
 ) : Parcelable {
 
+    @Parcelize
+    data class AboutThisAppSection(@StringRes val header: Int, val items: List<AboutThisAppItem>): Parcelable
+
     sealed class AboutThisAppItem(open val text: String) : Parcelable
+
+    @Parcelize
+    data class Destination(override val text: String, val destinationId: Int) : AboutThisAppItem(text)
 
     @Parcelize
     data class Url(override val text: String, val url: String) : AboutThisAppItem(text)
