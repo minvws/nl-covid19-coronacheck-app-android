@@ -13,7 +13,7 @@ import org.koin.dsl.module
  */
 val greenCardUseCasesModule = module {
     factory<CheckNewValidityInfoCardUseCase> {
-        CheckNewValidityInfoCardUseCaseImpl(get(), get())
+        CheckNewValidityInfoCardUseCaseImpl(get(), get(), get())
     }
     factory<CheckNewRecoveryValidityUseCase> {
         CheckNewRecoveryValidityUseCaseImpl(get(), get(), get(), get(), get(), get())
