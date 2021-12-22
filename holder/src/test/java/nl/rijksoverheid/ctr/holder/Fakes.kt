@@ -78,6 +78,10 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         }
 
+        override fun dismissNewValidityInfoCard() {
+
+        }
+
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {

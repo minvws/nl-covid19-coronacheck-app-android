@@ -78,7 +78,7 @@ class CheckNewValidityInfoCardUseCaseImplTest: AutoCloseKoinTest() {
         usecase.check()
 
         // Expected values
-        assertFalse(persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity())
+        assertFalse(persistenceManager.getCheckNewValidityInfoCard())
         assertFalse(persistenceManager.getHasDismissedNewValidityInfoCard())
     }
 
@@ -129,7 +129,7 @@ class CheckNewValidityInfoCardUseCaseImplTest: AutoCloseKoinTest() {
         usecase.check()
 
         // Expected values
-        assertFalse(persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity())
+        assertFalse(persistenceManager.getCheckNewValidityInfoCard())
         assertFalse(persistenceManager.getHasDismissedNewValidityInfoCard())
     }
 
@@ -180,7 +180,7 @@ class CheckNewValidityInfoCardUseCaseImplTest: AutoCloseKoinTest() {
         usecase.check()
 
         // Expected values
-        assertFalse(persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity())
+        assertFalse(persistenceManager.getCheckNewValidityInfoCard())
         assertTrue(persistenceManager.getHasDismissedNewValidityInfoCard())
     }
 
@@ -205,7 +205,7 @@ class CheckNewValidityInfoCardUseCaseImplTest: AutoCloseKoinTest() {
         usecase.check()
 
         // Expected values
-        assertTrue(persistenceManager.getShouldCheckRecoveryGreenCardRevisedValidity())
+        assertTrue(persistenceManager.getCheckNewValidityInfoCard())
         assertTrue(persistenceManager.getHasDismissedNewValidityInfoCard())
     }
 }

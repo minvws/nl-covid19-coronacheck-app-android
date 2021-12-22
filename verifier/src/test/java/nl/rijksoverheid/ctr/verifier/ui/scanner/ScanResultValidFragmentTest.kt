@@ -41,7 +41,7 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
             )
         )
         assertHasBackground(R.id.root, R.color.secondary_green)
-        assertDisplayed(R.id.title, R.string.scan_result_valid_title)
+        assertDisplayed(R.id.title, R.string.verifier_result_access_title)
     }
 
     @Test

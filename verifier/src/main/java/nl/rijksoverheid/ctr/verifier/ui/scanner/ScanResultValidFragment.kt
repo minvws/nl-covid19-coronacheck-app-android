@@ -47,7 +47,7 @@ class ScanResultValidFragment : Fragment(R.layout.fragment_scan_result_valid) {
                 Pair(R.string.scan_result_demo_title, R.color.grey_2)
             }
             is ScanResultValidData.Valid -> {
-                Pair(R.string.scan_result_valid_title, R.color.secondary_green)
+                Pair(R.string.verifier_result_access_title, R.color.secondary_green)
             }
         }
         val string = getString(stringId)
