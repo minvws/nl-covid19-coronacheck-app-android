@@ -281,17 +281,17 @@ class QrInfoScreenUtilImpl(
 
         val producer = recovery.getStringOrNull("is")
 
-        val validFromDate = recovery.getStringOrNull("df")?.let { testDate ->
+        val validFromDate = recovery.getStringOrNull("df")?.let {
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
+                LocalDate.parse(it, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
         } ?: ""
 
-        val validUntilDate = recovery.getStringOrNull("du")?.let { testDate ->
+        val validUntilDate = recovery.getStringOrNull("du")?.let {
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
+                LocalDate.parse(it, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }

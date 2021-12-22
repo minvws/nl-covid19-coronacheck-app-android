@@ -14,8 +14,6 @@ import java.security.MessageDigest
  *
  */
 fun fakeAppConfigPersistenceManager(
-    publicKeysJson: String? = null,
-    appConfigJson: String? = null,
     lastFetchedSeconds: Long = 0L
 ) = object : AppConfigPersistenceManager {
 

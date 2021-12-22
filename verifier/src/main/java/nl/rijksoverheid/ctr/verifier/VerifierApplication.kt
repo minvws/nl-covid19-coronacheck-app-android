@@ -43,7 +43,7 @@ open class VerifierApplication : SharedApplication() {
                     BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS,
                     BuildConfig.CERTIFICATE_PINS,
                 ),
-                verifierModule("verifier"),
+                verifierModule(),
                 verifierIntroductionModule,
                 sharedModule,
                 appConfigModule(BuildConfig.CDN_API_URL, "verifier", BuildConfig.VERSION_CODE),

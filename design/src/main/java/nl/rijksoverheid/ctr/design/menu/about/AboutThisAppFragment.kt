@@ -65,18 +65,18 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
             sectionView.header.text = getString(it.header)
             it.items.forEach { item ->
-                val view = AboutThisAppRowBinding.inflate(
+                val itemView = AboutThisAppRowBinding.inflate(
                     LayoutInflater.from(requireContext()),
                     sectionView.items,
                     true
                 )
 
-                view.title.text = item.text
+                itemView.title.text = item.text
 
-                view.root.setAsAccessibilityButton(true)
-                view.root.contentDescription = item.text
+                itemView.root.setAsAccessibilityButton(true)
+                itemView.root.contentDescription = item.text
 
-                view.root.setOnClickListener {
+                itemView.root.setOnClickListener {
                     when (item) {
                         is AboutThisAppData.Url -> item.url.launchUrl(requireContext())
                         is AboutThisAppData.ClearAppData -> showClearAppDataDialog()

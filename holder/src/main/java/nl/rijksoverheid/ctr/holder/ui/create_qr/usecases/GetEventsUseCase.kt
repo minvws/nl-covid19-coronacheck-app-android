@@ -125,11 +125,6 @@ class GetEventsUseCaseImpl(
                         errorResults = errorResults
                     )
                 } else {
-                    val recoveryEvent =
-                        allEvents.filterIsInstance(RemoteEventRecovery::class.java).firstOrNull()
-                    val positiveTestEvent =
-                        allEvents.filterIsInstance(RemoteEventPositiveTest::class.java)
-                            .firstOrNull()
 
                     // We do have events
                     EventsResult.Success(
