@@ -247,6 +247,16 @@
 
     </navigation>
 
+    <navigation android:id="@+id/nav_visitor_pass"
+        app:startDestination="@+id/visitor_pass">
+        <fragment android:id="@+id/visitor_pass"
+            android:label="@string/holder_menu_visitorpass"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.visitor_pass.VisitorPassIntroductionFragment"
+            tools:layout="@layout/fragment_visitor_pass_introduction">
+
+        </fragment>
+    </navigation>
+
     <fragment
         android:id="@+id/nav_qr_code_type"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.QrCodeTypeFragment"
