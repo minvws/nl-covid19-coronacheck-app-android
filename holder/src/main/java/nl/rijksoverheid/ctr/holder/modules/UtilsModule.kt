@@ -44,4 +44,5 @@ fun utilsModule(versionCode: Int) = module {
         DomesticVaccinationRecoveryCombinationUtilImpl(get())
     }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
+    factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl() }
 }
