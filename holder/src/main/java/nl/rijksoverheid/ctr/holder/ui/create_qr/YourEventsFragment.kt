@@ -28,9 +28,8 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination
-import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
-import nl.rijksoverheid.ctr.holder.ui.create_qr.items.getVaccinationEventSubtitle
-import nl.rijksoverheid.ctr.holder.ui.create_qr.items.getVaccinationEventTitle
+import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidget
+import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
@@ -43,11 +42,8 @@ import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
-import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 
 class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
@@ -61,6 +57,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val remoteProtocol3Util: RemoteProtocol3Util by inject()
     private val remoteEventUtil: RemoteEventUtil by inject()
     private val yourEventsFragmentUtil: YourEventsFragmentUtil by inject()
+    private val yourEventWidgetUtil: YourEventWidgetUtil by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
@@ -499,8 +496,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = getVaccinationEventTitle(isDccEvent, currentEvent),
-                subtitle = getVaccinationEventSubtitle(
+                title = yourEventWidgetUtil.getVaccinationEventTitle(context, isDccEvent, currentEvent),
+                subtitle = yourEventWidgetUtil.getVaccinationEventSubtitle(
+                    context,
                     isDccEvent,
                     providerIdentifiers,
                     fullName,
