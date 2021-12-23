@@ -250,12 +250,34 @@
     <navigation android:id="@+id/nav_visitor_pass"
         app:startDestination="@+id/visitor_pass">
         <fragment android:id="@+id/visitor_pass"
-            android:label="@string/holder_menu_visitorpass"
-            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.visitor_pass.VisitorPassIntroductionFragment"
+            android:label="@string/visitorpass_start_toolbar_title"
+            android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.visitor_pass.VisitorPassStartFragment"
             tools:layout="@layout/fragment_visitor_pass_introduction">
+
+            <action android:id="@+id/action_visitor_pass_code"
+                app:destination="@id/nav_commercial_test_code"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
 
         </fragment>
     </navigation>
+
+    <fragment android:id="@+id/visitor_pass_code"
+        android:label="@string/holder_menu_visitorpass"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.visitor_pass.VisitorPassCodeFragment"
+        tools:layout="@layout/fragment_visitorpass_code">
+
+        <deepLink app:uri=".*/app/visitorpass#{code}" />
+
+        <argument
+            android:name="code"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_qr_code_type"

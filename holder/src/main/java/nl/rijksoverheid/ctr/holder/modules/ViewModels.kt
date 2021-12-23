@@ -8,6 +8,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewMo
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.visitor_pass.VisitorPassCodeViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.visitor_pass.VisitorPassCodeViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
@@ -37,4 +39,5 @@ val viewModels = module {
     viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
     viewModel<DashboardViewModel> { DashboardViewModelImpl(get(), get(), get(), get(), get(), get()) }
     viewModel<SyncGreenCardsViewModel> { SyncGreenCardsViewModelImpl(get(), get()) }
+    viewModel<VisitorPassCodeViewModel> { VisitorPassCodeViewModelImpl(get()) }
 }
