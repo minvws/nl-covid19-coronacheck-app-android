@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import io.mockk.coEvery
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -27,9 +28,9 @@ import java.time.ZoneId
  *
  */
 class GreenCardRefreshUtilImplTest {
-    
+
     private val greenCardDao = mockk<GreenCardDao>(relaxed = true)
-    private val holderDatabase = mockk< HolderDatabase>(relaxed = true).apply { 
+    private val holderDatabase = mockk< HolderDatabase>(relaxed = true).apply {
         coEvery { greenCardDao() } returns greenCardDao
     }
     private val appConfig = mockk<HolderConfig>(relaxed = true).apply {
@@ -46,8 +47,12 @@ class GreenCardRefreshUtilImplTest {
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
     private val credentialUtil = CredentialUtilImpl(firstJanuaryClock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
 
-    private val greenCardRefreshUtil = GreenCardRefreshUtilImpl(holderDatabase, cachedAppConfigUseCase, greenCardUtil, firstJanuaryClock, credentialUtil)
-    
+    private val originUtil: OriginUtil = mockk()
+
+    private val greenCardRefreshUtil = GreenCardRefreshUtilImpl(
+        holderDatabase, cachedAppConfigUseCase, greenCardUtil, firstJanuaryClock, credentialUtil, originUtil
+    )
+
     private fun greenCard(
         originEntities: List<OriginEntity>? = null,
         credentials: List<CredentialEntity>? = null) = mockk<GreenCard>(relaxed = true).apply {
@@ -83,7 +88,6 @@ class GreenCardRefreshUtilImplTest {
 
     @Test
     fun `given two green cards with some credentials, when both green cards do not expire, then return false (no refresh)`() = runBlocking {
-        
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), validGreenCard())
 
         val expiring = greenCardRefreshUtil.shouldRefresh()
@@ -93,7 +97,6 @@ class GreenCardRefreshUtilImplTest {
 
     @Test
     fun `given two green cards with some credentials, when a green card expires and the other green card does not expire, then return true to refresh`() = runBlocking {
-        
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard(), expiringGreenCard())
 
         val expiring = greenCardRefreshUtil.shouldRefresh()
@@ -103,7 +106,7 @@ class GreenCardRefreshUtilImplTest {
 
     @Test
     fun `given a green card with some credentials, when all credentials expire, then return true to refresh`() = runBlocking {
-        
+
         coEvery { greenCardDao.getAll() } returns listOf(expiringGreenCard(), expiringGreenCard())
 
         val expiring = greenCardRefreshUtil.shouldRefresh()
@@ -113,7 +116,6 @@ class GreenCardRefreshUtilImplTest {
 
     @Test
     fun `given a green card with some credentials, when all credential versions are still supported, then return false (no refresh)`() = runBlocking {
-        
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard())
 
         val expiring = greenCardRefreshUtil.shouldRefresh()
@@ -132,7 +134,6 @@ class GreenCardRefreshUtilImplTest {
 
     @Test
     fun `given a green with credential expiring 6 days after now, when checking the last expiring one, then it returns it with refreshInDays set to 1`() = runBlocking {
-
         coEvery { greenCardDao.getAll() } returns listOf(validGreenCard())
 
         val credentialsExpireInDays = greenCardRefreshUtil.credentialsExpireInDays()
@@ -156,5 +157,26 @@ class GreenCardRefreshUtilImplTest {
         val credentialsExpireInDays = greenCardRefreshUtil.credentialsExpireInDays()
 
         assertEquals(0, credentialsExpireInDays)
+    }
+
+    @Test
+    fun `given green card with no credentials and valid origins, it should refresh`() = runBlocking {
+        val greenCard = greenCard(
+            originEntities = listOf(validOriginEntity()),
+            credentials = emptyList()
+        )
+        coEvery { greenCardDao.getAll() } returns listOf(greenCard)
+        coEvery { originUtil.isValidWithinRenewalThreshold(any(), any()) } returns true
+
+        assertTrue(greenCardRefreshUtil.shouldRefresh())
+    }
+
+    @Test
+    fun `given green card with credentials, no origin validity check needs to be done`() = runBlocking {
+        coEvery { greenCardDao.getAll() } returns listOf(validGreenCard())
+
+        greenCardRefreshUtil.shouldRefresh()
+
+        verify(inverse = true) { originUtil.isValidWithinRenewalThreshold(any(), any())}
     }
 }

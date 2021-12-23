@@ -28,6 +28,7 @@ class GreenCardRefreshUtilImpl(
     private val greenCardUtil: GreenCardUtil,
     private val clock: Clock,
     private val credentialUtil: CredentialUtil,
+    private val originUtil: OriginUtil
 ) : GreenCardRefreshUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
@@ -55,19 +56,11 @@ class GreenCardRefreshUtilImpl(
             .filter { it.credentialEntities.isEmpty() }
             .any { greenCard ->
                 greenCard.origins.any {
-                    isValidWithinThreshold(credentialRenewalDays, it)
+                    originUtil.isValidWithinRenewalThreshold(credentialRenewalDays, it)
                 }
             }
 
         return greenCardExpiring != null || hasValidFutureOrigins
-    }
-
-    private fun isValidWithinThreshold(
-        credentialRenewalDays: Long, origin: OriginEntity
-    ): Boolean {
-        val now = OffsetDateTime.now(clock)
-        val thresholdEndDate = now.plusDays(credentialRenewalDays)
-        return origin.validFrom < thresholdEndDate && origin.expirationTime > now
     }
 
     override suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean {
