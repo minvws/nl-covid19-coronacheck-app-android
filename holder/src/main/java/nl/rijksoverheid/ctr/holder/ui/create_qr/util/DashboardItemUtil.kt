@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 
 interface DashboardItemUtil {
     fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int
@@ -57,7 +58,7 @@ class DashboardItemUtilImpl(
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
     private val featureFlagUseCase: FeatureFlagUseCase,
     private val appConfigUseCase: CachedAppConfigUseCase,
-    private val versionCode: Int
+    private val buildConfigUseCase: BuildConfigUseCase
 ) : DashboardItemUtil {
 
     override fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int {
@@ -91,7 +92,7 @@ class DashboardItemUtilImpl(
         allGreenCards.isEmpty()
 
     override fun isAppUpdateAvailable(): Boolean {
-        return versionCode < appConfigUseCase.getCachedAppConfig().recommendedVersion
+        return buildConfigUseCase.getVersionCode() < appConfigUseCase.getCachedAppConfig().recommendedVersion
     }
 
     override fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {
