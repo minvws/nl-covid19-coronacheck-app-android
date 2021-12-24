@@ -13,7 +13,7 @@ jobs:
       - id: setup
         uses: ./scripts
       - name: Test
-        run: ./gradlew testDebug testAccDebug lint
+        run: ./gradlew testDebug testAccDebug lint --stacktrace --debug
 
   distribute:
     if: ${{ (github.ref == 'refs/heads/main' && github.event.repository.name != 'nl-covid19-coronacheck-app-android') || (github.event.repository.name != 'nl-covid19-coronacheck-app-android' && contains(github.event.pull_request.labels.*.name, 'generate-builds')) }}
