@@ -719,6 +719,16 @@ fun fakeOrigin(
     doseNumber: Int? = 1
 ) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber)
 
+fun fakeOriginEntity(
+    id: Int = 0,
+    greenCardId: Long = 1L,
+    type: OriginType = OriginType.Vaccination,
+    eventTime: OffsetDateTime = OffsetDateTime.now(),
+    expirationTime: OffsetDateTime = OffsetDateTime.now(),
+    validFrom: OffsetDateTime = OffsetDateTime.now(),
+    doseNumber: Int? = null
+) = OriginEntity(id, greenCardId, type, eventTime, expirationTime, validFrom, doseNumber)
+
 
 
 
