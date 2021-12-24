@@ -62,10 +62,6 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         }
 
-        override fun dismissRefreshedEuVaccinationsInfoCard() {
-
-        }
-
         override fun dismissRecoveredDomesticRecoveryInfoCard() {
 
         }
@@ -265,14 +261,6 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedUnsecureDeviceDialog(value: Boolean) {
-
-        }
-
-        override fun hasDismissedSyncedGreenCardsItem(): Boolean {
-            return hasDismissedUnsecureDeviceDialog
-        }
-
-        override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
 
         }
 

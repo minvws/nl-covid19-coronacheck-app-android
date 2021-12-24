@@ -450,13 +450,6 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
                     )
                 )
 
-                override suspend fun shouldAddSyncGreenCardsItem(
-                    allEventGroupEntities: List<EventGroupEntity>,
-                    allGreenCards: List<GreenCard>
-                ) = false
-
-                override fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>) = false
-
                 override fun shouldShowExtendDomesticRecoveryItem() = false
 
                 override fun shouldShowRecoverDomesticRecoveryItem() = false
