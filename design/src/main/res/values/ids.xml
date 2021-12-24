@@ -25,4 +25,5 @@
     <item name="accessibility_label_selected" type="string" />
     <item name="accessibility_label_not_selected" type="string" />
     <item name="action_info_fragment" type="id"/>
+    <item name="my_overview_test_result_button_indicator_accessibility_description" type="string" />
 </resources>

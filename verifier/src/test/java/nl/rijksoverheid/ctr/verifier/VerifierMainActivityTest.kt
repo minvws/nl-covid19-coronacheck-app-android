@@ -5,6 +5,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.findNavController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
+import io.mockk.coVerify
+import io.mockk.mockk
+import io.mockk.verify
+import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
@@ -33,6 +37,24 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     }
 
     @Test
+    fun `On app launch call cleanups`() {
+        val verifierMainActivityViewModel = mockk<VerifierMainActivityViewModel>(relaxed = true)
+        launchVerifierMainActivity(
+            introductionStatus = IntroductionStatus.IntroductionNotFinished(
+                introductionData = IntroductionData(
+                    onboardingItems = listOf(),
+                    privacyPolicyItems = listOf(),
+                    newFeatures = listOf(),
+                    null
+                )
+            ),
+            verifierMainActivityViewModel = verifierMainActivityViewModel
+        )
+
+        verify { verifierMainActivityViewModel.cleanup() }
+    }
+
+    @Test
     fun `If introduction not finished navigate to introduction`() {
         val scenario = launchVerifierMainActivity(
             introductionStatus = IntroductionStatus.IntroductionNotFinished(
@@ -42,7 +64,8 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
                     newFeatures = listOf(),
                     null
                 )
-            )
+            ),
+            verifierMainActivityViewModel = mockk(relaxed = true)
         )
 
         scenario.onActivity {
@@ -55,7 +78,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
 
     @Test
     fun `If introduction finished navigate to main`() {
-        val scenario = launchVerifierMainActivity()
+        val scenario = launchVerifierMainActivity(verifierMainActivityViewModel = mockk(relaxed = true))
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
@@ -69,6 +92,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
         val scenario = launchVerifierMainActivity(
             introductionStatus = IntroductionStatus.IntroductionNotFinished(IntroductionData()),
             appStatus = AppStatus.Error,
+            verifierMainActivityViewModel = mockk(relaxed = true)
         )
 
         scenario.onActivity {
@@ -81,7 +105,8 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
 
     private fun launchVerifierMainActivity(
         introductionStatus: IntroductionStatus? = null,
-        appStatus: AppStatus = AppStatus.NoActionRequired
+        appStatus: AppStatus = AppStatus.NoActionRequired,
+        verifierMainActivityViewModel: VerifierMainActivityViewModel,
     ): ActivityScenario<VerifierMainActivity> {
         loadKoinModules(
             module(override = true) {
@@ -94,6 +119,9 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
                     fakeAppConfigViewModel(
                         appStatus = appStatus
                     )
+                }
+                viewModel {
+                    verifierMainActivityViewModel
                 }
                 factory {
                     fakeCachedAppConfigUseCase()

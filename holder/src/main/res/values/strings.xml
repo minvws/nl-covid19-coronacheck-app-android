@@ -432,7 +432,7 @@
   <string name="your_events_block_back_dialog_title">Weet je zeker dat je terug wilt?</string>
   <string name="your_events_block_back_dialog_description">Hierdoor stop je het toevoegen van een bewijs.</string>
   <string name="your_events_block_back_dialog_positive_button">Ja, terug</string>
-  <string name="your_events_block_back_dialog_negative_button">Nee, ga verder</string>
+  <string name="your_events_block_back_dialog_negative_button">Nee</string>
   <string name="your_events_replace_dialog_title">Wil je je bewijs vervangen?</string>
   <string name="your_events_replace_dialog_message">Je hebt al eerder een bewijs gemaakt. De gegevens daarvan zijn anders dan de gegevens die net zijn opgehaald. Daarom kun je het bewijs alleen vervangen.</string>
   <string name="your_events_replace_dialog_negative_button">Nee, stop</string>
@@ -441,7 +441,7 @@
   <string name="qr_explanation_certificate_issuer">Ministerie van VWS / Ministry of Health, Welfare and Sport</string>
   <string name="qr_code_return_app_button">Terug naar de %s</string>
   <string name="qr_card_validity_future_from">geldig vanaf %1$s %2$s</string>
-  <string name="qr_card_validity_future_until">t/m %1s</string>
+  <string name="qr_card_validity_future_until">tot %1s</string>
   <string name="your_vaccination_explanation_dose">dosis %1s</string>
   <string name="qr_card_validity_future">Wordt automatisch geldig</string>
   <string name="new_in_app_tabs_title">Een Nederlands en internationaal tabblad</string>
@@ -584,4 +584,10 @@
   <string name="holder_negativetest_ggd_message">Is je uitslag bekend? Log in met DigiD om je testuitslag bij de GGD op te halen.</string>
   <string name="recommended_update_card_description">Je kunt de app al naar een nieuwere versie updaten</string>
   <string name="recommended_update_card_action">Nu updaten</string>
+  <string name="holder_menu_visitorpass">Bezoekersbewijs maken</string>
+  <string name="visitorpass_start_title">Een bezoekersbewijs maken</string>
+  <string name="visitorpass_start_action">Gegevens ophalen</string>
+  <string name="holder_dashboard_newvaliditybanner_title">De geldigheid van coronabewijzen wordt aangepast</string>
+  <string name="holder_dashboard_newvaliditybanner_action">Lees meer op Rijksoverheid.nl</string>
+  <string name="holder_dashboard_newvaliditybanner_url">https://www.rijksoverheid.nl/coronabewijs</string>
 </resources>

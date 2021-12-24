@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
+import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
@@ -14,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
+import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.IntentUtil
 import java.time.Instant
@@ -72,7 +74,14 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
                 onMissingDutchVaccinationItemClicked(myOverviewFragment)
-            DashboardItem.InfoItem.AppUpdate -> openPlayStore(myOverviewFragment)
+
+            is DashboardItem.InfoItem.AppUpdate -> openPlayStore(myOverviewFragment)
+            is DashboardItem.InfoItem.NewValidityItem -> {
+                onNewValidityInfoClicked(myOverviewFragment.requireContext())
+            }
+            is DashboardItem.InfoItem.TestCertificate3GValidity -> {
+                onTestCertificate3GValidityClicked(myOverviewFragment)
+            }
         }
     }
 
@@ -189,6 +198,20 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         )
     }
 
+
+    private fun onTestCertificate3GValidityClicked(myOverviewFragment: MyOverviewFragment) {
+        infoFragmentUtil.presentAsBottomSheet(
+            myOverviewFragment.childFragmentManager,
+            InfoFragmentData.TitleDescription(
+                title = myOverviewFragment.getString(R.string.holder_my_overview_3g_test_validity_bottom_sheet_title),
+                descriptionData = DescriptionData(
+                    R.string.holder_my_overview_3g_test_validity_bottom_sheet_body,
+                    htmlLinksEnabled = true
+                ),
+            )
+        )
+    }
+
     private fun onOriginInfoClicked(
         myOverviewFragment: MyOverviewFragment,
         item: DashboardItem.InfoItem.OriginInfoItem
@@ -201,6 +224,10 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 item.originType, myOverviewFragment
             )
         }
+    }
+
+    private fun onNewValidityInfoClicked(context: Context) {
+        context.getString(R.string.holder_dashboard_newvaliditybanner_url).launchUrl(context)
     }
 
     private fun presentOriginInfoForEuQr(
@@ -291,6 +318,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.RecoverDomesticRecovery,
             is DashboardItem.InfoItem.RefreshEuVaccinations -> {
                 // NO OP, items can't be dismissed
+            }
+            is DashboardItem.InfoItem.NewValidityItem -> {
+                myOverviewFragment.dashboardViewModel.dismissNewValidityInfoCard()
             }
         }
     }

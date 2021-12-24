@@ -37,7 +37,7 @@ class MyOverviewInfoCardItem(
 
         viewBinding.button.run {
             visibility = if (infoItem.hasButton) View.VISIBLE else View.GONE
-            infoItem.buttonText?.let { setText(it) }
+            setText(infoItem.buttonText ?: R.string.my_overview_info_card_button_read_more)
         }
 
         when (infoItem) {
@@ -73,10 +73,18 @@ class MyOverviewInfoCardItem(
                     getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
             }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem -> {
-                viewBinding.text.text = viewBinding.text.context.getString(R.string.missing_dutch_certificate_info_card_text)
+                viewBinding.text.text =
+                    viewBinding.text.context.getString(R.string.missing_dutch_certificate_info_card_text)
+            }
+            is DashboardItem.InfoItem.TestCertificate3GValidity -> {
+                viewBinding.text.text =
+                    viewBinding.text.context.getString(R.string.holder_my_overview_3g_test_validity_card)
             }
             is DashboardItem.InfoItem.AppUpdate -> {
                 viewBinding.text.setText(R.string.recommended_update_card_description)
+            }
+            is DashboardItem.InfoItem.NewValidityItem -> {
+                viewBinding.text.setText(R.string.holder_dashboard_newvaliditybanner_title)
             }
         }
 

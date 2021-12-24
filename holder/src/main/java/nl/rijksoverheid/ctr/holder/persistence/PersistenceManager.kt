@@ -39,6 +39,10 @@ interface PersistenceManager {
     fun getHasDismissedExtendedDomesticRecoveryInfoCard(): Boolean
     fun setHasDismissedRecoveredDomesticRecoveryInfoCard(dismissed: Boolean)
     fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean
+    fun getCheckNewValidityInfoCard(): Boolean
+    fun setCheckNewValidityInfoCard(check: Boolean)
+    fun getHasDismissedNewValidityInfoCard(): Boolean
+    fun setHasDismissedNewValidityInfoCard(dismissed: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -61,6 +65,8 @@ class SharedPreferencesPersistenceManager(
         const val SHOW_RECOVER_DOMESTIC_RECOVERY_INFO_CARD = "SHOW_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD"
         const val HAS_DISMISSED_EXTENDED_DOMESTIC_RECOVERY_INFO_CARD = "HAS_DISMISSED_EXTENDED_DOMESTIC_RECOVERY_INFO_CARD"
         const val HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD = "HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD"
+        const val CHECK_VALIDITY_INFO_CARD = "CHECK_VALIDITY_INFO_CARD"
+        const val HAS_DISMISSED_VALIDITY_INFO_CARD = "HAS_DISMISSED_VALIDITY_INFO_CARD"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -177,5 +183,21 @@ class SharedPreferencesPersistenceManager(
 
     override fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean {
         return sharedPreferences.getBoolean(HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD, true)
+    }
+
+    override fun getCheckNewValidityInfoCard(): Boolean {
+        return sharedPreferences.getBoolean(CHECK_VALIDITY_INFO_CARD, true)
+    }
+
+    override fun setCheckNewValidityInfoCard(check: Boolean) {
+        sharedPreferences.edit().putBoolean(CHECK_VALIDITY_INFO_CARD, check).apply()
+    }
+
+    override fun getHasDismissedNewValidityInfoCard(): Boolean {
+        return sharedPreferences.getBoolean(HAS_DISMISSED_VALIDITY_INFO_CARD, true)
+    }
+
+    override fun setHasDismissedNewValidityInfoCard(dismissed: Boolean) {
+        sharedPreferences.edit().putBoolean(HAS_DISMISSED_VALIDITY_INFO_CARD, dismissed).apply()
     }
 }

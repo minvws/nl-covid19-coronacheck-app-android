@@ -432,7 +432,7 @@
   <string name="your_events_block_back_dialog_title">Are you sure you want to go back?</string>
   <string name="your_events_block_back_dialog_description">Doing so will stop the process of adding a certificate.</string>
   <string name="your_events_block_back_dialog_positive_button">Yes, go back</string>
-  <string name="your_events_block_back_dialog_negative_button">No, continue</string>
+  <string name="your_events_block_back_dialog_negative_button">No</string>
   <string name="your_events_replace_dialog_title">Want to replace your certificate?</string>
   <string name="your_events_replace_dialog_message">You created a certificate earlier. The details on it differ from those that have just been retrieved. Therefore you can only replace it.</string>
   <string name="your_events_replace_dialog_negative_button">No, stop</string>
@@ -584,4 +584,10 @@
   <string name="holder_negativetest_ggd_message">Is your result in? Log in with DigiD to retrieve your test result from the GGD.</string>
   <string name="recommended_update_card_description">You can update your app to a newer version now</string>
   <string name="recommended_update_card_action">Update now</string>
+  <string name="holder_menu_visitorpass">Bezoekersbewijs maken</string>
+  <string name="visitorpass_start_title">Een bezoekersbewijs maken</string>
+  <string name="visitorpass_start_action">Gegevens ophalen</string>
+  <string name="holder_dashboard_newvaliditybanner_title">The validity of coronavirus passes will be adjusted</string>
+  <string name="holder_dashboard_newvaliditybanner_action">Read more on Government.nl</string>
+  <string name="holder_dashboard_newvaliditybanner_url">https://www.government.nl/covid-certificate</string>
 </resources>

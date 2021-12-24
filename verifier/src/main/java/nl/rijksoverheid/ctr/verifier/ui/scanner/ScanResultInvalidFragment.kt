@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
@@ -31,6 +32,7 @@ import java.util.concurrent.TimeUnit
 class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid) {
 
     private val infoFragmentUtil: InfoFragmentUtil by inject()
+    private val featureFlagUseCase: FeatureFlagUseCase by inject()
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable { navigateToScanner() }
@@ -70,8 +72,9 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
                     infoFragmentUtil.presentAsBottomSheet(childFragmentManager,
                         InfoFragmentData.TitleDescription(
                             title = getString(R.string.scan_result_invalid_reason_title),
-                            descriptionData = DescriptionData(R.string.scan_result_invalid_reason_description),
-                        ))
+                            descriptionData = DescriptionData(if (featureFlagUseCase.isVerificationPolicyEnabled()) R.string.scan_result_invalid_reason_description_2G else R.string.scan_result_invalid_reason_description),
+                        )
+                    )
                 }
             }
         }

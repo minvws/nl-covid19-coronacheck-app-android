@@ -48,13 +48,20 @@ sealed class DashboardItem {
 
         object ClockDeviationItem : InfoItem(isDismissible = false, hasButton = true)
 
-        data class GreenCardExpiredItem(val greenCard: GreenCard) :
-            InfoItem(isDismissible = true, hasButton = false)
+        data class GreenCardExpiredItem(val greenCard: GreenCard) : InfoItem(isDismissible = true, hasButton = false)
+
+        object TestCertificate3GValidity : InfoItem(isDismissible = false, hasButton = true)
 
         object AppUpdate : InfoItem(
             isDismissible = false,
             hasButton = true,
             buttonText = R.string.recommended_update_card_action
+        )
+
+        object NewValidityItem: InfoItem(
+            isDismissible = true,
+            hasButton = true,
+            buttonText = R.string.holder_dashboard_newvaliditybanner_action
         )
     }
 

@@ -30,6 +30,7 @@ abstract class AppConfig(
     val deeplinkDomains: List<Url>,
     val clockDeviationThresholdSeconds: Int,
     val configAlmostOutOfDateWarningSeconds : Int,
+    val enableVerificationPolicyVersion: Int
 ) : JSON() {
 
     @JsonClass(generateAdapter = true)

@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.introduction.ui.status.usecases
 
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
@@ -19,7 +20,8 @@ interface IntroductionStatusUseCase {
 
 class IntroductionStatusUseCaseImpl(
     private val introductionPersistenceManager: IntroductionPersistenceManager,
-    private val introductionData: IntroductionData
+    private val introductionData: IntroductionData,
+    private val featureFlagUseCase: FeatureFlagUseCase
 ) : IntroductionStatusUseCase {
 
     override fun get(): IntroductionStatus {
@@ -37,7 +39,7 @@ class IntroductionStatusUseCaseImpl(
                 !introductionPersistenceManager.getNewTermsSeen(introductionData.newTerms.version)
 
     private fun newFeaturesAvailable() = introductionData.newFeatures.isNotEmpty() &&
-            !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion)
+            !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion) && featureFlagUseCase.isVerificationPolicyEnabled()
 
     private fun introductionIsNotFinished() =
         !introductionPersistenceManager.getIntroductionFinished()

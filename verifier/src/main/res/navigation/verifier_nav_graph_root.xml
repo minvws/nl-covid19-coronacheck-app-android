@@ -71,5 +71,6 @@
         app:popUpTo="@id/nav_scanner" />
 
     <include app:graph="@navigation/verifier_nav_graph_scanner" />
+    <include app:graph="@navigation/verifier_nav_graph_main" />
 
 </navigation>
