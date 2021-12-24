@@ -39,11 +39,6 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
                         every { isVerificationPolicyEnabled() } answers { true }
                     }
                 }
-                factory {
-                    mockk<ClockDeviationUseCase>().apply {
-                        every { hasDeviation() } answers { false }
-                    }
-                }
             }
         )
     }
@@ -84,6 +79,8 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             isLoadingNewCredentials = false,
             allEventGroupEntities = listOf()
         )
+
+        println("[DEBUG ITEMS]: " + dashboardItems)
 
         assertEquals(dashboardItems.domesticItems.size, 4)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
