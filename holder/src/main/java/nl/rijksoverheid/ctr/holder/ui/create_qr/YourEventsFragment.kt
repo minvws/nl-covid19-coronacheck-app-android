@@ -251,8 +251,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         },
                         description = if (args.afterIncompleteVaccination) {
                             getString(
-                                R.string.certificate_created_vaccination_recovery_description,
-                                databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
+                                R.string.certificate_created_vaccination_recovery_description
                             )
                         } else {
                             getString(R.string.certificate_created_recovery_after_vaccination_description)
@@ -303,8 +302,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
                             title = getString(R.string.certificate_created_vaccination_title),
                             description = getString(
-                                R.string.certificate_created_vaccination_description,
-                                databaseSyncerResult.domesticVaccinationRecovery.recoveryValidityDays.toString()
+                                R.string.certificate_created_vaccination_description
                             )
                         )
                     }
@@ -347,27 +345,22 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private fun presentHeader(binding: FragmentYourEventsBinding) {
         when (val type = args.type) {
             is YourEventsFragmentType.TestResult2 -> {
-                binding.title.setText(R.string.your_negative_test_results_title)
                 binding.description.setHtmlText(R.string.your_negative_test_results_description)
             }
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 when (type.originType) {
                     is OriginType.Test -> {
-                        binding.title.setText(R.string.your_negative_test_results_title)
                         binding.description.setHtmlText(R.string.your_negative_test_results_description)
                     }
                     is OriginType.Vaccination -> {
-                        binding.title.visibility = View.GONE
                         binding.description.setHtmlText(R.string.your_retrieved_vaccinations_description)
                     }
                     is OriginType.Recovery -> {
-                        binding.title.visibility = View.GONE
                         binding.description.setHtmlText(R.string.your_positive_test_description)
                     }
                 }
             }
             is YourEventsFragmentType.DCC -> {
-                binding.title.visibility = View.GONE
                 binding.description.setHtmlText(R.string.your_dcc_event_description)
             }
         }
@@ -708,7 +701,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 if (isAdded) {
                     MaterialAlertDialogBuilder(requireContext())
                         .setTitle(R.string.your_events_block_back_dialog_title)
-                        .setMessage(R.string.your_events_block_back_dialog_description)
+                        .setMessage(getCancelDialogDescription())
                         .setPositiveButton(R.string.your_events_block_back_dialog_positive_button) { _, _ ->
                             navigateSafety(
                                 YourEventsFragmentDirections.actionMyOverview()
@@ -719,6 +712,18 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 }
             }
         })
+    }
+
+    private fun getCancelDialogDescription() = when (val type = args.type) {
+        is YourEventsFragmentType.DCC -> R.string.holder_dcc_alert_message
+        is YourEventsFragmentType.TestResult2 -> R.string.holder_test_alert_message
+        is YourEventsFragmentType.RemoteProtocol3Type -> {
+            when (type.originType) {
+                is OriginType.Test -> R.string.holder_test_alert_message
+                is OriginType.Recovery -> R.string.holder_recovery_alert_message
+                is OriginType.Vaccination -> R.string.holder_vaccination_alert_message
+            }
+        }
     }
 
     private fun getFullName(holder: RemoteProtocol3.Holder?): String = holder?.let {

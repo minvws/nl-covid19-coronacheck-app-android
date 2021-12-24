@@ -25,7 +25,11 @@ class VerifierConfig(
     @Json(name = "upgradeRecommendationInterval") val upgradeRecommendationIntervalHours: Int,
     @Json(name = "universalLinkDomains") val verifierDeeplinkDomains: List<Url>,
     @Json(name = "clockDeviationThresholdSeconds") val verifierClockDeviationThresholdSeconds: Int,
-    @Json(name = "configAlmostOutOfDateWarningSeconds") val verifierConfigAlmostOutOfDateWarningSeconds : Int
+    @Json(name = "configAlmostOutOfDateWarningSeconds") val verifierConfigAlmostOutOfDateWarningSeconds : Int,
+    @Json(name = "scanLockWarningSeconds") val scanLockWarningSeconds: Int,
+    @Json(name = "scanLockSeconds") val scanLockSeconds: Int,
+    @Json(name = "scanLogStorageSeconds") val scanLogStorageSeconds: Int,
+    @Json(name = "androidEnableVerificationPolicyVersion") val verifierEnableVerificationPolicyVersion: Int = 0
 ) : AppConfig(
     verifierAppDeactivated,
     verifierInformationURL,
@@ -37,7 +41,8 @@ class VerifierConfig(
     upgradeRecommendationIntervalHours,
     verifierDeeplinkDomains,
     verifierClockDeviationThresholdSeconds,
-    verifierConfigAlmostOutOfDateWarningSeconds
+    verifierConfigAlmostOutOfDateWarningSeconds,
+    verifierEnableVerificationPolicyVersion
 ) {
     companion object {
         fun default(
@@ -53,7 +58,11 @@ class VerifierConfig(
             upgradeRecommendationIntervalHours: Int = 24,
             returnApps: List<Url> = listOf(),
             verifierClockDeviationThresholdSeconds: Int = 30,
-            verifierConfigAlmostOutOfDateWarningSeconds: Int = 300
+            verifierConfigAlmostOutOfDateWarningSeconds: Int = 300,
+            scanLockWarningSeconds: Int = 3600,
+            scanLockSeconds: Int = 300,
+            scanLogStorageSeconds: Int = 3600,
+            verifierEnableVerificationPolicyVersion: Int = 0
         ) = VerifierConfig(
             verifierMinimumVersion = verifierMinimumVersion,
             verifierMinimumVersionMessage = verifierMinimumVersionMessage,
@@ -67,7 +76,11 @@ class VerifierConfig(
             upgradeRecommendationIntervalHours = upgradeRecommendationIntervalHours,
             verifierDeeplinkDomains = returnApps,
             verifierClockDeviationThresholdSeconds = verifierClockDeviationThresholdSeconds,
-            verifierConfigAlmostOutOfDateWarningSeconds = verifierConfigAlmostOutOfDateWarningSeconds
+            verifierConfigAlmostOutOfDateWarningSeconds = verifierConfigAlmostOutOfDateWarningSeconds,
+            scanLockWarningSeconds = scanLockWarningSeconds,
+            scanLockSeconds = scanLockSeconds,
+            scanLogStorageSeconds = scanLogStorageSeconds,
+            verifierEnableVerificationPolicyVersion = verifierEnableVerificationPolicyVersion
         )
     }
 }

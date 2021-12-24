@@ -9,7 +9,7 @@
 package nl.rijksoverheid.ctr.appconfig.usecases
 
 import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
-import org.junit.Assert.assertEquals
+import nl.rijksoverheid.ctr.appconfig.models.ServerTime
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -17,16 +17,10 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.time.Clock
 import java.time.Duration
-import java.time.Instant
-import java.time.ZoneId
 
 @RunWith(RobolectricTestRunner::class)
 class ClockDeviationUseCaseImplTest {
     private val defaultClock = Clock.systemUTC()
-    private val fixedClock = Clock.fixed(
-        Instant.parse("2021-11-02T18:00:00.00Z"),
-        ZoneId.systemDefault()
-    )
 
     @Test
     fun `Clock deviation usecase returns false if clock is correct`() {
@@ -34,8 +28,10 @@ class ClockDeviationUseCaseImplTest {
             defaultClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
-            serverResponseTimestamp = defaultClock.millis(),
-            localReceivedTimestamp = defaultClock.millis()
+            ServerTime.Available(
+                serverTimeMillis = defaultClock.millis(),
+                localTimeMillis = defaultClock.millis()
+            )
         )
         val hasDeviation = clockDeviationUseCase.hasDeviation()
         assertFalse(hasDeviation)
@@ -48,8 +44,10 @@ class ClockDeviationUseCaseImplTest {
             deviatedClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
-            serverResponseTimestamp = defaultClock.millis(),
-            localReceivedTimestamp = deviatedClock.millis()
+            ServerTime.Available(
+                serverTimeMillis = defaultClock.millis(),
+                localTimeMillis = deviatedClock.millis()
+            )
         )
         val hasDeviation = clockDeviationUseCase.hasDeviation()
         assertTrue(hasDeviation)
@@ -62,8 +60,10 @@ class ClockDeviationUseCaseImplTest {
             deviatedClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
-            serverResponseTimestamp = defaultClock.millis(),
-            localReceivedTimestamp = deviatedClock.millis()
+            ServerTime.Available(
+                serverTimeMillis = defaultClock.millis(),
+                localTimeMillis = deviatedClock.millis()
+            )
         )
         val hasDeviation = clockDeviationUseCase.hasDeviation()
         assertTrue(hasDeviation)
@@ -76,26 +76,12 @@ class ClockDeviationUseCaseImplTest {
             deviatedClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(
-            serverResponseTimestamp = defaultClock.millis(),
-            localReceivedTimestamp = deviatedClock.millis()
+            ServerTime.Available(
+                serverTimeMillis = defaultClock.millis(),
+                localTimeMillis = deviatedClock.millis()
+            )
         )
         val hasDeviation = clockDeviationUseCase.hasDeviation()
         assertFalse(hasDeviation)
-    }
-
-    @Test
-    fun `Clock deviation usecase returns adjusted clock`() {
-        // device clock is 10 seconds ahead of server time
-        val deviceClock = Clock.offset(fixedClock, Duration.ofSeconds(10L))
-        val clockDeviationUseCase = ClockDeviationUseCaseImpl(
-            deviceClock, fakeCachedAppConfigUseCase()
-        )
-        clockDeviationUseCase.store(
-            serverResponseTimestamp = fixedClock.millis(),
-            localReceivedTimestamp = deviceClock.millis()
-        )
-
-        val adjustedClock = clockDeviationUseCase.getAdjustedClock(deviceClock)
-        assertEquals(fixedClock.instant(), adjustedClock.instant())
     }
 }

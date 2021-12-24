@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewRecoveryValidityUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewValidityInfoCardUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
@@ -44,6 +45,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val workerManagerWrapper: WorkerManagerWrapper by inject()
     private val checkNewRecoveryValidityUseCase: CheckNewRecoveryValidityUseCase by inject()
+    private val checkNewValidityInfoCardUseCase: CheckNewValidityInfoCardUseCase by inject()
 
     private val holderModules = listOf(
         storageModule,
@@ -51,7 +53,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         eventsUseCasesModule,
         secretUseCasesModule,
         testProvidersUseCasesModule,
-        utilsModule,
+        utilsModule(BuildConfig.VERSION_CODE),
         viewModels,
         cardUtilsModule,
         repositoriesModule,
@@ -107,6 +109,9 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
 
             // check to prevent showing extension option for paper recovery certificates
             checkNewRecoveryValidityUseCase.checkIfNeedToReAllowRecoveryExtensionCheck()
+
+            // check if we need to show the new validity info card use case
+            checkNewValidityInfoCardUseCase.check()
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {

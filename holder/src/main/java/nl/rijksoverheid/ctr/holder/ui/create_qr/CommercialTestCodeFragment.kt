@@ -212,7 +212,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
                             remoteTestResult = result.remoteTestResult,
                             rawResponse = result.signedResponseWithTestResult.rawResponse
                         ),
-                        toolbarTitle = getString(R.string.commercial_test_type_title)
+                        toolbarTitle = getString(R.string.your_negative_test_results_toolbar)
                     )
                 )
             }
@@ -224,7 +224,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
                             originType = OriginType.Test,
                             fromCommercialTestCode = true
                         ),
-                        toolbarTitle = getString(R.string.commercial_test_type_title),
+                        toolbarTitle = getString(R.string.your_negative_test_results_toolbar),
                     )
                 )
             }

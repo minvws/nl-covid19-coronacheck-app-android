@@ -39,7 +39,26 @@ class MyOverviewGreenCardAdapterItem(
     override fun bind(viewBinding: ItemMyOverviewGreenCardBinding, position: Int) {
         applyStyling(viewBinding = viewBinding)
         setContent(viewBinding = viewBinding)
-        initButton(viewBinding)
+        initButton(viewBinding = viewBinding)
+        accessibility(
+            viewBinding = viewBinding,
+            greenCardType = cards.first().greenCard.greenCardEntity.type
+        )
+    }
+
+    private fun accessibility(viewBinding: ItemMyOverviewGreenCardBinding, greenCardType: GreenCardType) {
+        viewBinding.buttonWithProgressWidgetContainer.accessibility(
+            viewBinding.title.text.toString()
+        )
+        val imageContentDescription = viewBinding.root.context.getString(
+            when (greenCardType) {
+                GreenCardType.Domestic -> R.string.validity_type_dutch_title
+                GreenCardType.Eu -> R.string.validity_type_european_title
+            }
+        )
+        viewBinding.headerContainer.contentDescription = "${viewBinding.title.text} $imageContentDescription"
+        // Mark title of the cards as heading for accessibility
+        ViewCompat.setAccessibilityHeading(viewBinding.title, true)
     }
 
     private fun initButton(viewBinding: ItemMyOverviewGreenCardBinding) {
@@ -59,8 +78,6 @@ class MyOverviewGreenCardAdapterItem(
     }
 
     private fun applyStyling(viewBinding: ItemMyOverviewGreenCardBinding) {
-        val context = viewBinding.root.context
-
         viewBinding.buttonWithProgressWidgetContainer.setButtonText(
             viewBinding.root.context.getString(
                 if (cards.size > 1) R.string.my_overview_results_button else R.string.my_overview_test_result_button
@@ -79,16 +96,12 @@ class MyOverviewGreenCardAdapterItem(
         }
 
         if (cards.first().credentialState is DashboardItem.CardsItem.CredentialState.LoadingCredential) {
-            viewBinding.buttonWithProgressWidgetContainer.setAccessibilityText(context.getString(R.string.my_overview_test_result_button_indicator_accessibility_description))
             viewBinding.buttonWithProgressWidgetContainer.loading()
         } else {
             viewBinding.buttonWithProgressWidgetContainer.idle(
                 isEnabled = cards.first().credentialState is HasCredential
             )
         }
-
-        // Mark title of the cards as heading for accessibility
-        ViewCompat.setAccessibilityHeading(viewBinding.title, true)
     }
 
     private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {

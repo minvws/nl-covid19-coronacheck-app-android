@@ -74,7 +74,11 @@ class HolderDatabaseSyncerImpl(
                         is RemoteGreenCardsResult.Success -> {
                             val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
                             val combinedVaccinationRecovery =
-                                combinationUtil.getResult(events, remoteGreenCards)
+                                combinationUtil.getResult(
+                                    storedGreenCards = holderDatabase.greenCardDao().getAll(),
+                                    events = events,
+                                    remoteGreenCards = remoteGreenCards
+                                )
 
                             // If the recover domestic recovery info card has been shown, never show it again after a successful sync
                             // Start showing the info card that says you have recovered

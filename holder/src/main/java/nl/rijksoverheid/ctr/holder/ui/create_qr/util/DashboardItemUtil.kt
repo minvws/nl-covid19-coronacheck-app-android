@@ -1,8 +1,11 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
@@ -10,12 +13,14 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 
 interface DashboardItemUtil {
     fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int
     fun shouldShowClockDeviationItem(allGreenCards: List<GreenCard>): Boolean
     fun shouldShowPlaceholderItem(allGreenCards: List<GreenCard>): Boolean
     fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>): Boolean
+    fun isAppUpdateAvailable(): Boolean
 
     /**
      * Multiple EU vaccination green card items will be combined into 1.
@@ -44,6 +49,10 @@ interface DashboardItemUtil {
         greenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult
     ): Boolean
+    fun shouldShowNewValidityItem(): Boolean
+    fun shouldShowTestCertificate3GValidityItem(
+        domesticGreenCards: List<GreenCard>
+    ): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -51,7 +60,10 @@ class DashboardItemUtilImpl(
     private val greenCardUtil: GreenCardUtil,
     private val persistenceManager: PersistenceManager,
     private val eventGroupEntityUtil: EventGroupEntityUtil,
-    private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase
+    private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
+    private val featureFlagUseCase: FeatureFlagUseCase,
+    private val appConfigUseCase: CachedAppConfigUseCase,
+    private val buildConfigUseCase: BuildConfigUseCase
 ) : DashboardItemUtil {
 
     override fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int {
@@ -83,6 +95,10 @@ class DashboardItemUtilImpl(
 
     override fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>): Boolean =
         allGreenCards.isEmpty()
+
+    override fun isAppUpdateAvailable(): Boolean {
+        return buildConfigUseCase.getVersionCode() < appConfigUseCase.getCachedAppConfig().recommendedVersion
+    }
 
     override fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {
         return items
@@ -175,5 +191,19 @@ class DashboardItemUtilImpl(
         return greenCards.isNotEmpty()
                 && !greenCards.all { greenCardUtil.isExpired(it) }
                 && databaseSyncerResult is DatabaseSyncerResult.Success
+    }
+
+    override fun shouldShowNewValidityItem(): Boolean {
+        return !persistenceManager.getHasDismissedNewValidityInfoCard()
+                && appConfigUseCase.getCachedAppConfig().showNewValidityInfoCard
+    }
+
+    override fun shouldShowTestCertificate3GValidityItem(domesticGreenCards: List<GreenCard>): Boolean {
+        val isFeatureEnabled = featureFlagUseCase.isVerificationPolicyEnabled()
+        val has3GTest = domesticGreenCards.any { greenCard ->
+            greenCard.origins.any { it.type == OriginType.Test }
+                    && greenCard.credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G }
+        }
+        return isFeatureEnabled && has3GTest
     }
 }
