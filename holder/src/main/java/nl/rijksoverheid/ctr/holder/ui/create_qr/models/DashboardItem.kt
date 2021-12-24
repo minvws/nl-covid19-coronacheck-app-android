@@ -21,9 +21,6 @@ sealed class DashboardItem {
         @StringRes val buttonText: Int? = null
     ) : DashboardItem() {
 
-        object RefreshEuVaccinations :
-            InfoItem(isDismissible = false, hasButton = true)
-
         object ExtendDomesticRecovery :
             InfoItem(isDismissible = false, hasButton = true)
 
@@ -32,8 +29,6 @@ sealed class DashboardItem {
 
         data class ConfigFreshnessWarning(val maxValidityDate: Long) :
             InfoItem(isDismissible = false, hasButton = true)
-
-        object RefreshedEuVaccinations : InfoItem(isDismissible = true, hasButton = true)
 
         object ExtendedDomesticRecovery : InfoItem(isDismissible = true, hasButton = true)
 

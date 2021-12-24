@@ -29,11 +29,6 @@ interface DashboardItemUtil {
      */
     fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem>
 
-    suspend fun shouldAddSyncGreenCardsItem(
-        allEventGroupEntities: List<EventGroupEntity>,
-        allGreenCards: List<GreenCard>): Boolean
-    fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>): Boolean
-
     fun shouldShowExtendDomesticRecoveryItem(): Boolean
     fun shouldShowRecoverDomesticRecoveryItem(): Boolean
     fun shouldShowExtendedDomesticRecoveryItem(): Boolean
@@ -119,32 +114,6 @@ class DashboardItemUtilImpl(
                         }.flatten()
                 }
             }.flatten()
-    }
-
-    override suspend fun shouldAddSyncGreenCardsItem(
-        allEventGroupEntities: List<EventGroupEntity>,
-        allGreenCards: List<GreenCard>): Boolean {
-        val amountOfVaccinationEvents = eventGroupEntityUtil.amountOfVaccinationEvents(allEventGroupEntities)
-        return if (amountOfVaccinationEvents in 0..1) {
-            // If we only have a single vaccination event (e.g. hkvi) we'll never get more cards
-            false
-        } else {
-            // there are more than 1 vaccination events. If this
-            // isn't reflected by
-            // our current set of greencards, show the banner to offer
-            // people an upgrade.
-            val euVaccinationGreenCards = allGreenCards.filter { it.greenCardEntity.type is GreenCardType.Eu }.filter { it.origins.any { origin -> origin.type is OriginType.Vaccination } }
-            euVaccinationGreenCards.size == 1
-        }
-    }
-
-    override fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>): Boolean {
-        val euVaccinationGreenCards = allGreenCards.filter { it.greenCardEntity.type is GreenCardType.Eu }.filter { it.origins.any { origin -> origin.type is OriginType.Vaccination } }
-
-        // Only show banner if;
-        // - there are more than one european vaccinations
-        // - the banner has not been dismissed
-        return (euVaccinationGreenCards.size > 1 && !persistenceManager.hasDismissedSyncedGreenCardsItem())
     }
 
     override fun shouldShowExtendDomesticRecoveryItem(): Boolean {
