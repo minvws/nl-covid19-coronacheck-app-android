@@ -39,6 +39,11 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
                         every { isVerificationPolicyEnabled() } answers { true }
                     }
                 }
+                factory {
+                    mockk<ClockDeviationUseCase>().apply {
+                        every { hasDeviation() } answers { false }
+                    }
+                }
             }
         )
     }
