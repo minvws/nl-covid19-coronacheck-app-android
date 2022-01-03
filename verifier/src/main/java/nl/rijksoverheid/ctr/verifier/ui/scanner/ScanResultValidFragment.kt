@@ -61,6 +61,9 @@ class ScanResultValidFragment : Fragment() {
                     is VerificationPolicy.VerificationPolicy2G -> {
                         R.style.AppTheme_Scanner_Valid_2G
                     }
+                    is VerificationPolicy.VerificationPolicy2GPlus -> {
+                        R.style.AppTheme_Scanner_Valid_2GPlus
+                    }
                 }
             } else {
                 R.style.AppTheme_Scanner_Valid_3G
@@ -93,6 +96,9 @@ class ScanResultValidFragment : Fragment() {
                         }
                         is VerificationPolicy.VerificationPolicy3G -> {
                             getString(R.string.verifier_result_access_title_lowrisk)
+                        }
+                        is VerificationPolicy.VerificationPolicy2GPlus -> {
+                            getString(R.string.verifier_result_access_title_2g_plus)
                         }
                     }
                 } else {
