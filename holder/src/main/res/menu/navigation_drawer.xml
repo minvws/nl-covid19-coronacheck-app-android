@@ -28,15 +28,21 @@
     <group
         android:id="@+id/info"
         android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_about_this_app"
+            android:checkable="false"
+            android:title="@string/about_this_app" />
+
         <item
             android:id="@+id/nav_paper_proof"
             android:checkable="false"
             android:title="@string/add_paper_proof" />
 
         <item
-            android:id="@+id/nav_about_this_app"
+            android:id="@+id/nav_visitor_pass"
             android:checkable="false"
-            android:title="@string/about_this_app" />
+            android:title="@string/holder_menu_visitorpass" />
 
         <!-- TODO: Implement terms of use -->
         <item

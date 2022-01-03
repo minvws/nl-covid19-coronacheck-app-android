@@ -33,7 +33,8 @@ class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
         R.id.nav_my_overview_tabs,
         R.id.nav_about_this_app,
-        R.id.nav_paper_proof_explanation
+        R.id.nav_paper_proof_explanation,
+        R.id.nav_visitor_pass,
     )
 ) {
 
@@ -188,6 +189,8 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
             .styleTitle(context, R.attr.textAppearanceHeadline3)
         binding.navView.menu.findItem(R.id.nav_paper_proof)
+            .styleTitle(context, R.attr.textAppearanceHeadline3)
+        binding.navView.menu.findItem(R.id.nav_visitor_pass)
             .styleTitle(context, R.attr.textAppearanceHeadline3)
 
         // resize drawer according to design
