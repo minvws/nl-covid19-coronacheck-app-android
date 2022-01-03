@@ -252,7 +252,7 @@
         <fragment android:id="@+id/visitor_pass"
             android:label="@string/visitorpass_start_toolbar_title"
             android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.visitor_pass.VisitorPassStartFragment"
-            tools:layout="@layout/fragment_visitor_pass_introduction">
+            tools:layout="@layout/fragment_visitor_pass_start">
 
             <action android:id="@+id/action_visitor_pass_code"
                 app:destination="@id/nav_verification_code"
