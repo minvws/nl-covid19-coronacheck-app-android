@@ -141,15 +141,11 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         }
     }
 
-    private fun returnToApp(externalReturnAppData: ExternalReturnAppData?) {
+    private fun returnToApp(externalReturnAppData: ExternalReturnAppData) {
         binding.button.run {
-            if (externalReturnAppData != null) {
-                visibility = View.VISIBLE
-                text = getString(R.string.qr_code_return_app_button, externalReturnAppData.appName)
-                setOnClickListener { startIntent(externalReturnAppData) }
-            } else {
-                visibility = View.GONE
-            }
+            visibility = View.VISIBLE
+            text = getString(R.string.qr_code_return_app_button, externalReturnAppData.appName)
+            setOnClickListener { startIntent(externalReturnAppData) }
         }
     }
 
