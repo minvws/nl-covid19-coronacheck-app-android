@@ -42,7 +42,8 @@
         <item
             android:id="@+id/nav_visitor_pass"
             android:checkable="false"
-            android:title="@string/holder_menu_visitorpass" />
+            android:title="@string/holder_menu_visitorpass"
+            android:visible="false"/>
 
         <!-- TODO: Implement terms of use -->
         <item

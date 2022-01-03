@@ -46,7 +46,8 @@ data class HolderConfig(
     @Json(name = "recoveryGreencardRevisedValidityLaunchDate") val recoveryGreenCardRevisedValidityLaunchDate: String,
     @Json(name = "configAlmostOutOfDateWarningSeconds") val holderConfigAlmostOutOfDateWarningSeconds : Int,
     @Json(name = "showNewValidityInfoCard") val showNewValidityInfoCard: Boolean,
-    @Json(name = "androidEnableVerificationPolicyVersion") val holderEnableVerificationPolicyVersion: Int
+    @Json(name = "androidEnableVerificationPolicyVersion") val holderEnableVerificationPolicyVersion: Int,
+    @Json(name = "visitorPassEnabled") val visitorPassEnabled: Boolean
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -95,7 +96,8 @@ data class HolderConfig(
             luhnCheckEnabled: Boolean = false,
             internationalQRRelevancyDays: Int = 28,
             holderConfigAlmostOutOfDateWarningSeconds: Int = 300,
-            showNewValidityInfoCard: Boolean = false
+            showNewValidityInfoCard: Boolean = false,
+            visitorPassEnabled: Boolean = false
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -130,7 +132,8 @@ data class HolderConfig(
             recoveryGreenCardRevisedValidityLaunchDate = "1970-01-01T00:00:00Z",
             holderConfigAlmostOutOfDateWarningSeconds = holderConfigAlmostOutOfDateWarningSeconds,
             showNewValidityInfoCard = showNewValidityInfoCard,
-            holderEnableVerificationPolicyVersion = 0
+            holderEnableVerificationPolicyVersion = 0,
+            visitorPassEnabled = visitorPassEnabled
         )
     }
 }

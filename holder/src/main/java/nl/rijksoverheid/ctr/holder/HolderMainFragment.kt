@@ -20,12 +20,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.BaseMainFragment
 import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import org.koin.android.ext.android.inject
 
@@ -42,7 +42,8 @@ class HolderMainFragment : BaseMainFragment(
     private val binding get() = _binding!!
     private var _navController: NavController? = null
     private val navController get() = _navController!!
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val cachedAppConfigUseCase: nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase by inject()
+    private val holderCachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -148,6 +149,11 @@ class HolderMainFragment : BaseMainFragment(
                 }
             }
         })
+
+        // Show visitor pass menu item if feature is enabled
+        if (holderCachedAppConfigUseCase.getCachedAppConfig().visitorPassEnabled) {
+            binding.navView.menu.findItem(R.id.nav_visitor_pass).isVisible = true
+        }
     }
 
     override fun onDestroyView() {
