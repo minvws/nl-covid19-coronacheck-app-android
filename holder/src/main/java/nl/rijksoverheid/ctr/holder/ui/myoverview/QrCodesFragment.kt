@@ -109,7 +109,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
      * Whenever we sync the server time, generate new qr codes as the qr code holds the (possibly adjusted) time
      */
     private fun onServerTimeSynced() {
-        if (activity != null) generateQrCodes()
+        generateQrCodes()
     }
 
     /**
@@ -346,6 +346,9 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.SECONDS.toMillis(
                 cachedAppConfigUseCase.getCachedAppConfig().domesticQRRefreshSeconds.toLong()
             )
+
+        // Make sure there is only 1 callback as multiple qr generations can be triggered by onResume and server time LiveData
+        qrCodeHandler.removeCallbacks(qrCodeRunnable)
         qrCodeHandler.postDelayed(qrCodeRunnable, refreshMillis)
     }
 
@@ -367,7 +370,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     override fun onPause() {
         super.onPause()
-        qrCodeHandler.removeCallbacks(qrCodeRunnable)
         (parentFragment?.parentFragment as HolderMainFragment).let {
             it.getToolbar().menu.clear()
             // Reset menu item listener to default
@@ -378,6 +380,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        qrCodeHandler.removeCallbacks(qrCodeRunnable)
 
         // Set brightness back to previous
         val params = requireActivity().window.attributes
