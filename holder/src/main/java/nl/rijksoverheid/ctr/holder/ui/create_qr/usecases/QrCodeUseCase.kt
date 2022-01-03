@@ -8,7 +8,6 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import timber.log.Timber
 import java.time.Clock
 
 /*
@@ -26,11 +25,8 @@ class QrCodeUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val qrCodeUtil: QrCodeUtil,
     private val mobileCoreWrapper: MobileCoreWrapper,
-    clock: Clock,
-    clockDeviationUseCase: ClockDeviationUseCase
+    private val clockDeviationUseCase: ClockDeviationUseCase
 ) : QrCodeUseCase {
-
-    private val adjustedCurrentMillis: Long = clock.millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis()
 
     override suspend fun qrCode(
         credential: ByteArray,
@@ -40,13 +36,14 @@ class QrCodeUseCaseImpl(
         errorCorrectionLevel: ErrorCorrectionLevel
     ): Bitmap =
         withContext(Dispatchers.IO) {
+
             val secretKey = persistenceManager.getSecretKeyJson()
                 ?: throw IllegalStateException("Secret key should exist")
 
             val qrCodeContent = if (shouldDisclose) mobileCoreWrapper.disclose(
                 secretKey.toByteArray(),
                 credential,
-                adjustedCurrentMillis
+                Clock.systemDefaultZone().millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis()
             ) else String(credential)
 
             qrCodeUtil.createQrCode(
