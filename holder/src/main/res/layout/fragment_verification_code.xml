@@ -75,12 +75,13 @@
                 style="@style/Widget.App.TextInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:hint="@string/commercial_test_verification_code_header"
                 app:errorEnabled="true"
                 app:helperText="@string/commercial_test_verification_code_helper_text"
                 app:layout_constraintEnd_toEndOf="@+id/description"
                 app:layout_constraintStart_toStartOf="@+id/description"
-                app:layout_constraintTop_toBottomOf="@id/no_token_received_btn">
+                app:layout_constraintTop_toBottomOf="@id/unique_code_input">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/verification_code_text"
