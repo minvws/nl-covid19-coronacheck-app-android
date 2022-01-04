@@ -206,6 +206,15 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     binding.root.visibility = View.VISIBLE
                     binding.fullscreenLoading.visibility = View.GONE
                 }
+                DigidResult.NoBrowserFound -> {
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.dialog_no_browser_title,
+                        message = getString(R.string.dialog_no_browser_message_digid),
+                        positiveButtonText = R.string.ok,
+                        positiveButtonCallback = {},
+                    )
+                }
             }
         })
     }
@@ -234,7 +243,13 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     private fun getCopyForOriginType(): GetEventsFragmentCopy {
         when (args.originType) {
             is OriginType.Test -> {
-                TODO("This logic is currently in ChooseProviderFragment but should be migrated here")
+                return GetEventsFragmentCopy(
+                    title = getString(R.string.holder_negativetest_ggd_title),
+                    description = getString(R.string.holder_negativetest_ggd_message),
+                    toolbarTitle = getString(R.string.your_negative_test_results_header),
+                    hasNoEventsTitle = getString(R.string.no_test_results_title),
+                    hasNoEventsDescription = getString(R.string.no_test_results_description)
+                )
             }
             is OriginType.Vaccination -> {
                 return GetEventsFragmentCopy(

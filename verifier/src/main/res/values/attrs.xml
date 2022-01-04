@@ -11,4 +11,7 @@
         <attr name="header" format="string" />
         <attr name="textContent" format="string" />
     </declare-styleable>
+    <declare-styleable name="ScrollViewPolicyButtonWidget">
+        <attr name="attachToScrollView" format="reference" />
+    </declare-styleable>
 </resources>

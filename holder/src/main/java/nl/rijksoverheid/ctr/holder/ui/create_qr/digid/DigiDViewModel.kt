@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.digid
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -145,9 +146,14 @@ class DigiDViewModel(
         if (e is AuthorizationException) {
             postAuthErrorResult(e)
         } else {
-            digidResultLiveData.postValue(
-                Event(DigidResult.Failed(Error(DigidNetworkRequest, e)))
-            )
+            // App Auth will launch a browser intent to log in with DigiD.
+            // When it throws an ActivityNotFoundException it means there is no browser app to handle the intent.
+            val result = if (e is ActivityNotFoundException) {
+                DigidResult.NoBrowserFound
+            } else {
+                DigidResult.Failed(Error(DigidNetworkRequest, e))
+            }
+            digidResultLiveData.postValue(Event(result))
         }
     }
 

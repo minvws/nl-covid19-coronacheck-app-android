@@ -14,6 +14,7 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.*
 import org.junit.Test
@@ -24,6 +25,33 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
     private val appConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
     private val util = DomesticVaccinationRecoveryCombinationUtilImpl(appConfigUseCase)
 
+    @Test
+    fun `combination is not applicable when there is already a dometic vaccination stored`() {
+        val storedGreenCards = listOf(
+            fakeGreenCard(
+                greenCardType = GreenCardType.Domestic,
+                originType = OriginType.Vaccination
+            )
+        )
+        val events = listOf(
+            fakeEventGroupEntity(type = OriginType.Vaccination),
+            fakeEventGroupEntity(type = OriginType.Recovery)
+        )
+        val remoteGreenCards = fakeRemoteGreenCards(
+            domesticGreencard = fakeDomesticGreenCard(
+                origins = listOf(
+                    fakeOrigin(type = OriginType.Vaccination),
+                    fakeOrigin(type = OriginType.Recovery)
+                )
+            ),
+            euGreencards = listOf(fakeEuGreenCard())
+        )
+
+        assertEquals(
+            util.getResult(storedGreenCards, events, remoteGreenCards),
+            NotApplicable
+        )
+    }
 
     @Test
     fun `combination is none without recovery`() {
@@ -35,7 +63,7 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
-        assertEquals(util.getResult(events, remoteGreenCards), NoneWithoutRecovery)
+        assertEquals(util.getResult(emptyList(), events, remoteGreenCards), NoneWithoutRecovery)
     }
 
     @Test
@@ -54,7 +82,7 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard())
         )
 
-        assertEquals(util.getResult(events, remoteGreenCards), OnlyVaccination(365))
+        assertEquals(util.getResult(emptyList(), events, remoteGreenCards), OnlyVaccination(365))
     }
 
     @Test
@@ -72,7 +100,7 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard())
         )
 
-        assertEquals(util.getResult(events, remoteGreenCards), OnlyRecovery)
+        assertEquals(util.getResult(emptyList(), events, remoteGreenCards), OnlyRecovery)
     }
 
     @Test
@@ -86,7 +114,7 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
-        assertEquals(util.getResult(events, remoteGreenCards), NoneWithRecovery)
+        assertEquals(util.getResult(emptyList(), events, remoteGreenCards), NoneWithRecovery)
     }
 
     @Test
@@ -106,7 +134,10 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard())
         )
 
-        assertEquals(util.getResult(events, remoteGreenCards), CombinedVaccinationRecovery(365))
+        assertEquals(
+            util.getResult(emptyList(), events, remoteGreenCards),
+            CombinedVaccinationRecovery(365)
+        )
     }
 
     @Test
@@ -117,11 +148,11 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
         )
         val remoteGreenCards = fakeRemoteGreenCards(
             domesticGreencard = fakeDomesticGreenCard(
-                origins = listOf(fakeOrigin(type = OriginType.Vaccination),)
+                origins = listOf(fakeOrigin(type = OriginType.Vaccination))
             ),
             euGreencards = listOf(fakeEuGreenCard())
         )
 
-        assertEquals(util.getResult(events, remoteGreenCards), NotApplicable)
+        assertEquals(util.getResult(emptyList(), events, remoteGreenCards), NotApplicable)
     }
 }

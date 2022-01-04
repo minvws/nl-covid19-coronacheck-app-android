@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.shared.ext
 
 import android.content.Context
+import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.annotation.NonNull
@@ -49,6 +50,7 @@ fun Fragment.navigateSafety(directions: NavDirections) {
     try {
         findNavController().navigate(directions)
     } catch(e: Exception) {
+        e.printStackTrace()
         // no op
     }
 }
@@ -64,6 +66,22 @@ fun Fragment.navigateSafety(currentId: Int, directions: NavDirections) {
 fun Fragment.navigateSafety(currentId: Int, directionId: Int) {
     try {
         findNavControllerSafety(currentId)?.navigate(directionId)
+    } catch(e: Exception) {
+        // no op
+    }
+}
+
+fun Fragment.navigateSafety(destinationId: Int) {
+    try {
+        findNavControllerSafety()?.navigate(destinationId)
+    } catch(e: Exception) {
+        // no op
+    }
+}
+
+fun Fragment.navigateSafety(destinationId: Int, args: Bundle) {
+    try {
+        findNavControllerSafety()?.navigate(destinationId, args)
     } catch(e: Exception) {
         // no op
     }

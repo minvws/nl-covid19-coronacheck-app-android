@@ -21,9 +21,11 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.BuildConfig
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
+import nl.rijksoverheid.ctr.design.databinding.AboutThisAppSectionBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTimeNumerical
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import org.koin.android.ext.android.inject
@@ -54,22 +56,32 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         val aboutThisAppData = arguments?.getParcelable<AboutThisAppData>(EXTRA_ABOUT_THIS_APP_DATA)
             ?: throw IllegalStateException("AboutThisAppData should be set")
 
-        aboutThisAppData.readMoreItems.forEach { item ->
-            val view = AboutThisAppRowBinding.inflate(
+        aboutThisAppData.sections.forEach {
+            val sectionView = AboutThisAppSectionBinding.inflate(
                 LayoutInflater.from(requireContext()),
-                binding.readMoreItems,
+                binding.sections,
                 true
             )
 
-            view.title.text = item.text
+            sectionView.header.text = getString(it.header)
+            it.items.forEach { item ->
+                val itemView = AboutThisAppRowBinding.inflate(
+                    LayoutInflater.from(requireContext()),
+                    sectionView.items,
+                    true
+                )
 
-            view.root.setAsAccessibilityButton(true)
-            view.root.contentDescription = item.text
+                itemView.title.text = item.text
 
-            view.root.setOnClickListener {
-                when (item) {
-                    is AboutThisAppData.Url -> item.url.launchUrl(requireContext())
-                    is AboutThisAppData.ClearAppData -> showClearAppDataDialog()
+                itemView.root.setAsAccessibilityButton(true)
+                itemView.root.contentDescription = item.text
+
+                itemView.root.setOnClickListener {
+                    when (item) {
+                        is AboutThisAppData.Url -> item.url.launchUrl(requireContext())
+                        is AboutThisAppData.ClearAppData -> showClearAppDataDialog()
+                        is AboutThisAppData.Destination -> findNavControllerSafety()?.navigate(item.destinationId)
+                    }
                 }
             }
         }

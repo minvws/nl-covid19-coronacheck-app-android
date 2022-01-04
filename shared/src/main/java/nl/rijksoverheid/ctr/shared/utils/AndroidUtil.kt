@@ -5,10 +5,15 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.security.keystore.StrongBoxUnavailableException
 import androidx.security.crypto.MasterKeys
+import java.security.SecureRandom
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -23,6 +28,8 @@ interface AndroidUtil {
     fun isFirstInstall(): Boolean
     fun isNetworkAvailable(): Boolean
     fun getConnectivityManager() : ConnectivityManager
+    fun generateRandomKey(): ByteArray
+    fun getFirstInstallTime(): OffsetDateTime
 }
 
 class AndroidUtilImpl(private val context: Context) : AndroidUtil {
@@ -31,7 +38,7 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
     }
 
     override fun getMasterKeyAlias(): String =
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
                 MasterKeys.getOrCreate(
                     KeyGenParameterSpec.Builder(
@@ -80,4 +87,16 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
         return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
+    override fun generateRandomKey(): ByteArray = ByteArray(32).apply {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            SecureRandom.getInstanceStrong().nextBytes(this)
+        } else {
+            SecureRandom().nextBytes(this)
+        }
+    }
+
+    override fun getFirstInstallTime(): OffsetDateTime {
+        val millis = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
+        return OffsetDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneOffset.UTC)
+    }
 }

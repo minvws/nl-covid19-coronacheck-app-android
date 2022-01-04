@@ -66,9 +66,11 @@ class GetDashboardItemsUseCaseImpl(
             allGreenCards = allGreenCards
         )
 
-        dashboardItems.add(
-            DashboardItem.HeaderItem(text = headerText)
-        )
+        dashboardItems.add(DashboardItem.HeaderItem(text = headerText))
+
+        if (dashboardItemUtil.isAppUpdateAvailable()) {
+            dashboardItems.add(DashboardItem.InfoItem.AppUpdate)
+        }
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
@@ -98,6 +100,16 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowNewValidityItem()) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.NewValidityItem
+            )
+        }
+
+        if (dashboardItemUtil.shouldShowTestCertificate3GValidityItem(domesticGreenCards)) {
+            dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
+        }
+
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCardType = GreenCardType.Domestic,
@@ -115,7 +127,11 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(domesticGreenCards, databaseSyncerResult)) {
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(
+                domesticGreenCards,
+                databaseSyncerResult
+            )
+        ) {
             dashboardItems.add(
                 DashboardItem.CoronaMelderItem
             )
@@ -149,18 +165,12 @@ class GetDashboardItemsUseCaseImpl(
             DashboardItem.HeaderItem(text = headerText)
         )
 
+        if (dashboardItemUtil.isAppUpdateAvailable()) {
+            dashboardItems.add(DashboardItem.InfoItem.AppUpdate)
+        }
+
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
-        }
-
-        if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allEventGroupEntities, allGreenCards)) {
-            // Enable the ability to show GreenCardsSyncedItem (after successful sync)
-            persistenceManager.setHasDismissedSyncedGreenCardsItem(false)
-            dashboardItems.add(DashboardItem.InfoItem.RefreshEuVaccinations)
-        }
-
-        if (dashboardItemUtil.shouldAddGreenCardsSyncedItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.InfoItem.RefreshedEuVaccinations)
         }
 
         if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
@@ -188,7 +198,11 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(internationalGreenCards, databaseSyncerResult)) {
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(
+                internationalGreenCards,
+                databaseSyncerResult
+            )
+        ) {
             dashboardItems.add(
                 DashboardItem.CoronaMelderItem
             )
@@ -237,7 +251,10 @@ class GetDashboardItemsUseCaseImpl(
 
                 items.add(
                     if (greenCardType == GreenCardType.Domestic
-                        && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(greenCardsForSelectedType, greenCardsForUnselectedType)
+                        && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(
+                            greenCardsForSelectedType,
+                            greenCardsForUnselectedType
+                        )
                     ) {
                         DashboardItem.InfoItem.MissingDutchVaccinationItem
                     } else {

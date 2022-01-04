@@ -12,14 +12,17 @@ package nl.rijksoverheid.ctr.holder.persistence.database.util
 
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination
 import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.*
+import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 
 interface DomesticVaccinationRecoveryCombinationUtil {
 
     fun getResult(
+        storedGreenCards: List<GreenCard>,
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): DomesticVaccinationRecoveryCombination
@@ -32,11 +35,13 @@ class DomesticVaccinationRecoveryCombinationUtilImpl(
 ) : DomesticVaccinationRecoveryCombinationUtil {
 
     override fun getResult(
+        storedGreenCards: List<GreenCard>,
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): DomesticVaccinationRecoveryCombination {
         val recoveryValidityDays = appConfigUseCase.getCachedAppConfig().recoveryEventValidityDays
         return when {
+            hasStoredDomesticVaccination(storedGreenCards) -> NotApplicable
             isNoneWithoutRecovery(events, remoteGreenCards) -> NoneWithoutRecovery
             isOnlyVaccination(events, remoteGreenCards) -> OnlyVaccination(recoveryValidityDays)
             isOnlyRecovery(events, remoteGreenCards) -> OnlyRecovery
@@ -46,6 +51,20 @@ class DomesticVaccinationRecoveryCombinationUtilImpl(
             )
             else -> NotApplicable
         }
+    }
+
+    /**
+     * Check whether there is already domestic vaccination stored in the database. If there is one
+     * there is no need to make a combination.
+     *
+     * @return whether the database contains a domestic green card with vaccination origin
+     */
+    private  fun hasStoredDomesticVaccination(storedGreenCards: List<GreenCard>): Boolean {
+        return storedGreenCards
+            .filter { it.greenCardEntity.type == GreenCardType.Domestic }
+            .any { greenCard ->
+                greenCard.origins.any { it.type == OriginType.Vaccination }
+            }
     }
 
     private fun isNoneWithRecovery(

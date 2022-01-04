@@ -80,6 +80,8 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
             versionCode
         )
     }
+
+    factory<FeatureFlagUseCase> { FeatureFlagUseCaseImpl(get(), get()) }
 }
 
 fun isVerifierApp(applicationContext: Context): Boolean =

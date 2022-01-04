@@ -144,7 +144,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         val parts = listOf(spannable) // spannable.separated("\n") --> NOTE: disabled for now
 
         // Step 3: Add a HtmlTextView for each part of the Spannable
-        parts.forEachIndexed { index, part ->
+        parts.forEachIndexed { _, part ->
             val textView = HtmlTextView(context)
             textView.setTextColor(
                 if (htmlTextColor > NO_ID) {

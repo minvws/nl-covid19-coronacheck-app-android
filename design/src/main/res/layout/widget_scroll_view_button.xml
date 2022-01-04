@@ -7,40 +7,52 @@
     tools:parentTag="androidx.cardview.widget.CardView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:id="@+id/buttons"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="16dp"
-        android:orientation="vertical">
+        android:layout_gravity="center_horizontal">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/secondaryButton"
             style="@style/Widget.App.Button.Outlined"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="0.5"
+            android:layout_marginHorizontal="16dp"
             android:textColor="@color/primary_blue"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/button"
-            app:layout_constraintStart_toStartOf="@id/button"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/barrier"
             app:layout_constraintTop_toTopOf="parent"
             app:strokeColor="@color/primary_blue"
-            tools:visibility="visible" />
+            app:layout_constraintWidth_min="wrap"
+            tools:visibility="visible"
+            tools:text="Button 2 asdfasdfasdfasdfasdfasdfasdfasdfasdf"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button"
             style="@style/Widget.App.Button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="2dp"
-            android:gravity="center"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintTop_toBottomOf="@+id/secondaryButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/secondaryButton" />
+            app:layout_constraintEnd_toEndOf="@id/barrier"
+            app:layout_constraintWidth_min="wrap"
+            tools:text="Button 1"/>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="button,secondaryButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </merge>

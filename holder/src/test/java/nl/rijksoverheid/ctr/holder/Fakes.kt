@@ -7,6 +7,7 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.ServerTime
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -14,9 +15,8 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.VerificationCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
@@ -24,7 +24,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -32,10 +31,7 @@ import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
-import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
-import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import org.json.JSONObject
-import java.time.Clock
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -66,15 +62,15 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         }
 
-        override fun dismissRefreshedEuVaccinationsInfoCard() {
-
-        }
-
         override fun dismissRecoveredDomesticRecoveryInfoCard() {
 
         }
 
         override fun dismissExtendedDomesticRecoveryInfoCard() {
+
+        }
+
+        override fun dismissNewValidityInfoCard() {
 
         }
 
@@ -91,33 +87,6 @@ fun fakeTokenValidatorUtil(
 ) = object : TokenValidatorUtil {
     override fun validate(token: String, checksum: String): Boolean {
         return isValid
-    }
-}
-
-fun fakeTestResultUtil(
-    isValid: Boolean = true
-) = object : TestResultUtil {
-    override fun isValid(sampleDate: OffsetDateTime, validitySeconds: Long): Boolean {
-        return isValid
-    }
-}
-
-fun fakePersonalDetailsUtil(
-
-): PersonalDetailsUtil = object : PersonalDetailsUtil {
-    override fun getPersonalDetails(
-        firstNameInitial: String,
-        lastNameInitial: String,
-        birthDay: String,
-        birthMonth: String,
-        includeBirthMonthNumber: Boolean
-    ): PersonalDetails {
-        return PersonalDetails(
-            firstNameInitial = firstNameInitial,
-            lastNameInitial = lastNameInitial,
-            birthDay = birthDay,
-            birthMonth = birthMonth
-        )
     }
 }
 
@@ -155,8 +124,8 @@ fun fakeIntroductionViewModel(
     }
 }
 
-fun fakeCommercialTestResultViewModel(): CommercialTestCodeViewModel {
-    return object : CommercialTestCodeViewModel() {
+fun fakeCommercialTestResultViewModel(): VerificationCodeViewModel {
+    return object : VerificationCodeViewModel() {
 
         override fun updateViewState() {
 
@@ -172,16 +141,6 @@ fun fakeCommercialTestResultViewModel(): CommercialTestCodeViewModel {
     }
 }
 
-fun fakeCreateCredentialUseCase(
-    credential: String = ""
-): CreateCredentialUseCase {
-    return object : CreateCredentialUseCase {
-        override fun get(secretKeyJson: String, testIsmBody: String): String {
-            return credential
-        }
-    }
-}
-
 fun fakeSecretKeyUseCase(
     json: String = "{}"
 ): SecretKeyUseCase {
@@ -192,16 +151,6 @@ fun fakeSecretKeyUseCase(
 
         override fun persist() {
 
-        }
-    }
-}
-
-fun fakeCommitmentMessageUsecase(
-    json: String = "{}"
-): CommitmentMessageUseCase {
-    return object : CommitmentMessageUseCase {
-        override suspend fun json(nonce: String): String {
-            return json
         }
     }
 }
@@ -394,14 +343,6 @@ fun fakePersistenceManager(
 
         }
 
-        override fun hasDismissedSyncedGreenCardsItem(): Boolean {
-            return hasDismissedUnsecureDeviceDialog
-        }
-
-        override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
-
-        }
-
         override fun showSyncGreenCardsItem(): Boolean {
             return showSyncGreenCardsItem
         }
@@ -449,6 +390,22 @@ fun fakePersistenceManager(
         override fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean {
             return true
         }
+
+        override fun getCheckNewValidityInfoCard(): Boolean {
+            return false
+        }
+
+        override fun setCheckNewValidityInfoCard(check: Boolean) {
+
+        }
+
+        override fun getHasDismissedNewValidityInfoCard(): Boolean {
+            return false
+        }
+
+        override fun setHasDismissedNewValidityInfoCard(dismissed: Boolean) {
+
+        }
     }
 }
 
@@ -462,7 +419,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ByteArray(0)
         }
 
-        override fun createCommitmentMessage(secretKey: ByteArray, nonce: ByteArray): String {
+        override fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String {
             return ""
         }
 
@@ -492,6 +449,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                         isPaperProof = "0",
                         validForHours = 24,
                         validFrom = 1622731645L,
+                        category = "2"
                     ),
                 )
             )
@@ -505,7 +463,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun initializeVerifier(configFilesPath: String) = ""
 
-        override fun verify(credential: ByteArray): VerificationResult {
+        override fun verify(credential: ByteArray, policy: VerificationPolicy): VerificationResult {
             TODO("Not yet implemented")
         }
 
@@ -519,7 +477,8 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 "",
                 "",
                 "24",
-                "1622731645"
+                "1622731645",
+                "2"
             )
         }
     }
@@ -591,34 +550,6 @@ fun fakeGreenCardUtil(
     }
 }
 
-fun fakeCredentialUtil(activeCredential: CredentialEntity? = null) = object : CredentialUtil {
-    override fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity? {
-        return activeCredential
-    }
-
-    override fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean {
-        return false
-    }
-
-    override fun getTestTypeForEuropeanCredentials(entities: List<CredentialEntity>): String {
-        return ""
-    }
-
-    override fun getVaccinationDosesForEuropeanCredentials(
-        entities: List<CredentialEntity>,
-        getString: (String, String) -> String
-    ): String {
-        return ""
-    }
-
-    override fun vaccinationShouldBeHidden(
-        readEuropeanCredential: List<JSONObject>,
-        index: Int
-    ): Boolean {
-        return false
-    }
-}
-
 fun fakeGetRemoteGreenCardUseCase(
     result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
         RemoteGreenCards(null, null)
@@ -640,7 +571,7 @@ fun fakeSyncRemoteGreenCardUseCase(
 fun fakeClockDevationUseCase(
     hasDeviation: Boolean = false
 ) = object : ClockDeviationUseCase() {
-    override fun store(serverResponseTimestamp: Long, localReceivedTimestamp: Long) {
+    override fun store(serverTime: ServerTime) {
 
     }
 
@@ -648,7 +579,9 @@ fun fakeClockDevationUseCase(
         return hasDeviation
     }
 
-    override fun getAdjustedClock(clock: Clock): Clock = Clock.systemDefaultZone()
+    override fun calculateServerTimeOffsetMillis(): Long {
+        return 0L
+    }
 }
 
 fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object : ReadEuropeanCredentialUtil {
@@ -735,12 +668,6 @@ val fakeGreenCardEntity = GreenCardEntity(
     type = GreenCardType.Domestic
 )
 
-val fakeGreenCard = GreenCard(
-    greenCardEntity = fakeGreenCardEntity,
-    origins = listOf(),
-    credentialEntities = listOf()
-)
-
 fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) =
     RemoteEventVaccination.Vaccination(
         date = date,
@@ -756,7 +683,14 @@ fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) =
         manufacturer = ""
     )
 
-fun fakeGreenCard(greenCardType: GreenCardType, originType: OriginType) = GreenCard(
+fun fakeGreenCard(
+    greenCardType: GreenCardType = GreenCardType.Domestic,
+    originType: OriginType = OriginType.Vaccination,
+    eventTime: OffsetDateTime = OffsetDateTime.now(),
+    expirationTime: OffsetDateTime = OffsetDateTime.now(),
+    validFrom: OffsetDateTime = OffsetDateTime.now(),
+    category: String? = null
+) = GreenCard(
     greenCardEntity = GreenCardEntity(
         id = 0,
         walletId = 0,
@@ -767,9 +701,9 @@ fun fakeGreenCard(greenCardType: GreenCardType, originType: OriginType) = GreenC
             id = 0,
             greenCardId = 0,
             type = originType,
-            eventTime = OffsetDateTime.now(),
-            expirationTime = OffsetDateTime.now(),
-            validFrom = OffsetDateTime.now()
+            eventTime = eventTime,
+            expirationTime = expirationTime,
+            validFrom = validFrom
         )
     ),
     credentialEntities = listOf(
@@ -778,8 +712,9 @@ fun fakeGreenCard(greenCardType: GreenCardType, originType: OriginType) = GreenC
             greenCardId = 0,
             data = "".toByteArray(),
             credentialVersion = 0,
-            validFrom = OffsetDateTime.now(),
-            expirationTime = OffsetDateTime.now()
+            validFrom = validFrom,
+            expirationTime = expirationTime,
+            category = category
         )
     )
 )
@@ -850,6 +785,16 @@ fun fakeOrigin(
     ),
     doseNumber: Int? = 1
 ) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber)
+
+fun fakeOriginEntity(
+    id: Int = 0,
+    greenCardId: Long = 1L,
+    type: OriginType = OriginType.Vaccination,
+    eventTime: OffsetDateTime = OffsetDateTime.now(),
+    expirationTime: OffsetDateTime = OffsetDateTime.now(),
+    validFrom: OffsetDateTime = OffsetDateTime.now(),
+    doseNumber: Int? = null
+) = OriginEntity(id, greenCardId, type, eventTime, expirationTime, validFrom, doseNumber)
 
 
 

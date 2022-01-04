@@ -22,13 +22,13 @@ val cardUtilsModule = module {
     factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get()) }
     factory<TestInfoScreenUtil> { TestInfoScreenUtilImpl(androidContext().resources, get()) }
     factory<RecoveryInfoScreenUtil> { RecoveryInfoScreenUtilImpl(androidContext().resources) }
-    factory<QrInfoScreenUtil> { QrInfoScreenUtilImpl(get(), get(), get(), get()) }
+    factory<QrInfoScreenUtil> { QrInfoScreenUtilImpl(get(), get(), get(), get(), get()) }
     factory<VaccinationInfoScreenUtil> {
         VaccinationInfoScreenUtilImpl(get(), androidContext().resources, get())
     }
     factory<LastVaccinationDoseUtil> { LastVaccinationDoseUtilImpl(androidContext().resources) }
     factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC(), get()) }
     factory<GreenCardRefreshUtil> {
-        GreenCardRefreshUtilImpl(get(), get(), get(), get(), get())
+        GreenCardRefreshUtilImpl(get(), get(), get(), get(), get(), get())
     }
 }

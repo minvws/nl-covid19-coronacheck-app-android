@@ -27,7 +27,7 @@ import org.koin.dsl.module
 val viewModels = module {
     viewModel<QrCodesViewModel> { QrCodesViewModelImpl(get(), get()) }
     viewModel<HolderMainActivityViewModel> { HolderMainActivityViewModelImpl() }
-    viewModel<CommercialTestCodeViewModel> { CommercialTestCodeViewModelImpl(get(), get()) }
+    viewModel<VerificationCodeViewModel> { VerificationCodeViewModelImpl(get(), get()) }
     viewModel { DigiDViewModel(get(), get()) }
     viewModel { MijnCnViewModel(get(), get()) }
     viewModel { TokenQrViewModel(get()) }

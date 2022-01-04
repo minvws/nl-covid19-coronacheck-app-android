@@ -21,6 +21,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
 
 class NetworkRequestResultFactoryTest {
@@ -210,6 +211,14 @@ class NetworkRequestResultFactoryTest {
 
             override fun getConnectivityManager(): ConnectivityManager {
                 TODO("Not yet implemented")
+            }
+
+            override fun generateRandomKey(): ByteArray {
+                return "".toByteArray()
+            }
+
+            override fun getFirstInstallTime(): OffsetDateTime {
+                return OffsetDateTime.now()
             }
         }
     }

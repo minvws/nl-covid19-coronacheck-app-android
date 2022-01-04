@@ -7,9 +7,13 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import com.adevinta.android.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import org.junit.Test
@@ -31,6 +35,9 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
 
     private lateinit var navController: TestNavHostController
     private val scannerUtil: ScannerUtil = mockk(relaxed = true)
+    private val persistenceManager = mockk<PersistenceManager>(relaxed = true).apply {
+        every { getVerificationPolicySelected() } returns VerificationPolicy.VerificationPolicy3G
+    }
 
     @Test
     fun `Screen shows correct content when data is Valid`() {
@@ -41,7 +48,7 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
             )
         )
         assertHasBackground(R.id.root, R.color.secondary_green)
-        assertDisplayed(R.id.title, R.string.scan_result_valid_title)
+        assertDisplayed(R.id.title, R.string.verifier_result_access_title_lowrisk)
     }
 
     @Test
@@ -66,6 +73,14 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
             module(override = true) {
                 factory {
                     scannerUtil
+                }
+                factory {
+                    persistenceManager
+                }
+                factory {
+                    mockk<FeatureFlagUseCase>().apply {
+                        every { isVerificationPolicyEnabled() } answers { true }
+                    }
                 }
             }
         )
