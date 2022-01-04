@@ -59,10 +59,12 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                         title = when (it) {
                             is VerificationPolicy2G -> R.string.verifier_scanner_policy_indication_2g
                             is VerificationPolicy3G -> R.string.verifier_scanner_policy_indication_3g
+                            is VerificationPolicy2GPlus -> R.string.verifier_scanner_policy_indication_2g_plus
                         },
                         indicatorColor = when (it) {
                             is VerificationPolicy2G -> R.color.primary_blue
                             is VerificationPolicy3G -> R.color.secondary_green
+                            is VerificationPolicy2GPlus -> R.color.primary_text
                         }
                     )
                 } else {

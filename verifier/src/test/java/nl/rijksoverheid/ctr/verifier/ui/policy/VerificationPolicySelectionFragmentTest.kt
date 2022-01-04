@@ -175,6 +175,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
                 VerificationPolicyState.None -> null
                 VerificationPolicyState.Policy2G -> R.id.policy2G
                 VerificationPolicyState.Policy3G -> R.id.policy3G
+                VerificationPolicyState.Policy2GPlus -> R.id.policy2G_plus
             }
             coEvery { updateRadioButton(any()) } returns Unit
             coEvery { storeSelection(any()) } returns Unit
