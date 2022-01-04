@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  *
  */
 
-abstract class CommercialTestCodeViewModel : ViewModel() {
+abstract class VerificationCodeViewModel : ViewModel() {
     abstract fun updateViewState()
     abstract fun getTestResult(fromDeeplink: Boolean = false)
     abstract fun sendVerificationCode()
@@ -29,10 +29,10 @@ abstract class CommercialTestCodeViewModel : ViewModel() {
     val viewState: LiveData<ViewState> = MutableLiveData(ViewState())
 }
 
-class CommercialTestCodeViewModelImpl(
+class VerificationCodeViewModelImpl(
     private val savedStateHandle: SavedStateHandle,
     private val testResultUseCase: TestResultUseCase
-) : CommercialTestCodeViewModel() {
+) : VerificationCodeViewModel() {
 
     override var verificationCode: String? = savedStateHandle["verification_code"]
         set(value) {

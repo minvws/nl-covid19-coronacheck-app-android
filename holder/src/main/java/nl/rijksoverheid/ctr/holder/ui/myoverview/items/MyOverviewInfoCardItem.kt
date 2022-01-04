@@ -41,9 +41,6 @@ class MyOverviewInfoCardItem(
         }
 
         when (infoItem) {
-            is DashboardItem.InfoItem.RefreshEuVaccinations -> {
-                viewBinding.text.setText(R.string.dashboard_item_refresh_eu_vaccinations_text)
-            }
             is DashboardItem.InfoItem.ExtendDomesticRecovery -> {
                 viewBinding.text.setText(R.string.extend_domestic_recovery_green_card_info_card_text)
             }
@@ -58,9 +55,6 @@ class MyOverviewInfoCardItem(
             }
             is DashboardItem.InfoItem.RecoveredDomesticRecovery -> {
                 viewBinding.text.setText(R.string.recovered_domestic_recovery_green_card_info_card_text)
-            }
-            is DashboardItem.InfoItem.RefreshedEuVaccinations -> {
-                viewBinding.text.setText(R.string.dashboard_item_refreshed_eu_vaccinations_text)
             }
             is DashboardItem.InfoItem.ClockDeviationItem -> {
                 viewBinding.text.setText(R.string.my_overview_clock_deviation_description)

@@ -31,7 +31,6 @@ abstract class DashboardViewModel : ViewModel() {
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeGreenCard(greenCard: GreenCard)
-    abstract fun dismissRefreshedEuVaccinationsInfoCard()
     abstract fun dismissRecoveredDomesticRecoveryInfoCard()
     abstract fun dismissExtendedDomesticRecoveryInfoCard()
     abstract fun dismissNewValidityInfoCard()
@@ -120,10 +119,6 @@ class DashboardViewModelImpl(
         viewModelScope.launch {
             holderDatabase.greenCardDao().delete(greenCard.greenCardEntity)
         }
-    }
-
-    override fun dismissRefreshedEuVaccinationsInfoCard() {
-        persistenceManager.setHasDismissedSyncedGreenCardsItem(true)
     }
 
     override fun dismissRecoveredDomesticRecoveryInfoCard() {

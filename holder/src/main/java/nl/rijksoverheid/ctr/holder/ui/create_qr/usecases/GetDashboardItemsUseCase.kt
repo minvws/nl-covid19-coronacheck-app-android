@@ -173,16 +173,6 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
         }
 
-        if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allEventGroupEntities, allGreenCards)) {
-            // Enable the ability to show GreenCardsSyncedItem (after successful sync)
-            persistenceManager.setHasDismissedSyncedGreenCardsItem(false)
-            dashboardItems.add(DashboardItem.InfoItem.RefreshEuVaccinations)
-        }
-
-        if (dashboardItemUtil.shouldAddGreenCardsSyncedItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.InfoItem.RefreshedEuVaccinations)
-        }
-
         if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
             dashboardItems.add(
                 DashboardItem.InfoItem.ConfigFreshnessWarning(

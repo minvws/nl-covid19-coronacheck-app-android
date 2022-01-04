@@ -6,12 +6,11 @@
  *
  */
 
-package nl.rijksoverheid.ctr.holder.ui.create_qr.items
+package nl.rijksoverheid.ctr.holder.ui.create_qr.widgets
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import nl.rijksoverheid.ctr.holder.databinding.ItemYourEventBinding

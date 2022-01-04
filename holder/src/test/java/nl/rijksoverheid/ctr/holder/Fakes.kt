@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.VerificationCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
@@ -59,10 +59,6 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
         }
 
         override fun removeGreenCard(greenCard: GreenCard) {
-
-        }
-
-        override fun dismissRefreshedEuVaccinationsInfoCard() {
 
         }
 
@@ -128,8 +124,8 @@ fun fakeIntroductionViewModel(
     }
 }
 
-fun fakeCommercialTestResultViewModel(): CommercialTestCodeViewModel {
-    return object : CommercialTestCodeViewModel() {
+fun fakeCommercialTestResultViewModel(): VerificationCodeViewModel {
+    return object : VerificationCodeViewModel() {
 
         override fun updateViewState() {
 
@@ -265,14 +261,6 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedUnsecureDeviceDialog(value: Boolean) {
-
-        }
-
-        override fun hasDismissedSyncedGreenCardsItem(): Boolean {
-            return hasDismissedUnsecureDeviceDialog
-        }
-
-        override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
 
         }
 
@@ -718,6 +706,16 @@ fun fakeOrigin(
     ),
     doseNumber: Int? = 1
 ) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber)
+
+fun fakeOriginEntity(
+    id: Int = 0,
+    greenCardId: Long = 1L,
+    type: OriginType = OriginType.Vaccination,
+    eventTime: OffsetDateTime = OffsetDateTime.now(),
+    expirationTime: OffsetDateTime = OffsetDateTime.now(),
+    validFrom: OffsetDateTime = OffsetDateTime.now(),
+    doseNumber: Int? = null
+) = OriginEntity(id, greenCardId, type, eventTime, expirationTime, validFrom, doseNumber)
 
 
 

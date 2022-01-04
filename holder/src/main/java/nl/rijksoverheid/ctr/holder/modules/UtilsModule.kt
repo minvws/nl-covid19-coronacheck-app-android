@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtil
 import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
@@ -35,7 +37,7 @@ fun utilsModule(versionCode: Int) = module {
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
     factory<RemoteEventUtil> { RemoteEventUtilImpl(get()) }
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
-    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get(), versionCode) }
+    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
@@ -44,4 +46,6 @@ fun utilsModule(versionCode: Int) = module {
         DomesticVaccinationRecoveryCombinationUtilImpl(get())
     }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
+    factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl() }
+    factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
 }

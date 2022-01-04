@@ -3,16 +3,19 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.ServerTime
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeGreenCard
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtil
+import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -37,6 +40,20 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
                 factory {
                     mockk<FeatureFlagUseCase>().apply {
                         every { isVerificationPolicyEnabled() } answers { true }
+                    }
+                }
+                factory {
+                    mockk<BuildConfigUseCase>().apply {
+                        every { getVersionCode() } answers { 2 }
+                    }
+                }
+                factory {
+                    mockk<CachedAppConfigUseCase>().apply {
+                        every { getCachedAppConfig() } answers {
+                            HolderConfig.default(
+                                holderRecommendedVersion = 1
+                            )
+                        }
                     }
                 }
             }
@@ -432,13 +449,6 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
                         emptyList()
                     )
                 )
-
-                override suspend fun shouldAddSyncGreenCardsItem(
-                    allEventGroupEntities: List<EventGroupEntity>,
-                    allGreenCards: List<GreenCard>
-                ) = false
-
-                override fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>) = false
 
                 override fun shouldShowExtendDomesticRecoveryItem() = false
 

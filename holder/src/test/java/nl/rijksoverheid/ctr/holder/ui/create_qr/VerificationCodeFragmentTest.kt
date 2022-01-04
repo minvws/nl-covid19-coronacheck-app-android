@@ -14,11 +14,8 @@ import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import com.adevinta.android.barista.assertion.BaristaEnabledAssertions
 import com.adevinta.android.barista.assertion.BaristaEnabledAssertions.assertEnabled
-import com.adevinta.android.barista.assertion.BaristaHintAssertions
 import com.adevinta.android.barista.assertion.BaristaHintAssertions.assertHint
-import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeCommercialTestResultViewModel
@@ -31,14 +28,14 @@ import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class CommercialTestCodeFragmentTest : AutoCloseKoinTest() {
+class VerificationCodeFragmentTest : AutoCloseKoinTest() {
 
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {
         it.setViewModelStore(ViewModelStore())
         it.setGraph(R.navigation.holder_nav_graph_main)
-        it.setCurrentDestination(R.id.nav_commercial_test_code)
+        it.setCurrentDestination(R.id.nav_verification_code)
     }
 
     @Test
@@ -63,9 +60,11 @@ class CommercialTestCodeFragmentTest : AutoCloseKoinTest() {
             // Supply navArgs
             bundleOf(
                 "token" to token,
+                "toolbarTitle" to "",
+                "data" to VerificationCodeFragmentData.CommercialTest,
             ), themeResId = R.style.AppTheme
         ) {
-            CommercialTestCodeFragment().also {
+            VerificationCodeFragment().also {
                 it.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
                     if (viewLifecycleOwner != null) {
                         Navigation.setViewNavController(it.requireView(), navController)

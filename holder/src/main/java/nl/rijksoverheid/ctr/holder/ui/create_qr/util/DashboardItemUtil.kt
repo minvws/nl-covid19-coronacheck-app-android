@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 
 interface DashboardItemUtil {
     fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int
@@ -28,11 +29,6 @@ interface DashboardItemUtil {
      * @return Items list with vaccination green card items combined into 1.
      */
     fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem>
-
-    suspend fun shouldAddSyncGreenCardsItem(
-        allEventGroupEntities: List<EventGroupEntity>,
-        allGreenCards: List<GreenCard>): Boolean
-    fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>): Boolean
 
     fun shouldShowExtendDomesticRecoveryItem(): Boolean
     fun shouldShowRecoverDomesticRecoveryItem(): Boolean
@@ -62,7 +58,7 @@ class DashboardItemUtilImpl(
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
     private val featureFlagUseCase: FeatureFlagUseCase,
     private val appConfigUseCase: CachedAppConfigUseCase,
-    private val versionCode: Int
+    private val buildConfigUseCase: BuildConfigUseCase
 ) : DashboardItemUtil {
 
     override fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int {
@@ -96,7 +92,7 @@ class DashboardItemUtilImpl(
         allGreenCards.isEmpty()
 
     override fun isAppUpdateAvailable(): Boolean {
-        return versionCode < appConfigUseCase.getCachedAppConfig().recommendedVersion
+        return buildConfigUseCase.getVersionCode() < appConfigUseCase.getCachedAppConfig().recommendedVersion
     }
 
     override fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {
@@ -119,32 +115,6 @@ class DashboardItemUtilImpl(
                         }.flatten()
                 }
             }.flatten()
-    }
-
-    override suspend fun shouldAddSyncGreenCardsItem(
-        allEventGroupEntities: List<EventGroupEntity>,
-        allGreenCards: List<GreenCard>): Boolean {
-        val amountOfVaccinationEvents = eventGroupEntityUtil.amountOfVaccinationEvents(allEventGroupEntities)
-        return if (amountOfVaccinationEvents in 0..1) {
-            // If we only have a single vaccination event (e.g. hkvi) we'll never get more cards
-            false
-        } else {
-            // there are more than 1 vaccination events. If this
-            // isn't reflected by
-            // our current set of greencards, show the banner to offer
-            // people an upgrade.
-            val euVaccinationGreenCards = allGreenCards.filter { it.greenCardEntity.type is GreenCardType.Eu }.filter { it.origins.any { origin -> origin.type is OriginType.Vaccination } }
-            euVaccinationGreenCards.size == 1
-        }
-    }
-
-    override fun shouldAddGreenCardsSyncedItem(allGreenCards: List<GreenCard>): Boolean {
-        val euVaccinationGreenCards = allGreenCards.filter { it.greenCardEntity.type is GreenCardType.Eu }.filter { it.origins.any { origin -> origin.type is OriginType.Vaccination } }
-
-        // Only show banner if;
-        // - there are more than one european vaccinations
-        // - the banner has not been dismissed
-        return (euVaccinationGreenCards.size > 1 && !persistenceManager.hasDismissedSyncedGreenCardsItem())
     }
 
     override fun shouldShowExtendDomesticRecoveryItem(): Boolean {
