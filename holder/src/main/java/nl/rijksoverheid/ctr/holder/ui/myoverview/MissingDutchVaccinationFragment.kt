@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMissingDutchVaccinationCertificateBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
 
@@ -30,17 +31,17 @@ class MissingDutchVaccinationFragment :
         val binding = FragmentMissingDutchVaccinationCertificateBinding.inflate(inflater)
 
         binding.vaccinationButton.setOnClickListener {
-            navigate(OriginType.Vaccination)
+            navigate(RemoteOriginType.Vaccination)
         }
 
         binding.testButton.setOnClickListener {
-            navigate(OriginType.Recovery, afterIncompleteVaccination = true)
+            navigate(RemoteOriginType.Recovery, afterIncompleteVaccination = true)
         }
 
         return binding.root
     }
 
-    private fun navigate(originType: OriginType, afterIncompleteVaccination: Boolean = false) {
+    private fun navigate(originType: RemoteOriginType, afterIncompleteVaccination: Boolean = false) {
         navigateSafety(
             MissingDutchVaccinationFragmentDirections.actionGetEvents(
                 originType = originType,

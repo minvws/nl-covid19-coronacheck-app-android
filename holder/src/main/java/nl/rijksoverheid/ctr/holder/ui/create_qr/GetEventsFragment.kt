@@ -13,10 +13,7 @@ import nl.rijksoverheid.ctr.holder.launchUrl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -44,11 +41,11 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     override fun getFlow(): Flow {
         return when (args.originType) {
-            OriginType.Recovery -> {
+            RemoteOriginType.Recovery -> {
                 if (args.afterIncompleteVaccination) HolderFlow.Recovery else HolderFlow.PositiveTest
             }
-            OriginType.Test -> HolderFlow.DigidTest
-            OriginType.Vaccination -> HolderFlow.Vaccination
+            RemoteOriginType.Test -> HolderFlow.DigidTest
+            RemoteOriginType.Vaccination -> HolderFlow.Vaccination
         }
     }
 
@@ -59,7 +56,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         setBindings(binding, copy)
         setObservers(binding, copy)
 
-        if (args.originType == OriginType.Recovery && args.afterIncompleteVaccination) {
+        if (args.originType == RemoteOriginType.Recovery && args.afterIncompleteVaccination) {
             binding.root.visibility = View.GONE
             binding.fullscreenLoading.visibility = View.VISIBLE
             loginAgainWithDigiD()
@@ -235,7 +232,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private fun getCopyForOriginType(): GetEventsFragmentCopy {
         when (args.originType) {
-            is OriginType.Test -> {
+            is RemoteOriginType.Test -> {
                 return GetEventsFragmentCopy(
                     title = getString(R.string.holder_negativetest_ggd_title),
                     description = getString(R.string.holder_negativetest_ggd_message),
@@ -244,7 +241,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     hasNoEventsDescription = getString(R.string.no_test_results_description)
                 )
             }
-            is OriginType.Vaccination -> {
+            is RemoteOriginType.Vaccination -> {
                 return GetEventsFragmentCopy(
                     title = getString(R.string.get_vaccination_title),
                     description = getString(R.string.get_vaccination_description),
@@ -253,7 +250,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     hasNoEventsDescription = getString(R.string.no_vaccinations_description)
                 )
             }
-            is OriginType.Recovery -> {
+            is RemoteOriginType.Recovery -> {
                 return GetEventsFragmentCopy(
                     title = getString(
                         if (args.afterIncompleteVaccination) R.string.retrieve_test_result_title else R.string.get_recovery_title
@@ -278,7 +275,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 type = YourEventsFragmentType.RemoteProtocol3Type(
                     remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
                         .toMap(),
-                    originType = args.originType,
+                    originType = args.originType.toOriginType(),
                     eventProviders = eventProviders,
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,

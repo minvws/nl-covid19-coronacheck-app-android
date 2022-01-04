@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import org.koin.android.ext.android.inject
@@ -47,7 +48,7 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
         ) {
             navigateSafety(
                 ChooseProviderFragmentDirections.actionGetEvents(
-                    originType = OriginType.Test,
+                    originType = RemoteOriginType.Test,
                     toolbarTitle = getString(R.string.choose_provider_toolbar)
                 )
             )

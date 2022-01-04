@@ -95,6 +95,7 @@ class MyOverviewInfoCardItem(
             is OriginType.Vaccination -> context.getString(R.string.type_vaccination)
             is OriginType.Recovery -> context.getString(R.string.type_recovery)
             is OriginType.Test -> context.getString(R.string.type_test)
+            is OriginType.VaccinationAssessment -> context.getString(R.string.type_vaccination)
         }
 
         return when (infoItem.greenCardType) {

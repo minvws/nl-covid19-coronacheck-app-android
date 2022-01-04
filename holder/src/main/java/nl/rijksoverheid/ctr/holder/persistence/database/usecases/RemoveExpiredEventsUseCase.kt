@@ -21,7 +21,7 @@ class RemoveExpiredEventsUseCaseImpl(
     override suspend fun execute(events: List<EventGroupEntity>) {
         events.forEach {
             val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfig()
-            val expirationTimeInHours = when(it.type) {
+            val expirationTimeInHours = when (it.type) {
                 is OriginType.Vaccination -> {
                     TimeUnit.DAYS.toHours(cachedAppConfig.vaccinationEventValidityDays.toLong())
                 }
@@ -30,6 +30,9 @@ class RemoveExpiredEventsUseCaseImpl(
                 }
                 is OriginType.Recovery -> {
                     TimeUnit.DAYS.toHours(cachedAppConfig.recoveryEventValidityDays.toLong())
+                }
+                is OriginType.VaccinationAssessment -> {
+                    TimeUnit.DAYS.toHours(cachedAppConfig.vaccinationAssessmentEventValidityDays.toLong())
                 }
             }
 

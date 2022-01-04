@@ -57,7 +57,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
     override fun getFlow(): Flow {
         return when (navArgs.data) {
             VerificationCodeFragmentData.CommercialTest -> HolderFlow.CommercialTest
-            VerificationCodeFragmentData.VisitorPass -> HolderFlow.VisitorPass
+            VerificationCodeFragmentData.VisitorPass -> HolderFlow.VaccinationAssessment
         }
     }
 

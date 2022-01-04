@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCertificateCreatedBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -37,7 +38,7 @@ class CertificateCreatedFragment :
         binding.retrieveTestButton.setOnClickListener {
             navigateSafety(
                 CertificateCreatedFragmentDirections.actionGetEvents(
-                    originType = OriginType.Recovery,
+                    originType = RemoteOriginType.Recovery,
                     afterIncompleteVaccination = true,
                     toolbarTitle = resources.getString(R.string.retrieve_test_result_toolbar_title)
                 )

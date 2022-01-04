@@ -31,7 +31,7 @@ class GetEventsUseCaseImplTest {
 
     private val eventsError = mockk<NetworkRequestResult.Failed.Error>()
     private val jwt = "jwt"
-    private val originType = OriginType.Test
+    private val originType = RemoteOriginType.Test
 
     private val remoteEventProviders = listOf(eventProvider1, eventProvider2)
     val eventProviders = remoteEventProviders.map { EventProvider(it.providerIdentifier, it.name) }
