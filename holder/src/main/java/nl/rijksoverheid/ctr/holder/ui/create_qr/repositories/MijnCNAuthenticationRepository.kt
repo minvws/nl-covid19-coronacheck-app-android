@@ -54,7 +54,7 @@ class MijnCNAuthenticationRepository(
             serviceConfiguration,
             BuildConfig.DIGI_D_CLIENT_ID,
             ResponseTypeValues.CODE,
-            Uri.parse(BuildConfig.MIJNCN_REDIRECT_URI)
+            Uri.parse(BuildConfig.DIGI_D_REDIRECT_URI)
         ).setScope("openid email profile").build()
     }
 
