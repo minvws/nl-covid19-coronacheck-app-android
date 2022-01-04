@@ -145,7 +145,6 @@
   <string name="scan_log_list_entry">Scanned between %1$d and %2$d certificates</string>
   <string name="scan_log_list_highrisk">2G</string>
   <string name="scan_log_list_lowrisk">3G</string>
-  <string name="scan_log_list_2g_plus">2G+</string>
   <string name="scan_log_footer_in_use">App in use since %s</string>
   <string name="scan_log_footer_long_time">App in use for longer than one month</string>
   <string name="scan_log_list_clock_skew_detected">Date or time changed</string>
@@ -175,7 +174,6 @@
   <string name="verifier_home_countdown_subtitle">You have to wait for %d minutes because you changed your scan settings while scanning.</string>
   <string name="verifier_scanner_policy_indication_3g">3G access</string>
   <string name="verifier_scanner_policy_indication_2g">2G access</string>
-  <string name="verifier_scanner_policy_indication_2g_plus">2G+ access</string>
   <string name="verifier_risksetting_menu_scan_settings_unselected_title">Kies een instelling waarin je wilt scannen.</string>
   <string name="verifier_risksetting_menu_scan_settings_selected_title"><![CDATA[Choose your scan setting.<br/><br/><b>Please note:</b> if you change scan settings while scanning, you have to wait for %d minutes before you can scan again.]]></string>
   <string name="verifier_risksetting_confirmation_button">Confirm</string>
@@ -208,7 +206,10 @@
   <string name="verifier_scannextinstruction_header_supplemental">Het gescande bewijs niet voldoende. Zonder een vaccinatie- of herstelbewijs mag je de bezoeker geen toegang geven.</string>
   <string name="verifier_scannextinstruction_button_scan_next_supplemental">Scan aanvullend bewijs</string>
   <string name="verifier_scannextinstruction_button_deny_access_supplemental">Geen aanvullend bewijs</string>
+  <string name="scan_log_list_2g_plus">2G+</string>
   <string name="verifier_result_access_title_2g_plus">2G+ check done</string>
   <string name="verifier_risksetting_2g_plus_subtitle">You can only give access to visitors with a vaccination or recovery certificate and a test certificate.</string>
   <string name="verifier_start_scan_qr_policy_indication_2g_plus">Set to <b>2G+</b> access</string>
+  <string name="verifier_scanner_policy_indication_2g_plus">2G+ access</string>
+  <string name="verifier_risksetting_changeselection_2g_plus">Set to 2G+ access</string>
 </resources>

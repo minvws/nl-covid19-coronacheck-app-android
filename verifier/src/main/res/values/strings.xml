@@ -145,7 +145,6 @@
   <string name="scan_log_list_entry">%1$d tot %2$d bewijzen gescand</string>
   <string name="scan_log_list_highrisk">2G</string>
   <string name="scan_log_list_lowrisk">3G</string>
-  <string name="scan_log_list_2g_plus">2G+</string>
   <string name="scan_log_footer_in_use">App in gebruik sinds %s</string>
   <string name="scan_log_footer_long_time">App langer dan een maand in gebruik</string>
   <string name="scan_log_list_clock_skew_detected">Datum of tijd aangepast</string>
@@ -159,7 +158,7 @@
   <string name="verifier_risksetting_readmore">Welk soort toegang mag ik geven?</string>
   <string name="verifier_risksetting_readmore_url">https://www.rijksoverheid.nl/welketoegang</string>
   <string name="verifier_risksetting_firsttimeuse_title">Kies je scan-instelling</string>
-  <string name="verifier_risksetting_firsttimeuse_header">Stel voor jouw locatie in of je 3G-, 2G- of 2G+ toegang gaat geven. Controleer voordat je gaat scannen welk soort toegang je mag geven.</string>
+  <string name="verifier_risksetting_firsttimeuse_header">Stel voor jouw locatie in of je 2G- of 3G-toegang gaat geven. Controleer voordat je gaat scannen welk soort toegang je mag geven.</string>
   <string name="new_in_app_risksetting_title">2G- of 3G-toegang</string>
   <string name="new_in_app_risksetting_subtitle">Alleen bezoekers met een vaccinatie- of herstelbewijs krijgen 2G-toegang. 3G-toegang krijgen ook bezoekers met een testbewijs. Check van tevoren welk soort toegang jouw locatie mag geven.</string>
   <string name="verification_policy_selection_error_message">Maak een keuze om door te gaan</string>
@@ -175,7 +174,6 @@
   <string name="verifier_home_countdown_subtitle">Je moet %d minuten wachten omdat je tijdens het scannen jouw scan-instelling hebt aangepast.</string>
   <string name="verifier_scanner_policy_indication_3g">3G-toegang</string>
   <string name="verifier_scanner_policy_indication_2g">2G-toegang</string>
-  <string name="verifier_scanner_policy_indication_2g_plus">2G+ toegang</string>
   <string name="verifier_risksetting_menu_scan_settings_unselected_title">Kies een instelling waarin je wilt scannen.</string>
   <string name="verifier_risksetting_menu_scan_settings_selected_title"><![CDATA[Kies je scan-instelling.<br/><br/><b>Let op:</b> als je tijdens het scannen wisselt van scan-instelling moet je %d minuten wachten voordat je weer kunt scannen.]]></string>
   <string name="verifier_risksetting_confirmation_button">Bevestigen</string>
@@ -208,7 +206,10 @@
   <string name="verifier_scannextinstruction_header_supplemental">Het gescande bewijs niet voldoende. Zonder een vaccinatie- of herstelbewijs mag je de bezoeker geen toegang geven.</string>
   <string name="verifier_scannextinstruction_button_scan_next_supplemental">Scan aanvullend bewijs</string>
   <string name="verifier_scannextinstruction_button_deny_access_supplemental">Geen aanvullend bewijs</string>
+  <string name="scan_log_list_2g_plus">2G+</string>
   <string name="verifier_result_access_title_2g_plus">2G+ controle klaar</string>
   <string name="verifier_risksetting_2g_plus_subtitle">Je kunt alleen toegang geven aan bezoekers met een vaccinatie- of herstelbewijs én een testbewijs.</string>
   <string name="verifier_start_scan_qr_policy_indication_2g_plus"><b>2G+</b>toegang ingesteld</string>
+  <string name="verifier_scanner_policy_indication_2g_plus">2G+ toegang</string>
+  <string name="verifier_risksetting_changeselection_2g_plus">2G+ toegang ingesteld</string>
 </resources>
