@@ -42,7 +42,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
     private var _binding: FragmentInputTokenBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: VerificationCodeViewModel by stateViewModel(
+    private val viewModel: InputTokenViewModel by stateViewModel(
         state = emptyState(),
     )
 
@@ -155,7 +155,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
                 is TestResult.VerificationRequired -> {
                     // If we come here a second time, it means the inputted verification code is not valid
                     if (binding.verificationCodeText.text?.isNotEmpty() == true) {
-                        binding.verificationCodeInput.error = getString(navArgs.data.uniqueCodeNotValid)
+                        binding.verificationCodeInput.error = getString(R.string.commercial_test_error_invalid_combination)
                     }
                     binding.verificationCodeInput.requestFocus()
                 }
