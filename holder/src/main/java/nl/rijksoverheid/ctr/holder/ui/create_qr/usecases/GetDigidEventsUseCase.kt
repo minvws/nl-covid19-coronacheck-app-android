@@ -1,14 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventPositiveTest
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
@@ -28,7 +24,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
  * - getting events at event providers
  * - map result to success or error states
  */
-interface GetEventsUseCase {
+interface GetDigidEventsUseCase {
     suspend fun getEvents(
         jwt: String,
         originType: OriginType,
@@ -36,12 +32,12 @@ interface GetEventsUseCase {
     ): EventsResult
 }
 
-class GetEventsUseCaseImpl(
+class GetDigidEventsUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase,
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase
-) : GetEventsUseCase {
+) : GetDigidEventsUseCase {
 
     override suspend fun getEvents(
         jwt: String,

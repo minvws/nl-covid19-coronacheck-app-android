@@ -75,7 +75,7 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
         mijnCnViewModel.mijnCnResultLiveData.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is DigidResult.Success -> {
-                    getEventsViewModel.getEvents(
+                    getEventsViewModel.getDigidEvents(
                         it.jwt,
                         OriginType.Vaccination,
                         mijnCN = true

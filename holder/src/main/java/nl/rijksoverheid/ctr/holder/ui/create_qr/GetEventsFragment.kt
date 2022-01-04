@@ -184,7 +184,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         digidViewModel.digidResultLiveData.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is DigidResult.Success -> {
-                    getEventsViewModel.getEvents(
+                    getEventsViewModel.getDigidEvents(
                         it.jwt,
                         args.originType,
                         args.afterIncompleteVaccination
