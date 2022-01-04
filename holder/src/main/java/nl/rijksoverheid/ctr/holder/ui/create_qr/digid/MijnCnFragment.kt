@@ -10,12 +10,11 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.digid
 
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDigidBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentMijCnBinding
 import nl.rijksoverheid.ctr.holder.launchUrl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
@@ -31,7 +30,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class NoDigiDFragment : DigiDFragment(R.layout.fragment_no_digid) {
+class MijnCnFragment : DigiDFragment(R.layout.fragment_mij_cn) {
 
     private val getEventsViewModel: GetEventsViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
@@ -46,7 +45,7 @@ class NoDigiDFragment : DigiDFragment(R.layout.fragment_no_digid) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentNoDigidBinding.bind(view)
+        val binding = FragmentMijCnBinding.bind(view)
 
         binding.requestDigidButton.bind(
             R.string.no_digid_nodigid_button_title,
@@ -180,7 +179,7 @@ class NoDigiDFragment : DigiDFragment(R.layout.fragment_no_digid) {
         eventProviders: List<EventProvider> = emptyList(),
     ) {
         navigateSafety(
-            NoDigiDFragmentDirections.actionYourEvents(
+            MijnCnFragmentDirections.actionYourEvents(
                 type = YourEventsFragmentType.RemoteProtocol3Type(
                     remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
                         .toMap(),

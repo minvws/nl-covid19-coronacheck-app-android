@@ -365,7 +365,7 @@
 
         <action
             android:id="@+id/action_no_digid"
-            app:destination="@id/nav_nodigid"
+            app:destination="@id/nav_mijn_cn"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -521,10 +521,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_nodigid"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.digid.NoDigiDFragment"
+        android:id="@+id/nav_mijn_cn"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.digid.MijnCnFragment"
         android:label="@string/choose_provider_toolbar"
-        tools:layout="@layout/fragment_no_digid">
+        tools:layout="@layout/fragment_mij_cn">
         <action
             android:id="@+id/action_your_events"
             app:destination="@id/nav_your_events"
