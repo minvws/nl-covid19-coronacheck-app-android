@@ -14,6 +14,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -341,6 +343,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     is OriginType.Recovery -> {
                         binding.description.setHtmlText(R.string.your_positive_test_description)
                     }
+                    is OriginType.VaccinationAssessment -> {
+                        binding.description.setHtmlText(R.string.visitorpass_events_description)
+                    }
                 }
             }
             is YourEventsFragmentType.DCC -> {
@@ -422,6 +427,14 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     }
                     is RemoteEventRecovery -> {
                         presentRecoveryEvent(
+                            binding = binding,
+                            fullName = yourEventsFragmentUtil.getFullName(holder),
+                            birthDate = yourEventsFragmentUtil.getBirthDate(holder),
+                            event = remoteEvent
+                        )
+                    }
+                    is RemoteEventVaccinationAssessment -> {
+                        presentVaccinationAssessmentEvent(
                             binding = binding,
                             fullName = yourEventsFragmentUtil.getFullName(holder),
                             birthDate = yourEventsFragmentUtil.getBirthDate(holder),
@@ -572,6 +585,40 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         binding.eventsGroup.addView(eventWidget)
     }
 
+    private fun presentVaccinationAssessmentEvent(
+        binding: FragmentYourEventsBinding,
+        fullName: String,
+        birthDate: String,
+        event: RemoteEventVaccinationAssessment
+    ) {
+        val assessmentDate = event.vaccinationAssessment.assessmentDate?.toLocalDate()?.formatDayMonth()
+
+        val infoScreen = infoScreenUtil.getForVaccinationAssessment(
+            event = event,
+            fullName = fullName,
+            birthDate = birthDate
+        )
+
+        val eventWidget = YourEventWidget(requireContext()).apply {
+            setContent(
+                title = getString(R.string.visitorpass_event_name),
+                subtitle = getString(R.string.visitorpass_event_subtitle,
+                    assessmentDate,
+                    fullName,
+                    birthDate),
+                infoClickListener = {
+                    navigateSafety(
+                        YourEventsFragmentDirections.actionShowExplanation(
+                            toolbarTitle = infoScreen.title,
+                            data = arrayOf(infoScreen)
+                        )
+                    )
+                }
+            )
+        }
+        binding.eventsGroup.addView(eventWidget)
+    }
+
     private fun presentPositiveTestEvent(
         binding: FragmentYourEventsBinding,
         fullName: String,
@@ -663,8 +710,21 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     childFragmentManager, InfoFragmentData.TitleDescription(
                         title = getString(R.string.dialog_negative_test_result_something_wrong_title),
                         descriptionData = DescriptionData(
-                            htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {
-                                R.string.dialog_vaccination_something_wrong_description
+                            htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type) {
+                                when (type.originType) {
+                                    is OriginType.Vaccination -> {
+                                        R.string.dialog_vaccination_something_wrong_description
+                                    }
+                                    is OriginType.VaccinationAssessment -> {
+                                        R.string.visitorpass_event_something_wrong_description
+                                    }
+                                    is OriginType.Test -> {
+                                        R.string.dialog_negative_test_result_something_wrong_description
+                                    }
+                                    is OriginType.Recovery -> {
+                                        R.string.dialog_negative_test_result_something_wrong_description
+                                    }
+                                }
                             } else {
                                 R.string.dialog_negative_test_result_something_wrong_description
                             },

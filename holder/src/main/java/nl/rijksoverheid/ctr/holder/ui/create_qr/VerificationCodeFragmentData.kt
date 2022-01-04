@@ -26,6 +26,7 @@ sealed class VerificationCodeFragmentData(
     @StringRes val noResultScreenToolbarTitle: Int,
     @StringRes val noResultScreenTitle: Int,
     @StringRes val noResultScreenDescription: Int,
+    @StringRes val yourEventsToolbarTitle: Int,
     @StringRes val buttonText: Int,
 ): Parcelable {
     @Parcelize
@@ -42,6 +43,7 @@ sealed class VerificationCodeFragmentData(
         noResultScreenToolbarTitle = R.string.commercial_test_type_title,
         noResultScreenTitle = R.string.no_negative_test_result_title,
         noResultScreenDescription = R.string.no_negative_test_result_description,
+        yourEventsToolbarTitle = R.string.your_negative_test_results_toolbar,
         buttonText = R.string.commercial_test_button,
     )
 
@@ -56,9 +58,10 @@ sealed class VerificationCodeFragmentData(
         noCodeText = R.string.visitorpass_token_button_notoken,
         noCodeDialogTitle = R.string.visitorpass_token_modal_notoken_title,
         noCodeDialogDescription = R.string.visitorpass_token_modal_notoken_details,
-        noResultScreenToolbarTitle = R.string.holder_event_vaccination_assessment_nolist_toolbar_title,
+        noResultScreenToolbarTitle = R.string.holder_event_vaccination_assessment_toolbar_title,
         noResultScreenTitle = R.string.holder_event_vaccination_assessment_nolist_title,
         noResultScreenDescription = R.string.holder_event_vaccination_assessment_nolist_message,
+        yourEventsToolbarTitle = R.string.holder_event_vaccination_assessment_toolbar_title,
         buttonText = R.string.onboarding_next,
     )
 }

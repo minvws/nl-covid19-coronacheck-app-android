@@ -65,6 +65,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
         binding.description.text = getString(data.description)
         binding.uniqueCodeInput.hint = getString(data.uniqueCodeInputHint)
         binding.noTokenReceivedBtn.text = getString(data.noCodeText)
+        binding.bottom.setButtonText(getString(data.buttonText))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -230,10 +231,10 @@ import org.koin.androidx.viewmodel.scope.emptyState
                     VerificationCodeFragmentDirections.actionYourEvents(
                         type = YourEventsFragmentType.RemoteProtocol3Type(
                             mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse),
-                            originType = OriginType.Test,
+                            originType = if (navArgs.data is VerificationCodeFragmentData.CommercialTest) OriginType.Test else OriginType.VaccinationAssessment,
                             fromCommercialTestCode = true
                         ),
-                        toolbarTitle = getString(R.string.your_negative_test_results_toolbar),
+                        toolbarTitle = getString(navArgs.data.yourEventsToolbarTitle),
                     )
                 )
             }

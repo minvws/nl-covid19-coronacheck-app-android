@@ -614,16 +614,19 @@
   <string name="vaccination_events_toolbar_title">Vaccinatie beoordeling</string>
   <string name="visitorpass_events_description">Kloppen de gegevens? Als de gegevens kloppen kun je je vaccinatie boordeling toevoegen aan de app.</string>
   <string name="visitorpass_event_name">Vaccinatie beoordeling</string>
-  <string name="visitorpass_event_subtitle"><![CDATA[De volgende gegevens zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Beoordelingsdatum: <b>%3$s</b><br/><br/>Uniek certificaatnummer: <b>%4$s</b>]]></string>
+  <string name="visitorpass_event_subtitle"><![CDATA[Beoordelingsdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
   <string name="visitorpass_event_something_wrong_description">Neem contact op met de locatie waar je vaccinatiegegevens zijn beoordeeld. Zij kunnen je helpen je gegevens aan te passen.</string>
   <string name="holder_event_vaccination_assessment_about_unique_identifier">Uniek beoordelingscode:</string>
-  <string name="holder_event_vaccination_assessment_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je gegevens ophalen.</string>
+  <string name="holder_vaccination_assessment_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je gegevens ophalen.</string>
   <string name="holder_event_vaccination_assessment_nolist_title">Geen vaccinatie review beschikbaar</string>
   <string name="holder_event_vaccination_assessment_nolist_message">Er zijn geen gegevens over je vaccinatie review beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a></string>
   <string name="visitorpass_start_toolbar_title">Bezoekersbewijs</string>
   <string name="general_visitor_pass">bezoekersbewijs</string>
   <string name="visitorpass_code_error_invalid_code">Deze reviewcode is verlopen</string>
-  <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt van het VWS loket een beoordelingscode met cijfers en letters.<br/><br/>Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met het loket.]]></string>
-  <string name="holder_event_vaccination_assessment_nolist_toolbar_title">Vaccinatie beoordeling</string>
+  <string name="holder_event_vaccination_assessment_toolbar_title">Vaccinatie beoordeling</string>
   <string name="visitorpass_deeplink_text">Vul jouw reviewcode in om je vaccinatie beoordeling op te halen.</string>
+  <string name="your_vaccination_assessment_explanation_assessment_date">Beoordelingsdatum:</string>
+  <string name="your_vaccination_assessment_explanation_assessment_header">De volgende gegevens zijn opgehaald:</string>
+  <string name="rule_engine_no_test_origin_description_vaccination_assessment">vaccinatie beoordeling</string>
+  <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt van het VWS loket een beoordelingscode met cijfers en letters.<br/><br/>Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met het loket.]]></string>
 </resources>
