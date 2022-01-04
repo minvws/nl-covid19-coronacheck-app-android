@@ -12,6 +12,7 @@ import mobilecore.Mobilecore
 sealed class VerificationPolicy(val libraryValue: String) {
     object VerificationPolicy2G : VerificationPolicy(Mobilecore.VERIFICATION_POLICY_2G)
     object VerificationPolicy3G : VerificationPolicy(Mobilecore.VERIFICATION_POLICY_3G)
+    // TODO replace "4" with library static value when ready
     object VerificationPolicy2GPlus : VerificationPolicy("4")
 
     companion object {
