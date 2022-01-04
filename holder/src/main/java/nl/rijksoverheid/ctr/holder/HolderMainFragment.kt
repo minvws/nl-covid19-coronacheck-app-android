@@ -151,7 +151,7 @@ class HolderMainFragment : BaseMainFragment(
         })
 
         // Show visitor pass menu item if feature is enabled
-        if (true) {
+        if (holderCachedAppConfigUseCase.getCachedAppConfig().visitorPassEnabled) {
             binding.navView.menu.findItem(R.id.nav_visitor_pass).isVisible = true
         }
     }
