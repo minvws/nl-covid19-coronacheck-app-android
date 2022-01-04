@@ -10,18 +10,24 @@ import kotlinx.parcelize.Parcelize
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
+/**
+ * Types of origins that can be returned by the backend or the database
+ */
 sealed class OriginType(val order: Int) : Parcelable {
 
     companion object {
         const val TYPE_VACCINATION = "vaccination"
         const val TYPE_RECOVERY = "recovery"
         const val TYPE_TEST = "test"
+        const val TYPE_VACCINATION_ASSESSMENT = "vaccinationassessment"
 
         fun fromTypeString(typeString: String): OriginType {
             return when (typeString) {
                 TYPE_VACCINATION -> Vaccination
                 TYPE_RECOVERY -> Recovery
                 TYPE_TEST -> Test
+                TYPE_VACCINATION_ASSESSMENT -> VaccinationAssessment
                 else -> throw IllegalStateException("Type not known")
             }
         }
@@ -36,11 +42,15 @@ sealed class OriginType(val order: Int) : Parcelable {
     @Parcelize
     object Test : OriginType(3), Parcelable
 
+    @Parcelize
+    object VaccinationAssessment : OriginType(4), Parcelable
+
     fun getTypeString(): String {
         return when (this) {
             is Vaccination -> TYPE_VACCINATION
             is Recovery -> TYPE_RECOVERY
             is Test -> TYPE_TEST
+            is VaccinationAssessment -> TYPE_VACCINATION_ASSESSMENT
         }
     }
 }

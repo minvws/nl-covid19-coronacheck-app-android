@@ -113,6 +113,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     is OriginType.Vaccination -> {
                         HolderFlow.Vaccination
                     }
+                    is OriginType.VaccinationAssessment -> {
+                        HolderFlow.VaccinationAssessment
+                    }
                 }
             }
         }

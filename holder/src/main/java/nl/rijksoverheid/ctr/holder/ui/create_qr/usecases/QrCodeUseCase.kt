@@ -27,7 +27,7 @@ class QrCodeUseCaseImpl(
     private val qrCodeUtil: QrCodeUtil,
     private val mobileCoreWrapper: MobileCoreWrapper,
     clock: Clock,
-    clockDeviationUseCase: ClockDeviationUseCase
+    private val clockDeviationUseCase: ClockDeviationUseCase
 ) : QrCodeUseCase {
 
     private val adjustedCurrentMillis: Long = clock.millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis()

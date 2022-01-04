@@ -224,6 +224,11 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                                                 qrCodeData.readEuropeanCredential
                                             )
                                         }
+                                        is OriginType.VaccinationAssessment -> {
+                                            infoScreenUtil.getForEuropeanVaccinationQr(
+                                                qrCodeData.readEuropeanCredential
+                                            )
+                                        }
                                     }
                                 }
                             }

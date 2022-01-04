@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeTypeBinding
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import org.koin.android.ext.android.inject
 
 /*
@@ -46,7 +47,7 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
         ) {
             findNavController().navigate(
                 QrCodeTypeFragmentDirections.actionGetEvents(
-                    originType = OriginType.Recovery,
+                    originType = RemoteOriginType.Recovery,
                     toolbarTitle = resources.getString(R.string.choose_provider_toolbar)
                 )
             )
@@ -58,7 +59,7 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
         ) {
             findNavController().navigate(
                 QrCodeTypeFragmentDirections.actionGetEvents(
-                    originType = OriginType.Vaccination,
+                    originType = RemoteOriginType.Vaccination,
                     toolbarTitle = resources.getString(R.string.choose_provider_toolbar)
                 )
             )
