@@ -49,7 +49,7 @@ sealed class InputTokenFragmentData(
         description = R.string.visitorpass_token_text,
         descriptionDeeplink = R.string.visitorpass_deeplink_text,
         uniqueCodeInputHint = R.string.visitorpass_token_input_title,
-        uniqueCodeInputHintScreenReader = R.string.visitorpass_code_review_placeholder,
+        uniqueCodeInputHintScreenReader = R.string.visitorpass_code_review_placeholder_screenreader,
         noUniqueCodeEntered = R.string.visitorpass_token_error_empty_token,
         noCodeText = R.string.visitorpass_token_button_notoken,
         noCodeDialogTitle = R.string.visitorpass_token_modal_notoken_title,
