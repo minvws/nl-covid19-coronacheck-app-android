@@ -66,7 +66,7 @@ class GetMijnCnEventsUsecaseImpl(
 
         return if (eventProviders.isNotEmpty()) {
             // We have received providers that claim to have events for us so we get those events for each provider
-            val filter = EventProviderRepository.getFilter(originType, withIncompleteVaccination)
+            val filter = EventProviderRepository.getFilter(originType)
 
                 val eventResults = eventProviders.map { eventProvider ->
                 getRemoteEventsUseCase.getRemoteEvents(
