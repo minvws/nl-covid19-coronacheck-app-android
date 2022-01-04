@@ -64,12 +64,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
     private fun setCopies(data: VerificationCodeFragmentData) {
         binding.description.text = getString(data.description)
         binding.uniqueCodeInput.hint = getString(data.uniqueCodeInputHint)
-        binding.verificationCodeInput.hint = getString(data.verificationCodeInputHint)
-        binding.verificationCodeInput.helperText = getString(data.verificationCodeInputHelperText)
-        binding.verificationCodeInput.isHelperTextEnabled = true
-        if (data.verificationCodeTextHint > View.NO_ID) {
-            binding.verificationCodeText.hint = getString(data.verificationCodeTextHint)
-        }
+        binding.noTokenReceivedBtn.text = getString(data.noCodeText)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,12 +103,12 @@ import org.koin.androidx.viewmodel.scope.emptyState
             if (it.fromDeeplink && it.verificationRequired) {
                 binding.uniqueCodeInput.isVisible = false
                 binding.noTokenReceivedBtn.isVisible = false
-                binding.description.setText(R.string.commercial_test_verification_code_description_deeplink)
+                binding.description.setText(navArgs.data.descriptionDeeplink)
             }
 
             binding.uniqueCodeText.setHint(
                 if (Accessibility.screenReader(context)) {
-                    R.string.commercial_test_unique_code_hint_screenreader
+                    navArgs.data.uniqueCodeInputHintScreenReader
                 } else {
                     R.string.commercial_test_unique_code_hint
                 }
@@ -131,16 +126,16 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
         viewModel.testResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is TestResult.EmptyToken -> showTokenError(R.string.commercial_test_error_empty_retrieval_code)
+                is TestResult.EmptyToken -> showTokenError(navArgs.data.noUniqueCodeEntered)
                 is TestResult.InvalidToken -> showTokenError(R.string.commercial_test_error_invalid_code)
                 is TestResult.UnknownTestProvider -> showTokenError(R.string.commercial_test_error_unknown_test_provider)
                 is TestResult.NegativeTestResult -> showNegativeTestResult(it)
                 is TestResult.NoNegativeTestResult -> {
                     findNavController().navigate(
                         VerificationCodeFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = getString(R.string.commercial_test_type_title),
-                            title = getString(R.string.no_negative_test_result_title),
-                            description = getString(R.string.no_negative_test_result_description),
+                            toolbarTitle = getString(navArgs.data.noResultScreenToolbarTitle),
+                            title = getString(navArgs.data.noResultScreenTitle),
+                            description = getString(navArgs.data.noResultScreenDescription),
                             buttonTitle = getString(R.string.back_to_overview)
                         )
                     )
@@ -158,14 +153,12 @@ import org.koin.androidx.viewmodel.scope.emptyState
                 is TestResult.VerificationRequired -> {
                     // If we come here a second time, it means the inputted verification code is not valid
                     if (binding.verificationCodeText.text?.isNotEmpty() == true) {
-                        binding.verificationCodeInput.error =
-                            getString(R.string.commercial_test_error_invalid_combination)
+                        binding.verificationCodeInput.error = getString(navArgs.data.uniqueCodeNotValid)
                     }
                     binding.verificationCodeInput.requestFocus()
                 }
                 is TestResult.EmptyVerificationCode -> {
-                    binding.verificationCodeInput.error =
-                        getString(R.string.commercial_test_error_empty_verification_code)
+                    binding.verificationCodeInput.error = getString(R.string.commercial_test_error_empty_verification_code)
                 }
                 is TestResult.Error -> {
                     presentError(
@@ -213,8 +206,8 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
         binding.noTokenReceivedBtn.setOnClickListener {
             infoFragmentUtil.presentAsBottomSheet(childFragmentManager, InfoFragmentData.TitleDescription(
-                title = getString(R.string.commercial_test_type_no_code_title),
-                descriptionData = DescriptionData(R.string.commercial_test_type_no_code_description),
+                title = getString(navArgs.data.noCodeDialogTitle),
+                descriptionData = DescriptionData(navArgs.data.noCodeDialogDescription),
             ))
         }
     }

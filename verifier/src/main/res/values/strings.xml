@@ -156,7 +156,7 @@
   <string name="verifier_risksetting_highrisk_title">2G-toegang</string>
   <string name="verifier_risksetting_highrisk_subtitle">Je kunt alleen toegang geven aan bezoekers met een vaccinatie- of herstelbewijs.</string>
   <string name="verifier_risksetting_readmore">Welk soort toegang mag ik geven?</string>
-  <string name="verifier_risksetting_readmore_url">https://coronacheck.nl/nl/faq-scanner-in-app</string>
+  <string name="verifier_risksetting_readmore_url">https://www.rijksoverheid.nl/welketoegang</string>
   <string name="verifier_risksetting_firsttimeuse_title">Kies je scan-instelling</string>
   <string name="verifier_risksetting_firsttimeuse_header">Stel voor jouw locatie in of je 2G- of 3G-toegang gaat geven. Controleer voordat je gaat scannen welk soort toegang je mag geven.</string>
   <string name="new_in_app_risksetting_title">2G- of 3G-toegang</string>
@@ -197,4 +197,18 @@
   <string name="scan_instructions_4_description_2G">Zie je een vinkje op je scherm? Dan is de QR-code geldig en kloppen de gegevens met het identiteitsbewijs. Je mag de bezoeker toegang geven.</string>
   <string name="scan_result_invalid_reason_description_2G"><![CDATA[Een rood scherm met kruis betekent dat de QR-code niet aan Nederlandse eisen voldoet, of niet geldig is op plekken met 2G-toegang.<br/><br/><b>Dit kun je doen:</b><br/><ol><li>Controleer of de tijd goed staat ingesteld op de telefoon van de bezoeker en die van jou. Zorg dat de datum en tijd op ‘automatisch instellen’ staan. </li><li>Controleer of de bezoeker een origineel bewijs laat zien. Een screenshot van een bewijs kan voor problemen zorgen.</li><li>Vraag de bezoeker om de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li></ol><br/><b>Blijft het scherm rood?</b><br/>Vraag de bezoeker contact op te nemen met de helpdesk van CoronaCheck.<br/><br/><b>Let op:</b> zonder scherm met vinkje mag de bezoeker niet toegelaten worden.]]></string>
   <string name="verifier_risksetting_changeselection_title">Scan-instelling aanpassen</string>
+  <string name="verifier_scannextinstruction_subtitle">Bewijs 1 uit 2 gescand</string>
+  <string name="verifier_scannextinstruction_title_test">Scan nu het testbewijs</string>
+  <string name="verifier_scannextinstruction_header_test">Het gescande bewijs niet voldoende. Zonder testbewijs mag je de bezoeker geen toegang geven.</string>
+  <string name="verifier_scannextinstruction_button_scan_next_test">Scan testbewijs</string>
+  <string name="verifier_scannextinstruction_button_deny_access_test">Geen testbewijs</string>
+  <string name="verifier_scannextinstruction_title_supplemental">Scan nu een vaccinatie- of herstelbewijs</string>
+  <string name="verifier_scannextinstruction_header_supplemental">Het gescande bewijs niet voldoende. Zonder een vaccinatie- of herstelbewijs mag je de bezoeker geen toegang geven.</string>
+  <string name="verifier_scannextinstruction_button_scan_next_supplemental">Scan aanvullend bewijs</string>
+  <string name="verifier_scannextinstruction_button_deny_access_supplemental">Geen aanvullend bewijs</string>
+  <string name="scan_log_list_2g_plus">2G+</string>
+  <string name="verifier_result_access_title_2g_plus">2G+ controle klaar</string>
+  <string name="verifier_risksetting_2g_plus_subtitle">Je kunt alleen toegang geven aan bezoekers met een vaccinatie- of herstelbewijs én een testbewijs.</string>
+  <string name="verifier_start_scan_qr_policy_indication_2g_plus"><b>2G+</b>toegang ingesteld</string>
+  <string name="verifier_scanner_policy_indication_2g_plus">2G+ toegang</string>
 </resources>

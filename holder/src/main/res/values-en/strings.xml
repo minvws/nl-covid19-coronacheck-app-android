@@ -73,7 +73,7 @@
   <string name="commercial_test_type_qr_code_title">I have a QR code</string>
   <string name="commercial_test_type_no_code_title">Don\'t have a retrieval code?</string>
   <string name="commercial_test_type_no_code_received_title">Didn’t receive a verification code?</string>
-  <string name="commercial_test_type_no_code_description"><![CDATA[The test location gives you a retrieval code with numbers and letters.<br/><br/>Didn\'t get a code? Or did you lose it? Contact the test location.<br/><br/>You may need to get tested again.]]></string>
+  <string name="commercial_test_type_no_code_description"><![CDATA[The test location gives you a retrieval code with numbers and letters.<br/><br/>Didn\'t get a code? Or did you lose it? Contact the test location.]]></string>
   <string name="commercial_test_code_title">Retrieve test result</string>
   <string name="commercial_test_code_description">Enter your retrieval code. You received it from your test location.</string>
   <string name="commercial_test_unique_code_header">Retrieval code</string>
@@ -570,7 +570,8 @@
   <string name="holder_my_overview_3g_test_validity_bottom_sheet_body"><![CDATA[A Dutch test certificate is only valid in places with 3G access. This means that you cannot use your test certificate to get access to places with 2G access.<br><br><b>What is the difference between 3G and 2G?</b><br>The Gs determine which people can be given access: only those who were vaccinated and/or have recovered (2G), or people who tested negative as well (3G).<br><br>•	3G access means you can enter places with a test, vaccination or recovery certificate.<br>•	2G access means you cannot enter places with a test certificate. You\'ll need a vaccination or recovery certificate.<br><br><a href=\"https://www.government.nl/2g\">You can read more about 3G and 2G here</a>.]]></string>
   <string name="holder_my_overview_test_result_validity_3g">valid until %1$s for 3G access</string>
   <string name="no_digid_page_title">Ik heb geen DigiD</string>
-  <string name="no_digid_page_description"><![CDATA[Wanneer je in Nederland woont kan je een DigiD aanvragen.<br\><br\>Woon je in Caribisch Nederland? Dan kan je inloggen met MijnCN.]]></string>
+  <string name="no_digid_page_description"><![CDATA[Wanneer je in Nederland woont kan je een DigiD aanvragen.<br\><br\>Woon je in Caribisch Nederland? Dan kan je inloggen met MijnCN.]]>
+</string>
   <string name="no_digid_nodigid_button_title">Ik ben in Nederland ingeschreven</string>
   <string name="no_digid_nodigid_button_description">DigiD aanvragen</string>
   <string name="no_digid_mijncn_button_title">Ik ben in Caribisch Nederland ingeschreven</string>
@@ -584,17 +585,45 @@
   <string name="recommended_update_card_description">You can update your app to a newer version now</string>
   <string name="recommended_update_card_action">Update now</string>
   <string name="holder_menu_visitorpass">Bezoekersbewijs maken</string>
-  <string name="visitorpass_start_toolbar_title">Bezoekersbewijs</string>
   <string name="visitorpass_start_title">Een bezoekersbewijs maken</string>
   <string name="visitorpass_start_action">Gegevens ophalen</string>
   <string name="holder_dashboard_newvaliditybanner_title">The validity of coronavirus passes will be adjusted</string>
   <string name="holder_dashboard_newvaliditybanner_action">Read more on Government.nl</string>
   <string name="holder_dashboard_newvaliditybanner_url">https://www.government.nl/covid-certificate</string>
-  <string name="visitorpass_start_description"><![CDATA[Ben jij buiten de Europese Unie gevaccineerd en op bezoek in Nederland? Dan kan je een bezoekersbewijs maken waarmee je plekken in Nederland kan bezoeken die een coronatoegangsbewijs vragen.<br /><br />Kijk voor meer informatie op <a href="https://www.Rijksoverheid.nl/bezoekersbewijs">www.Rijksoverheid.nl/bezoekersbewijs.</a>]]></string>
-  <string name="visitorpass_code_title">Vaccinatie beoordeling toevoegen</string>
-  <string name="visitorpass_code_description">Vul jouw kortverblijfcode in. Deze heb je van het VWS loket gekregen.</string>
-  <string name="visitorpass_code_input">Bezoekerscode</string>
-  <string name="visitorpass_code_verification_input">Verificatiecode</string>
-  <string name="visitorpass_code_verification_input_explanation">Je krijgt een code via sms of e-mail</string>
-  <string name="visitorpass_code_verification_not_received_button">Geen verificatiecode gekregen?</string>
+  <string name="visitorpass_start_description"><![CDATA[Ben jij buiten de Europese Unie gevaccineerd en op bezoek in Nederland? Dan kan je een bezoekersbewijs maken. Met het bezoekersbewijs kun je toegang krijgen tot plekken en activiteiten in Nederland die vragen om een coronatoegangsbewijs.<br /><br />Kijk voor meer informatie op <a href=\"https://www.Rijksoverheid.nl/bezoekersbewijs\">www.Rijksoverheid.nl/bezoekersbewijs.</a>]]></string>
+  <string name="visitorpass_code_input">Verification code</string>
+  <string name="visitorpass_code_verification_not_received_button">No verification code received?</string>
+  <string name="visitorpass_code_verification_placeholder">E.g. 123456</string>
+  <string name="visitorpass_token_title">Vaccinatie beoordeling toevoegen</string>
+  <string name="visitorpass_token_text">Vul jouw beoordelingscode in. Deze heb je van het XXX loket gekregen toen jouw vaccinatie werd beoordeeld.</string>
+  <string name="visitorpass_token_next">Next</string>
+  <string name="visitorpass_token_input_title">Beoordelingscode</string>
+  <string name="visitorpass_token_input_placeholder">E.g. KVT-3839287262-F1</string>
+  <string name="visitorpass_token_input_placeholder_screenreader">Vul hier je beoordelingscode in</string>
+  <string name="visitorpass_token_error_empty_code">Please fill out a verification code first</string>
+  <string name="visitorpass_token_error_empty_token">Graag eerst een beoordelingscode invullen</string>
+  <string name="visitorpass_token_error_invalid_code">Geen geldige beoordelingscode</string>
+  <string name="visitorpass_token_error_unknown_provider">This test location is not known to us. Please contact the location who tested you.</string>
+  <string name="visitorpass_token_error_invalid_combination">No valid combination</string>
+  <string name="visitorpass_token_button_notoken">Heb je geen beoordelingscode?</string>
+  <string name="visitorpass_token_modal_notoken_title">Heb je geen beoordelingscode?</string>
+  <string name="visitorpass_code_confirmresendverificationalert_cancelbutton">Close</string>
+  <string name="visitorpass_code_confirmresendverificationalert_message">You receive the verification code via text or email. Didn\'t get one? Click ‘send again’ below for a new code.</string>
+  <string name="visitorpass_code_confirmresendverificationalert_okbutton">Send again</string>
+  <string name="visitorpass_code_confirmresendverificationalert_title">Didn’t receive a verification code?</string>
+  <string name="vaccination_events_toolbar_title">Vaccinatie beoordeling</string>
+  <string name="visitorpass_events_description">Kloppen de gegevens? Als de gegevens kloppen kun je je vaccinatie boordeling toevoegen aan de app.</string>
+  <string name="visitorpass_event_name">Vaccinatie beoordeling</string>
+  <string name="visitorpass_event_subtitle"><![CDATA[De volgende gegevens zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Beoordelingsdatum: <b>%3$s</b><br/><br/>Uniek certificaatnummer: <b>%4$s</b>]]></string>
+  <string name="visitorpass_event_something_wrong_description">Neem contact op met de locatie waar je vaccinatiegegevens zijn beoordeeld. Zij kunnen je helpen je gegevens aan te passen.</string>
+  <string name="holder_event_vaccination_assessment_about_unique_identifier">Uniek beoordelingscode:</string>
+  <string name="holder_event_vaccination_assessment_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
+  <string name="holder_event_vaccination_assessment_nolist_title">Geen vaccinatie review beschikbaar</string>
+  <string name="holder_event_vaccination_assessment_nolist_message">Er zijn geen gegevens over je vaccinatie review beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a></string>
+  <string name="visitorpass_start_toolbar_title">Bezoekersbewijs</string>
+  <string name="general_visitor_pass">bezoekersbewijs</string>
+  <string name="visitorpass_code_error_invalid_code">Deze reviewcode is verlopen</string>
+  <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt van het VWS loket een beoordelingscode met cijfers en letters.<br/><br/>Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met het loket.]]></string>
+  <string name="holder_event_vaccination_assessment_nolist_toolbar_title">Vaccinatie beoordeling</string>
+  <string name="visitorpass_deeplink_text">Vul jouw reviewcode in om je vaccinatie beoordeling op te halen.</string>
 </resources>
