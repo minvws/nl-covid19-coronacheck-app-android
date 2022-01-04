@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentMijCnBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentMijnCnBinding
 import nl.rijksoverheid.ctr.holder.launchUrl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
@@ -30,7 +30,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class MijnCnFragment : DigiDFragment(R.layout.fragment_mij_cn) {
+class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
 
     private val getEventsViewModel: GetEventsViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
@@ -45,7 +45,7 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mij_cn) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentMijCnBinding.bind(view)
+        val binding = FragmentMijnCnBinding.bind(view)
 
         binding.requestDigidButton.bind(
             R.string.no_digid_nodigid_button_title,
