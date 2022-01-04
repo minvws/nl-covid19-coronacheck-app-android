@@ -46,7 +46,7 @@ class YourEventsFragmentUtilImpl: YourEventsFragmentUtil {
                         R.string.rule_engine_no_test_origin_description_vaccination
                     }
                     is OriginType.VaccinationAssessment -> {
-                        R.string.rule_engine_no_test_origin_description_vaccination
+                        R.string.rule_engine_no_test_origin_description_vaccination_assessment
                     }
                 }
             }
@@ -69,7 +69,7 @@ class YourEventsFragmentUtilImpl: YourEventsFragmentUtil {
                     is OriginType.Test -> R.string.holder_test_alert_message
                     is OriginType.Recovery -> R.string.holder_recovery_alert_message
                     is OriginType.Vaccination -> R.string.holder_vaccination_alert_message
-                    is OriginType.VaccinationAssessment -> R.string.holder_vaccination_alert_message
+                    is OriginType.VaccinationAssessment -> R.string.holder_vaccination_assessment_alert_message
                 }
             }
         }

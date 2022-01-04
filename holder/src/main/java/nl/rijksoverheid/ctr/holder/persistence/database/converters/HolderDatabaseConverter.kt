@@ -49,6 +49,7 @@ class HolderDatabaseConverter {
             OriginType.TYPE_RECOVERY -> OriginType.Recovery
             OriginType.TYPE_TEST -> OriginType.Test
             OriginType.TYPE_VACCINATION -> OriginType.Vaccination
+            OriginType.TYPE_VACCINATION_ASSESSMENT -> OriginType.VaccinationAssessment
             else -> null
         }
     }
@@ -59,6 +60,7 @@ class HolderDatabaseConverter {
             OriginType.Recovery -> OriginType.TYPE_RECOVERY
             OriginType.Test -> OriginType.TYPE_TEST
             OriginType.Vaccination -> OriginType.TYPE_VACCINATION
+            OriginType.VaccinationAssessment -> OriginType.TYPE_VACCINATION_ASSESSMENT
             else -> null
         }
     }

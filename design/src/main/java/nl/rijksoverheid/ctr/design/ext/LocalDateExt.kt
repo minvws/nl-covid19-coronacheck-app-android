@@ -21,14 +21,6 @@ fun LocalDate.formatDayMonthYear(): String =
         )
     ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
 
-fun LocalDate.formatDayMonthTime(): String =
-    DateTimeFormatter.ofPattern(
-        DateFormat.getBestDateTimePattern(
-            Locale.getDefault(),
-            "d MMMM HH:mm"
-        )
-    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
-
 fun LocalDate.formatDayShortMonthYear(): String =
     DateTimeFormatter.ofPattern(
         DateFormat.getBestDateTimePattern(
@@ -42,6 +34,14 @@ fun LocalDate.formatDayMonthYearNumerical(): String =
         DateFormat.getBestDateTimePattern(
             Locale("nl"),
             "dd-MM-yyyy"
+        )
+    ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
+
+fun LocalDate.formatDayMonth(): String =
+    DateTimeFormatter.ofPattern(
+        DateFormat.getBestDateTimePattern(
+            Locale("nl"),
+            "EEEE d MMMM"
         )
     ).withLocale(Locale.getDefault()).withZone(ZoneId.of("CET")).format(this)
 
