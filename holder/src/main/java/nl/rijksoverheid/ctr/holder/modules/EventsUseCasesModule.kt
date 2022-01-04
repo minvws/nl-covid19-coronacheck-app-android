@@ -30,7 +30,6 @@ val eventsUseCasesModule = module {
             get(),
             get(),
             get(),
-            get(),
             get()
         )
     }

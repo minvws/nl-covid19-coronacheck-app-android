@@ -30,12 +30,10 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodesFragmentUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 import java.util.concurrent.TimeUnit
 
 /*
@@ -102,7 +100,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
         qrCodeViewModel.qrCodeDataListLiveData.observe(viewLifecycleOwner, ::bindQrCodeDataList)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
-        clockDeviationUseCase.serverTimeSyncedLiveData.observe(viewLifecycleOwner, { onServerTimeSynced() })
+        clockDeviationUseCase.serverTimeSyncedLiveData.observe(viewLifecycleOwner) { onServerTimeSynced() }
 
         args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it, args.data.type) }
     }
@@ -349,6 +347,9 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.SECONDS.toMillis(
                 cachedAppConfigUseCase.getCachedAppConfig().domesticQRRefreshSeconds.toLong()
             )
+
+        // Make sure there is only 1 callback as multiple qr generations can be triggered by onResume and server time LiveData
+        qrCodeHandler.removeCallbacks(qrCodeRunnable)
         qrCodeHandler.postDelayed(qrCodeRunnable, refreshMillis)
     }
 
@@ -358,7 +359,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private fun checkShouldAutomaticallyClose() {
         val shouldClose = qrCodesFragmentUtil.shouldClose(args.data.credentialExpirationTimeSeconds)
         if (shouldClose) {
-            findNavController().popBackStack()
+            findNavControllerSafety()?.popBackStack()
         }
     }
 
@@ -370,7 +371,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     override fun onPause() {
         super.onPause()
-        qrCodeHandler.removeCallbacks(qrCodeRunnable)
         (parentFragment?.parentFragment as HolderMainFragment).let {
             it.getToolbar().menu.clear()
             // Reset menu item listener to default
@@ -381,6 +381,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        qrCodeHandler.removeCallbacks(qrCodeRunnable)
 
         // Set brightness back to previous
         val params = requireActivity().window.attributes
