@@ -7,7 +7,6 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodeTypeBinding
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import org.koin.android.ext.android.inject
 
@@ -34,9 +33,9 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
             if (cachedAppConfigUseCase.getCachedAppConfig().ggdEnabled) {
                 findNavController().navigate(QrCodeTypeFragmentDirections.actionChooseProvider())
             } else {
-                findNavController().navigate(QrCodeTypeFragmentDirections.actionCommercialTestCode(
+                findNavController().navigate(QrCodeTypeFragmentDirections.actionInputToken(
                     toolbarTitle = getString(R.string.commercial_test_type_code_toolbar_title),
-                    data = VerificationCodeFragmentData.CommercialTest,
+                    data = InputTokenFragmentData.CommercialTest,
                 ))
             }
         }

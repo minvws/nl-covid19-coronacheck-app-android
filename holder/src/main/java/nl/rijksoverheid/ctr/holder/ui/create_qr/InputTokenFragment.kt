@@ -7,6 +7,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -17,7 +18,7 @@ import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentVerificationCodeBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentInputTokenBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
@@ -37,9 +38,9 @@ import org.koin.androidx.viewmodel.scope.emptyState
  *
  *   SPDX-License-Identifier: EUPL-1.2
  *
- */class VerificationCodeFragment : BaseFragment(R.layout.fragment_verification_code) {
+ */class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) {
 
-    private var _binding: FragmentVerificationCodeBinding? = null
+    private var _binding: FragmentInputTokenBinding? = null
     private val binding get() = _binding!!
     private val viewModel: VerificationCodeViewModel by stateViewModel(
         state = emptyState(),
@@ -48,7 +49,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
     private val dialogUtil: DialogUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
 
-    private val navArgs: VerificationCodeFragmentArgs by navArgs()
+    private val navArgs: InputTokenFragmentArgs by navArgs()
 
     override fun onButtonClickWithRetryAction() {
         fetchTestResults(binding)
@@ -56,12 +57,12 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
     override fun getFlow(): Flow {
         return when (navArgs.data) {
-            VerificationCodeFragmentData.CommercialTest -> HolderFlow.CommercialTest
-            VerificationCodeFragmentData.VisitorPass -> HolderFlow.VaccinationAssessment
+            InputTokenFragmentData.CommercialTest -> HolderFlow.CommercialTest
+            InputTokenFragmentData.VisitorPass -> HolderFlow.VaccinationAssessment
         }
     }
 
-    private fun setCopies(data: VerificationCodeFragmentData) {
+    private fun setCopies(data: InputTokenFragmentData) {
         binding.description.text = getString(data.description)
         binding.uniqueCodeInput.hint = getString(data.uniqueCodeInputHint)
         binding.noTokenReceivedBtn.text = getString(data.noCodeText)
@@ -71,7 +72,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentVerificationCodeBinding.bind(view)
+        _binding = FragmentInputTokenBinding.bind(view)
 
         binding.uniqueCodeText.filters = arrayOf(InputFilter.AllCaps())
         binding.uniqueCodeText.addTextChangedListener {
@@ -133,7 +134,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
                 is TestResult.NegativeTestResult -> showNegativeTestResult(it)
                 is TestResult.NoNegativeTestResult -> {
                     findNavController().navigate(
-                        VerificationCodeFragmentDirections.actionCouldNotCreateQr(
+                        InputTokenFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = getString(navArgs.data.noResultScreenToolbarTitle),
                             title = getString(navArgs.data.noResultScreenTitle),
                             description = getString(navArgs.data.noResultScreenDescription),
@@ -143,7 +144,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
                 }
                 is TestResult.Pending -> {
                     findNavController().navigate(
-                        VerificationCodeFragmentDirections.actionCouldNotCreateQr(
+                        InputTokenFragmentDirections.actionCouldNotCreateQr(
                             toolbarTitle = getString(R.string.commercial_test_type_title),
                             title = getString(R.string.test_result_not_known_title),
                             description = getString(R.string.test_result_not_known_description),
@@ -217,7 +218,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
         when (result.remoteTestResult) {
             is RemoteTestResult2 -> {
                 findNavController().navigate(
-                    VerificationCodeFragmentDirections.actionYourEvents(
+                    InputTokenFragmentDirections.actionYourEvents(
                         type = YourEventsFragmentType.TestResult2(
                             remoteTestResult = result.remoteTestResult,
                             rawResponse = result.signedResponseWithTestResult.rawResponse
@@ -228,10 +229,10 @@ import org.koin.androidx.viewmodel.scope.emptyState
             }
             is RemoteProtocol3 -> {
                 findNavController().navigate(
-                    VerificationCodeFragmentDirections.actionYourEvents(
+                    InputTokenFragmentDirections.actionYourEvents(
                         type = YourEventsFragmentType.RemoteProtocol3Type(
                             mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse),
-                            originType = if (navArgs.data is VerificationCodeFragmentData.CommercialTest) OriginType.Test else OriginType.VaccinationAssessment,
+                            originType = if (navArgs.data is InputTokenFragmentData.CommercialTest) OriginType.Test else OriginType.VaccinationAssessment,
                             fromCommercialTestCode = true
                         ),
                         toolbarTitle = getString(navArgs.data.yourEventsToolbarTitle),
@@ -257,7 +258,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
     }
 
     private fun fetchTestResults(
-        binding: FragmentVerificationCodeBinding,
+        binding: FragmentInputTokenBinding,
         fromDeeplink: Boolean = false
     ) {
         binding.verificationCodeInput.error = null

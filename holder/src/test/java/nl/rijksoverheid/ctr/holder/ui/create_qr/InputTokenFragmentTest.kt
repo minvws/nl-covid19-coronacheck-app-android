@@ -28,7 +28,7 @@ import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class VerificationCodeFragmentTest : AutoCloseKoinTest() {
+class InputTokenFragmentTest : AutoCloseKoinTest() {
 
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
@@ -61,10 +61,10 @@ class VerificationCodeFragmentTest : AutoCloseKoinTest() {
             bundleOf(
                 "token" to token,
                 "toolbarTitle" to "",
-                "data" to VerificationCodeFragmentData.CommercialTest,
+                "data" to InputTokenFragmentData.CommercialTest,
             ), themeResId = R.style.AppTheme
         ) {
-            VerificationCodeFragment().also {
+            InputTokenFragment().also {
                 it.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
                     if (viewLifecycleOwner != null) {
                         Navigation.setViewNavController(it.requireView(), navController)

@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr
 
-import android.view.View
 import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
@@ -13,7 +12,7 @@ import nl.rijksoverheid.ctr.holder.R
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class VerificationCodeFragmentData(
+sealed class InputTokenFragmentData(
     @StringRes val description: Int,
     @StringRes val descriptionDeeplink: Int,
     @StringRes val uniqueCodeInputHint: Int,
@@ -30,7 +29,7 @@ sealed class VerificationCodeFragmentData(
     @StringRes val buttonText: Int,
 ): Parcelable {
     @Parcelize
-    object CommercialTest: VerificationCodeFragmentData(
+    object CommercialTest: InputTokenFragmentData(
         description = R.string.commercial_test_code_description,
         descriptionDeeplink = R.string.commercial_test_verification_code_description_deeplink,
         uniqueCodeInputHint = R.string.commercial_test_unique_code_header,
@@ -48,7 +47,7 @@ sealed class VerificationCodeFragmentData(
     )
 
     @Parcelize
-    object VisitorPass: VerificationCodeFragmentData(
+    object VisitorPass: InputTokenFragmentData(
         description = R.string.visitorpass_token_text,
         descriptionDeeplink = R.string.visitorpass_deeplink_text,
         uniqueCodeInputHint = R.string.visitorpass_token_input_title,

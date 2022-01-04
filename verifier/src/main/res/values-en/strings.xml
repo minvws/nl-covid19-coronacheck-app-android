@@ -151,13 +151,11 @@
   <string name="scan_log_list_clock_skew_detected">Date or time changed</string>
   <string name="verifier_menu_risksetting">Scan setting</string>
   <string name="verifier_result_access_title_highrisk">2G check done</string>
-  <string name="verifier_result_access_title_2g_plus">2G+ check done</string>
   <string name="verifier_risksetting_active_title">Change scan setting</string>
   <string name="verifier_risksetting_lowrisk_title">3G access</string>
   <string name="verifier_risksetting_lowrisk_subtitle">You can give access to visitors with a test, vaccination or recovery certificate.</string>
   <string name="verifier_risksetting_highrisk_title">2G access</string>
   <string name="verifier_risksetting_highrisk_subtitle">You can only give access to visitors with a vaccination or recovery certificate.</string>
-  <string name="verifier_risksetting_2g_plus_subtitle">You can only give access to visitors with a vaccination or recovery certificate and a test certificate.</string>
   <string name="verifier_risksetting_readmore">Which kind of access can I give?</string>
   <string name="verifier_risksetting_readmore_url">https://www.government.nl/whichaccess</string>
   <string name="verifier_risksetting_firsttimeuse_title">Choose your scan setting</string>
@@ -168,7 +166,6 @@
   <string name="scan_log_message"><![CDATA[The scan setting log keeps track of the type of access used during scanning. A civil enforcement officer may request access to this log.<br/><br/>For privacy reasons, only scan settings used in the last %d minutes are saved on this phone. No personal information is saved. You can read more about this in the <a href=\"https://coronacheck.nl/nl/faq-scanner-in-app\">frequently asked questions</a>.]]></string>
   <string name="verifier_start_scan_qr_policy_indication_3g">Set to <b>3G</b> access</string>
   <string name="verifier_start_scan_qr_policy_indication_2g">Set to <b>2G</b> access</string>
-  <string name="verifier_start_scan_qr_policy_indication_2g_plus">Set to <b>2G+</b> access</string>
   <string name="verifier_risksetting_start_title">Scan setting</string>
   <string name="verifier_risksetting_start_header">For your location, please specify if you\'re going to give 2G or 3G access. Check which kind of access you can give before you start scanning.</string>
   <string name="verifier_risksetting_setting_button">Set setting</string>
@@ -211,9 +208,7 @@
   <string name="verifier_scannextinstruction_header_supplemental">Het gescande bewijs niet voldoende. Zonder een vaccinatie- of herstelbewijs mag je de bezoeker geen toegang geven.</string>
   <string name="verifier_scannextinstruction_button_scan_next_supplemental">Scan aanvullend bewijs</string>
   <string name="verifier_scannextinstruction_button_deny_access_supplemental">Geen aanvullend bewijs</string>
-  <string name="scan_log_list_2g_plus">2G+</string>
   <string name="verifier_result_access_title_2g_plus">2G+ check done</string>
   <string name="verifier_risksetting_2g_plus_subtitle">You can only give access to visitors with a vaccination or recovery certificate and a test certificate.</string>
   <string name="verifier_start_scan_qr_policy_indication_2g_plus">Set to <b>2G+</b> access</string>
-  <string name="verifier_scanner_policy_indication_2g_plus">2G+ access</string>
 </resources>
