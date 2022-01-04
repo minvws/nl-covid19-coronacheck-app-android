@@ -591,9 +591,6 @@
   <string name="holder_dashboard_newvaliditybanner_action">Lees meer op Rijksoverheid.nl</string>
   <string name="holder_dashboard_newvaliditybanner_url">https://www.rijksoverheid.nl/coronabewijs</string>
   <string name="visitorpass_start_description"><![CDATA[Ben jij buiten de Europese Unie gevaccineerd en op bezoek in Nederland? Dan kan je een bezoekersbewijs maken. Met het bezoekersbewijs kun je toegang krijgen tot plekken en activiteiten in Nederland die vragen om een coronatoegangsbewijs.<br /><br />Kijk voor meer informatie op <a href=\"https://www.Rijksoverheid.nl/bezoekersbewijs\">www.Rijksoverheid.nl/bezoekersbewijs.</a>]]></string>
-  <string name="visitorpass_code_input">Verificatiecode</string>
-  <string name="visitorpass_code_verification_not_received_button">Geen verificatiecode gekregen?</string>
-  <string name="visitorpass_code_verification_placeholder">Bijv. 123456</string>
   <string name="visitorpass_token_title">Vaccinatie beoordeling toevoegen</string>
   <string name="visitorpass_token_text">Vul jouw beoordelingscode in. Deze heb je van het XXX loket gekregen toen jouw vaccinatie werd beoordeeld.</string>
   <string name="visitorpass_token_next">Volgende</string>
@@ -607,10 +604,6 @@
   <string name="visitorpass_token_error_invalid_combination">Geen geldige combinatie</string>
   <string name="visitorpass_token_button_notoken">Heb je geen beoordelingscode?</string>
   <string name="visitorpass_token_modal_notoken_title">Heb je geen beoordelingscode?</string>
-  <string name="visitorpass_code_confirmresendverificationalert_cancelbutton">Sluiten</string>
-  <string name="visitorpass_code_confirmresendverificationalert_message">Je krijgt de verificatiecode via een sms of e-mail. Niks gekregen? Klik hieronder op ‘stuur opnieuw’ voor een nieuwe code.</string>
-  <string name="visitorpass_code_confirmresendverificationalert_okbutton">Stuur opnieuw</string>
-  <string name="visitorpass_code_confirmresendverificationalert_title">Geen verificatiecode gekregen?</string>
   <string name="vaccination_events_toolbar_title">Vaccinatie beoordeling</string>
   <string name="visitorpass_events_description">Kloppen de gegevens? Als de gegevens kloppen kun je je vaccinatie boordeling toevoegen aan de app.</string>
   <string name="visitorpass_event_name">Vaccinatie beoordeling</string>
@@ -629,4 +622,9 @@
   <string name="your_vaccination_assessment_explanation_assessment_header">De volgende gegevens zijn opgehaald:</string>
   <string name="rule_engine_no_test_origin_description_vaccination_assessment">vaccinatie beoordeling</string>
   <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt van het VWS loket een beoordelingscode met cijfers en letters.<br/><br/>Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met het loket.]]></string>
+  <string name="visitorpass_code_title">Vaccinatie review ophalen</string>
+  <string name="visitorpass_code_description">Vul je reviewcode in. Deze code begint met KVT- en heb je van de Visitor Pass Desk gekregen toen jouw vaccinatie werd beoordeeld.</string>
+  <string name="visitorpass_code_review_input">Reviewcode</string>
+  <string name="visitorpass_code_review_placeholder">Bijv. KVT-3839287262-F1</string>
+  <string name="visitorpass_code_review_button">Heb je geen reviewcode?</string>
 </resources>
