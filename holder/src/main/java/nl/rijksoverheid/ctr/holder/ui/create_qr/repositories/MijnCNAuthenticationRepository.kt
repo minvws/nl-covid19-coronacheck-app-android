@@ -68,15 +68,6 @@ class MijnCNAuthenticationRepository(
                 is NetworkRequestResult.Success -> continuation.resume(res.response.idToken)
                 is NetworkRequestResult.Failed -> continuation.resumeWithException(Exception("Failed to get JWT"))
             }
-
-//            authService.performTokenRequest(authResponse.createTokenExchangeRequest()) { resp, error ->
-//                val jwt = resp?.idToken
-//                when {
-//                    jwt != null -> continuation.resume(jwt)
-//                    error != null -> continuation.resumeWithException(error)
-//                    else -> continuation.resumeWithException(Exception("Could not get jwt"))
-//                }
-//            }
         }
     }
 
