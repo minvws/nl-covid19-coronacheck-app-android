@@ -64,7 +64,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
     private fun setCopies(data: InputTokenFragmentData) {
         binding.description.text = getString(data.description)
-        binding.uniqueCodeInput.hint = getString(data.uniqueCodeInputHint)
+        binding.uniqueCodeInput.hint = getString(data.uniqueCodeInputHeader)
         binding.noTokenReceivedBtn.text = getString(data.noCodeText)
         binding.bottom.setButtonText(getString(data.buttonText))
     }
@@ -112,7 +112,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
                 if (Accessibility.screenReader(context)) {
                     navArgs.data.uniqueCodeInputHintScreenReader
                 } else {
-                    R.string.commercial_test_unique_code_hint
+                    navArgs.data.uniqueCodeInputHint
                 }
             )
         }

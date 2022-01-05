@@ -279,7 +279,6 @@
   <string name="your_test_result_explanation_description_test_result">Testuitslag:</string>
   <string name="your_test_result_explanation_description_test_location">Testlocatie:</string>
   <string name="your_test_result_explanation_description_test_manufacturer">Testproducent:</string>
-  <string name="your_test_result_explanation_description_unique_identifier">Uniek testnummer:</string>
   <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
   <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s<br/>Gegevens opgehaald bij: %3$s]]></string>
   <string name="your_vaccination_explanation_toolbar_title">Details</string>
@@ -290,8 +289,6 @@
   <string name="your_vaccination_explanation_last_dose_no">nee</string>
   <string name="your_vaccination_explanation_last_dose_unknown">niet bekend</string>
   <string name="your_vaccination_explanation_header">Deze gegevens van je vaccinatie zijn opgehaald bij %1$s:</string>
-  <string name="your_vaccination_explanation_name">Naam:</string>
-  <string name="your_vaccination_explanation_birthday">Geboortedatum:</string>
   <string name="your_vaccination_explanation_covid_19">Ziekteverwekker:</string>
   <string name="your_vaccination_explanation_covid_19_answer">COVID-19</string>
   <string name="your_vaccination_explanation_vaccine">Vaccin:</string>
@@ -590,40 +587,42 @@
   <string name="holder_dashboard_newvaliditybanner_title">De geldigheid van coronabewijzen wordt aangepast</string>
   <string name="holder_dashboard_newvaliditybanner_action">Lees meer op Rijksoverheid.nl</string>
   <string name="holder_dashboard_newvaliditybanner_url">https://www.rijksoverheid.nl/coronabewijs</string>
-  <string name="visitorpass_start_description"><![CDATA[Ben jij buiten de Europese Unie gevaccineerd en op bezoek in Nederland? Dan kan je een bezoekersbewijs maken. Met het bezoekersbewijs kun je toegang krijgen tot plekken en activiteiten in Nederland die vragen om een coronatoegangsbewijs.<br /><br />Kijk voor meer informatie op <a href=\"https://www.Rijksoverheid.nl/bezoekersbewijs\">www.Rijksoverheid.nl/bezoekersbewijs.</a>]]></string>
-  <string name="visitorpass_token_title">Vaccinatie beoordeling toevoegen</string>
-  <string name="visitorpass_token_text">Vul jouw beoordelingscode in. Deze heb je van het XXX loket gekregen toen jouw vaccinatie werd beoordeeld.</string>
   <string name="visitorpass_token_next">Volgende</string>
-  <string name="visitorpass_token_input_title">Beoordelingscode</string>
   <string name="visitorpass_code_review_placeholder_screenreader">Vul hier je reviewcode in</string>
   <string name="visitorpass_token_error_empty_code">Graag eerst een verificatiecode invullen</string>
-  <string name="visitorpass_token_error_empty_token">Graag eerst een beoordelingscode invullen</string>
-  <string name="visitorpass_token_error_invalid_code">Geen geldige beoordelingscode</string>
+  <string name="visitorpass_token_error_empty_token">Graag eerst een reviewcode invullen</string>
+  <string name="visitorpass_token_error_invalid_code">Geen geldige reviewcode</string>
   <string name="visitorpass_token_error_unknown_provider">De testlocatie is (nog) niet bij ons bekend. Neem contact op met de locatie waar je bent getest.</string>
   <string name="visitorpass_token_error_invalid_combination">Geen geldige combinatie</string>
-  <string name="visitorpass_token_button_notoken">Heb je geen beoordelingscode?</string>
-  <string name="visitorpass_token_modal_notoken_title">Heb je geen beoordelingscode?</string>
+  <string name="visitorpass_token_modal_notoken_title">Heb je geen reviewcode?</string>
   <string name="vaccination_events_toolbar_title">Vaccinatie beoordeling</string>
-  <string name="visitorpass_events_description">Kloppen de gegevens? Als de gegevens kloppen kun je je vaccinatie boordeling toevoegen aan de app.</string>
-  <string name="visitorpass_event_name">Vaccinatie beoordeling</string>
-  <string name="visitorpass_event_subtitle"><![CDATA[Beoordelingsdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
-  <string name="visitorpass_event_something_wrong_description">Neem contact op met de locatie waar je vaccinatiegegevens zijn beoordeeld. Zij kunnen je helpen je gegevens aan te passen.</string>
+  <string name="holder_event_vaccination_assessment_element_subtitle"><![CDATA[Beoordelingsdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
+  <string name="holder_event_vaccination_assessment_about_date">Beoordelingdatum:</string>
+  <string name="holder_event_vaccination_assessment_about_subtitle">De volgende gegevens zijn opgehaald:</string>
   <string name="holder_event_vaccination_assessment_about_unique_identifier">Uniek beoordelingscode:</string>
-  <string name="holder_vaccination_assessment_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je gegevens ophalen.</string>
+  <string name="holder_event_vaccination_assessment_element_title">Vaccinatie review</string>
+  <string name="holder_event_vaccination_assessment_list_message">Als de gegevens kloppen kun je jouw vaccinatie review toevoegen aan de app.</string>
   <string name="holder_event_vaccination_assessment_nolist_title">Geen vaccinatie review beschikbaar</string>
   <string name="holder_event_vaccination_assessment_nolist_message">Er zijn geen gegevens over je vaccinatie review beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a></string>
+  <string name="holder_event_vaccination_assessment_nolist_action">Naar mijn bewijzen</string>
   <string name="visitorpass_start_toolbar_title">Bezoekersbewijs</string>
   <string name="general_visitor_pass">bezoekersbewijs</string>
   <string name="visitorpass_code_error_invalid_code">Deze reviewcode is verlopen</string>
   <string name="holder_event_vaccination_assessment_toolbar_title">Vaccinatie beoordeling</string>
-  <string name="visitorpass_deeplink_text">Vul jouw reviewcode in om je vaccinatie beoordeling op te halen.</string>
-  <string name="your_vaccination_assessment_explanation_assessment_date">Beoordelingsdatum:</string>
-  <string name="your_vaccination_assessment_explanation_assessment_header">De volgende gegevens zijn opgehaald:</string>
+  <string name="visitorpass_code_description_deeplink">Vul jouw reviewcode in om je vaccinatie beoordeling op te halen.</string>
   <string name="rule_engine_no_test_origin_description_vaccination_assessment">vaccinatie beoordeling</string>
-  <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt van het VWS loket een beoordelingscode met cijfers en letters.<br/><br/>Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met het loket.]]></string>
+  <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt van het VWS loket een reviewcode met cijfers en letters.<br/><br/>Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met het loket.]]></string>
   <string name="visitorpass_code_title">Vaccinatie review ophalen</string>
   <string name="visitorpass_code_description">Vul je reviewcode in. Deze code begint met KVT- en heb je van de Visitor Pass Desk gekregen toen jouw vaccinatie werd beoordeeld.</string>
   <string name="visitorpass_code_review_input">Reviewcode</string>
   <string name="visitorpass_code_review_placeholder">Bijv. KVT-3839287262-F1</string>
   <string name="visitorpass_code_review_button">Heb je geen reviewcode?</string>
+  <string name="visitorpass_start_message"><![CDATA[Ben je buiten de Europese Unie gevaccineerd en op bezoek in Nederland?  Dan kun je van jouw vaccinatie review en een negatieve testuitslag een bezoekersbewijs maken.<br/><br/>Met je bezoekersbewijs krijg je toegang tot plekken en activiteiten in Nederland die vragen om een coronatoegangsbewijs. Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijksoverheid.nl/bezoekersbewijs</a>.]]></string>
+  <string name="holder_event_vaccination_assessment_about_name">Naam:</string>
+  <string name="your_test_result_explanation_description_unique_identifier">Uniek testnummer:</string>
+  <string name="holder_event_vaccination_assessment_about_date_of_birth">Geboortedatum:</string>
+  <string name="your_vaccination_explanation_name">Naam:</string>
+  <string name="your_vaccination_explanation_birthday">Geboortedatum:</string>
+  <string name="holder_event_vaccination_assessment_wrong_body">Neem contact op met het loket waar jouw vaccinatie is beoordeeld. Zij kunnen je helpen je gegevens aan te passen.</string>
+  <string name="holder_event_vaccination_assessment_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je gegevens ophalen. </string>
 </resources>

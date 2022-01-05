@@ -212,4 +212,5 @@
   <string name="verifier_start_scan_qr_policy_indication_2g_plus"><b>2G+</b>toegang ingesteld</string>
   <string name="verifier_scanner_policy_indication_2g_plus">2G+ toegang</string>
   <string name="verifier_risksetting_changeselection_2g_plus">2G+ toegang ingesteld</string>
+  <string name="verifier_result_denied_personal_data_mismatch_title">De QR-codes hebben niet dezelfde persoonsgegevens</string>
 </resources>

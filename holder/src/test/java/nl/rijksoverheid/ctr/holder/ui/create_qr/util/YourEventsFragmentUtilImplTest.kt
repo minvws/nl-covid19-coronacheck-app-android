@@ -13,7 +13,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.Holder
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -165,6 +164,20 @@ class YourEventsFragmentUtilImplTest: AutoCloseKoinTest() {
         )
 
         assertEquals(copy, R.string.holder_vaccination_alert_message)
+    }
+
+    @Test
+    fun `getCancelDialogDescription returns correct copy for RemoteProtocol3Type with origin vaccination assessment`() {
+        val util = YourEventsFragmentUtilImpl()
+
+        val vaccinationAssessment = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
+        every { vaccinationAssessment.originType } answers { OriginType.VaccinationAssessment }
+
+        val copy = util.getCancelDialogDescription(
+            type = vaccinationAssessment
+        )
+
+        assertEquals(copy, R.string.holder_event_vaccination_assessment_alert_message)
     }
 
     @Test

@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.R
 sealed class InputTokenFragmentData(
     @StringRes val description: Int,
     @StringRes val descriptionDeeplink: Int,
+    @StringRes val uniqueCodeInputHeader: Int,
     @StringRes val uniqueCodeInputHint: Int,
     @StringRes val uniqueCodeInputHintScreenReader: Int,
     @StringRes val noUniqueCodeEntered: Int,
@@ -31,7 +32,8 @@ sealed class InputTokenFragmentData(
     object CommercialTest: InputTokenFragmentData(
         description = R.string.commercial_test_code_description,
         descriptionDeeplink = R.string.commercial_test_verification_code_description_deeplink,
-        uniqueCodeInputHint = R.string.commercial_test_unique_code_header,
+        uniqueCodeInputHeader = R.string.commercial_test_unique_code_header,
+        uniqueCodeInputHint = R.string.commercial_test_unique_code_hint,
         uniqueCodeInputHintScreenReader = R.string.commercial_test_unique_code_hint_screenreader,
         noUniqueCodeEntered = R.string.commercial_test_error_empty_retrieval_code,
         noCodeText = R.string.commercial_test_type_no_code_title,
@@ -46,12 +48,13 @@ sealed class InputTokenFragmentData(
 
     @Parcelize
     object VisitorPass: InputTokenFragmentData(
-        description = R.string.visitorpass_token_text,
-        descriptionDeeplink = R.string.visitorpass_deeplink_text,
-        uniqueCodeInputHint = R.string.visitorpass_token_input_title,
+        description = R.string.visitorpass_code_description,
+        descriptionDeeplink = R.string.visitorpass_code_description_deeplink,
+        uniqueCodeInputHeader = R.string.visitorpass_code_review_input,
+        uniqueCodeInputHint = R.string.visitorpass_code_review_placeholder,
         uniqueCodeInputHintScreenReader = R.string.visitorpass_code_review_placeholder_screenreader,
         noUniqueCodeEntered = R.string.visitorpass_token_error_empty_token,
-        noCodeText = R.string.visitorpass_token_button_notoken,
+        noCodeText = R.string.visitorpass_code_review_button,
         noCodeDialogTitle = R.string.visitorpass_token_modal_notoken_title,
         noCodeDialogDescription = R.string.visitorpass_token_modal_notoken_details,
         noResultScreenToolbarTitle = R.string.holder_event_vaccination_assessment_toolbar_title,
