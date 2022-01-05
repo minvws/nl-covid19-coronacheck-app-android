@@ -344,7 +344,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         binding.description.setHtmlText(R.string.your_positive_test_description)
                     }
                     is OriginType.VaccinationAssessment -> {
-                        binding.description.setHtmlText(R.string.visitorpass_events_description)
+                        binding.description.setHtmlText(R.string.holder_event_vaccination_assessment_list_message)
                     }
                 }
             }
@@ -601,8 +601,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = getString(R.string.visitorpass_event_name),
-                subtitle = getString(R.string.visitorpass_event_subtitle,
+                title = getString(R.string.holder_event_vaccination_assessment_element_title),
+                subtitle = getString(R.string.holder_event_vaccination_assessment_element_subtitle,
                     assessmentDate,
                     fullName,
                     birthDate),
@@ -716,7 +716,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                         R.string.dialog_vaccination_something_wrong_description
                                     }
                                     is OriginType.VaccinationAssessment -> {
-                                        R.string.visitorpass_event_something_wrong_description
+                                        R.string.holder_event_vaccination_assessment_wrong_body
                                     }
                                     is OriginType.Test -> {
                                         R.string.dialog_negative_test_result_something_wrong_description

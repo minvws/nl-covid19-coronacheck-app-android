@@ -15,7 +15,6 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.VerificationCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
@@ -121,23 +120,6 @@ fun fakeIntroductionViewModel(
 
         }
 
-    }
-}
-
-fun fakeCommercialTestResultViewModel(): VerificationCodeViewModel {
-    return object : VerificationCodeViewModel() {
-
-        override fun updateViewState() {
-
-        }
-
-        override fun getTestResult(fromDeeplink: Boolean) {
-
-        }
-
-        override fun sendVerificationCode() {
-
-        }
     }
 }
 
