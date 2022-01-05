@@ -1,6 +1,9 @@
 package nl.rijksoverheid.ctr.api.factory
 
-import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
+import nl.rijksoverheid.ctr.shared.models.MijnCnErrorResponse
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import nl.rijksoverheid.ctr.shared.models.Step
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -18,6 +21,10 @@ class NetworkRequestResultFactory(
     private val androidUtil: AndroidUtil,
     private val mijnCnErrorResponseBodyConverter: Converter<ResponseBody, MijnCnErrorResponse>,
 ) {
+
+    private companion object {
+        const val BES_PROVIDER = "BES"
+    }
 
     suspend fun <R : Any> createResult(
         step: Step,
@@ -42,32 +49,9 @@ class NetworkRequestResultFactory(
 
                 provider?.let {
                     // If this is a call to a provider we return a ProviderHttpError
-                    when (it) {
-                        "BES" -> {
-                            // BES provider returns errors differently from other providers, handle these accordingly
-                            // Check if there is a error body
-                            val errorBody = httpException.response()?.errorBody()
-                                ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
-
-                            // Check if the error body is a [MijnCnErrorResponse]
-                            val errorResponse = mijnCnErrorResponseBodyConverter.convert(errorBody)
-                                ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
-
-                            return NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError(
-                                step,
-                                httpException,
-                                CoronaCheckErrorResponse(errorResponse.model.error, errorResponse.model.code)
-                            )
-                        }
-                        else -> {
-                            return NetworkRequestResult.Failed.ProviderHttpError(
-                                step,
-                                httpException,
-                                it
-                            )
-                        }
-                    }
-
+                    return NetworkRequestResult.Failed.ProviderHttpError(
+                        step, httpException, it
+                    )
                 }
 
                 // Check if there is a error body
@@ -75,8 +59,13 @@ class NetworkRequestResultFactory(
                     ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
 
                 // Check if the error body is a [CoronaCheckErrorResponse]
-                val errorResponse = errorResponseBodyConverter.convert(errorBody)
-                    ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
+                val errorResponse = if (provider == BES_PROVIDER) {
+                    mijnCnErrorResponseBodyConverter.convert(errorBody)?.let {
+                        CoronaCheckErrorResponse(it.model.error, it.model.code)
+                    }
+                } else {
+                    errorResponseBodyConverter.convert(errorBody)
+                } ?: return NetworkRequestResult.Failed.CoronaCheckHttpError(step, httpException)
 
                 return NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError(
                     step,
