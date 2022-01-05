@@ -8,7 +8,7 @@
 
 package nl.rijksoverheid.ctr.holder.ui.create_qr.api
 
-import nl.rijksoverheid.ctr.holder.ui.create_qr.mijncn.MijnCNTokenResponse
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.MijnCNTokenResponse
 import retrofit2.http.*
 
 interface MijnCnApiClient {

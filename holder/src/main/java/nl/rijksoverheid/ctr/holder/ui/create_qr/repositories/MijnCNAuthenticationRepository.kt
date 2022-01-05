@@ -8,7 +8,7 @@ import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.MijnCnApiClient
-import nl.rijksoverheid.ctr.holder.ui.create_qr.mijncn.MijnCNTokenResponse
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.MijnCNTokenResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -65,7 +65,7 @@ class MijnCNAuthenticationRepository(
         val res = retrieveAccessToken(request)
         return suspendCoroutine { continuation ->
             when (res) {
-                is NetworkRequestResult.Success -> continuation.resume(res.response.id_token)
+                is NetworkRequestResult.Success -> continuation.resume(res.response.idToken)
                 is NetworkRequestResult.Failed -> continuation.resumeWithException(Exception("Failed to get JWT"))
             }
 
