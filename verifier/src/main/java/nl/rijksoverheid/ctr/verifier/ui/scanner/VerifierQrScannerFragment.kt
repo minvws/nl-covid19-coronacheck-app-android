@@ -122,13 +122,13 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                     getString(R.string.scan_result_unknown_qr_dialog_message)
                 )
                 is VerifiedQrResultState.PartiallyValid -> {
-                    navigateSafety(VerifierQrScannerFragmentDirections.actionPaperScanResult(
+                    navigateSafety(VerifierQrScannerFragmentDirections.actionDccScanResult(
                         data = if (qrResultState.isTestResult) {
-                            PaperScanResultFragmentData.ScanVaccinationOrRecovery(
+                            DccScanResultFragmentData.ScanVaccinationOrRecovery(
                                 previousScanVaccinationOrRecoveryResult = qrResultState.verifiedQr,
                             )
                         } else {
-                            PaperScanResultFragmentData.ScanTest(
+                            DccScanResultFragmentData.ScanTest(
                                 previousScanTextResult = qrResultState.verifiedQr,
                             )
                         }

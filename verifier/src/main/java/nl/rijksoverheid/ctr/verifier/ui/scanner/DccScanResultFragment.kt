@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.databinding.FragmentPaperScanResultBinding
+import nl.rijksoverheid.ctr.verifier.databinding.FragmentDccScanResultBinding
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
 
 
@@ -17,28 +17,28 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class PaperScanResultFragment: Fragment(R.layout.fragment_paper_scan_result) {
+class DccScanResultFragment: Fragment(R.layout.fragment_dcc_scan_result) {
 
-    private val navArgs: PaperScanResultFragmentArgs by navArgs()
+    private val navArgs: DccScanResultFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentPaperScanResultBinding.bind(view)
+        val binding = FragmentDccScanResultBinding.bind(view)
 
         binding.header.text = getString(navArgs.data.header)
         binding.description.text = getString(navArgs.data.description)
         binding.bottom.setButtonText(getString(navArgs.data.buttonText))
-        binding.bottom.customiseSecondaryButton { it.text = getString(navArgs.data.secondaryButtonText) }
+        binding.bottom.setSecondaryButtonText(getString(navArgs.data.secondaryButtonText))
 
         binding.bottom.setButtonClick {
-            navigateSafety(PaperScanResultFragmentDirections.actionNavQrScanner(
+            navigateSafety(DccScanResultFragmentDirections.actionNavQrScanner(
                 previousScanResult = navArgs.data.previousScanResult,
             ))
         }
 
         binding.bottom.setSecondaryButtonClick {
-            navigateSafety(PaperScanResultFragmentDirections.actionScanResultInvalid(ScanResultInvalidData.Error("")))
+            navigateSafety(DccScanResultFragmentDirections.actionScanResultInvalid(ScanResultInvalidData.Error("")))
         }
     }
 }

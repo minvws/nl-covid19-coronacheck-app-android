@@ -47,8 +47,8 @@
             app:popExitAnim="@anim/fragment_close_exit" />
 
         <action
-            android:id="@+id/action_paper_scan_result"
-            app:destination="@id/nav_paper_scan_result"
+            android:id="@+id/action_dcc_scan_result"
+            app:destination="@id/nav_dcc_scan_result"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -169,12 +169,12 @@
 
 
     <fragment
-        android:id="@+id/nav_paper_scan_result"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.PaperScanResultFragment">
+        android:id="@+id/nav_dcc_scan_result"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.DccScanResultFragment">
 
         <argument
             android:name="data"
-            app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.PaperScanResultFragmentData" />
+            app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.DccScanResultFragmentData" />
 
         <action
             android:id="@+id/action_nav_qr_scanner"

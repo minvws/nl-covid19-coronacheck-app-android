@@ -7,6 +7,7 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.LogScanUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
@@ -24,7 +25,7 @@ abstract class ScannerViewModel : ViewModel() {
         MutableLiveData<Event<Pair<VerifiedQrResultState, ExternalReturnAppData?>>>()
 
     abstract fun log()
-    abstract fun validate(qrContent: String, returnUri: String?)
+    abstract fun validate(qrContent: String, returnUri: String?, previousScanResult: VerificationResult? = null)
 }
 
 class ScannerViewModelImpl(
@@ -39,7 +40,8 @@ class ScannerViewModelImpl(
         }
     }
 
-    override fun validate(qrContent: String, returnUri: String?) {
+    // TODO use previousScanResult in task 3069
+    override fun validate(qrContent: String, returnUri: String?, previousScanResult: VerificationResult?) {
         loadingLiveData.value = Event(true)
         viewModelScope.launch {
             try {

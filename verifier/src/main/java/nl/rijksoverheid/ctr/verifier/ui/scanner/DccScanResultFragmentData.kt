@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.verifier.R
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class PaperScanResultFragmentData(
+sealed class DccScanResultFragmentData(
     @StringRes val header: Int,
     @StringRes val description: Int,
     @StringRes val buttonText: Int,
@@ -23,7 +23,7 @@ sealed class PaperScanResultFragmentData(
     @Parcelize
     data class ScanTest(
         val previousScanTextResult: VerificationResult,
-    ) : PaperScanResultFragmentData(
+    ) : DccScanResultFragmentData(
         header = R.string.verifier_scannextinstruction_title_test,
         description = R.string.verifier_scannextinstruction_header_test,
         buttonText = R.string.verifier_scannextinstruction_button_scan_next_test,
@@ -34,7 +34,7 @@ sealed class PaperScanResultFragmentData(
     @Parcelize
     data class ScanVaccinationOrRecovery(
         val previousScanVaccinationOrRecoveryResult: VerificationResult,
-    ) : PaperScanResultFragmentData(
+    ) : DccScanResultFragmentData(
         header = R.string.verifier_scannextinstruction_title_supplemental,
         description = R.string.verifier_scannextinstruction_header_supplemental,
         buttonText = R.string.verifier_scannextinstruction_button_scan_next_supplemental,
