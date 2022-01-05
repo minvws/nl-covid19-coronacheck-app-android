@@ -28,7 +28,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 interface GetMijnCnEventsUsecase {
     suspend fun getEvents(
         jwt: String,
-        originType: OriginType,
+        originType: RemoteOriginType,
         withIncompleteVaccination: Boolean
     ): EventsResult
 }
@@ -42,7 +42,7 @@ class GetMijnCnEventsUsecaseImpl(
 
     override suspend fun getEvents(
         jwt: String,
-        originType: OriginType,
+        originType: RemoteOriginType,
         withIncompleteVaccination: Boolean
     ): EventsResult {
         // Fetch event providers

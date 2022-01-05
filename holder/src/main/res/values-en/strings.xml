@@ -627,9 +627,6 @@
   <string name="visitorpass_code_review_input">Review code</string>
   <string name="visitorpass_code_review_placeholder">Bijv. KVT-3839287262-F1</string>
   <string name="visitorpass_code_review_button">Heb je geen reviewcode?</string>
-  <string name="visitorpass_start_description"><![CDATA[Ben jij buiten de Europese Unie gevaccineerd en op bezoek in Nederland? Dan kan je een bezoekersbewijs maken waarmee je plekken in Nederland kan bezoeken die een coronatoegangsbewijs vragen.<br /><br />Kijk voor meer informatie op <a href="https://www.Rijksoverheid.nl/bezoekersbewijs">www.Rijksoverheid.nl/bezoekersbewijs.</a>]]></string>
-  <string name="visitorpass_code_title">Vaccinatie beoordeling toevoegen</string>
-  <string name="visitorpass_code_description">Vul jouw kortverblijfcode in. Deze heb je van het VWS loket gekregen.</string>
   <string name="visitorpass_code_input">Bezoekerscode</string>
   <string name="visitorpass_code_verification_input">Verificatiecode</string>
   <string name="visitorpass_code_verification_input_explanation">Je krijgt een code via sms of e-mail</string>
