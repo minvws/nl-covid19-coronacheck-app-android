@@ -9,9 +9,11 @@ import net.openid.appauth.browser.VersionRange
 import net.openid.appauth.browser.VersionedBrowserMatcher
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.ui.create_qr.mijncn.MijnCnViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /*

@@ -88,7 +88,7 @@ class MijnCNAuthenticationRepository(
                     url = tokenRequest.configuration.tokenEndpoint.toString(),
                     code = tokenRequest.authorizationCode ?: "",
                     grantType = tokenRequest.grantType,
-                    redirectUri = BuildConfig.MIJNCN_REDIRECT_URI,
+                    redirectUri = BuildConfig.DIGI_D_REDIRECT_URI,
                     codeVerifier = tokenRequest.codeVerifier ?: "",
                     clientId = tokenRequest.clientId
                 )

@@ -227,10 +227,10 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         }
         binding.noDigidButton.setOnClickListener {
             when (args.originType) {
-                is OriginType.Vaccination -> {
+                is RemoteOriginType.Vaccination -> {
                     navigateSafety(GetEventsFragmentDirections.actionNoDigid())
                 }
-                is OriginType.Recovery -> {
+                is RemoteOriginType.Recovery -> {
                     context?.launchUrl(getString(R.string.no_digid_url))
                 }
             }
