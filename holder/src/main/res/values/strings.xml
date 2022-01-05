@@ -609,7 +609,7 @@
   <string name="general_visitor_pass">bezoekersbewijs</string>
   <string name="visitorpass_code_error_invalid_code">Deze reviewcode is verlopen</string>
   <string name="holder_event_vaccination_assessment_toolbar_title">Vaccinatie beoordeling</string>
-  <string name="visitorpass_code_description_deeplink">Vul jouw reviewcode in om je vaccinatie beoordeling op te halen.</string>
+  <string name="visitorpass_code_description_deeplink">Vul jouw verificatiecode in om je vaccinatie beoordeling op te halen.</string>
   <string name="rule_engine_no_test_origin_description_vaccination_assessment">vaccinatie beoordeling</string>
   <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt van het VWS loket een reviewcode met cijfers en letters.<br/><br/>Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met het loket.]]></string>
   <string name="visitorpass_code_title">Vaccinatie review ophalen</string>
