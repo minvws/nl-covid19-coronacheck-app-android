@@ -65,6 +65,12 @@
             android:name="invalidData"
             app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData" />
 
+        <argument
+            android:name="title"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
         <action
             android:id="@+id/action_nav_qr_scanner"
             app:destination="@id/nav_qr_scanner"
