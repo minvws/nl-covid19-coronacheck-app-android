@@ -16,9 +16,9 @@ import kotlin.coroutines.suspendCoroutine
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class DigidAuthenticationRepository {
+class DigidAuthenticationRepository: AuthenticationRepository {
 
-    suspend fun authResponse(
+    override suspend fun authResponse(
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
     ) {
@@ -49,7 +49,7 @@ class DigidAuthenticationRepository {
         ).setScope("openid email profile").build()
     }
 
-    suspend fun jwt(
+    override suspend fun jwt(
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
     ): String {

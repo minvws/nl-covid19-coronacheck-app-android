@@ -24,9 +24,9 @@ import kotlin.coroutines.suspendCoroutine
 class MijnCNAuthenticationRepository(
     private val mijnCnApiClient: MijnCnApiClient,
     private val networkRequestResultFactory: NetworkRequestResultFactory
-) {
+) : AuthenticationRepository {
 
-    suspend fun authResponse(
+    override suspend fun authResponse(
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
     ) {
@@ -57,7 +57,7 @@ class MijnCNAuthenticationRepository(
         ).setScope("openid email profile").build()
     }
 
-    suspend fun jwt(
+    override suspend fun jwt(
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
     ): String {

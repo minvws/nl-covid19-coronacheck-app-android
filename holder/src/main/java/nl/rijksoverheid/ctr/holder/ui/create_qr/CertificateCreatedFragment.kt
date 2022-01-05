@@ -17,19 +17,21 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCertificateCreatedBinding
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDViewModel
+import nl.rijksoverheid.ctr.holder.modules.LoginViewModelQualifier
+import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.LoginViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.qualifier.named
+import org.koin.core.qualifier.qualifier
 
 
 class CertificateCreatedFragment :
     Fragment(R.layout.fragment_certificate_created) {
 
     private val args: CertificateCreatedFragmentArgs by navArgs()
-    private val digidViewModel: DigiDViewModel by sharedViewModel()
+    protected val digidViewModel: LoginViewModel by sharedViewModel(qualifier = named("digid"))
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

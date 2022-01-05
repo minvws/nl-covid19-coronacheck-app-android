@@ -9,11 +9,13 @@ import net.openid.appauth.browser.VersionRange
 import net.openid.appauth.browser.VersionedBrowserMatcher
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.ui.create_qr.mijncn.MijnCnViewModel
+import nl.rijksoverheid.ctr.holder.modules.LoginViewModelQualifier
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
+import org.koin.core.qualifier.qualifier
 
 
 /*
@@ -25,8 +27,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutId) {
 
-    protected val mijnCnViewModel: MijnCnViewModel by viewModel()
-    protected val digidViewModel: DigiDViewModel by sharedViewModel()
+    protected val digidViewModel: LoginViewModel by sharedViewModel(named("digid"))
+    protected val mijnCnViewModel: LoginViewModel by viewModel(named("mijncn"))
     private val authService by lazy {
         val appAuthConfig = AppAuthConfiguration.Builder()
             .setBrowserMatcher(BrowserAllowList(*getSupportedBrowsers()))

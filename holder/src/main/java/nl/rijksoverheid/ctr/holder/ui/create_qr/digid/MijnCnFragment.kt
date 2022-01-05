@@ -72,18 +72,18 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
         })
 
 
-        mijnCnViewModel.mijnCnResultLiveData.observe(viewLifecycleOwner, EventObserver {
+        mijnCnViewModel.loginResultLiveData.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is DigidResult.Success -> {
+                is LoginResult.Success -> {
                     getEventsViewModel.getMijnCnEvents(
                         it.jwt,
                         RemoteOriginType.Vaccination,
                     )
                 }
-                is DigidResult.Failed -> {
+                is LoginResult.Failed -> {
                     presentError(it.errorResult)
                 }
-                DigidResult.Cancelled -> {
+                LoginResult.Cancelled -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.digid_login_cancelled_title,
