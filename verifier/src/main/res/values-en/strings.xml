@@ -156,7 +156,7 @@
   <string name="verifier_risksetting_highrisk_title">2G access</string>
   <string name="verifier_risksetting_highrisk_subtitle">You can only give access to visitors with a vaccination or recovery certificate.</string>
   <string name="verifier_risksetting_readmore">Which kind of access can I give?</string>
-  <string name="verifier_risksetting_readmore_url">https://coronacheck.nl/en/faq-scanner-in-app</string>
+  <string name="verifier_risksetting_readmore_url">https://www.government.nl/whichaccess</string>
   <string name="verifier_risksetting_firsttimeuse_title">Choose your scan setting</string>
   <string name="verifier_risksetting_firsttimeuse_header">For your location, please specify if you\'re going to give 2G or 3G access. Check which kind of access you can give before you start scanning.</string>
   <string name="new_in_app_risksetting_title">2G or 3G access</string>
@@ -197,4 +197,19 @@
   <string name="scan_instructions_4_description_2G">Does your screen show a check mark? In that case, the QR code is valid and the details are the same as on the proof of identity. You can grant the visitor access.</string>
   <string name="scan_result_invalid_reason_description_2G"><![CDATA[A red screen with a cross means the QR code does not comply with the Dutch regulations, or is not valid for locations with 2G access.<br/><br/><b>Here\'s what you can do:</b><br/><ol><li>Check if the time is set correctly, on the visitor\'s phone as well as your own. Make sure date and time are set to \'set automatically\'.</li><li>Check if the visitor is showing an original certificate. A screenshot of their certificate may cause problems.</li><li>Ask the visitor to completely close the app, and restart it. Please rescan the QR code after.</li></ol><br/><b>Does the screen stay red?</b><br/>Ask the visitor to contact the CoronaCheck help desk.<br/><br/><b>Please note:</b> without a screen with check mark, the visitor cannot be given access.]]></string>
   <string name="verifier_risksetting_changeselection_title">Change scan setting</string>
+  <string name="verifier_scannextinstruction_subtitle">Bewijs 1 uit 2 gescand</string>
+  <string name="verifier_scannextinstruction_title_test">Scan nu het testbewijs</string>
+  <string name="verifier_scannextinstruction_header_test">Het gescande bewijs niet voldoende. Zonder testbewijs mag je de bezoeker geen toegang geven.</string>
+  <string name="verifier_scannextinstruction_button_scan_next_test">Scan testbewijs</string>
+  <string name="verifier_scannextinstruction_button_deny_access_test">Geen testbewijs</string>
+  <string name="verifier_scannextinstruction_title_supplemental">Scan nu een vaccinatie- of herstelbewijs</string>
+  <string name="verifier_scannextinstruction_header_supplemental">Het gescande bewijs niet voldoende. Zonder een vaccinatie- of herstelbewijs mag je de bezoeker geen toegang geven.</string>
+  <string name="verifier_scannextinstruction_button_scan_next_supplemental">Scan aanvullend bewijs</string>
+  <string name="verifier_scannextinstruction_button_deny_access_supplemental">Geen aanvullend bewijs</string>
+  <string name="scan_log_list_2g_plus">2G+</string>
+  <string name="verifier_result_access_title_2g_plus">2G+ check done</string>
+  <string name="verifier_risksetting_2g_plus_subtitle">You can only give access to visitors with a vaccination or recovery certificate and a test certificate.</string>
+  <string name="verifier_start_scan_qr_policy_indication_2g_plus">Set to <b>2G+</b> access</string>
+  <string name="verifier_scanner_policy_indication_2g_plus">2G+ access</string>
+  <string name="verifier_risksetting_changeselection_2g_plus">Set to 2G+ access</string>
 </resources>

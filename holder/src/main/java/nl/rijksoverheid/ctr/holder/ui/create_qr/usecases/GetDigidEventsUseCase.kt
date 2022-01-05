@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
@@ -27,7 +28,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 interface GetDigidEventsUseCase {
     suspend fun getEvents(
         jwt: String,
-        originType: OriginType,
+        originType: RemoteOriginType,
         withIncompleteVaccination: Boolean
     ): EventsResult
 }
@@ -41,7 +42,7 @@ class GetDigidEventsUseCaseImpl(
 
     override suspend fun getEvents(
         jwt: String,
-        originType: OriginType,
+        originType: RemoteOriginType,
         withIncompleteVaccination: Boolean
     ): EventsResult {
         // Fetch event providers

@@ -7,12 +7,10 @@ import net.openid.appauth.browser.BrowserAllowList
 import net.openid.appauth.browser.BrowserSelector
 import net.openid.appauth.browser.VersionRange
 import net.openid.appauth.browser.VersionedBrowserMatcher
-import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.holder.BaseFragment
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.mijncn.MijnCnViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -81,11 +79,11 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
         )
     }
 
-    protected fun getDialogTitleFromOriginType(originType: OriginType): Int {
+    protected fun getDialogTitleFromOriginType(originType: RemoteOriginType): Int {
         return when (originType) {
-            OriginType.Recovery -> R.string.error_get_events_missing_events_dialog_title_recoveries
-            OriginType.Test -> R.string.error_get_events_missing_events_dialog_title_testresults
-            OriginType.Vaccination -> R.string.error_get_events_missing_events_dialog_title_vaccines
+            RemoteOriginType.Recovery -> R.string.error_get_events_missing_events_dialog_title_recoveries
+            RemoteOriginType.Test -> R.string.error_get_events_missing_events_dialog_title_testresults
+            RemoteOriginType.Vaccination -> R.string.error_get_events_missing_events_dialog_title_vaccines
         }
     }
 

@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
@@ -22,15 +23,15 @@ interface EventProviderRepository {
         /**
          * Get filter for backend endpoints
          */
-        fun getFilter(originType: OriginType): String {
+        fun getFilter(originType: RemoteOriginType): String {
             return when (originType) {
-                is OriginType.Vaccination -> {
+                is RemoteOriginType.Vaccination -> {
                     "vaccination"
                 }
-                is OriginType.Recovery -> {
+                is RemoteOriginType.Recovery -> {
                     "positivetest,recovery"
                 }
-                is OriginType.Test -> {
+                is RemoteOriginType.Test -> {
                     "negativetest"
                 }
             }

@@ -336,7 +336,7 @@
 
         <argument
             android:name="originType"
-            app:argType="nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType" />
+            app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType" />
 
         <argument
             android:name="afterIncompleteVaccination"

@@ -9,6 +9,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDigidEventsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMijnCnEventsUsecase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
@@ -24,13 +26,13 @@ abstract class GetEventsViewModel : ViewModel() {
 
     abstract fun getDigidEvents(
         jwt: String,
-        originType: OriginType,
+        originType: RemoteOriginType,
         withIncompleteVaccination: Boolean = false
     )
 
     abstract fun getMijnCnEvents(
         jwt: String,
-        originType: OriginType,
+        originType: RemoteOriginType,
         withIncompleteVaccination: Boolean = false
     )
 }
@@ -42,7 +44,7 @@ class GetEventsViewModelImpl(
 
     override fun getDigidEvents(
         jwt: String,
-        originType: OriginType,
+        originType: RemoteOriginType,
         withIncompleteVaccination: Boolean
     ) {
         getEvents() {
@@ -56,7 +58,7 @@ class GetEventsViewModelImpl(
 
     override fun getMijnCnEvents(
         jwt: String,
-        originType: OriginType,
+        originType: RemoteOriginType,
         withIncompleteVaccination: Boolean
     ) {
         getEvents() {

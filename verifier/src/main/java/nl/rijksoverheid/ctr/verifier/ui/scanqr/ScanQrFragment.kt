@@ -18,8 +18,7 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy2G
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.DeeplinkManager
 import nl.rijksoverheid.ctr.verifier.R
@@ -154,6 +153,10 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             VerificationPolicyState.Policy3G -> {
                 binding.bottom.setPolicy(VerificationPolicy3G)
                 R.drawable.illustration_scanner_get_started_3g
+            }
+            VerificationPolicyState.Policy2GPlus -> {
+                binding.bottom.setPolicy(VerificationPolicy2GPlus)
+                R.drawable.illustration_scanner_get_started_2g_plus
             }
         }
 

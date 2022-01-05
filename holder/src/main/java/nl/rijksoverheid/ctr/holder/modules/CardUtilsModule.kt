@@ -19,7 +19,7 @@ import java.time.Clock
 val cardUtilsModule = module {
     factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
-    factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get()) }
+    factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get(), get()) }
     factory<TestInfoScreenUtil> { TestInfoScreenUtilImpl(androidContext().resources, get()) }
     factory<RecoveryInfoScreenUtil> { RecoveryInfoScreenUtilImpl(androidContext().resources) }
     factory<QrInfoScreenUtil> { QrInfoScreenUtilImpl(get(), get(), get(), get(), get()) }
@@ -30,5 +30,8 @@ val cardUtilsModule = module {
     factory<GreenCardUtil> { GreenCardUtilImpl(Clock.systemUTC(), get()) }
     factory<GreenCardRefreshUtil> {
         GreenCardRefreshUtilImpl(get(), get(), get(), get(), get(), get())
+    }
+    factory<VaccinationAssessmentInfoScreenUtil> {
+        VaccinationAssessmentInfoScreenUtilImpl(get())
     }
 }

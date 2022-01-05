@@ -65,13 +65,13 @@ sealed class EventsResult {
         }
 
         companion object {
-            fun noProvidersError(originType: OriginType) = Error(object: ErrorResult {
+            fun noProvidersError(originType: RemoteOriginType) = Error(object: ErrorResult {
                 override fun getCurrentStep() = HolderStep.ConfigProvidersNetworkRequest
 
                 override fun getException() = when (originType) {
-                    OriginType.Recovery -> NoProvidersException.Recovery
-                    OriginType.Test -> NoProvidersException.Test
-                    OriginType.Vaccination -> NoProvidersException.Vaccination
+                    RemoteOriginType.Recovery -> NoProvidersException.Recovery
+                    RemoteOriginType.Test -> NoProvidersException.Test
+                    RemoteOriginType.Vaccination -> NoProvidersException.Vaccination
                 }
             })
         }

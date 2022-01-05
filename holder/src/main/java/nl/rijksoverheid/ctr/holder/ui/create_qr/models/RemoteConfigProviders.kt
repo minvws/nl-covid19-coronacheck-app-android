@@ -57,11 +57,11 @@ data class RemoteConfigProviders(
         val tls: ByteArray,
         val usage: List<String>,
     ) {
-        fun supports(originType: OriginType): Boolean {
+        fun supports(originType: RemoteOriginType): Boolean {
             return when (originType) {
-                OriginType.Recovery -> usage.contains("r")
-                OriginType.Test -> usage.contains("nt") || usage.contains("pt")
-                OriginType.Vaccination -> usage.contains("v")
+                RemoteOriginType.Recovery -> usage.contains("r")
+                RemoteOriginType.Test -> usage.contains("nt") || usage.contains("pt")
+                RemoteOriginType.Vaccination -> usage.contains("v")
             }
         }
         companion object {

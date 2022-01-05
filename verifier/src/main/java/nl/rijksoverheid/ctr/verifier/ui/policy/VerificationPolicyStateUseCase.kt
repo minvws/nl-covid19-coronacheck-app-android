@@ -24,6 +24,7 @@ class VerificationPolicyStateUseCaseImpl(
         return if (featureFlagUseCase.isVerificationPolicyEnabled()) {
             when (persistenceManager.getVerificationPolicySelected()) {
                 VerificationPolicy.VerificationPolicy2G -> VerificationPolicyState.Policy2G
+                VerificationPolicy.VerificationPolicy2GPlus -> VerificationPolicyState.Policy2GPlus
                 VerificationPolicy.VerificationPolicy3G -> VerificationPolicyState.Policy3G
                 else -> VerificationPolicyState.None
             }

@@ -61,6 +61,7 @@ val responsesModule = module {
                 PolymorphicJsonAdapterFactory.of(
                     RemoteEvent::class.java, "type"
                 )
+                    .withSubtype(RemoteEventVaccinationAssessment::class.java, "vaccinationassessment")
                     .withSubtype(RemoteEventPositiveTest::class.java, "positivetest")
                     .withSubtype(RemoteEventRecovery::class.java, "recovery")
                     .withSubtype(RemoteEventNegativeTest::class.java, "negativetest")
