@@ -7,10 +7,9 @@ import net.openid.appauth.*
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderStep
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.holder.ui.create_qr.api.MijnCnApiClient
 import nl.rijksoverheid.ctr.holder.ui.create_qr.mijncn.MijnCNTokenResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
-import org.json.JSONObject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -23,7 +22,7 @@ import kotlin.coroutines.suspendCoroutine
  *
  */
 class MijnCNAuthenticationRepository(
-    private val testProviderApiClient: TestProviderApiClient,
+    private val mijnCnApiClient: MijnCnApiClient,
     private val networkRequestResultFactory: NetworkRequestResultFactory
 ) {
 
@@ -84,7 +83,7 @@ class MijnCNAuthenticationRepository(
     private suspend fun retrieveAccessToken(tokenRequest: TokenRequest): NetworkRequestResult<MijnCNTokenResponse> {
         val result =
             networkRequestResultFactory.createResult(HolderStep.AccessTokensNetworkRequest) {
-                testProviderApiClient.getAccessToken(
+                mijnCnApiClient.getAccessToken(
                     url = tokenRequest.configuration.tokenEndpoint.toString(),
                     code = tokenRequest.authorizationCode ?: "",
                     grantType = tokenRequest.grantType,
