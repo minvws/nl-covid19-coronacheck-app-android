@@ -1,13 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -36,8 +32,6 @@ interface GetMijnCnEventsUsecase {
 class GetMijnCnEventsUsecaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase,
-    private val remoteEventUtil: RemoteEventUtil,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : GetMijnCnEventsUsecase {
 
     override suspend fun getEvents(
