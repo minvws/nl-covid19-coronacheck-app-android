@@ -135,7 +135,9 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                     ))
                 }
                 is VerifiedQrResultState.PersonalDataMismatch -> {
-//                    presentDialog()
+                    navigateSafety(VerifierQrScannerFragmentDirections.actionScanResultInvalid(
+                        invalidData = ScanResultInvalidData.Error(getString(R.string.verifier_result_denied_personal_data_mismatch_title))
+                    ))
                 }
             }
         })
