@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import nl.rijksoverheid.ctr.verifier.R
 
 /*
@@ -17,20 +18,27 @@ sealed class PaperScanResultFragmentData(
     @StringRes val description: Int,
     @StringRes val buttonText: Int,
     @StringRes val secondaryButtonText: Int,
-): Parcelable {
+    val previousScanResult: VerificationResult,
+) : Parcelable {
     @Parcelize
-    object ScanTest: PaperScanResultFragmentData(
+    data class ScanTest(
+        val previousScanTextResult: VerificationResult,
+    ) : PaperScanResultFragmentData(
         header = R.string.verifier_scannextinstruction_title_test,
         description = R.string.verifier_scannextinstruction_header_test,
         buttonText = R.string.verifier_scannextinstruction_button_scan_next_test,
         secondaryButtonText = R.string.verifier_scannextinstruction_button_deny_access_test,
+        previousScanResult = previousScanTextResult,
     )
 
     @Parcelize
-    object ScanVaccinationOrRecovery: PaperScanResultFragmentData(
+    data class ScanVaccinationOrRecovery(
+        val previousScanVaccinationOrRecoveryResult: VerificationResult,
+    ) : PaperScanResultFragmentData(
         header = R.string.verifier_scannextinstruction_title_supplemental,
         description = R.string.verifier_scannextinstruction_header_supplemental,
         buttonText = R.string.verifier_scannextinstruction_button_scan_next_supplemental,
         secondaryButtonText = R.string.verifier_scannextinstruction_button_deny_access_supplemental,
+        previousScanResult = previousScanVaccinationOrRecoveryResult,
     )
 }

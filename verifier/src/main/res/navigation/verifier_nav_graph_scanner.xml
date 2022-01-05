@@ -16,6 +16,12 @@
             app:argType="string"
             app:nullable="true" />
 
+        <argument
+            android:name="previousScanResult"
+            android:defaultValue="@null"
+            app:argType="nl.rijksoverheid.ctr.shared.models.VerificationResult"
+            app:nullable="true" />
+
         <action
             android:id="@+id/action_scan_result_invalid"
             app:destination="@id/nav_scan_result_invalid"
@@ -35,6 +41,14 @@
         <action
             android:id="@+id/action_scan_result_personal_details"
             app:destination="@id/nav_scan_result_personal_details"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+        <action
+            android:id="@+id/action_paper_scan_result"
+            app:destination="@id/nav_paper_scan_result"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"

@@ -32,7 +32,9 @@ class PaperScanResultFragment: Fragment(R.layout.fragment_paper_scan_result) {
         binding.bottom.customiseSecondaryButton { it.text = getString(navArgs.data.secondaryButtonText) }
 
         binding.bottom.setButtonClick {
-            navigateSafety(PaperScanResultFragmentDirections.actionNavQrScanner())
+            navigateSafety(PaperScanResultFragmentDirections.actionNavQrScanner(
+                previousScanResult = navArgs.data.previousScanResult,
+            ))
         }
 
         binding.bottom.setSecondaryButtonClick {
