@@ -51,7 +51,7 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
     ): Boolean {
         val now = OffsetDateTime.now(clock)
         val thresholdEndDate = now.plusDays(credentialRenewalDays)
-        return origin.validFrom < thresholdEndDate || origin.expirationTime > now
+        return origin.validFrom < thresholdEndDate && origin.expirationTime > now
     }
 }
 
