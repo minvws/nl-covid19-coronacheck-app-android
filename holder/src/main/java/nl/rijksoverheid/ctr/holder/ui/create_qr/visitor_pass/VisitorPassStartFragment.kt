@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentVisitorPassStartBinding
-import nl.rijksoverheid.ctr.holder.ui.create_qr.VerificationCodeFragmentData
+import nl.rijksoverheid.ctr.holder.ui.create_qr.InputTokenFragmentData
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
 /*
@@ -23,9 +23,9 @@ class VisitorPassStartFragment : Fragment(R.layout.fragment_visitor_pass_start) 
         val binding = FragmentVisitorPassStartBinding.bind(view)
         binding.button.setOnClickListener {
             navigateSafety(
-                VisitorPassStartFragmentDirections.actionVisitorPassCode(
+                VisitorPassStartFragmentDirections.actionInputToken(
                     toolbarTitle = getString(R.string.visitorpass_start_action),
-                    data = VerificationCodeFragmentData.VisitorPass,
+                    data = InputTokenFragmentData.VisitorPass,
                 )
             )
         }

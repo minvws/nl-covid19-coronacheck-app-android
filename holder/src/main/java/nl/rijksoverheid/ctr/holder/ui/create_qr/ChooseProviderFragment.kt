@@ -11,7 +11,6 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
@@ -36,9 +35,9 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
             R.string.choose_provider_commercial_title,
             null
         ) {
-            findNavController().navigate(ChooseProviderFragmentDirections.actionCommercialTestCode(
+            findNavController().navigate(ChooseProviderFragmentDirections.actionInputToken(
                 toolbarTitle = getString(R.string.commercial_test_type_code_toolbar_title),
-                data = VerificationCodeFragmentData.CommercialTest,
+                data = InputTokenFragmentData.CommercialTest,
             ))
         }
 

@@ -31,24 +31,24 @@ class VaccinationAssessmentInfoScreenUtilImpl(private val context: Context): Vac
         return InfoScreen(
             title = context.resources.getString(R.string.your_vaccination_explanation_toolbar_title),
             description = TextUtils.concat(
-                context.getString(R.string.your_vaccination_assessment_explanation_assessment_header),
+                context.getString(R.string.holder_event_vaccination_assessment_about_subtitle),
                 "<br/><br/>",
                 createLine(
-                    name = context.resources.getString(R.string.your_vaccination_explanation_name),
+                    name = context.resources.getString(R.string.holder_event_vaccination_assessment_about_name),
                     nameAnswer = fullName
                 ),
                 createLine(
-                    name = context.resources.getString(R.string.your_vaccination_explanation_birthday),
+                    name = context.resources.getString(R.string.holder_event_vaccination_assessment_about_date_of_birth),
                     nameAnswer = birthDate,
                 ),
                 "<br/>",
                 createLine(
-                    name = context.resources.getString(R.string.your_vaccination_assessment_explanation_assessment_date),
+                    name = context.resources.getString(R.string.holder_event_vaccination_assessment_about_date),
                     nameAnswer = event.vaccinationAssessment.assessmentDate?.formatDateTime(context) ?: "",
                 ),
                 "<br/>",
                 createLine(
-                    name = context.resources.getString(R.string.your_test_result_explanation_description_unique_identifier),
+                    name = context.resources.getString(R.string.holder_event_vaccination_assessment_about_unique_identifier),
                     nameAnswer = event.unique ?: ""
                 )
             ) as String

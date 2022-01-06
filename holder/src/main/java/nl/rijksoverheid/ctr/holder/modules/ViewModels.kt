@@ -41,6 +41,7 @@ val viewModels = module {
     viewModel(named("mijncn")) {
         LoginViewModel(get(named("mijncn")), get())
     }
+    viewModel<InputTokenViewModel> { InputTokenViewModelImpl(get(), get()) }
     viewModel { TokenQrViewModel(get()) }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<DeviceSecureViewModel> { DeviceSecureViewModelImpl(get(), get()) }
