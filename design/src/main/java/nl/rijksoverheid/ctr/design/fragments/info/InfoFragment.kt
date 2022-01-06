@@ -34,7 +34,7 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
                     val buttonData = infoFragmentData.buttonData
                     if (buttonData is ButtonData.NavigationButton) {
                         text = buttonData.text
-                        setOnClickListener { findNavControllerSafety()?.navigate(buttonData.navigationActionId) }
+                        setOnClickListener { findNavControllerSafety()?.navigate(buttonData.navigationActionId, buttonData.navigationArguments) }
                     }
                 }
             }

@@ -62,6 +62,13 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
+            <action android:id="@+id/action_input_token"
+                app:destination="@id/nav_input_token"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
         </fragment>
 
     </navigation>
@@ -546,6 +553,13 @@
         android:name="nl.rijksoverheid.ctr.design.fragments.info.InfoFragment"
         android:label="{toolbarTitle}"
         tools:layout="@layout/fragment_info">
+
+        <action android:id="@+id/action_input_token"
+            app:destination="@id/nav_input_token"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
         <argument
             android:name="toolbarTitle"
