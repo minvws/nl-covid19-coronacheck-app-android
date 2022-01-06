@@ -199,36 +199,8 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
                     originType = OriginType.Vaccination,
                     eventProviders = eventProviders,
                 ),
-                toolbarTitle = getCopyForOriginType(RemoteOriginType.Vaccination).toolbarTitle
+                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
             )
         )
     }
-
-    private fun getCopyForOriginType(originType: RemoteOriginType): GetEventsFragmentCopy {
-        when (originType) {
-            is RemoteOriginType.Test -> {
-                TODO("This logic is currently in ChooseProviderFragment but should be migrated here")
-            }
-            is RemoteOriginType.Vaccination -> {
-                return GetEventsFragmentCopy(
-                    title = getString(R.string.get_vaccination_title),
-                    description = getString(R.string.get_vaccination_description),
-                    toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
-                    hasNoEventsTitle = getString(R.string.no_vaccinations_title),
-                    hasNoEventsDescription = getString(R.string.no_vaccinations_description)
-                )
-            }
-            is RemoteOriginType.Recovery -> {
-                return GetEventsFragmentCopy(
-                    title = getString(R.string.get_recovery_title),
-                    description = getString(R.string.get_recovery_description),
-                    toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
-                    hasNoEventsTitle = getString(R.string.no_positive_test_result_title),
-                    hasNoEventsDescription = getString(R.string.no_positive_test_result_description)
-                )
-            }
-        }
-    }
-
-
 }
