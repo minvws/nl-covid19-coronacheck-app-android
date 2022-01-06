@@ -265,7 +265,6 @@ class GetDashboardItemsUseCaseImpl(
                     }
                 )
             }
-
         }
 
         // Always order by origin type
@@ -275,7 +274,7 @@ class GetDashboardItemsUseCaseImpl(
                     it.cards.first().originStates.first().origin.type.order
                 }
                 is DashboardItem.InfoItem.OriginInfoItem -> {
-                    it.originType.order
+                    0
                 }
                 else -> {
                     0
