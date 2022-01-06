@@ -34,7 +34,6 @@ import org.koin.dsl.module
 val viewModels = module {
     viewModel<QrCodesViewModel> { QrCodesViewModelImpl(get(), get()) }
     viewModel<HolderMainActivityViewModel> { HolderMainActivityViewModelImpl() }
-    viewModel<VerificationCodeViewModel> { VerificationCodeViewModelImpl(get(), get()) }
     viewModel(named("digid")) {
         LoginViewModel(get(named("digid")), get())
     }
