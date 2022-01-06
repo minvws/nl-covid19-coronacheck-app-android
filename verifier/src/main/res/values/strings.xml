@@ -209,8 +209,9 @@
   <string name="scan_log_list_2g_plus">2G+</string>
   <string name="verifier_result_access_title_2g_plus">2G+ controle klaar</string>
   <string name="verifier_risksetting_2g_plus_subtitle">Je kunt alleen toegang geven aan bezoekers met een vaccinatie- of herstelbewijs én een testbewijs.</string>
-  <string name="verifier_start_scan_qr_policy_indication_2g_plus"><b>2G+</b>toegang ingesteld</string>
+  <string name="verifier_start_scan_qr_policy_indication_2g_plus"><b>2G+</b> toegang ingesteld</string>
   <string name="verifier_scanner_policy_indication_2g_plus">2G+ toegang</string>
   <string name="verifier_risksetting_changeselection_2g_plus">2G+ toegang ingesteld</string>
   <string name="verifier_result_denied_personal_data_mismatch_title">De QR-codes hebben niet dezelfde persoonsgegevens</string>
+  <string name="verifier_risksetting_2g_plus_title">2G+ toegang</string>
 </resources>
