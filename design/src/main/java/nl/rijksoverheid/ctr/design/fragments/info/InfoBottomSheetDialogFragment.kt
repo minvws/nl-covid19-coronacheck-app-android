@@ -80,7 +80,7 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
             is InfoFragmentData.TitleDescriptionWithButton -> {
                 binding.button.visibility = View.VISIBLE
                 binding.button.apply {
-                    val buttonData = expandedBottomSheetData.buttonData
+                    val buttonData = expandedBottomSheetData.secondaryButtonData
                     if (buttonData is ButtonData.LinkButton) {
                         text = buttonData.text
                         setOnClickListener { buttonData.link.launchUrl(context) }

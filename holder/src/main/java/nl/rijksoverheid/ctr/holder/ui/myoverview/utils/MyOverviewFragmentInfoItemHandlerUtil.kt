@@ -20,7 +20,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirection
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.utils.IntentUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -204,10 +204,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 descriptionData = DescriptionData(
                     htmlText = R.string.holder_completecertificate_body
                 ),
-                buttonData = ButtonData.NavigationButton(
-                    text = myOverviewFragment.getString(R.string.holder_completecertificate_button_fetchnegativetest),
-                    navigationActionId = navigationDirection.actionId,
-                    navigationArguments = navigationDirection.arguments
+                secondaryButtonData = ButtonData.LinkButton(
+                    text = myOverviewFragment.getString(R.string.holder_completecertificate_button_makeappointement),
+                    link = myOverviewFragment.getString(R.string.url_make_appointment)
                 )
             )
         )

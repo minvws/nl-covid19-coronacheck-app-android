@@ -5,12 +5,11 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
-import nl.rijksoverheid.ctr.holder.launchUrl
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
@@ -32,6 +31,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
+    private val intentUtil: IntentUtil by inject()
 
     private val getEventsViewModel: GetEventsViewModel by viewModel()
 
@@ -226,7 +226,10 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             onButtonClickWithRetryAction()
         }
         binding.noDigidButton.setOnClickListener {
-            context?.launchUrl(getString(R.string.no_digid_url))
+            intentUtil.openUrl(
+                context = requireContext(),
+                url = getString(R.string.no_digid_url)
+            )
         }
     }
 
