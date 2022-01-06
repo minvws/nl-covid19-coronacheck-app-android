@@ -71,7 +71,6 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
-
         mijnCnViewModel.loginResultLiveData.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is LoginResult.Success -> {
@@ -185,7 +184,6 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
         })
 
     }
-
 
     private fun navigateToYourEvents(
         signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>,
