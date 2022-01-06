@@ -364,7 +364,7 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/action_no_digid"
+            android:id="@+id/action_mijn_cn"
             app:destination="@id/nav_mijn_cn"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"

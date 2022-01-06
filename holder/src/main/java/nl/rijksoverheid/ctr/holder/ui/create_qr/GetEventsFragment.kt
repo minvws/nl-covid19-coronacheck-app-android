@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
 import nl.rijksoverheid.ctr.holder.launchUrl
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.LoginResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
@@ -31,6 +32,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
     private val getEventsViewModel: GetEventsViewModel by viewModel()
 
@@ -227,7 +229,11 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         binding.noDigidButton.setOnClickListener {
             when (args.originType) {
                 is RemoteOriginType.Vaccination -> {
-                    navigateSafety(GetEventsFragmentDirections.actionNoDigid())
+                    if (cachedAppConfigUseCase.getCachedAppConfig().mijnCnEnabled) {
+                        navigateSafety(GetEventsFragmentDirections.actionMijnCn())
+                    } else {
+                        context?.launchUrl(getString(R.string.no_digid_url))
+                    }
                 }
                 is RemoteOriginType.Recovery -> {
                     context?.launchUrl(getString(R.string.no_digid_url))
