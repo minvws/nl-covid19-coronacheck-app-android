@@ -637,5 +637,5 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijkso
   <string name="holder_dashboard_visitorpasseexpiredbanner_title">Je bezoekersbewijs is verlopen</string>
   <string name="holder_dashboard_visitorpassexpired_title">Verlopen bezoekersbewijs</string>
   <string name="holder_dashboard_visitorpassexpired_body"><![CDATA[Een bezoekersbewijs is geldig tot %d dagen na de beoordeling van je vaccinatie. Blijf je langer in Nederland? Dan kun je opnieuw een bezoekersbewijs aanvragen. Ga voor meer informatie naar <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijksoverheid.nl/bezoekersbewijs</a>.]]></string>
-  <string name="general_vaccinationAssessment">vaccinatie review </string>
+  <string name="general_vaccinationAssessment">vaccinatie review</string>
 </resources>
