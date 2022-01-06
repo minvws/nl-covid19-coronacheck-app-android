@@ -227,17 +227,12 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             onButtonClickWithRetryAction()
         }
         binding.noDigidButton.setOnClickListener {
-            when (args.originType) {
-                is RemoteOriginType.Vaccination -> {
-                    if (cachedAppConfigUseCase.getCachedAppConfig().mijnCnEnabled) {
-                        navigateSafety(GetEventsFragmentDirections.actionMijnCn())
-                    } else {
-                        context?.launchUrl(getString(R.string.no_digid_url))
-                    }
-                }
-                is RemoteOriginType.Recovery -> {
-                    context?.launchUrl(getString(R.string.no_digid_url))
-                }
+            if (cachedAppConfigUseCase.getCachedAppConfig().mijnCnEnabled &&
+                args.originType == RemoteOriginType.Vaccination
+            ) {
+                navigateSafety(GetEventsFragmentDirections.actionMijnCn())
+            } else {
+                context?.launchUrl(getString(R.string.no_digid_url))
             }
         }
     }

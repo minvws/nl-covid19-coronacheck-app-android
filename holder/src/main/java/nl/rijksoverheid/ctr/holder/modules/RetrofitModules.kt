@@ -30,8 +30,6 @@ fun retrofitModule(baseUrl: String) = module {
                         .addTrustedCertificate(EV_ROOT_CA.decodeCertificatePem())
                         .addTrustedCertificate(PRIVATE_ROOT_CA.decodeCertificatePem())
                         .addTrustedCertificate(DIGICERT_BTC_ROOT_CA.decodeCertificatePem())
-                        .addTrustedCertificate(EMAX_ROOT_CA.decodeCertificatePem())
-                        .addTrustedCertificate(BEARINGPOINT_ROOT_CA.decodeCertificatePem())
                         .build()
 
                     sslSocketFactory(
@@ -55,7 +53,24 @@ fun retrofitModule(baseUrl: String) = module {
     }
 
     single {
+        val okHttpClient = get<OkHttpClient>(OkHttpClient::class)
+            .newBuilder()
+            .apply {
+                if (BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS) {
+                    val handshakeCertificates = HandshakeCertificates.Builder()
+                        .addTrustedCertificate(EMAX_ROOT_CA.decodeCertificatePem())
+                        .addTrustedCertificate(BEARINGPOINT_ROOT_CA.decodeCertificatePem())
+                        .build()
+
+                    sslSocketFactory(
+                        handshakeCertificates.sslSocketFactory(),
+                        handshakeCertificates.trustManager
+                    )
+                }
+            }.build()
+
         Retrofit.Builder()
+            .client(okHttpClient)
             .baseUrl(baseUrl)
             .addConverterFactory(MoshiConverterFactory.create(get()))
             .build()
