@@ -7,6 +7,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItemUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -48,4 +50,5 @@ fun utilsModule(versionCode: Int) = module {
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl() }
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
+    factory<MyOverviewInfoCardItemUtil> { MyOverviewInfoCardItemUtilImpl() }
 }

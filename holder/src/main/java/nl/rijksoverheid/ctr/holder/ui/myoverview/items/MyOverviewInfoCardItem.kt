@@ -8,6 +8,8 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewInfoCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,7 +23,9 @@ class MyOverviewInfoCardItem(
     private val onButtonClick: (infoItem: DashboardItem.InfoItem) -> Unit,
     private val onDismiss: (infoCardItem: MyOverviewInfoCardItem, infoItem: DashboardItem.InfoItem) -> Unit = { _, _ -> }
 ) :
-    BindableItem<ItemMyOverviewInfoCardBinding>(R.layout.item_my_overview_info_card.toLong()) {
+    BindableItem<ItemMyOverviewInfoCardBinding>(R.layout.item_my_overview_info_card.toLong()), KoinComponent {
+
+    private val util: MyOverviewInfoCardItemUtil by inject()
 
     override fun bind(viewBinding: ItemMyOverviewInfoCardBinding, position: Int) {
         if (infoItem.isDismissible) {
@@ -63,8 +67,7 @@ class MyOverviewInfoCardItem(
                 viewBinding.text.setText(R.string.qr_card_expired)
             }
             is DashboardItem.InfoItem.OriginInfoItem -> {
-                viewBinding.text.text =
-                    getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
+                viewBinding.text.text = util.getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
             }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem -> {
                 viewBinding.text.text =
@@ -84,31 +87,6 @@ class MyOverviewInfoCardItem(
 
         viewBinding.button.setOnClickListener {
             onButtonClick.invoke(infoItem)
-        }
-    }
-
-    private fun getOriginInfoText(
-        infoItem: DashboardItem.InfoItem.OriginInfoItem,
-        context: Context
-    ): String {
-        val originString = when (infoItem.originType) {
-            is OriginType.Vaccination -> context.getString(R.string.type_vaccination)
-            is OriginType.Recovery -> context.getString(R.string.type_recovery)
-            is OriginType.Test -> context.getString(R.string.type_test)
-            is OriginType.VaccinationAssessment -> context.getString(R.string.type_vaccination)
-        }
-
-        return when (infoItem.greenCardType) {
-            is GreenCardType.Domestic -> {
-                context.getString(
-                    R.string.my_overview_not_valid_domestic_but_is_in_eu, originString
-                )
-            }
-            is GreenCardType.Eu -> {
-                context.getString(
-                    R.string.my_overview_not_valid_eu_but_is_in_domestic, originString
-                )
-            }
         }
     }
 
