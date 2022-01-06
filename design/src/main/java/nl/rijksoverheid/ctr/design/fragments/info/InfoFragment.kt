@@ -57,7 +57,21 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
                 }
 
                 infoFragmentData.primaryButtonData?.let { buttonData ->
-
+                    binding.bottom.visibility = View.VISIBLE
+                    binding.bottom.setButtonText(buttonData.text)
+                    binding.bottom.setButtonClick {
+                        when (buttonData) {
+                            is ButtonData.NavigationButton -> {
+                                findNavControllerSafety()?.navigate(buttonData.navigationActionId, buttonData.navigationArguments)
+                            }
+                            is ButtonData.LinkButton -> {
+                                intentUtil.openUrl(
+                                    context = requireContext(),
+                                    url = buttonData.link
+                                )
+                            }
+                        }
+                    }
                 }
             }
             is InfoFragmentData.TitleDescriptionWithFooter -> {
