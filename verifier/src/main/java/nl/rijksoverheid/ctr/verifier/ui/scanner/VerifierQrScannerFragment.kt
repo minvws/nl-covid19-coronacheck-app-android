@@ -121,6 +121,25 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                     R.string.scan_result_unknown_qr_dialog_title,
                     getString(R.string.scan_result_unknown_qr_dialog_message)
                 )
+                is VerifiedQrResultState.PartiallyValid -> {
+                    navigateSafety(VerifierQrScannerFragmentDirections.actionDccScanResult(
+                        data = if (qrResultState.isTestResult) {
+                            DccScanResultFragmentData.ScanVaccinationOrRecovery(
+                                previousScanVaccinationOrRecoveryResult = qrResultState.verifiedQr,
+                            )
+                        } else {
+                            DccScanResultFragmentData.ScanTest(
+                                previousScanTextResult = qrResultState.verifiedQr,
+                            )
+                        }
+                    ))
+                }
+                is VerifiedQrResultState.PersonalDataMismatch -> {
+                    navigateSafety(VerifierQrScannerFragmentDirections.actionScanResultInvalid(
+                        invalidData = ScanResultInvalidData.Error("personal data mismatch"),
+                        title = getString(R.string.verifier_result_denied_personal_data_mismatch_title),
+                    ))
+                }
             }
         })
     }

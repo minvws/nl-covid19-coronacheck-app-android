@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.design.views
 
 import android.content.Context
-import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -117,7 +116,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
         binding.button.text = text
     }
 
-    private fun setSecondaryButtonText(text: String) {
+    fun setSecondaryButtonText(text: String) {
         binding.secondaryButton.text = text
         binding.secondaryButton.visibility = View.VISIBLE
     }
