@@ -46,7 +46,7 @@ class YourEventsFragmentUtilImpl: YourEventsFragmentUtil {
                         R.string.rule_engine_no_test_origin_description_vaccination
                     }
                     is OriginType.VaccinationAssessment -> {
-                        R.string.rule_engine_no_test_origin_description_vaccination_assessment
+                        R.string.general_vaccinationAssessment
                     }
                 }
             }
