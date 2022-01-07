@@ -29,7 +29,7 @@ class NetworkRequestResultFactoryTest {
     private val TestStep = Step(1)
     private lateinit var mockWebServer: MockWebServer
     private lateinit var testApi: TestApi
-    private lateinit var digidErrorConverter: Converter<ResponseBody, CoronaCheckErrorResponse>
+    private lateinit var errorResponseBodyConverter: Converter<ResponseBody, CoronaCheckErrorResponse>
     private lateinit var mijnCnErrorConverter: Converter<ResponseBody, MijnCnErrorResponse>
 
     @Before
@@ -43,7 +43,7 @@ class NetworkRequestResultFactoryTest {
             .baseUrl(mockWebServer.url("/"))
             .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().build()))
             .build()
-        digidErrorConverter = retrofit.responseBodyConverter(CoronaCheckErrorResponse::class.java, emptyArray())
+        errorResponseBodyConverter = retrofit.responseBodyConverter(CoronaCheckErrorResponse::class.java, emptyArray())
         mijnCnErrorConverter = retrofit.responseBodyConverter(MijnCnErrorResponse::class.java, emptyArray())
         testApi = retrofit.create(TestApi::class.java)
     }
@@ -56,7 +56,7 @@ class NetworkRequestResultFactoryTest {
                 .setResponseCode(200)
         )
 
-        val networkRequestResultFactory = NetworkRequestResultFactory(digidErrorConverter, getAndroidUtil(true), mijnCnErrorConverter)
+        val networkRequestResultFactory = NetworkRequestResultFactory(errorResponseBodyConverter, getAndroidUtil(true), mijnCnErrorConverter)
 
         val result = networkRequestResultFactory.createResult(
             TestStep
@@ -75,7 +75,7 @@ class NetworkRequestResultFactoryTest {
                 .setResponseCode(404)
         )
 
-        val networkRequestResultFactory = NetworkRequestResultFactory(digidErrorConverter, getAndroidUtil(true), mijnCnErrorConverter)
+        val networkRequestResultFactory = NetworkRequestResultFactory(errorResponseBodyConverter, getAndroidUtil(true), mijnCnErrorConverter)
 
         val result = networkRequestResultFactory.createResult(
             TestStep
@@ -94,7 +94,7 @@ class NetworkRequestResultFactoryTest {
                 .setResponseCode(404)
         )
 
-        val networkRequestResultFactory = NetworkRequestResultFactory(digidErrorConverter, getAndroidUtil(true), mijnCnErrorConverter)
+        val networkRequestResultFactory = NetworkRequestResultFactory(errorResponseBodyConverter, getAndroidUtil(true), mijnCnErrorConverter)
 
         val result = networkRequestResultFactory.createResult(
             step = TestStep,
@@ -114,7 +114,7 @@ class NetworkRequestResultFactoryTest {
                 .setResponseCode(404)
         )
 
-        val networkRequestResultFactory = NetworkRequestResultFactory(digidErrorConverter, getAndroidUtil(true), mijnCnErrorConverter)
+        val networkRequestResultFactory = NetworkRequestResultFactory(errorResponseBodyConverter, getAndroidUtil(true), mijnCnErrorConverter)
 
         val result = networkRequestResultFactory.createResult(
             TestStep
@@ -134,7 +134,7 @@ class NetworkRequestResultFactoryTest {
                 .setSocketPolicy(SocketPolicy.NO_RESPONSE)
         )
 
-        val networkRequestResultFactory = NetworkRequestResultFactory(digidErrorConverter, getAndroidUtil(true), mijnCnErrorConverter)
+        val networkRequestResultFactory = NetworkRequestResultFactory(errorResponseBodyConverter, getAndroidUtil(true), mijnCnErrorConverter)
 
         val result = networkRequestResultFactory.createResult(
             TestStep
@@ -153,7 +153,7 @@ class NetworkRequestResultFactoryTest {
                 .setResponseCode(200)
         )
 
-        val networkRequestResultFactory = NetworkRequestResultFactory(digidErrorConverter, getAndroidUtil(true), mijnCnErrorConverter)
+        val networkRequestResultFactory = NetworkRequestResultFactory(errorResponseBodyConverter, getAndroidUtil(true), mijnCnErrorConverter)
 
         val result = networkRequestResultFactory.createResult(
             TestStep
@@ -172,7 +172,7 @@ class NetworkRequestResultFactoryTest {
                 .setResponseCode(200)
         )
 
-        val networkRequestResultFactory = NetworkRequestResultFactory(digidErrorConverter, getAndroidUtil(false), mijnCnErrorConverter)
+        val networkRequestResultFactory = NetworkRequestResultFactory(errorResponseBodyConverter, getAndroidUtil(false), mijnCnErrorConverter)
 
         val result = networkRequestResultFactory.createResult(
             TestStep
