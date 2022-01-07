@@ -381,7 +381,7 @@
   <string name="dialog_faultyvaccination28June_refresh_error_message">Please retrieve your details again via the app.</string>
   <string name="my_overview_qr_placeholder_header">Find your Dutch certificate here later</string>
   <string name="my_overview_qr_placeholder_header_eu">Find your international certificate here later</string>
-  <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href=\"https://coronacheck.nl/en/testafspraak-in-app\">affiliated test location</a>.<br/>The app generates a certificate for the Netherlands and one for other countries.]]></string>
+  <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href=\"https://coronacheck.nl/en/testafspraak-in-app\">affiliated test location</a>.]]></string>
   <string name="my_overview_qr_placeholder_description_eu">Are you abroad, or planning to cross the border? Then always use your international certificate. Please check before leaving which certificate you need.</string>
   <string name="my_overview_qr_placeholder_button_eu">Which certificate is needed where I\'m heading?</string>
   <string name="my_overview_qr_placeholder_button_link_eu">https://www.coronacheck.nl/en/wegwijzer</string>
@@ -600,7 +600,7 @@
   <string name="holder_event_vaccination_assessment_element_title">Vaccinatie review</string>
   <string name="holder_event_vaccination_assessment_nolist_title">Geen vaccinatie review beschikbaar</string>
   <string name="holder_event_vaccination_assessment_nolist_message">Er zijn geen gegevens over je vaccinatie review beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a></string>
-  <string name="holder_event_vaccination_assessment_nolist_action">Naar mijn bewijzen</string>
+  <string name="holder_event_vaccination_assessment_nolist_action">To my certificates</string>
   <string name="visitorpass_start_toolbar_title">Bezoekersbewijs</string>
   <string name="general_visitorPass">bezoekersbewijs</string>
   <string name="visitorpass_code_error_invalid_code">Deze reviewcode is verlopen</string>
@@ -629,8 +629,8 @@
   <string name="holder_dashboard_visitorpassincompletebanner_title">Je vaccinatie review is toegevoegd. Maak je bezoekersbewijs compleet met je negatieve corona testuitslag</string>
   <string name="holder_dashboard_visitorpassincompletebanner_button_makecomplete">Maak bewijs compleet</string>
   <string name="holder_dashboard_visitorPassInvalidOutsideNLBanner_title">Je bezoekersbewijs is niet geldig buiten Nederland</string>
-  <string name="holder_dashboard_visitorpassmodal_international_title">Over je bezoekersbewijs</string>
-  <string name="holder_dashboard_visitorpassmodal_international_body"><![CDATA[Je bezoekersbewijs is alleen in Nederland geldig. Wil je naar een ander land? Check de regels van het land dat je wilt bezoeken.
+  <string name="holder_notvalidinthisregionmodal_visitorpass_international_title">Over je bezoekersbewijs</string>
+  <string name="holder_notvalidinthisregionmodal_visitorpass_international_body"><![CDATA[Je bezoekersbewijs is alleen in Nederland geldig. Wil je naar een ander land? Check de regels van het land dat je wilt bezoeken.
 <br/><br/>
 <b>Meer weten?</b><br/>
 Lees meer op <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijksoverheid.nl/bezoekersbewijs</a>.]]></string>
@@ -638,4 +638,13 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijkso
   <string name="holder_dashboard_visitorpassexpired_title">Verlopen bezoekersbewijs</string>
   <string name="holder_dashboard_visitorpassexpired_body"><![CDATA[Een bezoekersbewijs is geldig tot %d dagen na de beoordeling van je vaccinatie. Blijf je langer in Nederland? Dan kun je opnieuw een bezoekersbewijs aanvragen. Ga voor meer informatie naar <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijksoverheid.nl/bezoekersbewijs</a>.]]></string>
   <string name="general_vaccinationAssessment">vaccinatie review</string>
+  <string name="holder_dashboard_originExpiredBanner_domesticVaccine_title">Je Nederlandse vaccinatiebewijs is verlopen</string>
+  <string name="holder_dashboard_originExpiredBanner_domesticRecovery_title">Je Nederlandse herstelbewijs is verlopen</string>
+  <string name="holder_dashboard_originExpiredBanner_domesticTest_title">Je Nederlandse testbewijs is verlopen</string>
+  <string name="holder_dashboard_originExpiredBanner_visitorPass_title">Je bezoekersbewijs is verlopen</string>
+  <string name="holder_dashboard_originExpiredBanner_internationalVaccine_title">Je internationale vaccinatiebewijs is verlopen</string>
+  <string name="holder_dashboard_originExpiredBanner_internationalRecovery_title">Je internationale herstelbewijs is verlopen</string>
+  <string name="holder_dashboard_originExpiredBanner_internationalTest_title">Je internationale testbewijs is verlopen</string>
+  <string name="holder_expiredDomesticVaccinationModal_title">Verlopen vaccinatiebewijs</string>
+  <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Boostervaccinatie toevoegen</string>
 </resources>
