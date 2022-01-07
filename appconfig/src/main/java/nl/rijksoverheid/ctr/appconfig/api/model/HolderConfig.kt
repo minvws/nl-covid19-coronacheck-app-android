@@ -139,7 +139,7 @@ data class HolderConfig(
             holderEnableVerificationPolicyVersion = 0,
             visitorPassEnabled = visitorPassEnabled,
             vaccinationAssessmentEventValidityDays = vaccinationAssessmentEventValidityDays,
-            mijnCnEnabled
+            mijnCnEnabled = mijnCnEnabled
         )
     }
 }
