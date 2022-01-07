@@ -40,6 +40,7 @@ interface TestProviderApiClient {
 
     @POST
     @SignedRequest
+    @Headers("User-Agent: ") // Necessary for BES Islands events
     suspend fun getEvents(
         @Url url: String,
         @Header("Authorization") authorization: String,
