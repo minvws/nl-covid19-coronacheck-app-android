@@ -21,16 +21,16 @@ class LastVaccinationDoseUtilImplTest {
 
         val personalVaccination = RemoteEventTestFactory.createRemoteVaccination(
             completedByPersonalStatement = true,
-            completionReason = "priorevent"
+            completionReason = "first-vaccination-elsewhere"
         )
         val medicalVaccination = RemoteEventTestFactory.createRemoteVaccination(
             completedByMedicalStatement = true,
-            completionReason = "priorevent"
+            completionReason = "first-vaccination-elsewhere"
         )
         val allStatementVaccination = RemoteEventTestFactory.createRemoteVaccination(
             completedByPersonalStatement = true,
             completedByMedicalStatement = true,
-            completionReason = "priorevent"
+            completionReason = "first-vaccination-elsewhere"
         )
 
         assertEquals(util.getIsLastDoseAnswer(personalVaccination), answer)

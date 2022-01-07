@@ -16,7 +16,7 @@ class LastVaccinationDoseUtilImpl(
     override fun getIsLastDoseAnswer(event: RemoteEventVaccination) =
         event.vaccination?.run {
             when {
-                completed() && completionReason == "priorevent" -> resources.getString(R.string.your_vaccination_explanation_last_dose_yes_prior_event)
+                completed() && completionReason == "first-vaccination-elsewhere" -> resources.getString(R.string.your_vaccination_explanation_last_dose_yes_prior_event)
                 completed() && completionReason == "recovery" -> resources.getString(R.string.your_vaccination_explanation_last_dose_yes_recovery)
                 completed() && completionReason.isNullOrEmpty() -> resources.getString(R.string.your_vaccination_explanation_last_dose_yes)
                 else -> ""
