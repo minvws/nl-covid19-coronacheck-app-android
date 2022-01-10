@@ -594,13 +594,6 @@ fun fakeQrCodeUsecase() = object : QrCodeUseCase {
     }
 }
 
-fun fakeEventGroupEntityUtil(remoteEventVaccinations: List<RemoteEventVaccination> = listOf()) =
-    object : EventGroupEntityUtil {
-        override suspend fun amountOfVaccinationEvents(eventGroupEntities: List<EventGroupEntity>): Int {
-            return remoteEventVaccinations.size
-        }
-    }
-
 fun fakeRemoteEventUtil(
     getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()
 ) = object : RemoteEventUtil {

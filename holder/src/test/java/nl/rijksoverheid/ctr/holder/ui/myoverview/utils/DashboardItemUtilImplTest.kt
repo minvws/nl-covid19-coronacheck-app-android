@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -13,7 +12,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.HeaderItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
@@ -34,7 +32,6 @@ class DashboardItemUtilImplTest {
                 isExpired = false
             ),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
             featureFlagUseCase = mockk(),
             appConfigUseCase = mockk(),
@@ -57,7 +54,6 @@ class DashboardItemUtilImplTest {
                 isExpired = false
             ),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
             featureFlagUseCase = mockk(),
             appConfigUseCase = mockk(),
@@ -80,7 +76,6 @@ class DashboardItemUtilImplTest {
                 isExpired = false
             ),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
             featureFlagUseCase = mockk(),
             appConfigUseCase = mockk(),
@@ -103,7 +98,6 @@ class DashboardItemUtilImplTest {
                 isExpired = false
             ),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
             featureFlagUseCase = mockk(),
             appConfigUseCase = mockk(),
@@ -126,7 +120,6 @@ class DashboardItemUtilImplTest {
             ),
             greenCardUtil = fakeGreenCardUtil(),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
             featureFlagUseCase = mockk(),
             appConfigUseCase = mockk(),
@@ -150,7 +143,6 @@ class DashboardItemUtilImplTest {
                 isExpired = false
             ),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
             featureFlagUseCase = mockk(),
             appConfigUseCase = mockk(),
@@ -170,7 +162,6 @@ class DashboardItemUtilImplTest {
             clockDeviationUseCase = fakeClockDevationUseCase(),
             greenCardUtil = fakeGreenCardUtil(),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
             featureFlagUseCase = mockk(),
             appConfigUseCase = mockk(),
@@ -192,7 +183,6 @@ class DashboardItemUtilImplTest {
                 isExpired = true
             ),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
             featureFlagUseCase = mockk(),
             appConfigUseCase = mockk(),
@@ -212,7 +202,6 @@ class DashboardItemUtilImplTest {
             clockDeviationUseCase = fakeClockDevationUseCase(),
             greenCardUtil = fakeGreenCardUtil(),
             persistenceManager = fakePersistenceManager(),
-            eventGroupEntityUtil = fakeEventGroupEntityUtil(),
             appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
             featureFlagUseCase = mockk(),
             appConfigUseCase = mockk(),
@@ -229,7 +218,7 @@ class DashboardItemUtilImplTest {
     @Test
     fun `multiple vaccination card items should be combined into 1`() {
 
-        val util = DashboardItemUtilImpl(mockk(), mockk(), mockk(), mockk(),mockk(), mockk(), mockk(),mockk())
+        val util = DashboardItemUtilImpl(mockk(), mockk(), mockk(), mockk(),mockk(), mockk(), mockk())
 
         val card1 = createCardItem(OriginType.Vaccination)
         val card2 = createCardItem(OriginType.Vaccination)
@@ -421,7 +410,7 @@ class DashboardItemUtilImplTest {
         every { buildConfigUseCase.getVersionCode() } answers { 1 }
 
         val util = DashboardItemUtilImpl(
-            mockk(), mockk(), mockk(), mockk(), mockk(),
+            mockk(), mockk(), mockk(), mockk(),
             appConfigUseCase = mockk { every { getCachedAppConfig().recommendedVersion } returns 2 },
             featureFlagUseCase = featureFlagUseCase,
             buildConfigUseCase = buildConfigUseCase
@@ -439,7 +428,7 @@ class DashboardItemUtilImplTest {
         every { buildConfigUseCase.getVersionCode() } answers { 1 }
 
         val util = DashboardItemUtilImpl(
-            mockk(), mockk(), mockk(), mockk(), mockk(),
+            mockk(), mockk(), mockk(), mockk(),
             appConfigUseCase = mockk { every { getCachedAppConfig().recommendedVersion } returns 1 },
             buildConfigUseCase = buildConfigUseCase,
             featureFlagUseCase = featureFlagUseCase
@@ -457,7 +446,7 @@ class DashboardItemUtilImplTest {
         every { buildConfigUseCase.getVersionCode() } answers { 2 }
 
         val util = DashboardItemUtilImpl(
-            mockk(), mockk(), mockk(), mockk(), mockk(),
+            mockk(), mockk(), mockk(), mockk(),
             appConfigUseCase = mockk { every { getCachedAppConfig().recommendedVersion } returns 1 },
             featureFlagUseCase = featureFlagUseCase,
             buildConfigUseCase = buildConfigUseCase,
@@ -480,7 +469,7 @@ class DashboardItemUtilImplTest {
         every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { false }
 
         val util = DashboardItemUtilImpl(
-            mockk(), mockk(), persistenceManager = persistenceManager, mockk(), mockk(),
+            mockk(), mockk(), persistenceManager = persistenceManager, mockk(),
             appConfigUseCase = cachedAppConfigUseCase,
             buildConfigUseCase = buildConfigUseCase,
             featureFlagUseCase = featureFlagUseCase
@@ -503,7 +492,7 @@ class DashboardItemUtilImplTest {
         every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { false }
 
         val util = DashboardItemUtilImpl(
-            mockk(), mockk(), persistenceManager = persistenceManager, mockk(), mockk(),
+            mockk(), mockk(), persistenceManager = persistenceManager, mockk(),
             appConfigUseCase = cachedAppConfigUseCase,
             buildConfigUseCase = buildConfigUseCase,
             featureFlagUseCase = featureFlagUseCase
@@ -526,13 +515,81 @@ class DashboardItemUtilImplTest {
         every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { true }
 
         val util = DashboardItemUtilImpl(
-            mockk(), mockk(), persistenceManager = persistenceManager, mockk(), mockk(),
+            mockk(), mockk(), persistenceManager = persistenceManager, mockk(),
             appConfigUseCase = cachedAppConfigUseCase,
             buildConfigUseCase = buildConfigUseCase,
             featureFlagUseCase = featureFlagUseCase
         )
 
         assertFalse(util.shouldShowNewValidityItem())
+    }
+
+    @Test
+    fun `shouldShowVisitorPassIncompleteItem returns true if has vaccination assessment event and no vaccination assessment origin`() {
+        val featureFlagUseCase: FeatureFlagUseCase = mockk()
+        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
+
+        val buildConfigUseCase: BuildConfigUseCase = mockk()
+        every { buildConfigUseCase.getVersionCode() } answers { 2 }
+
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
+        val persistenceManager = mockk<PersistenceManager>()
+        every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { true }
+        every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { true }
+
+        val event = getEvent(
+            originType = OriginType.VaccinationAssessment
+        )
+
+        val util = DashboardItemUtilImpl(
+            mockk(), mockk(), persistenceManager = persistenceManager, mockk(),
+            appConfigUseCase = cachedAppConfigUseCase,
+            buildConfigUseCase = buildConfigUseCase,
+            featureFlagUseCase = featureFlagUseCase
+        )
+
+        val shouldShowVisitorPassIncompleteItem = util.shouldShowVisitorPassIncompleteItem(
+            events = listOf(event),
+            domesticGreenCards = listOf()
+        )
+
+        assertTrue(shouldShowVisitorPassIncompleteItem)
+    }
+
+    @Test
+    fun `shouldShowVisitorPassIncompleteItem returns false if has vaccination assessment event and vaccination assessment origin`() {
+        val featureFlagUseCase: FeatureFlagUseCase = mockk()
+        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
+
+        val buildConfigUseCase: BuildConfigUseCase = mockk()
+        every { buildConfigUseCase.getVersionCode() } answers { 2 }
+
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
+        val persistenceManager = mockk<PersistenceManager>()
+        every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { true }
+        every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { true }
+
+        val event = getEvent(
+            originType = OriginType.VaccinationAssessment
+        )
+
+        val greenCard = getGreenCard(
+            originType = OriginType.VaccinationAssessment
+        )
+
+        val util = DashboardItemUtilImpl(
+            mockk(), mockk(), persistenceManager = persistenceManager, mockk(),
+            appConfigUseCase = cachedAppConfigUseCase,
+            buildConfigUseCase = buildConfigUseCase,
+            featureFlagUseCase = featureFlagUseCase
+        )
+
+        val shouldShowVisitorPassIncompleteItem = util.shouldShowVisitorPassIncompleteItem(
+            events = listOf(event),
+            domesticGreenCards = listOf(greenCard)
+        )
+
+        assertFalse(shouldShowVisitorPassIncompleteItem)
     }
 
     private fun createCardItem(originType: OriginType) = CardItem(
@@ -564,10 +621,33 @@ class DashboardItemUtilImplTest {
         persistenceManager = fakePersistenceManager(
             hasDismissedUnsecureDeviceDialog = false
         ),
-        eventGroupEntityUtil = fakeEventGroupEntityUtil(),
         appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
         featureFlagUseCase = featureFlagUseCase,
         appConfigUseCase = mockk(),
         buildConfigUseCase = mockk()
+    )
+
+    private fun getEvent(originType: OriginType) = EventGroupEntity(
+        id = 0,
+        walletId = 0,
+        providerIdentifier = "1",
+        type = originType,
+        maxIssuedAt = OffsetDateTime.now(),
+        jsonData = "".toByteArray()
+    )
+
+    private fun getGreenCard(originType: OriginType) = GreenCard(
+        greenCardEntity = mockk(),
+        origins = listOf(
+            OriginEntity(
+                id = 0,
+                greenCardId = 0,
+                type = originType,
+                eventTime = OffsetDateTime.now(),
+                expirationTime = OffsetDateTime.now(),
+                validFrom = OffsetDateTime.now()
+            )
+        ),
+        credentialEntities = listOf()
     )
 }

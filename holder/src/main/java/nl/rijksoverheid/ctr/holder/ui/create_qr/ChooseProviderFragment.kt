@@ -58,7 +58,7 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
                 childFragmentManager, InfoFragmentData.TitleDescriptionWithButton(
                     title = getString(R.string.not_yet_tested_title),
                     descriptionData = DescriptionData(R.string.not_yet_tested_description),
-                    buttonData = ButtonData.LinkButton(
+                    secondaryButtonData = ButtonData.LinkButton(
                         getString(R.string.not_yet_tested_button),
                         getString(R.string.url_make_appointment)
                     ),

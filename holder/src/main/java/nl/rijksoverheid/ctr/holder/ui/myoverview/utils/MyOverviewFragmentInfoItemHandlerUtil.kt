@@ -4,12 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
+import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.InputTokenFragmentData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragmentDirections
@@ -17,7 +20,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirection
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.utils.IntentUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -77,6 +80,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             }
             is DashboardItem.InfoItem.TestCertificate3GValidity -> {
                 onTestCertificate3GValidityClicked(myOverviewFragment)
+            }
+            is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
+                onVisitorPassIncompleteClicked(myOverviewFragment)
             }
         }
     }
@@ -184,6 +190,33 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         )
     }
 
+    private fun onVisitorPassIncompleteClicked(myOverviewFragment: MyOverviewFragment) {
+        val navigationDirection = InfoFragmentDirections.actionInputToken(
+            data = InputTokenFragmentData.CommercialTest,
+            toolbarTitle = myOverviewFragment.getString(R.string.commercial_test_type_code_toolbar_title)
+        )
+
+        infoFragmentUtil.presentFullScreen(
+            currentFragment = myOverviewFragment,
+            toolbarTitle = myOverviewFragment.getString(R.string.holder_completecertificate_toolbar),
+            data = InfoFragmentData.TitleDescriptionWithButton(
+                title = myOverviewFragment.getString(R.string.holder_completecertificate_title),
+                descriptionData = DescriptionData(
+                    htmlText = R.string.holder_completecertificate_body
+                ),
+                secondaryButtonData = ButtonData.LinkButton(
+                    text = myOverviewFragment.getString(R.string.holder_completecertificate_button_makeappointement),
+                    link = myOverviewFragment.getString(R.string.url_make_appointment)
+                ),
+                primaryButtonData = ButtonData.NavigationButton(
+                    text = myOverviewFragment.getString(R.string.holder_completecertificate_button_fetchnegativetest),
+                    navigationActionId = navigationDirection.actionId,
+                    navigationArguments = navigationDirection.arguments
+                )
+            )
+        )
+    }
+
     private fun onOriginInfoClicked(
         myOverviewFragment: MyOverviewFragment,
         item: DashboardItem.InfoItem.OriginInfoItem
@@ -229,9 +262,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 }
                 is OriginType.VaccinationAssessment -> {
                     InfoFragmentData.TitleDescription(
-                        title =  myOverviewFragment.getString(R.string.holder_dashboard_visitorpassmodal_international_title),
+                        title =  myOverviewFragment.getString(R.string.holder_notvalidinthisregionmodal_visitorpass_international_title),
                         descriptionData = DescriptionData(
-                            htmlText = R.string.holder_dashboard_visitorpassmodal_international_body,
+                            htmlText = R.string.holder_notvalidinthisregionmodal_visitorpass_international_body,
                             htmlLinksEnabled = true),
                     )
                 }
@@ -258,8 +291,8 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             )
             OriginType.VaccinationAssessment -> Pair(
                 // Missing domestic visitor pass can never happen
-                myOverviewFragment.getString(R.string.holder_dashboard_visitorpassmodal_international_title),
-                R.string.holder_dashboard_visitorpassmodal_international_body
+                myOverviewFragment.getString(R.string.holder_notvalidinthisregionmodal_visitorpass_international_title),
+                R.string.holder_notvalidinthisregionmodal_visitorpass_international_body
             )
         }
         infoFragmentUtil.presentAsBottomSheet(

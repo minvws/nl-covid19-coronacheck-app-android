@@ -39,10 +39,9 @@ fun utilsModule(versionCode: Int) = module {
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
     factory<RemoteEventUtil> { RemoteEventUtilImpl(get()) }
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
-    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get(), get()) }
+    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
-    factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<MyOverviewFragmentInfoItemHandlerUtil> { MyOverviewFragmentInfoItemHandlerUtilImpl(get(), get()) }
     factory<DomesticVaccinationRecoveryCombinationUtil> {
         DomesticVaccinationRecoveryCombinationUtilImpl(get())

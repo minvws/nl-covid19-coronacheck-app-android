@@ -480,6 +480,13 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
                     return false
 
                 }
+
+                override fun shouldShowVisitorPassIncompleteItem(
+                    events: List<EventGroupEntity>,
+                    domesticGreenCards: List<GreenCard>
+                ): Boolean {
+                    return false
+                }
             }
         }
     }
