@@ -17,7 +17,7 @@ class LastVaccinationDoseUtilImplTest {
     @Test
     fun `when statement is completed and reason is prior event, answer is yes with corona`() {
         val answer = "ja, corona"
-        every { resources.getString(R.string.your_vaccination_explanation_last_dose_yes_prior_event) } returns answer
+        every { resources.getString(R.string.holder_eventdetails_vaccinationStatus_firstVaccinationElsewhere) } returns answer
 
         val personalVaccination = RemoteEventTestFactory.createRemoteVaccination(
             completedByPersonalStatement = true,
@@ -41,7 +41,7 @@ class LastVaccinationDoseUtilImplTest {
     @Test
     fun `when statement is completed and reason is recovery, answer is yes with corona`() {
         val answer = "ja, corona ergens"
-        every { resources.getString(R.string.your_vaccination_explanation_last_dose_yes_recovery) } returns answer
+        every { resources.getString(R.string.holder_eventdetails_vaccinationStatus_recovery) } returns answer
 
         val personalVaccination = RemoteEventTestFactory.createRemoteVaccination(
             completedByPersonalStatement = true,
@@ -65,7 +65,7 @@ class LastVaccinationDoseUtilImplTest {
     @Test
     fun `when statement is completed and no reason, answer is yes`() {
         val answer = "ja"
-        every { resources.getString(R.string.your_vaccination_explanation_last_dose_yes) } returns answer
+        every { resources.getString(R.string.holder_eventdetails_vaccinationStatus_complete) } returns answer
 
         val personalVaccination = RemoteEventTestFactory.createRemoteVaccination(
             completedByPersonalStatement = true,
