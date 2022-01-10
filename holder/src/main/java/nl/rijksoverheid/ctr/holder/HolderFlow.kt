@@ -13,4 +13,5 @@ sealed class HolderFlow(code: Int) : Flow(code) {
     object SyncGreenCards: HolderFlow(7)
     object PositiveTest: HolderFlow(8)
     object VaccinationAssessment: HolderFlow(9)
+    object VaccinationBesIslands: HolderFlow(10)
 }

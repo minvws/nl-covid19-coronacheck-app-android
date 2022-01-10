@@ -13,9 +13,7 @@ import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
-import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
-import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
-import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
+import nl.rijksoverheid.ctr.api.signing.certificates.*
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.signing.SignatureValidationException
 import nl.rijksoverheid.ctr.signing.SignatureValidator
@@ -75,6 +73,8 @@ class SignedResponseInterceptor(
                     .addTrustedCertificate(EV_ROOT_CA)
                     .addTrustedCertificate(ROOT_CA_G3)
                     .addTrustedCertificate(PRIVATE_ROOT_CA)
+                    .addTrustedCertificate(EMAX_ROOT_CA)
+                    .addTrustedCertificate(BEARINGPOINT_ROOT_CA)
                     .signingCertificate(expectedSigningCertificate.certificateBytes)
                 builder.build()
             } else {

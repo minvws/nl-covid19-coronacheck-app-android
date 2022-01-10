@@ -48,7 +48,8 @@ data class HolderConfig(
     @Json(name = "showNewValidityInfoCard") val showNewValidityInfoCard: Boolean,
     @Json(name = "androidEnableVerificationPolicyVersion") val holderEnableVerificationPolicyVersion: Int,
     @Json(name = "visitorPassEnabled") val visitorPassEnabled: Boolean,
-    @Json(name = "vaccinationAssessmentEventValidityDays") val vaccinationAssessmentEventValidityDays: Int
+    @Json(name = "vaccinationAssessmentEventValidityDays") val vaccinationAssessmentEventValidityDays: Int,
+    @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -99,7 +100,8 @@ data class HolderConfig(
             holderConfigAlmostOutOfDateWarningSeconds: Int = 300,
             showNewValidityInfoCard: Boolean = false,
             visitorPassEnabled: Boolean = false,
-            vaccinationAssessmentEventValidityDays: Int = 14
+            vaccinationAssessmentEventValidityDays: Int = 14,
+            mijnCnEnabled: Boolean = false
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -136,7 +138,8 @@ data class HolderConfig(
             showNewValidityInfoCard = showNewValidityInfoCard,
             holderEnableVerificationPolicyVersion = 0,
             visitorPassEnabled = visitorPassEnabled,
-            vaccinationAssessmentEventValidityDays = vaccinationAssessmentEventValidityDays
+            vaccinationAssessmentEventValidityDays = vaccinationAssessmentEventValidityDays,
+            mijnCnEnabled = mijnCnEnabled
         )
     }
 }
