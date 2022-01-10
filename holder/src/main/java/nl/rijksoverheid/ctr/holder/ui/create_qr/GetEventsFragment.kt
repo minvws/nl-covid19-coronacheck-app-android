@@ -10,9 +10,9 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
 import nl.rijksoverheid.ctr.holder.launchUrl
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
-import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.LoginResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -32,6 +32,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
     private val getEventsViewModel: GetEventsViewModel by viewModel()
 
@@ -178,19 +179,19 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             }
         })
 
-        digidViewModel.digidResultLiveData.observe(viewLifecycleOwner, EventObserver {
+        digidViewModel.loginResultLiveData.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is DigidResult.Success -> {
-                    getEventsViewModel.getEvents(
+                is LoginResult.Success -> {
+                    getEventsViewModel.getDigidEvents(
                         it.jwt,
                         args.originType,
                         args.afterIncompleteVaccination
                     )
                 }
-                is DigidResult.Failed -> {
+                is LoginResult.Failed -> {
                     presentError(it.errorResult)
                 }
-                is DigidResult.Cancelled -> {
+                is LoginResult.Cancelled -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.digid_login_cancelled_title,
@@ -199,11 +200,11 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         positiveButtonCallback = {}
                     )
                 }
-                DigidResult.TokenUnavailable -> {
+                LoginResult.TokenUnavailable -> {
                     binding.root.visibility = View.VISIBLE
                     binding.fullscreenLoading.visibility = View.GONE
                 }
-                DigidResult.NoBrowserFound -> {
+                LoginResult.NoBrowserFound -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_no_browser_title,
@@ -226,7 +227,13 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             onButtonClickWithRetryAction()
         }
         binding.noDigidButton.setOnClickListener {
-            context?.launchUrl(getString(R.string.no_digid_url))
+            if (cachedAppConfigUseCase.getCachedAppConfig().mijnCnEnabled &&
+                args.originType == RemoteOriginType.Vaccination
+            ) {
+                navigateSafety(GetEventsFragmentDirections.actionMijnCn())
+            } else {
+                context?.launchUrl(getString(R.string.no_digid_url))
+            }
         }
     }
 

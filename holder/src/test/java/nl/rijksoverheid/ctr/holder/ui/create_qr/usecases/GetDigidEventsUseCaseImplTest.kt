@@ -23,7 +23,7 @@ import retrofit2.Response
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class GetEventsUseCaseImplTest {
+class GetDigidEventsUseCaseImplTest {
     private val configProvidersUseCase: ConfigProvidersUseCase =  mockk()
     private val coronaCheckRepository: CoronaCheckRepository =  mockk()
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase =  mockk()
@@ -37,7 +37,7 @@ class GetEventsUseCaseImplTest {
     val eventProviders = remoteEventProviders.map { EventProvider(it.providerIdentifier, it.name) }
 
     private suspend fun getEvents(): EventsResult {
-        val getEventsUseCase = GetEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase)
+        val getEventsUseCase = GetDigidEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase)
         return getEventsUseCase.getEvents(jwt, originType, false)
     }
 

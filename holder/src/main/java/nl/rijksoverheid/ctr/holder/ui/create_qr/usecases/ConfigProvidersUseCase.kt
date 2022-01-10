@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
  */
 interface ConfigProvidersUseCase {
     suspend fun eventProviders(): EventProvidersResult
+    suspend fun eventProvidersBES(): EventProvidersResult
     suspend fun testProviders(): TestProvidersResult
 }
 
@@ -33,6 +34,15 @@ class ConfigProvidersUseCaseImpl(private val coronaCheckRepository: CoronaCheckR
         return when (val result = coronaCheckRepository.configProviders()) {
             is NetworkRequestResult.Success<RemoteConfigProviders> -> {
                 EventProvidersResult.Success(result.response.eventProviders)
+            }
+            is NetworkRequestResult.Failed -> EventProvidersResult.Error(result)
+        }
+    }
+
+    override suspend fun eventProvidersBES(): EventProvidersResult {
+        return when (val result = coronaCheckRepository.configProviders()) {
+            is NetworkRequestResult.Success<RemoteConfigProviders> -> {
+                    EventProvidersResult.Success(result.response.eventProvidersBes)
             }
             is NetworkRequestResult.Failed -> EventProvidersResult.Error(result)
         }
