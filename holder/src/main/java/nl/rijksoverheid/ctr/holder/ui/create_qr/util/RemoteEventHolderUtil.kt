@@ -86,7 +86,7 @@ class RemoteEventHolderUtilImpl(
     }
 
     private fun birthDateIsNotMatching(stored: String, incoming: String): Boolean {
-        if (stored.contains("XX") && incoming.contains("XX")) {
+        if (stored == incoming) {
             return false
         }
 
