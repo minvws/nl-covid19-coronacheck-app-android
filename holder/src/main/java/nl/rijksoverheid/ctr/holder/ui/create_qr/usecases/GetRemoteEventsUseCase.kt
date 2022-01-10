@@ -1,7 +1,11 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteAccessTokens
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /**
@@ -38,4 +42,11 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
             is NetworkRequestResult.Failed -> RemoteEventsResult.Error(eventsResult)
         }
     }
+}
+
+sealed class RemoteEventsResult {
+    data class Success(val signedModel: SignedResponseWithModel<RemoteProtocol3>) :
+        RemoteEventsResult()
+
+    data class Error(val errorResult: ErrorResult) : RemoteEventsResult()
 }

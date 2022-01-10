@@ -58,10 +58,6 @@ fun retrofitModule(baseUrl: String) = module {
             .apply {
                 if (BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS) {
                     val handshakeCertificates = HandshakeCertificates.Builder()
-                        .addTrustedCertificate(ROOT_CA_G3.decodeCertificatePem())
-                        .addTrustedCertificate(EV_ROOT_CA.decodeCertificatePem())
-                        .addTrustedCertificate(PRIVATE_ROOT_CA.decodeCertificatePem())
-                        .addTrustedCertificate(DIGICERT_BTC_ROOT_CA.decodeCertificatePem())
                         .addTrustedCertificate(EMAX_ROOT_CA.decodeCertificatePem())
                         .addTrustedCertificate(BEARINGPOINT_ROOT_CA.decodeCertificatePem())
                         .build()
