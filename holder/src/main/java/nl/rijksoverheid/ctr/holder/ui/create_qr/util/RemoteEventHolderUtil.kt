@@ -3,13 +3,13 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import android.util.Base64
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsFromPaperProofQrUseCase
 import nl.rijksoverheid.ctr.shared.models.JSON
 import org.json.JSONObject
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -90,12 +90,20 @@ class RemoteEventHolderUtilImpl(
 
     }
 
-    private fun birthMonth(birthDate: String): Int {
-        return LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).monthValue
+    private fun birthMonth(birthDate: String): Int? {
+        return try {
+            LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).monthValue
+        } catch (exception: DateTimeParseException) {
+            null
+        }
     }
 
-    private fun birthDay(birthDate: String): Int {
-        return LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).dayOfMonth
+    private fun birthDay(birthDate: String): Int? {
+        return try {
+            LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).dayOfMonth
+        } catch (exception: DateTimeParseException) {
+            null
+        }
     }
 
     companion object {
