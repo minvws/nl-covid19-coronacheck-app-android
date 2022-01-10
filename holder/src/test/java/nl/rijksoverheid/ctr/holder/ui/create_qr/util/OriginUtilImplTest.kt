@@ -121,15 +121,15 @@ class OriginUtilImplTest {
     }
 
     @Test
-    fun `when origin is valid before the threshold day from now, it's valid`() {
+    fun `when origin is valid before the threshold day from now and expires after now, it's valid`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(1), ZoneId.of("UTC"))
         val originUtil = OriginUtilImpl(clock)
 
         val origin = fakeOriginEntity(
-            validFrom = OffsetDateTime.now(clock).plusDays(27),
-            expirationTime = OffsetDateTime.now(clock)
+            validFrom = OffsetDateTime.now(clock).plusDays(3),
+            expirationTime = OffsetDateTime.now(clock).plusDays(28)
         )
-        originUtil.isValidWithinRenewalThreshold(28L, origin)
+        assertTrue(originUtil.isValidWithinRenewalThreshold(4L, origin))
     }
 
     @Test
@@ -138,10 +138,10 @@ class OriginUtilImplTest {
         val originUtil = OriginUtilImpl(clock)
 
         val origin = fakeOriginEntity(
-            validFrom = OffsetDateTime.now(clock).plusDays(28),
-            expirationTime = OffsetDateTime.now(clock)
+            validFrom = OffsetDateTime.now(clock).plusDays(4),
+            expirationTime = OffsetDateTime.now(clock).plusDays(28)
         )
-        originUtil.isValidWithinRenewalThreshold(28L, origin)
+        assertFalse(originUtil.isValidWithinRenewalThreshold(4L, origin))
     }
 
     @Test
@@ -150,22 +150,10 @@ class OriginUtilImplTest {
         val originUtil = OriginUtilImpl(clock)
 
         val origin = fakeOriginEntity(
-            validFrom = OffsetDateTime.now(clock).plusDays(29),
-            expirationTime = OffsetDateTime.now(clock)
+            validFrom = OffsetDateTime.now(clock).plusDays(5),
+            expirationTime = OffsetDateTime.now(clock).plusDays(28)
         )
-        originUtil.isValidWithinRenewalThreshold(28L, origin)
-    }
-
-    @Test
-    fun `when origin expires after now, it's valid`() {
-        val clock = Clock.fixed(Instant.ofEpochSecond(1), ZoneId.of("UTC"))
-        val originUtil = OriginUtilImpl(clock)
-
-        val origin = fakeOriginEntity(
-            validFrom = OffsetDateTime.now(clock).plusDays(29),
-            expirationTime = OffsetDateTime.now(clock).plusDays(1)
-        )
-        originUtil.isValidWithinRenewalThreshold(28L, origin)
+        assertFalse(originUtil.isValidWithinRenewalThreshold(4L, origin))
     }
 
     @Test
@@ -174,9 +162,9 @@ class OriginUtilImplTest {
         val originUtil = OriginUtilImpl(clock)
 
         val origin = fakeOriginEntity(
-            validFrom = OffsetDateTime.now(clock).plusDays(29),
+            validFrom = OffsetDateTime.now(clock).minusDays(10),
             expirationTime = OffsetDateTime.now(clock).minusDays(1)
         )
-        originUtil.isValidWithinRenewalThreshold(28L, origin)
+        assertFalse(originUtil.isValidWithinRenewalThreshold(4L, origin))
     }
 }

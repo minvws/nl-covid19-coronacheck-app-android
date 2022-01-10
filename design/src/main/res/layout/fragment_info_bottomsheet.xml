@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
@@ -22,7 +23,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:textSize="24sp"
+            tools:text="Test"
+            />
 
         <ImageView
             android:id="@+id/close"
@@ -31,10 +35,10 @@
             android:background="?attr/actionBarItemBackground"
             android:contentDescription="@string/menu_close"
             android:src="@drawable/ic_close"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/title" />
 
         <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
             android:id="@+id/description"

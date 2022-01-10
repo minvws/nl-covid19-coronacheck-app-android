@@ -351,6 +351,18 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
         )
     }
 
+    @Test
+    fun domesticVaccinationAssessment() {
+        val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil, featureFlagUseCase)
+
+        val greenCard = greenCard(GreenCardType.Domestic, OriginType.VaccinationAssessment)
+        myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
+
+        assertEquals("Bezoekersbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
+        assertEquals("geldig tot woensdag 28 juli 21:06", (viewBinding.description.getChildAt(1) as TextView).text)
+        assertEquals(View.GONE, viewBinding.expiresIn.visibility)
+    }
+
     private fun greenCard(
         greenCardType: GreenCardType,
         originType: OriginType = OriginType.Test,

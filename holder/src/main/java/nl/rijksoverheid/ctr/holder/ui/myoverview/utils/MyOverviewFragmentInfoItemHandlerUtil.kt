@@ -229,8 +229,10 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 }
                 is OriginType.VaccinationAssessment -> {
                     InfoFragmentData.TitleDescription(
-                        title = myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination),
+                        title =  myOverviewFragment.getString(R.string.holder_dashboard_visitorpassmodal_international_title),
+                        descriptionData = DescriptionData(
+                            htmlText = R.string.holder_dashboard_visitorpassmodal_international_body,
+                            htmlLinksEnabled = true),
                     )
                 }
             }
@@ -255,8 +257,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery
             )
             OriginType.VaccinationAssessment -> Pair(
-                myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination
+                // Missing domestic visitor pass can never happen
+                myOverviewFragment.getString(R.string.holder_dashboard_visitorpassmodal_international_title),
+                R.string.holder_dashboard_visitorpassmodal_international_body
             )
         }
         infoFragmentUtil.presentAsBottomSheet(
