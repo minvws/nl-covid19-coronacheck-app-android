@@ -11,11 +11,11 @@
   <string name="onboarding_screen_1_title">Alleen toegang met een bewijs</string>
   <string name="onboarding_screen_1_description">Jouw gezondheid en die van anderen is belangrijk. Daarom vragen sommige landen of plekken om een coronabewijs. Alleen met dit bewijs krijg je toegang.</string>
   <string name="onboarding_screen_2_title">Bewijs van test of vaccinatie</string>
-  <string name="onboarding_screen_2_description"><![CDATA[De app kan een coronabewijs voor jou maken als:<ul><li>Je bent gevaccineerd</li><li>Uit een test blijkt dat je geen corona hebt</li><li>Uit een test blijkt dat je corona hebt gehad en bent hersteld</li></ul>]]></string>
-  <string name="onboarding_screen_4_title">QR-code = jouw bewijs</string>
-  <string name="onboarding_screen_4_description">Deze app maakt van jouw vaccinatie, testuitslag of herstel een QR-code. Dat is jouw bewijs. De QR-code wordt gecheckt bij de ingang van plekken en activiteiten. Of aan de grens.</string>
+  <string name="onboarding_screen_2_description"><![CDATA[Met deze app kun je een bewijs maken als je bent:<ul><li>Gevaccineerd</li><li>Hersteld van corona</li><li>Getest en geen corona hebt</li></ul>]]></string>
+  <string name="onboarding_screen_4_title">Je bewijs heeft een QR-code</string>
+  <string name="onboarding_screen_4_description">De QR-code op je bewijs wordt gecheckt bij de ingang van plekken en activiteiten. Of aan de grens.</string>
   <string name="onboarding_screen_3_title">QR-codes voor Nederland en internationaal</string>
-  <string name="onboarding_screen_3_description">De app maakt twee QR-codes: een QR-code voor Nederland en een internationale. Beide QR-codes vind je in de app. Reis je buiten Nederland? Gebruik dan je internationale QR-code.</string>
+  <string name="onboarding_screen_3_description">De app maakt QR-codes voor in Nederland en het buitenland. Ga je de grens over? Gebruik dan je internationale QR-code.</string>
   <string name="onboarding_next">Volgende</string>
   <string name="onboarding_finish">Aan de slag</string>
   <string name="privacy_policy_title">Zo gebruikt de app jouw gegevens</string>
@@ -191,14 +191,14 @@
   <string name="about_this_clear_data">Wis gegevens</string>
   <string name="create_qr_explanation_menu_title">QR-code maken</string>
   <string name="create_qr_explanation_menu_title_alternative">Voeg een QR-code toe</string>
-  <string name="qr_code_type_title">Welk bewijs wil je toevoegen?</string>
+  <string name="qr_code_type_title">Wat wil je toevoegen?</string>
   <string name="qr_code_type_description">Geef aan wat voor bewijs je wilt toevoegen. Je kunt meerdere bewijzen tegelijk hebben.</string>
   <string name="qr_code_type_negative_test_title">Testbewijs</string>
   <string name="qr_code_type_negative_test_description">Uit de test blijkt dat ik geen corona heb</string>
   <string name="qr_code_type_vaccination_title">Vaccinatiebewijs</string>
-  <string name="qr_code_type_vaccination_description">Ik heb mijn prik of prikken gehad</string>
+  <string name="qr_code_type_vaccination_description">Ik heb een (booster) vaccinatie gehad</string>
   <string name="get_vaccination_title">Gegevens van je vaccinatie ophalen</string>
-  <string name="get_vaccination_description"><![CDATA[Ben je gevaccineerd? Log in met DigiD. De gegevens van je vaccinatie worden dan automatisch opgehaald.]]></string>
+  <string name="get_vaccination_description"><![CDATA[Heb je een (booster) vaccinatie gehad? Log in met DigiD om al je vaccinatiegegevens op te halen.]]></string>
   <string name="get_vaccination_button">Log in met DigiD</string>
   <string name="get_vaccination_no_digid_button">Ik heb geen DigiD</string>
   <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
@@ -647,4 +647,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijkso
   <string name="holder_dashboard_originExpiredBanner_internationalTest_title">Je internationale testbewijs is verlopen</string>
   <string name="holder_expiredDomesticVaccinationModal_title">Verlopen vaccinatiebewijs</string>
   <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Boostervaccinatie toevoegen</string>
+  <string name="holder_dashboard_addBoosterBanner_title">Heb je een boostervaccinatie gehad? Haal opnieuw je gegevens op om deze aan je bewijs toe te voegen</string>
+  <string name="holder_dashboard_addBoosterBanner_button_addBooster">Boostervaccinatie toevoegen</string>
+  <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[Om je vaccinatiebewijs te verlengen heb je een boostervaccinatie nodig. Kijk voor meer informatie over boostervaccinaties op <a href=\"https://www.coronavaccinatie.nl/booster\">www.coronavaccinatie.nl/booster</a>.<br/><br/>Heb je een boostervaccinatie gehad? Haal opnieuw je gegevens op om deze aan je bewijs toe te voegen.]]></string>
 </resources>

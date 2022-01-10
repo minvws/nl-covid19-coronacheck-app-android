@@ -21,8 +21,7 @@ class MyOverviewInfoCardItem(
     private val infoItem: DashboardItem.InfoItem,
     private val onButtonClick: (infoItem: DashboardItem.InfoItem) -> Unit,
     private val onDismiss: (infoCardItem: MyOverviewInfoCardItem, infoItem: DashboardItem.InfoItem) -> Unit = { _, _ -> }
-) :
-    BindableItem<ItemMyOverviewInfoCardBinding>(R.layout.item_my_overview_info_card.toLong()),
+) : BindableItem<ItemMyOverviewInfoCardBinding>(R.layout.item_my_overview_info_card.toLong()),
     KoinComponent {
 
     private val util: MyOverviewInfoCardItemUtil by inject()

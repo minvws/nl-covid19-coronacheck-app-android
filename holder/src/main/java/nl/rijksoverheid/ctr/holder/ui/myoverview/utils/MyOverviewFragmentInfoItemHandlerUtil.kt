@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
+import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
@@ -66,7 +67,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.OriginInfoItem ->
                 onOriginInfoClicked(myOverviewFragment, infoItem)
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                // NO OP, button is hidden
+                onGreenCardExpiredClicked(myOverviewFragment)
             }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
                 onMissingDutchVaccinationItemClicked(myOverviewFragment)
@@ -79,6 +80,25 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 onTestCertificate3GValidityClicked(myOverviewFragment)
             }
         }
+    }
+
+    private fun onGreenCardExpiredClicked(
+        myOverviewFragment: MyOverviewFragment
+    ) {
+        infoFragmentUtil.presentAsBottomSheet(
+            myOverviewFragment.childFragmentManager,
+            InfoFragmentData.TitleDescriptionWithButton(
+                title = myOverviewFragment.getString(R.string.holder_expiredDomesticVaccinationModal_title),
+                descriptionData = DescriptionData(
+                    R.string.holder_expiredDomesticVaccinationModal_body,
+                    htmlLinksEnabled = true
+                ),
+                buttonData = ButtonData.NavigationButton(
+                    text = myOverviewFragment.getString(R.string.holder_expiredDomesticVaccinationModal_button_addBoosterVaccination),
+                    navigationActionId = R.id.action_qr_type
+                )
+            )
+        )
     }
 
     private fun openPlayStore(myOverviewFragment: MyOverviewFragment) {
@@ -229,9 +249,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 }
                 is OriginType.VaccinationAssessment -> {
                     InfoFragmentData.TitleDescription(
-                        title =  myOverviewFragment.getString(R.string.holder_dashboard_visitorpassmodal_international_title),
+                        title =  myOverviewFragment.getString(R.string.holder_notvalidinthisregionmodal_visitorpass_international_title),
                         descriptionData = DescriptionData(
-                            htmlText = R.string.holder_dashboard_visitorpassmodal_international_body,
+                            htmlText = R.string.holder_notvalidinthisregionmodal_visitorpass_international_body,
                             htmlLinksEnabled = true),
                     )
                 }
@@ -258,8 +278,8 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             )
             OriginType.VaccinationAssessment -> Pair(
                 // Missing domestic visitor pass can never happen
-                myOverviewFragment.getString(R.string.holder_dashboard_visitorpassmodal_international_title),
-                R.string.holder_dashboard_visitorpassmodal_international_body
+                myOverviewFragment.getString(R.string.holder_notvalidinthisregionmodal_visitorpass_international_title),
+                R.string.holder_notvalidinthisregionmodal_visitorpass_international_body
             )
         }
         infoFragmentUtil.presentAsBottomSheet(
