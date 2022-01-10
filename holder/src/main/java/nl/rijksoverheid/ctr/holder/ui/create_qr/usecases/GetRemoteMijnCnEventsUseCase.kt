@@ -1,13 +1,13 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.MijnCnEventProviderRepository
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /**
  * Get events for a event provider
  */
-interface GetRemoteEventsUseCase {
+interface GetRemoteMijnCnEventsUseCase {
     suspend fun getRemoteEvents(
         eventProvider: RemoteConfigProviders.EventProvider,
         filter: String,
@@ -15,8 +15,9 @@ interface GetRemoteEventsUseCase {
     ): RemoteEventsResult
 }
 
-class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProviderRepository) :
-    GetRemoteEventsUseCase {
+class GetRemoteMijnCnEventsUseCaseImpl(
+    private val mijnCnEventProviderRepository: MijnCnEventProviderRepository
+) : GetRemoteMijnCnEventsUseCase {
 
     override suspend fun getRemoteEvents(
         eventProvider: RemoteConfigProviders.EventProvider,
@@ -24,8 +25,8 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
         token: RemoteAccessTokens.Token
     ): RemoteEventsResult {
 
-        return when (val eventsResult = eventProviderRepository
-            .getEvents(
+        return when (val eventsResult = mijnCnEventProviderRepository
+            .getMijnCnEvents(
                 url = eventProvider.eventUrl,
                 token = token.event,
                 filter = filter,

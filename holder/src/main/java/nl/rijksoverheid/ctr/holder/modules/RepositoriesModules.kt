@@ -34,4 +34,8 @@ val repositoriesModule = module {
             get(),
         )
     }
+
+    factory<MijnCnEventProviderRepository> {
+        MijnCnEventProviderRepositoryImpl(get(), get(),)
+    }
 }

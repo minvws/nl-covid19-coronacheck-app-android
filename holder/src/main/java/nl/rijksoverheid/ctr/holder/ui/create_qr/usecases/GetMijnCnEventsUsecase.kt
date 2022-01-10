@@ -31,7 +31,7 @@ interface GetMijnCnEventsUsecase {
 
 class GetMijnCnEventsUsecaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
-    private val getRemoteEventsUseCase: GetRemoteEventsUseCase,
+    private val getRemoteMijnCnEventsUseCase: GetRemoteMijnCnEventsUseCase,
 ) : GetMijnCnEventsUsecase {
 
     override suspend fun getEvents(
@@ -62,8 +62,8 @@ class GetMijnCnEventsUsecaseImpl(
             // We have received providers that claim to have events for us so we get those events for each provider
             val filter = EventProviderRepository.getFilter(originType)
 
-                val eventResults = eventProviders.map { eventProvider ->
-                getRemoteEventsUseCase.getRemoteEvents(
+            val eventResults = eventProviders.map { eventProvider ->
+                getRemoteMijnCnEventsUseCase.getRemoteEvents(
                     eventProvider = eventProvider,
                     token = RemoteAccessTokens.Token(
                         providerIdentifier = eventProvider.providerIdentifier,

@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.api
 
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
+import nl.rijksoverheid.ctr.holder.ui.create_qr.api.constant.ApiConstants.CORONACHECK_PROTOCOL_VERSION
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
@@ -23,7 +24,7 @@ interface TestProviderApiClient {
     suspend fun getTestResult(
         @Url url: String,
         @Header("Authorization") authorization: String,
-        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = CORONACHECK_PROTOCOL_VERSION,
         @Body data: GetTestResultPostData?,
         @Tag certificate: SigningCertificate
     ): SignedResponseWithModel<RemoteProtocol>
@@ -33,18 +34,17 @@ interface TestProviderApiClient {
     suspend fun getUnomi(
         @Url url: String,
         @Header("Authorization") authorization: String,
-        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = CORONACHECK_PROTOCOL_VERSION,
         @Body params: Map<String, String>,
         @Tag certificate: SigningCertificate,
     ): SignedResponseWithModel<RemoteUnomi>
 
     @POST
     @SignedRequest
-    @Headers("User-Agent: ") // Necessary for BES Islands events
     suspend fun getEvents(
         @Url url: String,
         @Header("Authorization") authorization: String,
-        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
+        @Header("CoronaCheck-Protocol-Version") protocolVersion: String = CORONACHECK_PROTOCOL_VERSION,
         @Body params: Map<String, String>,
         @Tag certificate: SigningCertificate,
     ): SignedResponseWithModel<RemoteProtocol3>
