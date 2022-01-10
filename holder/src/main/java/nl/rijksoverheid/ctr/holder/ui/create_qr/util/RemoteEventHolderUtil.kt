@@ -90,18 +90,28 @@ class RemoteEventHolderUtilImpl(
 
     }
 
-    private fun birthMonth(birthDate: String): Int? {
+    private fun birthMonth(birthDate: String): String? {
         return try {
-            LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).monthValue
-        } catch (exception: DateTimeParseException) {
+            "${LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).monthValue}"
+        } catch (e: DateTimeParseException) {
+            // Check if date has removed content, if so return XX
+            if (birthDate.contains("XX")) {
+                "XX"
+            } else null
+        } catch (e: Exception) {
             null
         }
     }
 
-    private fun birthDay(birthDate: String): Int? {
+    private fun birthDay(birthDate: String): String? {
         return try {
-            LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).dayOfMonth
-        } catch (exception: DateTimeParseException) {
+            "${LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).dayOfMonth}"
+        } catch (e: DateTimeParseException) {
+            // Check if date has removed content, if so return XX
+            if (birthDate.contains("XX")) {
+                "XX"
+            } else null
+        } catch (e: Exception) {
             null
         }
     }
