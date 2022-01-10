@@ -3,8 +3,8 @@ package nl.rijksoverheid.ctr.holder.modules
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodeUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewGreenCardAdapterUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewGreenCardAdapterUtilImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.time.Clock
@@ -18,7 +18,7 @@ import java.time.Clock
  */
 val cardUtilsModule = module {
     factory<QrCodeUtil> { QrCodeUtilImpl() }
-    factory<TestResultAdapterItemUtil> { TestResultAdapterItemUtilImpl(get()) }
+    factory<MyOverviewGreenCardAdapterUtil> { MyOverviewGreenCardAdapterUtilImpl(get()) }
     factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get(), get()) }
     factory<TestInfoScreenUtil> { TestInfoScreenUtilImpl(androidContext().resources, get()) }
     factory<RecoveryInfoScreenUtil> { RecoveryInfoScreenUtilImpl(androidContext().resources) }

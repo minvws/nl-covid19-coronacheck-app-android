@@ -12,7 +12,7 @@ import java.time.temporal.ChronoUnit
  *
  */
 
-interface TestResultAdapterItemUtil {
+interface MyOverviewGreenCardAdapterUtil {
     sealed class ExpireCountDown {
         data class Show(val hoursLeft: Long, val minutesLeft: Long) : ExpireCountDown()
         object Hide : ExpireCountDown()
@@ -23,21 +23,18 @@ interface TestResultAdapterItemUtil {
     ): ExpireCountDown
 }
 
-class TestResultAdapterItemUtilImpl(private val clock: Clock) : TestResultAdapterItemUtil {
+class MyOverviewGreenCardAdapterUtilImpl(private val clock: Clock) : MyOverviewGreenCardAdapterUtil {
 
     private val minutesInSeconds = 60
     private val hoursInSeconds = 60 * 60
 
-    /**
-     * Get if we need to show a countdown string in [nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewTestResultAdapterItem]]
-     */
     override fun getExpireCountdownText(
         expireDate: OffsetDateTime
-    ): TestResultAdapterItemUtil.ExpireCountDown {
+    ): MyOverviewGreenCardAdapterUtil.ExpireCountDown {
         val hoursBetweenExpiration =
             ChronoUnit.HOURS.between(OffsetDateTime.now(clock), expireDate)
-        return if (hoursBetweenExpiration > 5) {
-            TestResultAdapterItemUtil.ExpireCountDown.Hide
+        return if (hoursBetweenExpiration > 24) {
+            MyOverviewGreenCardAdapterUtil.ExpireCountDown.Hide
         } else {
             var diff =
                 expireDate.toEpochSecond() - OffsetDateTime.now(clock)
@@ -45,7 +42,7 @@ class TestResultAdapterItemUtilImpl(private val clock: Clock) : TestResultAdapte
             val hoursUntilFinish = diff / hoursInSeconds
             diff %= hoursInSeconds
             val minutesUntilFinish = (diff / minutesInSeconds).coerceAtLeast(1)
-            TestResultAdapterItemUtil.ExpireCountDown.Show(
+            MyOverviewGreenCardAdapterUtil.ExpireCountDown.Show(
                 hoursLeft = hoursUntilFinish,
                 minutesLeft = minutesUntilFinish
             )

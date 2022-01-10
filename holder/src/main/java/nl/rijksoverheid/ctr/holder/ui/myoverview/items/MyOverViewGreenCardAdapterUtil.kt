@@ -17,11 +17,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewGreenCardAdapterUtil
 import nl.rijksoverheid.ctr.shared.ext.capitalize
 import java.time.Clock
 import java.time.Instant
@@ -45,7 +44,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private val utcClock: Clock,
     private val context: Context,
     private val credentialUtil: CredentialUtil,
-    private val testResultAdapterItemUtil: TestResultAdapterItemUtil,
+    private val myOverviewGreenCardAdapterUtil: MyOverviewGreenCardAdapterUtil,
     private val greenCardUtil: GreenCardUtil,
     private val featureFlagUseCase: FeatureFlagUseCase
 ) : MyOverViewGreenCardAdapterUtil {
@@ -112,13 +111,13 @@ class MyOverViewGreenCardAdapterUtilImpl(
 
                     // If there is only one origin we can show a countdown if the green card almost expires
                     when (val expireCountDownResult =
-                        testResultAdapterItemUtil.getExpireCountdownText(
+                        myOverviewGreenCardAdapterUtil.getExpireCountdownText(
                             expireDate = greenCardUtil.getExpireDate(it)
                         )) {
-                        is TestResultAdapterItemUtil.ExpireCountDown.Hide -> {
+                        is MyOverviewGreenCardAdapterUtil.ExpireCountDown.Hide -> {
                             viewBinding.expiresIn.visibility = View.GONE
                         }
-                        is TestResultAdapterItemUtil.ExpireCountDown.Show -> {
+                        is MyOverviewGreenCardAdapterUtil.ExpireCountDown.Show -> {
                             viewBinding.expiresIn.visibility = View.VISIBLE
                             if (expireCountDownResult.hoursLeft == 0L) {
                                 viewBinding.expiresIn.text = context.getString(
