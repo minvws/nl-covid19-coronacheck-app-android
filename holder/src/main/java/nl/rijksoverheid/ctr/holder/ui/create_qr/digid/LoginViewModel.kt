@@ -28,10 +28,9 @@ import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class DigiDViewModel(
-    private val authenticationRepository: AuthenticationRepository,
-    private val androidUtil: AndroidUtil
-) : ViewModel() {
+class LoginViewModel(
+    private val digidAuthenticationRepository: AuthenticationRepository,
+    private val androidUtil: AndroidUtil) : ViewModel() {
 
     private companion object {
         const val USER_CANCELLED_FLOW_CODE = 1
@@ -41,7 +40,7 @@ class DigiDViewModel(
     }
 
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
-    val digidResultLiveData = MutableLiveData<Event<DigidResult>>()
+    val loginResultLiveData = MutableLiveData<Event<LoginResult>>()
 
     /** stored token to fetch different type of events in the same session */
     private var jwt: String? = null
@@ -53,7 +52,7 @@ class DigiDViewModel(
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                authenticationRepository.authResponse(activityResultLauncher, authService)
+                digidAuthenticationRepository.authResponse(activityResultLauncher, authService)
             } catch (e: Exception) {
                 postExceptionResult(e)
             }
@@ -65,8 +64,8 @@ class DigiDViewModel(
      * Login again with a token received with a previous login
      */
     fun loginAgain() {
-        val result = jwt?.let { DigidResult.Success(it) } ?: DigidResult.TokenUnavailable
-        digidResultLiveData.postValue(Event(result))
+        val result = jwt?.let { LoginResult.Success(it) } ?: LoginResult.TokenUnavailable
+        loginResultLiveData.postValue(Event(result))
         jwt = null // login again only once, consecutive logins should request new access token
     }
 
@@ -82,19 +81,19 @@ class DigiDViewModel(
                     else -> postAuthNullResult()
                 }
             } else {
-                digidResultLiveData.postValue(Event(DigidResult.Cancelled))
+                loginResultLiveData.postValue(Event(LoginResult.Cancelled))
             }
         }
     }
 
     private fun postAuthErrorResult(authError: AuthorizationException) {
         val digidResult = when {
-            isUserCancelled(authError) -> DigidResult.Cancelled
+            isUserCancelled(authError) -> LoginResult.Cancelled
             isNetworkError(authError) -> getNetworkErrorResult(authError)
             isServerBusy(authError) -> getServerBusyResult(authError)
-            else -> DigidResult.Failed(Error(DigidNetworkRequest, mapToOpenIdException(authError)))
+            else -> LoginResult.Failed(Error(DigidNetworkRequest, mapToOpenIdException(authError)))
         }
-        digidResultLiveData.postValue(Event(digidResult))
+        loginResultLiveData.postValue(Event(digidResult))
     }
 
     private fun mapToOpenIdException(authError: AuthorizationException) =
@@ -104,11 +103,11 @@ class DigiDViewModel(
         return authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == NETWORK_ERROR
     }
 
-    private fun getNetworkErrorResult(authError: AuthorizationException): DigidResult {
+    private fun getNetworkErrorResult(authError: AuthorizationException): LoginResult {
         return if (!androidUtil.isNetworkAvailable()) {
-            DigidResult.Failed(NetworkRequestResult.Failed.ClientNetworkError(DigidNetworkRequest))
+            LoginResult.Failed(NetworkRequestResult.Failed.ClientNetworkError(DigidNetworkRequest))
         } else {
-            DigidResult.Failed(
+            LoginResult.Failed(
                 NetworkRequestResult.Failed.ServerNetworkError(
                     DigidNetworkRequest,
                     mapToOpenIdException(authError)
@@ -121,7 +120,7 @@ class DigiDViewModel(
         authError.error == LOGIN_REQUIRED_ERROR
 
     private fun getServerBusyResult(authError: AuthorizationException) =
-        DigidResult.Failed(
+        LoginResult.Failed(
             ServerBusy(DigidNetworkRequest, mapToOpenIdException(authError))
         )
 
@@ -134,9 +133,10 @@ class DigiDViewModel(
         authResponse: AuthorizationResponse
     ) {
         try {
-            val jwt = authenticationRepository.jwt(authService, authResponse)
+            val jwt =
+                digidAuthenticationRepository.jwt(authService, authResponse)
             this.jwt = jwt
-            digidResultLiveData.postValue(Event(DigidResult.Success(jwt)))
+            loginResultLiveData.postValue(Event(LoginResult.Success(jwt)))
         } catch (e: Exception) {
             postExceptionResult(e)
         }
@@ -149,17 +149,17 @@ class DigiDViewModel(
             // App Auth will launch a browser intent to log in with DigiD.
             // When it throws an ActivityNotFoundException it means there is no browser app to handle the intent.
             val result = if (e is ActivityNotFoundException) {
-                DigidResult.NoBrowserFound
+                LoginResult.NoBrowserFound
             } else {
-                DigidResult.Failed(Error(DigidNetworkRequest, e))
+                LoginResult.Failed(Error(DigidNetworkRequest, e))
             }
-            digidResultLiveData.postValue(Event(result))
+            loginResultLiveData.postValue(Event(result))
         }
     }
 
     private fun postAuthNullResult() {
-        digidResultLiveData.postValue(
-            Event(DigidResult.Failed(Error(DigidNetworkRequest, NullPointerException())))
+        loginResultLiveData.postValue(
+            Event(LoginResult.Failed(Error(DigidNetworkRequest, NullPointerException())))
         )
     }
 

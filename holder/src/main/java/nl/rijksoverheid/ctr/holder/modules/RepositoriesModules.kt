@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.modules
 
+import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -12,7 +13,8 @@ import org.koin.dsl.module
  *
  */
 val repositoriesModule = module {
-    single { AuthenticationRepository() }
+    single<AuthenticationRepository>(named(LoginQualifier.DIGID)) { DigidAuthenticationRepository() }
+    single<AuthenticationRepository>(named(LoginQualifier.MIJN_CN)) { MijnCNAuthenticationRepository(get(), get()) }
     factory<CoronaCheckRepository> {
         CoronaCheckRepositoryImpl(
             get(),
