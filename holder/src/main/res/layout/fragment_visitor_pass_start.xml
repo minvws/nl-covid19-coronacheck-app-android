@@ -49,8 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:drawablePadding="10dp"
-                android:paddingEnd="40dp"
                 android:text="@string/visitorpass_start_action"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
