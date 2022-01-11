@@ -33,10 +33,7 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
             if (cachedAppConfigUseCase.getCachedAppConfig().ggdEnabled) {
                 findNavController().navigate(QrCodeTypeFragmentDirections.actionChooseProvider())
             } else {
-                findNavController().navigate(QrCodeTypeFragmentDirections.actionInputToken(
-                    toolbarTitle = getString(R.string.commercial_test_type_code_toolbar_title),
-                    data = InputTokenFragmentData.CommercialTest,
-                ))
+                findNavController().navigate(QrCodeTypeFragmentDirections.actionInputToken())
             }
         }
 

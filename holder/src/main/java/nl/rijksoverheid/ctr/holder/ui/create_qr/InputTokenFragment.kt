@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentInputTokenBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
@@ -38,7 +39,8 @@ import org.koin.androidx.viewmodel.scope.emptyState
  *
  *   SPDX-License-Identifier: EUPL-1.2
  *
- */class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) {
+ */
+abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) {
 
     private var _binding: FragmentInputTokenBinding? = null
     private val binding get() = _binding!!
@@ -49,20 +51,13 @@ import org.koin.androidx.viewmodel.scope.emptyState
     private val dialogUtil: DialogUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
 
-    private val navArgs: InputTokenFragmentArgs by navArgs()
-
     override fun onButtonClickWithRetryAction() {
         fetchTestResults(binding)
     }
 
-    override fun getFlow(): Flow {
-        return when (navArgs.data) {
-            InputTokenFragmentData.CommercialTest -> HolderFlow.CommercialTest
-            InputTokenFragmentData.VisitorPass -> HolderFlow.VaccinationAssessment
-        }
-    }
+    private fun setCopies() {
+        val data = getFragmentData()
 
-    private fun setCopies(data: InputTokenFragmentData) {
         binding.description.text = getString(data.description)
         binding.uniqueCodeInput.hint = getString(data.uniqueCodeInputHeader)
         binding.noTokenReceivedBtn.text = getString(data.noCodeText)
@@ -85,7 +80,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
             }
         }
 
-        setCopies(navArgs.data)
+        setCopies()
 
         viewModel.viewState.observe(viewLifecycleOwner) {
             binding.uniqueCodeText.imeOptions =
@@ -105,14 +100,14 @@ import org.koin.androidx.viewmodel.scope.emptyState
             if (it.fromDeeplink && it.verificationRequired) {
                 binding.uniqueCodeInput.isVisible = false
                 binding.noTokenReceivedBtn.isVisible = false
-                binding.description.setText(navArgs.data.descriptionDeeplink)
+                binding.description.setText(getFragmentData().descriptionDeeplink)
             }
 
             binding.uniqueCodeText.setHint(
                 if (Accessibility.screenReader(context)) {
-                    navArgs.data.uniqueCodeInputHintScreenReader
+                    getFragmentData().uniqueCodeInputHintScreenReader
                 } else {
-                    navArgs.data.uniqueCodeInputHint
+                    getFragmentData().uniqueCodeInputHint
                 }
             )
         }
@@ -128,29 +123,15 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
         viewModel.testResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is TestResult.EmptyToken -> showTokenError(navArgs.data.noUniqueCodeEntered)
+                is TestResult.EmptyToken -> showTokenError(getFragmentData().noUniqueCodeEntered)
                 is TestResult.InvalidToken -> showTokenError(R.string.commercial_test_error_invalid_code)
                 is TestResult.UnknownTestProvider -> showTokenError(R.string.commercial_test_error_unknown_test_provider)
                 is TestResult.NegativeTestResult -> showNegativeTestResult(it)
                 is TestResult.NoNegativeTestResult -> {
-                    findNavController().navigate(
-                        InputTokenFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = getString(navArgs.data.noResultScreenToolbarTitle),
-                            title = getString(navArgs.data.noResultScreenTitle),
-                            description = getString(navArgs.data.noResultScreenDescription),
-                            buttonTitle = getString(R.string.back_to_overview)
-                        )
-                    )
+                    navigateCouldNotCreateQr()
                 }
                 is TestResult.Pending -> {
-                    findNavController().navigate(
-                        InputTokenFragmentDirections.actionCouldNotCreateQr(
-                            toolbarTitle = getString(R.string.commercial_test_type_title),
-                            title = getString(R.string.test_result_not_known_title),
-                            description = getString(R.string.test_result_not_known_description),
-                            buttonTitle = getString(R.string.back_to_overview)
-                        )
-                    )
+                    navigateCouldNotCreateQr()
                 }
                 is TestResult.VerificationRequired -> {
                     // If we come here a second time, it means the inputted verification code is not valid
@@ -189,7 +170,7 @@ import org.koin.androidx.viewmodel.scope.emptyState
         }
 
         // If a location token is set, automatically fill it in. Else we show the keyboard focussing on first code input field
-        navArgs.token?.let { token ->
+        getDeeplinkToken()?.let { token ->
             // Only run this once. If the token has been handled once don't try to retrieve a testresult automatically again.
             if (viewModel.testCode.isEmpty()) {
                 binding.uniqueCodeText.setText(token)
@@ -208,38 +189,14 @@ import org.koin.androidx.viewmodel.scope.emptyState
 
         binding.noTokenReceivedBtn.setOnClickListener {
             infoFragmentUtil.presentAsBottomSheet(childFragmentManager, InfoFragmentData.TitleDescription(
-                title = getString(navArgs.data.noCodeDialogTitle),
-                descriptionData = DescriptionData(navArgs.data.noCodeDialogDescription),
+                title = getString(getFragmentData().noCodeDialogTitle),
+                descriptionData = DescriptionData(getFragmentData().noCodeDialogDescription),
             ))
         }
     }
 
     private fun showNegativeTestResult(result: TestResult.NegativeTestResult) {
-        when (result.remoteTestResult) {
-            is RemoteTestResult2 -> {
-                findNavController().navigate(
-                    InputTokenFragmentDirections.actionYourEvents(
-                        type = YourEventsFragmentType.TestResult2(
-                            remoteTestResult = result.remoteTestResult,
-                            rawResponse = result.signedResponseWithTestResult.rawResponse
-                        ),
-                        toolbarTitle = getString(R.string.your_negative_test_results_toolbar)
-                    )
-                )
-            }
-            is RemoteProtocol3 -> {
-                findNavController().navigate(
-                    InputTokenFragmentDirections.actionYourEvents(
-                        type = YourEventsFragmentType.RemoteProtocol3Type(
-                            mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse),
-                            originType = if (navArgs.data is InputTokenFragmentData.CommercialTest) OriginType.Test else OriginType.VaccinationAssessment,
-                            fromCommercialTestCode = true
-                        ),
-                        toolbarTitle = getString(navArgs.data.yourEventsToolbarTitle),
-                    )
-                )
-            }
-        }
+        navigateMyEvents(result)
     }
 
     private fun showTokenError(@StringRes errorMessageRes: Int) {
@@ -265,4 +222,9 @@ import org.koin.androidx.viewmodel.scope.emptyState
         binding.uniqueCodeInput.error = null
         viewModel.getTestResult(fromDeeplink)
     }
+
+    abstract fun getFragmentData(): InputTokenFragmentData
+    abstract fun navigateCouldNotCreateQr()
+    abstract fun navigateMyEvents(result: TestResult.NegativeTestResult)
+    abstract fun getDeeplinkToken(): String?
 }

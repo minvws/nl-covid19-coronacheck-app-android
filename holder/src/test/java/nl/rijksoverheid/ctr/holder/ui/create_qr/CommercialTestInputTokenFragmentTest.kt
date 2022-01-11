@@ -33,14 +33,14 @@ import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class InputTokenFragmentTest : AutoCloseKoinTest() {
+class CommercialTestInputTokenFragmentTest : AutoCloseKoinTest() {
 
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {
         it.setViewModelStore(ViewModelStore())
         it.setGraph(R.navigation.holder_nav_graph_main)
-        it.setCurrentDestination(R.id.nav_input_token)
+        it.setCurrentDestination(R.id.nav_commercial_test_input_token)
     }
 
     @Test
@@ -123,7 +123,7 @@ class InputTokenFragmentTest : AutoCloseKoinTest() {
                 "data" to InputTokenFragmentData.CommercialTest,
             ), themeResId = R.style.AppTheme
         ) {
-            InputTokenFragment().also {
+            CommercialTestInputTokenFragment().also {
                 it.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
                     if (viewLifecycleOwner != null) {
                         Navigation.setViewNavController(it.requireView(), navController)

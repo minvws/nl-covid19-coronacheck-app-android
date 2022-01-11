@@ -35,10 +35,7 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
             R.string.choose_provider_commercial_title,
             null
         ) {
-            findNavController().navigate(ChooseProviderFragmentDirections.actionInputToken(
-                toolbarTitle = getString(R.string.commercial_test_type_code_toolbar_title),
-                data = InputTokenFragmentData.CommercialTest,
-            ))
+            findNavController().navigate(ChooseProviderFragmentDirections.actionInputToken())
         }
 
         binding.providerGgd.bind(

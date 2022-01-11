@@ -44,6 +44,16 @@
 
                 <data
                     android:host="${deepLinkHost}"
+                    android:path="/app/redeem-assessment"
+                    android:scheme="https" />
+
+                <data
+                    android:host="www.${deepLinkHost}"
+                    android:path="/app/redeem-assessment"
+                    android:scheme="https" />
+
+                <data
+                    android:host="${deepLinkHost}"
                     android:path="/app/open"
                     android:scheme="https" />
             </intent-filter>

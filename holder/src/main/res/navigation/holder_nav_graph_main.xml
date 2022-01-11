@@ -63,7 +63,7 @@
                 app:popExitAnim="@anim/slide_out_right" />
 
             <action android:id="@+id/action_input_token"
-                app:destination="@id/nav_input_token"
+                app:destination="@id/nav_commercial_test_input_token"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
@@ -262,7 +262,7 @@
             tools:layout="@layout/fragment_visitor_pass_start">
 
             <action android:id="@+id/action_input_token"
-                app:destination="@id/nav_input_token"
+                app:destination="@id/nav_visitor_pass_input_token"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
@@ -287,7 +287,7 @@
 
         <action
             android:id="@+id/action_input_token"
-            app:destination="@id/nav_input_token"
+            app:destination="@id/nav_commercial_test_input_token"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -327,7 +327,7 @@
 
         <action
             android:id="@+id/action_input_token"
-            app:destination="@id/nav_input_token"
+            app:destination="@id/nav_commercial_test_input_token"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -454,20 +454,44 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_input_token"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.InputTokenFragment"
-        android:label="{toolbarTitle}"
+        android:id="@+id/nav_commercial_test_input_token"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestInputTokenFragment"
+        android:label="@string/commercial_test_type_code_toolbar_title"
         tools:layout="@layout/fragment_input_token">
 
-        <deepLink app:uri=".*/app/redeem#{token}" />
+        <deepLink app:uri=".*/app/redeem#{token}"  />
 
         <argument
-            android:name="data"
-            app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.InputTokenFragmentData" />
+            android:name="token"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
 
-        <argument
-            android:name="toolbarTitle"
-            app:argType="string" />
+        <action
+            android:id="@+id/action_your_events"
+            app:destination="@id/nav_your_events"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_could_not_create_qr"
+            app:destination="@id/nav_could_not_create_qr"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_visitor_pass_input_token"
+        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.VisitorPassInputTokenFragment"
+        android:label="@string/visitorpass_start_toolbar_title"
+        tools:layout="@layout/fragment_input_token">
+
+        <deepLink app:uri=".*/app/redeem-assessment#{token}"  />
 
         <argument
             android:name="token"
@@ -588,7 +612,7 @@
         tools:layout="@layout/fragment_info">
 
         <action android:id="@+id/action_input_token"
-            app:destination="@id/nav_input_token"
+            app:destination="@id/nav_commercial_test_input_token"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
