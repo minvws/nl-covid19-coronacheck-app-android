@@ -14,16 +14,16 @@ import java.time.ZoneId
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TestResultAdapterItemUtilImplTest {
+class MyOverviewGreenCardAdapterUtilImplTest {
 
     @Test
-    fun `getExpireCountdownText returns Hide when expire date more than 6 hours away`() {
+    fun `getExpireCountdownText returns Hide when expire date more than 24 hours away`() {
         val util = MyOverviewGreenCardAdapterUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
         )
         val result = util.getExpireCountdownText(
             expireDate = OffsetDateTime.ofInstant(
-                Instant.parse("2021-01-01T07:00:00.00Z"),
+                Instant.parse("2021-01-02T07:00:00.00Z"),
                 ZoneId.of("UTC")
             )
         )
@@ -31,19 +31,19 @@ class TestResultAdapterItemUtilImplTest {
     }
 
     @Test
-    fun `getExpireCountdownText returns Show when expire date more less than 6 hours away`() {
+    fun `getExpireCountdownText returns Show when expire date less than 24 hours away`() {
         val util = MyOverviewGreenCardAdapterUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
         )
         val result = util.getExpireCountdownText(
             expireDate = OffsetDateTime.ofInstant(
-                Instant.parse("2021-01-01T05:50:00.00Z"),
+                Instant.parse("2021-01-01T23:50:00.00Z"),
                 ZoneId.of("UTC")
             )
         )
         assertEquals(
             MyOverviewGreenCardAdapterUtil.ExpireCountDown.Show(
-                hoursLeft = 5,
+                hoursLeft = 23,
                 minutesLeft = 50
             ), result
         )
