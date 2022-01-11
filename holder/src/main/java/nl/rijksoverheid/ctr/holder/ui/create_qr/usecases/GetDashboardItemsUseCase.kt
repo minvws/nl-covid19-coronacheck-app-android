@@ -4,6 +4,7 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
@@ -40,7 +41,8 @@ class GetDashboardItemsUseCaseImpl(
             internationalItems = getInternationalItems(
                 allGreenCards = allGreenCards,
                 databaseSyncerResult = databaseSyncerResult,
-                isLoadingNewCredentials = isLoadingNewCredentials
+                isLoadingNewCredentials = isLoadingNewCredentials,
+                allEventGroupEntities = allEventGroupEntities
             )
         )
     }
@@ -62,6 +64,7 @@ class GetDashboardItemsUseCaseImpl(
             .distinctBy { it.greenCardEntity.type }
 
         val headerText = dashboardItemUtil.getHeaderItemText(
+            allEvents = allEventGroupEntities,
             greenCardType = GreenCardType.Domestic,
             allGreenCards = allGreenCards
         )
@@ -130,7 +133,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         )
 
-        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
+        if (dashboardItemUtil.shouldShowPlaceholderItem(allEventGroupEntities, allGreenCards)) {
             dashboardItems.add(
                 DashboardItem.PlaceholderCardItem(greenCardType = GreenCardType.Domestic)
             )
@@ -147,13 +150,14 @@ class GetDashboardItemsUseCaseImpl(
         }
 
         dashboardItems.add(
-            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
+            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allEventGroupEntities, allGreenCards))
         )
 
         return dashboardItems
     }
 
     private suspend fun getInternationalItems(
+        allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean,
@@ -166,7 +170,8 @@ class GetDashboardItemsUseCaseImpl(
 
         val headerText = dashboardItemUtil.getHeaderItemText(
             greenCardType = GreenCardType.Eu,
-            allGreenCards = allGreenCards
+            allGreenCards = allGreenCards,
+            allEvents = allEventGroupEntities
         )
 
         dashboardItems.add(
@@ -179,6 +184,20 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
+        }
+
+        // If the incomplete visitor pass banner shows in domestic, we show the relevant missing origin banner in EU
+        if (dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
+                events = allEventGroupEntities,
+                domesticGreenCards = domesticGreenCards
+            )) {
+
+            dashboardItems.add(
+                DashboardItem.InfoItem.OriginInfoItem(
+                    greenCardType = GreenCardType.Eu,
+                    originType = OriginType.VaccinationAssessment
+                )
+            )
         }
 
         if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
@@ -200,7 +219,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         )
 
-        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
+        if (dashboardItemUtil.shouldShowPlaceholderItem(allEventGroupEntities, allGreenCards)) {
             dashboardItems.add(
                 DashboardItem.PlaceholderCardItem(greenCardType = GreenCardType.Eu)
             )
@@ -217,7 +236,7 @@ class GetDashboardItemsUseCaseImpl(
         }
 
         dashboardItems.add(
-            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
+            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allEventGroupEntities, allGreenCards))
         )
 
         return dashboardItems

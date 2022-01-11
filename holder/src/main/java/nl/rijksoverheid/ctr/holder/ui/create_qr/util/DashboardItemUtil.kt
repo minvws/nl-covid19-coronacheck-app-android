@@ -16,10 +16,10 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 
 interface DashboardItemUtil {
-    fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int
+    fun getHeaderItemText(allEvents: List<EventGroupEntity>, greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int
     fun shouldShowClockDeviationItem(allGreenCards: List<GreenCard>): Boolean
-    fun shouldShowPlaceholderItem(allGreenCards: List<GreenCard>): Boolean
-    fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>): Boolean
+    fun shouldShowPlaceholderItem(allEvents: List<EventGroupEntity>, allGreenCards: List<GreenCard>): Boolean
+    fun shouldAddQrButtonItem(allEvents: List<EventGroupEntity>, allGreenCards: List<GreenCard>): Boolean
     fun isAppUpdateAvailable(): Boolean
 
     /**
@@ -64,21 +64,28 @@ class DashboardItemUtilImpl(
     private val buildConfigUseCase: BuildConfigUseCase
 ) : DashboardItemUtil {
 
-    override fun getHeaderItemText(greenCardType: GreenCardType, allGreenCards: List<GreenCard>): Int {
-        val hasGreenCards = allGreenCards.isNotEmpty() && !allGreenCards.all { greenCardUtil.isExpired(it) }
+    override fun getHeaderItemText(
+        allEvents: List<EventGroupEntity>,
+        greenCardType: GreenCardType,
+        allGreenCards: List<GreenCard>): Int {
+        val hasEmptyState = hasEmptyState(
+            allEvents = allEvents,
+            allGreenCards = allGreenCards
+        )
+
         return when (greenCardType) {
             is GreenCardType.Domestic -> {
-                if (hasGreenCards) {
-                    R.string.my_overview_description
-                } else {
+                if (hasEmptyState) {
                     R.string.my_overview_qr_placeholder_description
+                } else {
+                    R.string.my_overview_description
                 }
             }
             is GreenCardType.Eu -> {
-                if (hasGreenCards) {
-                    R.string.my_overview_description_eu
-                } else {
+                if (hasEmptyState) {
                     R.string.my_overview_qr_placeholder_description_eu
+                } else {
+                    R.string.my_overview_description_eu
                 }
             }
         }
@@ -88,11 +95,16 @@ class DashboardItemUtilImpl(
         clockDeviationUseCase.hasDeviation() && (allGreenCards.isNotEmpty() ||
                 !allGreenCards.all { greenCardUtil.isExpired(it) })
 
-    override fun shouldShowPlaceholderItem(allGreenCards: List<GreenCard>) =
-        allGreenCards.isEmpty() || allGreenCards.all { greenCardUtil.isExpired(it) }
+    override fun shouldShowPlaceholderItem(
+        allEvents: List<EventGroupEntity>,
+        allGreenCards: List<GreenCard>
+    ) = hasEmptyState(
+        allEvents = allEvents,
+        allGreenCards = allGreenCards
+    )
 
-    override fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>): Boolean =
-        allGreenCards.isEmpty()
+    override fun shouldAddQrButtonItem(allEvents: List<EventGroupEntity>, allGreenCards: List<GreenCard>): Boolean =
+        hasEmptyState(allEvents, allGreenCards)
 
     override fun isAppUpdateAvailable(): Boolean {
         return buildConfigUseCase.getVersionCode() < appConfigUseCase.getCachedAppConfig().recommendedVersion
@@ -185,5 +197,24 @@ class DashboardItemUtilImpl(
         val hasVaccinationAssessmentEvent = events.map { it.type }.contains(OriginType.VaccinationAssessment)
         val hasVaccinationAssessmentOrigin = domesticGreenCards.map { it.origins.map { origin -> origin.type } }.flatten().contains(OriginType.VaccinationAssessment)
         return hasVaccinationAssessmentEvent && !hasVaccinationAssessmentOrigin
+    }
+
+    /**
+     * Empty state shows if:
+     * - there are no green cards
+     * - no expired green cards
+     * - the incomplete visitor pass banner is not showing
+     */
+    private fun hasEmptyState(
+        allEvents: List<EventGroupEntity>,
+        allGreenCards: List<GreenCard>
+    ): Boolean {
+        val hasGreenCards = allGreenCards.isNotEmpty() && !allGreenCards.all { greenCardUtil.isExpired(it) }
+        val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
+        val hasIncompleteVisitorPass = shouldShowVisitorPassIncompleteItem(
+            events = allEvents,
+            domesticGreenCards = domesticGreenCards
+        )
+        return !hasGreenCards && !hasIncompleteVisitorPass
     }
 }

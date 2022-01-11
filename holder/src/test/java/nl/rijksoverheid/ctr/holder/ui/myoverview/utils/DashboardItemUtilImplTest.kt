@@ -40,7 +40,8 @@ class DashboardItemUtilImplTest {
 
         val headerText = util.getHeaderItemText(
             greenCardType = GreenCardType.Domestic,
-            allGreenCards = listOf(fakeGreenCard())
+            allGreenCards = listOf(fakeGreenCard()),
+            allEvents = listOf()
         )
 
         assertEquals(R.string.my_overview_description, headerText)
@@ -62,7 +63,8 @@ class DashboardItemUtilImplTest {
 
         val headerText = util.getHeaderItemText(
             greenCardType = GreenCardType.Domestic,
-            allGreenCards = listOf()
+            allGreenCards = listOf(),
+            allEvents = listOf()
         )
 
         assertEquals(R.string.my_overview_qr_placeholder_description, headerText)
@@ -84,7 +86,8 @@ class DashboardItemUtilImplTest {
 
         val headerText = util.getHeaderItemText(
             greenCardType = GreenCardType.Eu,
-            allGreenCards = listOf(fakeGreenCard())
+            allGreenCards = listOf(fakeGreenCard()),
+            allEvents = listOf()
         )
 
         assertEquals(R.string.my_overview_description_eu, headerText)
@@ -106,7 +109,8 @@ class DashboardItemUtilImplTest {
 
         val headerText = util.getHeaderItemText(
             greenCardType = GreenCardType.Eu,
-            allGreenCards = listOf()
+            allGreenCards = listOf(),
+            allEvents = listOf()
         )
 
         assertEquals(R.string.my_overview_qr_placeholder_description_eu, headerText)
@@ -169,6 +173,7 @@ class DashboardItemUtilImplTest {
         )
 
         val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
+            allEvents = listOf(),
             allGreenCards = listOf()
         )
 
@@ -190,6 +195,7 @@ class DashboardItemUtilImplTest {
         )
 
         val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
+            allEvents = listOf(),
             allGreenCards = listOf(fakeGreenCard())
         )
 
@@ -209,6 +215,7 @@ class DashboardItemUtilImplTest {
         )
 
         val shouldAddQrButtonItem = util.shouldAddQrButtonItem(
+            allEvents = listOf(),
             allGreenCards = listOf()
         )
 

@@ -432,15 +432,16 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
         factory<DashboardItemUtil> {
             object : DashboardItemUtil {
                 override fun getHeaderItemText(
+                    allEvents: List<EventGroupEntity>,
                     greenCardType: GreenCardType,
                     allGreenCards: List<GreenCard>
                 ): Int = R.string.my_overview_qr_placeholder_header
 
                 override fun shouldShowClockDeviationItem(allGreenCards: List<GreenCard>) = false
 
-                override fun shouldShowPlaceholderItem(allGreenCards: List<GreenCard>) = false
+                override fun shouldShowPlaceholderItem(allEvents: List<EventGroupEntity>, allGreenCards: List<GreenCard>) = false
 
-                override fun shouldAddQrButtonItem(allGreenCards: List<GreenCard>) = false
+                override fun shouldAddQrButtonItem(allEvent: List<EventGroupEntity>, allGreenCards: List<GreenCard>) = false
 
                 override fun isAppUpdateAvailable() = isAppUpdateAvailable
 
