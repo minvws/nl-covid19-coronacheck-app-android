@@ -201,10 +201,6 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 descriptionData = DescriptionData(
                     htmlText = R.string.holder_completecertificate_body
                 ),
-                secondaryButtonData = ButtonData.LinkButton(
-                    text = myOverviewFragment.getString(R.string.holder_completecertificate_button_makeappointement),
-                    link = myOverviewFragment.getString(R.string.url_make_appointment)
-                ),
                 primaryButtonData = ButtonData.NavigationButton(
                     text = myOverviewFragment.getString(R.string.holder_completecertificate_button_fetchnegativetest),
                     navigationActionId = navigationDirection.actionId,
