@@ -21,7 +21,6 @@ class DashboardItemEmptyStateUtilImpl(private val greenCardUtil: GreenCardUtil):
                                allGreenCards: List<GreenCard>): Boolean {
 
         val hasGreenCards = allGreenCards.isNotEmpty() && !allGreenCards.all { greenCardUtil.isExpired(it) }
-        val domesticGreenCards = allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
         return !hasGreenCards && !hasVisitorPassIncompleteItem
     }
 }
