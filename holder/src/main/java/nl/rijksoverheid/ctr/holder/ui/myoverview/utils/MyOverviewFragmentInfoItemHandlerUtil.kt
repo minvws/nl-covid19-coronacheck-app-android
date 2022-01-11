@@ -21,6 +21,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.holder.MainNavDirections
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -90,6 +92,11 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     private fun onGreenCardExpiredClicked(
         myOverviewFragment: MyOverviewFragment
     ) {
+        val navigationDirection = MainNavDirections.actionGetEvents(
+            toolbarTitle = myOverviewFragment.getString(R.string.get_vaccination_title),
+            originType = RemoteOriginType.Vaccination
+        )
+
         infoFragmentUtil.presentAsBottomSheet(
             myOverviewFragment.childFragmentManager,
             InfoFragmentData.TitleDescriptionWithButton(
@@ -100,7 +107,8 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 ),
                 secondaryButtonData = ButtonData.NavigationButton(
                     text = myOverviewFragment.getString(R.string.holder_expiredDomesticVaccinationModal_button_addBoosterVaccination),
-                    navigationActionId = R.id.action_qr_type
+                    navigationActionId = navigationDirection.actionId,
+                    navigationArguments = navigationDirection.arguments
                 )
             )
         )

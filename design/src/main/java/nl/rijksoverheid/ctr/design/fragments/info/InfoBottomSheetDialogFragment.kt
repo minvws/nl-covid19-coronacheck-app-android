@@ -90,7 +90,12 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     is ButtonData.NavigationButton -> {
                         binding.navigationButton.run {
                             text = buttonData.text
-                            setOnClickListener { findNavControllerSafety()?.navigate(buttonData.navigationActionId) }
+                            setOnClickListener {
+                                findNavControllerSafety()?.navigate(
+                                    buttonData.navigationActionId,
+                                    buttonData.navigationArguments
+                                )
+                            }
                             binding.navigationButton.visibility = View.VISIBLE
                         }
                     }
