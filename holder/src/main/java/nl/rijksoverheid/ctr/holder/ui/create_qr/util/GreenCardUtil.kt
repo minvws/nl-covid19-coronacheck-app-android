@@ -9,9 +9,20 @@ import java.time.OffsetDateTime
 
 interface GreenCardUtil {
     fun isExpired(greenCard: GreenCard): Boolean
+
+    /**
+     * Get the expiration date of the green card or of a specific origin of the green card
+     *
+     * @param[greenCard] green card to check expiration date
+     * @param[type] Origin to get expiration from or if null latest expiration of all origins
+     * @return Expiration time of origin type or latest expiration of all origins when not specified
+     */
     fun getExpireDate(greenCard: GreenCard, type: OriginType? = null): OffsetDateTime
+
     fun getErrorCorrectionLevel(greenCardType: GreenCardType): ErrorCorrectionLevel
+
     fun isExpiring(renewalDays: Long, greenCard: GreenCard): Boolean
+
     fun hasNoActiveCredentials(greenCard: GreenCard): Boolean
 }
 
