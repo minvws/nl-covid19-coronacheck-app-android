@@ -3,13 +3,10 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import android.util.Base64
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetEventsFromPaperProofQrUseCase
 import nl.rijksoverheid.ctr.shared.models.JSON
 import org.json.JSONObject
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -29,7 +26,8 @@ interface RemoteEventHolderUtil {
 class RemoteEventHolderUtilImpl(
     private val moshi: Moshi,
     private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase,
-    private val remoteEventUtil: RemoteEventUtil
+    private val remoteEventUtil: RemoteEventUtil,
+    private val yourEventsFragmentUtil: YourEventsFragmentUtil,
 ) : RemoteEventHolderUtil {
     override fun holder(data: ByteArray, providerIdentifier: String): RemoteProtocol3.Holder? {
         val remoteEvent =
@@ -58,15 +56,12 @@ class RemoteEventHolderUtilImpl(
             // if any of the stored or the new data is null
             // then we cannot really compare, just go on and
             // let the user store his new card
-            val storedBirthDay = birthDay(storedEventHolder.birthDate ?: return false)
-            val storedBirthMonth = birthMonth(storedEventHolder.birthDate)
+            val storedBirthdate = yourEventsFragmentUtil.getBirthDate(storedEventHolder)
             val storedFirstName = storedEventHolder.firstName
             val storedLastName = storedEventHolder.lastName
             incomingEventHolders.forEach { incomingEventHolder ->
-                val incomingBirthDay = birthDay(incomingEventHolder.birthDate ?: return false)
-                val incomingBirthMonth = birthMonth(incomingEventHolder.birthDate)
-                val birthDateIsNotMatching =
-                    storedBirthDay != incomingBirthDay || storedBirthMonth != incomingBirthMonth
+                val incomingBirthdate = yourEventsFragmentUtil.getBirthDate(incomingEventHolder)
+                val birthDateIsNotMatching = birthDateIsNotMatching(storedBirthdate, incomingBirthdate)
                 val incomingFirstName = incomingEventHolder.firstName
                 val incomingLastName = incomingEventHolder.lastName
                 val nameIsNotMatching = nameIsNotMatching(storedFirstName, incomingFirstName) && nameIsNotMatching(storedLastName, incomingLastName)
@@ -90,12 +85,20 @@ class RemoteEventHolderUtilImpl(
 
     }
 
-    private fun birthMonth(birthDate: String): Int {
-        return LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).monthValue
-    }
+    private fun birthDateIsNotMatching(stored: String, incoming: String): Boolean {
+        if (stored == incoming) {
+            return false
+        }
 
-    private fun birthDay(birthDate: String): Int {
-        return LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).dayOfMonth
+        val storedBirthdayParts = stored.split(" ")
+        val incomingBirthdayParts = incoming.split(" ")
+
+        val storedBirthDay: String? = storedBirthdayParts.getOrNull(0)
+        val storedBirthMonth: String? = storedBirthdayParts.getOrNull(1)
+        val incomingBirthDay: String? = incomingBirthdayParts.getOrNull(0)
+        val incomingBirthMonth: String? = incomingBirthdayParts.getOrNull(1)
+
+        return storedBirthDay != incomingBirthDay || storedBirthMonth != incomingBirthMonth
     }
 
     companion object {

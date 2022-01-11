@@ -83,6 +83,9 @@ class MyOverviewInfoCardItem(
             is DashboardItem.InfoItem.NewValidityItem -> {
                 viewBinding.text.setText(R.string.holder_dashboard_newvaliditybanner_title)
             }
+            is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
+                viewBinding.text.setText(R.string.holder_dashboard_visitorpassincompletebanner_title)
+            }
         }
 
         viewBinding.button.setOnClickListener {

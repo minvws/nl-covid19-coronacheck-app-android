@@ -32,7 +32,7 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
-import nl.rijksoverheid.ctr.shared.utils.IntentUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -180,25 +180,4 @@ class HolderMainActivity : AppCompatActivity() {
         navController.setGraph(R.navigation.holder_nav_graph_root)
         navController.handleDeepLink(intent)
     }
-
-    fun launchUrl(url: String) {
-        url.launchUrl(this) {
-            dialogUtil.presentDialog(
-                context = this,
-                title = R.string.dialog_no_browser_title,
-                // remove the https prefix to make it more eye friendsly
-                message = getString(R.string.dialog_no_browser_message, url).replace(
-                    "https://",
-                    ""
-                ),
-                positiveButtonText = R.string.ok,
-                positiveButtonCallback = {},
-            )
-        }
-    }
-}
-
-fun Context.launchUrl(url: String) {
-    val holderMainActivity = this as? HolderMainActivity
-    holderMainActivity?.launchUrl(url)
 }

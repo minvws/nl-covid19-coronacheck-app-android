@@ -48,13 +48,16 @@ interface DashboardItemUtil {
     fun shouldShowTestCertificate3GValidityItem(
         domesticGreenCards: List<GreenCard>
     ): Boolean
+    fun shouldShowVisitorPassIncompleteItem(
+        events: List<EventGroupEntity>,
+        domesticGreenCards: List<GreenCard>
+    ): Boolean
 }
 
 class DashboardItemUtilImpl(
     private val clockDeviationUseCase: ClockDeviationUseCase,
     private val greenCardUtil: GreenCardUtil,
     private val persistenceManager: PersistenceManager,
-    private val eventGroupEntityUtil: EventGroupEntityUtil,
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
     private val featureFlagUseCase: FeatureFlagUseCase,
     private val appConfigUseCase: CachedAppConfigUseCase,
@@ -174,5 +177,13 @@ class DashboardItemUtilImpl(
                     && greenCard.credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G }
         }
         return isFeatureEnabled && has3GTest
+    }
+
+    override fun shouldShowVisitorPassIncompleteItem(
+        events: List<EventGroupEntity>,
+        domesticGreenCards: List<GreenCard>): Boolean {
+        val hasVaccinationAssessmentEvent = events.map { it.type }.contains(OriginType.VaccinationAssessment)
+        val hasVaccinationAssessmentOrigin = domesticGreenCards.map { it.origins.map { origin -> origin.type } }.flatten().contains(OriginType.VaccinationAssessment)
+        return hasVaccinationAssessmentEvent && !hasVaccinationAssessmentOrigin
     }
 }

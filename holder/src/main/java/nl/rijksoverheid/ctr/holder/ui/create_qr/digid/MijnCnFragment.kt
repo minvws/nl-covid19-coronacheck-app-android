@@ -11,13 +11,12 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.digid
 import android.os.Bundle
 import android.view.View
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMijnCnBinding
-import nl.rijksoverheid.ctr.holder.launchUrl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.GetEventsFragmentCopy
 import nl.rijksoverheid.ctr.holder.ui.create_qr.GetEventsViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
@@ -34,6 +33,8 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
 
     private val getEventsViewModel: GetEventsViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
+    private val intentUtil: IntentUtil by inject()
+
     override fun onButtonClickWithRetryAction() {
         loginWithMijnCN()
     }
@@ -51,7 +52,10 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
             R.string.no_digid_nodigid_button_title,
             getString(R.string.no_digid_nodigid_button_description),
             onClick = {
-                context?.launchUrl(getString(R.string.no_digid_url))
+                intentUtil.openUrl(
+                    context = requireContext(),
+                    url = getString(R.string.no_digid_url)
+                )
             })
 
         binding.mijncnButton.bind(

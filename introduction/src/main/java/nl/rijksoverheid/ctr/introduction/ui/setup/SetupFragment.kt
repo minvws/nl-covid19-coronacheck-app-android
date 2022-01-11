@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
-import nl.rijksoverheid.ctr.shared.utils.IntentUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

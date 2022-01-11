@@ -23,8 +23,7 @@ class GetDashboardItemsUseCaseImpl(
     private val greenCardUtil: GreenCardUtil,
     private val credentialUtil: CredentialUtil,
     private val originUtil: OriginUtil,
-    private val dashboardItemUtil: DashboardItemUtil,
-    private val persistenceManager: PersistenceManager
+    private val dashboardItemUtil: DashboardItemUtil
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -36,18 +35,19 @@ class GetDashboardItemsUseCaseImpl(
             domesticItems = getDomesticItems(
                 allGreenCards = allGreenCards,
                 databaseSyncerResult = databaseSyncerResult,
-                isLoadingNewCredentials = isLoadingNewCredentials
+                isLoadingNewCredentials = isLoadingNewCredentials,
+                allEventGroupEntities = allEventGroupEntities
             ),
             internationalItems = getInternationalItems(
                 allGreenCards = allGreenCards,
                 databaseSyncerResult = databaseSyncerResult,
-                isLoadingNewCredentials = isLoadingNewCredentials,
-                allEventGroupEntities = allEventGroupEntities
+                isLoadingNewCredentials = isLoadingNewCredentials
             )
         )
     }
 
     private fun getDomesticItems(
+        allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean,
@@ -91,6 +91,15 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.shouldShowExtendedDomesticRecoveryItem()) {
             dashboardItems.add(DashboardItem.InfoItem.ExtendedDomesticRecovery)
+        }
+
+        if (dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
+            events = allEventGroupEntities,
+            domesticGreenCards = domesticGreenCards
+        )) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.VisitorPassIncompleteItem
+            )
         }
 
         if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
@@ -146,7 +155,6 @@ class GetDashboardItemsUseCaseImpl(
     }
 
     private suspend fun getInternationalItems(
-        allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean,

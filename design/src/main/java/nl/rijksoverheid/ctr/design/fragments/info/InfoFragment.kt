@@ -6,10 +6,14 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.FragmentInfoBinding
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import org.koin.android.ext.android.inject
 
 class InfoFragment : Fragment(R.layout.fragment_info) {
+
+    private val intentUtil: IntentUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,10 +35,42 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
             is InfoFragmentData.TitleDescriptionWithButton -> {
                 binding.button.visibility = View.VISIBLE
                 binding.button.apply {
-                    val buttonData = infoFragmentData.buttonData
+                    val buttonData = infoFragmentData.secondaryButtonData
+                    text = buttonData.text
+                    setOnClickListener {
+                        when (buttonData) {
+                            is ButtonData.NavigationButton -> {
+                                findNavControllerSafety()?.navigate(buttonData.navigationActionId, buttonData.navigationArguments)
+                            }
+                            is ButtonData.LinkButton -> {
+                                intentUtil.openUrl(
+                                    context = requireContext(),
+                                    url = buttonData.link
+                                )
+                            }
+                        }
+                    }
                     if (buttonData is ButtonData.NavigationButton) {
                         text = buttonData.text
-                        setOnClickListener { findNavControllerSafety()?.navigate(buttonData.navigationActionId) }
+                        setOnClickListener { findNavControllerSafety()?.navigate(buttonData.navigationActionId, buttonData.navigationArguments) }
+                    }
+                }
+
+                infoFragmentData.primaryButtonData?.let { buttonData ->
+                    binding.bottom.visibility = View.VISIBLE
+                    binding.bottom.setButtonText(buttonData.text)
+                    binding.bottom.setButtonClick {
+                        when (buttonData) {
+                            is ButtonData.NavigationButton -> {
+                                findNavControllerSafety()?.navigate(buttonData.navigationActionId, buttonData.navigationArguments)
+                            }
+                            is ButtonData.LinkButton -> {
+                                intentUtil.openUrl(
+                                    context = requireContext(),
+                                    url = buttonData.link
+                                )
+                            }
+                        }
                     }
                 }
             }

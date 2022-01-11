@@ -59,6 +59,12 @@ sealed class DashboardItem {
             hasButton = true,
             buttonText = R.string.holder_dashboard_newvaliditybanner_action
         )
+
+        object VisitorPassIncompleteItem: InfoItem(
+            isDismissible = false,
+            hasButton = true,
+            buttonText = R.string.holder_dashboard_visitorpassincompletebanner_button_makecomplete
+        )
     }
 
     object CoronaMelderItem : DashboardItem()
