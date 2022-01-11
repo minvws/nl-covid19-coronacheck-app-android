@@ -257,15 +257,14 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
     fun domesticTestExpiringIn6Minutes() {
         val testResultAdapterItemUtil = MyOverviewGreenCardAdapterUtilImpl(Clock.fixed(Instant.ofEpochSecond(1627495600), ZoneId.of("UTC")))
         val greenCard = greenCard(GreenCardType.Domestic)
-        every { greenCardUtil.getExpireDate(greenCard) } returns greenCard.credentialEntities.first().expirationTime
+        every { greenCardUtil.getExpireDate(greenCard, OriginType.Test) } returns greenCard.credentialEntities.first().expirationTime
         val myOverViewGreenCardAdapterUtil = MyOverViewGreenCardAdapterUtilImpl(Clock.systemUTC(), context, credentialUtil, testResultAdapterItemUtil, greenCardUtil, featureFlagUseCase)
 
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(OriginState.Valid(greenCard.origins.first())))))
 
         assertEquals("Testbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig tot woensdag 28 juli 21:06", (viewBinding.description.getChildAt(1) as TextView).text)
-        assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
-        assertEquals("Verloopt in 1 uur 1 min", viewBinding.expiresIn.text)
+        assertEquals("Verloopt in 1 uur 1 min", (viewBinding.description.getChildAt(2) as TextView).text)
     }
 
     @Test
