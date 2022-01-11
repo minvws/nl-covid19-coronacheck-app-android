@@ -135,6 +135,44 @@ class HolderDatabaseSyncerImplTest {
     }
 
     @Test
+    fun `sync returns Success if returned origins is vaccination assessment and does not match`() = runBlocking {
+        coEvery { eventGroupDao.getAll() } answers { events }
+
+        val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
+            holderDatabase = holderDatabase,
+            greenCardUtil = fakeGreenCardUtil(),
+            getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
+                result = RemoteGreenCardsResult.Success(
+                    remoteGreenCards = RemoteGreenCards(
+                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
+                            origins = listOf(RemoteGreenCards.Origin(
+                                type = OriginType.VaccinationAssessment,
+                                eventTime = OffsetDateTime.now(),
+                                expirationTime = OffsetDateTime.now(),
+                                validFrom = OffsetDateTime.now(),
+                                doseNumber = 1,
+                            )),
+                            createCredentialMessages = "".toByteArray()
+                        ),
+                        euGreencards = null
+                    )
+                )
+            ),
+            syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            persistenceManager = fakePersistenceManager(),
+            combinationUtil = mockk { every { getResult(any(), any(), any()) } returns NotApplicable }
+        )
+
+        val databaseSyncerResult = holderDatabaseSyncer.sync(
+            expectedOriginType = OriginType.VaccinationAssessment,
+            syncWithRemote = true
+        )
+
+        assertEquals(DatabaseSyncerResult.Success(false), databaseSyncerResult)
+    }
+
+    @Test
     fun `sync returns NetworkError if getting remote green cards returns NetworkError`() = runBlocking {
         coEvery { eventGroupDao.getAll() } answers { events }
         coEvery { greenCardDao.getAll() } answers { listOf() }
