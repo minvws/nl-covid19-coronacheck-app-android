@@ -14,7 +14,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
@@ -37,7 +36,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
-import nl.rijksoverheid.ctr.shared.models.OriginMismatchErrorResult
+import nl.rijksoverheid.ctr.shared.models.MissingOriginErrorResult
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -170,7 +169,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                                 type = args.type
                                             )
                                         ), errorCodeStringFactory.get(getFlow(), listOf(
-                                                OriginMismatchErrorResult(HolderStep.GetCredentialsNetworkRequest)
+                                                MissingOriginErrorResult(HolderStep.GetCredentialsNetworkRequest)
                                             ))
                                         ),
                                         buttonTitle = getString(R.string.back_to_overview)

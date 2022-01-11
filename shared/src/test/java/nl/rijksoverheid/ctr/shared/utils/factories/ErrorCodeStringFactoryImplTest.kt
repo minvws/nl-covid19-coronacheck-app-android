@@ -88,7 +88,7 @@ class ErrorCodeStringFactoryImplTest {
     fun `get() returns correct string if errorResult is a OriginMismatchError`() {
         val errorCodeString = factory.get(
             flow = Flow(2),
-            errorResults = listOf(OriginMismatchErrorResult(
+            errorResults = listOf(MissingOriginErrorResult(
                 step = Step(80))
             ))
 

@@ -65,7 +65,7 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
                 is ConnectException -> "005"
                 is NoProvidersException -> exception.errorCode
                 is ActivityNotFoundException -> "070-14"
-                is OriginMismatchException -> "058"
+                is MissingOriginException -> "058"
                 else -> throw it.getException()
             }
 

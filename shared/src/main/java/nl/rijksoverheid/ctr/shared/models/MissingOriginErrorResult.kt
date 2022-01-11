@@ -9,14 +9,14 @@ import java.lang.Exception
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-data class OriginMismatchErrorResult(val step: Step): ErrorResult {
+data class MissingOriginErrorResult(val step: Step): ErrorResult {
     override fun getCurrentStep(): Step {
         return step
     }
 
     override fun getException(): Exception {
-        return OriginMismatchException()
+        return MissingOriginException()
     }
 }
 
-class OriginMismatchException: Exception("origin mismatch exception")
+class MissingOriginException: Exception("missing origin exception")
