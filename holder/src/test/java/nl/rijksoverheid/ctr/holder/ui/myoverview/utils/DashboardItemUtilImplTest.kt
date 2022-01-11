@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
 import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -9,85 +11,52 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CardItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.HeaderItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemEmptyStateUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
+import org.junit.Assert.*
 import org.junit.Test
 import java.lang.IllegalStateException
 import java.time.OffsetDateTime
-import kotlin.test.assertTrue
 
 class DashboardItemUtilImplTest {
 
     @Test
-    fun `getHeaderItemText returns correct text if domestic and has green cards`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = false
-            ),
-            persistenceManager = fakePersistenceManager(),
-            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk(),
-            appConfigUseCase = mockk(),
-            buildConfigUseCase = mockk()
-        )
+    fun `getHeaderItemText returns correct text if domestic and empty state`() {
+        val util = getUtil()
 
         val headerText = util.getHeaderItemText(
+            emptyState = true,
             greenCardType = GreenCardType.Domestic,
-            allGreenCards = listOf(fakeGreenCard()),
-            allEvents = listOf()
-        )
-
-        assertEquals(R.string.my_overview_description, headerText)
-    }
-
-    @Test
-    fun `getHeaderItemText returns correct text if domestic and has no green cards`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = false
-            ),
-            persistenceManager = fakePersistenceManager(),
-            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk(),
-            appConfigUseCase = mockk(),
-            buildConfigUseCase = mockk()
-        )
-
-        val headerText = util.getHeaderItemText(
-            greenCardType = GreenCardType.Domestic,
-            allGreenCards = listOf(),
-            allEvents = listOf()
         )
 
         assertEquals(R.string.my_overview_qr_placeholder_description, headerText)
     }
 
     @Test
-    fun `getHeaderItemText returns correct text if eu and has green cards`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = false
-            ),
-            persistenceManager = fakePersistenceManager(),
-            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk(),
-            appConfigUseCase = mockk(),
-            buildConfigUseCase = mockk()
-        )
+    fun `getHeaderItemText returns correct text if domestic and no empty state`() {
+        val util = getUtil()
 
         val headerText = util.getHeaderItemText(
+            emptyState = false,
+            greenCardType = GreenCardType.Domestic,
+        )
+
+        assertEquals(R.string.my_overview_description, headerText)
+    }
+
+    @Test
+    fun `getHeaderItemText returns correct text if eu and no empty state`() {
+        val util = getUtil()
+
+        val headerText = util.getHeaderItemText(
+            emptyState = false,
             greenCardType = GreenCardType.Eu,
-            allGreenCards = listOf(fakeGreenCard()),
-            allEvents = listOf()
         )
 
         assertEquals(R.string.my_overview_description_eu, headerText)
@@ -95,144 +64,100 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `getHeaderItemText returns correct text if eu and has no green cards`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = false
-            ),
-            persistenceManager = fakePersistenceManager(),
-            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk(),
-            appConfigUseCase = mockk(),
-            buildConfigUseCase = mockk()
-        )
+        val util = getUtil()
 
         val headerText = util.getHeaderItemText(
+            emptyState = true,
             greenCardType = GreenCardType.Eu,
-            allGreenCards = listOf(),
-            allEvents = listOf()
         )
 
         assertEquals(R.string.my_overview_qr_placeholder_description_eu, headerText)
     }
 
     @Test
-    fun `shouldShowClockDeviationItem returns true if has deviation and has green cards`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(
-                hasDeviation = true
-            ),
-            greenCardUtil = fakeGreenCardUtil(),
-            persistenceManager = fakePersistenceManager(),
-            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk(),
-            appConfigUseCase = mockk(),
-            buildConfigUseCase = mockk()
+    fun `shouldShowClockDeviationItem returns true if has deviation and no empty state`() {
+        val clockDeviationUseCase: ClockDeviationUseCase = mockk()
+        every { clockDeviationUseCase.hasDeviation() } answers { true }
+
+        val util = getUtil(
+            clockDeviationUseCase = clockDeviationUseCase
         )
 
         val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
-            allGreenCards = listOf(fakeGreenCard())
+            allGreenCards = listOf(fakeGreenCard()),
+            emptyState = false
         )
 
         assertEquals(true, shouldShowClockDeviationItem)
     }
 
     @Test
-    fun `shouldShowClockDeviationItem returns true if has deviation and not all green cards expired`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(
-                hasDeviation = true
-            ),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = false
-            ),
-            persistenceManager = fakePersistenceManager(),
-            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk(),
-            appConfigUseCase = mockk(),
-            buildConfigUseCase = mockk()
+    fun `shouldShowClockDeviationItem returns false if has deviation and empty state`() {
+        val clockDeviationUseCase: ClockDeviationUseCase = mockk()
+        every { clockDeviationUseCase.hasDeviation() } answers { true }
+
+        val util = getUtil(
+            clockDeviationUseCase = clockDeviationUseCase
         )
 
         val shouldShowClockDeviationItem = util.shouldShowClockDeviationItem(
-            allGreenCards = listOf(fakeGreenCard())
+            allGreenCards = listOf(fakeGreenCard()),
+            emptyState = true
         )
 
-        assertEquals(true, shouldShowClockDeviationItem)
+        assertEquals(false, shouldShowClockDeviationItem)
     }
 
     @Test
-    fun `shouldShowPlaceholderItem returns true if has no green cards`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(),
-            persistenceManager = fakePersistenceManager(),
-            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk(),
-            appConfigUseCase = mockk(),
-            buildConfigUseCase = mockk()
-        )
+    fun `shouldShowPlaceholderItem returns true if empty state`() {
+        val util = getUtil()
 
-        val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
-            allEvents = listOf(),
-            allGreenCards = listOf()
-        )
+        val shouldShowPlaceholderItem = util.shouldShowPlaceholderItem(true)
 
-        assertEquals(true, shouldShowHeaderItem)
+        assertEquals(true, shouldShowPlaceholderItem)
     }
 
     @Test
-    fun `shouldShowPlaceholderItem returns true if all green cards expired`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(
-                isExpired = true
-            ),
-            persistenceManager = fakePersistenceManager(),
-            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk(),
-            appConfigUseCase = mockk(),
-            buildConfigUseCase = mockk()
-        )
+    fun `shouldShowPlaceholderItem returns false if empty state`() {
+        val util = getUtil()
 
-        val shouldShowHeaderItem = util.shouldShowPlaceholderItem(
-            allEvents = listOf(),
-            allGreenCards = listOf(fakeGreenCard())
-        )
+        val shouldShowPlaceholderItem = util.shouldShowPlaceholderItem(false)
 
-        assertEquals(true, shouldShowHeaderItem)
+        assertEquals(false, shouldShowPlaceholderItem)
     }
 
     @Test
-    fun `shouldAddQrButtonItem returns true if has no green cards`() {
-        val util = DashboardItemUtilImpl(
-            clockDeviationUseCase = fakeClockDevationUseCase(),
-            greenCardUtil = fakeGreenCardUtil(),
-            persistenceManager = fakePersistenceManager(),
-            appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-            featureFlagUseCase = mockk(),
-            appConfigUseCase = mockk(),
-            buildConfigUseCase = mockk()
-        )
+    fun `shouldAddQrButtonItem returns true if empty state`() {
+        val util = getUtil()
 
         val shouldAddQrButtonItem = util.shouldAddQrButtonItem(
-            allEvents = listOf(),
-            allGreenCards = listOf()
+            emptyState = true
         )
 
         assertEquals(true, shouldAddQrButtonItem)
     }
 
     @Test
-    fun `multiple vaccination card items should be combined into 1`() {
+    fun `shouldAddQrButtonItem returns false if empty state`() {
+        val util = getUtil()
 
-        val util = DashboardItemUtilImpl(mockk(), mockk(), mockk(), mockk(),mockk(), mockk(), mockk())
+        val shouldAddQrButtonItem = util.shouldAddQrButtonItem(
+            emptyState = false
+        )
+
+        assertEquals(false, shouldAddQrButtonItem)
+    }
+
+    @Test
+    fun `multiple vaccination card items should be combined into 1`() {
+        val util = getUtil()
 
         val card1 = createCardItem(OriginType.Vaccination)
         val card2 = createCardItem(OriginType.Vaccination)
         val card3 = createCardItem(OriginType.Vaccination)
 
         val items = listOf(
-            HeaderItem(1),
+            DashboardItem.HeaderItem(1),
             CardsItem(listOf(createCardItem(OriginType.Test))),
             CardsItem(listOf(card1)),
             CardsItem(listOf(createCardItem(OriginType.Recovery))),
@@ -251,11 +176,11 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `shouldShowMissingDutchVaccinationItem returns true if no nl vaccination card and there is a eu vaccination card`() {
-        val util = dashboardItemUtil()
+        val util = getUtil()
 
         val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
-            domesticGreenCards = listOf(fakeDomesticTestGreenCard),
-            euGreenCards = listOf(fakeEuropeanVaccinationGreenCard),
+            domesticGreenCards = listOf(),
+            euGreenCards = listOf(fakeGreenCard(originType = OriginType.Vaccination)),
         )
 
         assertTrue(shouldShowMissingDutchVaccinationItem)
@@ -263,10 +188,10 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `shouldShowMissingDutchVaccinationItem returns false if there is a nl vaccination card`() {
-        val util = dashboardItemUtil()
+        val util = getUtil()
 
         val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
-            domesticGreenCards = listOf(fakeDomesticVaccinationGreenCard),
+            domesticGreenCards = listOf(fakeGreenCard(originType = OriginType.Vaccination)),
             euGreenCards = listOf(fakeEuropeanVaccinationGreenCard),
         )
 
@@ -275,19 +200,19 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `shouldShowMissingDutchVaccinationItem returns false if there is no eu vaccination card`() {
-        val util = dashboardItemUtil()
+        val util = getUtil()
 
         val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
-            domesticGreenCards = listOf(fakeDomesticTestGreenCard),
-            euGreenCards = listOf(fakeEuropeanVaccinationTestCard),
+            domesticGreenCards = listOf(),
+            euGreenCards = listOf(),
         )
 
         assertFalse(shouldShowMissingDutchVaccinationItem)
     }
 
     @Test
-    fun `shouldShowCoronaMelderItem returns false if there are no green cards`() {
-        val util = dashboardItemUtil()
+    fun `shouldShowCoronaMelderItem returns false if no green cards`() {
+        val util = getUtil()
 
         val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
             greenCards = listOf(),
@@ -298,13 +223,28 @@ class DashboardItemUtilImplTest {
     }
 
     @Test
-    fun `shouldShowCoronaMelderItem returns false if all green cards expired`() {
-        val util = dashboardItemUtil(
-            isExpired = true
+    fun `shouldShowCoronaMelderItem returns true if green cards`() {
+        val util = getUtil()
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(fakeGreenCard()),
+            databaseSyncerResult = DatabaseSyncerResult.Success()
+        )
+
+        assertTrue(shouldShowCoronaMelderItem)
+    }
+
+    @Test
+    fun `shouldShowCoronaMelderItem returns false if green cards but expired`() {
+        val greenCardUtil: GreenCardUtil = mockk()
+        every { greenCardUtil.isExpired(any()) } answers { true }
+
+        val util = getUtil(
+            greenCardUtil = greenCardUtil
         )
 
         val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
-            greenCards = listOf(fakeDomesticVaccinationGreenCard),
+            greenCards = listOf(fakeGreenCard()),
             databaseSyncerResult = DatabaseSyncerResult.Success()
         )
 
@@ -313,39 +253,28 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `shouldShowCoronaMelderItem returns false if green cards but with error DatabaseSyncerResult`() {
-        val util = dashboardItemUtil(
-            isExpired = false
-        )
+        val util = getUtil()
 
         val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
-            greenCards = listOf(fakeDomesticVaccinationGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Failed.Error(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException()))
+            greenCards = listOf(fakeGreenCard()),
+            databaseSyncerResult = DatabaseSyncerResult.Failed.Error(
+                AppErrorResult(
+                    HolderStep.TestResultNetworkRequest,
+                    IllegalStateException()
+                )
+            )
         )
 
         assertFalse(shouldShowCoronaMelderItem)
     }
 
-    @Test
-    fun `shouldShowCoronaMelderItem returns true if green cards`() {
-        val util = dashboardItemUtil(
-            isExpired = false
-        )
-
-        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
-            greenCards = listOf(fakeDomesticVaccinationGreenCard),
-            databaseSyncerResult = DatabaseSyncerResult.Success()
-        )
-
-        assertTrue(shouldShowCoronaMelderItem)
-    }
 
     @Test
     fun `shouldShowTestCertificate3GValidityItem returns false if test has 2g category`() {
         val featureFlagUseCase: FeatureFlagUseCase = mockk()
         every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { true }
 
-        val util = dashboardItemUtil(
-            isExpired = false,
+        val util = getUtil(
             featureFlagUseCase = featureFlagUseCase
         )
 
@@ -367,8 +296,7 @@ class DashboardItemUtilImplTest {
         val featureFlagUseCase: FeatureFlagUseCase = mockk()
         every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { true }
 
-        val util = dashboardItemUtil(
-            isExpired = false,
+        val util = getUtil(
             featureFlagUseCase = featureFlagUseCase
         )
 
@@ -390,8 +318,7 @@ class DashboardItemUtilImplTest {
         val featureFlagUseCase: FeatureFlagUseCase = mockk()
         every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
 
-        val util = dashboardItemUtil(
-            isExpired = false,
+        val util = getUtil(
             featureFlagUseCase = featureFlagUseCase
         )
 
@@ -410,16 +337,14 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `App update is available when the recommended version is higher than current version`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
+        val appConfigUseCase: CachedAppConfigUseCase = mockk()
+        every { appConfigUseCase.getCachedAppConfig().recommendedVersion } answers { 2 }
 
         val buildConfigUseCase: BuildConfigUseCase = mockk()
         every { buildConfigUseCase.getVersionCode() } answers { 1 }
 
-        val util = DashboardItemUtilImpl(
-            mockk(), mockk(), mockk(), mockk(),
-            appConfigUseCase = mockk { every { getCachedAppConfig().recommendedVersion } returns 2 },
-            featureFlagUseCase = featureFlagUseCase,
+        val util = getUtil(
+            appConfigUseCase = appConfigUseCase,
             buildConfigUseCase = buildConfigUseCase
         )
 
@@ -428,17 +353,15 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `App update is not available when the recommended version is current version`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
+        val appConfigUseCase: CachedAppConfigUseCase = mockk()
+        every { appConfigUseCase.getCachedAppConfig().recommendedVersion } answers { 1 }
 
         val buildConfigUseCase: BuildConfigUseCase = mockk()
         every { buildConfigUseCase.getVersionCode() } answers { 1 }
 
-        val util = DashboardItemUtilImpl(
-            mockk(), mockk(), mockk(), mockk(),
-            appConfigUseCase = mockk { every { getCachedAppConfig().recommendedVersion } returns 1 },
-            buildConfigUseCase = buildConfigUseCase,
-            featureFlagUseCase = featureFlagUseCase
+        val util = getUtil(
+            appConfigUseCase = appConfigUseCase,
+            buildConfigUseCase = buildConfigUseCase
         )
 
         assertFalse(util.isAppUpdateAvailable())
@@ -446,17 +369,15 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `App update is not available when the recommended version lower is current version`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
+        val appConfigUseCase: CachedAppConfigUseCase = mockk()
+        every { appConfigUseCase.getCachedAppConfig().recommendedVersion } answers { 1 }
 
         val buildConfigUseCase: BuildConfigUseCase = mockk()
         every { buildConfigUseCase.getVersionCode() } answers { 2 }
 
-        val util = DashboardItemUtilImpl(
-            mockk(), mockk(), mockk(), mockk(),
-            appConfigUseCase = mockk { every { getCachedAppConfig().recommendedVersion } returns 1 },
-            featureFlagUseCase = featureFlagUseCase,
-            buildConfigUseCase = buildConfigUseCase,
+        val util = getUtil(
+            appConfigUseCase = appConfigUseCase,
+            buildConfigUseCase = buildConfigUseCase
         )
 
         assertFalse(util.isAppUpdateAvailable())
@@ -464,22 +385,14 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `shouldShowNewValidityItem returns true if banner needs to be shown`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
-
-        val buildConfigUseCase: BuildConfigUseCase = mockk()
-        every { buildConfigUseCase.getVersionCode() } answers { 2 }
-
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
         val persistenceManager = mockk<PersistenceManager>()
         every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { true }
         every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { false }
 
-        val util = DashboardItemUtilImpl(
-            mockk(), mockk(), persistenceManager = persistenceManager, mockk(),
-            appConfigUseCase = cachedAppConfigUseCase,
-            buildConfigUseCase = buildConfigUseCase,
-            featureFlagUseCase = featureFlagUseCase
+        val util = getUtil(
+            persistenceManager = persistenceManager,
+            appConfigUseCase = cachedAppConfigUseCase
         )
 
         assertTrue(util.shouldShowNewValidityItem())
@@ -487,22 +400,14 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `shouldShowNewValidityItem returns false if feature not live yet`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
-
-        val buildConfigUseCase: BuildConfigUseCase = mockk()
-        every { buildConfigUseCase.getVersionCode() } answers { 2 }
-
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
         val persistenceManager = mockk<PersistenceManager>()
         every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { false }
         every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { false }
 
-        val util = DashboardItemUtilImpl(
-            mockk(), mockk(), persistenceManager = persistenceManager, mockk(),
-            appConfigUseCase = cachedAppConfigUseCase,
-            buildConfigUseCase = buildConfigUseCase,
-            featureFlagUseCase = featureFlagUseCase
+        val util = getUtil(
+            persistenceManager = persistenceManager,
+            appConfigUseCase = cachedAppConfigUseCase
         )
 
         assertFalse(util.shouldShowNewValidityItem())
@@ -510,22 +415,14 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `shouldShowNewValidityItem returns false if banner does not need to show`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
-
-        val buildConfigUseCase: BuildConfigUseCase = mockk()
-        every { buildConfigUseCase.getVersionCode() } answers { 2 }
-
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
         val persistenceManager = mockk<PersistenceManager>()
         every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { true }
         every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { true }
 
-        val util = DashboardItemUtilImpl(
-            mockk(), mockk(), persistenceManager = persistenceManager, mockk(),
-            appConfigUseCase = cachedAppConfigUseCase,
-            buildConfigUseCase = buildConfigUseCase,
-            featureFlagUseCase = featureFlagUseCase
+        val util = getUtil(
+            persistenceManager = persistenceManager,
+            appConfigUseCase = cachedAppConfigUseCase
         )
 
         assertFalse(util.shouldShowNewValidityItem())
@@ -533,30 +430,10 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `shouldShowVisitorPassIncompleteItem returns true if has vaccination assessment event and no vaccination assessment origin`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
-
-        val buildConfigUseCase: BuildConfigUseCase = mockk()
-        every { buildConfigUseCase.getVersionCode() } answers { 2 }
-
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        val persistenceManager = mockk<PersistenceManager>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { true }
-        every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { true }
-
-        val event = getEvent(
-            originType = OriginType.VaccinationAssessment
-        )
-
-        val util = DashboardItemUtilImpl(
-            mockk(), mockk(), persistenceManager = persistenceManager, mockk(),
-            appConfigUseCase = cachedAppConfigUseCase,
-            buildConfigUseCase = buildConfigUseCase,
-            featureFlagUseCase = featureFlagUseCase
-        )
+        val util = getUtil()
 
         val shouldShowVisitorPassIncompleteItem = util.shouldShowVisitorPassIncompleteItem(
-            events = listOf(event),
+            events = listOf(getEvent(originType = OriginType.VaccinationAssessment)),
             domesticGreenCards = listOf()
         )
 
@@ -565,35 +442,11 @@ class DashboardItemUtilImplTest {
 
     @Test
     fun `shouldShowVisitorPassIncompleteItem returns false if has vaccination assessment event and vaccination assessment origin`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
-
-        val buildConfigUseCase: BuildConfigUseCase = mockk()
-        every { buildConfigUseCase.getVersionCode() } answers { 2 }
-
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        val persistenceManager = mockk<PersistenceManager>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { true }
-        every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { true }
-
-        val event = getEvent(
-            originType = OriginType.VaccinationAssessment
-        )
-
-        val greenCard = getGreenCard(
-            originType = OriginType.VaccinationAssessment
-        )
-
-        val util = DashboardItemUtilImpl(
-            mockk(), mockk(), persistenceManager = persistenceManager, mockk(),
-            appConfigUseCase = cachedAppConfigUseCase,
-            buildConfigUseCase = buildConfigUseCase,
-            featureFlagUseCase = featureFlagUseCase
-        )
+        val util = getUtil()
 
         val shouldShowVisitorPassIncompleteItem = util.shouldShowVisitorPassIncompleteItem(
-            events = listOf(event),
-            domesticGreenCards = listOf(greenCard)
+            events = listOf(getEvent(originType = OriginType.VaccinationAssessment)),
+            domesticGreenCards = listOf(getGreenCard(originType = OriginType.VaccinationAssessment))
         )
 
         assertFalse(shouldShowVisitorPassIncompleteItem)
@@ -618,22 +471,6 @@ class DashboardItemUtilImplTest {
         databaseSyncerResult = mockk()
     )
 
-    private fun dashboardItemUtil(
-        isExpired: Boolean = false,
-        featureFlagUseCase: FeatureFlagUseCase = mockk()) = DashboardItemUtilImpl(
-        clockDeviationUseCase = fakeClockDevationUseCase(),
-        greenCardUtil = fakeGreenCardUtil(
-            isExpired = isExpired
-        ),
-        persistenceManager = fakePersistenceManager(
-            hasDismissedUnsecureDeviceDialog = false
-        ),
-        appConfigFreshnessUseCase = fakeAppConfigFreshnessUseCase(),
-        featureFlagUseCase = featureFlagUseCase,
-        appConfigUseCase = mockk(),
-        buildConfigUseCase = mockk()
-    )
-
     private fun getEvent(originType: OriginType) = EventGroupEntity(
         id = 0,
         walletId = 0,
@@ -656,5 +493,23 @@ class DashboardItemUtilImplTest {
             )
         ),
         credentialEntities = listOf()
+    )
+
+    private fun getUtil(
+        clockDeviationUseCase: ClockDeviationUseCase = mockk(relaxed = true),
+        persistenceManager: PersistenceManager = mockk(relaxed = true),
+        appConfigFreshnessUseCase: AppConfigFreshnessUseCase = mockk(relaxed = true),
+        featureFlagUseCase: FeatureFlagUseCase = mockk(relaxed = true),
+        appConfigUseCase: CachedAppConfigUseCase = mockk(relaxed = true),
+        buildConfigUseCase: BuildConfigUseCase = mockk(relaxed = true),
+        greenCardUtil: GreenCardUtil = mockk(relaxed = true)
+    ) = DashboardItemUtilImpl(
+        clockDeviationUseCase = clockDeviationUseCase,
+        persistenceManager = persistenceManager,
+        appConfigFreshnessUseCase = appConfigFreshnessUseCase,
+        featureFlagUseCase = featureFlagUseCase,
+        appConfigUseCase = appConfigUseCase,
+        buildConfigUseCase = buildConfigUseCase,
+        greenCardUtil = greenCardUtil
     )
 }
