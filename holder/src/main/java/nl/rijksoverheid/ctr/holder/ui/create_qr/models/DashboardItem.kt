@@ -43,8 +43,8 @@ sealed class DashboardItem {
 
         object ClockDeviationItem : InfoItem(isDismissible = false, hasButton = true)
 
-        data class GreenCardExpiredItem(val greenCard: GreenCard, val isExpiredVaccination: Boolean)
-            : InfoItem(isDismissible = true, hasButton = isExpiredVaccination)
+        data class GreenCardExpiredItem(val greenCard: GreenCard, val isExpiredDomesticVaccination: Boolean)
+            : InfoItem(isDismissible = true, hasButton = isExpiredDomesticVaccination)
 
         object TestCertificate3GValidity : InfoItem(isDismissible = false, hasButton = true)
 

@@ -271,7 +271,7 @@ class GetDashboardItemsUseCaseImpl(
                 if (greenCardUtil.isExpired(greenCard)) {
                     DashboardItem.InfoItem.GreenCardExpiredItem(
                         greenCard = greenCard,
-                        isExpiredVaccination = greenCard.origins.any { it.type == OriginType.Vaccination } && greenCard.greenCardEntity.type == GreenCardType.Domestic
+                        isExpiredDomesticVaccination = greenCardUtil.isExpiredDomesticVaccination(greenCard)
                     )
                 } else {
                     mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)

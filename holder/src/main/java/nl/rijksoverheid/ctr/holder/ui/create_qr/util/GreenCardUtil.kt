@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -12,6 +13,7 @@ interface GreenCardUtil {
     fun getErrorCorrectionLevel(greenCardType: GreenCardType): ErrorCorrectionLevel
     fun isExpiring(renewalDays: Long, greenCard: GreenCard): Boolean
     fun hasNoActiveCredentials(greenCard: GreenCard): Boolean
+    fun isExpiredDomesticVaccination(greenCard: GreenCard): Boolean
 }
 
 class GreenCardUtilImpl(
@@ -41,5 +43,10 @@ class GreenCardUtilImpl(
 
     override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
         return credentialUtil.getActiveCredential(greenCard.credentialEntities) == null
+    }
+
+    override fun isExpiredDomesticVaccination(greenCard: GreenCard): Boolean {
+        return greenCard.origins.any { it.type == OriginType.Vaccination } &&
+                greenCard.greenCardEntity.type == GreenCardType.Domestic
     }
 }
