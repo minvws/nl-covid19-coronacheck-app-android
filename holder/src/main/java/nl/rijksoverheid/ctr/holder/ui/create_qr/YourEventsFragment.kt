@@ -36,7 +36,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
-import nl.rijksoverheid.ctr.shared.models.MissingOriginErrorResult
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -159,20 +158,12 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     is DatabaseSyncerResult.Success -> {
                         when {
                             databaseSyncerResult.missingOrigin -> {
-                                navigateSafety(
-                                    YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                        toolbarTitle = args.toolbarTitle,
-                                        title = getString(R.string.rule_engine_no_origin_title),
-                                        description = getString(
-                                            R.string.rule_engine_no_test_origin_description,
-                                            requireContext().getString(yourEventsFragmentUtil.getNoOriginTypeCopy(
-                                                type = args.type
-                                            )
-                                        ), errorCodeStringFactory.get(getFlow(), listOf(
-                                                MissingOriginErrorResult(HolderStep.GetCredentialsNetworkRequest)
-                                            ))
-                                        ),
-                                        buttonTitle = getString(R.string.back_to_overview)
+                                val noOriginTypeCopy = getString(yourEventsFragmentUtil.getNoOriginTypeCopy(args.type))
+                                presentError(
+                                    errorResult = MissingOriginErrorResult,
+                                    customerErrorDescription = getString(
+                                        R.string.rule_engine_no_test_origin_description,
+                                        noOriginTypeCopy
                                     )
                                 )
                             }
