@@ -7,9 +7,7 @@ import com.squareup.moshi.JsonEncodingException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
 import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
-import nl.rijksoverheid.ctr.shared.models.ErrorResult
-import nl.rijksoverheid.ctr.shared.models.Flow
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import nl.rijksoverheid.ctr.shared.models.*
 import retrofit2.HttpException
 import java.lang.StringBuilder
 import java.net.ConnectException
@@ -67,6 +65,7 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
                 is ConnectException -> "005"
                 is NoProvidersException -> exception.errorCode
                 is ActivityNotFoundException -> "070-14"
+                is OriginMismatchException -> "058"
                 else -> throw it.getException()
             }
 

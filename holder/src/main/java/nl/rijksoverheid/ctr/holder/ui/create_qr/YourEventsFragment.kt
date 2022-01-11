@@ -22,10 +22,7 @@ import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
-import nl.rijksoverheid.ctr.holder.BaseFragment
-import nl.rijksoverheid.ctr.holder.HolderFlow
-import nl.rijksoverheid.ctr.holder.HolderMainFragment
-import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -40,6 +37,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.shared.models.OriginMismatchErrorResult
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -171,7 +169,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                             requireContext().getString(yourEventsFragmentUtil.getNoOriginTypeCopy(
                                                 type = args.type
                                             )
-                                        )),
+                                        ), errorCodeStringFactory.get(getFlow(), listOf(
+                                                OriginMismatchErrorResult(HolderStep.GetCredentialsNetworkRequest)
+                                            ))
+                                        ),
                                         buttonTitle = getString(R.string.back_to_overview)
                                     )
                                 )
