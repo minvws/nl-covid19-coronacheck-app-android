@@ -98,7 +98,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     R.string.holder_expiredDomesticVaccinationModal_body,
                     htmlLinksEnabled = true
                 ),
-                buttonData = ButtonData.NavigationButton(
+                secondaryButtonData = ButtonData.NavigationButton(
                     text = myOverviewFragment.getString(R.string.holder_expiredDomesticVaccinationModal_button_addBoosterVaccination),
                     navigationActionId = R.id.action_qr_type
                 )
