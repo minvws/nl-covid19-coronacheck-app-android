@@ -6,9 +6,7 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtilImpl
-import org.junit.Assert
 import org.junit.Test
 import java.time.Clock
 import java.time.Instant
@@ -16,7 +14,6 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class GreenCardUtilImplTest {

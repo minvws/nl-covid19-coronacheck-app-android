@@ -9,7 +9,7 @@ import java.time.OffsetDateTime
 
 interface GreenCardUtil {
     fun isExpired(greenCard: GreenCard): Boolean
-    fun getExpireDate(greenCard: GreenCard): OffsetDateTime
+    fun getExpireDate(greenCard: GreenCard, type: OriginType? = null): OffsetDateTime
     fun getErrorCorrectionLevel(greenCardType: GreenCardType): ErrorCorrectionLevel
     fun isExpiring(renewalDays: Long, greenCard: GreenCard): Boolean
     fun hasNoActiveCredentials(greenCard: GreenCard): Boolean
@@ -20,8 +20,12 @@ class GreenCardUtilImpl(
     private val clock: Clock,
     private val credentialUtil: CredentialUtil): GreenCardUtil {
 
-    override fun getExpireDate(greenCard: GreenCard): OffsetDateTime {
-        return greenCard.origins.maxByOrNull { it.expirationTime }?.expirationTime ?: OffsetDateTime.now(clock)
+    override fun getExpireDate(greenCard: GreenCard, type: OriginType?): OffsetDateTime {
+        return greenCard.origins
+            .filter { if (type == null) true else type == it.type }
+            .maxByOrNull { it.expirationTime }
+            ?.expirationTime
+            ?: OffsetDateTime.now(clock)
     }
 
     override fun getErrorCorrectionLevel(greenCardType: GreenCardType): ErrorCorrectionLevel {
