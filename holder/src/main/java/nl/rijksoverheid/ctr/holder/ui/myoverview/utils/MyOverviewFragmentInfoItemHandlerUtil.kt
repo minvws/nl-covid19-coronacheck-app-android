@@ -191,10 +191,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
     private fun onVisitorPassIncompleteClicked(myOverviewFragment: MyOverviewFragment) {
-        val navigationDirection = InfoFragmentDirections.actionInputToken(
-            data = InputTokenFragmentData.CommercialTest,
-            toolbarTitle = myOverviewFragment.getString(R.string.commercial_test_type_code_toolbar_title)
-        )
+        val navigationDirection = InfoFragmentDirections.actionInputToken()
 
         infoFragmentUtil.presentFullScreen(
             currentFragment = myOverviewFragment,

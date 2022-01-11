@@ -23,10 +23,7 @@ class VisitorPassStartFragment : Fragment(R.layout.fragment_visitor_pass_start) 
         val binding = FragmentVisitorPassStartBinding.bind(view)
         binding.button.setOnClickListener {
             navigateSafety(
-                VisitorPassStartFragmentDirections.actionInputToken(
-                    toolbarTitle = getString(R.string.visitorpass_start_action),
-                    data = InputTokenFragmentData.VisitorPass,
-                )
+                VisitorPassStartFragmentDirections.actionInputToken()
             )
         }
     }
