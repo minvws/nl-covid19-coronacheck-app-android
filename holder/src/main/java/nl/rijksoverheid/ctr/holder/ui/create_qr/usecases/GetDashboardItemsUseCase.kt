@@ -103,9 +103,10 @@ class GetDashboardItemsUseCaseImpl(
         }
 
         if (dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
-            events = allEventGroupEntities,
-            domesticGreenCards = domesticGreenCards
-        )) {
+                events = allEventGroupEntities,
+                domesticGreenCards = domesticGreenCards
+            )
+        ) {
             dashboardItems.add(
                 DashboardItem.InfoItem.VisitorPassIncompleteItem
             )
@@ -204,7 +205,8 @@ class GetDashboardItemsUseCaseImpl(
         if (dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
                 events = allEventGroupEntities,
                 domesticGreenCards = domesticGreenCards
-            )) {
+            )
+        ) {
 
             dashboardItems.add(
                 DashboardItem.InfoItem.OriginInfoItem(
@@ -271,7 +273,8 @@ class GetDashboardItemsUseCaseImpl(
                 if (greenCardUtil.isExpired(greenCard)) {
                     DashboardItem.InfoItem.GreenCardExpiredItem(
                         greenCard = greenCard,
-                        isExpiredDomesticVaccination = greenCardUtil.isExpiredDomesticVaccination(greenCard)
+                        isDomesticVaccination = greenCard.greenCardEntity.type == GreenCardType.Domestic
+                                && greenCard.origins.any { it.type == OriginType.Vaccination }
                     )
                 } else {
                     mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)

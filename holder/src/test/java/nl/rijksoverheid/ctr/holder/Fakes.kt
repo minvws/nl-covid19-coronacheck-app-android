@@ -532,10 +532,6 @@ fun fakeGreenCardUtil(
     override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
         return hasNoActiveCredentials
     }
-
-    override fun isExpiredDomesticVaccination(greenCard: GreenCard): Boolean {
-        return false
-    }
 }
 
 fun fakeGetRemoteGreenCardUseCase(

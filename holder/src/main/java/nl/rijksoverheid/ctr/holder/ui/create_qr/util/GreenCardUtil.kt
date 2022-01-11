@@ -13,7 +13,6 @@ interface GreenCardUtil {
     fun getErrorCorrectionLevel(greenCardType: GreenCardType): ErrorCorrectionLevel
     fun isExpiring(renewalDays: Long, greenCard: GreenCard): Boolean
     fun hasNoActiveCredentials(greenCard: GreenCard): Boolean
-    fun isExpiredDomesticVaccination(greenCard: GreenCard): Boolean
 }
 
 class GreenCardUtilImpl(
@@ -47,10 +46,5 @@ class GreenCardUtilImpl(
 
     override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
         return credentialUtil.getActiveCredential(greenCard.credentialEntities) == null
-    }
-
-    override fun isExpiredDomesticVaccination(greenCard: GreenCard): Boolean {
-        return greenCard.origins.any { it.type == OriginType.Vaccination } &&
-                greenCard.greenCardEntity.type == GreenCardType.Domestic
     }
 }

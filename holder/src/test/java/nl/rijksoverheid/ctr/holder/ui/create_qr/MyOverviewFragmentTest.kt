@@ -286,7 +286,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.GreenCardExpiredItem(fakeGreenCard())
+                    DashboardItem.InfoItem.GreenCardExpiredItem(fakeGreenCard(), false)
                 )
             )
         )
@@ -308,6 +308,31 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
 
         // assert card is dismissed
         assertListItemCount(listId = R.id.recyclerView, expectedItemCount = 0)
+    }
+
+    @Test
+    fun `Expired vaccination card has a read more`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.GreenCardExpiredItem(fakeGreenCard(), true)
+                )
+            )
+        )
+
+        // assert display of card
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemInfoRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+
+        assertDisplayed(R.id.button)
     }
 
     @Test
