@@ -126,7 +126,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowBoosterItem()) {
+        if (dashboardItemUtil.shouldShowBoosterItem(domesticGreenCards)) {
             dashboardItems.add(
                 DashboardItem.InfoItem.BoosterItem
             )
