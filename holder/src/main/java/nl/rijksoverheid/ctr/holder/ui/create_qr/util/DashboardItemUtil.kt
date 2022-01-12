@@ -53,7 +53,7 @@ interface DashboardItemUtil {
         domesticGreenCards: List<GreenCard>
     ): Boolean
     fun shouldShowBoosterItem(
-        domesticGreenCards: List<GreenCard>
+        greenCards: List<GreenCard>
     ): Boolean
 }
 
@@ -190,10 +190,10 @@ class DashboardItemUtilImpl(
     }
 
     override fun shouldShowBoosterItem(
-        domesticGreenCards: List<GreenCard>
+        greenCards: List<GreenCard>
     ): Boolean {
         val boosterItemNotDismissedYet = persistenceManager.getHasDismissedBoosterInfoCard() == 0L
-        val hasVaccinationOrigin = domesticGreenCards.map { it.origins.map { origin -> origin.type } }.flatten().contains(OriginType.Vaccination)
+        val hasVaccinationOrigin = greenCards.map { it.origins.map { origin -> origin.type } }.flatten().contains(OriginType.Vaccination)
         return boosterItemNotDismissedYet && hasVaccinationOrigin
     }
 }

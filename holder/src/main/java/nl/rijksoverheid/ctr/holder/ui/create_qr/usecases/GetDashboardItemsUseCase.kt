@@ -230,6 +230,12 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowBoosterItem(internationalGreenCards)) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.BoosterItem
+            )
+        }
+
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCardType = GreenCardType.Eu,

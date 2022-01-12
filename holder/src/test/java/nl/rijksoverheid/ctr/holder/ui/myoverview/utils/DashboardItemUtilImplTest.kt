@@ -460,7 +460,7 @@ class DashboardItemUtilImplTest {
         )
 
         val shouldShowBoosterItem = util.shouldShowBoosterItem(
-            domesticGreenCards = listOf(getGreenCard(originType = OriginType.Vaccination))
+            greenCards = listOf(getGreenCard(originType = OriginType.Vaccination))
         )
 
         assertTrue(shouldShowBoosterItem)
@@ -475,7 +475,7 @@ class DashboardItemUtilImplTest {
         )
 
         val shouldShowBoosterItem = util.shouldShowBoosterItem(
-            domesticGreenCards = listOf(getGreenCard(originType = OriginType.Test))
+            greenCards = listOf(getGreenCard(originType = OriginType.Test))
         )
 
         assertFalse(shouldShowBoosterItem)
@@ -490,7 +490,7 @@ class DashboardItemUtilImplTest {
         )
 
         val shouldShowBoosterItem = util.shouldShowBoosterItem(
-            domesticGreenCards = listOf(getGreenCard(originType = OriginType.Vaccination))
+            greenCards = listOf(getGreenCard(originType = OriginType.Vaccination))
         )
 
         assertFalse(shouldShowBoosterItem)
