@@ -639,6 +639,11 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijkso
   <string name="holder_dashboard_visitorpassexpired_title">Verlopen bezoekersbewijs</string>
   <string name="holder_dashboard_visitorpassexpired_body"><![CDATA[Een bezoekersbewijs is geldig tot %d dagen na de beoordeling van je vaccinatie. Blijf je langer in Nederland? Dan kun je opnieuw een bezoekersbewijs aanvragen. Ga voor meer informatie naar <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijksoverheid.nl/bezoekersbewijs</a>.]]></string>
   <string name="general_vaccinationAssessment">vaccinatie review</string>
+  <string name="holder_expiredDomesticVaccinationModal_title">Expired vaccination certificate</string>
+  <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Add booster vaccination</string>
+  <string name="holder_dashboard_addBoosterBanner_title">Did you receive a booster vaccination? Please retrieve your details again if you want to add it to your certificate</string>
+  <string name="holder_dashboard_addBoosterBanner_button_addBooster">Add booster vaccination</string>
+  <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[To renew your vaccination certificate, you need a booster vaccination. For more information about booster vaccinations, please visit <a href=\"https://www.government.nl/booster\">www.government.nl/booster</a>.<br/><br/>Did you receive a booster vaccination? Then please retrieve your details again to add it to your certificate.]]></string>
   <string name="holder_dashboard_originExpiredBanner_domesticVaccine_title">Your Dutch vaccination certificate has expired</string>
   <string name="holder_dashboard_originExpiredBanner_domesticRecovery_title">Je Nederlandse herstelbewijs is verlopen</string>
   <string name="holder_dashboard_originExpiredBanner_domesticTest_title">Je Nederlandse testbewijs is verlopen</string>
@@ -646,9 +651,4 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijkso
   <string name="holder_dashboard_originExpiredBanner_internationalVaccine_title">Je internationale vaccinatiebewijs is verlopen</string>
   <string name="holder_dashboard_originExpiredBanner_internationalRecovery_title">Je internationale herstelbewijs is verlopen</string>
   <string name="holder_dashboard_originExpiredBanner_internationalTest_title">Je internationale testbewijs is verlopen</string>
-  <string name="holder_expiredDomesticVaccinationModal_title">Expired vaccination certificate</string>
-  <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Add booster vaccination</string>
-  <string name="holder_dashboard_addBoosterBanner_title">Did you receive a booster vaccination? Please retrieve your details again to add it to your certificate</string>
-  <string name="holder_dashboard_addBoosterBanner_button_addBooster">Add booster vaccination</string>
-  <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[To renew your vaccination certificate, you need a booster vaccination. For more information about booster vaccinations, please visit <a href=\"https://www.government.nl/booster\">www.government.nl/booster</a>.<br/><br/>Did you receive a booster vaccination? Then please retrieve your details again to add it to your certificate.]]></string>
 </resources>

@@ -75,6 +75,9 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         }
 
+        override fun dismissBoosterInfoCard() {
+
+        }
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {
@@ -388,6 +391,14 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedNewValidityInfoCard(dismissed: Boolean) {
+
+        }
+
+        override fun getHasDismissedBoosterInfoCard(): Long {
+            return 0L
+        }
+
+        override fun setHasDismissedBoosterInfoCard(dismissedAtEpochSeconds: Long) {
 
         }
     }

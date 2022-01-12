@@ -126,6 +126,12 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowBoosterItem(domesticGreenCards)) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.BoosterItem
+            )
+        }
+
         if (dashboardItemUtil.shouldShowTestCertificate3GValidityItem(domesticGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
         }

@@ -22,6 +22,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import java.time.Clock
+import java.time.Instant
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
 
@@ -34,6 +36,7 @@ abstract class DashboardViewModel : ViewModel() {
     abstract fun dismissRecoveredDomesticRecoveryInfoCard()
     abstract fun dismissExtendedDomesticRecoveryInfoCard()
     abstract fun dismissNewValidityInfoCard()
+    abstract fun dismissBoosterInfoCard()
 
     companion object {
         val RETRY_FAILED_REQUEST_AFTER_SECONDS = if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(10)
@@ -46,7 +49,8 @@ class DashboardViewModelImpl(
     private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
-    private val checkNewRecoveryValidityUseCase: CheckNewRecoveryValidityUseCase
+    private val checkNewRecoveryValidityUseCase: CheckNewRecoveryValidityUseCase,
+    private val clock: Clock,
 ): DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -166,5 +170,10 @@ class DashboardViewModelImpl(
         (dashboardTabItemsLiveData as MutableLiveData<List<DashboardTabItem>>).postValue(
             dashboardTabItems
         )
+    }
+
+    override fun dismissBoosterInfoCard() {
+        val nowEpochSeconds = Instant.now(clock).epochSecond
+        persistenceManager.setHasDismissedBoosterInfoCard(nowEpochSeconds)
     }
 }

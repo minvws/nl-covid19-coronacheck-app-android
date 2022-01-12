@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CardItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemEmptyStateUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
@@ -450,6 +449,51 @@ class DashboardItemUtilImplTest {
         )
 
         assertFalse(shouldShowVisitorPassIncompleteItem)
+    }
+
+    @Test
+    fun `shouldShowBoosterItem returns true if has vaccination origin and hasn't dismissed yet`() {
+        val util = getUtil(
+            persistenceManager = mockk<PersistenceManager>().apply {
+                every { getHasDismissedBoosterInfoCard() } returns 0L
+            }
+        )
+
+        val shouldShowBoosterItem = util.shouldShowBoosterItem(
+            domesticGreenCards = listOf(getGreenCard(originType = OriginType.Vaccination))
+        )
+
+        assertTrue(shouldShowBoosterItem)
+    }
+
+    @Test
+    fun `shouldShowBoosterItem returns false if hasn't vaccination origin and hasn't dismissed yet`() {
+        val util = getUtil(
+            persistenceManager = mockk<PersistenceManager>().apply {
+                every { getHasDismissedBoosterInfoCard() } returns 0L
+            }
+        )
+
+        val shouldShowBoosterItem = util.shouldShowBoosterItem(
+            domesticGreenCards = listOf(getGreenCard(originType = OriginType.Test))
+        )
+
+        assertFalse(shouldShowBoosterItem)
+    }
+
+    @Test
+    fun `shouldShowBoosterItem returns false if has vaccination origin and has dismissed already`() {
+        val util = getUtil(
+            persistenceManager = mockk<PersistenceManager>().apply {
+                every { getHasDismissedBoosterInfoCard() } returns 1000L
+            }
+        )
+
+        val shouldShowBoosterItem = util.shouldShowBoosterItem(
+            domesticGreenCards = listOf(getGreenCard(originType = OriginType.Vaccination))
+        )
+
+        assertFalse(shouldShowBoosterItem)
     }
 
     private fun createCardItem(originType: OriginType) = CardItem(

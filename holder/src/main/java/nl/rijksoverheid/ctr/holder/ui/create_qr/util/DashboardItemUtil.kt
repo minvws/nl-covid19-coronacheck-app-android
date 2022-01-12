@@ -52,6 +52,9 @@ interface DashboardItemUtil {
         events: List<EventGroupEntity>,
         domesticGreenCards: List<GreenCard>
     ): Boolean
+    fun shouldShowBoosterItem(
+        domesticGreenCards: List<GreenCard>
+    ): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -184,5 +187,13 @@ class DashboardItemUtilImpl(
         val hasVaccinationAssessmentEvent = events.map { it.type }.contains(OriginType.VaccinationAssessment)
         val hasVaccinationAssessmentOrigin = domesticGreenCards.map { it.origins.map { origin -> origin.type } }.flatten().contains(OriginType.VaccinationAssessment)
         return hasVaccinationAssessmentEvent && !hasVaccinationAssessmentOrigin
+    }
+
+    override fun shouldShowBoosterItem(
+        domesticGreenCards: List<GreenCard>
+    ): Boolean {
+        val boosterItemNotDismissedYet = persistenceManager.getHasDismissedBoosterInfoCard() == 0L
+        val hasVaccinationOrigin = domesticGreenCards.map { it.origins.map { origin -> origin.type } }.flatten().contains(OriginType.Vaccination)
+        return boosterItemNotDismissedYet && hasVaccinationOrigin
     }
 }
