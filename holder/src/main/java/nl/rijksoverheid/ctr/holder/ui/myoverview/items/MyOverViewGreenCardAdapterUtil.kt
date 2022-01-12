@@ -377,7 +377,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         title: String,
     ) {
         descriptionLayout.addView(
-            TextView(context).apply {
+            TextView(descriptionLayout.context).apply {
                 setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
                 text = title
             },
@@ -398,7 +398,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         showTime: Boolean,
         subtitle: String,
     ) {
-        val textView = TextView(context).apply {
+        val textView = TextView(descriptionLayout.context).apply {
             setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
         }
 
@@ -443,7 +443,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         result: MyOverviewGreenCardAdapterUtil.ExpireCountDown
     ) {
         if (result is MyOverviewGreenCardAdapterUtil.ExpireCountDown.Show) {
-            val textView = TextView(context).apply {
+            val textView = TextView(descriptionLayout.context).apply {
                 setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
                 setTypeface(null, Typeface.BOLD)
             }
