@@ -315,7 +315,7 @@
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of test isn\'t accepted abroad. Get tested again.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
   <string name="rule_engine_no_origin_title">We can\'t make a certificate</string>
-  <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from %1$s. This can have various causes.  Find more information on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost.</a>]]></string>
+  <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your %1$s. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost.</a>]]></string>
   <string name="back_to_overview">To my certificates</string>
   <string name="no_vaccinations_title">Vaccinations not available</string>
   <string name="no_vaccinations_description"><![CDATA[There is no available vaccination data. This can have various causes. Read the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a> for more information.<br/><br/>Got vaccinated recently? It can take a few hours until your details are available. Try again later.]]></string>
@@ -567,11 +567,10 @@
   <string name="rule_engine_no_test_origin_description_positive_test">positive test result</string>
   <string name="holder_my_overview_3g_test_validity_card">Your test certificate is only valid for 3G access within the Netherlands</string>
   <string name="holder_my_overview_3g_test_validity_bottom_sheet_title">Test certificate only valid for 3G access</string>
-  <string name="holder_my_overview_3g_test_validity_bottom_sheet_body"><![CDATA[A Dutch test certificate is only valid in places with 3G access. This means that you cannot use your test certificate to get access to places with 2G access.<br><br><b>What is the difference between 3G and 2G?</b><br>The Gs determine which people can be given access: only those who were vaccinated and/or have recovered (2G), or people who tested negative as well (3G).<br><br>•	3G access means you can enter places with a test, vaccination or recovery certificate.<br>•	2G access means you cannot enter places with a test certificate. You\'ll need a vaccination or recovery certificate.<br><br><a href=\"https://www.government.nl/2g\">You can read more about 3G and 2G here</a>.]]></string>
+  <string name="holder_my_overview_3g_test_validity_bottom_sheet_body"><![CDATA[A Dutch test certificate is only valid in places with 3G access. This means that you cannot use your test certificate to get access to places with 2G access.<br><br><b>What is the difference between 3G and 2G?</b><br>The Gs determine which people can be given access: only those who were vaccinated and/or have recovered (2G), or people who tested negative as well (3G).<br><br>•	3G access means you can enter places with a test, vaccination or recovery certificate.<br>•	2G access means you cannot enter places with a test certificate. You\'ll need a vaccination or recovery certificate.<br><br><a href=\"https://www.government.nl/2g-cc\">You can read more about 3G and 2G here</a>.]]></string>
   <string name="holder_my_overview_test_result_validity_3g">valid until %1$s for 3G access</string>
-  <string name="no_digid_page_title">Ik heb geen DigiD</string>
-  <string name="no_digid_page_description"><![CDATA[Wanneer je in Nederland woont kan je een DigiD aanvragen.<br\><br\>Woon je in Caribisch Nederland? Dan kan je inloggen met MijnCN.]]>
-</string>
+  <string name="no_digid_page_title">I don\'t have DigiD</string>
+  <string name="no_digid_page_description"><![CDATA[Wanneer je in Nederland woont kan je een DigiD aanvragen.<br\><br\>Woon je in Caribisch Nederland? Dan kan je inloggen met MijnCN.]]></string>
   <string name="no_digid_nodigid_button_title">Ik ben in Nederland ingeschreven</string>
   <string name="no_digid_nodigid_button_description">DigiD aanvragen</string>
   <string name="no_digid_mijncn_button_title">Ik ben in Caribisch Nederland ingeschreven</string>
@@ -606,11 +605,10 @@
   <string name="holder_event_vaccination_assessment_nolist_action">To my certificates</string>
   <string name="visitorpass_start_toolbar_title">Add visitor pass</string>
   <string name="general_visitorPass">Visitor pass:</string>
-  <string name="visitorpass_code_error_invalid_code">This VAC code has expired</string>
   <string name="holder_event_vaccination_assessment_toolbar_title">Retrieve vaccination approval</string>
   <string name="visitorpass_code_description_deeplink">Enter your verification code. You will receive this via text or email.</string>
-  <string name="visitorpass_token_modal_notoken_details"><![CDATA[You will receive a VAC code from the desk that reviewed your vaccination, either by email or on paper. Don\'t have a VAC code? Please contact the desk you stopped by.<br/><br/>Didn’t stop by a desk yet to have your vaccination reviewed? For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
-  <string name="visitorpass_code_description">Enter your VAC code. You received this code from the desk that reviewed your vaccination.</string>
+  <string name="visitorpass_token_modal_notoken_details"><![CDATA[You will receive a Vaccination Approval Code (VAC) from the desk that reviewed your vaccination, either by email or on paper. Don\'t have a VAC code? Please contact the desk you stopped by.<br/><br/>Didn’t stop by a desk yet to have your vaccination reviewed? For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
+  <string name="visitorpass_code_description">Enter your Vaccination Approval Code (VAC). You received this code from the desk that reviewed your vaccination.</string>
   <string name="visitorpass_code_review_input">VAC code</string>
   <string name="visitorpass_code_review_placeholder">E.g. VAC-3839287262-F1</string>
   <string name="visitorpass_code_review_button">Don\'t have a VAC code?</string>
@@ -639,18 +637,19 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_visitorpasseexpiredbanner_title">Your visitor pass is expired</string>
   <string name="holder_dashboard_visitorpassexpired_title">Expired visitor pass</string>
   <string name="holder_dashboard_visitorpassexpired_body"><![CDATA[A visitor pass is valid up until %d days after review of your vaccination. Are you staying in the Netherlands longer? Then you can request a visitor pass again. For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
-  <string name="general_vaccinationAssessment">vaccinatie review</string>
+  <string name="general_vaccinationAssessment">vaccination approval</string>
   <string name="holder_dashboard_originExpiredBanner_domesticVaccine_title">Your Dutch vaccination certificate has expired</string>
-  <string name="holder_dashboard_originExpiredBanner_domesticRecovery_title">Je Nederlandse herstelbewijs is verlopen</string>
-  <string name="holder_dashboard_originExpiredBanner_domesticTest_title">Je Nederlandse testbewijs is verlopen</string>
-  <string name="holder_dashboard_originExpiredBanner_visitorPass_title">Je bezoekersbewijs is verlopen</string>
-  <string name="holder_dashboard_originExpiredBanner_internationalVaccine_title">Je internationale vaccinatiebewijs is verlopen</string>
-  <string name="holder_dashboard_originExpiredBanner_internationalRecovery_title">Je internationale herstelbewijs is verlopen</string>
-  <string name="holder_dashboard_originExpiredBanner_internationalTest_title">Je internationale testbewijs is verlopen</string>
+  <string name="holder_dashboard_originExpiredBanner_domesticRecovery_title">Your Dutch recovery certificate has expired</string>
+  <string name="holder_dashboard_originExpiredBanner_domesticTest_title">Your Dutch test certificate has expired</string>
+  <string name="holder_dashboard_originExpiredBanner_visitorPass_title">Your visitor pass has expired</string>
+  <string name="holder_dashboard_originExpiredBanner_internationalVaccine_title">Your international vaccination certificate has expired</string>
+  <string name="holder_dashboard_originExpiredBanner_internationalRecovery_title">Your international recovery certificate has expired</string>
+  <string name="holder_dashboard_originExpiredBanner_internationalTest_title">Your international test certificate has expired</string>
   <string name="holder_expiredDomesticVaccinationModal_title">Expired vaccination certificate</string>
   <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Add booster vaccination</string>
   <string name="holder_dashboard_addBoosterBanner_title">Did you receive a booster vaccination? Please retrieve your details again if you want to add it to your certificate</string>
   <string name="holder_dashboard_addBoosterBanner_button_addBooster">Add booster vaccination</string>
   <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[To renew your vaccination certificate, you need a booster vaccination. For more information about booster vaccinations, please visit <a href=\"https://www.government.nl/booster\">www.government.nl/booster</a>.<br/><br/>Did you receive a booster vaccination? Then please retrieve your details again to add it to your certificate.]]></string>
   <string name="holder_event_missingorigin_error_description"><![CDATA[<br/><br/><b>Error code:</b><br/>%1$s]]></string>
+  <string name="rule_engine_no_test_origin_description_vaccination_approval">vaccination approval</string>
 </resources>
