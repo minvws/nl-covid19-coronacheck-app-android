@@ -56,7 +56,7 @@ class CommercialTestInputTokenFragment: InputTokenFragment() {
                     CommercialTestInputTokenFragmentDirections.actionYourEvents(
                         type = YourEventsFragmentType.RemoteProtocol3Type(
                             mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse),
-                            originType = if (getFragmentData() is InputTokenFragmentData.CommercialTest) OriginType.Test else OriginType.VaccinationAssessment,
+                            originType = getOriginType(result.remoteTestResult),
                             fromCommercialTestCode = true
                         ),
                         toolbarTitle = getString(getFragmentData().yourEventsToolbarTitle),

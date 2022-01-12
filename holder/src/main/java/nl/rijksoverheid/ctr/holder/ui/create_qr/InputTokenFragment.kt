@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentInputTokenBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
@@ -221,6 +222,23 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
         binding.verificationCodeInput.error = null
         binding.uniqueCodeInput.error = null
         viewModel.getTestResult(fromDeeplink)
+    }
+
+    fun getOriginType(remoteProtocol: RemoteProtocol): OriginType {
+        return when (remoteProtocol) {
+            is RemoteTestResult2 -> {
+                OriginType.Test
+            }
+            is RemoteProtocol3 -> {
+                if (remoteProtocol.events?.any { it is RemoteEventVaccinationAssessment } == true) {
+                    OriginType.VaccinationAssessment
+                } else {
+                    OriginType.Test
+                }
+            } else -> {
+                OriginType.Test
+            }
+        }
     }
 
     abstract fun getFragmentData(): InputTokenFragmentData
