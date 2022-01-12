@@ -103,9 +103,10 @@ class GetDashboardItemsUseCaseImpl(
         }
 
         if (dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
-            events = allEventGroupEntities,
-            domesticGreenCards = domesticGreenCards
-        )) {
+                events = allEventGroupEntities,
+                domesticGreenCards = domesticGreenCards
+            )
+        ) {
             dashboardItems.add(
                 DashboardItem.InfoItem.VisitorPassIncompleteItem
             )
@@ -204,7 +205,8 @@ class GetDashboardItemsUseCaseImpl(
         if (dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
                 events = allEventGroupEntities,
                 domesticGreenCards = domesticGreenCards
-            )) {
+            )
+        ) {
 
             dashboardItems.add(
                 DashboardItem.InfoItem.OriginInfoItem(

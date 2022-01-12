@@ -517,7 +517,7 @@ fun fakeGreenCardUtil(
         return isExpired
     }
 
-    override fun getExpireDate(greenCard: GreenCard): OffsetDateTime {
+    override fun getExpireDate(greenCard: GreenCard, type: OriginType?): OffsetDateTime {
         return expireDate
     }
 

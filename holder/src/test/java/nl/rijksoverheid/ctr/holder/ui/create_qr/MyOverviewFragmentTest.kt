@@ -286,7 +286,12 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.GreenCardExpiredItem(fakeGreenCard())
+                    DashboardItem.InfoItem.GreenCardExpiredItem(
+                        fakeGreenCard(
+                            greenCardType = GreenCardType.Domestic,
+                            originType = OriginType.Recovery
+                        )
+                    )
                 )
             )
         )
@@ -311,13 +316,46 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
+    fun `Expired vaccination card has a read more`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.GreenCardExpiredItem(
+                        fakeGreenCard(
+                            greenCardType = GreenCardType.Domestic,
+                            originType = OriginType.Vaccination
+                        )
+                    )
+                )
+            )
+        )
+
+        // assert display of card
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemInfoRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+
+        assertDisplayed(R.id.button)
+    }
+
+    @Test
     fun `Origin card cannot be dismissed and should have a read more`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.OriginInfoItem(GreenCardType.Domestic, OriginType.Vaccination)
+                    DashboardItem.InfoItem.OriginInfoItem(
+                        GreenCardType.Domestic,
+                        OriginType.Vaccination
+                    )
                 )
             )
         )
