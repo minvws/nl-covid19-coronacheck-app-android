@@ -52,6 +52,9 @@ interface DashboardItemUtil {
         events: List<EventGroupEntity>,
         domesticGreenCards: List<GreenCard>
     ): Boolean
+    fun shouldShowBoosterItem(
+
+    ): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -184,5 +187,9 @@ class DashboardItemUtilImpl(
         val hasVaccinationAssessmentEvent = events.map { it.type }.contains(OriginType.VaccinationAssessment)
         val hasVaccinationAssessmentOrigin = domesticGreenCards.map { it.origins.map { origin -> origin.type } }.flatten().contains(OriginType.VaccinationAssessment)
         return hasVaccinationAssessmentEvent && !hasVaccinationAssessmentOrigin
+    }
+
+    override fun shouldShowBoosterItem(): Boolean {
+        return true
     }
 }
