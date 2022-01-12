@@ -21,6 +21,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.holder.MainNavDirections
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -69,7 +71,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.OriginInfoItem ->
                 onOriginInfoClicked(myOverviewFragment, infoItem)
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                // NO OP, button is hidden
+                onGreenCardExpiredClicked(myOverviewFragment)
             }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
                 onMissingDutchVaccinationItemClicked(myOverviewFragment)
@@ -85,6 +87,31 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 onVisitorPassIncompleteClicked(myOverviewFragment)
             }
         }
+    }
+
+    private fun onGreenCardExpiredClicked(
+        myOverviewFragment: MyOverviewFragment
+    ) {
+        val navigationDirection = MainNavDirections.actionGetEvents(
+            toolbarTitle = myOverviewFragment.getString(R.string.get_vaccination_title),
+            originType = RemoteOriginType.Vaccination
+        )
+
+        infoFragmentUtil.presentAsBottomSheet(
+            myOverviewFragment.childFragmentManager,
+            InfoFragmentData.TitleDescriptionWithButton(
+                title = myOverviewFragment.getString(R.string.holder_expiredDomesticVaccinationModal_title),
+                descriptionData = DescriptionData(
+                    R.string.holder_expiredDomesticVaccinationModal_body,
+                    htmlLinksEnabled = true
+                ),
+                secondaryButtonData = ButtonData.NavigationButton(
+                    text = myOverviewFragment.getString(R.string.holder_expiredDomesticVaccinationModal_button_addBoosterVaccination),
+                    navigationActionId = navigationDirection.actionId,
+                    navigationArguments = navigationDirection.arguments
+                )
+            )
+        )
     }
 
     private fun openPlayStore(myOverviewFragment: MyOverviewFragment) {
