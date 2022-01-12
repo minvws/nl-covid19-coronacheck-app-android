@@ -175,5 +175,6 @@ class DashboardViewModelImpl(
     override fun dismissBoosterInfoCard() {
         val nowEpochSeconds = Instant.now(clock).epochSecond
         persistenceManager.setHasDismissedBoosterInfoCard(nowEpochSeconds)
+        refresh(DashboardSync.DisableSync)
     }
 }
