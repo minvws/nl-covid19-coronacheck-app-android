@@ -312,7 +312,7 @@
   <string name="my_overview_green_card_not_valid_title_test">About your test certificate</string>
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/><br/>It\'s possible the validity period in the Netherlands is shorter than the validity period in other countries. Get tested again.]]></string>
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/>It\'s possible you\'ve only had one injection. Add your second vaccination to get a valid Dutch certificate. <a href=\"https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse\">Read all about the possible causes.</a>]]></string>
-  <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of test isn\'t accepted abroad. Get tested again.]]></string>
+  <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was created.<br/><br/>It\'s possible that your type of test isn\'t accepted abroad. Please get tested again.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
   <string name="rule_engine_no_origin_title">We can\'t make a certificate</string>
   <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your %1$s. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost.</a>]]></string>
@@ -531,14 +531,14 @@
   <string name="qr_card_vaccination_title_domestic_with_doses">Vaccination certificate (%1$s doses):</string>
   <string name="add_paper_proof_why_only_international_title">Why only international?</string>
   <string name="add_paper_proof_why_only_international_description">You can use the details in international QR codes to immediately create a Dutch certificate as well. This way you won\'t have to scan them both.</string>
-  <string name="international_certificate_created_description"><![CDATA[You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.<br/><br/><b>Still have to get a second vaccination?</b><br/>Please add a vaccination certificate again after getting your vaccination. You will also receive a Dutch certificate then.<br/><br/><b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
+  <string name="international_certificate_created_description"><![CDATA[You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.<br/><br/><b>Still have to get a new vaccination?</b><br/>Please add a vaccination certificate again after getting your vaccination. You will also receive a Dutch certificate then.<br/><br/><b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
   <string name="international_certificate_created_title">Only an international certificate was created</string>
   <string name="international_certificate_created_toolbar_title">Certificate created</string>
   <string name="international_certificate_created_retrieve_test_button">Retrieve my test result</string>
   <string name="missing_dutch_certificate_info_card_text">You don\'t have a Dutch vaccination certificate</string>
   <string name="missing_dutch_certificate_title">No Dutch vaccination certificate</string>
   <string name="missing_dutch_certificate_introduction">You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.</string>
-  <string name="missing_dutch_certificate_second_vaccine_explanation"><![CDATA[<br/><b>Had your second vaccination?</b><br/>Please retrieve your vaccination details again. You will receive a Dutch certificate.]]></string>
+  <string name="missing_dutch_certificate_second_vaccine_explanation"><![CDATA[<br/><b>Had a new vaccination?</b><br/>Please retrieve your vaccination details again. You will receive a Dutch certificate.]]></string>
   <string name="missing_dutch_certificate_retrieve_vaccination_button">Retrieve my vaccinations</string>
   <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
   <string name="missing_dutch_certificate_retrieve_test_button">Retrieve my test result</string>
@@ -620,7 +620,7 @@
   <string name="your_vaccination_explanation_birthday">Date of birth:</string>
   <string name="holder_event_vaccination_assessment_wrong_body">Please contact the desk that reviewed your vaccination. They can help you change your details. For more information, please visit <a href="https://www.government.nl/entry-pass-visitors-cc">www.government.nl/entry-pass-visitors</a>.</string>
   <string name="holder_event_vaccination_assessment_alert_message">Doing so will stop the addition of your vaccination approval and you will have to retrieve your details again later.</string>
-  <string name="visitorpass_token_error_invalid_code">No valid VAC code</string>
+  <string name="visitorpass_token_error_invalid_code">This code is invalid</string>
   <string name="holder_event_vaccination_assessment_list_message">Are the details correct? If the details are correct, you can add your vaccination approval to the app.</string>
   <string name="holder_completecertificate_title">Complete your visitor pass</string>
   <string name="holder_completecertificate_body"><![CDATA[Retrieve a negative test result to complete your visitor pass.<br/><br/>Didn\'t do a test yet? Make an appointment at <a href=\"https://www.testenvoortoegang.org\">www.testenvoortoegang.org</a>.]]></string>
@@ -651,7 +651,8 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[To renew your vaccination certificate, you need a booster vaccination. For more information about booster vaccinations, please visit <a href=\"https://www.government.nl/boosterjab-cc\">www.government.nl/boosterjab</a>.<br/><br/>Did you receive a booster vaccination? Then please retrieve your details again to add it to your certificate.]]></string>
   <string name="holder_event_missingorigin_error_description"><![CDATA[<br/><br/><b>Error code:</b><br/>%1$s]]></string>
   <string name="rule_engine_no_test_origin_description_vaccination_approval">vaccination approval</string>
-  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_title">Negatieve testuitslag toegevoegd</string>
-  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete">Maak bewijs compleet</string>
-  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Je negatieve testuitslag is succesvol toegevoegd. Maak je bezoekersbewijs compleet met je vaccinatie goedkeuring.<br /><br />Hiervoor heb je een Vaccinatie Approval Code (VAC-) van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen.]]></string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_title">Negative test result added</string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete">Complete certificate</string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Your negative test result was successfully added. Add your vaccination approval to complete your visitor pass.<br /><br />To this end, you\'ve received a Vaccination Approval Code (VAC) from the desk that reviewed your vaccination. You\'ve received this code either by email or on paper.]]></string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Toolbar</string>
 </resources>

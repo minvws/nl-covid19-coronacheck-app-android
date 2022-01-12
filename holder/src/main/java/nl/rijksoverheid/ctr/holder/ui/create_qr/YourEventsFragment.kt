@@ -17,8 +17,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
+import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.*
@@ -266,7 +268,20 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 )
             }
             DomesticVaccinationRecoveryCombination.AddedNegativeTestInVaccinationAssessmentFlow -> {
-                Timber.v("IK KOM HIER")
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
+                        descriptionData = DescriptionData(
+                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
+                        ),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
+                            navigationActionId = InfoFragmentDirections.actionVisitorPassInputToken().actionId,
+                        )
+                    )
+                )
             }
         }
     }
