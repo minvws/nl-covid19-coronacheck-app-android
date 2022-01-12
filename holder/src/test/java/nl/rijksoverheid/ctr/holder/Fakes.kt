@@ -393,6 +393,14 @@ fun fakePersistenceManager(
         override fun setHasDismissedNewValidityInfoCard(dismissed: Boolean) {
 
         }
+
+        override fun getHasDismissedBoosterInfoCard(): Long {
+            return 0L
+        }
+
+        override fun setHasDismissedBoosterInfoCard(dismissedAtEpochSeconds: Long) {
+
+        }
     }
 }
 
