@@ -590,11 +590,11 @@
   <string name="holder_dashboard_newvaliditybanner_action">Read more on Government.nl</string>
   <string name="holder_dashboard_newvaliditybanner_url">https://www.government.nl/covid-certificate</string>
   <string name="visitorpass_token_next">Next</string>
-  <string name="visitorpass_code_review_placeholder_screenreader">Enter your VAC code here</string>
-  <string name="visitorpass_token_error_empty_token">Please fill out a VAC code first</string>
+  <string name="visitorpass_code_review_placeholder_screenreader">Enter your approval code here</string>
+  <string name="visitorpass_token_error_empty_token">Please enter your approval code</string>
   <string name="visitorpass_token_error_unknown_provider">This test location is not known to us. Please contact the location who tested you.</string>
   <string name="visitorpass_token_error_invalid_combination">No valid combination</string>
-  <string name="visitorpass_token_modal_notoken_title">Don\'t have a VAC code?</string>
+  <string name="visitorpass_token_modal_notoken_title">Don\'t have an approval code?</string>
   <string name="holder_event_vaccination_assessment_element_subtitle"><![CDATA[Review date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
   <string name="holder_event_vaccination_assessment_about_date">Review date:</string>
   <string name="holder_event_vaccination_assessment_about_subtitle">The following details were retrieved:</string>
@@ -607,11 +607,11 @@
   <string name="general_visitorPass">visitor pass</string>
   <string name="holder_event_vaccination_assessment_toolbar_title">Retrieve vaccination approval</string>
   <string name="visitorpass_code_description_deeplink">Enter your verification code. You will receive this via text or email.</string>
-  <string name="visitorpass_token_modal_notoken_details"><![CDATA[You will receive a Vaccination Approval Code (VAC) from the desk that reviewed your vaccination, either by email or on paper. Don\'t have a VAC code? Please contact the desk you stopped by.<br/><br/>Didn’t stop by a desk yet to have your vaccination reviewed? For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
-  <string name="visitorpass_code_description">Enter your Vaccination Approval Code (VAC). You received this code from the desk that reviewed your vaccination.</string>
-  <string name="visitorpass_code_review_input">VAC code</string>
+  <string name="visitorpass_token_modal_notoken_details"><![CDATA[You will receive an approval code from the desk that reviewed your vaccination, either by email or on paper. Don\'t have an approval code? Please contact the desk you stopped by.<br/><br/>Didn’t stop by a desk yet to have your vaccination reviewed? For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
+  <string name="visitorpass_code_description">Enter your approval code. You received this code from the desk that reviewed your vaccination.</string>
+  <string name="visitorpass_code_review_input">Approval code</string>
   <string name="visitorpass_code_review_placeholder">E.g. VAC-3839287262-F2</string>
-  <string name="visitorpass_code_review_button">Don\'t have a VAC code?</string>
+  <string name="visitorpass_code_review_button">Don\'t have an approval code?</string>
   <string name="visitorpass_start_message"><![CDATA[Were you vaccinated outside of the European Union, and are you visiting the Netherlands? Then you can use your vaccination approval and negative test result to create a visitor pass.<br/><br/>You can use your visitor pass to get access to places and activities in the Netherlands that require a coronavirus pass.<br/><br/>For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="holder_event_vaccination_assessment_about_name">Name:</string>
   <string name="your_test_result_explanation_description_unique_identifier">Unique test identifier:</string>
@@ -653,6 +653,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="rule_engine_no_test_origin_description_vaccination_approval">vaccination approval</string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_title">Negative test result added</string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete">Complete certificate</string>
-  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Your negative test result was successfully added. Add your vaccination approval to complete your visitor pass.<br /><br />To this end, you\'ve received a Vaccination Approval Code (VAC) from the desk that reviewed your vaccination. You\'ve received this code either by email or on paper.]]></string>
-  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Toolbar</string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Your negative test result was successfully added. Add your vaccination approval to complete your visitor pass.<br /><br />To this end, you\'ve received an approval code from the desk that reviewed your vaccination. You\'ve received this code either by email or on paper.]]></string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Retrieve test result</string>
 </resources>

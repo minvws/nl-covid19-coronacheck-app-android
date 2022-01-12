@@ -591,28 +591,28 @@
   <string name="holder_dashboard_newvaliditybanner_action">Lees meer op Rijksoverheid.nl</string>
   <string name="holder_dashboard_newvaliditybanner_url">https://www.rijksoverheid.nl/coronabewijs</string>
   <string name="visitorpass_token_next">Volgende</string>
-  <string name="visitorpass_code_review_placeholder_screenreader">Vul hier je VAC-code in</string>
-  <string name="visitorpass_token_error_empty_token">Graag eerst een VAC-code invullen</string>
+  <string name="visitorpass_code_review_placeholder_screenreader">Vul hier je beoordelingscode in</string>
+  <string name="visitorpass_token_error_empty_token">Graag je beoordelingscode invullen</string>
   <string name="visitorpass_token_error_unknown_provider">Deze testlocatie is (nog) niet bij ons bekend. Neem contact op met de locatie waar je bent getest.</string>
   <string name="visitorpass_token_error_invalid_combination">Geen geldige combinatie</string>
-  <string name="visitorpass_token_modal_notoken_title">Heb je geen VAC-code?</string>
+  <string name="visitorpass_token_modal_notoken_title">Heb je geen beoordelingscode?</string>
   <string name="holder_event_vaccination_assessment_element_subtitle"><![CDATA[Beoordelingsdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
   <string name="holder_event_vaccination_assessment_about_date">Beoordelingsdatum:</string>
   <string name="holder_event_vaccination_assessment_about_subtitle">De volgende gegevens zijn opgehaald:</string>
   <string name="holder_event_vaccination_assessment_about_unique_identifier">Uniek beoordelingsnummer:</string>
-  <string name="holder_event_vaccination_assessment_element_title">Vaccinatie goedkeuring</string>
-  <string name="holder_event_vaccination_assessment_nolist_title">Geen vaccinatie goedkeuring beschikbaar</string>
-  <string name="holder_event_vaccination_assessment_nolist_message"><![CDATA[Er zijn geen gegevens over je vaccinatie goedkeuring beschikbaar. Neem contact op met de balie waar jouw vaccinatie is beoordeeld.<br/><br/>Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
+  <string name="holder_event_vaccination_assessment_element_title">Vaccinatie-beoordeling</string>
+  <string name="holder_event_vaccination_assessment_nolist_title">Geen vaccinatie-beoordeling beschikbaar</string>
+  <string name="holder_event_vaccination_assessment_nolist_message"><![CDATA[Er zijn geen gegevens over je vaccinatie-beoordeling beschikbaar. Neem contact op met de balie waar jouw vaccinatie is beoordeeld.<br/><br/>Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_event_vaccination_assessment_nolist_action">Naar mijn bewijzen</string>
   <string name="visitorpass_start_toolbar_title">Bezoekersbewijs toevoegen</string>
   <string name="general_visitorPass">bezoekersbewijs</string>
-  <string name="holder_event_vaccination_assessment_toolbar_title">Vaccinatie goedkeuring ophalen</string>
+  <string name="holder_event_vaccination_assessment_toolbar_title">Vaccinatie-beoordeling ophalen</string>
   <string name="visitorpass_code_description_deeplink">Vul je verificatiecode in. Deze krijg je via sms of e-mail.</string>
-  <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt een Vaccinatie Approval Code (VAC-) van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen. Heb je geen VAC-code? Neem dan contact op met de balie waar je bent geweest.<br/><br/>Nog niet langs een balie geweest om je vaccinatie te laten beoordelen? Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
-  <string name="visitorpass_code_description">Vul je Vaccinatie Approval Code (VAC-) in. Deze heb je van de balie gekregen waar jouw vaccinatie werd beoordeeld.</string>
-  <string name="visitorpass_code_review_input">VAC-code</string>
+  <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt een beoordelingscode van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen. Heb je geen beoordelingscode? Neem dan contact op met de balie waar je bent geweest.<br/><br/>Nog niet langs een balie geweest om je vaccinatie te laten beoordelen? Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
+  <string name="visitorpass_code_description">Vul je beoordelingscode in. Deze heb je van de balie gekregen waar jouw vaccinatie werd beoordeeld.</string>
+  <string name="visitorpass_code_review_input">Beoordelingscode</string>
   <string name="visitorpass_code_review_placeholder">Bijv. VAC-3839287262-F2</string>
-  <string name="visitorpass_code_review_button">Heb je geen VAC-code?</string>
+  <string name="visitorpass_code_review_button">Heb je geen beoordelingscode?</string>
   <string name="visitorpass_start_message"><![CDATA[Ben je buiten de Europese Unie gevaccineerd en op bezoek in Nederland?  Dan kun je van jouw vaccinatie-beoordeling en een negatieve testuitslag een bezoekersbewijs maken.<br/><br/>Met je bezoekersbewijs krijg je toegang tot plekken en activiteiten in Nederland die vragen om een coronatoegangsbewijs.<br/><br/>Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_event_vaccination_assessment_about_name">Naam:</string>
   <string name="your_test_result_explanation_description_unique_identifier">Uniek testnummer:</string>
@@ -620,14 +620,14 @@
   <string name="your_vaccination_explanation_name">Naam:</string>
   <string name="your_vaccination_explanation_birthday">Geboortedatum:</string>
   <string name="holder_event_vaccination_assessment_wrong_body">Neem contact op met de balie waar jouw vaccinatie is beoordeeld. Zij kunnen je helpen je gegevens aan te passen. Kijk voor meer informatie op <a href="https://www.rijksoverheid.nl/ctb-bezoekers-cc">www.rijksoverheid.nl/ctb-bezoekers</a>.</string>
-  <string name="holder_event_vaccination_assessment_alert_message">Hierdoor stop je het toevoegen van je vaccinatie goedkeuring en moet je later opnieuw je gegevens ophalen.</string>
+  <string name="holder_event_vaccination_assessment_alert_message">Hierdoor stop je het toevoegen van je vaccinatie-beoordeling en moet je later opnieuw je gegevens ophalen.</string>
   <string name="visitorpass_token_error_invalid_code">Deze code is niet geldig</string>
-  <string name="holder_event_vaccination_assessment_list_message">Kloppen de gegevens? Als de gegevens kloppen kun je jouw vaccinatie goedkeuring toevoegen aan de app.</string>
+  <string name="holder_event_vaccination_assessment_list_message">Kloppen de gegevens? Als de gegevens kloppen kun je jouw vaccinatie-beoordeling toevoegen aan de app.</string>
   <string name="holder_completecertificate_title">Maak je bezoekersbewijs compleet</string>
   <string name="holder_completecertificate_body"><![CDATA[Haal een negatieve testuitslag op om je bezoekersbewijs compleet te maken.<br/><br/>Heb je nog geen coronatest gedaan? Kijk voor meer informatie op <a href=\"https://www.testenvoortoegang.org\">www.testenvoortoegang.org</a>.]]></string>
   <string name="holder_completecertificate_button_fetchnegativetest">Testuitslag ophalen</string>
   <string name="holder_completecertificate_toolbar">Maak bewijs compleet</string>
-  <string name="holder_dashboard_visitorpassincompletebanner_title">Je vaccinatie goedkeuring is toegevoegd. Maak je bezoekersbewijs compleet met je negatieve corona testuitslag</string>
+  <string name="holder_dashboard_visitorpassincompletebanner_title">Je vaccinatie-beoordeling is toegevoegd. Maak je bezoekersbewijs compleet met je negatieve corona testuitslag</string>
   <string name="holder_dashboard_visitorpassincompletebanner_button_makecomplete">Maak bewijs compleet</string>
   <string name="holder_dashboard_visitorPassInvalidOutsideNLBanner_title">Je bezoekersbewijs is niet geldig buiten Nederland</string>
   <string name="holder_notvalidinthisregionmodal_visitorpass_international_title">Over je bezoekersbewijs</string>
@@ -637,7 +637,7 @@
 Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_dashboard_visitorpassexpired_title">Verlopen bezoekersbewijs</string>
   <string name="holder_dashboard_visitorpassexpired_body"><![CDATA[Een bezoekersbewijs is geldig tot %d dagen na de beoordeling van je vaccinatie. Blijf je langer in Nederland? Dan kun je opnieuw een bezoekersbewijs aanvragen. Ga voor meer informatie naar <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
-  <string name="general_vaccinationAssessment">vaccinatie goedkeuring</string>
+  <string name="general_vaccinationAssessment">vaccinatie-beoordeling</string>
   <string name="holder_dashboard_originExpiredBanner_domesticVaccine_title">Je Nederlandse vaccinatiebewijs is verlopen</string>
   <string name="holder_dashboard_originExpiredBanner_domesticRecovery_title">Je Nederlandse herstelbewijs is verlopen</string>
   <string name="holder_dashboard_originExpiredBanner_domesticTest_title">Je Nederlandse testbewijs is verlopen</string>
@@ -651,9 +651,9 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_dashboard_addBoosterBanner_button_addBooster">Boostervaccinatie toevoegen</string>
   <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[Om je vaccinatiebewijs te verlengen heb je een boostervaccinatie nodig. Kijk voor meer informatie over boostervaccinaties op <a href=\"https://www.coronavaccinatie.nl/booster-cc\">www.coronavaccinatie.nl/booster</a>.<br/><br/>Heb je een boostervaccinatie gehad? Haal opnieuw je gegevens op om deze aan je bewijs toe te voegen.]]></string>
   <string name="holder_event_missingorigin_error_description"><![CDATA[<br/><br/><b>Foutcode:</b><br/>%1$s]]></string>
-  <string name="rule_engine_no_test_origin_description_vaccination_approval">vaccinatie goedkeuring</string>
+  <string name="rule_engine_no_test_origin_description_vaccination_approval">vaccinatie-beoordeling</string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_title">Negatieve testuitslag toegevoegd</string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete">Maak bewijs compleet</string>
-  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Je negatieve testuitslag is succesvol toegevoegd. Maak je bezoekersbewijs compleet met je vaccinatie goedkeuring.<br /><br />Hiervoor heb je een Vaccinatie Approval Code (VAC-) van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen.]]></string>
-  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Toolbar</string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Je negatieve testuitslag is succesvol toegevoegd. Maak je bezoekersbewijs compleet met je vaccinatie-beoordeling.<br /><br />Hiervoor heb je een beoordelingscode van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen.]]></string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Testuitslag ophalen</string>
 </resources>
