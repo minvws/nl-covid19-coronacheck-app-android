@@ -411,6 +411,10 @@
             app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType" />
 
         <argument
+            android:name="flow"
+            app:argType="nl.rijksoverheid.ctr.shared.models.Flow" />
+
+        <argument
             android:name="afterIncompleteVaccination"
             android:defaultValue="false"
             app:argType="boolean" />

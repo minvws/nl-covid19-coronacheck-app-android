@@ -89,34 +89,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     override fun getFlow(): Flow {
-        when (val type = args.type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                return HolderFlow.CommercialTest
-            }
-            is YourEventsFragmentType.DCC -> {
-                return HolderFlow.HkviScan
-            }
-            is YourEventsFragmentType.RemoteProtocol3Type -> {
-                return when (type.originType) {
-                    is OriginType.Test -> {
-                        if (type.fromCommercialTestCode) {
-                            HolderFlow.CommercialTest
-                        } else {
-                            HolderFlow.DigidTest
-                        }
-                    }
-                    is OriginType.Recovery -> {
-                        HolderFlow.Recovery
-                    }
-                    is OriginType.Vaccination -> {
-                        HolderFlow.Vaccination
-                    }
-                    is OriginType.VaccinationAssessment -> {
-                        HolderFlow.VaccinationAssessment
-                    }
-                }
-            }
-        }
+        return args.flow
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
