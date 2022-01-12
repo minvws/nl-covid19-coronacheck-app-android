@@ -604,13 +604,13 @@
   <string name="holder_event_vaccination_assessment_nolist_message"><![CDATA[There are no details available about your vaccination approval. Please contact the desk that reviewed your vaccination.<br/><br/>For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="holder_event_vaccination_assessment_nolist_action">To my certificates</string>
   <string name="visitorpass_start_toolbar_title">Add visitor pass</string>
-  <string name="general_visitorPass">Visitor pass:</string>
+  <string name="general_visitorPass">visitor pass</string>
   <string name="holder_event_vaccination_assessment_toolbar_title">Retrieve vaccination approval</string>
   <string name="visitorpass_code_description_deeplink">Enter your verification code. You will receive this via text or email.</string>
   <string name="visitorpass_token_modal_notoken_details"><![CDATA[You will receive a Vaccination Approval Code (VAC) from the desk that reviewed your vaccination, either by email or on paper. Don\'t have a VAC code? Please contact the desk you stopped by.<br/><br/>Didn’t stop by a desk yet to have your vaccination reviewed? For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="visitorpass_code_description">Enter your Vaccination Approval Code (VAC). You received this code from the desk that reviewed your vaccination.</string>
   <string name="visitorpass_code_review_input">VAC code</string>
-  <string name="visitorpass_code_review_placeholder">E.g. VAC-3839287262-F1</string>
+  <string name="visitorpass_code_review_placeholder">E.g. VAC-3839287262-F2</string>
   <string name="visitorpass_code_review_button">Don\'t have a VAC code?</string>
   <string name="visitorpass_start_message"><![CDATA[Were you vaccinated outside of the European Union, and are you visiting the Netherlands? Then you can use your vaccination approval and negative test result to create a visitor pass.<br/><br/>You can use your visitor pass to get access to places and activities in the Netherlands that require a coronavirus pass.<br/><br/>For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="holder_event_vaccination_assessment_about_name">Name:</string>
@@ -634,7 +634,6 @@
 <br/><br/>
 <b>Want to know more?</b><br/>
 Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
-  <string name="holder_dashboard_visitorpasseexpiredbanner_title">Your visitor pass is expired</string>
   <string name="holder_dashboard_visitorpassexpired_title">Expired visitor pass</string>
   <string name="holder_dashboard_visitorpassexpired_body"><![CDATA[A visitor pass is valid up until %d days after review of your vaccination. Are you staying in the Netherlands longer? Then you can request a visitor pass again. For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="general_vaccinationAssessment">vaccination approval</string>
@@ -649,7 +648,10 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Add booster vaccination</string>
   <string name="holder_dashboard_addBoosterBanner_title">Did you receive a booster vaccination? Please retrieve your details again if you want to add it to your certificate</string>
   <string name="holder_dashboard_addBoosterBanner_button_addBooster">Add booster vaccination</string>
-  <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[To renew your vaccination certificate, you need a booster vaccination. For more information about booster vaccinations, please visit <a href=\"https://www.government.nl/booster\">www.government.nl/booster</a>.<br/><br/>Did you receive a booster vaccination? Then please retrieve your details again to add it to your certificate.]]></string>
+  <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[To renew your vaccination certificate, you need a booster vaccination. For more information about booster vaccinations, please visit <a href=\"https://www.government.nl/boosterjab-cc\">www.government.nl/boosterjab</a>.<br/><br/>Did you receive a booster vaccination? Then please retrieve your details again to add it to your certificate.]]></string>
   <string name="holder_event_missingorigin_error_description"><![CDATA[<br/><br/><b>Error code:</b><br/>%1$s]]></string>
   <string name="rule_engine_no_test_origin_description_vaccination_approval">vaccination approval</string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_title">Negatieve testuitslag toegevoegd</string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete">Maak bewijs compleet</string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Je negatieve testuitslag is succesvol toegevoegd. Maak je bezoekersbewijs compleet met je vaccinatie goedkeuring.<br /><br />Hiervoor heb je een Vaccinatie Approval Code (VAC-) van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen.]]></string>
 </resources>
