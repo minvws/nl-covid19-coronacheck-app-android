@@ -32,5 +32,7 @@ sealed class DomesticVaccinationRecoveryCombination {
     /** No domestic certificate after signing ONLY vaccination events (no recovery events) */
     object NoneWithoutRecovery : DomesticVaccinationRecoveryCombination()
 
+    object AddedNegativeTestInVaccinationAssessmentFlow: DomesticVaccinationRecoveryCombination()
+
     object NotApplicable : DomesticVaccinationRecoveryCombination()
 }

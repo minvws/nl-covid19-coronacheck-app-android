@@ -48,7 +48,7 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
         )
 
         assertEquals(
-            util.getResult(storedGreenCards, events, remoteGreenCards),
+            util.getResult(HolderFlow.Startup, storedGreenCards, events, remoteGreenCards),
             NotApplicable
         )
     }
@@ -63,7 +63,7 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
-        assertEquals(util.getResult(emptyList(), events, remoteGreenCards), NoneWithoutRecovery)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NoneWithoutRecovery)
     }
 
     @Test
@@ -82,7 +82,7 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard())
         )
 
-        assertEquals(util.getResult(emptyList(), events, remoteGreenCards), OnlyVaccination(365))
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), OnlyVaccination(365))
     }
 
     @Test
@@ -100,7 +100,7 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard())
         )
 
-        assertEquals(util.getResult(emptyList(), events, remoteGreenCards), OnlyRecovery)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), OnlyRecovery)
     }
 
     @Test
@@ -114,7 +114,7 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
-        assertEquals(util.getResult(emptyList(), events, remoteGreenCards), NoneWithRecovery)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NoneWithRecovery)
     }
 
     @Test
@@ -135,7 +135,7 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
         )
 
         assertEquals(
-            util.getResult(emptyList(), events, remoteGreenCards),
+            util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards),
             CombinedVaccinationRecovery(365)
         )
     }
@@ -153,6 +153,6 @@ class DomesticVaccinationRecoveryCombinationUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard())
         )
 
-        assertEquals(util.getResult(emptyList(), events, remoteGreenCards), NotApplicable)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NotApplicable)
     }
 }

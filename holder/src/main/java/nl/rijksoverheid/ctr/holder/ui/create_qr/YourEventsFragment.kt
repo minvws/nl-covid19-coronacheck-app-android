@@ -39,6 +39,7 @@ import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -71,6 +72,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         when (val type = args.type) {
             is YourEventsFragmentType.TestResult2 -> {
                 yourEventsViewModel.saveNegativeTest2(
+                    flow = getFlow(),
                     negativeTest2 = type.remoteTestResult,
                     rawResponse = type.rawResponse
                 )
@@ -166,7 +168,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                type.remoteEvents, type.originType, false
+                                getFlow(), type.remoteEvents, type.originType, false
                             )
                         }
                     }
@@ -175,7 +177,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                type.remoteEvents, type.originType, false
+                                getFlow(), type.remoteEvents, type.originType, false
                             )
                         }
                     }
@@ -263,6 +265,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     YourEventsFragmentDirections.actionMyOverview()
                 )
             }
+            DomesticVaccinationRecoveryCombination.AddedNegativeTestInVaccinationAssessmentFlow -> {
+                Timber.v("IK KOM HIER")
+            }
         }
     }
 
@@ -277,6 +282,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             positiveButtonText = R.string.your_events_replace_dialog_positive_button,
             positiveButtonCallback = {
                 yourEventsViewModel.saveRemoteProtocol3Events(
+                    flow = getFlow(),
                     remoteProtocols3 = remoteEvents,
                     originType = originType,
                     removePreviousEvents = true

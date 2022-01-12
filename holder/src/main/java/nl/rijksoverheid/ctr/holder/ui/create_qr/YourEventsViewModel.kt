@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCaseImpl
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.Flow
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -31,8 +32,9 @@ abstract class YourEventsViewModel : ViewModel() {
     val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
     val conflictingEventsResult: LiveData<Event<Boolean>> = MutableLiveData()
 
-    abstract fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
+    abstract fun saveNegativeTest2(flow: Flow, negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
     abstract fun saveRemoteProtocol3Events(
+        flow: Flow,
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         originType: OriginType,
         removePreviousEvents: Boolean
@@ -54,7 +56,7 @@ class YourEventsViewModelImpl(
     private val combinationUtil: DomesticVaccinationRecoveryCombinationUtil
 ) : YourEventsViewModel() {
 
-    override fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
+    override fun saveNegativeTest2(flow: Flow, negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
@@ -63,6 +65,7 @@ class YourEventsViewModelImpl(
                     is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
                         // Send all events to database and create green cards, origins and credentials
                         val databaseSyncerResult = holderDatabaseSyncer.sync(
+                            flow = flow,
                             expectedOriginType = OriginType.Test
                         )
 
@@ -103,6 +106,7 @@ class YourEventsViewModelImpl(
     }
 
     override fun saveRemoteProtocol3Events(
+        flow: Flow,
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         originType: OriginType,
         removePreviousEvents: Boolean
@@ -121,6 +125,7 @@ class YourEventsViewModelImpl(
                     is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
                         // Send all events to database and create green cards, origins and credentials
                         val databaseSyncerResult = holderDatabaseSyncer.sync(
+                            flow = flow,
                             expectedOriginType = getExpectedOriginType(originType)
                         )
 
