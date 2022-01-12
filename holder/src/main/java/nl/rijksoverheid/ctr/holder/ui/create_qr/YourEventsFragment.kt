@@ -14,7 +14,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
@@ -22,10 +21,7 @@ import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
-import nl.rijksoverheid.ctr.holder.BaseFragment
-import nl.rijksoverheid.ctr.holder.HolderFlow
-import nl.rijksoverheid.ctr.holder.HolderMainFragment
-import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -162,17 +158,12 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     is DatabaseSyncerResult.Success -> {
                         when {
                             databaseSyncerResult.missingOrigin -> {
-                                navigateSafety(
-                                    YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                        toolbarTitle = args.toolbarTitle,
-                                        title = getString(R.string.rule_engine_no_origin_title),
-                                        description = getString(
-                                            R.string.rule_engine_no_test_origin_description,
-                                            requireContext().getString(yourEventsFragmentUtil.getNoOriginTypeCopy(
-                                                type = args.type
-                                            )
-                                        )),
-                                        buttonTitle = getString(R.string.back_to_overview)
+                                val noOriginTypeCopy = getString(yourEventsFragmentUtil.getNoOriginTypeCopy(args.type))
+                                presentError(
+                                    errorResult = MissingOriginErrorResult,
+                                    customerErrorDescription = getString(
+                                        R.string.rule_engine_no_test_origin_description,
+                                        noOriginTypeCopy
                                     )
                                 )
                             }

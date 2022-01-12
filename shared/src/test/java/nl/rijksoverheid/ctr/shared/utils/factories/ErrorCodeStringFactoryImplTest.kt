@@ -83,4 +83,21 @@ class ErrorCodeStringFactoryImplTest {
 
         assertEquals(errorCodeString, "A 01 000 400 2")
     }
+
+    @Test
+    fun `get() returns correct string if errorResult is a OriginMismatchError`() {
+        val errorCodeString = factory.get(
+            flow = Flow(2),
+            errorResults = listOf(object: ErrorResult {
+                override fun getCurrentStep(): Step {
+                    return Step(80)
+                }
+
+                override fun getException(): Exception {
+                    return MissingOriginException()
+                }
+            }))
+
+        assertEquals("A 280 000 058", errorCodeString)
+    }
 }

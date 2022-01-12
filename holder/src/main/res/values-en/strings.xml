@@ -313,6 +313,7 @@
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
   <string name="rule_engine_no_origin_title">We can\'t make a certificate</string>
   <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from %1$s. This can have various causes.  Find more information on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost.</a>]]></string>
+  <string name="holder_event_missingorigin_error_description"><![CDATA[<br/><br/><b>Error code:</b><br/>%1$s]]></string>
   <string name="back_to_overview">To my certificates</string>
   <string name="no_vaccinations_title">Vaccinations not available</string>
   <string name="no_vaccinations_description"><![CDATA[There is no available vaccination data. This can have various causes. Read the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a> for more information.<br/><br/>Got vaccinated recently? It can take a few hours until your details are available. Try again later.]]></string>
