@@ -12,7 +12,6 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.InputTokenFragmentData
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragmentDirections
@@ -21,8 +20,8 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
-import nl.rijksoverheid.ctr.holder.MainNavDirections
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
+import nl.rijksoverheid.ctr.holder.MainNavDirections
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -86,7 +85,18 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
                 onVisitorPassIncompleteClicked(myOverviewFragment)
             }
+            is DashboardItem.InfoItem.BoosterItem -> {
+                onBoosterItemClicked(myOverviewFragment)
+            }
         }
+    }
+
+    private fun onBoosterItemClicked(myOverviewFragment: MyOverviewFragment) {
+        myOverviewFragment.navigateSafety(MyOverviewTabsFragmentDirections.actionGetEvents(
+            originType = RemoteOriginType.Vaccination,
+            afterIncompleteVaccination = false,
+            toolbarTitle = myOverviewFragment.getString(R.string.choose_provider_toolbar),
+        ))
     }
 
     private fun onGreenCardExpiredClicked(
@@ -353,6 +363,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.RecoverDomesticRecovery,
             is DashboardItem.InfoItem.NewValidityItem -> {
                 myOverviewFragment.dashboardViewModel.dismissNewValidityInfoCard()
+            }
+            is DashboardItem.InfoItem.BoosterItem -> {
+                myOverviewFragment.dashboardViewModel.dismissBoosterInfoCard()
             }
         }
     }

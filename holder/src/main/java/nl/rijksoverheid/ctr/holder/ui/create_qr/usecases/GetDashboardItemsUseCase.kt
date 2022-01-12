@@ -126,6 +126,12 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowBoosterItem(domesticGreenCards)) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.BoosterItem
+            )
+        }
+
         if (dashboardItemUtil.shouldShowTestCertificate3GValidityItem(domesticGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
         }
@@ -221,6 +227,12 @@ class GetDashboardItemsUseCaseImpl(
                 DashboardItem.InfoItem.ConfigFreshnessWarning(
                     maxValidityDate = dashboardItemUtil.getConfigFreshnessMaxValidity()
                 )
+            )
+        }
+
+        if (dashboardItemUtil.shouldShowBoosterItem(internationalGreenCards)) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.BoosterItem
             )
         }
 

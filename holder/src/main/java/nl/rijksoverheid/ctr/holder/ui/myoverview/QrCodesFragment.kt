@@ -13,7 +13,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
+import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
+import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -22,11 +27,6 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
-import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
-import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
-import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
-import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
-import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodesFragmentUtil
@@ -315,17 +315,11 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     private fun showDoseInfo(vaccination: QrCodeData.European.Vaccination) {
         TransitionManager.beginDelayedTransition(binding.bottomScroll)
-        when {
-            vaccination.isOverVaccinated -> {
-                binding.doseInfo.text = getString(
-                    R.string.qr_code_over_vaccinated)
-                binding.doseInfo.visibility = View.VISIBLE
-            }
-            vaccination.isHidden -> {
-                binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
-                binding.doseInfo.visibility = View.VISIBLE
-            }
-            else -> binding.doseInfo.visibility = View.GONE
+        if (vaccination.isHidden) {
+            binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
+            binding.doseInfo.visibility = View.VISIBLE
+        } else {
+            binding.doseInfo.visibility = View.GONE
         }
     }
 
