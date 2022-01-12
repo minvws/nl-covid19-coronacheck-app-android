@@ -37,7 +37,6 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
                 infoFragmentData.secondaryButtonData?.let { buttonData ->
                     binding.button.visibility = View.VISIBLE
                     binding.button.apply {
-                        val buttonData = infoFragmentData.secondaryButtonData
                         text = buttonData.text
                         setOnClickListener {
                             when (buttonData) {
@@ -51,10 +50,6 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
                                     )
                                 }
                             }
-                        }
-                        if (buttonData is ButtonData.NavigationButton) {
-                            text = buttonData.text
-                            setOnClickListener { findNavControllerSafety()?.navigate(buttonData.navigationActionId, buttonData.navigationArguments) }
                         }
                     }
                 }
