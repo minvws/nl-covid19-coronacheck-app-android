@@ -228,7 +228,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
     private fun onVisitorPassIncompleteClicked(myOverviewFragment: MyOverviewFragment) {
-        val navigationDirection = InfoFragmentDirections.actionInputToken()
+        val navigationDirection = InfoFragmentDirections.actionCommercialTestInputToken()
 
         infoFragmentUtil.presentFullScreen(
             currentFragment = myOverviewFragment,
@@ -237,10 +237,6 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 title = myOverviewFragment.getString(R.string.holder_completecertificate_title),
                 descriptionData = DescriptionData(
                     htmlText = R.string.holder_completecertificate_body
-                ),
-                secondaryButtonData = ButtonData.LinkButton(
-                    text = myOverviewFragment.getString(R.string.holder_completecertificate_button_makeappointement),
-                    link = myOverviewFragment.getString(R.string.url_make_appointment)
                 ),
                 primaryButtonData = ButtonData.NavigationButton(
                     text = myOverviewFragment.getString(R.string.holder_completecertificate_button_fetchnegativetest),

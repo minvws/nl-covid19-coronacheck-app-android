@@ -47,7 +47,8 @@ class CommercialTestInputTokenFragment: InputTokenFragment() {
                             remoteTestResult = result.remoteTestResult,
                             rawResponse = result.signedResponseWithTestResult.rawResponse
                         ),
-                        toolbarTitle = getString(R.string.your_negative_test_results_toolbar)
+                        toolbarTitle = getString(R.string.your_negative_test_results_toolbar),
+                        flow = HolderFlow.CommercialTest
                     )
                 )
             }
@@ -56,9 +57,9 @@ class CommercialTestInputTokenFragment: InputTokenFragment() {
                     CommercialTestInputTokenFragmentDirections.actionYourEvents(
                         type = YourEventsFragmentType.RemoteProtocol3Type(
                             mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse),
-                            originType = if (getFragmentData() is InputTokenFragmentData.CommercialTest) OriginType.Test else OriginType.VaccinationAssessment,
-                            fromCommercialTestCode = true
+                            originType = getOriginType(result.remoteTestResult),
                         ),
+                        flow = HolderFlow.CommercialTest,
                         toolbarTitle = getString(getFragmentData().yourEventsToolbarTitle),
                     )
                 )

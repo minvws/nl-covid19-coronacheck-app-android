@@ -156,7 +156,7 @@
   <string name="verifier_risksetting_highrisk_title">2G-toegang</string>
   <string name="verifier_risksetting_highrisk_subtitle">Je kunt alleen toegang geven aan bezoekers met een vaccinatie- of herstelbewijs.</string>
   <string name="verifier_risksetting_readmore">Welk soort toegang mag ik geven?</string>
-  <string name="verifier_risksetting_readmore_url">https://www.rijksoverheid.nl/welketoegang</string>
+  <string name="verifier_risksetting_readmore_url">https://www.rijksoverheid.nl/welketoegang-cc</string>
   <string name="verifier_risksetting_firsttimeuse_title">Kies je scan-instelling</string>
   <string name="verifier_risksetting_firsttimeuse_header">Stel voor jouw locatie in of je 2G- of 3G-toegang gaat geven. Controleer voordat je gaat scannen welk soort toegang je mag geven.</string>
   <string name="new_in_app_risksetting_title">2G- of 3G-toegang</string>

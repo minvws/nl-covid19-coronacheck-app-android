@@ -156,7 +156,7 @@
   <string name="verifier_risksetting_highrisk_title">2G access</string>
   <string name="verifier_risksetting_highrisk_subtitle">You can only give access to visitors with a vaccination or recovery certificate.</string>
   <string name="verifier_risksetting_readmore">Which kind of access can I give?</string>
-  <string name="verifier_risksetting_readmore_url">https://www.government.nl/whichaccess</string>
+  <string name="verifier_risksetting_readmore_url">https://www.government.nl/whichaccess-cc</string>
   <string name="verifier_risksetting_firsttimeuse_title">Choose your scan setting</string>
   <string name="verifier_risksetting_firsttimeuse_header">For your location, please specify if you\'re going to give 2G or 3G access. Check which kind of access you can give before you start scanning.</string>
   <string name="new_in_app_risksetting_title">2G or 3G access</string>

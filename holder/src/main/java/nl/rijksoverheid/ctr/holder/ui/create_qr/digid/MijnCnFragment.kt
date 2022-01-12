@@ -201,7 +201,8 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
                     originType = OriginType.Vaccination,
                     eventProviders = eventProviders,
                 ),
-                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title)
+                toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
+                flow = HolderFlow.VaccinationBesIslands
             )
         )
     }

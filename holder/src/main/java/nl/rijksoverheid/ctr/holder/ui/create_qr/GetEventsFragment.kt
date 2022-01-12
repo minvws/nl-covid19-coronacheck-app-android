@@ -289,7 +289,8 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     eventProviders = eventProviders,
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,
-                afterIncompleteVaccination = args.afterIncompleteVaccination
+                afterIncompleteVaccination = args.afterIncompleteVaccination,
+                flow = getFlow()
             )
         )
     }

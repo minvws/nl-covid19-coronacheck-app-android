@@ -419,6 +419,10 @@
             app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType" />
 
         <argument
+            android:name="flow"
+            app:argType="nl.rijksoverheid.ctr.shared.models.Flow" />
+
+        <argument
             android:name="afterIncompleteVaccination"
             android:defaultValue="false"
             app:argType="boolean" />
@@ -619,16 +623,25 @@
         android:label="{toolbarTitle}"
         tools:layout="@layout/fragment_info">
 
-        <action android:id="@+id/action_input_token"
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
+
+        <action android:id="@+id/action_commercial_test_input_token"
             app:destination="@id/nav_commercial_test_input_token"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-        <argument
-            android:name="toolbarTitle"
-            app:argType="string" />
+        <action android:id="@+id/action_visitor_pass_input_token"
+            app:destination="@id/nav_visitor_pass_input_token"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_my_overview_tabs"
+            app:popUpToInclusive="false" />
 
     </fragment>
 

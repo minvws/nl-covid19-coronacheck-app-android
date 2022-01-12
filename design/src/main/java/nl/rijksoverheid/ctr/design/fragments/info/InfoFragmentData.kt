@@ -41,7 +41,7 @@ sealed class InfoFragmentData(open val title: String, open val descriptionData: 
     class TitleDescriptionWithButton(
         override val title: String,
         override val descriptionData: DescriptionData,
-        val secondaryButtonData: ButtonData,
+        val secondaryButtonData: ButtonData? = null,
         val primaryButtonData: ButtonData? = null
     ) : InfoFragmentData(title, descriptionData)
 

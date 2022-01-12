@@ -11,9 +11,9 @@
   <string name="app_name_acc">CoronaCheck (Acc)</string>
   <string name="app_name">CoronaCheck</string>
   <string name="onboarding_title">Onboarding</string>
-  <string name="onboarding_screen_1_title">Alleen toegang met een bewijs</string>
-  <string name="onboarding_screen_1_description">Jouw gezondheid en die van anderen is belangrijk. Daarom vragen sommige landen of plekken om een coronabewijs. Alleen met dit bewijs krijg je toegang.</string>
-  <string name="onboarding_screen_2_title">Bewijs van test of vaccinatie</string>
+  <string name="onboarding_screen_1_title">Krijg toegang met je bewijs</string>
+  <string name="onboarding_screen_1_description">Jouw gezondheid en die van anderen is belangrijk. Laat daarom je coronabewijs zien om veilig toegang te krijgen tot plekken. Of als je op reis gaat.</string>
+  <string name="onboarding_screen_2_title">Bewijs van vaccinatie, herstel, of test</string>
   <string name="onboarding_screen_2_description"><![CDATA[Met deze app kun je een bewijs maken als je bent:<ul><li>Gevaccineerd</li><li>Hersteld van corona</li><li>Getest en geen corona hebt</li></ul>]]></string>
   <string name="onboarding_screen_4_title">Je bewijs heeft een QR-code</string>
   <string name="onboarding_screen_4_description">De QR-code op je bewijs wordt gecheckt bij de ingang van plekken en activiteiten. Of aan de grens.</string>
@@ -199,7 +199,7 @@
   <string name="qr_code_type_negative_test_title">Testbewijs</string>
   <string name="qr_code_type_negative_test_description">Uit de test blijkt dat ik geen corona heb</string>
   <string name="qr_code_type_vaccination_title">Vaccinatiebewijs</string>
-  <string name="qr_code_type_vaccination_description">Ik heb een (booster) vaccinatie gehad</string>
+  <string name="qr_code_type_vaccination_description">Ik heb een (booster)vaccinatie gehad</string>
   <string name="get_vaccination_title">Gegevens van je vaccinatie ophalen</string>
   <string name="get_vaccination_description"><![CDATA[Heb je een (booster) vaccinatie gehad? Log in met DigiD om al je vaccinatiegegevens op te halen.]]></string>
   <string name="get_vaccination_button">Log in met DigiD</string>
@@ -286,6 +286,9 @@
   <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s<br/>Gegevens opgehaald bij: %3$s]]></string>
   <string name="your_vaccination_explanation_toolbar_title">Details</string>
   <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is dit de laatste dosis van je vaccinatie? <b>%8$s</b><br/> Vaccinatiedatum: <b>%9$s</b><br/>Gevaccineerd in: <b>%10$s</b><br/>Uniek certificaatnummer: <b>%11$s</b>]]></string>
+  <string name="your_vaccination_explanation_last_dose_yes">ja</string>
+  <string name="your_vaccination_explanation_last_dose_yes_recovery">ja (eerder corona gehad)</string>
+  <string name="your_vaccination_explanation_last_dose_yes_prior_event">ja (ergens anders gevaccineerd)</string>
   <string name="your_vaccination_explanation_last_dose_no">nee</string>
   <string name="your_vaccination_explanation_last_dose_unknown">niet bekend</string>
   <string name="your_vaccination_explanation_header">Deze gegevens van je vaccinatie zijn opgehaald bij %1$s:</string>
@@ -309,11 +312,10 @@
   <string name="my_overview_green_card_not_valid_title_test">Over je testbewijs</string>
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Dit kan komen doordat de geldigheidsduur in Nederland korter is dan in andere landen. Laat je opnieuw testen voor een bewijs dat ook in Nederland geldig is.]]></string>
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Het kan bijvoorbeeld zijn dat je maar één prik hebt gehad. Voeg je tweede vaccinatie toe om een bewijs te maken dat ook in Nederland geldig is. <a href=\"https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse\"> Lees hier meer over de mogelijke oorzaken.</a>]]></string>
-  <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet internationaal geldig. Je hebt wel een Nederlandse QR-code.<br/><br/>Dit kan bijvoorbeeld komen doordat een testbewijs in Nederland minder lang geldig is dan in het buitenland. Laat je opnieuw testen voor een bewijs dat ook geldig is in Nederland.]]></string>
+  <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat je type test niet geaccepteerd wordt in andere landen. Laat je opnieuw testen voor een bewijs dat ook internationaal geldig is.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat jouw type vaccin niet geaccepteerd wordt in het buitenland.]]></string>
   <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
-  <string name="rule_engine_no_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van %1$s. Dit kan verschillende oorzaken hebben. Lees meer op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer.</a>]]></string>
-  <string name="holder_event_missingorigin_error_description"><![CDATA[<br/><br/><b>Foutcode:</b><br/>%1$s]]></string>
+  <string name="rule_engine_no_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van je %1$s. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer.</a>]]></string>
   <string name="back_to_overview">Naar mijn bewijzen</string>
   <string name="no_vaccinations_title">Geen vaccinaties beschikbaar</string>
   <string name="no_vaccinations_description"><![CDATA[Er zijn geen gegevens over je vaccinatie(s) beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de  <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren tot de gegevens beschikbaar zijn.]]></string>
@@ -432,9 +434,9 @@
   <string name="your_events_block_back_dialog_positive_button">Ja, terug</string>
   <string name="your_events_block_back_dialog_negative_button">Nee</string>
   <string name="your_events_replace_dialog_title">Wil je je bewijs vervangen?</string>
-  <string name="your_events_replace_dialog_message">Je hebt al eerder een bewijs gemaakt. De gegevens daarvan zijn anders dan de gegevens die net zijn opgehaald. Daarom kun je het bewijs alleen vervangen.</string>
-  <string name="your_events_replace_dialog_negative_button">Nee, stop</string>
-  <string name="your_events_replace_dialog_positive_button">Ja, vervang</string>
+  <string name="your_events_replace_dialog_message">De persoonsgegevens die je net hebt opgehaald zijn anders dan die in je huidige bewijs staan. Stop en laat eerst de gegevens aanpassen bij de zorgverlener die de gegevens voor je bewijs heeft geregistreerd, of vervang je bewijs. Je huidige bewijs wordt dan verwijderd.</string>
+  <string name="your_events_replace_dialog_negative_button">Stoppen</string>
+  <string name="your_events_replace_dialog_positive_button">Vervangen</string>
   <string name="your_events_details_button">Details</string>
   <string name="qr_explanation_certificate_issuer">Ministerie van VWS / Ministry of Health, Welfare and Sport</string>
   <string name="qr_code_return_app_button">Terug naar de %s</string>
@@ -529,14 +531,14 @@
   <string name="qr_card_vaccination_title_domestic_with_doses">Vaccinatiebewijs (%1$s doses):</string>
   <string name="add_paper_proof_why_only_international_title">Waarom alleen internationaal?</string>
   <string name="add_paper_proof_why_only_international_description">Met de gegevens in internationale QR-codes kan ook direct een Nederlands bewijs gemaakt worden. Zo hoef je ze niet allebei te scannen.</string>
-  <string name="international_certificate_created_description"><![CDATA[Je hebt geen Nederlands vaccinatiebewijs. Hiervoor moet je volledig gevaccineerd zijn, of hersteld van corona vóór je eerste prik.<br/><br/><b>Krijg je nog een tweede prik?</b><br/>Voeg opnieuw een vaccinatiebewijs toe nadat je prik is gezet. Je krijgt dan ook een Nederlands bewijs.<br/><br/><b>Corona gehad voor je eerste prik?</b><br/>Haal je positieve testuitslag op. Je krijgt dan ook een Nederlands bewijs.]]></string>
+  <string name="international_certificate_created_description"><![CDATA[Je hebt geen Nederlands vaccinatiebewijs. Hiervoor moet je volledig gevaccineerd zijn, of hersteld van corona vóór je eerste prik.<br/><br/><b>Krijg je nog een nieuwe prik?</b><br/>Voeg opnieuw een vaccinatiebewijs toe nadat je prik is gezet. Je krijgt dan ook een Nederlands bewijs.<br/><br/><b>Corona gehad voor je eerste prik?</b><br/>Haal je positieve testuitslag op. Je krijgt dan ook een Nederlands bewijs.]]></string>
   <string name="international_certificate_created_title">Er is alleen een internationaal bewijs gemaakt</string>
   <string name="international_certificate_created_toolbar_title">Bewijs gemaakt</string>
   <string name="international_certificate_created_retrieve_test_button">Haal mijn testuitslag op</string>
   <string name="missing_dutch_certificate_info_card_text">Je hebt geen Nederlands vaccinatiebewijs</string>
   <string name="missing_dutch_certificate_title">Geen Nederlands vaccinatiebewijs</string>
   <string name="missing_dutch_certificate_introduction">Je hebt geen Nederlands vaccinatiebewijs. Hiervoor moet je volledig gevaccineerd zijn, of hersteld van corona vóór je eerste prik.</string>
-  <string name="missing_dutch_certificate_second_vaccine_explanation"><![CDATA[<br/><b>Tweede prik gehad?</b><br/>Haal opnieuw je vaccinaties op. Je krijgt dan een Nederlands bewijs.]]></string>
+  <string name="missing_dutch_certificate_second_vaccine_explanation"><![CDATA[<br/><b>Nieuwe prik gehad?</b><br/>Haal opnieuw je vaccinaties op. Je krijgt dan een Nederlands bewijs.]]></string>
   <string name="missing_dutch_certificate_retrieve_vaccination_button">Haal mijn vaccinaties op</string>
   <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<b>Corona gehad voor je eerste prik?</b><br/>Haal je positieve testuitslag op. Je krijgt dan een Nederlands bewijs.]]></string>
   <string name="missing_dutch_certificate_retrieve_test_button">Haal mijn testuitslag op</string>
@@ -565,7 +567,7 @@
   <string name="rule_engine_no_test_origin_description_positive_test">positieve testuitslag</string>
   <string name="holder_my_overview_3g_test_validity_card">Je testbewijs is alleen geldig voor 3G-toegang in Nederland</string>
   <string name="holder_my_overview_3g_test_validity_bottom_sheet_title">Testbewijs alleen geldig voor 3G-toegang</string>
-  <string name="holder_my_overview_3g_test_validity_bottom_sheet_body"><![CDATA[Een Nederlands testbewijs is alleen geldig op plekken met 3G-toegang. Dit betekent dat je met je testbewijs geen toegang krijgt tot plekken waar 2G geldt.<br><br><b>Wat is het verschil tussen 3G en 2G?</b><br>De ‘G’ staat voor Getest, Gevaccineerd, of Genezen (hersteld van corona).<br><br>•	3G-toegang krijg je met een test-, vaccinatie- of herstelbewijs.<br>•	2G-toegang krijg je niet met een testbewijs. Hiervoor heb je een vaccinatie- of herstelbewijs nodig.<br><br><a href=\"https://www.rijksoverheid.nl/2g\">Lees hier meer over 3G en 2G</a>.]]></string>
+  <string name="holder_my_overview_3g_test_validity_bottom_sheet_body"><![CDATA[Een Nederlands testbewijs is alleen geldig op plekken met 3G-toegang. Dit betekent dat je met je testbewijs geen toegang krijgt tot plekken waar 2G geldt.<br><br><b>Wat is het verschil tussen 3G en 2G?</b><br>De ‘G’ staat voor Getest, Gevaccineerd, of Genezen (hersteld van corona).<br><br>•	3G-toegang krijg je met een test-, vaccinatie- of herstelbewijs.<br>•	2G-toegang krijg je niet met een testbewijs. Hiervoor heb je een vaccinatie- of herstelbewijs nodig.<br><br><a href=\"https://www.rijksoverheid.nl/2g-cc\">Lees hier meer over 3G en 2G</a>.]]></string>
   <string name="holder_my_overview_test_result_validity_3g">geldig tot %1$s voor 3G-toegang</string>
   <string name="no_digid_page_title">Ik heb geen DigiD</string>
   <string name="no_digid_page_description"><![CDATA[Wanneer je in Nederland woont kan je een DigiD aanvragen.<br\><br\>Woon je in Caribisch Nederland? Dan kan je inloggen met MijnCN.]]>
@@ -582,63 +584,60 @@
   <string name="holder_negativetest_ggd_message">Is je uitslag bekend? Log in met DigiD om je testuitslag bij de GGD op te halen.</string>
   <string name="recommended_update_card_description">Je kunt de app al naar een nieuwere versie updaten</string>
   <string name="recommended_update_card_action">Nu updaten</string>
-  <string name="holder_menu_visitorpass">Bezoekersbewijs maken</string>
-  <string name="visitorpass_start_title">Een bezoekersbewijs maken</string>
-  <string name="visitorpass_start_action">Gegevens ophalen</string>
+  <string name="holder_menu_visitorpass">Bezoekersbewijs toevoegen</string>
+  <string name="visitorpass_start_title">Een bezoekersbewijs toevoegen</string>
+  <string name="visitorpass_start_action">Volgende</string>
   <string name="holder_dashboard_newvaliditybanner_title">De geldigheid van coronabewijzen wordt aangepast</string>
   <string name="holder_dashboard_newvaliditybanner_action">Lees meer op Rijksoverheid.nl</string>
   <string name="holder_dashboard_newvaliditybanner_url">https://www.rijksoverheid.nl/coronabewijs</string>
   <string name="visitorpass_token_next">Volgende</string>
-  <string name="visitorpass_code_review_placeholder_screenreader">Vul hier je reviewcode in</string>
-  <string name="visitorpass_token_error_empty_token">Graag eerst een reviewcode invullen</string>
-  <string name="visitorpass_token_error_unknown_provider">De testlocatie is (nog) niet bij ons bekend. Neem contact op met de locatie waar je bent getest.</string>
+  <string name="visitorpass_code_review_placeholder_screenreader">Vul hier je beoordelingscode in</string>
+  <string name="visitorpass_token_error_empty_token">Graag je beoordelingscode invullen</string>
+  <string name="visitorpass_token_error_unknown_provider">Deze testlocatie is (nog) niet bij ons bekend. Neem contact op met de locatie waar je bent getest.</string>
   <string name="visitorpass_token_error_invalid_combination">Geen geldige combinatie</string>
-  <string name="visitorpass_token_modal_notoken_title">Heb je geen reviewcode?</string>
+  <string name="visitorpass_token_modal_notoken_title">Heb je geen beoordelingscode?</string>
   <string name="holder_event_vaccination_assessment_element_subtitle"><![CDATA[Beoordelingsdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
-  <string name="holder_event_vaccination_assessment_about_date">Beoordelingdatum:</string>
+  <string name="holder_event_vaccination_assessment_about_date">Beoordelingsdatum:</string>
   <string name="holder_event_vaccination_assessment_about_subtitle">De volgende gegevens zijn opgehaald:</string>
-  <string name="holder_event_vaccination_assessment_about_unique_identifier">Uniek beoordelingscode:</string>
-  <string name="holder_event_vaccination_assessment_element_title">Vaccinatie review</string>
-  <string name="holder_event_vaccination_assessment_nolist_title">Geen vaccinatie review beschikbaar</string>
-  <string name="holder_event_vaccination_assessment_nolist_message">Er zijn geen gegevens over je vaccinatie review beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a></string>
+  <string name="holder_event_vaccination_assessment_about_unique_identifier">Uniek beoordelingsnummer:</string>
+  <string name="holder_event_vaccination_assessment_element_title">Vaccinatie-beoordeling</string>
+  <string name="holder_event_vaccination_assessment_nolist_title">Geen vaccinatie-beoordeling beschikbaar</string>
+  <string name="holder_event_vaccination_assessment_nolist_message"><![CDATA[Er zijn geen gegevens over je vaccinatie-beoordeling beschikbaar. Neem contact op met de balie waar jouw vaccinatie is beoordeeld.<br/><br/>Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_event_vaccination_assessment_nolist_action">Naar mijn bewijzen</string>
-  <string name="visitorpass_start_toolbar_title">Bezoekersbewijs</string>
+  <string name="visitorpass_start_toolbar_title">Bezoekersbewijs toevoegen</string>
   <string name="general_visitorPass">bezoekersbewijs</string>
-  <string name="visitorpass_code_error_invalid_code">Deze reviewcode is verlopen</string>
-  <string name="holder_event_vaccination_assessment_toolbar_title">Vaccinatie beoordeling</string>
-  <string name="visitorpass_code_description_deeplink">Vul jouw verificatiecode in om je vaccinatie beoordeling op te halen.</string>
-  <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt van het VWS loket een reviewcode met cijfers en letters.<br/><br/>Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met het loket.]]></string>
-  <string name="visitorpass_code_description">Vul je reviewcode in. Deze code begint met KVT- en heb je van de Visitor Pass Desk gekregen toen jouw vaccinatie werd beoordeeld.</string>
-  <string name="visitorpass_code_review_input">Reviewcode</string>
-  <string name="visitorpass_code_review_placeholder">Bijv. KVT-3839287262-F1</string>
-  <string name="visitorpass_code_review_button">Heb je geen reviewcode?</string>
-  <string name="visitorpass_start_message"><![CDATA[Ben je buiten de Europese Unie gevaccineerd en op bezoek in Nederland?  Dan kun je van jouw vaccinatie review en een negatieve testuitslag een bezoekersbewijs maken.<br/><br/>Met je bezoekersbewijs krijg je toegang tot plekken en activiteiten in Nederland die vragen om een coronatoegangsbewijs. Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijksoverheid.nl/bezoekersbewijs</a>.]]></string>
+  <string name="holder_event_vaccination_assessment_toolbar_title">Vaccinatie-beoordeling ophalen</string>
+  <string name="visitorpass_code_description_deeplink">Vul je verificatiecode in. Deze krijg je via sms of e-mail.</string>
+  <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt een beoordelingscode van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen. Heb je geen beoordelingscode? Neem dan contact op met de balie waar je bent geweest.<br/><br/>Nog niet langs een balie geweest om je vaccinatie te laten beoordelen? Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
+  <string name="visitorpass_code_description">Vul je beoordelingscode in. Deze heb je van de balie gekregen waar jouw vaccinatie werd beoordeeld.</string>
+  <string name="visitorpass_code_review_input">Beoordelingscode</string>
+  <string name="visitorpass_code_review_placeholder">Bijv. VAC-3839287262-F2</string>
+  <string name="visitorpass_code_review_button">Heb je geen beoordelingscode?</string>
+  <string name="visitorpass_start_message"><![CDATA[Ben je buiten de Europese Unie gevaccineerd en op bezoek in Nederland?  Dan kun je van jouw vaccinatie-beoordeling en een negatieve testuitslag een bezoekersbewijs maken.<br/><br/>Met je bezoekersbewijs krijg je toegang tot plekken en activiteiten in Nederland die vragen om een coronatoegangsbewijs.<br/><br/>Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_event_vaccination_assessment_about_name">Naam:</string>
   <string name="your_test_result_explanation_description_unique_identifier">Uniek testnummer:</string>
   <string name="holder_event_vaccination_assessment_about_date_of_birth">Geboortedatum:</string>
   <string name="your_vaccination_explanation_name">Naam:</string>
   <string name="your_vaccination_explanation_birthday">Geboortedatum:</string>
-  <string name="holder_event_vaccination_assessment_wrong_body">Neem contact op met het loket waar jouw vaccinatie is beoordeeld. Zij kunnen je helpen je gegevens aan te passen.</string>
-  <string name="holder_event_vaccination_assessment_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je gegevens ophalen. </string>
-  <string name="visitorpass_token_error_invalid_code">Dit is geen geldige reviewcode</string>
-  <string name="holder_event_vaccination_assessment_list_message">Kloppen de gegevens? Als de gegevens kloppen kun je je vaccinatie boordeling toevoegen aan de app.</string>
+  <string name="holder_event_vaccination_assessment_wrong_body">Neem contact op met de balie waar jouw vaccinatie is beoordeeld. Zij kunnen je helpen je gegevens aan te passen. Kijk voor meer informatie op <a href="https://www.rijksoverheid.nl/ctb-bezoekers-cc">www.rijksoverheid.nl/ctb-bezoekers</a>.</string>
+  <string name="holder_event_vaccination_assessment_alert_message">Hierdoor stop je het toevoegen van je vaccinatie-beoordeling en moet je later opnieuw je gegevens ophalen.</string>
+  <string name="visitorpass_token_error_invalid_code">Deze code is niet geldig</string>
+  <string name="holder_event_vaccination_assessment_list_message">Kloppen de gegevens? Als de gegevens kloppen kun je jouw vaccinatie-beoordeling toevoegen aan de app.</string>
   <string name="holder_completecertificate_title">Maak je bezoekersbewijs compleet</string>
-  <string name="holder_completecertificate_body"><![CDATA[Om je bezoekersbewijs compleet te maken heb je een negatieve testuitslag nodig van minder dan 24 uur oud.<br/><br/>Heb je nog geen coronatest gedaan? Maak dan eerst een afspraak.]]></string>
-  <string name="holder_completecertificate_button_makeappointement">Maak een testafspraak</string>
+  <string name="holder_completecertificate_body"><![CDATA[Haal een negatieve testuitslag op om je bezoekersbewijs compleet te maken.<br/><br/>Heb je nog geen coronatest gedaan? Kijk voor meer informatie op <a href=\"https://www.testenvoortoegang.org\">www.testenvoortoegang.org</a>.]]></string>
   <string name="holder_completecertificate_button_fetchnegativetest">Testuitslag ophalen</string>
   <string name="holder_completecertificate_toolbar">Maak bewijs compleet</string>
-  <string name="holder_dashboard_visitorpassincompletebanner_title">Je vaccinatie review is toegevoegd. Maak je bezoekersbewijs compleet met je negatieve corona testuitslag</string>
+  <string name="holder_dashboard_visitorpassincompletebanner_title">Je vaccinatie-beoordeling is toegevoegd. Maak je bezoekersbewijs compleet met je negatieve corona testuitslag</string>
   <string name="holder_dashboard_visitorpassincompletebanner_button_makecomplete">Maak bewijs compleet</string>
   <string name="holder_dashboard_visitorPassInvalidOutsideNLBanner_title">Je bezoekersbewijs is niet geldig buiten Nederland</string>
   <string name="holder_notvalidinthisregionmodal_visitorpass_international_title">Over je bezoekersbewijs</string>
   <string name="holder_notvalidinthisregionmodal_visitorpass_international_body"><![CDATA[Je bezoekersbewijs is alleen in Nederland geldig. Wil je naar een ander land? Check de regels van het land dat je wilt bezoeken.
 <br/><br/>
 <b>Meer weten?</b><br/>
-Lees meer op <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijksoverheid.nl/bezoekersbewijs</a>.]]></string>
-  <string name="holder_dashboard_visitorpasseexpiredbanner_title">Je bezoekersbewijs is verlopen</string>
+Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_dashboard_visitorpassexpired_title">Verlopen bezoekersbewijs</string>
-  <string name="holder_dashboard_visitorpassexpired_body"><![CDATA[Een bezoekersbewijs is geldig tot %d dagen na de beoordeling van je vaccinatie. Blijf je langer in Nederland? Dan kun je opnieuw een bezoekersbewijs aanvragen. Ga voor meer informatie naar <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijksoverheid.nl/bezoekersbewijs</a>.]]></string>
-  <string name="general_vaccinationAssessment">vaccinatie review</string>
+  <string name="holder_dashboard_visitorpassexpired_body"><![CDATA[Een bezoekersbewijs is geldig tot %d dagen na de beoordeling van je vaccinatie. Blijf je langer in Nederland? Dan kun je opnieuw een bezoekersbewijs aanvragen. Ga voor meer informatie naar <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
+  <string name="general_vaccinationAssessment">vaccinatie-beoordeling</string>
   <string name="holder_dashboard_originExpiredBanner_domesticVaccine_title">Je Nederlandse vaccinatiebewijs is verlopen</string>
   <string name="holder_dashboard_originExpiredBanner_domesticRecovery_title">Je Nederlandse herstelbewijs is verlopen</string>
   <string name="holder_dashboard_originExpiredBanner_domesticTest_title">Je Nederlandse testbewijs is verlopen</string>
@@ -648,7 +647,13 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/bezoekersbewijs\">www.rijkso
   <string name="holder_dashboard_originExpiredBanner_internationalTest_title">Je internationale testbewijs is verlopen</string>
   <string name="holder_expiredDomesticVaccinationModal_title">Verlopen vaccinatiebewijs</string>
   <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Boostervaccinatie toevoegen</string>
-  <string name="holder_dashboard_addBoosterBanner_title">Heb je een boostervaccinatie gehad? Haal opnieuw je gegevens op om deze aan je bewijs toe te voegen</string>
+  <string name="holder_dashboard_addBoosterBanner_title">Heb je een boostervaccinatie gehad? Haal opnieuw je gegevens op als je deze aan je bewijs wilt toevoegen</string>
   <string name="holder_dashboard_addBoosterBanner_button_addBooster">Boostervaccinatie toevoegen</string>
-  <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[Om je vaccinatiebewijs te verlengen heb je een boostervaccinatie nodig. Kijk voor meer informatie over boostervaccinaties op <a href=\"https://www.coronavaccinatie.nl/booster\">www.coronavaccinatie.nl/booster</a>.<br/><br/>Heb je een boostervaccinatie gehad? Haal opnieuw je gegevens op om deze aan je bewijs toe te voegen.]]></string>
+  <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[Om je vaccinatiebewijs te verlengen heb je een boostervaccinatie nodig. Kijk voor meer informatie over boostervaccinaties op <a href=\"https://www.coronavaccinatie.nl/booster-cc\">www.coronavaccinatie.nl/booster</a>.<br/><br/>Heb je een boostervaccinatie gehad? Haal opnieuw je gegevens op om deze aan je bewijs toe te voegen.]]></string>
+  <string name="holder_event_missingorigin_error_description"><![CDATA[<br/><br/><b>Foutcode:</b><br/>%1$s]]></string>
+  <string name="rule_engine_no_test_origin_description_vaccination_approval">vaccinatie-beoordeling</string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_title">Negatieve testuitslag toegevoegd</string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete">Maak bewijs compleet</string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Je negatieve testuitslag is succesvol toegevoegd. Maak je bezoekersbewijs compleet met je vaccinatie-beoordeling.<br /><br />Hiervoor heb je een beoordelingscode van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen.]]></string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Testuitslag ophalen</string>
 </resources>

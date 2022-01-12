@@ -34,14 +34,8 @@ val appModule = module {
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get()) }
 
-    factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
-
     factory<ReturnToExternalAppUseCase> {
         ReturnToExternalAppUseCaseImpl(get())
-    }
-
-    factory {
-        HolderWorkerFactory(get(), get())
     }
 
     factory<BuildConfigUseCase> {

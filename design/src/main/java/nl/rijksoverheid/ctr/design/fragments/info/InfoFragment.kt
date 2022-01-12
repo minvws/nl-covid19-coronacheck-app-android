@@ -33,26 +33,24 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
         when (infoFragmentData) {
             is InfoFragmentData.TitleDescription -> {}
             is InfoFragmentData.TitleDescriptionWithButton -> {
-                binding.button.visibility = View.VISIBLE
-                binding.button.apply {
-                    val buttonData = infoFragmentData.secondaryButtonData
-                    text = buttonData.text
-                    setOnClickListener {
-                        when (buttonData) {
-                            is ButtonData.NavigationButton -> {
-                                findNavControllerSafety()?.navigate(buttonData.navigationActionId, buttonData.navigationArguments)
-                            }
-                            is ButtonData.LinkButton -> {
-                                intentUtil.openUrl(
-                                    context = requireContext(),
-                                    url = buttonData.link
-                                )
+
+                infoFragmentData.secondaryButtonData?.let { buttonData ->
+                    binding.button.visibility = View.VISIBLE
+                    binding.button.apply {
+                        text = buttonData.text
+                        setOnClickListener {
+                            when (buttonData) {
+                                is ButtonData.NavigationButton -> {
+                                    findNavControllerSafety()?.navigate(buttonData.navigationActionId, buttonData.navigationArguments)
+                                }
+                                is ButtonData.LinkButton -> {
+                                    intentUtil.openUrl(
+                                        context = requireContext(),
+                                        url = buttonData.link
+                                    )
+                                }
                             }
                         }
-                    }
-                    if (buttonData is ButtonData.NavigationButton) {
-                        text = buttonData.text
-                        setOnClickListener { findNavControllerSafety()?.navigate(buttonData.navigationActionId, buttonData.navigationArguments) }
                     }
                 }
 

@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination
@@ -13,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import java.time.OffsetDateTime
 
@@ -32,6 +34,7 @@ interface HolderDatabaseSyncer {
      * @param previousSyncResult The previous result outputted by this [sync] if known
      */
     suspend fun sync(
+        flow: Flow = HolderFlow.Startup,
         expectedOriginType: OriginType? = null,
         syncWithRemote: Boolean = true,
         previousSyncResult: DatabaseSyncerResult? = null
@@ -51,6 +54,7 @@ class HolderDatabaseSyncerImpl(
     private val mutex = Mutex()
 
     override suspend fun sync(
+        flow: Flow,
         expectedOriginType: OriginType?,
         syncWithRemote: Boolean,
         previousSyncResult: DatabaseSyncerResult?
@@ -75,6 +79,7 @@ class HolderDatabaseSyncerImpl(
                             val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
                             val combinedVaccinationRecovery =
                                 combinationUtil.getResult(
+                                    flow = flow,
                                     storedGreenCards = holderDatabase.greenCardDao().getAll(),
                                     events = events,
                                     remoteGreenCards = remoteGreenCards

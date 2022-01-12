@@ -17,8 +17,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
+import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.*
@@ -71,6 +73,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         when (val type = args.type) {
             is YourEventsFragmentType.TestResult2 -> {
                 yourEventsViewModel.saveNegativeTest2(
+                    flow = getFlow(),
                     negativeTest2 = type.remoteTestResult,
                     rawResponse = type.rawResponse
                 )
@@ -89,34 +92,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     override fun getFlow(): Flow {
-        when (val type = args.type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                return HolderFlow.CommercialTest
-            }
-            is YourEventsFragmentType.DCC -> {
-                return HolderFlow.HkviScan
-            }
-            is YourEventsFragmentType.RemoteProtocol3Type -> {
-                return when (type.originType) {
-                    is OriginType.Test -> {
-                        if (type.fromCommercialTestCode) {
-                            HolderFlow.CommercialTest
-                        } else {
-                            HolderFlow.DigidTest
-                        }
-                    }
-                    is OriginType.Recovery -> {
-                        HolderFlow.Recovery
-                    }
-                    is OriginType.Vaccination -> {
-                        HolderFlow.Vaccination
-                    }
-                    is OriginType.VaccinationAssessment -> {
-                        HolderFlow.VaccinationAssessment
-                    }
-                }
-            }
-        }
+        return args.flow
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -193,7 +169,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                type.remoteEvents, type.originType, false
+                                getFlow(), type.remoteEvents, type.originType, false
                             )
                         }
                     }
@@ -202,7 +178,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                type.remoteEvents, type.originType, false
+                                getFlow(), type.remoteEvents, type.originType, false
                             )
                         }
                     }
@@ -290,6 +266,22 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     YourEventsFragmentDirections.actionMyOverview()
                 )
             }
+            DomesticVaccinationRecoveryCombination.AddedNegativeTestInVaccinationAssessmentFlow -> {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
+                        descriptionData = DescriptionData(
+                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
+                        ),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
+                            navigationActionId = InfoFragmentDirections.actionVisitorPassInputToken().actionId,
+                        )
+                    )
+                )
+            }
         }
     }
 
@@ -304,6 +296,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             positiveButtonText = R.string.your_events_replace_dialog_positive_button,
             positiveButtonCallback = {
                 yourEventsViewModel.saveRemoteProtocol3Events(
+                    flow = getFlow(),
                     remoteProtocols3 = remoteEvents,
                     originType = originType,
                     removePreviousEvents = true
