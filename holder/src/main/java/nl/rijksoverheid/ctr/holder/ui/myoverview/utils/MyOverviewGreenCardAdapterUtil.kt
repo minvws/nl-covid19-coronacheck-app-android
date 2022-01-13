@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
@@ -19,7 +20,8 @@ interface MyOverviewGreenCardAdapterUtil {
     }
 
     fun getExpireCountdownText(
-        expireDate: OffsetDateTime
+        expireDate: OffsetDateTime,
+        type: OriginType
     ): ExpireCountDown
 }
 
@@ -29,11 +31,12 @@ class MyOverviewGreenCardAdapterUtilImpl(private val clock: Clock) : MyOverviewG
     private val hoursInSeconds = 60 * 60
 
     override fun getExpireCountdownText(
-        expireDate: OffsetDateTime
+        expireDate: OffsetDateTime,
+        type: OriginType
     ): MyOverviewGreenCardAdapterUtil.ExpireCountDown {
         val hoursBetweenExpiration =
             ChronoUnit.HOURS.between(OffsetDateTime.now(clock), expireDate)
-        return if (hoursBetweenExpiration > 24) {
+        return if (hoursBetweenExpiration >= getExpiryForType(type)) {
             MyOverviewGreenCardAdapterUtil.ExpireCountDown.Hide
         } else {
             var diff =
@@ -49,4 +52,7 @@ class MyOverviewGreenCardAdapterUtilImpl(private val clock: Clock) : MyOverviewG
         }
     }
 
+    private fun getExpiryForType(type: OriginType): Int {
+        return if (type == OriginType.Test) 6 else 24
+    }
 }

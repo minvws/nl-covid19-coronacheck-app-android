@@ -96,7 +96,8 @@ class MyOverViewGreenCardAdapterUtilImpl(
                             val origin = originState.origin
                             val expireCountDownResult =
                                 myOverviewGreenCardAdapterUtil.getExpireCountdownText(
-                                    expireDate = greenCardUtil.getExpireDate(it, origin.type)
+                                    expireDate = greenCardUtil.getExpireDate(it, origin.type),
+                                    type = origin.type
                                 )
                             when (origin.type) {
                                 is OriginType.Vaccination -> setDomesticVaccinationOrigin(
