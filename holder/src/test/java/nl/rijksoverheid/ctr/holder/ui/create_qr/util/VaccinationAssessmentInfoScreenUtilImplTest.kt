@@ -14,6 +14,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.time.Instant
@@ -23,6 +24,8 @@ import java.time.ZoneId
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl-land")
 class VaccinationAssessmentInfoScreenUtilImplTest: AutoCloseKoinTest() {
+
+    private val util: VaccinationAssessmentInfoScreenUtil by inject()
 
     @Test
     fun `check correct copy when getting info screen()`() {
@@ -38,7 +41,6 @@ class VaccinationAssessmentInfoScreenUtilImplTest: AutoCloseKoinTest() {
             )
         )
 
-        val util = VaccinationAssessmentInfoScreenUtilImpl(context)
         val infoScreen = util.getForVaccinationAssessment(
             event = event,
             fullName = "Bob de Bouwer",
@@ -46,6 +48,6 @@ class VaccinationAssessmentInfoScreenUtilImplTest: AutoCloseKoinTest() {
         )
 
         assertEquals("Details", infoScreen.title)
-        assertEquals("De volgende gegevens zijn opgehaald:<br/><br/>Naam: <b>Bob de Bouwer</b><br/>Geboortedatum: <b>1 jan 1970</b><br/><br/>Beoordelingsdatum: <b>vrijdag 1 januari 01:00</b><br/><br/>Uniek beoordelingsnummer: <b>123</b><br/>", infoScreen.description)
+        assertEquals("De volgende gegevens zijn opgehaald:<br/><br/>Naam: <b>Bob de Bouwer</b><br/>Geboortedatum: <b>1 jan 1970</b><br/><br/>Beoordelingsdatum: <b>vrijdag 1 januari 01:00</b><br/>Gevaccineerd in (land): <b>Nederland</b><br/><br/>Uniek beoordelingsnummer: <b>123</b><br/>", infoScreen.description)
     }
 }
