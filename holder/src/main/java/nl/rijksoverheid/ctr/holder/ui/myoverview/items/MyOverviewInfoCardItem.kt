@@ -63,7 +63,7 @@ class MyOverviewInfoCardItem(
                 viewBinding.text.setText(R.string.my_overview_clock_deviation_description)
             }
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                setExpiredItemText(infoItem, viewBinding)
+                viewBinding.text.setText(util.getExpiredItemText(infoItem))
             }
             is DashboardItem.InfoItem.OriginInfoItem -> {
                 viewBinding.text.text =
@@ -94,25 +94,6 @@ class MyOverviewInfoCardItem(
         viewBinding.button.setOnClickListener {
             onButtonClick.invoke(infoItem)
         }
-    }
-
-    private fun setExpiredItemText(
-        infoItem: DashboardItem.InfoItem.GreenCardExpiredItem,
-        viewBinding: ItemMyOverviewInfoCardBinding
-    ) {
-        val type = infoItem.greenCard.greenCardEntity.type
-        val originType = infoItem.greenCard.origins.firstOrNull()?.type
-        val text = when {
-            type == Domestic && originType == Vaccination -> R.string.holder_dashboard_originExpiredBanner_domesticVaccine_title
-            type == Domestic && originType == Recovery -> R.string.holder_dashboard_originExpiredBanner_domesticRecovery_title
-            type == Domestic && originType == Test -> R.string.holder_dashboard_originExpiredBanner_domesticTest_title
-            type == Eu && originType == Vaccination -> R.string.holder_dashboard_originExpiredBanner_internationalVaccine_title
-            type == Eu && originType == Recovery -> R.string.holder_dashboard_originExpiredBanner_internationalRecovery_title
-            type == Eu && originType == Test -> R.string.holder_dashboard_originExpiredBanner_internationalTest_title
-            originType == VaccinationAssessment -> R.string.holder_dashboard_originExpiredBanner_visitorPass_title
-            else -> R.string.qr_card_expired
-        }
-        viewBinding.text.setText(text)
     }
 
     override fun getLayout(): Int {

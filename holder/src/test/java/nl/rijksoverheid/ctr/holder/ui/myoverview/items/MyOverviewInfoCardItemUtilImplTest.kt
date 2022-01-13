@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
@@ -155,5 +156,103 @@ class MyOverviewInfoCardItemUtilImplTest: AutoCloseKoinTest() {
 
         val expectedCopy = context.getString(R.string.holder_dashboard_visitorPassInvalidOutsideNLBanner_title)
         assertEquals(expectedCopy, copy)
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for domestic vaccination`() {
+        val greenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.Vaccination
+        )
+        val expiredItem = DashboardItem.InfoItem.GreenCardExpiredItem(greenCard)
+
+        assertEquals(
+            MyOverviewInfoCardItemUtilImpl().getExpiredItemText(expiredItem),
+            R.string.holder_dashboard_originExpiredBanner_domesticVaccine_title
+        )
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for domestic recovery`() {
+        val greenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.Recovery
+        )
+        val expiredItem = DashboardItem.InfoItem.GreenCardExpiredItem(greenCard)
+
+        assertEquals(
+            MyOverviewInfoCardItemUtilImpl().getExpiredItemText(expiredItem),
+            R.string.holder_dashboard_originExpiredBanner_domesticRecovery_title
+        )
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for domestic test`() {
+        val greenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.Test
+        )
+        val expiredItem = DashboardItem.InfoItem.GreenCardExpiredItem(greenCard)
+
+        assertEquals(
+            MyOverviewInfoCardItemUtilImpl().getExpiredItemText(expiredItem),
+            R.string.holder_dashboard_originExpiredBanner_domesticTest_title
+        )
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for eu vaccination`() {
+        val greenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Eu,
+            originType = OriginType.Vaccination
+        )
+        val expiredItem = DashboardItem.InfoItem.GreenCardExpiredItem(greenCard)
+
+        assertEquals(
+            MyOverviewInfoCardItemUtilImpl().getExpiredItemText(expiredItem),
+            R.string.holder_dashboard_originExpiredBanner_internationalVaccine_title
+        )
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for eu recovery`() {
+        val greenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Eu,
+            originType = OriginType.Recovery
+        )
+        val expiredItem = DashboardItem.InfoItem.GreenCardExpiredItem(greenCard)
+
+        assertEquals(
+            MyOverviewInfoCardItemUtilImpl().getExpiredItemText(expiredItem),
+            R.string.holder_dashboard_originExpiredBanner_internationalRecovery_title
+        )
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for eu test`() {
+        val greenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Eu,
+            originType = OriginType.Test
+        )
+        val expiredItem = DashboardItem.InfoItem.GreenCardExpiredItem(greenCard)
+
+        assertEquals(
+            MyOverviewInfoCardItemUtilImpl().getExpiredItemText(expiredItem),
+            R.string.holder_dashboard_originExpiredBanner_internationalTest_title
+        )
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for vaccination assessment`() {
+        val greenCard = fakeGreenCard(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.VaccinationAssessment
+        )
+        val expiredItem = DashboardItem.InfoItem.GreenCardExpiredItem(greenCard)
+
+        assertEquals(
+            MyOverviewInfoCardItemUtilImpl().getExpiredItemText(expiredItem),
+            R.string.holder_dashboard_originExpiredBanner_visitorPass_title
+        )
     }
 }
