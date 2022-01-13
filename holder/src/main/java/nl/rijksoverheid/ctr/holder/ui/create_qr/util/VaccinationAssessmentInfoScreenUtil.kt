@@ -55,7 +55,8 @@ class VaccinationAssessmentInfoScreenUtilImpl(
                 ),
                 createLine(
                     name = context.resources.getString(R.string.holder_event_vaccination_assessment_about_country),
-                    nameAnswer = countryName
+                    nameAnswer = countryName,
+                    isOptional = true
                 ),
                 "<br/>",
                 createLine(
