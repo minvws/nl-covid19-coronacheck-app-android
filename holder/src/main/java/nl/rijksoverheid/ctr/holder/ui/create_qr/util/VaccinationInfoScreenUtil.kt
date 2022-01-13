@@ -31,6 +31,7 @@ interface VaccinationInfoScreenUtil {
 class VaccinationInfoScreenUtilImpl(
     private val lastVaccinationDoseUtil: LastVaccinationDoseUtil,
     private val resources: Resources,
+    private val countryUtil: CountryUtil,
     cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : VaccinationInfoScreenUtil {
 
@@ -76,7 +77,7 @@ class VaccinationInfoScreenUtilImpl(
         val vaccinationDateAnswer = event.vaccination?.date?.formatDayMonthYear() ?: ""
 
         val fullCountryName = if (event.vaccination?.country != null) {
-            getFullCountryName(Locale.getDefault().language, event.vaccination.country)
+            countryUtil.getCountryForInfoScreen(Locale.getDefault().language, event.vaccination.country)
         } else {
             ""
         }
@@ -158,18 +159,6 @@ class VaccinationInfoScreenUtilImpl(
             brand.isNotEmpty() -> brand
             else -> ""
         }
-    }
-
-    private fun getFullCountryName(currentDeviceLanguage: String, currentCountryIso3Code: String): String {
-        val countriesMap: MutableMap<String, String> = mutableMapOf()
-        Locale.getISOCountries().forEach {
-            val locale = Locale(currentDeviceLanguage, it)
-            val countryIso3Code = locale.isO3Country
-            val fullCountryName = locale.displayCountry
-            countriesMap[countryIso3Code] = fullCountryName
-        }
-
-        return countriesMap[currentCountryIso3Code] ?: ""
     }
 
     private fun createdLine(
