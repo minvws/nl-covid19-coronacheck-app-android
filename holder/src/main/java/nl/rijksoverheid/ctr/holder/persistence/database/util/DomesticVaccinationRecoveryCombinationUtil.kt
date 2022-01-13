@@ -15,8 +15,8 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination
-import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.*
+import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
+import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -28,7 +28,7 @@ interface DomesticVaccinationRecoveryCombinationUtil {
         storedGreenCards: List<GreenCard>,
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
-    ): DomesticVaccinationRecoveryCombination
+    ): YourEventFragmentEndState
 
     fun hasVaccinationAndRecoveryEvents(events: List<EventGroupEntity>): Boolean
 }
@@ -42,7 +42,7 @@ class DomesticVaccinationRecoveryCombinationUtilImpl(
         storedGreenCards: List<GreenCard>,
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
-    ): DomesticVaccinationRecoveryCombination {
+    ): YourEventFragmentEndState {
         val recoveryValidityDays = appConfigUseCase.getCachedAppConfig().recoveryEventValidityDays
         return when {
             hasAddedNegativeTestInVaccinationAssessmentFlow(flow, remoteGreenCards) -> AddedNegativeTestInVaccinationAssessmentFlow

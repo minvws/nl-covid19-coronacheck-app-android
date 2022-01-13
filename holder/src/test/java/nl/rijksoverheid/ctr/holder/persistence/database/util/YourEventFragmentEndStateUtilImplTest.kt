@@ -16,11 +16,11 @@ import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.*
+import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState.*
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class DomesticVaccinationRecoveryCombinationUtilImplTest {
+class YourEventFragmentEndStateUtilImplTest {
 
     private val appConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
     private val util = DomesticVaccinationRecoveryCombinationUtilImpl(appConfigUseCase)
