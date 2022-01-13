@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
 import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
@@ -27,7 +26,6 @@ fun utilsModule(versionCode: Int) = module {
         MyOverViewGreenCardAdapterUtilImpl(
             Clock.systemUTC(),
             androidContext(),
-            get(),
             get(),
             get(),
             get()
