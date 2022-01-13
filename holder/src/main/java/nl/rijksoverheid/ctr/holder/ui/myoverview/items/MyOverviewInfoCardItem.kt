@@ -64,7 +64,7 @@ class MyOverviewInfoCardItem(
             is DashboardItem.InfoItem.ClockDeviationItem -> {
                 viewBinding.text.setText(R.string.my_overview_clock_deviation_description)
             }
-            is DashboardItem.InfoItem.OriginExpiredItem -> {
+            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 val expiredItemText = getExpiredItemText(
                     greenCardType = infoItem.greenCardEntity.type,
                     originType = infoItem.originType

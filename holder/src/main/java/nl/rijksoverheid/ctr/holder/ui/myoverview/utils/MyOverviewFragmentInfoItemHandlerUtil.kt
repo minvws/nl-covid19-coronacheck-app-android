@@ -375,7 +375,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.ExtendedDomesticRecovery -> {
                 myOverviewFragment.dashboardViewModel.dismissExtendedDomesticRecoveryInfoCard()
             }
-            is DashboardItem.InfoItem.OriginExpiredItem -> {
+            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCardEntity)
             }
             is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {

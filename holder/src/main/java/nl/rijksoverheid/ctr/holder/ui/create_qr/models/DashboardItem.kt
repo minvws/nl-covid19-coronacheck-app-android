@@ -41,7 +41,7 @@ sealed class DashboardItem {
 
         object ClockDeviationItem : InfoItem(isDismissible = false, hasButton = true)
 
-        data class OriginExpiredItem(val greenCardEntity: GreenCardEntity, val originType: OriginType) : InfoItem(
+        data class GreenCardExpiredItem(val greenCardEntity: GreenCardEntity, val originType: OriginType) : InfoItem(
             isDismissible = true,
             hasButton = false
         )
