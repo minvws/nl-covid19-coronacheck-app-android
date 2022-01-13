@@ -45,7 +45,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private val context: Context,
     private val credentialUtil: CredentialUtil,
     private val myOverviewGreenCardExpiryUtil: MyOverviewGreenCardExpiryUtil,
-    private val greenCardUtil: GreenCardUtil,
     private val featureFlagUseCase: FeatureFlagUseCase
 ) : MyOverViewGreenCardAdapterUtil {
 
@@ -53,7 +52,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
         viewBinding: ViewBindingWrapper,
         cards: List<AdapterCard>,
     ) {
-        val greenCardType = cards.first().greenCard.greenCardEntity.type
         cards.forEach { card ->
             val it = card.greenCard
             when (it.greenCardEntity.type) {
