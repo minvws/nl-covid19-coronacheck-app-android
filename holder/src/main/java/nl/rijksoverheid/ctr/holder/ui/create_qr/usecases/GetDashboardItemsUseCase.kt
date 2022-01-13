@@ -1,8 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
@@ -47,7 +49,7 @@ class GetDashboardItemsUseCaseImpl(
         )
     }
 
-    private fun getDomesticItems(
+    private suspend fun getDomesticItems(
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
@@ -270,7 +272,7 @@ class GetDashboardItemsUseCaseImpl(
         return dashboardItems
     }
 
-    private fun getGreenCardItems(
+    private suspend fun getGreenCardItems(
         greenCardType: GreenCardType,
         greenCardsForSelectedType: List<GreenCard>,
         greenCardsForUnselectedType: List<GreenCard>,
@@ -283,7 +285,9 @@ class GetDashboardItemsUseCaseImpl(
         val items = greenCardsForSelectedType
             .map { greenCard ->
                 if (greenCardUtil.isExpired(greenCard)) {
-                    DashboardItem.InfoItem.GreenCardExpiredItem(greenCard = greenCard)
+                    getExpiredBannerItem(
+                        greenCard = greenCard
+                    )
                 } else {
                     mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
                 }
@@ -338,6 +342,26 @@ class GetDashboardItemsUseCaseImpl(
         }
 
         return items
+    }
+
+    private fun getExpiredBannerItem(
+        greenCard: GreenCard,
+    ): DashboardItem {
+        val origin = greenCard.origins.last()
+        return when {
+            greenCard.greenCardEntity.type is GreenCardType.Domestic && origin.type is OriginType.Vaccination -> {
+                DashboardItem.InfoItem.DomesticVaccinationExpiredItem(greenCard.greenCardEntity)
+            }
+            greenCard.greenCardEntity.type is GreenCardType.Domestic && origin.type is OriginType.VaccinationAssessment -> {
+                DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem(greenCard.greenCardEntity)
+            }
+            else -> {
+                DashboardItem.InfoItem.GreenCardExpiredItem(
+                    greenCardEntity = greenCard.greenCardEntity,
+                    originType = origin.type
+                )
+            }
+        }
     }
 
     private fun mapGreenCardsItem(

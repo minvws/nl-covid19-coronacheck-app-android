@@ -287,10 +287,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.GreenCardExpiredItem(
-                        fakeGreenCard(
-                            greenCardType = GreenCardType.Domestic,
-                            originType = OriginType.Recovery
-                        )
+                        greenCardEntity = fakeGreenCard().greenCardEntity,
+                        originType = OriginType.Vaccination
                     )
                 )
             )
@@ -322,11 +320,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.GreenCardExpiredItem(
-                        fakeGreenCard(
-                            greenCardType = GreenCardType.Domestic,
-                            originType = OriginType.Vaccination
-                        )
+                    DashboardItem.InfoItem.DomesticVaccinationExpiredItem(
+                        greenCardEntity = fakeGreenCard().greenCardEntity
                     )
                 )
             )
