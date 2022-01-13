@@ -264,7 +264,7 @@ class MyOverViewGreenCardAdapterUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals("Testbewijs:", (viewBinding.description.getChildAt(0) as TextView).text)
         assertEquals("geldig tot woensdag 28 juli 21:06", (viewBinding.description.getChildAt(1) as TextView).text)
-        assertEquals("Verloopt in 1 uur 1 min", (viewBinding.description.getChildAt(2) as TextView).text)
+        assertEquals("Verloopt in 1 uur 1 min", viewBinding.expiresIn.text)
     }
 
     @Test
