@@ -13,26 +13,26 @@ package nl.rijksoverheid.ctr.holder.persistence.database.models
 /**
  * Result state when sending vaccination with/without recovery events to the signer.
  */
-sealed class DomesticVaccinationRecoveryCombination {
+sealed class YourEventFragmentEndState {
 
     /** A combined certificate after signing vaccination together with recovery events */
     data class CombinedVaccinationRecovery(val recoveryValidityDays: Int) :
-        DomesticVaccinationRecoveryCombination()
+        YourEventFragmentEndState()
 
     /** A vaccination certificate after signing vaccination together with recovery events */
     data class OnlyVaccination(val recoveryValidityDays: Int) :
-        DomesticVaccinationRecoveryCombination()
+        YourEventFragmentEndState()
 
     /** A recovery certificate after signing vaccination together with recovery events */
-    object OnlyRecovery : DomesticVaccinationRecoveryCombination()
+    object OnlyRecovery : YourEventFragmentEndState()
 
     /** No domestic certificate after signing vaccination together with recovery events */
-    object NoneWithRecovery : DomesticVaccinationRecoveryCombination()
+    object NoneWithRecovery : YourEventFragmentEndState()
 
     /** No domestic certificate after signing ONLY vaccination events (no recovery events) */
-    object NoneWithoutRecovery : DomesticVaccinationRecoveryCombination()
+    object NoneWithoutRecovery : YourEventFragmentEndState()
 
-    object AddedNegativeTestInVaccinationAssessmentFlow: DomesticVaccinationRecoveryCombination()
+    object AddedNegativeTestInVaccinationAssessmentFlow: YourEventFragmentEndState()
 
-    object NotApplicable : DomesticVaccinationRecoveryCombination()
+    object NotApplicable : YourEventFragmentEndState()
 }

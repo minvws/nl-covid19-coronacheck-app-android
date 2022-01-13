@@ -4,7 +4,9 @@ import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewInfoCardBinding
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType.*
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import org.koin.core.component.KoinComponent
@@ -63,7 +65,25 @@ class MyOverviewInfoCardItem(
                 viewBinding.text.setText(R.string.my_overview_clock_deviation_description)
             }
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                viewBinding.text.setText(util.getExpiredItemText(infoItem))
+                val expiredItemText = getExpiredItemText(
+                    greenCardType = infoItem.greenCardEntity.type,
+                    originType = infoItem.originType
+                )
+                viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
+            }
+            is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
+                val expiredItemText = getExpiredItemText(
+                    greenCardType = Domestic,
+                    originType = Vaccination
+                )
+                viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
+            }
+            is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
+                val expiredItemText = getExpiredItemText(
+                    greenCardType = Domestic,
+                    originType = VaccinationAssessment
+                )
+                viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
             }
             is DashboardItem.InfoItem.OriginInfoItem -> {
                 viewBinding.text.text =
@@ -93,6 +113,22 @@ class MyOverviewInfoCardItem(
 
         viewBinding.button.setOnClickListener {
             onButtonClick.invoke(infoItem)
+        }
+    }
+
+    private fun getExpiredItemText(
+        greenCardType: GreenCardType,
+        originType: OriginType
+    ): Int {
+        return when {
+            greenCardType == Domestic && originType == Vaccination -> R.string.holder_dashboard_originExpiredBanner_domesticVaccine_title
+            greenCardType == Domestic && originType == Recovery -> R.string.holder_dashboard_originExpiredBanner_domesticRecovery_title
+            greenCardType == Domestic && originType == Test -> R.string.holder_dashboard_originExpiredBanner_domesticTest_title
+            greenCardType == Eu && originType == Vaccination -> R.string.holder_dashboard_originExpiredBanner_internationalVaccine_title
+            greenCardType == Eu && originType == Recovery -> R.string.holder_dashboard_originExpiredBanner_internationalRecovery_title
+            greenCardType == Eu && originType == Test -> R.string.holder_dashboard_originExpiredBanner_internationalTest_title
+            originType == VaccinationAssessment -> R.string.holder_dashboard_originExpiredBanner_visitorPass_title
+            else -> R.string.qr_card_expired
         }
     }
 

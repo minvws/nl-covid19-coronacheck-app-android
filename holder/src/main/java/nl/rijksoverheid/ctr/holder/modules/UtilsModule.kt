@@ -1,7 +1,8 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtil
-import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtilImpl
+import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
+import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtil
+import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
@@ -42,9 +43,9 @@ fun utilsModule(versionCode: Int) = module {
     factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
-    factory<MyOverviewFragmentInfoItemHandlerUtil> { MyOverviewFragmentInfoItemHandlerUtilImpl(get(), get()) }
-    factory<DomesticVaccinationRecoveryCombinationUtil> {
-        DomesticVaccinationRecoveryCombinationUtilImpl(get())
+    factory<MyOverviewFragmentInfoItemHandlerUtil> { MyOverviewFragmentInfoItemHandlerUtilImpl(get(), get(), get()) }
+    factory<YourEventFragmentEndStateUtil> {
+        YourEventFragmentEndStateUtilImpl(get())
     }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl() }

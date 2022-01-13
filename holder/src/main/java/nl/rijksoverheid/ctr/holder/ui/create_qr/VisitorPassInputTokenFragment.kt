@@ -59,7 +59,7 @@ class VisitorPassInputTokenFragment: InputTokenFragment() {
                             mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse),
                             originType = getOriginType(result.remoteTestResult),
                         ),
-                        toolbarTitle = getString(getFragmentData().yourEventsToolbarTitle),
+                        toolbarTitle = getString(getYourEventsToolbarTitle(result.remoteTestResult)),
                         flow = HolderFlow.VaccinationAssessment
                     )
                 )

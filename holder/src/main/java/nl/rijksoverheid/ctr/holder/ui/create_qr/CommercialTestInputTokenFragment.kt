@@ -60,7 +60,7 @@ class CommercialTestInputTokenFragment: InputTokenFragment() {
                             originType = getOriginType(result.remoteTestResult),
                         ),
                         flow = HolderFlow.CommercialTest,
-                        toolbarTitle = getString(getFragmentData().yourEventsToolbarTitle),
+                        toolbarTitle = getString(getYourEventsToolbarTitle(result.remoteTestResult)),
                     )
                 )
             }
