@@ -34,16 +34,16 @@ sealed class OriginType(val order: Int) : Parcelable {
     }
 
     @Parcelize
-    object Vaccination : OriginType(1), Parcelable
+    object Vaccination : OriginType(1)
 
     @Parcelize
-    object Recovery : OriginType(2), Parcelable
+    object Recovery : OriginType(2)
 
     @Parcelize
-    object Test : OriginType(3), Parcelable
+    object VaccinationAssessment : OriginType(3)
 
     @Parcelize
-    object VaccinationAssessment : OriginType(4), Parcelable
+    object Test : OriginType(4)
 
     fun getTypeString(): String {
         return when (this) {
