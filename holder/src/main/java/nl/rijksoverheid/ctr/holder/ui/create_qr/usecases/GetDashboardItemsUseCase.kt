@@ -366,6 +366,9 @@ class GetDashboardItemsUseCaseImpl(
             greenCardType is GreenCardType.Domestic && originType is OriginType.Vaccination -> {
                 DashboardItem.InfoItem.DomesticVaccinationExpiredItem
             }
+            greenCardType is GreenCardType.Domestic && originType is OriginType.VaccinationAssessment -> {
+                DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem
+            }
             else -> {
                 DashboardItem.InfoItem.OriginExpiredItem(
                     greenCardType = greenCardType,

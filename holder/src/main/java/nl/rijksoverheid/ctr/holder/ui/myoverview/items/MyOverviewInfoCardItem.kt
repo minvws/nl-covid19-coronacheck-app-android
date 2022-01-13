@@ -78,6 +78,13 @@ class MyOverviewInfoCardItem(
                 )
                 viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
             }
+            is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
+                val expiredItemText = getExpiredItemText(
+                    greenCardType = Domestic,
+                    originType = VaccinationAssessment
+                )
+                viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
+            }
             is DashboardItem.InfoItem.OriginInfoItem -> {
                 viewBinding.text.text =
                     util.getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)

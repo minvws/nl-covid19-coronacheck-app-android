@@ -22,6 +22,7 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.MainNavDirections
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -44,7 +45,8 @@ interface MyOverviewFragmentInfoItemHandlerUtil {
 
 class MyOverviewFragmentInfoItemHandlerUtilImpl(
     private val infoFragmentUtil: InfoFragmentUtil,
-    private val intentUtil: IntentUtil
+    private val intentUtil: IntentUtil,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : MyOverviewFragmentInfoItemHandlerUtil {
 
     /**
@@ -74,7 +76,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
                 onDomesticVaccinationExpiredItemClicked(myOverviewFragment)
             }
-
+            is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
+                onDomesticVaccinationAssessmentExpiredClicked(myOverviewFragment)
+            }
             is DashboardItem.InfoItem.AppUpdate -> openPlayStore(myOverviewFragment)
             is DashboardItem.InfoItem.NewValidityItem -> {
                 onNewValidityInfoClicked(myOverviewFragment.requireContext())
@@ -119,6 +123,24 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                     text = myOverviewFragment.getString(R.string.holder_expiredDomesticVaccinationModal_button_addBoosterVaccination),
                     navigationActionId = navigationDirection.actionId,
                     navigationArguments = navigationDirection.arguments
+                )
+            )
+        )
+    }
+
+    private fun onDomesticVaccinationAssessmentExpiredClicked(
+        myOverviewFragment: MyOverviewFragment,
+    ) {
+        val descriptionText = myOverviewFragment.getString(R.string.holder_dashboard_visitorpassexpired_body,
+            cachedAppConfigUseCase.getCachedAppConfig().vaccinationAssessmentEventValidityDays)
+
+        infoFragmentUtil.presentAsBottomSheet(
+            myOverviewFragment.childFragmentManager,
+            InfoFragmentData.TitleDescriptionWithButton(
+                title = myOverviewFragment.getString(R.string.holder_dashboard_visitorpassexpired_title),
+                descriptionData = DescriptionData(
+                    htmlTextString = descriptionText,
+                    htmlLinksEnabled = true
                 )
             )
         )

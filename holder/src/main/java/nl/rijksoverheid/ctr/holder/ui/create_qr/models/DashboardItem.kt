@@ -54,6 +54,11 @@ sealed class DashboardItem {
             hasButton = true
         )
 
+        object DomesticVaccinationAssessmentExpiredItem: InfoItem(
+            isDismissible = true,
+            hasButton = true
+        )
+
         object TestCertificate3GValidity : InfoItem(isDismissible = false, hasButton = true)
 
         object AppUpdate : InfoItem(
