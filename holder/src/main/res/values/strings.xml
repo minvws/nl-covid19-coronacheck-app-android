@@ -599,7 +599,7 @@
   <string name="holder_event_vaccination_assessment_element_subtitle"><![CDATA[Beoordelingsdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
   <string name="holder_event_vaccination_assessment_about_date">Beoordelingsdatum:</string>
   <string name="holder_event_vaccination_assessment_about_subtitle">De volgende gegevens zijn opgehaald:</string>
-  <string name="holder_event_vaccination_assessment_about_unique_identifier">Uniek beoordelingsnummer:</string>
+  <string name="holder_event_vaccination_assessment_about_unique_identifier">\lingsnummer:</string>
   <string name="holder_event_vaccination_assessment_element_title">Vaccinatie-beoordeling</string>
   <string name="holder_event_vaccination_assessment_nolist_title">Geen vaccinatie-beoordeling beschikbaar</string>
   <string name="holder_event_vaccination_assessment_nolist_message"><![CDATA[Er zijn geen gegevens over je vaccinatie-beoordeling beschikbaar. Neem contact op met de balie waar jouw vaccinatie is beoordeeld.<br/><br/>Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>

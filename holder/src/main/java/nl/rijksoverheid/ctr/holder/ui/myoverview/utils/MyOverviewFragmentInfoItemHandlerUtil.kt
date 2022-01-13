@@ -69,11 +69,11 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 onClockDeviationClicked(myOverviewFragment)
             is DashboardItem.InfoItem.OriginInfoItem ->
                 onOriginInfoClicked(myOverviewFragment, infoItem)
-            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                onGreenCardExpiredClicked(myOverviewFragment)
-            }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
                 onMissingDutchVaccinationItemClicked(myOverviewFragment)
+            is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
+                onDomesticVaccinationExpiredItemClicked(myOverviewFragment)
+            }
 
             is DashboardItem.InfoItem.AppUpdate -> openPlayStore(myOverviewFragment)
             is DashboardItem.InfoItem.NewValidityItem -> {
@@ -99,8 +99,8 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         ))
     }
 
-    private fun onGreenCardExpiredClicked(
-        myOverviewFragment: MyOverviewFragment
+    private fun onDomesticVaccinationExpiredItemClicked(
+        myOverviewFragment: MyOverviewFragment,
     ) {
         val navigationDirection = MainNavDirections.actionGetEvents(
             toolbarTitle = myOverviewFragment.getString(R.string.get_vaccination_title),
@@ -353,14 +353,17 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.ExtendedDomesticRecovery -> {
                 myOverviewFragment.dashboardViewModel.dismissExtendedDomesticRecoveryInfoCard()
             }
-            is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCard)
-            }
             is DashboardItem.InfoItem.ClockDeviationItem,
             is DashboardItem.InfoItem.ConfigFreshnessWarning,
             is DashboardItem.InfoItem.ExtendDomesticRecovery,
             is DashboardItem.InfoItem.OriginInfoItem,
             is DashboardItem.InfoItem.RecoverDomesticRecovery,
+            is DashboardItem.InfoItem.DomesticVaccinationExpiredItem,
+            is DashboardItem.InfoItem.OriginExpiredItem,
+            is DashboardItem.InfoItem.AppUpdate,
+            is DashboardItem.InfoItem.MissingDutchVaccinationItem,
+            is DashboardItem.InfoItem.TestCertificate3GValidity,
+            is DashboardItem.InfoItem.VisitorPassIncompleteItem,
             is DashboardItem.InfoItem.NewValidityItem -> {
                 myOverviewFragment.dashboardViewModel.dismissNewValidityInfoCard()
             }
