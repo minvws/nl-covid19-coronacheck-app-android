@@ -3,10 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 
@@ -44,17 +41,17 @@ sealed class DashboardItem {
 
         object ClockDeviationItem : InfoItem(isDismissible = false, hasButton = true)
 
-        data class OriginExpiredItem(val greenCardType: GreenCardType, val originType: OriginType) : InfoItem(
+        data class OriginExpiredItem(val greenCardEntity: GreenCardEntity, val originType: OriginType) : InfoItem(
             isDismissible = true,
             hasButton = false
         )
 
-        object DomesticVaccinationExpiredItem: InfoItem(
+        data class DomesticVaccinationExpiredItem(val greenCardEntity: GreenCardEntity): InfoItem(
             isDismissible = true,
             hasButton = true
         )
 
-        object DomesticVaccinationAssessmentExpiredItem: InfoItem(
+        data class DomesticVaccinationAssessmentExpiredItem(val greenCardEntity: GreenCardEntity): InfoItem(
             isDismissible = true,
             hasButton = true
         )

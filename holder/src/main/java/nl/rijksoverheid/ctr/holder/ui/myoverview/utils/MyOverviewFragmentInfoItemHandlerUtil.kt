@@ -375,13 +375,20 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.ExtendedDomesticRecovery -> {
                 myOverviewFragment.dashboardViewModel.dismissExtendedDomesticRecoveryInfoCard()
             }
+            is DashboardItem.InfoItem.OriginExpiredItem -> {
+                myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCardEntity)
+            }
+            is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
+                myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCardEntity)
+            }
+            is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
+                myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCardEntity)
+            }
             is DashboardItem.InfoItem.ClockDeviationItem,
             is DashboardItem.InfoItem.ConfigFreshnessWarning,
             is DashboardItem.InfoItem.ExtendDomesticRecovery,
             is DashboardItem.InfoItem.OriginInfoItem,
             is DashboardItem.InfoItem.RecoverDomesticRecovery,
-            is DashboardItem.InfoItem.DomesticVaccinationExpiredItem,
-            is DashboardItem.InfoItem.OriginExpiredItem,
             is DashboardItem.InfoItem.AppUpdate,
             is DashboardItem.InfoItem.MissingDutchVaccinationItem,
             is DashboardItem.InfoItem.TestCertificate3GValidity,

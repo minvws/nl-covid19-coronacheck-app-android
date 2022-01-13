@@ -56,9 +56,8 @@ class CheckNewRecoveryValidityUseCaseImpl(
                 .firstOrNull { it.greenCardEntity.type is GreenCardType.Domestic }
 
             // Check if there is a non expired recovery proof in the domestic green card
-            val hasValidDomesticRecoveryOrigin = originUtil.getOriginsState(domesticGreenCard?.origins ?: listOf())
+            val hasValidDomesticRecoveryOrigin = originUtil.getOriginState(domesticGreenCard?.origins ?: listOf())
                 .any { it !is OriginState.Expired && it.origin.type is OriginType.Recovery }
-
 
             if (hasRecoveryEvent) {
                 if (hasValidDomesticRecoveryOrigin) {

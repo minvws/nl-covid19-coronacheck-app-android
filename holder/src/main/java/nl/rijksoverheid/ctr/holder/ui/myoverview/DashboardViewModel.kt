@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewRecoveryValidityUseCase
@@ -32,7 +33,7 @@ abstract class DashboardViewModel : ViewModel() {
     open val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
-    abstract fun removeGreenCard(greenCard: GreenCard)
+    abstract fun removeGreenCard(greenCardEntity: GreenCardEntity)
     abstract fun dismissRecoveredDomesticRecoveryInfoCard()
     abstract fun dismissExtendedDomesticRecoveryInfoCard()
     abstract fun dismissNewValidityInfoCard()
@@ -119,9 +120,9 @@ class DashboardViewModelImpl(
         }
     }
 
-    override fun removeGreenCard(greenCard: GreenCard) {
+    override fun removeGreenCard(greenCardEntity: GreenCardEntity) {
         viewModelScope.launch {
-            holderDatabase.greenCardDao().delete(greenCard.greenCardEntity)
+            holderDatabase.greenCardDao().delete(greenCardEntity)
         }
     }
 

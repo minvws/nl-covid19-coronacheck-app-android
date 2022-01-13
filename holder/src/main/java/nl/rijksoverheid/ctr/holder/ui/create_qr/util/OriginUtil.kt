@@ -8,8 +8,7 @@ import java.time.temporal.ChronoUnit
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardAdapterItem
 
 interface OriginUtil {
-    fun getOriginsState(origins: List<OriginEntity>): List<OriginState>
-    fun getOriginState(origin: OriginEntity): OriginState
+    fun getOriginState(origins: List<OriginEntity>): List<OriginState>
 
     /**
      * If the origin subtitle should be hiden in the [MyOverviewGreenCardAdapterItem]
@@ -25,22 +24,18 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
         private const val PRESENT_SUBTITLE_WHEN_LESS_THEN_YEARS = 3
     }
 
-    override fun getOriginsState(origins: List<OriginEntity>): List<OriginState> {
+    override fun getOriginState(origins: List<OriginEntity>): List<OriginState> {
         return origins.map { origin ->
-            getOriginState(origin)
-        }
-    }
-
-    override fun getOriginState(origin: OriginEntity): OriginState {
-        return when {
-            origin.expirationTime.isBefore(OffsetDateTime.now(clock)) -> {
-                OriginState.Expired(origin)
-            }
-            origin.validFrom.isAfter(OffsetDateTime.now(clock)) -> {
-                OriginState.Future(origin)
-            }
-            else -> {
-                OriginState.Valid(origin)
+            when {
+                origin.expirationTime.isBefore(OffsetDateTime.now(clock)) -> {
+                    OriginState.Expired(origin)
+                }
+                origin.validFrom.isAfter(OffsetDateTime.now(clock)) -> {
+                    OriginState.Future(origin)
+                }
+                else -> {
+                    OriginState.Valid(origin)
+                }
             }
         }
     }

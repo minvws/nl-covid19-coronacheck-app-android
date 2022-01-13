@@ -281,41 +281,27 @@ class GetDashboardItemsUseCaseImpl(
         combineVaccinations: Boolean
     ): List<DashboardItem> {
 
-        val expiredGreenCards = greenCardsForSelectedType.filter { greenCardUtil.isExpired(it) }
-        val nonExpiredGreenCards = greenCardsForSelectedType.filterNot { greenCardUtil.isExpired(it) }
-
-        val items = mutableListOf<DashboardItem>()
-
-        // Create expired banners for each origin inside the green card that expired
-        expiredGreenCards
-            .map { it.origins }
-            .flatten()
-            .filter { originUtil.getOriginState(it) is OriginState.Expired }
-            .map { getExpiredBannerItem(
-                greenCardType = greenCardType,
-                originType = it.type
-            ) }
-            .also {
-                items.addAll(it)
-            }
-
         // Loop through all green cards that exists in the database and map them to UI models
-        nonExpiredGreenCards
+        val items = greenCardsForSelectedType
             .map { greenCard ->
-                mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
+                if (greenCardUtil.isExpired(greenCard)) {
+                    getExpiredBannerItem(
+                        greenCard = greenCard
+                    )
+                } else {
+                    mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
+                }
             }
             .let { if (combineVaccinations) dashboardItemUtil.combineEuVaccinationItems(it) else it }
-            .also {
-                items.addAll(it)
-            }
+            .toMutableList()
 
         // If we have valid origins that exists in the other selected type but not in the current one, we show a banner
         val allOriginsForSelectedType = greenCardsForSelectedType.map { it.origins }.flatten()
         val allOriginsForUnselectedType = greenCardsForUnselectedType.map { it.origins }.flatten()
-        val allValidOriginsForSelectedType = originUtil.getOriginsState(allOriginsForSelectedType)
+        val allValidOriginsForSelectedType = originUtil.getOriginState(allOriginsForSelectedType)
             .filter { it is OriginState.Valid || it is OriginState.Future }.map { it.origin }
         val allValidOriginsForUnselectedType =
-            originUtil.getOriginsState(allOriginsForUnselectedType)
+            originUtil.getOriginState(allOriginsForUnselectedType)
                 .filter { it is OriginState.Valid || it is OriginState.Future }.map { it.origin }
 
         allValidOriginsForUnselectedType.forEach { originForUnselectedType ->
@@ -359,20 +345,20 @@ class GetDashboardItemsUseCaseImpl(
     }
 
     private fun getExpiredBannerItem(
-        greenCardType: GreenCardType,
-        originType: OriginType
+        greenCard: GreenCard,
     ): DashboardItem {
+        val origin = greenCard.origins.last()
         return when {
-            greenCardType is GreenCardType.Domestic && originType is OriginType.Vaccination -> {
-                DashboardItem.InfoItem.DomesticVaccinationExpiredItem
+            greenCard.greenCardEntity.type is GreenCardType.Domestic && origin.type is OriginType.Vaccination -> {
+                DashboardItem.InfoItem.DomesticVaccinationExpiredItem(greenCard.greenCardEntity)
             }
-            greenCardType is GreenCardType.Domestic && originType is OriginType.VaccinationAssessment -> {
-                DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem
+            greenCard.greenCardEntity.type is GreenCardType.Domestic && origin.type is OriginType.VaccinationAssessment -> {
+                DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem(greenCard.greenCardEntity)
             }
             else -> {
                 DashboardItem.InfoItem.OriginExpiredItem(
-                    greenCardType = greenCardType,
-                    originType = originType
+                    greenCardEntity = greenCard.greenCardEntity,
+                    originType = origin.type
                 )
             }
         }
@@ -389,7 +375,7 @@ class GetDashboardItemsUseCaseImpl(
         )
 
         // Check the states of our origins
-        val originStates = originUtil.getOriginsState(
+        val originStates = originUtil.getOriginState(
             origins = greenCard.origins
         ).sortedBy { it.origin.type.order }
 
