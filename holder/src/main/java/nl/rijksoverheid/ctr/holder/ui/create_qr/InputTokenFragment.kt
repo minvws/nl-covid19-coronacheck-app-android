@@ -241,6 +241,23 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
         }
     }
 
+    fun getYourEventsToolbarTitle(remoteProtocol: RemoteProtocol): Int {
+        return when (remoteProtocol) {
+            is RemoteTestResult2 -> {
+                R.string.your_negative_test_results_toolbar
+            }
+            is RemoteProtocol3 -> {
+                if (remoteProtocol.events?.any { it is RemoteEventVaccinationAssessment } == true) {
+                    R.string.holder_event_vaccination_assessment_toolbar_title
+                } else {
+                    R.string.your_negative_test_results_toolbar
+                }
+            } else -> {
+                R.string.your_negative_test_results_toolbar
+            }
+        }
+    }
+
     abstract fun getFragmentData(): InputTokenFragmentData
     abstract fun navigateCouldNotCreateQr()
     abstract fun navigateMyEvents(result: TestResult.NegativeTestResult)

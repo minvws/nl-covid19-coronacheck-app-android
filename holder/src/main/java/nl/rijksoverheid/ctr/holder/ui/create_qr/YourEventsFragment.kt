@@ -27,7 +27,7 @@ import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination
+import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
@@ -191,8 +191,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     private fun navigateToCertificateCreated(databaseSyncerResult: DatabaseSyncerResult.Success) {
-        when (databaseSyncerResult.domesticVaccinationRecovery) {
-            is DomesticVaccinationRecoveryCombination.CombinedVaccinationRecovery -> {
+        when (databaseSyncerResult.yourEventFragmentEndState) {
+            is YourEventFragmentEndState.CombinedVaccinationRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
@@ -211,7 +211,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            DomesticVaccinationRecoveryCombination.NoneWithoutRecovery -> {
+            YourEventFragmentEndState.NoneWithoutRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
@@ -221,7 +221,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            DomesticVaccinationRecoveryCombination.NoneWithRecovery -> {
+            YourEventFragmentEndState.NoneWithRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.no_certificate_created_toolbar_title),
@@ -230,7 +230,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            DomesticVaccinationRecoveryCombination.OnlyRecovery -> {
+            YourEventFragmentEndState.OnlyRecovery -> {
                 navigateSafety(
                     if (args.afterIncompleteVaccination) {
                         YourEventsFragmentDirections.actionCertificateCreated(
@@ -244,7 +244,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     }
                 )
             }
-            is DomesticVaccinationRecoveryCombination.OnlyVaccination -> {
+            is YourEventFragmentEndState.OnlyVaccination -> {
                 navigateSafety(
                     if (args.afterIncompleteVaccination) {
                         // When coming from a vaccination completion flow, navigate directly to dashboard
@@ -260,24 +260,26 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     }
                 )
             }
-            DomesticVaccinationRecoveryCombination.NotApplicable -> {
+            YourEventFragmentEndState.NotApplicable -> {
                 // We have a origin in the database that we expect, so success
                 navigateSafety(
                     YourEventsFragmentDirections.actionMyOverview()
                 )
             }
-            DomesticVaccinationRecoveryCombination.AddedNegativeTestInVaccinationAssessmentFlow -> {
+            YourEventFragmentEndState.AddedNegativeTestInVaccinationAssessmentFlow -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
-                    toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
-                    data = InfoFragmentData.TitleDescriptionWithButton(
-                        title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
-                        descriptionData = DescriptionData(
-                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
-                        ),
-                        primaryButtonData = ButtonData.NavigationButton(
-                            text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
-                            navigationActionId = InfoFragmentDirections.actionVisitorPassInputToken().actionId,
+                    infoFragmentDirections = YourEventsFragmentDirections.actionInfoFragment(
+                        toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
+                        data = InfoFragmentData.TitleDescriptionWithButton(
+                            title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
+                            descriptionData = DescriptionData(
+                                htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
+                            ),
+                            primaryButtonData = ButtonData.NavigationButton(
+                                text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
+                                navigationActionId = InfoFragmentDirections.actionVisitorPassInputToken().actionId,
+                            )
                         )
                     )
                 )

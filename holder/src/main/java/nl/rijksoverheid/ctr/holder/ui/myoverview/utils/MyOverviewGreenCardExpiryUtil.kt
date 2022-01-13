@@ -43,7 +43,7 @@ class MyOverviewGreenCardExpiryUtilImpl(
     ): MyOverviewGreenCardExpiryUtil.ExpireCountDown {
         val hoursBetweenExpiration =
             ChronoUnit.HOURS.between(OffsetDateTime.now(clock), expireDate)
-        return if (hoursBetweenExpiration >= getExpiryForType(type)) {
+        return if (hoursBetweenExpiration >= getExpiryHoursForType(type)) {
             MyOverviewGreenCardExpiryUtil.ExpireCountDown.Hide
         } else {
             var diff =
@@ -59,7 +59,7 @@ class MyOverviewGreenCardExpiryUtilImpl(
         }
     }
 
-    private fun getExpiryForType(type: OriginType): Int {
+    private fun getExpiryHoursForType(type: OriginType): Int {
         return if (type == OriginType.Test) 6 else 24
     }
 

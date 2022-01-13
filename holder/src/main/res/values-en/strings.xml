@@ -350,7 +350,7 @@
   <string name="get_recovery_title">Retrieve recovery details</string>
   <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Log in with DigiD to retrieve your test result.]]></string>
   <string name="no_positive_test_result_title">No positive test result available</string>
-  <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Please contact your test location to verify if your details were entered into the system correctly.]]></string>
+  <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Please contact your test location to verify if your details were entered into the system correctly.<br/><br/>Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="qr_code_type_recovery_title">Recovery certificate</string>
   <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
   <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
@@ -384,7 +384,7 @@
   <string name="dialog_faultyvaccination28June_refresh_error_message">Please retrieve your details again via the app.</string>
   <string name="my_overview_qr_placeholder_header">Find your Dutch certificate here later</string>
   <string name="my_overview_qr_placeholder_header_eu">Find your international certificate here later</string>
-  <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href=\"https://coronacheck.nl/en/testafspraak-in-app\">affiliated test location</a>.]]></string>
+  <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had coronavirus or by taking a test at an <a href=\"https://coronacheck.nl/en/testafspraak-in-app\">affiliated test location</a>.]]></string>
   <string name="my_overview_qr_placeholder_description_eu">Are you abroad, or planning to cross the border? Then always use your international certificate. Please check before leaving which certificate you need.</string>
   <string name="my_overview_qr_placeholder_button_eu">Which certificate is needed where I\'m heading?</string>
   <string name="my_overview_qr_placeholder_button_link_eu">https://www.coronacheck.nl/en/wegwijzer</string>
@@ -605,7 +605,7 @@
   <string name="holder_event_vaccination_assessment_nolist_action">To my certificates</string>
   <string name="visitorpass_start_toolbar_title">Add visitor pass</string>
   <string name="general_visitorPass">visitor pass</string>
-  <string name="holder_event_vaccination_assessment_toolbar_title">Retrieve vaccination approval</string>
+  <string name="holder_event_vaccination_assessment_toolbar_title">Retrieve approval</string>
   <string name="visitorpass_code_description_deeplink">Enter your verification code. You will receive this via text or email.</string>
   <string name="visitorpass_token_modal_notoken_details"><![CDATA[You will receive an approval code from the desk that reviewed your vaccination, either by email or on paper. Don\'t have an approval code? Please contact the desk you stopped by.<br/><br/>Didn’t stop by a desk yet to have your vaccination reviewed? For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="visitorpass_code_description">Enter your approval code. You received this code from the desk that reviewed your vaccination.</string>
@@ -654,5 +654,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_title">Negative test result added</string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete">Complete certificate</string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Your negative test result was successfully added. Add your vaccination approval to complete your visitor pass.<br /><br />To this end, you\'ve received an approval code from the desk that reviewed your vaccination. You\'ve received this code either by email or on paper.]]></string>
-  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Retrieve test result</string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Complete certificate</string>
+  <string name="holder_event_vaccination_assessment_about_country">Vaccinated in (country):</string>
 </resources>
