@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
 import android.content.Context
+import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -18,9 +19,15 @@ interface MyOverviewInfoCardItemUtil {
         infoItem: DashboardItem.InfoItem.OriginInfoItem,
         context: Context
     ): String
+
+    @StringRes
+    fun getExpiredItemText(
+        greenCardType: GreenCardType,
+        originType: OriginType
+    ): Int
 }
 
-class MyOverviewInfoCardItemUtilImpl: MyOverviewInfoCardItemUtil {
+class MyOverviewInfoCardItemUtilImpl : MyOverviewInfoCardItemUtil {
     override fun getOriginInfoText(
         infoItem: DashboardItem.InfoItem.OriginInfoItem,
         context: Context
@@ -50,6 +57,22 @@ class MyOverviewInfoCardItemUtilImpl: MyOverviewInfoCardItemUtil {
                     }
                 }
             }
+        }
+    }
+
+    override fun getExpiredItemText(
+        greenCardType: GreenCardType,
+        originType: OriginType
+    ): Int {
+        return when {
+            greenCardType == GreenCardType.Domestic && originType == OriginType.Vaccination -> R.string.holder_dashboard_originExpiredBanner_domesticVaccine_title
+            greenCardType == GreenCardType.Domestic && originType == OriginType.Recovery -> R.string.holder_dashboard_originExpiredBanner_domesticRecovery_title
+            greenCardType == GreenCardType.Domestic && originType == OriginType.Test -> R.string.holder_dashboard_originExpiredBanner_domesticTest_title
+            greenCardType == GreenCardType.Eu && originType == OriginType.Vaccination -> R.string.holder_dashboard_originExpiredBanner_internationalVaccine_title
+            greenCardType == GreenCardType.Eu && originType == OriginType.Recovery -> R.string.holder_dashboard_originExpiredBanner_internationalRecovery_title
+            greenCardType == GreenCardType.Eu && originType == OriginType.Test -> R.string.holder_dashboard_originExpiredBanner_internationalTest_title
+            originType == OriginType.VaccinationAssessment -> R.string.holder_dashboard_originExpiredBanner_visitorPass_title
+            else -> R.string.qr_card_expired
         }
     }
 }

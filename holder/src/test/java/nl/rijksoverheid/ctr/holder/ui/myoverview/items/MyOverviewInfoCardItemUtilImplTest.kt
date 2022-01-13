@@ -22,7 +22,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl-land")
-class MyOverviewInfoCardItemUtilImplTest: AutoCloseKoinTest() {
+class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getOriginInfoText returns correct copy for domestic vaccination`() {
@@ -155,5 +155,75 @@ class MyOverviewInfoCardItemUtilImplTest: AutoCloseKoinTest() {
 
         val expectedCopy = context.getString(R.string.holder_dashboard_visitorPassInvalidOutsideNLBanner_title)
         assertEquals(expectedCopy, copy)
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for domestic vaccination`() {
+        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.Vaccination
+        )
+
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_domesticVaccine_title, text)
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for domestic recovery`() {
+        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.Recovery
+        )
+
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_domesticRecovery_title, text)
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for domestic test`() {
+        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.Test
+        )
+
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_domesticTest_title, text)
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for eu vaccination`() {
+        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+            greenCardType = GreenCardType.Eu,
+            originType = OriginType.Vaccination
+        )
+
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_internationalVaccine_title, text)
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for eu recovery`() {
+        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+            greenCardType = GreenCardType.Eu,
+            originType = OriginType.Recovery
+        )
+
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_internationalRecovery_title, text)
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for eu test`() {
+        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+            greenCardType = GreenCardType.Eu,
+            originType = OriginType.Test
+        )
+
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_internationalTest_title, text)
+    }
+
+    @Test
+    fun `getExpiredItemText returns correct copy for vaccination assessment`() {
+        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+            greenCardType = GreenCardType.Domestic,
+            originType = OriginType.VaccinationAssessment
+        )
+
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_visitorPass_title, text)
     }
 }

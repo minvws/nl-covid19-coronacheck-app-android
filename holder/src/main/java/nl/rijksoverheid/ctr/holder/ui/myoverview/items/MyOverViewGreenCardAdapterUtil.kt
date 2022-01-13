@@ -21,7 +21,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewGreenCardAdapterUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewGreenCardExpiryUtil
 import nl.rijksoverheid.ctr.shared.ext.capitalize
 import java.time.Clock
 import java.time.Instant
@@ -45,7 +45,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private val utcClock: Clock,
     private val context: Context,
     private val credentialUtil: CredentialUtil,
-    private val myOverviewGreenCardAdapterUtil: MyOverviewGreenCardAdapterUtil,
+    private val myOverviewGreenCardExpiryUtil: MyOverviewGreenCardExpiryUtil,
     private val greenCardUtil: GreenCardUtil,
     private val featureFlagUseCase: FeatureFlagUseCase
 ) : MyOverViewGreenCardAdapterUtil {
@@ -67,20 +67,20 @@ class MyOverViewGreenCardAdapterUtilImpl(
                             viewBinding.title.text =
                                 context.getString(R.string.qr_code_type_negative_test_title)
                             setEuTestOrigin(
-                                viewBinding, it, originState, greenCardType, origin
+                                viewBinding, it, originState, origin
                             )
                         }
                         is OriginType.Vaccination -> {
                             viewBinding.title.text =
                                 context.getString(R.string.qr_code_type_vaccination_title)
                             setEuVaccinationOrigin(
-                                viewBinding, it, originState, greenCardType, origin
+                                viewBinding, it, origin
                             )
                         }
                         is OriginType.Recovery -> {
                             viewBinding.title.text =
                                 context.getString(R.string.qr_code_type_recovery_title)
-                            setEuRecoveryOrigin(viewBinding, originState, greenCardType, origin)
+                            setEuRecoveryOrigin(viewBinding, originState, origin)
                         }
                         is OriginType.VaccinationAssessment -> {
                             // Visitor pass is only for domestic
@@ -95,8 +95,9 @@ class MyOverViewGreenCardAdapterUtilImpl(
                         .forEach { originState ->
                             val origin = originState.origin
                             val expireCountDownResult =
-                                myOverviewGreenCardAdapterUtil.getExpireCountdownText(
-                                    expireDate = greenCardUtil.getExpireDate(it, origin.type)
+                                myOverviewGreenCardExpiryUtil.getExpireCountdown(
+                                    expireDate = greenCardUtil.getExpireDate(it, origin.type),
+                                    type = origin.type
                                 )
                             when (origin.type) {
                                 is OriginType.Vaccination -> setDomesticVaccinationOrigin(
@@ -132,7 +133,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         originState: OriginState,
         origin: OriginEntity,
         credentialEntities: List<CredentialEntity>,
-        expireCountDownResult: MyOverviewGreenCardAdapterUtil.ExpireCountDown
+        expireCountDownResult: MyOverviewGreenCardExpiryUtil.ExpireCountDown
     ) {
         setOriginTitle(
             descriptionLayout = viewBinding.description,
@@ -163,7 +164,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         viewBinding: ViewBindingWrapper,
         originState: OriginState,
         origin: OriginEntity,
-        expireCountDownResult: MyOverviewGreenCardAdapterUtil.ExpireCountDown
+        expireCountDownResult: MyOverviewGreenCardExpiryUtil.ExpireCountDown
     ) {
         if (origin.doseNumber == null) {
             setOriginTitle(
@@ -235,7 +236,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         viewBinding: ViewBindingWrapper,
         originState: OriginState,
         origin: OriginEntity,
-        expireCountDownResult: MyOverviewGreenCardAdapterUtil.ExpireCountDown
+        expireCountDownResult: MyOverviewGreenCardExpiryUtil.ExpireCountDown
     ) {
         setOriginTitle(
             descriptionLayout = viewBinding.description,
@@ -262,7 +263,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         viewBinding: ViewBindingWrapper,
         originState: OriginState,
         origin: OriginEntity,
-        expireCountDownResult: MyOverviewGreenCardAdapterUtil.ExpireCountDown
+        expireCountDownResult: MyOverviewGreenCardExpiryUtil.ExpireCountDown
     ) {
         setOriginTitle(
             descriptionLayout = viewBinding.description,
@@ -288,7 +289,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private fun setEuRecoveryOrigin(
         viewBinding: ViewBindingWrapper,
         originState: OriginState,
-        greenCardType: GreenCardType,
         origin: OriginEntity
     ) {
         // EU recovery description has no title so we put only the space in between for correct alignment
@@ -312,8 +312,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private fun setEuVaccinationOrigin(
         viewBinding: ViewBindingWrapper,
         greenCard: GreenCard,
-        originState: OriginState,
-        greenCardType: GreenCardType,
         origin: OriginEntity
     ) {
         val getCurrentDosesString: (String, String) -> String =
@@ -348,7 +346,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
         viewBinding: ViewBindingWrapper,
         greenCard: GreenCard,
         originState: OriginState,
-        greenCardType: GreenCardType,
         origin: OriginEntity
     ) {
         setOriginTitle(
@@ -440,26 +437,15 @@ class MyOverViewGreenCardAdapterUtilImpl(
 
     private fun setOriginExpiration(
         descriptionLayout: LinearLayout,
-        result: MyOverviewGreenCardAdapterUtil.ExpireCountDown
+        result: MyOverviewGreenCardExpiryUtil.ExpireCountDown
     ) {
-        if (result is MyOverviewGreenCardAdapterUtil.ExpireCountDown.Show) {
+        if (result is MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show) {
             val textView = TextView(descriptionLayout.context).apply {
                 setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
                 setTypeface(null, Typeface.BOLD)
             }
 
-            if (result.hoursLeft == 0L) {
-                textView.text = context.getString(
-                    R.string.my_overview_test_result_expires_in_minutes,
-                    result.minutesLeft.toString()
-                )
-            } else {
-                textView.text = context.getString(
-                    R.string.my_overview_test_result_expires_in_hours_minutes,
-                    result.hoursLeft.toString(),
-                    result.minutesLeft.toString()
-                )
-            }
+            textView.text = myOverviewGreenCardExpiryUtil.getExpiryText(result)
 
             descriptionLayout.addView(textView)
         }

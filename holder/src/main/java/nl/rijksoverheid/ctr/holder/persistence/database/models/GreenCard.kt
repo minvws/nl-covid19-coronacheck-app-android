@@ -25,9 +25,4 @@ data class GreenCard(
         entityColumn = "green_card_id"
     )
     val credentialEntities: List<CredentialEntity>,
-) {
-    fun isDomesticVaccination(): Boolean {
-        return greenCardEntity.type == GreenCardType.Domestic
-                && origins.any { it.type == OriginType.Vaccination }
-    }
-}
+)
