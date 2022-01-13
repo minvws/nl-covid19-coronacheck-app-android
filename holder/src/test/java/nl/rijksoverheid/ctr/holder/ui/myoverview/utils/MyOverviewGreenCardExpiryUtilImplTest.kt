@@ -15,11 +15,11 @@ import java.time.ZoneId
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewGreenCardAdapterUtilImplTest {
+class MyOverviewGreenCardExpiryUtilImplTest {
 
     @Test
     fun `getExpireCountdownText returns Hide when expire date more than 24 hours away for vaccination`() {
-        val util = MyOverviewGreenCardAdapterUtilImpl(
+        val util = MyOverviewGreenCardExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
         )
         val result = util.getExpireCountdownText(
@@ -29,12 +29,12 @@ class MyOverviewGreenCardAdapterUtilImplTest {
             ),
             type = OriginType.Vaccination
         )
-        assertEquals(MyOverviewGreenCardAdapterUtil.ExpireCountDown.Hide, result)
+        assertEquals(MyOverviewGreenCardExpiryUtil.ExpireCountDown.Hide, result)
     }
 
     @Test
     fun `getExpireCountdownText returns Show when expire date less than 24 hours away for vaccination`() {
-        val util = MyOverviewGreenCardAdapterUtilImpl(
+        val util = MyOverviewGreenCardExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
         )
         val result = util.getExpireCountdownText(
@@ -45,7 +45,7 @@ class MyOverviewGreenCardAdapterUtilImplTest {
             type =  OriginType.Vaccination
         )
         assertEquals(
-            MyOverviewGreenCardAdapterUtil.ExpireCountDown.Show(
+            MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show(
                 hoursLeft = 23,
                 minutesLeft = 50
             ), result
@@ -54,7 +54,7 @@ class MyOverviewGreenCardAdapterUtilImplTest {
 
     @Test
     fun `getExpireCountdownText returns Hide when expire date more than 24 hours away for recovery`() {
-        val util = MyOverviewGreenCardAdapterUtilImpl(
+        val util = MyOverviewGreenCardExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
         )
         val result = util.getExpireCountdownText(
@@ -64,12 +64,12 @@ class MyOverviewGreenCardAdapterUtilImplTest {
             ),
             type = OriginType.Recovery
         )
-        assertEquals(MyOverviewGreenCardAdapterUtil.ExpireCountDown.Hide, result)
+        assertEquals(MyOverviewGreenCardExpiryUtil.ExpireCountDown.Hide, result)
     }
 
     @Test
     fun `getExpireCountdownText returns Show when expire date less than 24 hours away for recovery`() {
-        val util = MyOverviewGreenCardAdapterUtilImpl(
+        val util = MyOverviewGreenCardExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
         )
         val result = util.getExpireCountdownText(
@@ -80,7 +80,7 @@ class MyOverviewGreenCardAdapterUtilImplTest {
             type =  OriginType.Recovery
         )
         assertEquals(
-            MyOverviewGreenCardAdapterUtil.ExpireCountDown.Show(
+            MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show(
                 hoursLeft = 23,
                 minutesLeft = 59
             ), result
@@ -89,7 +89,7 @@ class MyOverviewGreenCardAdapterUtilImplTest {
 
     @Test
     fun `getExpireCountdownText returns Hide when expire date more than 6 hours away for test`() {
-        val util = MyOverviewGreenCardAdapterUtilImpl(
+        val util = MyOverviewGreenCardExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
         )
         val result = util.getExpireCountdownText(
@@ -99,12 +99,12 @@ class MyOverviewGreenCardAdapterUtilImplTest {
             ),
             type = OriginType.Test
         )
-        assertEquals(MyOverviewGreenCardAdapterUtil.ExpireCountDown.Hide, result)
+        assertEquals(MyOverviewGreenCardExpiryUtil.ExpireCountDown.Hide, result)
     }
 
     @Test
     fun `getExpireCountdownText returns Show when expire date less than 6 hours away for test`() {
-        val util = MyOverviewGreenCardAdapterUtilImpl(
+        val util = MyOverviewGreenCardExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
         )
         val result = util.getExpireCountdownText(
@@ -115,7 +115,7 @@ class MyOverviewGreenCardAdapterUtilImplTest {
             type =  OriginType.Test
         )
         assertEquals(
-            MyOverviewGreenCardAdapterUtil.ExpireCountDown.Show(
+            MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show(
                 hoursLeft = 5,
                 minutesLeft = 59
             ), result
@@ -124,7 +124,7 @@ class MyOverviewGreenCardAdapterUtilImplTest {
 
     @Test
     fun `getExpireCountdownText returned minutes should never be below 1`() {
-        val util = MyOverviewGreenCardAdapterUtilImpl(
+        val util = MyOverviewGreenCardExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
         )
         val result = util.getExpireCountdownText(
@@ -135,7 +135,7 @@ class MyOverviewGreenCardAdapterUtilImplTest {
             type =  OriginType.Vaccination
         )
         assertEquals(
-            MyOverviewGreenCardAdapterUtil.ExpireCountDown.Show(
+            MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show(
                 hoursLeft = 0,
                 minutesLeft = 1
             ), result

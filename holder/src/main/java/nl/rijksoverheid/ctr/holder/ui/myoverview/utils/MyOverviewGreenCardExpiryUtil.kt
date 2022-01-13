@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit
  *
  */
 
-interface MyOverviewGreenCardAdapterUtil {
+interface MyOverviewGreenCardExpiryUtil {
     sealed class ExpireCountDown {
         data class Show(val hoursLeft: Long, val minutesLeft: Long) : ExpireCountDown()
         object Hide : ExpireCountDown()
@@ -25,7 +25,7 @@ interface MyOverviewGreenCardAdapterUtil {
     ): ExpireCountDown
 }
 
-class MyOverviewGreenCardAdapterUtilImpl(private val clock: Clock) : MyOverviewGreenCardAdapterUtil {
+class MyOverviewGreenCardExpiryUtilImpl(private val clock: Clock) : MyOverviewGreenCardExpiryUtil {
 
     private val minutesInSeconds = 60
     private val hoursInSeconds = 60 * 60
@@ -33,11 +33,11 @@ class MyOverviewGreenCardAdapterUtilImpl(private val clock: Clock) : MyOverviewG
     override fun getExpireCountdownText(
         expireDate: OffsetDateTime,
         type: OriginType
-    ): MyOverviewGreenCardAdapterUtil.ExpireCountDown {
+    ): MyOverviewGreenCardExpiryUtil.ExpireCountDown {
         val hoursBetweenExpiration =
             ChronoUnit.HOURS.between(OffsetDateTime.now(clock), expireDate)
         return if (hoursBetweenExpiration >= getExpiryForType(type)) {
-            MyOverviewGreenCardAdapterUtil.ExpireCountDown.Hide
+            MyOverviewGreenCardExpiryUtil.ExpireCountDown.Hide
         } else {
             var diff =
                 expireDate.toEpochSecond() - OffsetDateTime.now(clock)
@@ -45,7 +45,7 @@ class MyOverviewGreenCardAdapterUtilImpl(private val clock: Clock) : MyOverviewG
             val hoursUntilFinish = diff / hoursInSeconds
             diff %= hoursInSeconds
             val minutesUntilFinish = (diff / minutesInSeconds).coerceAtLeast(1)
-            MyOverviewGreenCardAdapterUtil.ExpireCountDown.Show(
+            MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show(
                 hoursLeft = hoursUntilFinish,
                 minutesLeft = minutesUntilFinish
             )
