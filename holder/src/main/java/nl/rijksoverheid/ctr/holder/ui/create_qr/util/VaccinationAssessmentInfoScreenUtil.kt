@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccinationAssessment
+import java.util.*
 
 interface VaccinationAssessmentInfoScreenUtil {
     fun getForVaccinationAssessment(
@@ -22,12 +23,18 @@ interface VaccinationAssessmentInfoScreenUtil {
     ): InfoScreen
 }
 
-class VaccinationAssessmentInfoScreenUtilImpl(private val context: Context): VaccinationAssessmentInfoScreenUtil {
+class VaccinationAssessmentInfoScreenUtilImpl(
+    private val context: Context,
+    private val countryUtil: CountryUtil): VaccinationAssessmentInfoScreenUtil {
     override fun getForVaccinationAssessment(
         event: RemoteEventVaccinationAssessment,
         fullName: String,
         birthDate: String
     ): InfoScreen {
+        val countryName = if (event.vaccinationAssessment.country != null) {
+            countryUtil.getCountryForInfoScreen(Locale.getDefault().language, event.vaccinationAssessment.country)
+        } else ""
+
         return InfoScreen(
             title = context.resources.getString(R.string.your_vaccination_explanation_toolbar_title),
             description = TextUtils.concat(
@@ -45,6 +52,10 @@ class VaccinationAssessmentInfoScreenUtilImpl(private val context: Context): Vac
                 createLine(
                     name = context.resources.getString(R.string.holder_event_vaccination_assessment_about_date),
                     nameAnswer = event.vaccinationAssessment.assessmentDate?.formatDateTime(context) ?: "",
+                ),
+                createLine(
+                    name = context.resources.getString(R.string.holder_event_vaccination_assessment_about_country),
+                    nameAnswer = countryName
                 ),
                 "<br/>",
                 createLine(

@@ -32,6 +32,6 @@ val cardUtilsModule = module {
         GreenCardRefreshUtilImpl(get(), get(), get(), get(), get(), get())
     }
     factory<VaccinationAssessmentInfoScreenUtil> {
-        VaccinationAssessmentInfoScreenUtilImpl(get())
+        VaccinationAssessmentInfoScreenUtilImpl(get(), get())
     }
 }
