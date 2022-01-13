@@ -65,21 +65,21 @@ class MyOverviewInfoCardItem(
                 viewBinding.text.setText(R.string.my_overview_clock_deviation_description)
             }
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                val expiredItemText = getExpiredItemText(
+                val expiredItemText = util.getExpiredItemText(
                     greenCardType = infoItem.greenCardEntity.type,
                     originType = infoItem.originType
                 )
                 viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
             }
             is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
-                val expiredItemText = getExpiredItemText(
+                val expiredItemText = util.getExpiredItemText(
                     greenCardType = Domestic,
                     originType = Vaccination
                 )
                 viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
             }
             is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
-                val expiredItemText = getExpiredItemText(
+                val expiredItemText = util.getExpiredItemText(
                     greenCardType = Domestic,
                     originType = VaccinationAssessment
                 )
@@ -113,22 +113,6 @@ class MyOverviewInfoCardItem(
 
         viewBinding.button.setOnClickListener {
             onButtonClick.invoke(infoItem)
-        }
-    }
-
-    private fun getExpiredItemText(
-        greenCardType: GreenCardType,
-        originType: OriginType
-    ): Int {
-        return when {
-            greenCardType == Domestic && originType == Vaccination -> R.string.holder_dashboard_originExpiredBanner_domesticVaccine_title
-            greenCardType == Domestic && originType == Recovery -> R.string.holder_dashboard_originExpiredBanner_domesticRecovery_title
-            greenCardType == Domestic && originType == Test -> R.string.holder_dashboard_originExpiredBanner_domesticTest_title
-            greenCardType == Eu && originType == Vaccination -> R.string.holder_dashboard_originExpiredBanner_internationalVaccine_title
-            greenCardType == Eu && originType == Recovery -> R.string.holder_dashboard_originExpiredBanner_internationalRecovery_title
-            greenCardType == Eu && originType == Test -> R.string.holder_dashboard_originExpiredBanner_internationalTest_title
-            originType == VaccinationAssessment -> R.string.holder_dashboard_originExpiredBanner_visitorPass_title
-            else -> R.string.qr_card_expired
         }
     }
 
