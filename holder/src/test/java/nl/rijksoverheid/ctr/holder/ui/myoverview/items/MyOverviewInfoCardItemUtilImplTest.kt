@@ -164,7 +164,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Vaccination
         )
 
-        assertEquals(text, R.string.holder_dashboard_originExpiredBanner_domesticVaccine_title)
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_domesticVaccine_title, text)
     }
 
     @Test
@@ -174,7 +174,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Recovery
         )
 
-        assertEquals(text, R.string.holder_dashboard_originExpiredBanner_domesticRecovery_title)
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_domesticRecovery_title, text)
     }
 
     @Test
@@ -184,7 +184,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Test
         )
 
-        assertEquals(text, R.string.holder_dashboard_originExpiredBanner_domesticTest_title)
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_domesticTest_title, text)
     }
 
     @Test
@@ -194,7 +194,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Vaccination
         )
 
-        assertEquals(text, R.string.holder_dashboard_originExpiredBanner_internationalVaccine_title)
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_internationalVaccine_title, text)
     }
 
     @Test
@@ -204,7 +204,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Recovery
         )
 
-        assertEquals(text, R.string.holder_dashboard_originExpiredBanner_internationalRecovery_title)
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_internationalRecovery_title, text)
     }
 
     @Test
@@ -214,7 +214,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Test
         )
 
-        assertEquals(text, R.string.holder_dashboard_originExpiredBanner_internationalTest_title)
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_internationalTest_title, text)
     }
 
     @Test
@@ -224,6 +224,6 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.VaccinationAssessment
         )
 
-        assertEquals(text, R.string.holder_dashboard_originExpiredBanner_visitorPass_title)
+        assertEquals(R.string.holder_dashboard_originExpiredBanner_visitorPass_title, text)
     }
 }
