@@ -656,5 +656,5 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete">Maak bewijs compleet</string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Je negatieve testuitslag is succesvol toegevoegd. Maak je bezoekersbewijs compleet met je vaccinatie-beoordeling.<br /><br />Hiervoor heb je een beoordelingscode van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen.]]></string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Maak bewijs compleet</string>
-  <string name="holder_event_vaccination_assessment_about_country">Land:</string>
+  <string name="holder_event_vaccination_assessment_about_country">Gevaccineerd in (land):</string>
 </resources>

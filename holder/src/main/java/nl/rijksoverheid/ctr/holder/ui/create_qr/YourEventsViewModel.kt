@@ -10,7 +10,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtil
+import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
@@ -53,7 +53,7 @@ class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val holderDatabase: HolderDatabase,
-    private val combinationUtil: DomesticVaccinationRecoveryCombinationUtil
+    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil
 ) : YourEventsViewModel() {
 
     override fun saveNegativeTest2(flow: Flow, negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
@@ -157,6 +157,6 @@ class YourEventsViewModelImpl(
      */
     private suspend fun getExpectedOriginType(originType: OriginType): OriginType? {
         val events = holderDatabase.eventGroupDao().getAll()
-        return if (!combinationUtil.hasVaccinationAndRecoveryEvents(events)) originType else null
+        return if (!yourEventFragmentEndStateUtil.hasVaccinationAndRecoveryEvents(events)) originType else null
     }
 }

@@ -21,7 +21,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.shared.models.Flow
 
-interface DomesticVaccinationRecoveryCombinationUtil {
+interface YourEventFragmentEndStateUtil {
 
     fun getResult(
         flow: Flow,
@@ -33,9 +33,9 @@ interface DomesticVaccinationRecoveryCombinationUtil {
     fun hasVaccinationAndRecoveryEvents(events: List<EventGroupEntity>): Boolean
 }
 
-class DomesticVaccinationRecoveryCombinationUtilImpl(
+class YourEventFragmentEndStateUtilImpl(
     private val appConfigUseCase: CachedAppConfigUseCase
-) : DomesticVaccinationRecoveryCombinationUtil {
+) : YourEventFragmentEndStateUtil {
 
     override fun getResult(
         flow: Flow,

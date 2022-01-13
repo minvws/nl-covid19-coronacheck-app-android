@@ -10,7 +10,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
 import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
-import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtil
+import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -47,7 +47,7 @@ class HolderDatabaseSyncerImpl(
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
     private val persistenceManager: PersistenceManager,
-    private val combinationUtil: DomesticVaccinationRecoveryCombinationUtil
+    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil
 ) : HolderDatabaseSyncer {
 
     private val mutex = Mutex()
@@ -77,7 +77,7 @@ class HolderDatabaseSyncerImpl(
                         is RemoteGreenCardsResult.Success -> {
                             val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
                             val combinedVaccinationRecovery =
-                                combinationUtil.getResult(
+                                yourEventFragmentEndStateUtil.getResult(
                                     flow = flow,
                                     storedGreenCards = holderDatabase.greenCardDao().getAll(),
                                     events = events,

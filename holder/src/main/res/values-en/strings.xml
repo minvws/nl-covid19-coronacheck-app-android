@@ -655,5 +655,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete">Complete certificate</string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Your negative test result was successfully added. Add your vaccination approval to complete your visitor pass.<br /><br />To this end, you\'ve received an approval code from the desk that reviewed your vaccination. You\'ve received this code either by email or on paper.]]></string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Complete certificate</string>
-  <string name="holder_event_vaccination_assessment_about_country">Country:</string>
+  <string name="holder_event_vaccination_assessment_about_country">Vaccinated in (country):</string>
 </resources>
