@@ -23,7 +23,7 @@ import kotlin.test.assertEquals
 class YourEventFragmentEndStateUtilImplTest {
 
     private val appConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
-    private val util = DomesticVaccinationRecoveryCombinationUtilImpl(appConfigUseCase)
+    private val util = YourEventFragmentEndStateUtilImpl(appConfigUseCase)
 
     @Test
     fun `combination is not applicable when there is already a dometic vaccination stored`() {
