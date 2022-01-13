@@ -18,7 +18,7 @@ import java.time.Clock
  */
 val cardUtilsModule = module {
     factory<QrCodeUtil> { QrCodeUtilImpl() }
-    factory<MyOverviewGreenCardExpiryUtil> { MyOverviewGreenCardExpiryUtilImpl(get()) }
+    factory<MyOverviewGreenCardExpiryUtil> { MyOverviewGreenCardExpiryUtilImpl(get(), androidContext()) }
     factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get(), get()) }
     factory<TestInfoScreenUtil> { TestInfoScreenUtilImpl(androidContext().resources, get()) }
     factory<RecoveryInfoScreenUtil> { RecoveryInfoScreenUtilImpl(androidContext().resources) }

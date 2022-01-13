@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
+import android.content.Context
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -19,18 +21,23 @@ interface MyOverviewGreenCardExpiryUtil {
         object Hide : ExpireCountDown()
     }
 
-    fun getExpireCountdownText(
+    fun getExpireCountdown(
         expireDate: OffsetDateTime,
         type: OriginType
     ): ExpireCountDown
+
+    fun getExpiryText(result: ExpireCountDown.Show): String
 }
 
-class MyOverviewGreenCardExpiryUtilImpl(private val clock: Clock) : MyOverviewGreenCardExpiryUtil {
+class MyOverviewGreenCardExpiryUtilImpl(
+    private val clock: Clock,
+    private val context: Context
+) : MyOverviewGreenCardExpiryUtil {
 
     private val minutesInSeconds = 60
     private val hoursInSeconds = 60 * 60
 
-    override fun getExpireCountdownText(
+    override fun getExpireCountdown(
         expireDate: OffsetDateTime,
         type: OriginType
     ): MyOverviewGreenCardExpiryUtil.ExpireCountDown {
@@ -54,5 +61,22 @@ class MyOverviewGreenCardExpiryUtilImpl(private val clock: Clock) : MyOverviewGr
 
     private fun getExpiryForType(type: OriginType): Int {
         return if (type == OriginType.Test) 6 else 24
+    }
+
+    override fun getExpiryText(
+        result: MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show
+    ): String {
+        return if (result.hoursLeft == 0L) {
+            context.getString(
+                R.string.my_overview_test_result_expires_in_minutes,
+                result.minutesLeft.toString()
+            )
+        } else {
+            context.getString(
+                R.string.my_overview_test_result_expires_in_hours_minutes,
+                result.hoursLeft.toString(),
+                result.minutesLeft.toString()
+            )
+        }
     }
 }
