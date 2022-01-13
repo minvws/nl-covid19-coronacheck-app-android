@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.StringRes
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderFlow
@@ -14,7 +13,6 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

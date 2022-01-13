@@ -175,6 +175,7 @@ class DashboardViewModelImpl(
     override fun dismissBoosterInfoCard() {
         val nowEpochSeconds = Instant.now(clock).epochSecond
         persistenceManager.setHasDismissedBoosterInfoCard(nowEpochSeconds)
+        // remove it from both the domestic and the international tab
         refresh(DashboardSync.DisableSync)
     }
 }
