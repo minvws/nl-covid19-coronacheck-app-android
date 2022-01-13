@@ -463,6 +463,15 @@
             app:popUpTo="@id/nav_my_overview_tabs"
             app:popUpToInclusive="false" />
 
+        <action android:id="@+id/action_info_fragment"
+            app:destination="@id/nav_info_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_my_overview_tabs"
+            app:popUpToInclusive="false" />
+
     </fragment>
 
     <fragment
@@ -626,6 +635,10 @@
         <argument
             android:name="toolbarTitle"
             app:argType="string" />
+
+        <argument
+            android:name="data"
+            app:argType="nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData" />
 
         <action android:id="@+id/action_commercial_test_input_token"
             app:destination="@id/nav_commercial_test_input_token"

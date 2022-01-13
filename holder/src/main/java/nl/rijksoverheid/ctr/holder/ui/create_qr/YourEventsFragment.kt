@@ -269,15 +269,17 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             DomesticVaccinationRecoveryCombination.AddedNegativeTestInVaccinationAssessmentFlow -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
-                    toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
-                    data = InfoFragmentData.TitleDescriptionWithButton(
-                        title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
-                        descriptionData = DescriptionData(
-                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
-                        ),
-                        primaryButtonData = ButtonData.NavigationButton(
-                            text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
-                            navigationActionId = InfoFragmentDirections.actionVisitorPassInputToken().actionId,
+                    infoFragmentDirections = YourEventsFragmentDirections.actionInfoFragment(
+                        toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
+                        data = InfoFragmentData.TitleDescriptionWithButton(
+                            title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
+                            descriptionData = DescriptionData(
+                                htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
+                            ),
+                            primaryButtonData = ButtonData.NavigationButton(
+                                text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
+                                navigationActionId = InfoFragmentDirections.actionVisitorPassInputToken().actionId,
+                            )
                         )
                     )
                 )
