@@ -48,6 +48,6 @@ class VaccinationAssessmentInfoScreenUtilImplTest: AutoCloseKoinTest() {
         )
 
         assertEquals("Details", infoScreen.title)
-        assertEquals("De volgende gegevens zijn opgehaald:<br/><br/>Naam: <b>Bob de Bouwer</b><br/>Geboortedatum: <b>1 jan 1970</b><br/><br/>Beoordelingsdatum: <b>vrijdag 1 januari 01:00</b><br/>Land: <b>Nederland</b><br/><br/>Uniek beoordelingsnummer: <b>123</b><br/>", infoScreen.description)
+        assertEquals("De volgende gegevens zijn opgehaald:<br/><br/>Naam: <b>Bob de Bouwer</b><br/>Geboortedatum: <b>1 jan 1970</b><br/><br/>Beoordelingsdatum: <b>vrijdag 1 januari 01:00</b><br/>Gevaccineerd in (land): <b>Nederland</b><br/><br/>Uniek beoordelingsnummer: <b>123</b><br/>", infoScreen.description)
     }
 }
