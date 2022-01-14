@@ -232,7 +232,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowBoosterItem(internationalGreenCards)) {
+        if (dashboardItemUtil.shouldShowBoosterItem(domesticGreenCards)) {
             dashboardItems.add(
                 DashboardItem.InfoItem.BoosterItem
             )
