@@ -11,10 +11,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 
 class CommercialTestInputTokenFragment: InputTokenFragment() {
@@ -69,5 +69,9 @@ class CommercialTestInputTokenFragment: InputTokenFragment() {
 
     override fun getDeeplinkToken(): String? {
         return args.token
+    }
+
+    override fun presentInputTokenError(errorResult: ErrorResult) {
+        presentError(errorResult)
     }
 }

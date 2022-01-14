@@ -11,10 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
 
 class VisitorPassInputTokenFragment: InputTokenFragment() {
@@ -69,5 +70,16 @@ class VisitorPassInputTokenFragment: InputTokenFragment() {
 
     override fun getDeeplinkToken(): String? {
         return args.token
+    }
+
+    override fun presentInputTokenError(errorResult: ErrorResult) {
+        presentError(
+            ErrorResultFragmentData(
+                title = getString(R.string.rule_engine_no_origin_title),
+                description = getString(R.string.rule_engine_no_test_origin_description, getString(R.string.rule_engine_no_test_origin_description_vaccination_approval)),
+                buttonTitle = getString(R.string.back_to_overview),
+                buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
+            )
+        )
     }
 }

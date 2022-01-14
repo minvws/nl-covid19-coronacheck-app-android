@@ -303,7 +303,7 @@
   <string name="your_vaccination_explanation_vaccination_country">Member state of vaccination:</string>
   <string name="your_vaccination_explanation_unique_code">Unique vaccination identifier:</string>
   <string name="your_vaccination_explanation_doses_answer">%1$s / %2$s</string>
-  <string name="my_overview_not_valid_domestic_but_is_in_eu">Your %1$s isn\'t valid in the Netherlands. You\'ve only got an international certificate.</string>
+  <string name="my_overview_not_valid_domestic_but_is_in_eu">You don\'t have a Dutch %1$s.</string>
   <string name="my_overview_not_valid_eu_but_is_in_domestic">Your %1$s isn\'t valid internationally. You\'ve only got a Dutch certificate.</string>
   <string name="type_recovery">recovery certificate</string>
   <string name="type_test">test certificate</string>
@@ -434,7 +434,7 @@
   <string name="your_events_block_back_dialog_positive_button">Yes, go back</string>
   <string name="your_events_block_back_dialog_negative_button">No</string>
   <string name="your_events_replace_dialog_title">Want to replace your certificate?</string>
-  <string name="your_events_replace_dialog_message">The personal details you just retrieved don\'t match those in your current certificate. You can either stop and have your details changed by the healthcare provider who registered the details for your certificate, or replace your certificate. Your current certificate will then be removed.</string>
+  <string name="your_events_replace_dialog_message">The personal details you just retrieved don\'t match those in your current certificate. You can either stop and have your details changed by the organisation that registered the details for your certificate, or replace your certificate. Your current certificate will then be removed.</string>
   <string name="your_events_replace_dialog_negative_button">Stop</string>
   <string name="your_events_replace_dialog_positive_button">Replace</string>
   <string name="your_events_details_button">Details</string>
@@ -618,12 +618,12 @@
   <string name="holder_event_vaccination_assessment_about_date_of_birth">Date of birth:</string>
   <string name="your_vaccination_explanation_name">Name:</string>
   <string name="your_vaccination_explanation_birthday">Date of birth:</string>
-  <string name="holder_event_vaccination_assessment_wrong_body">Please contact the desk that reviewed your vaccination. They can help you change your details. For more information, please visit <a href="https://www.government.nl/entry-pass-visitors-cc">www.government.nl/entry-pass-visitors</a>.</string>
+  <string name="holder_event_vaccination_assessment_wrong_body"><![CDATA[Please contact the desk that reviewed your vaccination. They can help you change your details. For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="holder_event_vaccination_assessment_alert_message">Doing so will stop the addition of your vaccination approval and you will have to retrieve your details again later.</string>
   <string name="visitorpass_token_error_invalid_code">This code is invalid</string>
   <string name="holder_event_vaccination_assessment_list_message">Are the details correct? If the details are correct, you can add your vaccination approval to the app.</string>
   <string name="holder_completecertificate_title">Complete your visitor pass</string>
-  <string name="holder_completecertificate_body"><![CDATA[Retrieve a negative test result to complete your visitor pass.<br/><br/>Didn\'t do a test yet? Make an appointment at <a href=\"https://www.testenvoortoegang.org\">www.testenvoortoegang.org</a>.]]></string>
+  <string name="holder_completecertificate_body"><![CDATA[Retrieve a negative test result to complete your visitor pass.<br/><br/>Didn\'t do a test yet? Make an appointment at <a href=\"https://www.testenvoortoegang.org/?lang=en\">www.testenvoortoegang.org</a>.]]></string>
   <string name="holder_completecertificate_button_fetchnegativetest">Retrieve test result</string>
   <string name="holder_completecertificate_toolbar">Complete visitor pass</string>
   <string name="holder_dashboard_visitorpassincompletebanner_title">Your vaccination approval has been added. Complete your visitor pass with your negative test result</string>
