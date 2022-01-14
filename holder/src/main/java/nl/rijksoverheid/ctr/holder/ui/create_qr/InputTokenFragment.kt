@@ -7,15 +7,11 @@ import android.view.inputmethod.EditorInfo
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
-import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentInputTokenBinding
@@ -28,7 +24,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
@@ -145,9 +141,7 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
                     binding.verificationCodeInput.error = getString(R.string.commercial_test_error_empty_verification_code)
                 }
                 is TestResult.Error -> {
-                    presentError(
-                        errorResult = it.errorResult
-                    )
+                    presentInputTokenError(it.errorResult)
                 }
             }
         })
@@ -265,4 +259,5 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
     abstract fun navigateCouldNotCreateQr()
     abstract fun navigateMyEvents(result: TestResult.NegativeTestResult)
     abstract fun getDeeplinkToken(): String?
+    abstract fun presentInputTokenError(errorResult: ErrorResult)
 }
