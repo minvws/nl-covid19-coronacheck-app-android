@@ -191,7 +191,10 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
         binding.noTokenReceivedBtn.setOnClickListener {
             infoFragmentUtil.presentAsBottomSheet(childFragmentManager, InfoFragmentData.TitleDescription(
                 title = getString(getFragmentData().noCodeDialogTitle),
-                descriptionData = DescriptionData(getFragmentData().noCodeDialogDescription),
+                descriptionData = DescriptionData(
+                    htmlText = getFragmentData().noCodeDialogDescription,
+                    htmlLinksEnabled = true,
+                ),
             ))
         }
     }

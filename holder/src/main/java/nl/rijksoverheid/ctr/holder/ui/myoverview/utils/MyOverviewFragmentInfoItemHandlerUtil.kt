@@ -258,7 +258,8 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             data = InfoFragmentData.TitleDescriptionWithButton(
                 title = myOverviewFragment.getString(R.string.holder_completecertificate_title),
                 descriptionData = DescriptionData(
-                    htmlText = R.string.holder_completecertificate_body
+                    htmlText = R.string.holder_completecertificate_body,
+                    htmlLinksEnabled = true,
                 ),
                 primaryButtonData = ButtonData.NavigationButton(
                     text = myOverviewFragment.getString(R.string.holder_completecertificate_button_fetchnegativetest),
