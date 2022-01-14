@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
 import android.content.Context
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -27,6 +28,14 @@ interface MyOverviewGreenCardExpiryUtil {
     ): ExpireCountDown
 
     fun getExpiryText(result: ExpireCountDown.Show): String
+
+    /**
+     * Get the last origin that's valid if it's the only valid one.
+     *
+     * @param[origins] origins list to get the last one valid from
+     * @return last origin that's valid or null when none or more are valid
+     */
+    fun getLastValidOrigin(origins: List<OriginEntity>): OriginEntity?
 }
 
 class MyOverviewGreenCardExpiryUtilImpl(
@@ -78,5 +87,11 @@ class MyOverviewGreenCardExpiryUtilImpl(
                 result.minutesLeft.toString()
             )
         }
+    }
+
+    override fun getLastValidOrigin(origins: List<OriginEntity>): OriginEntity? {
+        return origins.filter { it.expirationTime > OffsetDateTime.now(clock) }
+            .takeIf { it.size == 1 }
+            ?.firstOrNull()
     }
 }
