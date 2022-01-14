@@ -4,6 +4,7 @@ import android.content.Context
 import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -48,7 +49,7 @@ class MyOverviewGreenCardExpiryUtilImplTest {
                 Instant.parse("2021-01-01T23:50:00.00Z"),
                 ZoneId.of("UTC")
             ),
-            type =  OriginType.Vaccination
+            type = OriginType.Vaccination
         )
         assertEquals(
             MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show(
@@ -85,7 +86,7 @@ class MyOverviewGreenCardExpiryUtilImplTest {
                 Instant.parse("2021-01-01T23:59:00.00Z"),
                 ZoneId.of("UTC")
             ),
-            type =  OriginType.Recovery
+            type = OriginType.Recovery
         )
         assertEquals(
             MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show(
@@ -122,7 +123,7 @@ class MyOverviewGreenCardExpiryUtilImplTest {
                 Instant.parse("2021-01-01T05:59:00.00Z"),
                 ZoneId.of("UTC")
             ),
-            type =  OriginType.Test
+            type = OriginType.Test
         )
         assertEquals(
             MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show(
@@ -143,7 +144,7 @@ class MyOverviewGreenCardExpiryUtilImplTest {
                 Instant.parse("2021-01-01T00:00:50.00Z"),
                 ZoneId.of("UTC")
             ),
-            type =  OriginType.Vaccination
+            type = OriginType.Vaccination
         )
         assertEquals(
             MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show(
@@ -180,7 +181,85 @@ class MyOverviewGreenCardExpiryUtilImplTest {
 
         util.getExpiryText(result)
 
-        verify { context.getString(R.string.my_overview_test_result_expires_in_hours_minutes, "2", "15") }
+        verify {
+            context.getString(
+                R.string.my_overview_test_result_expires_in_hours_minutes,
+                "2",
+                "15"
+            )
+        }
+    }
+
+    @Test
+    fun `Get the last valid origin when it's the only valid one left`() {
+        val context: Context = mockk(relaxed = true)
+        val util = MyOverviewGreenCardExpiryUtilImpl(
+            clock = Clock.fixed(Instant.parse("2021-01-10T00:00:00.00Z"), ZoneId.of("UTC")),
+            context = context
+        )
+        val validOrigin = fakeOriginEntity(
+            expirationTime = OffsetDateTime.ofInstant(
+                Instant.parse("2021-01-11T00:00:00.00Z"), ZoneId.of("UTC")
+            )
+        )
+        val origins = listOf(
+            validOrigin,
+            fakeOriginEntity(
+                expirationTime = OffsetDateTime.ofInstant(
+                    Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")
+                )
+            )
+        )
+
+        assertEquals(validOrigin, util.getLastValidOrigin(origins))
+    }
+
+    @Test
+    fun `Last valid origin should not return anything when more than 1 origins are valid`() {
+        val context: Context = mockk(relaxed = true)
+        val util = MyOverviewGreenCardExpiryUtilImpl(
+            clock = Clock.fixed(Instant.parse("2021-01-10T00:00:00.00Z"), ZoneId.of("UTC")),
+            context = context
+        )
+        val validOrigin = fakeOriginEntity(
+            expirationTime = OffsetDateTime.ofInstant(
+                Instant.parse("2021-01-11T00:00:00.00Z"), ZoneId.of("UTC")
+            )
+        )
+        val origins = listOf(
+            validOrigin,
+            fakeOriginEntity(
+                expirationTime = OffsetDateTime.ofInstant(
+                    Instant.parse("2021-01-12T00:00:00.00Z"), ZoneId.of("UTC")
+                )
+            )
+        )
+
+        assertEquals(null, util.getLastValidOrigin(origins))
+    }
+
+    @Test
+    fun `Last valid origin should not return anything when none are valid`() {
+        val context: Context = mockk(relaxed = true)
+        val util = MyOverviewGreenCardExpiryUtilImpl(
+            clock = Clock.fixed(Instant.parse("2021-01-10T00:00:00.00Z"), ZoneId.of("UTC")),
+            context = context
+        )
+        val validOrigin = fakeOriginEntity(
+            expirationTime = OffsetDateTime.ofInstant(
+                Instant.parse("2021-01-09T00:00:00.00Z"), ZoneId.of("UTC")
+            )
+        )
+        val origins = listOf(
+            validOrigin,
+            fakeOriginEntity(
+                expirationTime = OffsetDateTime.ofInstant(
+                    Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")
+                )
+            )
+        )
+
+        assertEquals(null, util.getLastValidOrigin(origins))
     }
 }
 

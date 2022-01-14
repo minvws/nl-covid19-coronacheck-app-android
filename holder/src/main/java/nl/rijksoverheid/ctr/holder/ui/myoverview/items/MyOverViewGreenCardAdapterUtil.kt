@@ -105,8 +105,10 @@ class MyOverViewGreenCardAdapterUtilImpl(
                                 )
                             }
                         }
-                    // When there is only 1 origin set potential expiry countdown
-                    if (it.origins.size == 1) setExpiryText(it, viewBinding)
+                    // When there is only 1 valid origin set potential expiry countdown
+                    myOverviewGreenCardExpiryUtil.getLastValidOrigin(it.origins)?.let {
+                        setExpiryText(it, viewBinding)
+                    }
                 }
             }
         }
@@ -404,15 +406,12 @@ class MyOverViewGreenCardAdapterUtilImpl(
     }
 
     private fun setExpiryText(
-        greenCard: GreenCard,
+        origin: OriginEntity,
         viewBinding: ViewBindingWrapper
     ) {
-        val expireCountDownResult = greenCard.origins.firstOrNull()
-            ?.let {
-                myOverviewGreenCardExpiryUtil.getExpireCountdown(
-                    it.expirationTime, it.type
-                )
-            }
+        val expireCountDownResult = myOverviewGreenCardExpiryUtil.getExpireCountdown(
+            origin.expirationTime, origin.type
+        )
         if (expireCountDownResult is MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show) {
             viewBinding.expiresIn.visibility = View.VISIBLE
             viewBinding.expiresIn.text =
