@@ -509,7 +509,7 @@
     <fragment
         android:id="@+id/nav_visitor_pass_input_token"
         android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.VisitorPassInputTokenFragment"
-        android:label="@string/visitorpass_start_toolbar_title"
+        android:label="@string/holder_event_vaccination_assessment_toolbar_title"
         tools:layout="@layout/fragment_input_token">
 
         <deepLink app:uri=".*/app/redeem-assessment#{token}"  />
