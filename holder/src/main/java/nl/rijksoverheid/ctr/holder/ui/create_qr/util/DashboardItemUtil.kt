@@ -55,6 +55,11 @@ interface DashboardItemUtil {
     fun shouldShowBoosterItem(
         greenCards: List<GreenCard>
     ): Boolean
+    fun shouldShowOriginInfoItem(
+        greenCards: List<GreenCard>,
+        greenCardType: GreenCardType,
+        originType: OriginType
+    ): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -195,5 +200,19 @@ class DashboardItemUtilImpl(
         val boosterItemNotDismissedYet = persistenceManager.getHasDismissedBoosterInfoCard() == 0L
         val hasVaccinationOrigin = greenCards.map { it.origins.map { origin -> origin.type } }.flatten().contains(OriginType.Vaccination)
         return boosterItemNotDismissedYet && hasVaccinationOrigin
+    }
+
+    override fun shouldShowOriginInfoItem(
+        greenCards: List<GreenCard>,
+        greenCardType: GreenCardType,
+        originInfoTypeOrigin: OriginType
+    ): Boolean {
+        val hasVaccinationAssessmentOrigin = greenCardUtil.hasOrigin(
+            greenCards = greenCards,
+            originType = OriginType.VaccinationAssessment
+        )
+
+        // We do not show the origin info item for a domestic test if there is a vaccination assessment green card active (this causes some confusion in the UI)
+        return !(hasVaccinationAssessmentOrigin && originInfoTypeOrigin == OriginType.Test && greenCardType == GreenCardType.Domestic)
     }
 }

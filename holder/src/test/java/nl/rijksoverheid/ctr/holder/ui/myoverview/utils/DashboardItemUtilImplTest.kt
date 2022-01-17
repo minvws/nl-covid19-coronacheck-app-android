@@ -14,16 +14,24 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CardItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import org.junit.Assert.*
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
+import org.robolectric.RobolectricTestRunner
 import java.lang.IllegalStateException
 import java.time.OffsetDateTime
 
-class DashboardItemUtilImplTest {
+@RunWith(RobolectricTestRunner::class)
+class DashboardItemUtilImplTest: AutoCloseKoinTest() {
+
+    private val greenCardUtil: GreenCardUtil by inject()
 
     @Test
     fun `getHeaderItemText returns correct text if domestic and empty state`() {
@@ -494,6 +502,51 @@ class DashboardItemUtilImplTest {
         )
 
         assertFalse(shouldShowBoosterItem)
+    }
+
+    @Test
+    fun `shouldShowOriginInfoItem returns false if vaccination assessment green card exists and card is for domestic test`() {
+        val util = getUtil(
+            greenCardUtil = greenCardUtil
+        )
+
+        val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
+            greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
+            greenCardType = GreenCardType.Domestic,
+            originInfoTypeOrigin = OriginType.Test
+        )
+
+        assertFalse(shouldShowOriginInfoItem)
+    }
+
+    @Test
+    fun `shouldShowOriginInfoItem returns true if no vaccination assessment green card exists and card is for domestic test`() {
+        val util = getUtil(
+            greenCardUtil = greenCardUtil
+        )
+
+        val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
+            greenCards = listOf(),
+            greenCardType = GreenCardType.Domestic,
+            originInfoTypeOrigin = OriginType.Test
+        )
+
+        assertTrue(shouldShowOriginInfoItem)
+    }
+
+    @Test
+    fun `shouldShowOriginInfoItem returns true if vaccination assessment green card exists and card is for domestic vaccination`() {
+        val util = getUtil(
+            greenCardUtil = greenCardUtil
+        )
+
+        val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
+            greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
+            greenCardType = GreenCardType.Domestic,
+            originInfoTypeOrigin = OriginType.VaccinationAssessment
+        )
+
+        assertTrue(shouldShowOriginInfoItem)
     }
 
     private fun createCardItem(originType: OriginType) = CardItem(
