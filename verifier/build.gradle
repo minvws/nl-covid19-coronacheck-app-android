@@ -10,7 +10,7 @@ def appVersionCode =  1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
-version = "2.6.1"
+version = "2.6.2"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
@@ -109,10 +109,6 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
-    }
-
-    packagingOptions {
-        doNotStrip '**/*.so'
     }
 }
 
