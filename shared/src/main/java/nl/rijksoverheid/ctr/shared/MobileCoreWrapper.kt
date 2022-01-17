@@ -12,6 +12,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import mobilecore.Mobilecore
+import mobilecore.Mobilecore.VERIFICATION_POLICY_3G
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
 import nl.rijksoverheid.ctr.shared.ext.successJsonObject
 import nl.rijksoverheid.ctr.shared.ext.successString
@@ -122,7 +123,7 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
     }
 
     override fun verify(credential: ByteArray): VerificationResult {
-        val result = Mobilecore.verify(credential)
+        val result = Mobilecore.verify(credential, VERIFICATION_POLICY_3G)
         return VerificationResult(
             status = result.status,
             details = VerificationResultDetails(
