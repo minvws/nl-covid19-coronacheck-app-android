@@ -543,7 +543,7 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
             greenCardType = GreenCardType.Domestic,
-            originInfoTypeOrigin = OriginType.VaccinationAssessment
+            originInfoTypeOrigin = OriginType.Vaccination
         )
 
         assertTrue(shouldShowOriginInfoItem)
