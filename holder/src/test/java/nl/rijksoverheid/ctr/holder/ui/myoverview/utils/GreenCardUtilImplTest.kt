@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.holder.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
@@ -19,6 +20,36 @@ import kotlin.test.assertTrue
 class GreenCardUtilImplTest {
 
     private val credentialUtil = mockk<CredentialUtil>(relaxed = true)
+
+    @Test
+    fun `hasOrigin returns true if green cards contain origin`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
+        val util = GreenCardUtilImpl(clock, credentialUtil)
+
+        val greenCard = fakeGreenCard(originType = OriginType.Vaccination)
+
+        val hasOrigin = util.hasOrigin(
+            greenCards = listOf(greenCard),
+            originType = OriginType.Vaccination
+        )
+
+        assertTrue(hasOrigin)
+    }
+
+    @Test
+    fun `hasOrigin returns false if green cards does not contain origin`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
+        val util = GreenCardUtilImpl(clock, credentialUtil)
+
+        val greenCard = fakeGreenCard(originType = OriginType.Recovery)
+
+        val hasOrigin = util.hasOrigin(
+            greenCards = listOf(greenCard),
+            originType = OriginType.Vaccination
+        )
+
+        assertFalse(hasOrigin)
+    }
 
     @Test
     fun `getExpireDate returns expired date of origin furthest away`() {

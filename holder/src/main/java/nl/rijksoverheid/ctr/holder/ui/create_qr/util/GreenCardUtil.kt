@@ -8,6 +8,8 @@ import java.time.Clock
 import java.time.OffsetDateTime
 
 interface GreenCardUtil {
+    fun hasOrigin(greenCards: List<GreenCard>, originType: OriginType): Boolean
+
     fun isExpired(greenCard: GreenCard): Boolean
 
     /**
@@ -43,6 +45,10 @@ class GreenCardUtilImpl(
             is GreenCardType.Domestic -> ErrorCorrectionLevel.M
             is GreenCardType.Eu -> ErrorCorrectionLevel.Q
         }
+    }
+
+    override fun hasOrigin(greenCards: List<GreenCard>, originType: OriginType): Boolean {
+        return greenCards.map { it.origins }.flatten().map { it.type }.any { it == originType }
     }
 
     override fun isExpired(greenCard: GreenCard): Boolean {

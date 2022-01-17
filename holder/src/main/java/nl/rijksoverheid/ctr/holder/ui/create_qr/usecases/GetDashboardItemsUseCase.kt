@@ -140,6 +140,7 @@ class GetDashboardItemsUseCaseImpl(
 
         dashboardItems.addAll(
             getGreenCardItems(
+                greenCards = allGreenCards,
                 greenCardType = GreenCardType.Domestic,
                 greenCardsForSelectedType = domesticGreenCards,
                 greenCardsForUnselectedType = internationalGreenCards,
@@ -240,6 +241,7 @@ class GetDashboardItemsUseCaseImpl(
 
         dashboardItems.addAll(
             getGreenCardItems(
+                greenCards = allGreenCards,
                 greenCardType = GreenCardType.Eu,
                 greenCardsForSelectedType = internationalGreenCards,
                 greenCardsForUnselectedType = domesticGreenCards,
@@ -273,6 +275,7 @@ class GetDashboardItemsUseCaseImpl(
     }
 
     private suspend fun getGreenCardItems(
+        greenCards: List<GreenCard>,
         greenCardType: GreenCardType,
         greenCardsForSelectedType: List<GreenCard>,
         greenCardsForUnselectedType: List<GreenCard>,
@@ -308,21 +311,27 @@ class GetDashboardItemsUseCaseImpl(
             if (!allValidOriginsForSelectedType.map { it.type }
                     .contains(originForUnselectedType.type)) {
 
-                items.add(
-                    if (greenCardType == GreenCardType.Domestic
-                        && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(
-                            greenCardsForSelectedType,
-                            greenCardsForUnselectedType
-                        )
-                    ) {
-                        DashboardItem.InfoItem.MissingDutchVaccinationItem
-                    } else {
-                        DashboardItem.InfoItem.OriginInfoItem(
-                            greenCardType = greenCardType,
-                            originType = originForUnselectedType.type
-                        )
-                    }
-                )
+                if (dashboardItemUtil.shouldShowOriginInfoItem(
+                        greenCards = greenCards,
+                        greenCardType = greenCardType,
+                        originType = originForUnselectedType.type
+                    )) {
+                    items.add(
+                        if (greenCardType == GreenCardType.Domestic
+                            && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(
+                                greenCardsForSelectedType,
+                                greenCardsForUnselectedType
+                            )
+                        ) {
+                            DashboardItem.InfoItem.MissingDutchVaccinationItem
+                        } else {
+                            DashboardItem.InfoItem.OriginInfoItem(
+                                greenCardType = greenCardType,
+                                originType = originForUnselectedType.type
+                            )
+                        }
+                    )
+                }
             }
         }
 
