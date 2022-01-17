@@ -70,8 +70,4 @@ class CommercialTestInputTokenFragment: InputTokenFragment() {
     override fun getDeeplinkToken(): String? {
         return args.token
     }
-
-    override fun presentInputTokenError(errorResult: ErrorResult) {
-        presentError(errorResult)
-    }
 }
