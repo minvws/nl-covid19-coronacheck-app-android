@@ -25,6 +25,7 @@
             app:layout_goneMarginEnd="24dp"
             app:layout_goneMarginBottom="24dp"
             android:textAppearance="?attr/textAppearanceBody1"
+            android:focusable="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/button"
             app:layout_constraintStart_toStartOf="parent"
