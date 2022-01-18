@@ -141,7 +141,7 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
                     binding.verificationCodeInput.error = getString(R.string.commercial_test_error_empty_verification_code)
                 }
                 is TestResult.Error -> {
-                    presentInputTokenError(it.errorResult)
+                    presentError(it.errorResult)
                 }
             }
         })
@@ -259,5 +259,4 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
     abstract fun navigateCouldNotCreateQr()
     abstract fun navigateMyEvents(result: TestResult.NegativeTestResult)
     abstract fun getDeeplinkToken(): String?
-    abstract fun presentInputTokenError(errorResult: ErrorResult)
 }

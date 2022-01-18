@@ -71,15 +71,4 @@ class VisitorPassInputTokenFragment: InputTokenFragment() {
     override fun getDeeplinkToken(): String? {
         return args.token
     }
-
-    override fun presentInputTokenError(errorResult: ErrorResult) {
-        presentError(
-            ErrorResultFragmentData(
-                title = getString(R.string.rule_engine_no_origin_title),
-                description = getString(R.string.rule_engine_no_test_origin_description, getString(R.string.rule_engine_no_test_origin_description_vaccination_approval)),
-                buttonTitle = getString(R.string.back_to_overview),
-                buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
-            )
-        )
-    }
 }
