@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
