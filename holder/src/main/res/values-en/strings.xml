@@ -49,8 +49,8 @@
   <string name="accessibility_label_my_overview_test_result_personal_data">Your personal data: %1$s %2$s %3$s %4$s</string>
   <string name="accessibility_label_selected">Selected</string>
   <string name="accessibility_label_not_selected">Not selected</string>
-  <string name="my_overview_test_result_expires_in_hours_minutes">Expires in %1$s hour(s) %2$s min</string>
-  <string name="my_overview_test_result_expires_in_minutes">Expires in %1$s min</string>
+  <string name="my_overview_test_result_expires_in_hours_minutes">Expires in %1$s, %2$s</string>
+  <string name="my_overview_test_result_expires_in_minutes">Expires in %1$s</string>
   <string name="my_overview_test_result_footer">Show QR code at the entrance</string>
   <string name="my_overview_test_result_button">View QR</string>
   <string name="my_overview_test_result_button_indicator_accessibility_description">Loading, please wait</string>
@@ -447,9 +447,9 @@
   <string name="new_in_app_tabs_title">A Dutch and an international tab</string>
   <string name="new_in_app_tabs_description">From now on you can easily switch between your Dutch and international certificate. At the top of the screen, you’ll find a tab named ‘the Netherlands’ and a tab named ‘International’. Are you travelling abroad? Use the certificates found under ‘International’.</string>
   <string name="your_events_and">and</string>
-  <string name="my_overview_clock_deviation_description">Check your phone\'s time settings. They might be incorrect.</string>
-  <string name="clock_deviation_explanation_title">Please check your phone’s time settings</string>
-  <string name="clock_deviation_explanation_description"><![CDATA[Your phone’s time settings may be incorrect. Your phone may be a few minutes ahead. To make the best use of the CoronaCheck app, it is important that the time is set correctly.<br/><br/><a href=\"#\">Go to settings</a> on your phone and set date and time to ‘set automatically’.]]></string>
+  <string name="my_overview_clock_deviation_description">Check your phone\'s time settings. They might be incorrect</string>
+  <string name="clock_deviation_explanation_title">Check your phone’s time settings</string>
+  <string name="clock_deviation_explanation_description"><![CDATA[In order to properly use the CoronaCheck app, it is important that the time on your phone is set correctly. For example, if the clock on your phone is a few minutes ahead, an error might occur while verifying your coronavirus pass.<br/><br/><a href=\"#\">Go to your phone\'s settings</a> and set the date and time to \'set automatically\'.]]></string>
   <string name="domestic_qr_code_title">Dutch QR</string>
   <string name="app_status_update_recommended_title">Update your app in advance</string>
   <string name="app_status_update_recommended_message">Want to prevent having to update when you\'re entering a place, or crossing the border? Then update to a newer version now.</string>
@@ -601,13 +601,13 @@
   <string name="holder_event_vaccination_assessment_about_unique_identifier">Unique review identifier:</string>
   <string name="holder_event_vaccination_assessment_element_title">Vaccination approval</string>
   <string name="holder_event_vaccination_assessment_nolist_title">No vaccination approval available</string>
-  <string name="holder_event_vaccination_assessment_nolist_message"><![CDATA[There are no details available about your vaccination approval. Please contact the desk that reviewed your vaccination.<br/><br/>For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
+  <string name="holder_event_vaccination_assessment_nolist_message"><![CDATA[There are no details available about your vaccination approval. Please go back to the desk that reviewed your vaccination.<br/><br/>For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="holder_event_vaccination_assessment_nolist_action">To my certificates</string>
   <string name="visitorpass_start_toolbar_title">Add visitor pass</string>
   <string name="general_visitorPass">visitor pass</string>
   <string name="holder_event_vaccination_assessment_toolbar_title">Retrieve approval</string>
   <string name="visitorpass_code_description_deeplink">Enter your verification code. You will receive this via text or email.</string>
-  <string name="visitorpass_token_modal_notoken_details"><![CDATA[You will receive an approval code from the desk that reviewed your vaccination, either by email or on paper. Don\'t have an approval code? Please contact the desk you stopped by.<br/><br/>Didn’t stop by a desk yet to have your vaccination reviewed? For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
+  <string name="visitorpass_token_modal_notoken_details"><![CDATA[You will receive an approval code from the desk that reviewed your vaccination, either by email or on paper. Don\'t have an approval code? Please go back to the desk you stopped by.<br/><br/>Didn’t stop by a desk yet to have your vaccination reviewed? For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="visitorpass_code_description">Enter your approval code. You received this code from the desk that reviewed your vaccination.</string>
   <string name="visitorpass_code_review_input">Approval code</string>
   <string name="visitorpass_code_review_placeholder">E.g. VAC-3839287262-F2</string>
@@ -618,7 +618,7 @@
   <string name="holder_event_vaccination_assessment_about_date_of_birth">Date of birth:</string>
   <string name="your_vaccination_explanation_name">Name:</string>
   <string name="your_vaccination_explanation_birthday">Date of birth:</string>
-  <string name="holder_event_vaccination_assessment_wrong_body"><![CDATA[Please contact the desk that reviewed your vaccination. They can help you change your details. For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
+  <string name="holder_event_vaccination_assessment_wrong_body"><![CDATA[Please go back to the desk that reviewed your vaccination. They can help you change your details. For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="holder_event_vaccination_assessment_alert_message">Doing so will stop the addition of your vaccination approval and you will have to retrieve your details again later.</string>
   <string name="visitorpass_token_error_invalid_code">This code is invalid</string>
   <string name="holder_event_vaccination_assessment_list_message">Are the details correct? If the details are correct, you can add your vaccination approval to the app.</string>
@@ -656,4 +656,12 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Your negative test result was successfully added. Add your vaccination approval to complete your visitor pass.<br /><br />To this end, you\'ve received an approval code from the desk that reviewed your vaccination. You\'ve received this code either by email or on paper.]]></string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Complete certificate</string>
   <string name="holder_event_vaccination_assessment_about_country">Vaccinated in (country):</string>
+  <plurals name="my_overview_test_result_expires_hours">
+    <item quantity="one">hour</item>
+    <item quantity="other">hours</item>
+  </plurals>
+  <plurals name="my_overview_test_result_expires_minutes">
+    <item quantity="one">minute</item>
+    <item quantity="other">minutes</item>
+  </plurals>
 </resources>
