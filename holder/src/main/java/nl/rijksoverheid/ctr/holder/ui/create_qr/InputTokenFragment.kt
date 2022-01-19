@@ -58,6 +58,7 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
         binding.description.text = getString(data.description)
         binding.uniqueCodeInput.hint = getString(data.uniqueCodeInputHeader)
         binding.noTokenReceivedBtn.text = getString(data.noCodeText)
+        binding.noTokenReceivedBtn.contentDescription = getString(data.noCodeText)
         binding.bottom.setButtonText(getString(data.buttonText))
     }
 
