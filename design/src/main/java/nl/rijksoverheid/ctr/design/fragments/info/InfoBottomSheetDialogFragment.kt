@@ -68,8 +68,7 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 htmlTextString?.let {
                     setHtmlText(
                         htmlText = it,
-                        htmlLinksEnabled = htmlLinksEnabled,
-                        htmlTextColor = htmlTextColor,
+                        htmlLinksEnabled = htmlLinksEnabled
                     )
                 }
                 customLinkIntent?.let { enableCustomLinks { context.startActivity(it) } }
