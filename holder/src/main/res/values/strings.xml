@@ -109,7 +109,7 @@
   <string name="testresult_to_qr_code_description">In de QR-code staat dat je negatief getest bent op 2 februari om 14:06.\nIn de CoronaCheck-app is alleen de anonieme QR-code zichtbaar, zonder testdetails.</string>
   <string name="button_continue">Verder</string>
   <string name="commercial_test_error_invalid_code">Deze code is niet geldig</string>
-  <string name="commercial_test_error_invalid_combination">Geen geldige combinatie</string>
+  <string name="commercial_test_error_invalid_combination">Geen geldige combinatie. Vul de 6-cijferige verificatiecode in.</string>
   <string name="commercial_test_error_unknown_test_provider">Ophaalcode is van een onbekende testlocatie</string>
   <string name="commercial_test_error_empty_retrieval_code">Graag eerst een ophaalcode invullen</string>
   <string name="commercial_test_error_empty_verification_code">Graag eerst een verificatiecode invullen</string>
@@ -594,7 +594,7 @@
   <string name="visitorpass_code_review_placeholder_screenreader">Vul hier je beoordelingscode in</string>
   <string name="visitorpass_token_error_empty_token">Graag je beoordelingscode invullen</string>
   <string name="visitorpass_token_error_unknown_provider">Deze testlocatie is (nog) niet bij ons bekend. Neem contact op met de locatie waar je bent getest.</string>
-  <string name="visitorpass_token_error_invalid_combination">Geen geldige combinatie</string>
+  <string name="visitorpass_token_error_invalid_combination">Geen geldige combinatie. Vul de 6-cijferige verificatiecode in.</string>
   <string name="visitorpass_token_modal_notoken_title">Heb je geen beoordelingscode?</string>
   <string name="holder_event_vaccination_assessment_element_subtitle"><![CDATA[Beoordelingsdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
   <string name="holder_event_vaccination_assessment_about_date">Beoordelingsdatum:</string>
