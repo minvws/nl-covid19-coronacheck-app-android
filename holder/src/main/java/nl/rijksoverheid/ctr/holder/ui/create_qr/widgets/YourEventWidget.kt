@@ -33,13 +33,15 @@ class YourEventWidget @JvmOverloads constructor(
         ItemYourEventBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun setContent(title: String, subtitle: String, infoClickListener: () -> Unit) {
+        onClickListener = {
+            infoClickListener.invoke()
+        }
+
         binding.rowTitle.text = title
         binding.rowSubtitle.setHtmlText(subtitle)
+        binding.detailsButton.setOnClickListener { onClickListener.invoke() }
 
-        with (binding.testResultsGroup) {
-            onClickListener = {
-                infoClickListener.invoke()
-            }
+        with(binding.testResultsGroup) {
             setOnClickListener { onClickListener.invoke() }
 
             setAccessibilityLabel(String.format("%s. %s.",
@@ -56,7 +58,7 @@ class YourEventWidget @JvmOverloads constructor(
         if (enabled) {
             binding.testResultsGroup.setOnClickListener { onClickListener.invoke() }
         } else {
-            binding.testResultsGroup.setOnClickListener {  }
+            binding.testResultsGroup.setOnClickListener { }
         }
     }
 
