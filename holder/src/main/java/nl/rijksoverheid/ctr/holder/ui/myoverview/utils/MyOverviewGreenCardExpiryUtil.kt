@@ -75,16 +75,18 @@ class MyOverviewGreenCardExpiryUtilImpl(
     override fun getExpiryText(
         result: MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show
     ): String {
-        return if (result.hoursLeft == 0L) {
+        val hoursLeft = result.hoursLeft.toInt()
+        val minutesLeft = result.minutesLeft.toInt()
+        return if (hoursLeft == 0) {
             context.getString(
                 R.string.my_overview_test_result_expires_in_minutes,
-                result.minutesLeft.toString()
+                "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}"
             )
         } else {
             context.getString(
                 R.string.my_overview_test_result_expires_in_hours_minutes,
-                result.hoursLeft.toString(),
-                result.minutesLeft.toString()
+                "$hoursLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_hours, hoursLeft)}",
+                "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}",
             )
         }
     }

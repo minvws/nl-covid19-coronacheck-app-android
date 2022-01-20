@@ -49,8 +49,8 @@
   <string name="accessibility_label_my_overview_test_result_personal_data">Jouw persoonsgegevens: %1$s %2$s %3$s %4$s</string>
   <string name="accessibility_label_selected">Geselecteerd</string>
   <string name="accessibility_label_not_selected">Niet geselecteerd</string>
-  <string name="my_overview_test_result_expires_in_hours_minutes">Verloopt in %1$s uur %2$s min</string>
-  <string name="my_overview_test_result_expires_in_minutes">Verloopt over %1$s min</string>
+  <string name="my_overview_test_result_expires_in_hours_minutes">Verloopt over %1$s en %2$s</string>
+  <string name="my_overview_test_result_expires_in_minutes">Verloopt over %1$s</string>
   <string name="my_overview_test_result_footer">Laat QR-code zien bij ingang</string>
   <string name="my_overview_test_result_button">Bekijk QR</string>
   <string name="my_overview_test_result_button_indicator_accessibility_description">Bezig met laden, even geduld</string>
@@ -447,9 +447,9 @@
   <string name="new_in_app_tabs_title">Een Nederlands en internationaal tabblad</string>
   <string name="new_in_app_tabs_description">Je kunt nu makkelijker wisselen tussen je Nederlandse en internationale bewijs. Bovenin het scherm vind je een tabblad ‘Nederland’ en een tabblad ‘Internationaal’. Ga je de grens over? Gebruik dan de bewijzen onder ‘Internationaal’.</string>
   <string name="your_events_and">en</string>
-  <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld.</string>
+  <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld</string>
   <string name="clock_deviation_explanation_title">Controleer de tijd van je telefoon</string>
-  <string name="clock_deviation_explanation_description"><![CDATA[De tijd van jouw telefoon lijkt niet te kloppen. Het kan bijvoorbeeld zijn dat je telefoon een paar minuten voor loopt. Om de CoronaCheck-app goed te kunnen gebruiken is het belangrijk dat de tijd juist staat ingesteld.<br/><br/><a href=\"#\">Ga naar de instellingen</a> van jouw telefoon en zet de datum en tijd op ‘automatisch instellen’.]]></string>
+  <string name="clock_deviation_explanation_description"><![CDATA[Om de CoronaCheck-app goed te kunnen gebruiken, is het belangrijk dat de tijd op je telefoon goed staat ingesteld. Loopt je telefoon bijvoorbeeld een paar minuten voor? Dan kan er een fout ontstaan tijdens de controle van je coronabewijs.<br/><br/><a href=\"#\">Ga naar de instellingen van je telefoon</a> en zet de datum en tijd op ‘automatisch instellen’.]]></string>
   <string name="domestic_qr_code_title">Nederlandse QR</string>
   <string name="app_status_update_recommended_title">Update alvast je app</string>
   <string name="app_status_update_recommended_message">Voorkomen dat je moet updaten als je ergens naar binnen wilt of de grens over gaat? Update nu al naar een nieuwere versie.</string>
@@ -602,13 +602,13 @@
   <string name="holder_event_vaccination_assessment_about_unique_identifier">Uniek beoordelingsnummer:</string>
   <string name="holder_event_vaccination_assessment_element_title">Vaccinatiebeoordeling</string>
   <string name="holder_event_vaccination_assessment_nolist_title">Geen vaccinatiebeoordeling beschikbaar</string>
-  <string name="holder_event_vaccination_assessment_nolist_message"><![CDATA[Er zijn geen gegevens over je vaccinatiebeoordeling beschikbaar. Neem contact op met de balie waar jouw vaccinatie is beoordeeld.<br/><br/>Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
+  <string name="holder_event_vaccination_assessment_nolist_message"><![CDATA[Er zijn geen gegevens over je vaccinatiebeoordeling beschikbaar. Ga terug naar de balie waar jouw vaccinatie is beoordeeld.<br/><br/>Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_event_vaccination_assessment_nolist_action">Naar mijn bewijzen</string>
   <string name="visitorpass_start_toolbar_title">Bezoekersbewijs toevoegen</string>
   <string name="general_visitorPass">bezoekersbewijs</string>
   <string name="holder_event_vaccination_assessment_toolbar_title">Beoordeling ophalen</string>
   <string name="visitorpass_code_description_deeplink">Vul je verificatiecode in. Deze krijg je via sms of e-mail.</string>
-  <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt een beoordelingscode van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen. Heb je geen beoordelingscode? Neem dan contact op met de balie waar je bent geweest.<br/><br/>Nog niet langs een balie geweest om je vaccinatie te laten beoordelen? Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
+  <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt een beoordelingscode van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen. Heb je geen beoordelingscode? Ga dan terug naar de balie waar je bent geweest.<br/><br/>Nog niet langs een balie geweest om je vaccinatie te laten beoordelen? Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="visitorpass_code_description">Vul je beoordelingscode in. Deze heb je van de balie gekregen waar jouw vaccinatie werd beoordeeld.</string>
   <string name="visitorpass_code_review_input">Beoordelingscode</string>
   <string name="visitorpass_code_review_placeholder">Bijv. VAC-3839287262-F2</string>
@@ -619,7 +619,7 @@
   <string name="holder_event_vaccination_assessment_about_date_of_birth">Geboortedatum:</string>
   <string name="your_vaccination_explanation_name">Naam:</string>
   <string name="your_vaccination_explanation_birthday">Geboortedatum:</string>
-  <string name="holder_event_vaccination_assessment_wrong_body"><![CDATA[Neem contact op met de balie waar jouw vaccinatie is beoordeeld. Zij kunnen je helpen je gegevens aan te passen. Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
+  <string name="holder_event_vaccination_assessment_wrong_body"><![CDATA[Ga terug naar de balie waar jouw vaccinatie is beoordeeld. Zij kunnen je helpen je gegevens aan te passen. Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_event_vaccination_assessment_alert_message">Hierdoor stop je het toevoegen van je vaccinatiebeoordeling en moet je later opnieuw je gegevens ophalen.</string>
   <string name="visitorpass_token_error_invalid_code">Deze code is niet geldig</string>
   <string name="holder_event_vaccination_assessment_list_message">Kloppen de gegevens? Als de gegevens kloppen kun je jouw vaccinatiebeoordeling toevoegen aan de app.</string>
@@ -657,4 +657,12 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Je negatieve testuitslag is succesvol toegevoegd. Maak je bezoekersbewijs compleet met je vaccinatiebeoordeling.<br /><br />Hiervoor heb je een beoordelingscode gekregen van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen.]]></string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Maak bewijs compleet</string>
   <string name="holder_event_vaccination_assessment_about_country">Gevaccineerd in (land):</string>
+  <plurals name="my_overview_test_result_expires_hours">
+    <item quantity="one">uur</item>
+    <item quantity="other">uur</item>
+  </plurals>
+  <plurals name="my_overview_test_result_expires_minutes">
+    <item quantity="one">minuut</item>
+    <item quantity="other">minuten</item>
+  </plurals>
 </resources>
