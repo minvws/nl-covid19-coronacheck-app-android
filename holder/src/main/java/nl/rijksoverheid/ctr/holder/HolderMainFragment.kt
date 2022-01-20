@@ -167,12 +167,12 @@ class HolderMainFragment : BaseMainFragment(
     }
 
     fun presentLoading(loading: Boolean) {
-        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
         if (loading) {
             binding.loading.setAccessibilityFocus()
         } else {
-            binding.toolbar.setAccessibilityFocus()
+            binding.loading.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         }
+        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     fun getToolbar(): Toolbar {

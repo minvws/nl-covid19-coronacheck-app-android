@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
@@ -58,6 +59,7 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
         binding.description.text = getString(data.description)
         binding.uniqueCodeInput.hint = getString(data.uniqueCodeInputHeader)
         binding.noTokenReceivedBtn.text = getString(data.noCodeText)
+        binding.noTokenReceivedBtn.contentDescription = getString(data.noCodeText)
         binding.bottom.setButtonText(getString(data.buttonText))
     }
 
