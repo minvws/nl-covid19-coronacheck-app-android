@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CardItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
@@ -40,6 +39,20 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         val headerText = util.getHeaderItemText(
             emptyState = true,
             greenCardType = GreenCardType.Domestic,
+            hasVisitorPassIncompleteItem = true,
+        )
+
+        assertEquals(R.string.my_overview_qr_placeholder_description, headerText)
+    }
+
+    @Test
+    fun `getHeaderItemText returns correct text if domestic, no empty state but has hasVisitorPassIncompleteItem`() {
+        val util = getUtil()
+
+        val headerText = util.getHeaderItemText(
+            emptyState = false,
+            greenCardType = GreenCardType.Domestic,
+            hasVisitorPassIncompleteItem = true,
         )
 
         assertEquals(R.string.my_overview_qr_placeholder_description, headerText)
@@ -52,6 +65,7 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         val headerText = util.getHeaderItemText(
             emptyState = false,
             greenCardType = GreenCardType.Domestic,
+            hasVisitorPassIncompleteItem = false,
         )
 
         assertEquals(R.string.my_overview_description, headerText)
@@ -64,6 +78,7 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         val headerText = util.getHeaderItemText(
             emptyState = false,
             greenCardType = GreenCardType.Eu,
+            hasVisitorPassIncompleteItem = true,
         )
 
         assertEquals(R.string.my_overview_description_eu, headerText)
@@ -76,6 +91,7 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         val headerText = util.getHeaderItemText(
             emptyState = true,
             greenCardType = GreenCardType.Eu,
+            hasVisitorPassIncompleteItem = true,
         )
 
         assertEquals(R.string.my_overview_qr_placeholder_description_eu, headerText)

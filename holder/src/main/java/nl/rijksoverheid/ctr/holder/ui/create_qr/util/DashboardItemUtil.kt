@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 
 interface DashboardItemUtil {
-    fun getHeaderItemText(emptyState: Boolean, greenCardType: GreenCardType): Int
+    fun getHeaderItemText(emptyState: Boolean, greenCardType: GreenCardType, hasVisitorPassIncompleteItem: Boolean): Int
     fun shouldShowClockDeviationItem(emptyState: Boolean, allGreenCards: List<GreenCard>): Boolean
     fun shouldShowPlaceholderItem(emptyState: Boolean): Boolean
     fun shouldAddQrButtonItem(emptyState: Boolean): Boolean
@@ -74,11 +74,13 @@ class DashboardItemUtilImpl(
 
     override fun getHeaderItemText(
         emptyState: Boolean,
-        greenCardType: GreenCardType): Int {
+        greenCardType: GreenCardType,
+        hasVisitorPassIncompleteItem: Boolean,
+    ): Int {
 
         return when (greenCardType) {
             is GreenCardType.Domestic -> {
-                if (emptyState) {
+                if (emptyState || hasVisitorPassIncompleteItem) {
                     R.string.my_overview_qr_placeholder_description
                 } else {
                     R.string.my_overview_description
