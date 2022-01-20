@@ -109,7 +109,7 @@
   <string name="testresult_to_qr_code_description">That you tested negative (no coronavirus) on February 2 at 14:06 will be processed into the QR code. The CoronaCheck app only shows the anonymous QR code, without test details.</string>
   <string name="button_continue">Continue</string>
   <string name="commercial_test_error_invalid_code">This code is invalid</string>
-  <string name="commercial_test_error_invalid_combination">Invalid combination</string>
+  <string name="commercial_test_error_invalid_combination">Invalid combination. Enter the 6-digit verification code.</string>
   <string name="commercial_test_error_unknown_test_provider">Retrieval code is from an unknown test location</string>
   <string name="commercial_test_error_empty_retrieval_code">Please fill out a retrieval code first</string>
   <string name="commercial_test_error_empty_verification_code">Please fill out a verification code first</string>
@@ -593,7 +593,7 @@
   <string name="visitorpass_code_review_placeholder_screenreader">Enter your approval code here</string>
   <string name="visitorpass_token_error_empty_token">Please enter your approval code</string>
   <string name="visitorpass_token_error_unknown_provider">This test location is not known to us. Please contact the location who tested you.</string>
-  <string name="visitorpass_token_error_invalid_combination">No valid combination</string>
+  <string name="visitorpass_token_error_invalid_combination">Invalid combination. Enter the 6-digit verification code.</string>
   <string name="visitorpass_token_modal_notoken_title">Don\'t have an approval code?</string>
   <string name="holder_event_vaccination_assessment_element_subtitle"><![CDATA[Review date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
   <string name="holder_event_vaccination_assessment_about_date">Review date:</string>
