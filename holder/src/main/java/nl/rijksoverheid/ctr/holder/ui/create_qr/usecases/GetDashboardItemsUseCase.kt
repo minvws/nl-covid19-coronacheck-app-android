@@ -1,10 +1,8 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
@@ -59,11 +57,12 @@ class GetDashboardItemsUseCaseImpl(
         val domesticGreenCards =
             allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
 
+        val hasVisitorPassIncompleteItem = dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
+            events = allEventGroupEntities,
+            domesticGreenCards = domesticGreenCards
+        )
         val hasEmptyState = dashboardItemEmptyStateUtil.hasEmptyState(
-            hasVisitorPassIncompleteItem = dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
-                events = allEventGroupEntities,
-                domesticGreenCards = domesticGreenCards
-            ),
+            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
             allGreenCards = allGreenCards
         )
 
@@ -76,6 +75,7 @@ class GetDashboardItemsUseCaseImpl(
         val headerText = dashboardItemUtil.getHeaderItemText(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Domestic,
+            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
         )
 
         dashboardItems.add(DashboardItem.HeaderItem(text = headerText))
@@ -185,17 +185,19 @@ class GetDashboardItemsUseCaseImpl(
         val internationalGreenCards =
             allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
 
+        val hasVisitorPassIncompleteItem = dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
+            events = allEventGroupEntities,
+            domesticGreenCards = domesticGreenCards
+        )
         val hasEmptyState = dashboardItemEmptyStateUtil.hasEmptyState(
-            hasVisitorPassIncompleteItem = dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
-                events = allEventGroupEntities,
-                domesticGreenCards = domesticGreenCards
-            ),
-            allGreenCards = allGreenCards
+            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
+            allGreenCards = allGreenCards,
         )
 
         val headerText = dashboardItemUtil.getHeaderItemText(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Eu,
+            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
         )
 
         dashboardItems.add(
