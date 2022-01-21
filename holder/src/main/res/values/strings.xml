@@ -108,7 +108,7 @@
   <string name="testresult_to_qr_code_title">Van jouw testuitslag wordt nu een QR-code gemaakt</string>
   <string name="testresult_to_qr_code_description">In de QR-code staat dat je negatief getest bent op 2 februari om 14:06.\nIn de CoronaCheck-app is alleen de anonieme QR-code zichtbaar, zonder testdetails.</string>
   <string name="button_continue">Verder</string>
-  <string name="commercial_test_error_invalid_code">Deze code is niet geldig</string>
+  <string name="commercial_test_error_invalid_code">Deze code is niet geldig. Een code ziet er bijvoorbeeld zo uit: VAC-YYYYYYYYY1-F2.</string>
   <string name="commercial_test_error_invalid_combination">Geen geldige combinatie. Vul de 6-cijferige verificatiecode in.</string>
   <string name="commercial_test_error_unknown_test_provider">Ophaalcode is van een onbekende testlocatie</string>
   <string name="commercial_test_error_empty_retrieval_code">Graag eerst een ophaalcode invullen</string>
@@ -447,7 +447,7 @@
   <string name="new_in_app_tabs_title">Een Nederlands en internationaal tabblad</string>
   <string name="new_in_app_tabs_description">Je kunt nu makkelijker wisselen tussen je Nederlandse en internationale bewijs. Bovenin het scherm vind je een tabblad ‘Nederland’ en een tabblad ‘Internationaal’. Ga je de grens over? Gebruik dan de bewijzen onder ‘Internationaal’.</string>
   <string name="your_events_and">en</string>
-  <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld</string>
+  <string name="my_overview_clock_deviation_description">Controleer de tijd van je telefoon. Mogelijk staat deze niet goed ingesteld.</string>
   <string name="clock_deviation_explanation_title">Controleer de tijd van je telefoon</string>
   <string name="clock_deviation_explanation_description"><![CDATA[Om de CoronaCheck-app goed te kunnen gebruiken, is het belangrijk dat de tijd op je telefoon goed staat ingesteld. Loopt je telefoon bijvoorbeeld een paar minuten voor? Dan kan er een fout ontstaan tijdens de controle van je coronabewijs.<br/><br/><a href=\"#\">Ga naar de instellingen van je telefoon</a> en zet de datum en tijd op ‘automatisch instellen’.]]></string>
   <string name="domestic_qr_code_title">Nederlandse QR</string>
@@ -611,7 +611,7 @@
   <string name="visitorpass_token_modal_notoken_details"><![CDATA[Je krijgt een beoordelingscode van de balie waar je vaccinatie is beoordeeld. Deze code heb je per mail of geprint gekregen. Heb je geen beoordelingscode? Ga dan terug naar de balie waar je bent geweest.<br/><br/>Nog niet langs een balie geweest om je vaccinatie te laten beoordelen? Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="visitorpass_code_description">Vul je beoordelingscode in. Deze heb je van de balie gekregen waar jouw vaccinatie werd beoordeeld.</string>
   <string name="visitorpass_code_review_input">Beoordelingscode</string>
-  <string name="visitorpass_code_review_placeholder">Bijv. VAC-3839287262-F2</string>
+  <string name="visitorpass_code_review_placeholder">Bijv. VAC-YYYYYYYYY1-F2</string>
   <string name="visitorpass_code_review_button">Heb je geen beoordelingscode?</string>
   <string name="visitorpass_start_message"><![CDATA[Ben je buiten de Europese Unie gevaccineerd en op bezoek in Nederland?  Dan kun je van jouw vaccinatiebeoordeling en een negatieve testuitslag een bezoekersbewijs maken.<br/><br/>Met je bezoekersbewijs krijg je toegang tot plekken en activiteiten in Nederland die vragen om een coronatoegangsbewijs.<br/><br/>Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_event_vaccination_assessment_about_name">Naam:</string>
@@ -621,7 +621,7 @@
   <string name="your_vaccination_explanation_birthday">Geboortedatum:</string>
   <string name="holder_event_vaccination_assessment_wrong_body"><![CDATA[Ga terug naar de balie waar jouw vaccinatie is beoordeeld. Zij kunnen je helpen je gegevens aan te passen. Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_event_vaccination_assessment_alert_message">Hierdoor stop je het toevoegen van je vaccinatiebeoordeling en moet je later opnieuw je gegevens ophalen.</string>
-  <string name="visitorpass_token_error_invalid_code">Deze code is niet geldig</string>
+  <string name="visitorpass_token_error_invalid_code">Deze code is niet geldig. Een code ziet er bijvoorbeeld zo uit: VAC-YYYYYYYYY1-F2.</string>
   <string name="holder_event_vaccination_assessment_list_message">Kloppen de gegevens? Als de gegevens kloppen kun je jouw vaccinatiebeoordeling toevoegen aan de app.</string>
   <string name="holder_completecertificate_title">Maak je bezoekersbewijs compleet</string>
   <string name="holder_completecertificate_body"><![CDATA[Haal een negatieve testuitslag op om je bezoekersbewijs compleet te maken.<br/><br/>Heb je nog geen coronatest gedaan? Maak een afspraak op <a href=\"https://www.testenvoortoegang.org\">www.testenvoortoegang.org</a>.]]></string>
