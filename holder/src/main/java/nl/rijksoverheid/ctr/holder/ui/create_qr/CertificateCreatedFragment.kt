@@ -51,7 +51,6 @@ class CertificateCreatedFragment :
             binding.title.text = title
             binding.description.setHtmlText(
                 htmlText = description,
-                htmlTextColor = R.color.primary_text,
                 htmlLinksEnabled = true,
             )
             binding.retrieveTestButton.visibility =

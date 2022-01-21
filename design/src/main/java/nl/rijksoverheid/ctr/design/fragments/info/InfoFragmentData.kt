@@ -3,9 +3,7 @@ package nl.rijksoverheid.ctr.design.fragments.info
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.View.NO_ID
 import androidx.annotation.IdRes
-import androidx.navigation.NavDirections
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -13,8 +11,7 @@ class DescriptionData(
     val htmlText: Int? = null,
     val htmlTextString: String? = null,
     val htmlLinksEnabled: Boolean = false,
-    val customLinkIntent: Intent? = null,
-    val htmlTextColor: Int = NO_ID,
+    val customLinkIntent: Intent? = null
 ) : Parcelable
 
 sealed class ButtonData(open val text: String) : Parcelable {
