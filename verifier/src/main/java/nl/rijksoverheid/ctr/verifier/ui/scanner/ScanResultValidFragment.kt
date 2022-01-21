@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
@@ -29,9 +29,9 @@ class ScanResultValidFragment : Fragment() {
     private var _binding: FragmentScanResultValidBinding? = null
     private val binding get() = _binding!!
 
-    private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
+    private val verificationPolicySelectionUseCase: VerificationPolicySelectionUseCase by inject()
     private val verificationPolicy: VerificationPolicy by lazy {
-        verificationPolicyUseCase.get()
+        verificationPolicySelectionUseCase.get()
     }
 
     private val args: ScanResultValidFragmentArgs by navArgs()

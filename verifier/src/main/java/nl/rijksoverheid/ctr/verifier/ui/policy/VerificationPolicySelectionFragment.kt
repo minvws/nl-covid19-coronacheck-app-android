@@ -38,7 +38,7 @@ class VerificationPolicySelectionFragment :
 
     private val dialogUtil: DialogUtil by inject()
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
-    private val verificationPolicyStateUseCase: VerificationPolicyStateUseCase by inject()
+    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,15 +60,15 @@ class VerificationPolicySelectionFragment :
         val selectionType = args.selectionType
         when (selectionType) {
             is VerificationPolicySelectionType.FirstTimeUse -> setupScreenForFirstTimeUse()
-            is VerificationPolicySelectionType.Default -> setupScreenForDefaultSelectionType(selectionType.state.verificationPolicyState, scanUsedRecently)
+            is VerificationPolicySelectionType.Default -> setupScreenForDefaultSelectionType(selectionType.state.verificationPolicySelectionState, scanUsedRecently)
         }
         setupRadioGroup(selectionType)
     }
 
-    private fun setupScreenForDefaultSelectionType(verificationPolicyState: VerificationPolicyState, scanUsedRecently: Boolean) {
+    private fun setupScreenForDefaultSelectionType(verificationPolicySelectionState: VerificationPolicySelectionState, scanUsedRecently: Boolean) {
         binding.subHeader.setHtmlText(
             htmlText =
-            if (verificationPolicyState != VerificationPolicyState.None && scanUsedRecently) {
+            if (verificationPolicySelectionState != VerificationPolicySelectionState.None && scanUsedRecently) {
                 getString(
                     R.string.verifier_risksetting_menu_scan_settings_selected_title,
                     TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
@@ -87,11 +87,11 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun presentWarningDialog() {
-        val currentPolicyState = verificationPolicyStateUseCase.get()
-        val policyHasNotChanged = currentPolicyState is VerificationPolicyState.Policy1G && binding.policy1G.isChecked ||
-                currentPolicyState is VerificationPolicyState.Policy3G && binding.policy3G.isChecked
+        val currentPolicyState = verificationPolicySelectionStateUseCase.get()
+        val policyHasNotChanged = currentPolicyState is VerificationPolicySelectionState.Policy1G && binding.policy1G.isChecked ||
+                currentPolicyState is VerificationPolicySelectionState.Policy3G && binding.policy3G.isChecked
         when {
-            currentPolicyState is VerificationPolicyState.None -> {
+            currentPolicyState is VerificationPolicySelectionState.None -> {
                 storeSelection()
                 closeScreen()
             }
@@ -174,7 +174,7 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun setupRadioGroup(selectionType: VerificationPolicySelectionType) {
-        policySelected(selectionType.state.verificationPolicyState)
+        policySelected(selectionType.state.verificationPolicySelectionState)
 
         when (viewModel.radioButtonSelected) {
             binding.policy3G.id -> policy3GSelected()
@@ -192,25 +192,25 @@ class VerificationPolicySelectionFragment :
 
     private fun policy3GSelected() {
         policyChecked(binding.policy3G.id)
-        policySelected(VerificationPolicyState.Policy3G)
+        policySelected(VerificationPolicySelectionState.Policy3G)
     }
 
     private fun policy1GSelected() {
         policyChecked(binding.policy1G.id)
-        policySelected(VerificationPolicyState.Policy1G)
+        policySelected(VerificationPolicySelectionState.Policy1G)
     }
 
-    private fun policySelected(state: VerificationPolicyState) {
+    private fun policySelected(state: VerificationPolicySelectionState) {
         when (state) {
-            VerificationPolicyState.Policy3G -> {
+            VerificationPolicySelectionState.Policy3G -> {
                 binding.policy3G.isChecked = true
                 binding.policy1G.isChecked = false
             }
-            VerificationPolicyState.Policy1G -> {
+            VerificationPolicySelectionState.Policy1G -> {
                 binding.policy3G.isChecked = false
                 binding.policy1G.isChecked = true
             }
-            VerificationPolicyState.None -> {
+            VerificationPolicySelectionState.None -> {
                 binding.policy3G.isChecked = false
                 binding.policy1G.isChecked = false
             }

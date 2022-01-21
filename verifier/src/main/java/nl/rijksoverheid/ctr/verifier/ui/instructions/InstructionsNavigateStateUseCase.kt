@@ -22,7 +22,7 @@ class InstructionsNavigateStateUseCaseImpl(
     private val featureFlagUseCase: FeatureFlagUseCase,
 ): InstructionsNavigateStateUseCase {
     override fun get(): InstructionsNavigateState {
-        return if (!persistenceManager.isVerificationPolicySelectionSet() && featureFlagUseCase.isVerificationPolicyEnabled()) {
+        return if (!persistenceManager.isVerificationPolicySelectionSet() && featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
             InstructionsNavigateState.VerificationPolicySelection
         } else {
             InstructionsNavigateState.Scanner(scannerStateUseCase.get() is ScannerState.Locked)

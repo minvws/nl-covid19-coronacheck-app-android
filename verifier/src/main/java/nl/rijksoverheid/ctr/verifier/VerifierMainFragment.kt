@@ -75,7 +75,7 @@ class VerifierMainFragment :
             }
         })
 
-        binding.navView.menu.findItem(R.id.nav_policy_settings).isVisible = featureFlagUseCase.isVerificationPolicyEnabled()
+        binding.navView.menu.findItem(R.id.nav_policy_settings).isVisible = featureFlagUseCase.isVerificationPolicySelectionEnabled()
     }
 
     override fun onDestroyView() {
@@ -151,7 +151,7 @@ class VerifierMainFragment :
                                     }
                                 )
                             ).apply {
-                                if (featureFlagUseCase.isVerificationPolicyEnabled()) {
+                                if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
                                     add(AboutThisAppData.AboutThisAppSection(
                                         header = R.string.verifier_about_this_app_law_enforcement,
                                         items = listOf(

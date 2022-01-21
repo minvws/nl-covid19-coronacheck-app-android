@@ -8,9 +8,7 @@
 
 package nl.rijksoverheid.ctr.appconfig.usecases
 
-import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
-import java.lang.IllegalStateException
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
 
 interface FeatureFlagUseCase {
     fun isVerificationPolicyEnabled(): Boolean
@@ -18,19 +16,17 @@ interface FeatureFlagUseCase {
 }
 
 class FeatureFlagUseCaseImpl(
-    private val buildConfigUseCase: BuildConfigUseCase,
     private val appConfigUseCase: CachedAppConfigUseCase,
 ): FeatureFlagUseCase {
 
     override fun isVerificationPolicyEnabled(): Boolean {
-        return if (appConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion == 0) {
-            false
-        } else {
-            buildConfigUseCase.getVersionCode() >= appConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion
-        }
+        val verificationPoliciesEnabled = appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+        return verificationPoliciesEnabled.contains(
+            VerificationPolicy1G.configValue)
     }
 
     override fun isVerificationPolicySelectionEnabled(): Boolean {
-        return appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled.size > 1
+        val verificationPoliciesEnabled = appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+        return verificationPoliciesEnabled.size > 1
     }
 }

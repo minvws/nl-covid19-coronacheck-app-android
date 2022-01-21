@@ -7,11 +7,10 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.persistance.database.VerifierDatabase
 import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionUseCase
 import org.junit.Test
 import java.time.Clock
 import java.time.Instant
-import java.time.OffsetDateTime
 import java.time.ZoneId
 
 class LogScanUseCaseImplTest {
@@ -21,7 +20,7 @@ class LogScanUseCaseImplTest {
         val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"),
             ZoneId.of("UTC"))
 
-        val verificationPolicyUseCase = mockk<VerificationPolicyUseCase>(relaxed = true)
+        val verificationPolicyUseCase = mockk<VerificationPolicySelectionUseCase>(relaxed = true)
         every { verificationPolicyUseCase.get() } answers { VerificationPolicy.VerificationPolicy3G }
 
         val verifierDatabase = mockk<VerifierDatabase>(relaxed = true)

@@ -12,15 +12,15 @@ import java.time.Instant
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface VerificationPolicyUseCase {
+interface VerificationPolicySelectionUseCase {
     fun get(): VerificationPolicy
     fun store(verificationPolicy: VerificationPolicy)
 }
 
-class VerificationPolicyUseCaseImpl(
+class VerificationPolicySelectionUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
-): VerificationPolicyUseCase {
+): VerificationPolicySelectionUseCase {
 
     // use only when the policy is set already
     override fun get(): VerificationPolicy {

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 
@@ -26,12 +25,12 @@ abstract class VerificationPolicySelectionViewModel: ViewModel() {
  *
  */
 class VerificationPolicySelectionViewModelImpl(
-    private val verificationPolicyUseCase: VerificationPolicyUseCase,
+    private val verificationPolicySelectionUseCase: VerificationPolicySelectionUseCase,
     private val scannerUsedRecentlyUseCase: ScannerUsedRecentlyUseCase,
 ) : VerificationPolicySelectionViewModel() {
 
     override fun storeSelection(verificationPolicy: VerificationPolicy) {
-        verificationPolicyUseCase.store(verificationPolicy)
+        verificationPolicySelectionUseCase.store(verificationPolicy)
     }
 
     override fun updateRadioButton(checkedId: Int) {

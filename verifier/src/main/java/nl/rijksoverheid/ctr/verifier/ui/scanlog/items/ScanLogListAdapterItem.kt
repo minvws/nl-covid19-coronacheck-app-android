@@ -33,7 +33,7 @@ class ScanLogListAdapterItem(val item: ScanLogItem.ListScanLogItem): BindableIte
 
         viewBinding.type.text = when (item.scanLog.policy) {
             is VerificationPolicy.VerificationPolicy3G -> context.getString(R.string.scan_log_list_lowrisk)
-            is VerificationPolicy.VerificationPolicy1G -> context.getString(R.string.scan_log_list_lowrisk)//TODO fix copy
+            is VerificationPolicy.VerificationPolicy1G -> context.getString(R.string.scan_log_list_lowrisk)//TODO fix copy (task 3289)
         }
         viewBinding.time.text = util.getTimeString(context, scanLog.from, scanLog.to, item.index == 0)
         viewBinding.amount.text = util.getAmountString(context, scanLog.count)

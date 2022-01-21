@@ -25,7 +25,7 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
     private val binding get() = _binding!!
 
     private val scannerStateUseCase: ScannerStateUseCase by inject()
-    private val verificationPolicyStateUseCase: VerificationPolicyStateUseCase by inject()
+    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,7 +55,7 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
         val policySelectionAction = VerificationPolicyInfoFragmentDirections.actionPolicySelection(
             selectionType = VerificationPolicySelectionType.Default(scannerStateUseCase.get()),
             toolbarTitle = getString(
-                if (verificationPolicyStateUseCase.get() != VerificationPolicyState.None) {
+                if (verificationPolicySelectionStateUseCase.get() != VerificationPolicySelectionState.None) {
                     R.string.verifier_risksetting_changeselection_title
                 } else {
                     R.string.verifier_menu_risksetting
@@ -77,17 +77,17 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
     }
 
     private fun setupPolicy() {
-        when (scannerStateUseCase.get().verificationPolicyState) {
-            VerificationPolicyState.None -> {
+        when (scannerStateUseCase.get().verificationPolicySelectionState) {
+            VerificationPolicySelectionState.None -> {
             }
-            VerificationPolicyState.Policy1G -> {
+            VerificationPolicySelectionState.Policy1G -> {
                 // TODO change copies used
                 displayPolicyViews(
                     R.string.verifier_start_scan_qr_policy_indication_2g,
                     R.string.verifier_risksetting_highrisk_subtitle
                 )
             }
-            VerificationPolicyState.Policy3G -> {
+            VerificationPolicySelectionState.Policy3G -> {
                 displayPolicyViews(
                     R.string.verifier_start_scan_qr_policy_indication_3g,
                     R.string.verifier_risksetting_lowrisk_subtitle

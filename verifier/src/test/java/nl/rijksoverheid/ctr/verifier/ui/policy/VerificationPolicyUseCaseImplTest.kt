@@ -5,7 +5,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.Clock
 import java.time.Instant
@@ -17,7 +16,7 @@ class VerificationPolicyUseCaseImplTest {
 
     private val clock = Clock.fixed(Instant.parse("2021-12-01T00:00:00.00Z"), ZoneId.of("UTC"))
     private val useCase =
-        VerificationPolicyUseCaseImpl(persistenceManager, clock)
+        VerificationPolicySelectionUseCaseImpl(persistenceManager, clock)
 
     @Test
     fun `storing the policy first time is only setting the correct policy`() {
