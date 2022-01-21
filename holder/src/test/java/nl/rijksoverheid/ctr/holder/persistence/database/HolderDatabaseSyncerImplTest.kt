@@ -9,7 +9,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.NotApplicable
+import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState.NotApplicable
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoteGreenCardsResult
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.SyncRemoteGreenCardsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
@@ -59,7 +59,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable}
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable}
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -85,7 +85,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -123,7 +123,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -132,6 +132,44 @@ class HolderDatabaseSyncerImplTest {
         )
 
         assertEquals(DatabaseSyncerResult.Success(true), databaseSyncerResult)
+    }
+
+    @Test
+    fun `sync returns Success if returned origins is vaccination assessment and does not match`() = runBlocking {
+        coEvery { eventGroupDao.getAll() } answers { events }
+
+        val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
+            holderDatabase = holderDatabase,
+            greenCardUtil = fakeGreenCardUtil(),
+            getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
+                result = RemoteGreenCardsResult.Success(
+                    remoteGreenCards = RemoteGreenCards(
+                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
+                            origins = listOf(RemoteGreenCards.Origin(
+                                type = OriginType.VaccinationAssessment,
+                                eventTime = OffsetDateTime.now(),
+                                expirationTime = OffsetDateTime.now(),
+                                validFrom = OffsetDateTime.now(),
+                                doseNumber = 1,
+                            )),
+                            createCredentialMessages = "".toByteArray()
+                        ),
+                        euGreencards = null
+                    )
+                )
+            ),
+            syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            persistenceManager = fakePersistenceManager(),
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+        )
+
+        val databaseSyncerResult = holderDatabaseSyncer.sync(
+            expectedOriginType = OriginType.VaccinationAssessment,
+            syncWithRemote = true
+        )
+
+        assertEquals(DatabaseSyncerResult.Success(false), databaseSyncerResult)
     }
 
     @Test
@@ -149,7 +187,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -179,7 +217,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -205,7 +243,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -245,7 +283,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistenceManager = fakePersistenceManager(),
-            combinationUtil = mockk { every { getResult(any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(

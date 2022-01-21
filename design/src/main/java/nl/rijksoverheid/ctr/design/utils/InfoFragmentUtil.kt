@@ -1,12 +1,16 @@
 package nl.rijksoverheid.ctr.design.utils
 
 import android.os.Bundle
+import androidx.annotation.IdRes
+import androidx.annotation.NavigationRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.fragments.info.InfoBottomSheetDialogFragment
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragment
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 
 /*
@@ -19,11 +23,17 @@ import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 interface InfoFragmentUtil {
 
     companion object {
-        const val EXTRA_INFO_FRAGMENT_DATA = "EXTRA_INFO_FRAGMENT_DATA"
+        const val EXTRA_INFO_FRAGMENT_DATA = "data"
     }
 
     fun presentFullScreen(
         currentFragment: Fragment,
+        infoFragmentDirections: NavDirections
+    )
+
+    fun presentFullScreen(
+        currentFragment: Fragment,
+        @IdRes infoFragmentNavigationId: Int = R.id.action_info_fragment,
         toolbarTitle: String,
         data: InfoFragmentData)
 
@@ -34,10 +44,22 @@ interface InfoFragmentUtil {
 }
 
 class InfoFragmentUtilImpl: InfoFragmentUtil {
-
-    override fun presentFullScreen(currentFragment: Fragment, toolbarTitle: String, data: InfoFragmentData) {
+    override fun presentFullScreen(
+        currentFragment: Fragment,
+        infoFragmentDirections: NavDirections
+    ) {
         currentFragment.findNavController().navigate(
-            R.id.action_info_fragment,
+            infoFragmentDirections
+        )
+    }
+
+
+    override fun presentFullScreen(currentFragment: Fragment,
+                                   @IdRes infoFragmentNavigationId: Int,
+                                   toolbarTitle: String,
+                                   data: InfoFragmentData) {
+        currentFragment.findNavController().navigate(
+            infoFragmentNavigationId,
             bundleOf(
                 Pair("toolbarTitle", toolbarTitle),
                 Pair(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA, data)

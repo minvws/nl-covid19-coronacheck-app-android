@@ -10,6 +10,8 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import android.app.Application
 import android.os.Build
 import android.text.TextUtils
+import mobilecore.Mobilecore
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -23,7 +25,7 @@ import java.time.format.DateTimeParseException
 import java.util.*
 
 interface QrInfoScreenUtil {
-    fun getForDomesticQr(personalDetails: PersonalDetails): QrInfoScreen
+    fun getForDomesticQr(personalDetails: PersonalDetails, category: String?): QrInfoScreen
     fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): QrInfoScreen
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen
     fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): QrInfoScreen
@@ -33,15 +35,21 @@ class QrInfoScreenUtilImpl(
     private val application: Application,
     private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
     private val countryUtil: CountryUtil,
+    private val featureFlagUseCase: FeatureFlagUseCase,
     cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : QrInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
-    override fun getForDomesticQr(personalDetails: PersonalDetails): QrInfoScreen {
+    override fun getForDomesticQr(personalDetails: PersonalDetails, category: String?): QrInfoScreen {
         val title = application.getString(R.string.qr_explanation_title_domestic)
+
         val description = application.getString(
-            R.string.qr_explanation_description_domestic,
+            if (featureFlagUseCase.isVerificationPolicyEnabled() && category == Mobilecore.VERIFICATION_POLICY_3G) {
+                R.string.qr_explanation_description_domestic_2G
+            } else {
+                R.string.qr_explanation_description_domestic
+            },
             "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
         )
 
@@ -96,7 +104,7 @@ class QrInfoScreenUtilImpl(
                 it.code == test.getStringOrNull("ma")
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
-        val testCountry = countryUtil.getCountry(test.getStringOrNull("co"), getCurrentLocale())
+        val testCountry = countryUtil.getCountryForQrInfoScreen(test.getStringOrNull("co"), getCurrentLocale())
 
         val issuerValue = test.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -196,7 +204,7 @@ class QrInfoScreenUtilImpl(
         } ?: ""
 
         val countryCode = vaccination.getStringOrNull("co")
-        val vaccinationCountry = countryUtil.getCountry(countryCode, getCurrentLocale())
+        val vaccinationCountry = countryUtil.getCountryForQrInfoScreen(countryCode, getCurrentLocale())
 
         val issuerValue = vaccination.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -269,21 +277,21 @@ class QrInfoScreenUtilImpl(
             }
         } ?: ""
 
-        val country = countryUtil.getCountry(recovery.getStringOrNull("co"), getCurrentLocale())
+        val country = countryUtil.getCountryForQrInfoScreen(recovery.getStringOrNull("co"), getCurrentLocale())
 
         val producer = recovery.getStringOrNull("is")
 
-        val validFromDate = recovery.getStringOrNull("df")?.let { testDate ->
+        val validFromDate = recovery.getStringOrNull("df")?.let {
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
+                LocalDate.parse(it, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }
         } ?: ""
 
-        val validUntilDate = recovery.getStringOrNull("du")?.let { testDate ->
+        val validUntilDate = recovery.getStringOrNull("du")?.let {
             try {
-                LocalDate.parse(testDate, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
+                LocalDate.parse(it, DateTimeFormatter.ISO_DATE).formatDayMonthYearNumerical()
             } catch (e: Exception) {
                 ""
             }

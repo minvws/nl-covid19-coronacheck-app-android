@@ -11,6 +11,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.core.text.HtmlCompat
 import androidx.core.text.getSpans
 import androidx.core.view.ViewCompat
@@ -44,6 +45,10 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     private val HEADING_MARGIN_MULTIPLIER = 1.0f
     private val LIST_ITEM_MARGIN_MULTIPLIER = 0.25f
 
+    private val textColor by lazy {
+        context.getColor(R.color.primary_text)
+    }
+
     private val textColorLink by lazy {
         context.getAttrColor(android.R.attr.textColorLink)
     }
@@ -73,7 +78,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                         htmlText = htmlText.toString(),
                         htmlTextColor = getColor(
                             R.styleable.HtmlTextViewWidget_htmlTextColor,
-                            NO_ID
+                            textColor
                         ),
                         htmlTextColorLink = getColor(
                             R.styleable.HtmlTextViewWidget_htmlTextColorLink,
@@ -122,8 +127,8 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     fun setHtmlText(
         htmlText: String,
         htmlLinksEnabled: Boolean = HTML_LINKS_ENABLED,
-        htmlTextColor: Int = NO_ID,
-        htmlTextColorLink: Int = textColorLink,
+        @ColorInt htmlTextColor: Int = textColor,
+        @ColorInt htmlTextColorLink: Int = textColorLink,
         paragraphMarginMultiplier: Float = PARAGRAPH_MARGIN_MULTIPLIER,
         headingMarginMultiplier: Float = HEADING_MARGIN_MULTIPLIER,
         listItemMarginMultiplier: Float = LIST_ITEM_MARGIN_MULTIPLIER,
@@ -144,15 +149,9 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         val parts = listOf(spannable) // spannable.separated("\n") --> NOTE: disabled for now
 
         // Step 3: Add a HtmlTextView for each part of the Spannable
-        parts.forEachIndexed { index, part ->
+        parts.forEachIndexed { _, part ->
             val textView = HtmlTextView(context)
-            textView.setTextColor(
-                if (htmlTextColor > NO_ID) {
-                    context.getColor(htmlTextColor)
-                } else {
-                    context.getColor(R.color.primary_text)
-                }
-            )
+            textView.setTextColor(htmlTextColor)
             textView.setLinkTextColor(htmlTextColorLink)
             textView.text = part
 

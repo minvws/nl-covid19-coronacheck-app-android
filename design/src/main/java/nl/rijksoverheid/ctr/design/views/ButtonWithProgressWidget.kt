@@ -67,14 +67,13 @@ class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs
         binding.button.setOnClickListener(listener)
     }
 
-    fun isButtonEnabled(isEnabled: Boolean) {
-        binding.button.isEnabled = isEnabled
-    }
-
-    fun setAccessibilityText(text: String) {
-        binding.loading.contentDescription = text
+    fun accessibility(buttonAdditionalText: String) {
+        binding.button.contentDescription = "${binding.button.text} $buttonAdditionalText"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            binding.loading.stateDescription = text
+            binding.button.stateDescription = buttonText
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            binding.loading.stateDescription = binding.loading.contentDescription
         }
     }
 }

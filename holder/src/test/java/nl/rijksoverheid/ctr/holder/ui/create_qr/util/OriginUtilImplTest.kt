@@ -1,12 +1,12 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import nl.rijksoverheid.ctr.holder.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import org.junit.Assert.*
 import org.junit.Test
 import java.time.*
-import java.util.*
 
 class OriginUtilImplTest {
 
@@ -64,12 +64,15 @@ class OriginUtilImplTest {
                 eventTime = OffsetDateTime.now(clock),
                 expirationTime = OffsetDateTime.now(clock),
                 validFrom = OffsetDateTime.now(clock).plusYears(2)
-            ))
+            )
+        )
 
-        assertFalse(originUtil.hideSubtitle(
-            greenCardType = GreenCardType.Domestic,
-            originState = originState
-        ))
+        assertFalse(
+            originUtil.hideSubtitle(
+                greenCardType = GreenCardType.Domestic,
+                originState = originState
+            )
+        )
     }
 
     @Test
@@ -85,12 +88,15 @@ class OriginUtilImplTest {
                 eventTime = OffsetDateTime.now(clock),
                 expirationTime = OffsetDateTime.now(clock).plusYears(3),
                 validFrom = OffsetDateTime.now(clock)
-            ))
+            )
+        )
 
-        assertTrue(originUtil.hideSubtitle(
-            greenCardType = GreenCardType.Domestic,
-            originState = originState
-        ))
+        assertTrue(
+            originUtil.hideSubtitle(
+                greenCardType = GreenCardType.Domestic,
+                originState = originState
+            )
+        )
     }
 
     @Test
@@ -112,5 +118,53 @@ class OriginUtilImplTest {
             greenCardType = GreenCardType.Eu,
             originState = originState
         ))
+    }
+
+    @Test
+    fun `when origin is valid before the threshold day from now and expires after now, it's valid`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(1), ZoneId.of("UTC"))
+        val originUtil = OriginUtilImpl(clock)
+
+        val origin = fakeOriginEntity(
+            validFrom = OffsetDateTime.now(clock).plusDays(3),
+            expirationTime = OffsetDateTime.now(clock).plusDays(28)
+        )
+        assertTrue(originUtil.isValidWithinRenewalThreshold(4L, origin))
+    }
+
+    @Test
+    fun `when origin is valid on the threshold day from now, it's not valid`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(1), ZoneId.of("UTC"))
+        val originUtil = OriginUtilImpl(clock)
+
+        val origin = fakeOriginEntity(
+            validFrom = OffsetDateTime.now(clock).plusDays(4),
+            expirationTime = OffsetDateTime.now(clock).plusDays(28)
+        )
+        assertFalse(originUtil.isValidWithinRenewalThreshold(4L, origin))
+    }
+
+    @Test
+    fun `when origin is valid after the threshold day from now, it's not valid`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(1), ZoneId.of("UTC"))
+        val originUtil = OriginUtilImpl(clock)
+
+        val origin = fakeOriginEntity(
+            validFrom = OffsetDateTime.now(clock).plusDays(5),
+            expirationTime = OffsetDateTime.now(clock).plusDays(28)
+        )
+        assertFalse(originUtil.isValidWithinRenewalThreshold(4L, origin))
+    }
+
+    @Test
+    fun `when origin expires before now, it's not valid`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(1), ZoneId.of("UTC"))
+        val originUtil = OriginUtilImpl(clock)
+
+        val origin = fakeOriginEntity(
+            validFrom = OffsetDateTime.now(clock).minusDays(10),
+            expirationTime = OffsetDateTime.now(clock).minusDays(1)
+        )
+        assertFalse(originUtil.isValidWithinRenewalThreshold(4L, origin))
     }
 }

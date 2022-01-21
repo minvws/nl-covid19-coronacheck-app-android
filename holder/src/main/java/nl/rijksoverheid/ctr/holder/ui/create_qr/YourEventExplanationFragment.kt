@@ -41,8 +41,7 @@ class YourEventExplanationAdapter(private val dataSet: Array<InfoScreen>) :
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.htmlTextViewWidget.setHtmlText(
-            htmlText = dataSet[position].description,
-            htmlTextColor = R.color.primary_text,
+            htmlText = dataSet[position].description
         )
     }
 

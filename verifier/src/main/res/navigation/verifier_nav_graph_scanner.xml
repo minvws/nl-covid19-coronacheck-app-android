@@ -10,6 +10,18 @@
         android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.VerifierQrScannerFragment"
         tools:layout="@layout/fragment_scanner">
 
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="previousScanResult"
+            android:defaultValue="@null"
+            app:argType="nl.rijksoverheid.ctr.shared.models.VerificationResult"
+            app:nullable="true" />
+
         <action
             android:id="@+id/action_scan_result_invalid"
             app:destination="@id/nav_scan_result_invalid"
@@ -34,6 +46,14 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
+        <action
+            android:id="@+id/action_dcc_scan_result"
+            app:destination="@id/nav_dcc_scan_result"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
     </fragment>
 
     <fragment
@@ -44,6 +64,12 @@
         <argument
             android:name="invalidData"
             app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData" />
+
+        <argument
+            android:name="title"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
 
         <action
             android:id="@+id/action_nav_qr_scanner"
@@ -139,6 +165,35 @@
             app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_qr_scanner"
             app:popUpToInclusive="true" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_dcc_scan_result"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.DccScanResultFragment">
+
+        <argument
+            android:name="data"
+            app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.DccScanResultFragmentData" />
+
+        <action
+            android:id="@+id/action_nav_qr_scanner"
+            app:destination="@id/nav_qr_scanner"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_qr_scanner"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_scan_result_invalid"
+            app:destination="@id/nav_scan_result_invalid"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
     </fragment>
 
 </navigation>

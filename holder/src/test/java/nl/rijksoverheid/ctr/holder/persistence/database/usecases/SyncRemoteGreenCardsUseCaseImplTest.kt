@@ -76,7 +76,8 @@ class SyncRemoteGreenCardsUseCaseImplTest {
             lastNameInitial = "",
             isPaperProof = "",
             validFrom = 1,
-            validForHours = 1
+            validForHours = 1,
+            category = "2"
         )))
 
         val domesticGreenCard = RemoteGreenCards.DomesticGreenCard(

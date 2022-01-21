@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -62,9 +61,9 @@ class PaperProofCodeFragment : Fragment(R.layout.fragment_paper_proof_code) {
                 data = InfoFragmentData.TitleDescriptionWithButton(
                     title = getString(R.string.no_letter_combination_dialog_title),
                     descriptionData = DescriptionData(R.string.no_letter_combination_dialog_description),
-                    buttonData = ButtonData.NavigationButton(
+                    secondaryButtonData = ButtonData.NavigationButton(
                         text = getString(R.string.add_paper_proof_self_printed_goto_add_proof_button),
-                        navigationActionId = R.id.action_qr_type
+                        navigationActionId = R.id.action_qr_type,
                     )
                 )
             )

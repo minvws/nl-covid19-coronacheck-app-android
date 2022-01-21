@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.utils.IntentUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,14 +31,13 @@ class VerifierMainActivity : AppCompatActivity() {
 
     private val introductionViewModel: IntroductionViewModel by viewModel()
     private val appConfigViewModel: AppConfigViewModel by viewModel()
+    private val verifierMainActivityViewModel: VerifierMainActivityViewModel by viewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
+    private val deeplinkManager: DeeplinkManager by inject()
 
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
-
-    var returnUri: String? = null // return uri to external app given as argument from deeplink
-    private var hasHandledDeeplink: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -63,6 +62,7 @@ class VerifierMainActivity : AppCompatActivity() {
             }
             isFreshStart = false
         }
+        verifierMainActivityViewModel.cleanup()
     }
 
     private fun observeStatuses() {
@@ -81,8 +81,10 @@ class VerifierMainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, arguments ->
             if (destination.id == R.id.nav_main) {
                 // Persist deeplink return uri in case it's not used immediately because of onboarding
-                arguments?.getString("returnUri")?.let { returnUri = it }
-                navigateDeeplink(navController)
+                arguments?.getString("returnUri")?.let {
+                    deeplinkManager.set(it)
+                    arguments.remove("returnUri")
+                }
             }
 
             // verifier can stay active for a long time, so it is not sufficient
@@ -94,13 +96,7 @@ class VerifierMainActivity : AppCompatActivity() {
                 isFreshStart = false
             }
         }
-    }
 
-    private fun navigateDeeplink(navController: NavController) {
-        if (returnUri != null && !hasHandledDeeplink && isIntroductionFinished()) {
-            navController.navigate(RootNavDirections.actionScanner())
-        }
-        hasHandledDeeplink = true
     }
 
     private fun isIntroductionFinished() =

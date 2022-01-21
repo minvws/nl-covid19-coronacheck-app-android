@@ -116,7 +116,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
         binding.button.text = text
     }
 
-    private fun setSecondaryButtonText(text: String) {
+    fun setSecondaryButtonText(text: String) {
         binding.secondaryButton.text = text
         binding.secondaryButton.visibility = View.VISIBLE
     }

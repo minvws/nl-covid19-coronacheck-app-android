@@ -58,7 +58,8 @@ class PaperProofConsentFragment: BaseFragment(R.layout.fragment_paper_proof_cons
                 type = YourEventsFragmentType.DCC(
                     remoteEvents = it,
                     originType = OriginType.fromTypeString(it.keys.first().events!!.first().type!!)
-                )
+                ),
+                flow = HolderFlow.HkviScan
             ))
         })
 

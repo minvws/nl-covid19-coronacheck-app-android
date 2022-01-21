@@ -6,11 +6,11 @@ plugins {
     id "androidx.navigation.safeargs.kotlin"
 }
 
-def appVersionCode =  1000000
+def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
-version = "2.6"
+version = "2.8"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
@@ -36,14 +36,17 @@ android {
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://coronacheck.nl/app/auth2\""
-        buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v6/\""
+        buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v7/\""
         buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.coronacheck.nl\""
         buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
+
+        buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.coronacheck.nl\""
+
         buildConfigField "String[]", "CERTIFICATE_PINS",
                 "{" +
                         "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
                         "}"
-        buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.coronacheck.nl/v6/\""
+        buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.coronacheck.nl/v7/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl", digidSchema: "coronacheck"]
 
         javaCompileOptions {
@@ -66,11 +69,13 @@ android {
     flavorDimensions "environment"
     productFlavors {
         acc {
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v6/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v6/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v7/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v7/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.acc.coronacheck.nl/app/auth2\""
+
+            buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.acc.coronacheck.nl\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
                             "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
@@ -82,10 +87,12 @@ android {
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
             matchingFallbacks = ['mlkit']
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "false"
+            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
         }
         fdroidAcc {
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v6/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v6/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v7/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v7/\""
             buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"coronacheck-acc://auth/login\""

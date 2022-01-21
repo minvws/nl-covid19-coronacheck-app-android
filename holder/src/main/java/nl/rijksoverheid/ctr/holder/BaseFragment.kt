@@ -66,6 +66,20 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                     )
                 )
             }
+            is MissingOriginErrorResult -> {
+                val errorCodeString = getString(
+                    R.string.holder_event_missingorigin_error_description,
+                    errorCodeStringFactory.get(getFlow(), listOf(errorResult))
+                )
+                presentError(
+                    data = ErrorResultFragmentData(
+                        title = getString(R.string.rule_engine_no_origin_title),
+                        description = "$customerErrorDescription$errorCodeString",
+                        buttonTitle = getString(R.string.back_to_overview),
+                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
+                    )
+                )
+            }
             else -> {
                 val errorCodeString = errorCodeStringFactory.get(
                     flow = getFlow(),
