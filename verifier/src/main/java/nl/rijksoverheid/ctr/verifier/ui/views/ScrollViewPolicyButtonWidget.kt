@@ -89,7 +89,6 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
     }
 
     fun setPolicy(policy: VerificationPolicy) {
-        //TODO fix values for 1G
         binding.policyIndicator.backgroundTintList = ColorStateList.valueOf(
             context.getColor(
                 when (policy) {
@@ -98,6 +97,7 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
                 }
             )
         )
+        //TODO fix copy for 1G
         binding.policyIndicatorText.setText(
             when (policy) {
                 VerificationPolicy.VerificationPolicy1G -> R.string.verifier_start_scan_qr_policy_indication_2g

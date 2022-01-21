@@ -55,7 +55,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
             ),
             verificationPolicy = verificationPolicyUseCase.get().let {
                 if (featureFlagUseCase.isVerificationPolicyEnabled()) {
-                    //TODO fix values for 1G
+                    //TODO fix copies for 1G
                     Copy.VerificationPolicy(
                         title = when (it) {
                             is VerificationPolicy1G -> R.string.verifier_scanner_policy_indication_2g

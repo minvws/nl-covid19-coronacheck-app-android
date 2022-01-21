@@ -59,8 +59,7 @@ class ScanResultValidFragment : Fragment() {
                         R.style.AppTheme_Scanner_Valid_3G
                     }
                     is VerificationPolicy.VerificationPolicy1G -> {
-                        //TODO fix theme used
-                        R.style.AppTheme_Scanner_Valid_2G
+                        R.style.AppTheme_Scanner_Valid_1G
                     }
                 }
             } else {

@@ -147,9 +147,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
                 R.drawable.illustration_scanner_get_started_3g
             }
             VerificationPolicyState.Policy1G -> {
-                //TODO fix values for 1G
                 binding.bottom.setPolicy(VerificationPolicy1G)
-                R.drawable.illustration_scanner_get_started_2g
+                R.drawable.illustration_scanner_get_started_1g
             }
             VerificationPolicyState.Policy3G -> {
                 binding.bottom.setPolicy(VerificationPolicy3G)
