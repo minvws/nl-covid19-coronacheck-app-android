@@ -12,8 +12,9 @@ import mobilecore.Mobilecore
 sealed class VerificationPolicy(val libraryValue: String) {
     object VerificationPolicy2G : VerificationPolicy(Mobilecore.VERIFICATION_POLICY_2G)
     object VerificationPolicy3G : VerificationPolicy(Mobilecore.VERIFICATION_POLICY_3G)
-    // TODO replace "4" with library static value when ready
+    // TODO replace "4" and "5" with library static value when ready
     object VerificationPolicy2GPlus : VerificationPolicy("4")
+    object VerificationPolicy1G : VerificationPolicy("5")
 
     companion object {
         fun fromString(value: String?): VerificationPolicy? = when (value) {
