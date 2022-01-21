@@ -15,7 +15,6 @@ import java.lang.IllegalStateException
 interface FeatureFlagUseCase {
     fun isVerificationPolicyEnabled(): Boolean
     fun isVerificationPolicySelectionEnabled(): Boolean
-    fun verificationPoliciesEnabled(): List<VerificationPolicy>
 }
 
 class FeatureFlagUseCaseImpl(
@@ -33,17 +32,5 @@ class FeatureFlagUseCaseImpl(
 
     override fun isVerificationPolicySelectionEnabled(): Boolean {
         return appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled.size > 1
-    }
-
-    override fun verificationPoliciesEnabled(): List<VerificationPolicy> {
-        return appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled.map {
-            when (it) {
-                "3G" -> VerificationPolicy.VerificationPolicy3G
-                "2G" -> VerificationPolicy.VerificationPolicy2G
-                "2GPlus" -> VerificationPolicy.VerificationPolicy2GPlus
-                "1G" -> VerificationPolicy.VerificationPolicy3G
-                else -> throw IllegalStateException("invalid policy value")
-            }
-        }
     }
 }

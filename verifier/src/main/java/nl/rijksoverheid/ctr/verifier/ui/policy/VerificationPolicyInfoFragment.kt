@@ -80,7 +80,8 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
         when (scannerStateUseCase.get().verificationPolicyState) {
             VerificationPolicyState.None -> {
             }
-            VerificationPolicyState.Policy2G -> {
+            VerificationPolicyState.Policy1G -> {
+                // TODO change copies used
                 displayPolicyViews(
                     R.string.verifier_start_scan_qr_policy_indication_2g,
                     R.string.verifier_risksetting_highrisk_subtitle

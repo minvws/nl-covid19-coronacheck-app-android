@@ -146,17 +146,14 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
                 binding.bottom.hidePolicyIndication()
                 R.drawable.illustration_scanner_get_started_3g
             }
-            VerificationPolicyState.Policy2G -> {
-                binding.bottom.setPolicy(VerificationPolicy2G)
+            VerificationPolicyState.Policy1G -> {
+                //TODO fix values for 1G
+                binding.bottom.setPolicy(VerificationPolicy1G)
                 R.drawable.illustration_scanner_get_started_2g
             }
             VerificationPolicyState.Policy3G -> {
                 binding.bottom.setPolicy(VerificationPolicy3G)
                 R.drawable.illustration_scanner_get_started_3g
-            }
-            VerificationPolicyState.Policy2GPlus -> {
-                binding.bottom.setPolicy(VerificationPolicy2GPlus)
-                R.drawable.illustration_scanner_get_started_2g_plus
             }
         }
 

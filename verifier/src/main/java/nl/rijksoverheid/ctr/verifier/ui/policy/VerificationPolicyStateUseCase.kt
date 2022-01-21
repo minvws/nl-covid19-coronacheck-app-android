@@ -23,9 +23,8 @@ class VerificationPolicyStateUseCaseImpl(
     override fun get(): VerificationPolicyState {
         return if (featureFlagUseCase.isVerificationPolicyEnabled()) {
             when (persistenceManager.getVerificationPolicySelected()) {
-                VerificationPolicy.VerificationPolicy2G -> VerificationPolicyState.Policy2G
-                VerificationPolicy.VerificationPolicy2GPlus -> VerificationPolicyState.Policy2GPlus
                 VerificationPolicy.VerificationPolicy3G -> VerificationPolicyState.Policy3G
+                VerificationPolicy.VerificationPolicy1G -> VerificationPolicyState.Policy1G
                 else -> VerificationPolicyState.None
             }
         } else {

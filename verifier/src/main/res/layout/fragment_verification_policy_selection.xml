@@ -64,7 +64,6 @@
                 android:layout_marginTop="32dp"
                 app:layout_constraintStart_toStartOf="@id/subHeader"
                 app:layout_constraintTop_toBottomOf="@+id/link"
-                android:visibility="gone"
                 android:background="?selectableItemBackground">
 
                 <View
@@ -106,100 +105,13 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/policy2G_container"
+                android:id="@+id/policy1G_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="?selectableItemBackground"
                 app:layout_constraintTop_toBottomOf="@id/policy3G_container"
                 app:layout_constraintStart_toStartOf="@id/policy3G_container"
-                android:visibility="gone"
-                android:layout_marginTop="10dp">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/policy2G"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:paddingHorizontal="16dp"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:clickable="false"
-                    android:text="@string/verifier_risksetting_highrisk_title" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/subtitle_2g"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:textColor="@color/secondary_text"
-                    android:paddingStart="56dp"
-                    android:paddingEnd="16dp"
-                    android:textSize="16sp"
-                    android:text="@string/verifier_risksetting_highrisk_subtitle" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/grey_4" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/policy2G_plus_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="?selectableItemBackground"
-                app:layout_constraintTop_toBottomOf="@id/policy2G_container"
-                app:layout_constraintStart_toStartOf="@id/policy3G_container"
-                android:visibility="gone"
-                android:layout_marginTop="10dp">
-
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/policy2G_plus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:paddingHorizontal="16dp"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:clickable="false"
-                    android:text="@string/verifier_scanner_policy_indication_2g_plus" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/subtitle_2g_plus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?attr/textAppearanceBody1"
-                    android:textColor="@color/secondary_text"
-                    android:paddingStart="56dp"
-                    android:paddingEnd="16dp"
-                    android:textSize="16sp"
-                    android:text="@string/verifier_risksetting_2g_plus_subtitle" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/grey_4" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/policy1G_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="?selectableItemBackground"
-                app:layout_constraintTop_toBottomOf="@id/policy2G_plus_container"
-                app:layout_constraintStart_toStartOf="@id/policy3G_container"
-                android:visibility="gone"
                 android:layout_marginTop="10dp">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton

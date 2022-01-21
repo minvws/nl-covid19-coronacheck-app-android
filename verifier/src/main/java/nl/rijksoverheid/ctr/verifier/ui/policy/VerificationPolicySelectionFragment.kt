@@ -51,21 +51,9 @@ class VerificationPolicySelectionFragment :
 
         viewModel.scannerUsedRecentlyLiveData.observe(viewLifecycleOwner, EventObserver {
             setupScreenBasedOnType(it)
-            setupEnabledPolicies()
         })
 
         viewModel.didScanRecently()
-    }
-
-    private fun setupEnabledPolicies() {
-        viewModel.verificationPoliciesEnabled.forEach {
-            when (it) {
-                VerificationPolicy2G -> binding.policy2GContainer.visibility = VISIBLE
-                VerificationPolicy2GPlus -> binding.policy2GPlusContainer.visibility = VISIBLE
-                VerificationPolicy3G -> binding.policy3GContainer.visibility = VISIBLE
-                VerificationPolicy1G -> binding.policy1GContainer.visibility = VISIBLE
-            }
-        }
     }
 
     private fun setupScreenBasedOnType(scanUsedRecently: Boolean) {
@@ -100,8 +88,7 @@ class VerificationPolicySelectionFragment :
 
     private fun presentWarningDialog() {
         val currentPolicyState = verificationPolicyStateUseCase.get()
-        val policyHasNotChanged = currentPolicyState is VerificationPolicyState.Policy2G && binding.policy2G.isChecked ||
-                currentPolicyState is VerificationPolicyState.Policy2GPlus && binding.policy2GPlus.isChecked ||
+        val policyHasNotChanged = currentPolicyState is VerificationPolicyState.Policy1G && binding.policy1G.isChecked ||
                 currentPolicyState is VerificationPolicyState.Policy3G && binding.policy3G.isChecked
         when {
             currentPolicyState is VerificationPolicyState.None -> {
@@ -144,7 +131,7 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun onConfirmationButtonClicked(onClick: () -> Unit) {
-        val policySelected = binding.policy3G.isChecked || binding.policy2G.isChecked || binding.policy2GPlus.isChecked || binding.policy1G.isChecked
+        val policySelected = binding.policy3G.isChecked || binding.policy1G.isChecked
         if (policySelected) {
             onClick()
         } else {
@@ -154,21 +141,19 @@ class VerificationPolicySelectionFragment :
 
     private fun storeSelection() {
         val policy = when {
-            binding.policy2G.isChecked -> VerificationPolicy2G
-            binding.policy2GPlus.isChecked -> VerificationPolicy2GPlus
-            binding.policy2G.isChecked -> VerificationPolicy3G
+            binding.policy3G.isChecked -> VerificationPolicy3G
             binding.policy1G.isChecked -> VerificationPolicy1G
             else -> return
         }
         viewModel.storeSelection(policy)
     }
 
-    private val allRadioButtons = listOf(binding.policy2G, binding.policy2GPlus, binding.policy3G, binding.policy2G)
+    private fun allRadioButtons() = listOf(binding.policy3G, binding.policy1G)
 
     private fun toggleError(error: Boolean) {
         if (error) {
             binding.errorContainer.visibility = VISIBLE
-            allRadioButtons.forEach {
+            allRadioButtons().forEach {
                 it.buttonTintList =
                     ColorStateList.valueOf(requireContext().getColor(R.color.error))
             }
@@ -181,7 +166,7 @@ class VerificationPolicySelectionFragment :
             }
         } else {
             binding.errorContainer.visibility = GONE
-            allRadioButtons.forEach {
+            allRadioButtons().forEach {
                 it.buttonTintList =
                     ColorStateList.valueOf(requireContext().getColor(R.color.link))
             }
@@ -192,18 +177,8 @@ class VerificationPolicySelectionFragment :
         policySelected(selectionType.state.verificationPolicyState)
 
         when (viewModel.radioButtonSelected) {
-            binding.policy2G.id -> policy2GSelected()
-            binding.policy2GPlus.id -> policy2GPlusSelected()
             binding.policy3G.id -> policy3GSelected()
             binding.policy1G.id -> policy1GSelected()
-        }
-
-        binding.policy2GContainer.setOnClickListener {
-            policy2GSelected()
-        }
-
-        binding.policy2GPlusContainer.setOnClickListener {
-            policy2GPlusSelected()
         }
 
         binding.policy3GContainer.setOnClickListener {
@@ -213,16 +188,6 @@ class VerificationPolicySelectionFragment :
         binding.policy1GContainer.setOnClickListener {
             policy1GSelected()
         }
-    }
-
-    private fun policy2GSelected() {
-        policyChecked(binding.policy2G.id)
-        policySelected(VerificationPolicyState.Policy2G)
-    }
-
-    private fun policy2GPlusSelected() {
-        policyChecked(binding.policy2GPlus.id)
-        policySelected(VerificationPolicyState.Policy2GPlus)
     }
 
     private fun policy3GSelected() {
@@ -237,33 +202,15 @@ class VerificationPolicySelectionFragment :
 
     private fun policySelected(state: VerificationPolicyState) {
         when (state) {
-            VerificationPolicyState.Policy2G -> {
-                binding.policy2G.isChecked = true
-                binding.policy2GPlus.isChecked = false
-                binding.policy3G.isChecked = false
-                binding.policy1G.isChecked = false
-            }
-            VerificationPolicyState.Policy2GPlus -> {
-                binding.policy2G.isChecked = false
-                binding.policy2GPlus.isChecked = true
-                binding.policy3G.isChecked = false
-                binding.policy1G.isChecked = false
-            }
             VerificationPolicyState.Policy3G -> {
-                binding.policy2G.isChecked = false
-                binding.policy2GPlus.isChecked = false
                 binding.policy3G.isChecked = true
                 binding.policy1G.isChecked = false
             }
             VerificationPolicyState.Policy1G -> {
                 binding.policy3G.isChecked = false
-                binding.policy2G.isChecked = false
-                binding.policy2GPlus.isChecked = false
                 binding.policy1G.isChecked = true
             }
             VerificationPolicyState.None -> {
-                binding.policy2G.isChecked = false
-                binding.policy2GPlus.isChecked = false
                 binding.policy3G.isChecked = false
                 binding.policy1G.isChecked = false
             }
