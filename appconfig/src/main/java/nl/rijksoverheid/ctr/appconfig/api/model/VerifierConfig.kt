@@ -30,7 +30,7 @@ class VerifierConfig(
     @Json(name = "scanLockSeconds") val scanLockSeconds: Int,
     @Json(name = "scanLogStorageSeconds") val scanLogStorageSeconds: Int,
     @Json(name = "androidEnableVerificationPolicyVersion") val verifierEnableVerificationPolicyVersion: Int = 0,
-    @Json(name = "verificationPolicies") val verificationPolicies: List<String> = listOf("3G"),
+    @Json(name = "verificationPolicies") val verificationPolicies: List<String>,
 ) : AppConfig(
     verifierAppDeactivated,
     verifierInformationURL,
