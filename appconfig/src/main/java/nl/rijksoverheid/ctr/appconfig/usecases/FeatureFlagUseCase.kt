@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
 
 interface FeatureFlagUseCase {
+    @Deprecated("this is used now only from the holder app and it will change in a forecoming holder ticket")
     fun isVerificationPolicyEnabled(): Boolean
     fun isVerificationPolicySelectionEnabled(): Boolean
 }
