@@ -38,6 +38,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
         elevation = 0f
         WidgetScrollViewButtonBinding.inflate(LayoutInflater.from(context), this)
         binding = WidgetScrollViewButtonBinding.bind(this)
+        isFocusable = false
 
         context.theme.obtainStyledAttributes(
             attrs,

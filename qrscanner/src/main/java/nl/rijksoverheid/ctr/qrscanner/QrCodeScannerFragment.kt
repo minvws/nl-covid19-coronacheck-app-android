@@ -91,14 +91,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             findNavController().navigateUp()
         }
 
-        binding.scannerFooter.run {
-            text = getCopy().message
-            getCopy().onMessageClicked?.let { onClicked ->
-                paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
-                setOnClickListener { onClicked.invoke() }
-            }
-        }
-        binding.toolbar.title = getCopy().title
+        setCopy()
 
         // Show header below overlay window after overlay finishes drawing
         binding.overlay.doOnLayout {
@@ -114,6 +107,26 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             binding.policyIndicator.backgroundTintList =
                 ColorStateList.valueOf(requireContext().getColor(it.indicatorColor))
         } ?: run { binding.policyRiskWidget.visibility = View.GONE }
+    }
+
+    private fun setCopy() {
+        val copy = getCopy()
+        binding.toolbar.title = copy.title
+        binding.scannerFooter.text = copy.message
+        binding.scannerFooterButton.text = copy.message
+
+        if (copy.onMessageClicked != null) {
+            binding.scannerFooterButton.paintFlags =
+                binding.scannerFooterButton.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+            binding.scannerFooterButton.setOnClickListener { copy.onMessageClicked.invoke() }
+
+            // For accessibility there is a separation when the footer is clickable as button or not as text view
+            binding.scannerFooterButton.visibility = View.VISIBLE
+            binding.scannerFooter.visibility = View.GONE
+        } else {
+            binding.scannerFooterButton.visibility = View.GONE
+            binding.scannerFooter.visibility = View.VISIBLE
+        }
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
