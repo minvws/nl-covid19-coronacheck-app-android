@@ -29,6 +29,9 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             allEventGroupEntities = listOf()
         )
 
+        dashboardItems.domesticItems.map { it.javaClass }.forEach(::println)
+        dashboardItems.internationalItems.map { it.javaClass }.forEach(::println)
+
         assertEquals(3, dashboardItems.domesticItems.size)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.PlaceholderCardItem)
@@ -56,6 +59,9 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             isLoadingNewCredentials = false,
             allEventGroupEntities = listOf()
         )
+
+        dashboardItems.domesticItems.map { it.javaClass }.forEach(::println)
+        dashboardItems.internationalItems.map { it.javaClass }.forEach(::println)
 
         assertEquals(5, dashboardItems.domesticItems.size)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
@@ -87,6 +93,9 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             isLoadingNewCredentials = false,
             allEventGroupEntities = listOf()
         )
+
+        dashboardItems.domesticItems.map { it.javaClass }.forEach(::println)
+        dashboardItems.internationalItems.map { it.javaClass }.forEach(::println)
 
         assertEquals( 3, dashboardItems.domesticItems.size)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
@@ -125,6 +134,9 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             allEventGroupEntities = listOf()
         )
 
+        dashboardItems.domesticItems.map { it.javaClass }.forEach(::println)
+        dashboardItems.internationalItems.map { it.javaClass }.forEach(::println)
+
         assertEquals(5, dashboardItems.domesticItems.size)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.BoosterItem)
@@ -157,6 +169,9 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             allEventGroupEntities = listOf()
         )
 
+        dashboardItems.domesticItems.map { it.javaClass }.forEach(::println)
+        dashboardItems.internationalItems.map { it.javaClass }.forEach(::println)
+
         assertEquals(5, dashboardItems.domesticItems.size)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.BoosterItem)
@@ -188,6 +203,9 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             allEventGroupEntities = listOf()
         )
 
+        dashboardItems.domesticItems.map { it.javaClass }.forEach(::println)
+        dashboardItems.internationalItems.map { it.javaClass }.forEach(::println)
+
         assertEquals(3, dashboardItems.domesticItems.size, )
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.PlaceholderCardItem)
@@ -210,6 +228,10 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
                 fakeEventGroupEntity(type = OriginType.VaccinationAssessment)
             )
         )
+
+        println("getItems returns correct models for when invalid visitor pass banner is showing")
+        dashboardItems.domesticItems.map { it.javaClass }.forEach(::println)
+        dashboardItems.internationalItems.map { it.javaClass }.forEach(::println)
 
         assertEquals( 3, dashboardItems.domesticItems.size)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
