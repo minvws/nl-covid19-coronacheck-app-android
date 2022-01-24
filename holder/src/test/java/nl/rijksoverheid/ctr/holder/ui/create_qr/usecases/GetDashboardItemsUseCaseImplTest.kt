@@ -1,15 +1,21 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.fakeEventGroupEntity
 import nl.rijksoverheid.ctr.holder.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
@@ -19,6 +25,18 @@ import java.time.OffsetDateTime
 class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
 
     private val usecase: GetDashboardItemsUseCase by inject()
+
+    @Before
+    fun setup() {
+        loadKoinModules(module(override = true) {
+            factory {
+                mockk<BuildConfigUseCase>().apply {
+                    every { getVersionCode() } returns 99999
+                }
+            }
+
+        })
+    }
 
     @Test
     fun `getItems returns correct models when no green cards`() = runBlocking {
