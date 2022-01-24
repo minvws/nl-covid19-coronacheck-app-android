@@ -2,9 +2,7 @@ package nl.rijksoverheid.ctr.holder.persistence.database.models
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

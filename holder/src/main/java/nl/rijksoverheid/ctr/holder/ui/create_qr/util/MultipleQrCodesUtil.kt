@@ -18,9 +18,9 @@ class MultipleQrCodesUtilImpl : MultipleQrCodesUtil {
 
     override fun getMostRelevantQrCodeIndex(vaccinations: List<QrCodeData.European.Vaccination>): Int {
         val mostRelevantVaccination = vaccinations.sortedWith(
-            compareBy<QrCodeData.European.Vaccination> { it.dose == "2" && it.ofTotalDoses == "2" && !it.isHidden }
-                .thenBy { it.dose == it.ofTotalDoses && !it.isHidden }
+            compareBy<QrCodeData.European.Vaccination> { !it.isHidden }
                 .thenBy { it.dose }
+                .thenBy { it.ofTotalDoses }
         ).last()
         return vaccinations.indexOfFirst { it == mostRelevantVaccination }
     }

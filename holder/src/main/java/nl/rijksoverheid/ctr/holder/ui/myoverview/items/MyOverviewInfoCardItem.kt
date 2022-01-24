@@ -1,13 +1,16 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.items
 
-import android.content.Context
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewInfoCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -20,8 +23,10 @@ class MyOverviewInfoCardItem(
     private val infoItem: DashboardItem.InfoItem,
     private val onButtonClick: (infoItem: DashboardItem.InfoItem) -> Unit,
     private val onDismiss: (infoCardItem: MyOverviewInfoCardItem, infoItem: DashboardItem.InfoItem) -> Unit = { _, _ -> }
-) :
-    BindableItem<ItemMyOverviewInfoCardBinding>(R.layout.item_my_overview_info_card.toLong()) {
+) : BindableItem<ItemMyOverviewInfoCardBinding>(R.layout.item_my_overview_info_card.toLong()),
+    KoinComponent {
+
+    private val util: MyOverviewInfoCardItemUtil by inject()
 
     override fun bind(viewBinding: ItemMyOverviewInfoCardBinding, position: Int) {
         if (infoItem.isDismissible) {
@@ -41,9 +46,6 @@ class MyOverviewInfoCardItem(
         }
 
         when (infoItem) {
-            is DashboardItem.InfoItem.RefreshEuVaccinations -> {
-                viewBinding.text.setText(R.string.dashboard_item_refresh_eu_vaccinations_text)
-            }
             is DashboardItem.InfoItem.ExtendDomesticRecovery -> {
                 viewBinding.text.setText(R.string.extend_domestic_recovery_green_card_info_card_text)
             }
@@ -59,18 +61,33 @@ class MyOverviewInfoCardItem(
             is DashboardItem.InfoItem.RecoveredDomesticRecovery -> {
                 viewBinding.text.setText(R.string.recovered_domestic_recovery_green_card_info_card_text)
             }
-            is DashboardItem.InfoItem.RefreshedEuVaccinations -> {
-                viewBinding.text.setText(R.string.dashboard_item_refreshed_eu_vaccinations_text)
-            }
             is DashboardItem.InfoItem.ClockDeviationItem -> {
                 viewBinding.text.setText(R.string.my_overview_clock_deviation_description)
             }
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                viewBinding.text.setText(R.string.qr_card_expired)
+                val expiredItemText = util.getExpiredItemText(
+                    greenCardType = infoItem.greenCardEntity.type,
+                    originType = infoItem.originType
+                )
+                viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
+            }
+            is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
+                val expiredItemText = util.getExpiredItemText(
+                    greenCardType = Domestic,
+                    originType = Vaccination
+                )
+                viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
+            }
+            is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
+                val expiredItemText = util.getExpiredItemText(
+                    greenCardType = Domestic,
+                    originType = VaccinationAssessment
+                )
+                viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
             }
             is DashboardItem.InfoItem.OriginInfoItem -> {
                 viewBinding.text.text =
-                    getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
+                    util.getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
             }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem -> {
                 viewBinding.text.text =
@@ -86,34 +103,16 @@ class MyOverviewInfoCardItem(
             is DashboardItem.InfoItem.NewValidityItem -> {
                 viewBinding.text.setText(R.string.holder_dashboard_newvaliditybanner_title)
             }
+            is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
+                viewBinding.text.setText(R.string.holder_dashboard_visitorpassincompletebanner_title)
+            }
+            is DashboardItem.InfoItem.BoosterItem -> {
+                viewBinding.text.setText(R.string.holder_dashboard_addBoosterBanner_title)
+            }
         }
 
         viewBinding.button.setOnClickListener {
             onButtonClick.invoke(infoItem)
-        }
-    }
-
-    private fun getOriginInfoText(
-        infoItem: DashboardItem.InfoItem.OriginInfoItem,
-        context: Context
-    ): String {
-        val originString = when (infoItem.originType) {
-            is OriginType.Vaccination -> context.getString(R.string.type_vaccination)
-            is OriginType.Recovery -> context.getString(R.string.type_recovery)
-            is OriginType.Test -> context.getString(R.string.type_test)
-        }
-
-        return when (infoItem.greenCardType) {
-            is GreenCardType.Domestic -> {
-                context.getString(
-                    R.string.my_overview_not_valid_domestic_but_is_in_eu, originString
-                )
-            }
-            is GreenCardType.Eu -> {
-                context.getString(
-                    R.string.my_overview_not_valid_eu_but_is_in_domestic, originString
-                )
-            }
         }
     }
 

@@ -10,6 +10,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.time.Clock
@@ -28,12 +29,14 @@ import java.time.ZoneId
 @Config(qualifiers = "nl-land")
 class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
 
+    private val lastVaccinationDoseUtil: LastVaccinationDoseUtil by inject()
+    private val countryUtil: CountryUtil by inject()
+
     @Test
     fun `get correct vaccination screen info for non paper proof`() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val resources = context.resources
 
-        val lastVaccinationDoseUtil = LastVaccinationDoseUtilImpl(resources)
         val cachedAppConfigUseCase: CachedAppConfigUseCase = object : CachedAppConfigUseCase {
             override fun getCachedAppConfig() = HolderConfig.default().copy(
                 hpkCodes = listOf(
@@ -84,6 +87,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
         val vaccinationInfoScreenUtil = VaccinationInfoScreenUtilImpl(
             lastVaccinationDoseUtil,
             resources,
+            countryUtil,
             cachedAppConfigUseCase
         )
 
@@ -159,6 +163,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
         val vaccinationInfoScreenUtil = VaccinationInfoScreenUtilImpl(
             lastVaccinationDoseUtil,
             resources,
+            countryUtil,
             cachedAppConfigUseCase
         )
 

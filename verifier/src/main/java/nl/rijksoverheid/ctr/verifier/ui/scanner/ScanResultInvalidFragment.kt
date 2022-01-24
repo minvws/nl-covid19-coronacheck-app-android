@@ -79,6 +79,10 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
             }
         }
 
+        args.title?.let {
+            binding.title.text = it
+        }
+
         binding.bottom.setButtonClick { navigateToScanner() }
 
         // scroll all the way down on landscape

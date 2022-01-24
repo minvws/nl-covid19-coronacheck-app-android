@@ -9,8 +9,6 @@ import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.*
-import nl.rijksoverheid.ctr.holder.persistence.HolderWorkerFactory
-import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
@@ -35,15 +33,13 @@ import org.koin.core.module.Module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class HolderApplication : SharedApplication(), Configuration.Provider {
+open class HolderApplication : SharedApplication() {
 
     private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
     private val testResultsMigrationManager: TestResultsMigrationManager by inject()
-    private val holderWorkerFactory: HolderWorkerFactory by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
-    private val workerManagerWrapper: WorkerManagerWrapper by inject()
     private val checkNewRecoveryValidityUseCase: CheckNewRecoveryValidityUseCase by inject()
     private val checkNewValidityInfoCardUseCase: CheckNewValidityInfoCardUseCase by inject()
 
@@ -91,9 +87,6 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         // Generate and store secret key to be used by rest of the app
         secretKeyUseCase.persist()
 
-        // cancel pending refresh credentials jobs scheduled from app version 2.1.7
-        workerManagerWrapper.cancel(this)
-
         // Create default wallet in database if empty
         GlobalScope.launch {
             if (holderDatabase.walletDao().getAll().isEmpty()) {
@@ -121,16 +114,5 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
 
     override fun getAdditionalModules(): List<Module> {
         return listOf(holderPreferenceModule, holderMobileCoreModule)
-    }
-
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder().apply {
-            setMinimumLoggingLevel(if (BuildConfig.DEBUG) {
-                Log.DEBUG
-            } else {
-                Log.ERROR
-            })
-            setWorkerFactory(holderWorkerFactory)
-        }.build()
     }
 }

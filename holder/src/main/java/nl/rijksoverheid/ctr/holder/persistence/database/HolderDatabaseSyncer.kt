@@ -4,15 +4,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
-import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination
-import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination.*
+import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
+import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState.*
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
-import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
+import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import java.time.OffsetDateTime
 
@@ -32,6 +33,7 @@ interface HolderDatabaseSyncer {
      * @param previousSyncResult The previous result outputted by this [sync] if known
      */
     suspend fun sync(
+        flow: Flow = HolderFlow.Startup,
         expectedOriginType: OriginType? = null,
         syncWithRemote: Boolean = true,
         previousSyncResult: DatabaseSyncerResult? = null
@@ -45,12 +47,13 @@ class HolderDatabaseSyncerImpl(
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
     private val persistenceManager: PersistenceManager,
-    private val combinationUtil: DomesticVaccinationRecoveryCombinationUtil
+    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil
 ) : HolderDatabaseSyncer {
 
     private val mutex = Mutex()
 
     override suspend fun sync(
+        flow: Flow,
         expectedOriginType: OriginType?,
         syncWithRemote: Boolean,
         previousSyncResult: DatabaseSyncerResult?
@@ -74,7 +77,8 @@ class HolderDatabaseSyncerImpl(
                         is RemoteGreenCardsResult.Success -> {
                             val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
                             val combinedVaccinationRecovery =
-                                combinationUtil.getResult(
+                                yourEventFragmentEndStateUtil.getResult(
+                                    flow = flow,
                                     storedGreenCards = holderDatabase.greenCardDao().getAll(),
                                     events = events,
                                     remoteGreenCards = remoteGreenCards
@@ -99,8 +103,11 @@ class HolderDatabaseSyncerImpl(
                             }
 
                             // If we expect the remote green cards to have a certain origin
+                            // We ignore the vaccination assessment origin here because you can
+                            // fetch send a vaccination assessment event origin but not get a
+                            // green card vaccination assessment origin back
                             if (expectedOriginType != null && !remoteGreenCards.getAllOrigins()
-                                    .contains(expectedOriginType)
+                                    .contains(expectedOriginType) && expectedOriginType != OriginType.VaccinationAssessment
                             ) {
                                 return@withContext DatabaseSyncerResult.Success(
                                     missingOrigin = true,
@@ -166,7 +173,7 @@ class HolderDatabaseSyncerImpl(
 sealed class DatabaseSyncerResult {
     data class Success(
         val missingOrigin: Boolean = false,
-        val domesticVaccinationRecovery: DomesticVaccinationRecoveryCombination = NotApplicable
+        val yourEventFragmentEndState: YourEventFragmentEndState = NotApplicable
     ) : DatabaseSyncerResult()
 
     sealed class Failed(open val errorResult: ErrorResult, open val failedAt: OffsetDateTime) :

@@ -15,8 +15,8 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.CommercialTestCodeViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
@@ -24,6 +24,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -58,11 +59,7 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
                 .postValue(tabItems)
         }
 
-        override fun removeGreenCard(greenCard: GreenCard) {
-
-        }
-
-        override fun dismissRefreshedEuVaccinationsInfoCard() {
+        override fun removeGreenCard(greenCardEntity: GreenCardEntity) {
 
         }
 
@@ -78,6 +75,9 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         }
 
+        override fun dismissBoosterInfoCard() {
+
+        }
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {
@@ -125,23 +125,6 @@ fun fakeIntroductionViewModel(
 
         }
 
-    }
-}
-
-fun fakeCommercialTestResultViewModel(): CommercialTestCodeViewModel {
-    return object : CommercialTestCodeViewModel() {
-
-        override fun updateViewState() {
-
-        }
-
-        override fun getTestResult(fromDeeplink: Boolean) {
-
-        }
-
-        override fun sendVerificationCode() {
-
-        }
     }
 }
 
@@ -194,8 +177,87 @@ fun fakeConfigProviderUseCase(
             return EventProvidersResult.Success(eventProviders)
         }
 
+        override suspend fun eventProvidersBES(): EventProvidersResult {
+            return EventProvidersResult.Success(eventProviders)
+        }
+
         override suspend fun testProviders(): TestProvidersResult {
             return TestProvidersResult.Success(testProviders)
+        }
+    }
+}
+
+fun fakeCoronaCheckRepository(
+    testProviders: RemoteConfigProviders = RemoteConfigProviders(listOf(), listOf(), listOf()),
+    testIsmResult: TestIsmResult = TestIsmResult.Success(""),
+    testIsmExceptionCallback: (() -> Unit)? = null,
+    remoteNonce: RemoteNonce = RemoteNonce("", ""),
+    accessTokens: RemoteAccessTokens = RemoteAccessTokens(tokens = listOf()),
+    remoteCredentials: RemoteGreenCards = RemoteGreenCards(
+        domesticGreencard = null,
+        euGreencards = null
+    ),
+    prepareIssue: RemotePrepareIssue = RemotePrepareIssue(
+        stoken = "",
+        prepareIssueMessage = "".toByteArray()
+    )
+
+): CoronaCheckRepository {
+    return object : CoronaCheckRepository {
+
+        override suspend fun configProviders(): NetworkRequestResult<RemoteConfigProviders> {
+            return NetworkRequestResult.Success(testProviders)
+        }
+
+        override suspend fun accessTokens(jwt: String): NetworkRequestResult<RemoteAccessTokens> {
+            return NetworkRequestResult.Success(accessTokens)
+        }
+
+        override suspend fun getGreenCards(
+            stoken: String,
+            events: List<String>,
+            issueCommitmentMessage: String
+        ): NetworkRequestResult<RemoteGreenCards> {
+            return NetworkRequestResult.Success(remoteCredentials)
+        }
+
+        override suspend fun getPrepareIssue(): NetworkRequestResult<RemotePrepareIssue> {
+            return NetworkRequestResult.Success(prepareIssue)
+        }
+
+        override suspend fun getCoupling(
+            credential: String,
+            couplingCode: String
+        ): NetworkRequestResult<RemoteCouplingResponse> {
+            return NetworkRequestResult.Success(RemoteCouplingResponse(RemoteCouplingStatus.Accepted))
+        }
+    }
+}
+
+fun fakeTestResultAttributesUseCase(
+    sampleTimeSeconds: Long = 0L,
+    testType: String = "",
+    birthDay: String = "",
+    birthMonth: String = "",
+    firstNameInitial: String = "",
+    lastNameInitial: String = "",
+    isSpecimen: String = "0",
+    isPaperProof: String = "0"
+): TestResultAttributesUseCase {
+    return object : TestResultAttributesUseCase {
+        override fun get(credentials: String): TestResultAttributes {
+            return TestResultAttributes(
+                birthDay = birthDay,
+                birthMonth = birthMonth,
+                firstNameInitial = firstNameInitial,
+                lastNameInitial = lastNameInitial,
+                isSpecimen = isSpecimen,
+                isNLDCC = "1",
+                credentialVersion = "1",
+                isPaperProof = "0",
+                validForHours = "24",
+                validFrom = "1622633766",
+            )
         }
     }
 }
@@ -268,14 +330,6 @@ fun fakePersistenceManager(
 
         }
 
-        override fun hasDismissedSyncedGreenCardsItem(): Boolean {
-            return hasDismissedUnsecureDeviceDialog
-        }
-
-        override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
-
-        }
-
         override fun showSyncGreenCardsItem(): Boolean {
             return showSyncGreenCardsItem
         }
@@ -337,6 +391,14 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedNewValidityInfoCard(dismissed: Boolean) {
+
+        }
+
+        override fun getHasDismissedBoosterInfoCard(): Long {
+            return 0L
+        }
+
+        override fun setHasDismissedBoosterInfoCard(dismissedAtEpochSeconds: Long) {
 
         }
     }
@@ -462,11 +524,15 @@ fun fakeGreenCardUtil(
     isExpiring: Boolean = false,
     hasNoActiveCredentials: Boolean = false
 ) = object : GreenCardUtil {
+    override fun hasOrigin(greenCards: List<GreenCard>, originType: OriginType): Boolean {
+        return true
+    }
+
     override fun isExpired(greenCard: GreenCard): Boolean {
         return isExpired
     }
 
-    override fun getExpireDate(greenCard: GreenCard): OffsetDateTime {
+    override fun getExpireDate(greenCard: GreenCard, type: OriginType?): OffsetDateTime {
         return expireDate
     }
 
@@ -542,13 +608,6 @@ fun fakeQrCodeUsecase() = object : QrCodeUseCase {
         return mockk()
     }
 }
-
-fun fakeEventGroupEntityUtil(remoteEventVaccinations: List<RemoteEventVaccination> = listOf()) =
-    object : EventGroupEntityUtil {
-        override suspend fun amountOfVaccinationEvents(eventGroupEntities: List<EventGroupEntity>): Int {
-            return remoteEventVaccinations.size
-        }
-    }
 
 fun fakeRemoteEventUtil(
     getRemoteEventsFromNonDcc: List<RemoteEvent> = listOf()
@@ -718,6 +777,16 @@ fun fakeOrigin(
     ),
     doseNumber: Int? = 1
 ) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber)
+
+fun fakeOriginEntity(
+    id: Int = 0,
+    greenCardId: Long = 1L,
+    type: OriginType = OriginType.Vaccination,
+    eventTime: OffsetDateTime = OffsetDateTime.now(),
+    expirationTime: OffsetDateTime = OffsetDateTime.now(),
+    validFrom: OffsetDateTime = OffsetDateTime.now(),
+    doseNumber: Int? = null
+) = OriginEntity(id, greenCardId, type, eventTime, expirationTime, validFrom, doseNumber)
 
 
 

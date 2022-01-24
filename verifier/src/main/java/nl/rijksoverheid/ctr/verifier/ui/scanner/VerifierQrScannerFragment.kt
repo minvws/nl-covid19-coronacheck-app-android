@@ -59,10 +59,12 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                         title = when (it) {
                             is VerificationPolicy2G -> R.string.verifier_scanner_policy_indication_2g
                             is VerificationPolicy3G -> R.string.verifier_scanner_policy_indication_3g
+                            is VerificationPolicy2GPlus -> R.string.verifier_scanner_policy_indication_2g_plus
                         },
                         indicatorColor = when (it) {
                             is VerificationPolicy2G -> R.color.primary_blue
                             is VerificationPolicy3G -> R.color.secondary_green
+                            is VerificationPolicy2GPlus -> R.color.primary_text
                         }
                     )
                 } else {
@@ -119,6 +121,25 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                     R.string.scan_result_unknown_qr_dialog_title,
                     getString(R.string.scan_result_unknown_qr_dialog_message)
                 )
+                is VerifiedQrResultState.PartiallyValid -> {
+                    navigateSafety(VerifierQrScannerFragmentDirections.actionDccScanResult(
+                        data = if (qrResultState.isTestResult) {
+                            DccScanResultFragmentData.ScanVaccinationOrRecovery(
+                                previousScanVaccinationOrRecoveryResult = qrResultState.verifiedQr,
+                            )
+                        } else {
+                            DccScanResultFragmentData.ScanTest(
+                                previousScanTextResult = qrResultState.verifiedQr,
+                            )
+                        }
+                    ))
+                }
+                is VerifiedQrResultState.PersonalDataMismatch -> {
+                    navigateSafety(VerifierQrScannerFragmentDirections.actionScanResultInvalid(
+                        invalidData = ScanResultInvalidData.Error("personal data mismatch"),
+                        title = getString(R.string.verifier_result_denied_personal_data_mismatch_title),
+                    ))
+                }
             }
         })
     }

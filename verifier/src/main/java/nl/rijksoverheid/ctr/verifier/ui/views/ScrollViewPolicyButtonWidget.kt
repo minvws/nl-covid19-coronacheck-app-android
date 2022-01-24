@@ -95,6 +95,7 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
                     when (policy) {
                         VerificationPolicy.VerificationPolicy2G -> R.color.primary_blue
                         VerificationPolicy.VerificationPolicy3G -> R.color.secondary_green
+                        VerificationPolicy.VerificationPolicy2GPlus -> R.color.black
                     }
                 )
             )
@@ -103,6 +104,7 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
             when (policy) {
                 VerificationPolicy.VerificationPolicy2G -> R.string.verifier_start_scan_qr_policy_indication_2g
                 VerificationPolicy.VerificationPolicy3G -> R.string.verifier_start_scan_qr_policy_indication_3g
+                VerificationPolicy.VerificationPolicy2GPlus -> R.string.verifier_start_scan_qr_policy_indication_2g_plus
             }
         )
     }

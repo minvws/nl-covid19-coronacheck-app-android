@@ -16,39 +16,26 @@ import kotlin.test.assertEquals
 class MultipleQrCodesUtilImplTest {
 
     @Test
-    fun `2 of 2 not hidden qr should be most relevant above all`() {
-        val util = MultipleQrCodesUtilImpl()
-        val vaccinations = listOf(
-            createVaccination(dose = "1", totalDoses = "1", isHidden = false),
-            createVaccination(dose = "3", totalDoses = "3", isHidden = false),
-            createVaccination(dose = "2", totalDoses = "2", isHidden = false), // most relevant
-            createVaccination(dose = "3", totalDoses = "2", isHidden = true)
-        )
-
-        assertEquals(util.getMostRelevantQrCodeIndex(vaccinations), 2)
-    }
-
-    @Test
-    fun `The visible qr where dose and total dose is equal and highest is the most relevant`() {
+    fun `The most relevant QR is the one with the highest dose which is not hidden`() {
         val util = MultipleQrCodesUtilImpl()
         val vaccinations = listOf(
             createVaccination(dose = "1", totalDoses = "1", isHidden = false),
             createVaccination(dose = "3", totalDoses = "3", isHidden = false), // most relevant
-            createVaccination(dose = "2", totalDoses = "2", isHidden = true),
-            createVaccination(dose = "4", totalDoses = "5", isHidden = false)
+            createVaccination(dose = "2", totalDoses = "2", isHidden = false),
+            createVaccination(dose = "4", totalDoses = "2", isHidden = true)
         )
 
         assertEquals(util.getMostRelevantQrCodeIndex(vaccinations), 1)
     }
 
     @Test
-    fun `When there is no equal doses visible qr, the qr with highest dose is most relevant`() {
+    fun `The most relevant QR of highest equal doses is the one with the highest of total doses`() {
         val util = MultipleQrCodesUtilImpl()
         val vaccinations = listOf(
-            createVaccination(dose = "1", totalDoses = "5", isHidden = false),
-            createVaccination(dose = "2", totalDoses = "2", isHidden = true),
-            createVaccination(dose = "5", totalDoses = "2", isHidden = false), // most relevant
-            createVaccination(dose = "4", totalDoses = "5", isHidden = false)
+            createVaccination(dose = "1", totalDoses = "1", isHidden = false),
+            createVaccination(dose = "3", totalDoses = "2", isHidden = false),
+            createVaccination(dose = "3", totalDoses = "3", isHidden = false), // most relevant
+            createVaccination(dose = "4", totalDoses = "5", isHidden = true)
         )
 
         assertEquals(util.getMostRelevantQrCodeIndex(vaccinations), 2)

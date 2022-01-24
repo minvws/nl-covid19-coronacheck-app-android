@@ -20,12 +20,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.BaseMainFragment
 import nl.rijksoverheid.ctr.design.ext.styleTitle
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import org.koin.android.ext.android.inject
 
@@ -33,7 +34,8 @@ class HolderMainFragment : BaseMainFragment(
     R.layout.fragment_main, setOf(
         R.id.nav_my_overview_tabs,
         R.id.nav_about_this_app,
-        R.id.nav_paper_proof_explanation
+        R.id.nav_paper_proof_explanation,
+        R.id.nav_visitor_pass,
     )
 ) {
 
@@ -41,8 +43,10 @@ class HolderMainFragment : BaseMainFragment(
     private val binding get() = _binding!!
     private var _navController: NavController? = null
     private val navController get() = _navController!!
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val cachedAppConfigUseCase: nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase by inject()
+    private val holderCachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
+    private val intentUtil: IntentUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -89,7 +93,10 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_frequently_asked_questions -> {
-                    context?.launchUrl(getString(R.string.url_faq))
+                    intentUtil.openUrl(
+                        context = requireContext(),
+                        url = getString(R.string.url_faq)
+                    )
                 }
                 R.id.nav_about_this_app -> {
                     navController.navigate(
@@ -100,7 +107,7 @@ class HolderMainFragment : BaseMainFragment(
                                 sections = listOf(
                                     AboutThisAppData.AboutThisAppSection(
                                         header = R.string.about_this_app_read_more,
-                                        items = mutableListOf<AboutThisAppData.AboutThisAppItem>(
+                                        items = mutableListOf(
                                             AboutThisAppData.Url(
                                                 text = getString(R.string.privacy_statement),
                                                 url = getString(R.string.url_privacy_statement),
@@ -147,6 +154,11 @@ class HolderMainFragment : BaseMainFragment(
                 }
             }
         })
+
+        // Show visitor pass menu item if feature is enabled
+        if (holderCachedAppConfigUseCase.getCachedAppConfig().visitorPassEnabled) {
+            binding.navView.menu.findItem(R.id.nav_visitor_pass).isVisible = true
+        }
     }
 
     override fun onDestroyView() {
@@ -155,12 +167,12 @@ class HolderMainFragment : BaseMainFragment(
     }
 
     fun presentLoading(loading: Boolean) {
-        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
         if (loading) {
             binding.loading.setAccessibilityFocus()
         } else {
-            binding.toolbar.setAccessibilityFocus()
+            binding.loading.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         }
+        binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     fun getToolbar(): Toolbar {
@@ -188,6 +200,8 @@ class HolderMainFragment : BaseMainFragment(
         binding.navView.menu.findItem(R.id.nav_terms_of_use)
             .styleTitle(context, R.attr.textAppearanceHeadline3)
         binding.navView.menu.findItem(R.id.nav_paper_proof)
+            .styleTitle(context, R.attr.textAppearanceHeadline3)
+        binding.navView.menu.findItem(R.id.nav_visitor_pass)
             .styleTitle(context, R.attr.textAppearanceHeadline3)
 
         // resize drawer according to design

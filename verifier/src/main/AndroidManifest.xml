@@ -16,7 +16,8 @@
         android:theme="@style/AppTheme.Launcher">
 
         <activity
-            android:name=".VerifierMainActivity">
+            android:name=".VerifierMainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

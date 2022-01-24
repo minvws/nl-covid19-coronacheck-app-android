@@ -56,14 +56,22 @@ sealed class EventsResult {
             return unomiOrEventErrors != null
         }
 
+        fun isMijnCnMissingDataErrors() : Boolean {
+            val returnedError  = errorResults.find { it.getCurrentStep() == HolderStep.EventNetworkRequest }
+            returnedError?.let{ errorResult ->
+                return errorResult is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError && errorResult.getCode() in 777706..777716
+            }
+            return false
+        }
+
         companion object {
-            fun noProvidersError(originType: OriginType) = Error(object: ErrorResult {
+            fun noProvidersError(originType: RemoteOriginType) = Error(object: ErrorResult {
                 override fun getCurrentStep() = HolderStep.ConfigProvidersNetworkRequest
 
                 override fun getException() = when (originType) {
-                    OriginType.Recovery -> NoProvidersException.Recovery
-                    OriginType.Test -> NoProvidersException.Test
-                    OriginType.Vaccination -> NoProvidersException.Vaccination
+                    RemoteOriginType.Recovery -> NoProvidersException.Recovery
+                    RemoteOriginType.Test -> NoProvidersException.Test
+                    RemoteOriginType.Vaccination -> NoProvidersException.Vaccination
                 }
             })
         }

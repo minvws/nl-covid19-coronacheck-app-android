@@ -104,7 +104,7 @@ class QrInfoScreenUtilImpl(
                 it.code == test.getStringOrNull("ma")
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
-        val testCountry = countryUtil.getCountry(test.getStringOrNull("co"), getCurrentLocale())
+        val testCountry = countryUtil.getCountryForQrInfoScreen(test.getStringOrNull("co"), getCurrentLocale())
 
         val issuerValue = test.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -204,7 +204,7 @@ class QrInfoScreenUtilImpl(
         } ?: ""
 
         val countryCode = vaccination.getStringOrNull("co")
-        val vaccinationCountry = countryUtil.getCountry(countryCode, getCurrentLocale())
+        val vaccinationCountry = countryUtil.getCountryForQrInfoScreen(countryCode, getCurrentLocale())
 
         val issuerValue = vaccination.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -277,7 +277,7 @@ class QrInfoScreenUtilImpl(
             }
         } ?: ""
 
-        val country = countryUtil.getCountry(recovery.getStringOrNull("co"), getCurrentLocale())
+        val country = countryUtil.getCountryForQrInfoScreen(recovery.getStringOrNull("co"), getCurrentLocale())
 
         val producer = recovery.getStringOrNull("is")
 

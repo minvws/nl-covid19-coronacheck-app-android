@@ -25,8 +25,6 @@ interface PersistenceManager {
     fun setJune28FixApplied(applied: Boolean)
     fun hasDismissedUnsecureDeviceDialog(): Boolean
     fun setHasDismissedUnsecureDeviceDialog(value : Boolean)
-    fun hasDismissedSyncedGreenCardsItem(): Boolean
-    fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean)
     fun showSyncGreenCardsItem(): Boolean
     fun setShowSyncGreenCardsItem(show: Boolean)
     fun setShouldCheckRecoveryGreenCardRevisedValidity(check: Boolean)
@@ -43,6 +41,8 @@ interface PersistenceManager {
     fun setCheckNewValidityInfoCard(check: Boolean)
     fun getHasDismissedNewValidityInfoCard(): Boolean
     fun setHasDismissedNewValidityInfoCard(dismissed: Boolean)
+    fun getHasDismissedBoosterInfoCard(): Long
+    fun setHasDismissedBoosterInfoCard(dismissedAtEpochSeconds: Long)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -58,7 +58,6 @@ class SharedPreferencesPersistenceManager(
         const val FIX28JUNE_APPLIED = "FIX_28_JUNE_APPLIED"
         const val SELECTED_DASHBOARD_TAB = "SELECTED_DASHBOARD_TAB"
         const val HAS_SEEN_SECURE_DEVICE_DIALOG = "HAS_SEEN_SECURE_DEVICE_DIALOG"
-        const val HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM = "HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM"
         const val SHOW_SYNC_GREEN_CARDS_ITEM = "SHOW_SYNC_GREEN_CARDS_ITEM"
         const val SHOULD_CHECK_RECOVERY_GREEN_CARD_REVISED_VALIDITY = "SHOULD_CHECK_RECOVERY_GREEN_CARD_REVISED_VALIDITY"
         const val SHOW_EXTEND_DOMESTIC_RECOVERY_INFO_CARD = "SHOW_EXTEND_DOMESTIC_RECOVERY_INFO_CARD"
@@ -67,6 +66,7 @@ class SharedPreferencesPersistenceManager(
         const val HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD = "HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD"
         const val CHECK_VALIDITY_INFO_CARD = "CHECK_VALIDITY_INFO_CARD"
         const val HAS_DISMISSED_VALIDITY_INFO_CARD = "HAS_DISMISSED_VALIDITY_INFO_CARD"
+        const val HAS_DISMISSED_BOOSTER_INFO_CARD = "HAS_DISMISSED_BOOSTER_INFO_CARD"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -127,14 +127,6 @@ class SharedPreferencesPersistenceManager(
 
     override fun setHasDismissedUnsecureDeviceDialog(value : Boolean) {
         sharedPreferences.edit().putBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, value).commit()
-    }
-
-    override fun hasDismissedSyncedGreenCardsItem(): Boolean {
-        return sharedPreferences.getBoolean(HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM, true)
-    }
-
-    override fun setHasDismissedSyncedGreenCardsItem(dismissed: Boolean) {
-        sharedPreferences.edit().putBoolean(HAS_DISMISSED_SYNCED_GREEN_CARDS_ITEM, dismissed).commit()
     }
 
     override fun showSyncGreenCardsItem(): Boolean {
@@ -199,5 +191,13 @@ class SharedPreferencesPersistenceManager(
 
     override fun setHasDismissedNewValidityInfoCard(dismissed: Boolean) {
         sharedPreferences.edit().putBoolean(HAS_DISMISSED_VALIDITY_INFO_CARD, dismissed).apply()
+    }
+
+    override fun getHasDismissedBoosterInfoCard(): Long {
+        return sharedPreferences.getLong(HAS_DISMISSED_BOOSTER_INFO_CARD, 0)
+    }
+
+    override fun setHasDismissedBoosterInfoCard(dismissedAtEpochSeconds: Long) {
+        sharedPreferences.edit().putLong(HAS_DISMISSED_BOOSTER_INFO_CARD, dismissedAtEpochSeconds).apply()
     }
 }

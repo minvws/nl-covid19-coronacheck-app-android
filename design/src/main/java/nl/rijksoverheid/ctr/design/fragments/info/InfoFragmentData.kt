@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.design.fragments.info
 
 import android.content.Intent
+import android.os.Bundle
 import android.os.Parcelable
-import android.view.View.NO_ID
 import androidx.annotation.IdRes
 import kotlinx.parcelize.Parcelize
 
@@ -11,8 +11,7 @@ class DescriptionData(
     val htmlText: Int? = null,
     val htmlTextString: String? = null,
     val htmlLinksEnabled: Boolean = false,
-    val customLinkIntent: Intent? = null,
-    val htmlTextColor: Int = NO_ID,
+    val customLinkIntent: Intent? = null
 ) : Parcelable
 
 sealed class ButtonData(open val text: String) : Parcelable {
@@ -21,7 +20,9 @@ sealed class ButtonData(open val text: String) : Parcelable {
         Parcelable
 
     @Parcelize
-    data class NavigationButton(override val text: String, @IdRes val navigationActionId: Int) :
+    data class NavigationButton(override val text: String,
+                                @IdRes val navigationActionId: Int,
+                                val navigationArguments: Bundle? = null) :
         ButtonData(text), Parcelable
 }
 
@@ -37,7 +38,8 @@ sealed class InfoFragmentData(open val title: String, open val descriptionData: 
     class TitleDescriptionWithButton(
         override val title: String,
         override val descriptionData: DescriptionData,
-        val buttonData: ButtonData
+        val secondaryButtonData: ButtonData? = null,
+        val primaryButtonData: ButtonData? = null
     ) : InfoFragmentData(title, descriptionData)
 
     @Parcelize

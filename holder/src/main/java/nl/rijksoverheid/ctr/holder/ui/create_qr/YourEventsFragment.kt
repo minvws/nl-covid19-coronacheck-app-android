@@ -14,27 +14,27 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
+import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
-import nl.rijksoverheid.ctr.holder.BaseFragment
-import nl.rijksoverheid.ctr.holder.HolderFlow
-import nl.rijksoverheid.ctr.holder.HolderMainFragment
-import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.persistence.database.models.DomesticVaccinationRecoveryCombination
-import nl.rijksoverheid.ctr.holder.ui.create_qr.items.YourEventWidget
-import nl.rijksoverheid.ctr.holder.ui.create_qr.items.getVaccinationEventSubtitle
-import nl.rijksoverheid.ctr.holder.ui.create_qr.items.getVaccinationEventTitle
+import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
+import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidget
+import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -42,11 +42,8 @@ import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
-import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 
 class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
@@ -59,6 +56,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private val remoteProtocol3Util: RemoteProtocol3Util by inject()
     private val remoteEventUtil: RemoteEventUtil by inject()
+    private val yourEventsFragmentUtil: YourEventsFragmentUtil by inject()
+    private val yourEventWidgetUtil: YourEventWidgetUtil by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
@@ -74,6 +73,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         when (val type = args.type) {
             is YourEventsFragmentType.TestResult2 -> {
                 yourEventsViewModel.saveNegativeTest2(
+                    flow = getFlow(),
                     negativeTest2 = type.remoteTestResult,
                     rawResponse = type.rawResponse
                 )
@@ -92,31 +92,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     override fun getFlow(): Flow {
-        when (val type = args.type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                return HolderFlow.CommercialTest
-            }
-            is YourEventsFragmentType.DCC -> {
-                return HolderFlow.HkviScan
-            }
-            is YourEventsFragmentType.RemoteProtocol3Type -> {
-                return when (type.originType) {
-                    is OriginType.Test -> {
-                        if (type.fromCommercialTestCode) {
-                            HolderFlow.CommercialTest
-                        } else {
-                            HolderFlow.DigidTest
-                        }
-                    }
-                    is OriginType.Recovery -> {
-                        HolderFlow.Recovery
-                    }
-                    is OriginType.Vaccination -> {
-                        HolderFlow.Vaccination
-                    }
-                }
-            }
-        }
+        return args.flow
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -158,15 +134,12 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     is DatabaseSyncerResult.Success -> {
                         when {
                             databaseSyncerResult.missingOrigin -> {
-                                navigateSafety(
-                                    YourEventsFragmentDirections.actionCouldNotCreateQr(
-                                        toolbarTitle = args.toolbarTitle,
-                                        title = getString(R.string.rule_engine_no_origin_title),
-                                        description = getString(
-                                            R.string.rule_engine_no_test_origin_description,
-                                            getNoOriginTypeCopy()
-                                        ),
-                                        buttonTitle = getString(R.string.back_to_overview)
+                                val noOriginTypeCopy = getString(yourEventsFragmentUtil.getNoOriginTypeCopy(args.type))
+                                presentError(
+                                    errorResult = MissingOriginErrorResult,
+                                    customerErrorDescription = getString(
+                                        R.string.rule_engine_no_test_origin_description,
+                                        noOriginTypeCopy
                                     )
                                 )
                             }
@@ -196,7 +169,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                type.remoteEvents, type.originType, false
+                                getFlow(), type.remoteEvents, type.originType, false
                             )
                         }
                     }
@@ -205,42 +178,21 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                type.remoteEvents, type.originType, false
+                                getFlow(), type.remoteEvents, type.originType, false
                             )
                         }
+                    }
+                    is YourEventsFragmentType.TestResult2 -> {
+                        // TODO check
                     }
                 }
             }
         )
     }
 
-    private fun getNoOriginTypeCopy(): String {
-        return when (val type = args.type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                getString(R.string.rule_engine_no_test_origin_description_negative_test)
-            }
-            is YourEventsFragmentType.DCC -> {
-                getString(R.string.rule_engine_no_test_origin_description_scanned_qr_code)
-            }
-            is YourEventsFragmentType.RemoteProtocol3Type -> {
-                return when (type.originType) {
-                    is OriginType.Test -> {
-                        getString(R.string.rule_engine_no_test_origin_description_negative_test)
-                    }
-                    is OriginType.Recovery -> {
-                        getString(R.string.rule_engine_no_test_origin_description_positive_test)
-                    }
-                    is OriginType.Vaccination -> {
-                        getString(R.string.rule_engine_no_test_origin_description_vaccination)
-                    }
-                }
-            }
-        }
-    }
-
     private fun navigateToCertificateCreated(databaseSyncerResult: DatabaseSyncerResult.Success) {
-        when (databaseSyncerResult.domesticVaccinationRecovery) {
-            is DomesticVaccinationRecoveryCombination.CombinedVaccinationRecovery -> {
+        when (databaseSyncerResult.yourEventFragmentEndState) {
+            is YourEventFragmentEndState.CombinedVaccinationRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
@@ -259,7 +211,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            DomesticVaccinationRecoveryCombination.NoneWithoutRecovery -> {
+            YourEventFragmentEndState.NoneWithoutRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
@@ -269,7 +221,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            DomesticVaccinationRecoveryCombination.NoneWithRecovery -> {
+            YourEventFragmentEndState.NoneWithRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.no_certificate_created_toolbar_title),
@@ -278,7 +230,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            DomesticVaccinationRecoveryCombination.OnlyRecovery -> {
+            YourEventFragmentEndState.OnlyRecovery -> {
                 navigateSafety(
                     if (args.afterIncompleteVaccination) {
                         YourEventsFragmentDirections.actionCertificateCreated(
@@ -292,7 +244,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     }
                 )
             }
-            is DomesticVaccinationRecoveryCombination.OnlyVaccination -> {
+            is YourEventFragmentEndState.OnlyVaccination -> {
                 navigateSafety(
                     if (args.afterIncompleteVaccination) {
                         // When coming from a vaccination completion flow, navigate directly to dashboard
@@ -308,10 +260,28 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     }
                 )
             }
-            DomesticVaccinationRecoveryCombination.NotApplicable -> {
+            YourEventFragmentEndState.NotApplicable -> {
                 // We have a origin in the database that we expect, so success
                 navigateSafety(
                     YourEventsFragmentDirections.actionMyOverview()
+                )
+            }
+            YourEventFragmentEndState.AddedNegativeTestInVaccinationAssessmentFlow -> {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    infoFragmentDirections = YourEventsFragmentDirections.actionInfoFragment(
+                        toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
+                        data = InfoFragmentData.TitleDescriptionWithButton(
+                            title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
+                            descriptionData = DescriptionData(
+                                htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
+                            ),
+                            primaryButtonData = ButtonData.NavigationButton(
+                                text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
+                                navigationActionId = InfoFragmentDirections.actionVisitorPassInputToken().actionId,
+                            )
+                        )
+                    )
                 )
             }
         }
@@ -328,6 +298,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             positiveButtonText = R.string.your_events_replace_dialog_positive_button,
             positiveButtonCallback = {
                 yourEventsViewModel.saveRemoteProtocol3Events(
+                    flow = getFlow(),
                     remoteProtocols3 = remoteEvents,
                     originType = originType,
                     removePreviousEvents = true
@@ -358,6 +329,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     is OriginType.Recovery -> {
                         binding.description.setHtmlText(R.string.your_positive_test_description)
                     }
+                    is OriginType.VaccinationAssessment -> {
+                        binding.description.setHtmlText(R.string.holder_event_vaccination_assessment_list_message)
+                    }
                 }
             }
             is YourEventsFragmentType.DCC -> {
@@ -386,13 +360,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         }
     }
 
-    private fun getProviderName(providerIdentifier: String): String {
-        return (args.type as? YourEventsFragmentType.RemoteProtocol3Type)
-            ?.eventProviders?.firstOrNull { it.identifier == providerIdentifier }
-            ?.name
-            ?: providerIdentifier
-    }
-
     private fun presentEvents(
         remoteEvents: Map<RemoteProtocol3, ByteArray>,
         binding: FragmentYourEventsBinding,
@@ -406,7 +373,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             val holder = protocolGroupedEvent.value.firstOrNull()?.holder
             val providerIdentifiers =
                 protocolGroupedEvent.value.map { it.providerIdentifier }
-                    .map { getProviderName(it) }
+                    .map { yourEventsFragmentUtil.getProviderName(
+                        type = args.type,
+                        providerIdentifier = it) }
+
             val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
             val allEventsInformation = protocolGroupedEvent.value.map {
                 RemoteEventInformation(it.providerIdentifier, holder, it.remoteEvent)
@@ -418,8 +388,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             binding = binding,
                             providerIdentifiers = providerIdentifiers.toSet()
                                 .joinToString(" ${getString(R.string.your_events_and)} "),
-                            fullName = getFullName(holder),
-                            birthDate = getBirthDate(holder),
+                            fullName = yourEventsFragmentUtil.getFullName(holder),
+                            birthDate = yourEventsFragmentUtil.getBirthDate(holder),
                             currentEvent = remoteEvent,
                             allEventsInformation = allEventsInformation,
                             isDccEvent = isDccEvent
@@ -428,24 +398,32 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     is RemoteEventNegativeTest -> {
                         presentNegativeTestEvent(
                             binding = binding,
-                            fullName = getFullName(holder),
-                            birthDate = getBirthDate(holder),
+                            fullName = yourEventsFragmentUtil.getFullName(holder),
+                            birthDate = yourEventsFragmentUtil.getBirthDate(holder),
                             event = remoteEvent
                         )
                     }
                     is RemoteEventPositiveTest -> {
                         presentPositiveTestEvent(
                             binding = binding,
-                            fullName = getFullName(holder),
-                            birthDate = getBirthDate(holder),
+                            fullName = yourEventsFragmentUtil.getFullName(holder),
+                            birthDate = yourEventsFragmentUtil.getBirthDate(holder),
                             event = remoteEvent
                         )
                     }
                     is RemoteEventRecovery -> {
                         presentRecoveryEvent(
                             binding = binding,
-                            fullName = getFullName(holder),
-                            birthDate = getBirthDate(holder),
+                            fullName = yourEventsFragmentUtil.getFullName(holder),
+                            birthDate = yourEventsFragmentUtil.getBirthDate(holder),
+                            event = remoteEvent
+                        )
+                    }
+                    is RemoteEventVaccinationAssessment -> {
+                        presentVaccinationAssessmentEvent(
+                            binding = binding,
+                            fullName = yourEventsFragmentUtil.getFullName(holder),
+                            birthDate = yourEventsFragmentUtil.getBirthDate(holder),
                             event = remoteEvent
                         )
                     }
@@ -520,8 +498,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = getVaccinationEventTitle(isDccEvent, currentEvent),
-                subtitle = getVaccinationEventSubtitle(
+                title = yourEventWidgetUtil.getVaccinationEventTitle(context, isDccEvent, currentEvent),
+                subtitle = yourEventWidgetUtil.getVaccinationEventSubtitle(
+                    context,
                     isDccEvent,
                     providerIdentifiers,
                     fullName,
@@ -538,7 +517,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                     event = vaccinationEvent,
                                     fullName = fullName,
                                     birthDate = birthDate,
-                                    providerIdentifier = getProviderName(it.providerIdentifier),
+                                    providerIdentifier = yourEventsFragmentUtil.getProviderName(
+                                        type = args.type,
+                                        providerIdentifier = it.providerIdentifier
+                                    ),
                                     isPaperProof = args.type is YourEventsFragmentType.DCC
                                 )
                             }.toTypedArray()
@@ -576,6 +558,40 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     fullName,
                     birthDate
                 ),
+                infoClickListener = {
+                    navigateSafety(
+                        YourEventsFragmentDirections.actionShowExplanation(
+                            toolbarTitle = infoScreen.title,
+                            data = arrayOf(infoScreen)
+                        )
+                    )
+                }
+            )
+        }
+        binding.eventsGroup.addView(eventWidget)
+    }
+
+    private fun presentVaccinationAssessmentEvent(
+        binding: FragmentYourEventsBinding,
+        fullName: String,
+        birthDate: String,
+        event: RemoteEventVaccinationAssessment
+    ) {
+        val assessmentDate = event.vaccinationAssessment.assessmentDate?.toLocalDate()?.formatDayMonth()
+
+        val infoScreen = infoScreenUtil.getForVaccinationAssessment(
+            event = event,
+            fullName = fullName,
+            birthDate = birthDate
+        )
+
+        val eventWidget = YourEventWidget(requireContext()).apply {
+            setContent(
+                title = getString(R.string.holder_event_vaccination_assessment_element_title),
+                subtitle = getString(R.string.holder_event_vaccination_assessment_element_subtitle,
+                    assessmentDate,
+                    fullName,
+                    birthDate),
                 infoClickListener = {
                     navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
@@ -680,8 +696,21 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     childFragmentManager, InfoFragmentData.TitleDescription(
                         title = getString(R.string.dialog_negative_test_result_something_wrong_title),
                         descriptionData = DescriptionData(
-                            htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type && type.originType is OriginType.Vaccination) {
-                                R.string.dialog_vaccination_something_wrong_description
+                            htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type) {
+                                when (type.originType) {
+                                    is OriginType.Vaccination -> {
+                                        R.string.dialog_vaccination_something_wrong_description
+                                    }
+                                    is OriginType.VaccinationAssessment -> {
+                                        R.string.holder_event_vaccination_assessment_wrong_body
+                                    }
+                                    is OriginType.Test -> {
+                                        R.string.dialog_negative_test_result_something_wrong_description
+                                    }
+                                    is OriginType.Recovery -> {
+                                        R.string.dialog_negative_test_result_something_wrong_description
+                                    }
+                                }
                             } else {
                                 R.string.dialog_negative_test_result_something_wrong_description
                             },
@@ -701,7 +730,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 if (isAdded) {
                     MaterialAlertDialogBuilder(requireContext())
                         .setTitle(R.string.your_events_block_back_dialog_title)
-                        .setMessage(getCancelDialogDescription())
+                        .setMessage(yourEventsFragmentUtil.getCancelDialogDescription(
+                            type = args.type
+                        ))
                         .setPositiveButton(R.string.your_events_block_back_dialog_positive_button) { _, _ ->
                             navigateSafety(
                                 YourEventsFragmentDirections.actionMyOverview()
@@ -713,40 +744,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
         })
     }
-
-    private fun getCancelDialogDescription() = when (val type = args.type) {
-        is YourEventsFragmentType.DCC -> R.string.holder_dcc_alert_message
-        is YourEventsFragmentType.TestResult2 -> R.string.holder_test_alert_message
-        is YourEventsFragmentType.RemoteProtocol3Type -> {
-            when (type.originType) {
-                is OriginType.Test -> R.string.holder_test_alert_message
-                is OriginType.Recovery -> R.string.holder_recovery_alert_message
-                is OriginType.Vaccination -> R.string.holder_vaccination_alert_message
-            }
-        }
-    }
-
-    private fun getFullName(holder: RemoteProtocol3.Holder?): String = holder?.let {
-        return if (it.infix.isNullOrEmpty()) {
-            "${it.lastName}, ${it.firstName}"
-        } else {
-            "${it.infix} ${it.lastName}, ${it.firstName}"
-        }
-    } ?: ""
-
-    private fun getBirthDate(holder: RemoteProtocol3.Holder?): String =
-        holder?.birthDate?.let { birthDate ->
-            try {
-                LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
-            } catch (e: DateTimeParseException) {
-                // Check if date has removed content, if so return string directly
-                if (birthDate.contains("XX")) {
-                    birthDate
-                } else ""
-            } catch (e: Exception) {
-                ""
-            }
-        } ?: ""
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -17,11 +17,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TestResultAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewGreenCardExpiryUtil
+import nl.rijksoverheid.ctr.shared.ext.capitalize
 import java.time.Clock
 import java.time.Instant
 import java.util.concurrent.TimeUnit
@@ -44,8 +43,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private val utcClock: Clock,
     private val context: Context,
     private val credentialUtil: CredentialUtil,
-    private val testResultAdapterItemUtil: TestResultAdapterItemUtil,
-    private val greenCardUtil: GreenCardUtil,
+    private val myOverviewGreenCardExpiryUtil: MyOverviewGreenCardExpiryUtil,
     private val featureFlagUseCase: FeatureFlagUseCase
 ) : MyOverViewGreenCardAdapterUtil {
 
@@ -53,7 +51,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
         viewBinding: ViewBindingWrapper,
         cards: List<AdapterCard>,
     ) {
-        val greenCardType = cards.first().greenCard.greenCardEntity.type
         cards.forEach { card ->
             val it = card.greenCard
             when (it.greenCardEntity.type) {
@@ -66,20 +63,23 @@ class MyOverViewGreenCardAdapterUtilImpl(
                             viewBinding.title.text =
                                 context.getString(R.string.qr_code_type_negative_test_title)
                             setEuTestOrigin(
-                                viewBinding, it, originState, greenCardType, origin
+                                viewBinding, it, originState, origin
                             )
                         }
                         is OriginType.Vaccination -> {
                             viewBinding.title.text =
                                 context.getString(R.string.qr_code_type_vaccination_title)
                             setEuVaccinationOrigin(
-                                viewBinding, it, originState, greenCardType, origin
+                                viewBinding, it, origin
                             )
                         }
                         is OriginType.Recovery -> {
                             viewBinding.title.text =
                                 context.getString(R.string.qr_code_type_recovery_title)
-                            setEuRecoveryOrigin(viewBinding, originState, greenCardType, origin)
+                            setEuRecoveryOrigin(viewBinding, originState, origin)
+                        }
+                        is OriginType.VaccinationAssessment -> {
+                            // Visitor pass is only for domestic
                         }
                     }
                 }
@@ -92,52 +92,30 @@ class MyOverViewGreenCardAdapterUtilImpl(
                             val origin = originState.origin
                             when (origin.type) {
                                 is OriginType.Vaccination -> setDomesticVaccinationOrigin(
-                                    viewBinding, originState, greenCardType, origin
+                                    viewBinding, originState, origin
                                 )
-                                is OriginType.Recovery -> setRecoveryOrigin(
-                                    viewBinding, originState, greenCardType, origin
+                                is OriginType.Recovery -> setDomesticRecoveryOrigin(
+                                    viewBinding, originState, origin
                                 )
                                 is OriginType.Test -> setDomesticTestOrigin(
-                                    viewBinding, originState, greenCardType, origin, it.credentialEntities
+                                    viewBinding, originState, origin, it.credentialEntities
+                                )
+                                is OriginType.VaccinationAssessment -> setDomesticVaccinationAssessmentOrigin(
+                                    viewBinding, originState, origin
                                 )
                             }
                         }
-
-                    // If there is only one origin we can show a countdown if the green card almost expires
-                    when (val expireCountDownResult =
-                        testResultAdapterItemUtil.getExpireCountdownText(
-                            expireDate = greenCardUtil.getExpireDate(it)
-                        )) {
-                        is TestResultAdapterItemUtil.ExpireCountDown.Hide -> {
-                            viewBinding.expiresIn.visibility = View.GONE
-                        }
-                        is TestResultAdapterItemUtil.ExpireCountDown.Show -> {
-                            viewBinding.expiresIn.visibility = View.VISIBLE
-                            if (expireCountDownResult.hoursLeft == 0L) {
-                                viewBinding.expiresIn.text = context.getString(
-                                    R.string.my_overview_test_result_expires_in_minutes,
-                                    expireCountDownResult.minutesLeft.toString()
-                                )
-                            } else {
-                                viewBinding.expiresIn.text = context.getString(
-                                    R.string.my_overview_test_result_expires_in_hours_minutes,
-                                    expireCountDownResult.hoursLeft.toString(),
-                                    expireCountDownResult.minutesLeft.toString()
-                                )
-                            }
-                        }
+                    // When there is only 1 valid origin set potential expiry countdown
+                    myOverviewGreenCardExpiryUtil.getLastValidOrigin(it.origins)?.let {
+                        setExpiryText(it, viewBinding)
                     }
                 }
             }
         }
 
         val originStates = cards.first().originStates
-        val becomesValidAutomatically = originStates.size == 1 &&
-                originStates.first() is OriginState.Future &&
-                shouldShowTimeSubtitle(
-                    originStates.first(),
-                    cards.first().greenCard.greenCardEntity.type
-                )
+        val becomesValidAutomatically =
+            originStates.size == 1 && originStates.first() is OriginState.Future
         if (becomesValidAutomatically) {
             viewBinding.expiresIn.visibility = View.VISIBLE
             viewBinding.expiresIn.text = context.getString(R.string.qr_card_validity_future)
@@ -147,7 +125,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private fun setDomesticTestOrigin(
         viewBinding: ViewBindingWrapper,
         originState: OriginState,
-        greenCardType: GreenCardType,
         origin: OriginEntity,
         credentialEntities: List<CredentialEntity>
     ) {
@@ -159,7 +136,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         setOriginSubtitle(
             descriptionLayout = viewBinding.description,
             originState = originState,
-            showTime = shouldShowTimeSubtitle(originState, greenCardType),
+            showTime = false,
             subtitle = context.getString(
                 if (credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G } && featureFlagUseCase.isVerificationPolicyEnabled()) {
                     R.string.holder_my_overview_test_result_validity_3g
@@ -174,7 +151,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private fun setDomesticVaccinationOrigin(
         viewBinding: ViewBindingWrapper,
         originState: OriginState,
-        greenCardType: GreenCardType,
         origin: OriginEntity
     ) {
         if (origin.doseNumber == null) {
@@ -222,7 +198,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         setOriginSubtitle(
             descriptionLayout = viewBinding.description,
             originState = originState,
-            showTime = shouldShowTimeSubtitle(originState, greenCardType),
+            showTime = true,
             subtitle = subtitle
         )
     }
@@ -232,15 +208,15 @@ class MyOverViewGreenCardAdapterUtilImpl(
      * @param origin The origin to check
      */
     private fun originExpirationTimeThreeYearsFromNow(origin: OriginEntity): Boolean {
-        val expirationSecondsFromNow = origin.expirationTime.toInstant().epochSecond - Instant.now(utcClock).epochSecond
+        val expirationSecondsFromNow =
+            origin.expirationTime.toInstant().epochSecond - Instant.now(utcClock).epochSecond
         val expirationYearsFromNow = TimeUnit.SECONDS.toDays(expirationSecondsFromNow) / 365
         return expirationYearsFromNow >= 3
     }
 
-    private fun setRecoveryOrigin(
+    private fun setDomesticRecoveryOrigin(
         viewBinding: ViewBindingWrapper,
         originState: OriginState,
-        greenCardType: GreenCardType,
         origin: OriginEntity
     ) {
         setOriginTitle(
@@ -251,7 +227,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         setOriginSubtitle(
             descriptionLayout = viewBinding.description,
             originState = originState,
-            showTime = shouldShowTimeSubtitle(originState, greenCardType),
+            showTime = true,
             subtitle = context.getString(
                 R.string.qr_card_validity_valid,
                 origin.expirationTime.toLocalDate().formatDayShortMonthYear()
@@ -259,10 +235,30 @@ class MyOverViewGreenCardAdapterUtilImpl(
         )
     }
 
+    private fun setDomesticVaccinationAssessmentOrigin(
+        viewBinding: ViewBindingWrapper,
+        originState: OriginState,
+        origin: OriginEntity
+    ) {
+        setOriginTitle(
+            descriptionLayout = viewBinding.description,
+            title = "${context.getString(R.string.general_visitorPass).capitalize()}:"
+        )
+
+        setOriginSubtitle(
+            descriptionLayout = viewBinding.description,
+            originState = originState,
+            showTime = false,
+            subtitle = context.getString(
+                R.string.qr_card_validity_valid,
+                origin.expirationTime.formatDateTime(context)
+            )
+        )
+    }
+
     private fun setEuRecoveryOrigin(
         viewBinding: ViewBindingWrapper,
         originState: OriginState,
-        greenCardType: GreenCardType,
         origin: OriginEntity
     ) {
         // EU recovery description has no title so we put only the space in between for correct alignment
@@ -275,7 +271,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         setOriginSubtitle(
             descriptionLayout = viewBinding.description,
             originState = originState,
-            showTime = shouldShowTimeSubtitle(originState, greenCardType),
+            showTime = true,
             subtitle = context.getString(
                 R.string.qr_card_validity_valid,
                 origin.expirationTime.toLocalDate().formatDayShortMonthYear()
@@ -286,8 +282,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
     private fun setEuVaccinationOrigin(
         viewBinding: ViewBindingWrapper,
         greenCard: GreenCard,
-        originState: OriginState,
-        greenCardType: GreenCardType,
         origin: OriginEntity
     ) {
         val getCurrentDosesString: (String, String) -> String =
@@ -311,7 +305,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
             // force a valid origin, as we need to allow the user to view the QR
             // and when is valid from, it depends from the country going to
             originState = OriginState.Valid(greenCard.origins.first()),
-            showTime = shouldShowTimeSubtitle(originState, greenCardType),
+            showTime = false,
             subtitle = "${context.getString(R.string.qr_card_vaccination_title_eu)} ${
                 origin.eventTime.toLocalDate().formatDayMonthYear()
             }",
@@ -322,7 +316,6 @@ class MyOverViewGreenCardAdapterUtilImpl(
         viewBinding: ViewBindingWrapper,
         greenCard: GreenCard,
         originState: OriginState,
-        greenCardType: GreenCardType,
         origin: OriginEntity
     ) {
         setOriginTitle(
@@ -337,7 +330,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
         setOriginSubtitle(
             descriptionLayout = viewBinding.description,
             originState = originState,
-            showTime = shouldShowTimeSubtitle(originState, greenCardType),
+            showTime = false,
             subtitle = "${context.getString(R.string.qr_card_test_title_eu)} ${
                 origin.eventTime.formatDateTime(
                     context
@@ -346,18 +339,12 @@ class MyOverViewGreenCardAdapterUtilImpl(
         )
     }
 
-    private fun shouldShowTimeSubtitle(
-        originState: OriginState,
-        greenCardType: GreenCardType
-    ) = originState.origin.type == OriginType.Recovery ||
-            (originState.origin.type == OriginType.Vaccination && greenCardType == GreenCardType.Domestic)
-
     private fun setOriginTitle(
         descriptionLayout: LinearLayout,
         title: String,
     ) {
         descriptionLayout.addView(
-            TextView(context).apply {
+            TextView(descriptionLayout.context).apply {
                 setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
                 text = title
             },
@@ -378,13 +365,16 @@ class MyOverViewGreenCardAdapterUtilImpl(
         showTime: Boolean,
         subtitle: String,
     ) {
-        val textView = TextView(context).apply {
+        val textView = TextView(descriptionLayout.context).apply {
             setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
         }
 
         when (originState) {
             is OriginState.Future -> {
-                val showUntil = originState.origin.type == OriginType.Vaccination && !originExpirationTimeThreeYearsFromNow(originState.origin) || originState.origin.type == OriginType.Recovery
+                val showUntil =
+                    originState.origin.type == OriginType.Vaccination &&
+                            !originExpirationTimeThreeYearsFromNow(originState.origin) ||
+                            originState.origin.type == OriginType.Recovery
 
                 val validFromDateTime = originState.origin.validFrom
                 val validFrom = if (showTime) {
@@ -394,7 +384,8 @@ class MyOverViewGreenCardAdapterUtilImpl(
                 }
                 textView.text = context.getString(
                     R.string.qr_card_validity_future_from, validFrom, if (showUntil) {
-                        val until = originState.origin.expirationTime.toLocalDate().formatDayMonthYear()
+                        val until =
+                            originState.origin.expirationTime.toLocalDate().formatDayMonthYear()
                         context.getString(R.string.qr_card_validity_future_until, until)
                     } else {
                         ""
@@ -412,5 +403,23 @@ class MyOverViewGreenCardAdapterUtilImpl(
         }
 
         descriptionLayout.addView(textView)
+    }
+
+    private fun setExpiryText(
+        origin: OriginEntity,
+        viewBinding: ViewBindingWrapper
+    ) {
+        val expireCountDownResult = myOverviewGreenCardExpiryUtil.getExpireCountdown(
+            origin.expirationTime, origin.type
+        )
+        if (expireCountDownResult is MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show) {
+            viewBinding.expiresIn.visibility = View.VISIBLE
+            viewBinding.expiresIn.text =
+                myOverviewGreenCardExpiryUtil.getExpiryText(
+                    expireCountDownResult
+                )
+        } else {
+            viewBinding.expiresIn.visibility = View.GONE
+        }
     }
 }

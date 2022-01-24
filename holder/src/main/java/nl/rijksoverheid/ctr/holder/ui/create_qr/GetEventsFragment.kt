@@ -5,18 +5,15 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
-import nl.rijksoverheid.ctr.holder.launchUrl
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
-import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigidResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.LoginResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -35,7 +32,8 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
-
+    private val intentUtil: IntentUtil by inject()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
 
     override fun onButtonClickWithRetryAction() {
@@ -44,11 +42,11 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     override fun getFlow(): Flow {
         return when (args.originType) {
-            OriginType.Recovery -> {
+            RemoteOriginType.Recovery -> {
                 if (args.afterIncompleteVaccination) HolderFlow.Recovery else HolderFlow.PositiveTest
             }
-            OriginType.Test -> HolderFlow.DigidTest
-            OriginType.Vaccination -> HolderFlow.Vaccination
+            RemoteOriginType.Test -> HolderFlow.DigidTest
+            RemoteOriginType.Vaccination -> HolderFlow.Vaccination
         }
     }
 
@@ -59,7 +57,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         setBindings(binding, copy)
         setObservers(binding, copy)
 
-        if (args.originType == OriginType.Recovery && args.afterIncompleteVaccination) {
+        if (args.originType == RemoteOriginType.Recovery && args.afterIncompleteVaccination) {
             binding.root.visibility = View.GONE
             binding.fullscreenLoading.visibility = View.VISIBLE
             loginAgainWithDigiD()
@@ -181,19 +179,19 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             }
         })
 
-        digidViewModel.digidResultLiveData.observe(viewLifecycleOwner, EventObserver {
+        digidViewModel.loginResultLiveData.observe(viewLifecycleOwner, EventObserver {
             when (it) {
-                is DigidResult.Success -> {
-                    getEventsViewModel.getEvents(
+                is LoginResult.Success -> {
+                    getEventsViewModel.getDigidEvents(
                         it.jwt,
                         args.originType,
                         args.afterIncompleteVaccination
                     )
                 }
-                is DigidResult.Failed -> {
+                is LoginResult.Failed -> {
                     presentError(it.errorResult)
                 }
-                is DigidResult.Cancelled -> {
+                is LoginResult.Cancelled -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.digid_login_cancelled_title,
@@ -202,11 +200,11 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         positiveButtonCallback = {}
                     )
                 }
-                DigidResult.TokenUnavailable -> {
+                LoginResult.TokenUnavailable -> {
                     binding.root.visibility = View.VISIBLE
                     binding.fullscreenLoading.visibility = View.GONE
                 }
-                DigidResult.NoBrowserFound -> {
+                LoginResult.NoBrowserFound -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = R.string.dialog_no_browser_title,
@@ -229,13 +227,22 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             onButtonClickWithRetryAction()
         }
         binding.noDigidButton.setOnClickListener {
-            context?.launchUrl(getString(R.string.no_digid_url))
+            if (cachedAppConfigUseCase.getCachedAppConfig().mijnCnEnabled &&
+                args.originType == RemoteOriginType.Vaccination
+            ) {
+                navigateSafety(GetEventsFragmentDirections.actionMijnCn())
+            } else {
+                intentUtil.openUrl(
+                    context = requireContext(),
+                    url = getString(R.string.no_digid_url)
+                )
+            }
         }
     }
 
     private fun getCopyForOriginType(): GetEventsFragmentCopy {
         when (args.originType) {
-            is OriginType.Test -> {
+            is RemoteOriginType.Test -> {
                 return GetEventsFragmentCopy(
                     title = getString(R.string.holder_negativetest_ggd_title),
                     description = getString(R.string.holder_negativetest_ggd_message),
@@ -244,7 +251,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     hasNoEventsDescription = getString(R.string.no_test_results_description)
                 )
             }
-            is OriginType.Vaccination -> {
+            is RemoteOriginType.Vaccination -> {
                 return GetEventsFragmentCopy(
                     title = getString(R.string.get_vaccination_title),
                     description = getString(R.string.get_vaccination_description),
@@ -253,7 +260,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     hasNoEventsDescription = getString(R.string.no_vaccinations_description)
                 )
             }
-            is OriginType.Recovery -> {
+            is RemoteOriginType.Recovery -> {
                 return GetEventsFragmentCopy(
                     title = getString(
                         if (args.afterIncompleteVaccination) R.string.retrieve_test_result_title else R.string.get_recovery_title
@@ -278,11 +285,12 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 type = YourEventsFragmentType.RemoteProtocol3Type(
                     remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
                         .toMap(),
-                    originType = args.originType,
+                    originType = args.originType.toOriginType(),
                     eventProviders = eventProviders,
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,
-                afterIncompleteVaccination = args.afterIncompleteVaccination
+                afterIncompleteVaccination = args.afterIncompleteVaccination,
+                flow = getFlow()
             )
         )
     }

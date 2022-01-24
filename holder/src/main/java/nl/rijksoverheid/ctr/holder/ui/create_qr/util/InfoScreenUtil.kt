@@ -50,12 +50,19 @@ interface InfoScreenUtil {
         birthDate: String,
         isPaperProof: Boolean
     ): InfoScreen
+
+    fun getForVaccinationAssessment(
+        event: RemoteEventVaccinationAssessment,
+        fullName: String,
+        birthDate: String
+    ): InfoScreen
 }
 
 class InfoScreenUtilImpl(
     private val vaccinationInfoScreenUtil: VaccinationInfoScreenUtil,
     private val testInfoScreenUtil: TestInfoScreenUtil,
-    private val recoveryInfoScreenUtil: RecoveryInfoScreenUtil
+    private val recoveryInfoScreenUtil: RecoveryInfoScreenUtil,
+    private val vaccinationAssessmentInfoScreenUtil: VaccinationAssessmentInfoScreenUtil
 ) : InfoScreenUtil {
 
     override fun getForRemoteTestResult2(
@@ -95,6 +102,12 @@ class InfoScreenUtilImpl(
         birthDate: String,
         isPaperProof: Boolean
     ) = recoveryInfoScreenUtil.getForRecovery(event, testDate, fullName, birthDate, isPaperProof)
+
+    override fun getForVaccinationAssessment(
+        event: RemoteEventVaccinationAssessment,
+        fullName: String,
+        birthDate: String
+    ) = vaccinationAssessmentInfoScreenUtil.getForVaccinationAssessment(event, fullName, birthDate)
 }
 
 @Parcelize
