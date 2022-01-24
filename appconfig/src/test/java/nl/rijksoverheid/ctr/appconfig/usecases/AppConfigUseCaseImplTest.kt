@@ -44,7 +44,7 @@ class AppConfigUseCaseImplTest {
 
     private val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>().apply {
         every { getCachedAppConfig() } returns object :
-            AppConfig(true, "", 1, 3600, 100, emptyList(), 1, 1, listOf(), 30, 300, 0) {}
+            AppConfig(true, "", 1, 3600, 100, emptyList(), 1, 1, listOf(), 30, 300, 0, listOf("3G")) {}
     }
 
     @Test

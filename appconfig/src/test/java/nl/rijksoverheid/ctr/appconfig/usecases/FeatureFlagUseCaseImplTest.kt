@@ -11,7 +11,6 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -19,62 +18,38 @@ import org.junit.Test
 class FeatureFlagUseCaseImplTest {
 
     @Test
-    fun `isVerificationPolicyEnabled returns false if enableVerificationPolicyVersion is lower than app version`() {
-        val buildConfigUseCase = mockk<BuildConfigUseCase>()
-        every { buildConfigUseCase.getVersionCode() } answers { 10 }
+    fun `isVerificationPolicySelectionEnabled returns false if verificationPoliciesEnabled is empty`() {
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion } answers { 11 }
+        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled } answers { emptyList() }
 
         val usecase = FeatureFlagUseCaseImpl(
-            buildConfigUseCase,
             cachedAppConfigUseCase
         )
 
-        assertFalse(usecase.isVerificationPolicyEnabled())
+        assertFalse(usecase.isVerificationPolicySelectionEnabled())
     }
 
     @Test
-    fun `isVerificationPolicyEnabled returns true if enableVerificationPolicyVersion is equal to app version`() {
-        val buildConfigUseCase = mockk<BuildConfigUseCase>()
-        every { buildConfigUseCase.getVersionCode() } answers { 10 }
+    fun `isVerificationPolicySelectionEnabled returns false if verificationPoliciesEnabled has one element`() {
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion } answers { 10 }
+        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled } answers { listOf("3G") }
 
         val usecase = FeatureFlagUseCaseImpl(
-            buildConfigUseCase,
             cachedAppConfigUseCase
         )
 
-        assertTrue(usecase.isVerificationPolicyEnabled())
+        assertFalse(usecase.isVerificationPolicySelectionEnabled())
     }
 
     @Test
-    fun `isVerificationPolicyEnabled returns true if enableVerificationPolicyVersion is higher than app version`() {
-        val buildConfigUseCase = mockk<BuildConfigUseCase>()
-        every { buildConfigUseCase.getVersionCode() } answers { 10 }
+    fun `isVerificationPolicySelectionEnabled returns true if verificationPoliciesEnabled has two elements`() {
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion } answers { 9 }
+        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled } answers { listOf("1G", "3G") }
 
         val usecase = FeatureFlagUseCaseImpl(
-            buildConfigUseCase,
             cachedAppConfigUseCase
         )
 
-        assertTrue(usecase.isVerificationPolicyEnabled())
-    }
-
-    @Test
-    fun `isVerificationPolicyEnabled returns false if enableVerificationPolicyVersion is 0`() {
-        val buildConfigUseCase = mockk<BuildConfigUseCase>()
-        every { buildConfigUseCase.getVersionCode() } answers { 10 }
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion } answers { 0 }
-
-        val usecase = FeatureFlagUseCaseImpl(
-            buildConfigUseCase,
-            cachedAppConfigUseCase
-        )
-
-        assertFalse(usecase.isVerificationPolicyEnabled())
+        assertTrue(usecase.isVerificationPolicySelectionEnabled())
     }
 }
