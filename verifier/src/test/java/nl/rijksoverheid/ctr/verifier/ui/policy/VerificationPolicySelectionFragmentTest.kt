@@ -76,24 +76,24 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given first time use and policy selected, when click to continue, then no error is shown, selection is stored and scanner is launched`() {
         launchFragment(
-            policySelectionState = VerificationPolicySelectionState.Policy2G
+            policySelectionState = VerificationPolicySelectionState.Policy1G
         )
 
-        clickOn(R.id.policy2G_container)
+        clickOn(R.id.policy1G_container)
         clickOn(R.id.confirmationButton)
 
         assertNotDisplayed(R.id.error_container)
         verify { scannerUtil.launchScanner(any()) }
-        verify { verificationPolicySelectionViewModel.storeSelection(VerificationPolicy.VerificationPolicy2G) }
+        verify { verificationPolicySelectionViewModel.storeSelection(VerificationPolicy.VerificationPolicy1G) }
     }
 
     @Test
     fun `given default policy selection fragment and stored 2g selection, when confirming 3g selection, then correct subheader and confirmation dialog show up`() {
         launchFragment(
-            policySelectionState = VerificationPolicySelectionState.Policy2G,
+            policySelectionState = VerificationPolicySelectionState.Policy1G,
             selectionType = VerificationPolicySelectionType.Default(
                 ScannerState.Unlocked(
-                    VerificationPolicySelectionState.Policy2G
+                    VerificationPolicySelectionState.Policy1G
                 )
             ),
         )
@@ -120,15 +120,15 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given default policy selection fragment and stored 2g selection, when confirming 2g selection, then goes to home screen`() {
         launchFragment(
-            policySelectionState = VerificationPolicySelectionState.Policy2G,
+            policySelectionState = VerificationPolicySelectionState.Policy1G,
             selectionType = VerificationPolicySelectionType.Default(
                 ScannerState.Unlocked(
-                    VerificationPolicySelectionState.Policy2G
+                    VerificationPolicySelectionState.Policy1G
                 )
             ),
         )
 
-        clickOn(R.id.policy2G_container)
+        clickOn(R.id.policy1G_container)
         clickOn(R.id.confirmationButton)
 
         assertEquals(navController.currentDestination?.id, R.id.nav_scan_qr)
@@ -137,10 +137,10 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given default policy selection fragment and scan not used recently, then correct subheader is showing`() {
         launchFragment(
-            policySelectionState = VerificationPolicySelectionState.Policy2G,
+            policySelectionState = VerificationPolicySelectionState.Policy1G,
             selectionType = VerificationPolicySelectionType.Default(
                 ScannerState.Unlocked(
-                    VerificationPolicySelectionState.Policy2G
+                    VerificationPolicySelectionState.Policy1G
                 )
             ),
             scannerUsedRecently = false,
@@ -173,9 +173,8 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
             }
             coEvery { radioButtonSelected } returns when (policySelectionState) {
                 VerificationPolicySelectionState.None -> null
-                VerificationPolicySelectionState.Policy2G -> R.id.policy2G
+                VerificationPolicySelectionState.Policy1G -> R.id.policy1G
                 VerificationPolicySelectionState.Policy3G -> R.id.policy3G
-                VerificationPolicySelectionState.Policy2GPlus -> R.id.policy2G_plus
             }
             coEvery { updateRadioButton(any()) } returns Unit
             coEvery { storeSelection(any()) } returns Unit

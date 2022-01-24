@@ -17,15 +17,15 @@ class ScanLogDataMapperImplTest {
 
         val entities = listOf(
             ScanLogEntity(
-                policy = VerificationPolicy.VerificationPolicy2G,
+                policy = VerificationPolicy.VerificationPolicy1G,
                 date = Instant.parse("2021-01-01T00:00:00.00Z")
             ),
             ScanLogEntity(
-                policy = VerificationPolicy.VerificationPolicy2G,
+                policy = VerificationPolicy.VerificationPolicy1G,
                 date = Instant.parse("2021-01-01T00:05:00.00Z")
             ),
             ScanLogEntity(
-                policy = VerificationPolicy.VerificationPolicy2G,
+                policy = VerificationPolicy.VerificationPolicy1G,
                 date = Instant.parse("2021-01-01T00:10:00.00Z")
             ),
             ScanLogEntity(
@@ -37,14 +37,14 @@ class ScanLogDataMapperImplTest {
                 date = Instant.parse("2021-01-01T00:12:00.00Z")
             ),
             ScanLogEntity(
-                policy = VerificationPolicy.VerificationPolicy2G,
+                policy = VerificationPolicy.VerificationPolicy1G,
                 date = Instant.parse("2021-01-01T00:20:00.00Z")
             ),
         )
 
         val expectedModels = listOf(
             ScanLog(
-                policy = VerificationPolicy.VerificationPolicy2G,
+                policy = VerificationPolicy.VerificationPolicy1G,
                 count = 1,
                 skew = false,
                 from = OffsetDateTime.ofInstant(
@@ -83,7 +83,7 @@ class ScanLogDataMapperImplTest {
                 )
             ),
             ScanLog(
-                policy = VerificationPolicy.VerificationPolicy2G,
+                policy = VerificationPolicy.VerificationPolicy1G,
                 count = 3,
                 skew = false,
                 from = OffsetDateTime.ofInstant(

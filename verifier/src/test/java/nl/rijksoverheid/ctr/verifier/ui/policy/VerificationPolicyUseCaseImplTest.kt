@@ -21,23 +21,23 @@ class VerificationPolicyUseCaseImplTest {
     @Test
     fun `storing the policy first time is only setting the correct policy`() {
         every { persistenceManager.isVerificationPolicySelectionSet() } returns false
-        every { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy2G) } returns Unit
+        every { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy1G) } returns Unit
 
-        useCase.store(VerificationPolicy.VerificationPolicy2G)
+        useCase.store(VerificationPolicy.VerificationPolicy1G)
 
-        verify { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy2G) }
+        verify { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy1G) }
         verify(exactly = 0) { persistenceManager.storeLastScanLockTimeSeconds(any()) }
     }
 
     @Test
     fun `storing the same policy again is not locking the scanner`() {
         every { persistenceManager.isVerificationPolicySelectionSet() } returns true
-        every { persistenceManager.getVerificationPolicySelected() } returns VerificationPolicy.VerificationPolicy2G
-        every { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy2G) } returns Unit
+        every { persistenceManager.getVerificationPolicySelected() } returns VerificationPolicy.VerificationPolicy1G
+        every { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy1G) } returns Unit
 
-        useCase.store(VerificationPolicy.VerificationPolicy2G)
+        useCase.store(VerificationPolicy.VerificationPolicy1G)
 
-        verify { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy2G) }
+        verify { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy1G) }
         verify(exactly = 0) { persistenceManager.storeLastScanLockTimeSeconds(any()) }
     }
 
@@ -45,12 +45,12 @@ class VerificationPolicyUseCaseImplTest {
     fun `storing the policy second time onwards is setting the correct policy and storing the lock timestamp`() {
         every { persistenceManager.isVerificationPolicySelectionSet() } returns true
         every { persistenceManager.getVerificationPolicySelected() } returns VerificationPolicy.VerificationPolicy3G
-        every { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy2G) } returns Unit
+        every { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy1G) } returns Unit
         every { persistenceManager.storeLastScanLockTimeSeconds(1638316800) } returns Unit
 
-        useCase.store(VerificationPolicy.VerificationPolicy2G)
+        useCase.store(VerificationPolicy.VerificationPolicy1G)
 
         verify { persistenceManager.storeLastScanLockTimeSeconds(1638316800) }
-        verify { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy2G) }
+        verify { persistenceManager.setVerificationPolicySelected(VerificationPolicy.VerificationPolicy1G) }
     }
 }

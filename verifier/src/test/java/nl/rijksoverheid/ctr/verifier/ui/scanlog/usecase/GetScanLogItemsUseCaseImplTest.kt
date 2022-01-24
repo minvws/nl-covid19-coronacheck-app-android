@@ -65,7 +65,7 @@ class GetScanLogItemsUseCaseImplTest {
         )
         val scanLogs = listOf(
             ScanLog(
-                policy = VerificationPolicy.VerificationPolicy2G,
+                policy = VerificationPolicy.VerificationPolicy1G,
                 count = 2,
                 skew = false,
                 from = OffsetDateTime.ofInstant(

@@ -76,7 +76,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Given instructions seen and policy set, Clicking start scan opens scanner`() {
         launchScanQrFragment(
-            scannerState = ScannerState.Unlocked(VerificationPolicySelectionState.Policy2G),
+            scannerState = ScannerState.Unlocked(VerificationPolicySelectionState.Policy1G),
             scannerNavigationState = ScannerNavigationState.Scanner(false),
         )
         clickOn(R.id.button)
@@ -93,7 +93,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given 2g policy is set, 2g policy indication is shown`() {
         launchScanQrFragment(
-            scannerState = ScannerState.Unlocked(VerificationPolicySelectionState.Policy2G)
+            scannerState = ScannerState.Unlocked(VerificationPolicySelectionState.Policy1G)
         )
 
         assertDisplayed(R.id.indicationContainer)
@@ -130,7 +130,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given scanner is locked in 2G, then there is 2G indication but no button`() {
         launchScanQrFragment(
-            scannerState = ScannerState.Locked(5000L, VerificationPolicySelectionState.Policy2G)
+            scannerState = ScannerState.Locked(5000L, VerificationPolicySelectionState.Policy1G)
         )
 
         assertDisplayed(
