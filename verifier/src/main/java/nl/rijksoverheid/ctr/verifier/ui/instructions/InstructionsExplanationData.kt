@@ -33,7 +33,7 @@ fun instructionsExplanationData(isVerificationPolicyEnabled: Boolean): Introduct
                 description = R.string.scan_instructions_3_description,
                 position = 3
             ),
-            OnboardingItem(
+            OnboardingItem(//TODO select correct copy in the copies task (3289)
                 animationResource = R.raw.scaninstructions_4,
                 titleResource = if (isVerificationPolicyEnabled) R.string.scan_instructions_4_title_2G else R.string.scan_instructions_4_title,
                 description = if (isVerificationPolicyEnabled) R.string.scan_instructions_4_description_2G else R.string.scan_instructions_4_description_2G,

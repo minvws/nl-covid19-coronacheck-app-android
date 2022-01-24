@@ -11,7 +11,10 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState.*
+import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
@@ -27,7 +30,7 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class VerificationPolicyDefaultFragmentTest : AutoCloseKoinTest() {
+class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {
@@ -49,7 +52,7 @@ class VerificationPolicyDefaultFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given 2g policy is set, 2g policy related views are displayed`() {
         launchFragment(
-            policy = VerificationPolicy.VerificationPolicy2G
+            verificationPolicySelectionState = Policy1G
         )
 
         assertDisplayed(R.id.separator1)
@@ -65,7 +68,7 @@ class VerificationPolicyDefaultFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given 3g policy is set, 3g policy related views are displayed`() {
         launchFragment(
-            policy = VerificationPolicy.VerificationPolicy3G
+            verificationPolicySelectionState = Policy3G
         )
 
         assertDisplayed(R.id.separator1)
@@ -79,19 +82,20 @@ class VerificationPolicyDefaultFragmentTest : AutoCloseKoinTest() {
     }
 
     private fun launchFragment(
-        policy: VerificationPolicy? = null
+        verificationPolicySelectionState: VerificationPolicySelectionState = None,
+        isVerificationPolicySelectionEnabled: Boolean = true,
     ) {
         loadKoinModules(
             module(override = true) {
                 factory {
-                    mockk<PersistenceManager>().apply {
-                        every { getVerificationPolicySelected() } returns policy
-                        every { getLastScanLockTimeSeconds() } returns 0L
+                    mockk<ScannerStateUseCase>().apply {
+                        every { get() } returns ScannerState.Unlocked(verificationPolicySelectionState)
                     }
                 }
                 factory {
                     mockk<FeatureFlagUseCase>().apply {
                         every { isVerificationPolicyEnabled() } answers { true }
+                        every { isVerificationPolicySelectionEnabled() } answers { isVerificationPolicySelectionEnabled }
                     }
                 }
             }

@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
 
 import android.os.CountDownTimer
 import android.text.format.DateUtils
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtil
 
 /*

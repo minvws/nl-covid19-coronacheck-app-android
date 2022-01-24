@@ -12,8 +12,6 @@ import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
-import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtilImpl
-import nl.rijksoverheid.ctr.shared.ext.getDimensionPixelSize
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
@@ -71,7 +69,7 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
                 binding.bottom.setSecondaryButtonClick {
                     infoFragmentUtil.presentAsBottomSheet(childFragmentManager,
                         InfoFragmentData.TitleDescription(
-                            title = getString(R.string.scan_result_invalid_reason_title),
+                            title = getString(R.string.scan_result_invalid_reason_title),//TODO select correct copy in the copies task (3289)
                             descriptionData = DescriptionData(if (featureFlagUseCase.isVerificationPolicyEnabled()) R.string.scan_result_invalid_reason_description_2G else R.string.scan_result_invalid_reason_description),
                         )
                     )

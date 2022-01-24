@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase
 
 import nl.rijksoverheid.ctr.verifier.persistance.database.VerifierDatabase
 import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionUseCase
 import java.time.Clock
 import java.time.Instant
 
@@ -19,14 +19,14 @@ interface LogScanUseCase {
 
 class LogScanUseCaseImpl(
     private val clock: Clock,
-    private val verificationPolicyUseCase: VerificationPolicyUseCase,
+    private val verificationPolicySelectionUseCase: VerificationPolicySelectionUseCase,
     private val verifierDatabase: VerifierDatabase
 ): LogScanUseCase {
 
     override suspend fun log() {
         verifierDatabase.scanLogDao().insert(
             ScanLogEntity(
-                policy = verificationPolicyUseCase.get(),
+                policy = verificationPolicySelectionUseCase.get(),
                 date = Instant.now(clock)
             )
         )

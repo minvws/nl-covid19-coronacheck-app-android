@@ -11,7 +11,6 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
@@ -53,7 +52,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
     private val scannerStateUseCase: ScannerStateUseCase by inject()
     private val androidUtil: AndroidUtil by inject()
-    private val featureFlagUseCase: FeatureFlagUseCase by inject()
     private val deeplinkManager: DeeplinkManager by inject()
 
     private var scannerStateCountDownTimer: ScannerStateCountDownTimer? = null
@@ -141,22 +139,18 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     }
 
     private fun onStateUpdated(scannerState: ScannerState) {
-        val imageDrawable = when (scannerState.verificationPolicyState) {
-            VerificationPolicyState.None -> {
+        val imageDrawable = when (scannerState.verificationPolicySelectionState) {
+            VerificationPolicySelectionState.None -> {
                 binding.bottom.hidePolicyIndication()
                 R.drawable.illustration_scanner_get_started_3g
             }
-            VerificationPolicyState.Policy2G -> {
-                binding.bottom.setPolicy(VerificationPolicy2G)
-                R.drawable.illustration_scanner_get_started_2g
+            VerificationPolicySelectionState.Policy1G -> {
+                binding.bottom.setPolicy(VerificationPolicy1G)
+                R.drawable.illustration_scanner_get_started_1g
             }
-            VerificationPolicyState.Policy3G -> {
+            VerificationPolicySelectionState.Policy3G -> {
                 binding.bottom.setPolicy(VerificationPolicy3G)
                 R.drawable.illustration_scanner_get_started_3g
-            }
-            VerificationPolicyState.Policy2GPlus -> {
-                binding.bottom.setPolicy(VerificationPolicy2GPlus)
-                R.drawable.illustration_scanner_get_started_2g_plus
             }
         }
 
@@ -221,7 +215,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
     private fun unlockScanner() {
         binding.title.setText(R.string.scan_qr_header)
-        binding.description.setText(if (featureFlagUseCase.isVerificationPolicyEnabled()) R.string.scan_qr_description_2G else R.string.scan_qr_description)
+        // TODO make sure description text is correct when doing the copies task 3289
         binding.instructionsButton.visibility = VISIBLE
         showDeviationViewIfNeeded()
         binding.bottom.unlock()

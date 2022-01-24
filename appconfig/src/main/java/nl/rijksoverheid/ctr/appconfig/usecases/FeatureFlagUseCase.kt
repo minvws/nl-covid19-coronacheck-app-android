@@ -8,22 +8,26 @@
 
 package nl.rijksoverheid.ctr.appconfig.usecases
 
-import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
 
 interface FeatureFlagUseCase {
+    @Deprecated("this is used now only from the holder app and it will change in a forecoming holder ticket")
     fun isVerificationPolicyEnabled(): Boolean
+    fun isVerificationPolicySelectionEnabled(): Boolean
 }
 
 class FeatureFlagUseCaseImpl(
-    private val buildConfigUseCase: BuildConfigUseCase,
     private val appConfigUseCase: CachedAppConfigUseCase,
 ): FeatureFlagUseCase {
 
     override fun isVerificationPolicyEnabled(): Boolean {
-        return if (appConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion == 0) {
-            false
-        } else {
-            buildConfigUseCase.getVersionCode() >= appConfigUseCase.getCachedAppConfig().enableVerificationPolicyVersion
-        }
+        val verificationPoliciesEnabled = appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+        return verificationPoliciesEnabled.contains(
+            VerificationPolicy1G.configValue)
+    }
+
+    override fun isVerificationPolicySelectionEnabled(): Boolean {
+        val verificationPoliciesEnabled = appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+        return verificationPoliciesEnabled.size > 1
     }
 }

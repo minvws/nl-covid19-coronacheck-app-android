@@ -11,25 +11,27 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface VerificationPolicyStateUseCase {
-    fun get(): VerificationPolicyState
+interface VerificationPolicySelectionStateUseCase {
+    fun get(): VerificationPolicySelectionState
 }
 
-class VerificationPolicyStateUseCaseImpl(
+class VerificationPolicySelectionStateUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val featureFlagUseCase: FeatureFlagUseCase
-): VerificationPolicyStateUseCase {
+): VerificationPolicySelectionStateUseCase {
 
-    override fun get(): VerificationPolicyState {
+    /**
+     * if set, get the user selected verification policy or none otherwise
+     */
+    override fun get(): VerificationPolicySelectionState {
         return if (featureFlagUseCase.isVerificationPolicyEnabled()) {
             when (persistenceManager.getVerificationPolicySelected()) {
-                VerificationPolicy.VerificationPolicy2G -> VerificationPolicyState.Policy2G
-                VerificationPolicy.VerificationPolicy2GPlus -> VerificationPolicyState.Policy2GPlus
-                VerificationPolicy.VerificationPolicy3G -> VerificationPolicyState.Policy3G
-                else -> VerificationPolicyState.None
+                VerificationPolicy.VerificationPolicy3G -> VerificationPolicySelectionState.Policy3G
+                VerificationPolicy.VerificationPolicy1G -> VerificationPolicySelectionState.Policy1G
+                else -> VerificationPolicySelectionState.None
             }
         } else {
-            VerificationPolicyState.None
+            VerificationPolicySelectionState.None
         }
     }
 }

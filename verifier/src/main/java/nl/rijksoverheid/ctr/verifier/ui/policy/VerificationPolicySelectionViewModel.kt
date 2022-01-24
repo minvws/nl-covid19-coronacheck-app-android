@@ -25,12 +25,12 @@ abstract class VerificationPolicySelectionViewModel: ViewModel() {
  *
  */
 class VerificationPolicySelectionViewModelImpl(
-    private val verificationPolicyUseCase: VerificationPolicyUseCase,
+    private val verificationPolicySelectionUseCase: VerificationPolicySelectionUseCase,
     private val scannerUsedRecentlyUseCase: ScannerUsedRecentlyUseCase,
 ) : VerificationPolicySelectionViewModel() {
 
     override fun storeSelection(verificationPolicy: VerificationPolicy) {
-        verificationPolicyUseCase.store(verificationPolicy)
+        verificationPolicySelectionUseCase.store(verificationPolicy)
     }
 
     override fun updateRadioButton(checkedId: Int) {
