@@ -25,22 +25,16 @@ class YourEventWidget @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : ConstraintLayout(context, attrs, defStyle, defStyleRes) {
 
-    private var onClickListener = {
-
-    }
-
     val binding =
         ItemYourEventBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun setContent(title: String, subtitle: String, infoClickListener: () -> Unit) {
         binding.rowTitle.text = title
         binding.rowSubtitle.setHtmlText(subtitle)
+        binding.detailsButton.setOnClickListener { infoClickListener.invoke() }
 
-        with (binding.testResultsGroup) {
-            onClickListener = {
-                infoClickListener.invoke()
-            }
-            setOnClickListener { onClickListener.invoke() }
+        with(binding.testResultsGroup) {
+            setOnClickListener { infoClickListener.invoke() }
 
             setAccessibilityLabel(String.format("%s. %s.",
                 binding.rowTitle.text,
@@ -53,15 +47,6 @@ class YourEventWidget @JvmOverloads constructor(
 
     fun setButtonsEnabled(enabled: Boolean) {
         binding.detailsButton.isEnabled = enabled
-        if (enabled) {
-            binding.testResultsGroup.setOnClickListener { onClickListener.invoke() }
-        } else {
-            binding.testResultsGroup.setOnClickListener {  }
-        }
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        onClickListener = { }
+        binding.testResultsGroup.isClickable = enabled
     }
 }
