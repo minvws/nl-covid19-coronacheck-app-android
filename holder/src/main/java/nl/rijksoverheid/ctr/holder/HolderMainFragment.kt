@@ -71,7 +71,7 @@ class HolderMainFragment : BaseMainFragment(
                 defaultToolbarElevation
             }
         }
-        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
+        binding.toolbar.setupWithNavController(navController)
         binding.navView.setupWithNavController(navController)
 
         binding.toolbar.setNavigationOnClickListener {
