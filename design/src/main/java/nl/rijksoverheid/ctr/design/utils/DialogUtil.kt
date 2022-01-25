@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.design.utils
 
 import android.content.Context
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -36,27 +36,7 @@ class DialogUtilImpl : DialogUtil {
         negativeButtonCallback: (() -> Unit)?,
         onDismissCallback: (() -> Unit)?
     ) {
-//        val builder = MaterialAlertDialogBuilder(context)
-//            .setTitle(title)
-//            .setMessage(message)
-//            .setPositiveButton(
-//                positiveButtonText
-//            ) { _, _ -> positiveButtonCallback.invoke() }
-//
-//        if (negativeButtonText != null) {
-//            builder.setNegativeButton(
-//                negativeButtonText
-//            ) { _, _ -> negativeButtonCallback?.invoke() }
-//        }
-//
-//        builder.setOnDismissListener {
-//            onDismissCallback?.invoke()
-//        }
-//
-//        builder.show()
-
-        println("show dialog fragment")
-        val fragmentManager = (context as AppCompatActivity).supportFragmentManager
+        val fragmentManager = (context as FragmentActivity).supportFragmentManager
         if (fragmentManager.findFragmentByTag(DialogFragment.TAG) == null) {
             DialogFragment().show(
                 manager = fragmentManager,
