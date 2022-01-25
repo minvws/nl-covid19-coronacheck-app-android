@@ -31,6 +31,13 @@ abstract class DialogFragmentViewModel: ViewModel() {
 
 }
 
+/**
+ * The dialog fragment needs a view model to hold all the information needed on screen rotation.
+ * The fragment manager recreates the dialog fragment calling its constructor without arguments,
+ * so we cannot have a custom constructor.
+ * Instead we save here our data and the dialog listener methods (which cannot be serialised), so
+ * they can be used on the fragment recreation after a screen rotation.
+ */
 class DialogFragmentViewModelImpl: DialogFragmentViewModel() {
     
     override lateinit var title: String
@@ -50,6 +57,7 @@ class DialogFragmentViewModelImpl: DialogFragmentViewModel() {
         negativeButtonCallback: (() -> Unit)?,
         onDismissCallback: (() -> Unit)?
     ) {
+        negativeButtonCallback?.run {  }
         this.title = title
         this.message = message
         this.positiveButtonText = positiveButtonText
