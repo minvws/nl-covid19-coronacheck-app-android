@@ -524,6 +524,10 @@ fun fakeGreenCardUtil(
     isExpiring: Boolean = false,
     hasNoActiveCredentials: Boolean = false
 ) = object : GreenCardUtil {
+    override suspend fun getAllGreenCards(): List<GreenCard> {
+        return listOf()
+    }
+
     override fun hasOrigin(greenCards: List<GreenCard>, originType: OriginType): Boolean {
         return true
     }
