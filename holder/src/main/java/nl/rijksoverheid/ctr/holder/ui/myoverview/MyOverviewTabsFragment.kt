@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -31,7 +29,6 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 /*
@@ -86,7 +83,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     }
 
     private fun observeItems(adapter: DashboardPagerAdapter) {
-        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, { dashboardTabItems ->
+        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner) { dashboardTabItems ->
 
             // Add pager items only once
             if (adapter.itemCount == 0) {
@@ -98,10 +95,14 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                 )
 
                 // Default select the item that we had selected last
-                binding.viewPager.setCurrentItem(persistenceManager.getSelectedDashboardTab(), false)
+                binding.viewPager.setCurrentItem(
+                    persistenceManager.getSelectedDashboardTab(),
+                    false
+                )
 
                 // Register listener so that last selected item is saved
-                binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+                binding.viewPager.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
                         persistenceManager.setSelectedDashboardTab(position)
@@ -110,16 +111,15 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
             }
 
             // This button needs to be shown in this view instead of MyOverviewFragment (which is a single item in the viewpager)
-            val showAddQrButton = dashboardTabItems.first().items.any { it is DashboardItem.AddQrButtonItem && it.show }
-            binding.addQrButton.visibility = if (showAddQrButton) VISIBLE else GONE
-            if (showAddQrButton) {
-                binding.addQrButton.setOnClickListener {
-                    navigateSafety(
-                        MyOverviewFragmentDirections.actionQrType()
-                    )
-                }
+            binding.addQrButton.isVisible = dashboardTabItems.any { dashboardTabItem ->
+                dashboardTabItem.items.any { it is DashboardItem.AddQrButtonItem }
             }
-        })
+            binding.addQrButton.setOnClickListener {
+                navigateSafety(
+                    MyOverviewFragmentDirections.actionQrType()
+                )
+            }
+        }
     }
 
     private fun observeSyncErrors() {
@@ -159,9 +159,9 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     }
 
     private fun observeAppConfig() {
-        appConfigViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
+        appConfigViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
             dashboardViewModel.refresh()
-        })
+        }
     }
 
     private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync) {

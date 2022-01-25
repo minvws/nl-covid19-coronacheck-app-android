@@ -166,9 +166,9 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        dashboardItems.add(
-            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState))
-        )
+        if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
+            dashboardItems.add(DashboardItem.AddQrButtonItem)
+        }
 
         return dashboardItems
     }
@@ -269,9 +269,9 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        dashboardItems.add(
-            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState))
-        )
+        if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
+            dashboardItems.add(DashboardItem.AddQrButtonItem)
+        }
 
         return dashboardItems
     }

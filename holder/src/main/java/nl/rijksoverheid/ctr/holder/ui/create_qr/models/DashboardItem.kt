@@ -101,5 +101,7 @@ sealed class DashboardItem {
         )
     }
 
-    data class AddQrButtonItem(val show: Boolean) : DashboardItem()
+    object AddQrButtonItem : DashboardItem()
+
+    object AddQrCardItem : DashboardItem()
 }
