@@ -168,7 +168,9 @@ class HolderMainFragment : BaseMainFragment(
 
     fun presentLoading(loading: Boolean) {
         if (loading) {
+            binding.loading.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
             binding.loading.setAccessibilityFocus()
+            binding.loading.announceForAccessibility(getString(R.string.general_loading_description))
         } else {
             binding.loading.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         }
