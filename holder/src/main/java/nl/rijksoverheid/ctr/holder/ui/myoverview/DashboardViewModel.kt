@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewRecoveryValidityUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -46,6 +47,7 @@ abstract class DashboardViewModel : ViewModel() {
 
 class DashboardViewModelImpl(
     private val holderDatabase: HolderDatabase,
+    private val greenCardUtil: GreenCardUtil,
     private val getDashboardItemsUseCase: GetDashboardItemsUseCase,
     private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
@@ -89,7 +91,7 @@ class DashboardViewModelImpl(
                     }
                 }
 
-                val allGreenCards = holderDatabase.greenCardDao().getAll()
+                val allGreenCards = greenCardUtil.getAllGreenCards()
                 val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
 
                 refreshDashboardTabItems(
