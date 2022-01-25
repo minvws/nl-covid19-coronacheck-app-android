@@ -13,11 +13,13 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 
 @Parcelize
 data class MenuSection(
-    val menuItems: List<MenuItem>
+    val menuItems: List<MenuItem>,
 ): Parcelable {
+
     @Parcelize
     data class MenuItem(
         @DrawableRes val icon: Int,
@@ -26,7 +28,6 @@ data class MenuSection(
     ): Parcelable {
 
         sealed class OnClick: Parcelable {
-
             @Parcelize
             data class OpenBrowser(val url: String): OnClick(), Parcelable
 

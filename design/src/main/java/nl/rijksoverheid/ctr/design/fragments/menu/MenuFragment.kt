@@ -16,11 +16,14 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.FragmentMenuBinding
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import org.koin.android.ext.android.inject
 
 class MenuFragment: Fragment(R.layout.fragment_menu) {
 
-    private val menuItems: List<MenuSection> by lazy { requireArguments().getParcelableArrayList<MenuSection>("menuItems")?.toList()
-        ?: error("menuItems should not be empty") }
+    private val intentUtil: IntentUtil by inject()
+    private val menuSections by lazy { (requireArguments().getParcelableArray("menuSections") as Array<MenuSection>).toList() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,7 +38,7 @@ class MenuFragment: Fragment(R.layout.fragment_menu) {
         binding.recyclerView.adapter =
             GroupAdapter<GroupieViewHolder>()
                 .also { adapter ->
-                    menuItems.forEach {
+                    menuSections.forEach {
                         val section = getAdapterSectionForMenuSection(it)
                         adapter.add(section)
                     }
@@ -50,13 +53,30 @@ class MenuFragment: Fragment(R.layout.fragment_menu) {
             adapterItems.add(
                 MenuItemAdapterItem(
                     menuItem = menuItem,
-                    lastItemInSection = index == menuSection.menuItems.size - 1
+                    lastItemInSection = index == menuSection.menuItems.size - 1,
+                    onClick = {
+                        handleMenuItemClick(it)
+                    }
                 )
             )
         }
 
         return Section().apply {
             addAll(adapterItems)
+        }
+    }
+
+    private fun handleMenuItemClick(onClick: MenuSection.MenuItem.OnClick) {
+        when (onClick) {
+            is MenuSection.MenuItem.OnClick.Navigate -> {
+                findNavControllerSafety()?.navigate(onClick.navigationActionId, onClick.navigationArguments)
+            }
+            is MenuSection.MenuItem.OnClick.OpenBrowser -> {
+                intentUtil.openUrl(
+                    context = requireContext(),
+                    url = onClick.url
+                )
+            }
         }
     }
 }

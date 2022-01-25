@@ -15,7 +15,8 @@ import nl.rijksoverheid.ctr.design.databinding.ItemMenuBinding
 
 class MenuItemAdapterItem(
     private val menuItem: MenuSection.MenuItem,
-    private val lastItemInSection: Boolean
+    private val lastItemInSection: Boolean,
+    private val onClick: (onClick: MenuSection.MenuItem.OnClick) -> Unit
 ): BindableItem<ItemMenuBinding>() {
 
     override fun bind(viewBinding: ItemMenuBinding, position: Int) {
@@ -23,9 +24,12 @@ class MenuItemAdapterItem(
 
         viewBinding.icon.setImageResource(menuItem.icon)
         viewBinding.title.setText(menuItem.title)
+        viewBinding.root.setOnClickListener {
+            onClick.invoke(menuItem.onClick)
+        }
 
         val marginLayoutParams = viewBinding.root.layoutParams as ViewGroup.MarginLayoutParams
-        val marginBottom = if (lastItemInSection) context.resources.getDimensionPixelSize(R.dimen.menu_section_spacing) else 0
+        val marginBottom = if (lastItemInSection) context.resources.getDimensionPixelSize(R.dimen.menu_section_spacing) else context.resources.getDimensionPixelSize(R.dimen.menu_list_item_spacing)
         marginLayoutParams.bottomMargin = marginBottom
     }
 

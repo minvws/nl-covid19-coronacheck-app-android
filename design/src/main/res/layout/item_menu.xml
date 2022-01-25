@@ -11,9 +11,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?selectableItemBackground"
-    android:paddingVertical="16dp"
-    android:paddingHorizontal="20dp">
+    android:background="?colorSurface"
+    android:foreground="?attr/selectableItemBackground"
+    android:paddingVertical="24dp"
+    android:paddingHorizontal="30dp">
 
     <ImageView
         android:id="@id/icon"

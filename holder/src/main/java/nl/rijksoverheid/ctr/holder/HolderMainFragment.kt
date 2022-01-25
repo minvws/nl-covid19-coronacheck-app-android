@@ -14,6 +14,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -30,14 +31,7 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import org.koin.android.ext.android.inject
 
-class HolderMainFragment : BaseMainFragment(
-    R.layout.fragment_main, setOf(
-        R.id.nav_my_overview_tabs,
-        R.id.nav_about_this_app,
-        R.id.nav_paper_proof_explanation,
-        R.id.nav_visitor_pass,
-    )
-) {
+class HolderMainFragment : Fragment(R.layout.fragment_main) {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
@@ -58,10 +52,6 @@ class HolderMainFragment : BaseMainFragment(
         _navController = navHostFragment.navController
 
         binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        val appBarConfiguration = AppBarConfiguration(
-            topLevelDestinations,
-            binding.drawerLayout
-        )
 
         val defaultToolbarElevation = resources.getDimension(R.dimen.toolbar_elevation)
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -83,7 +73,7 @@ class HolderMainFragment : BaseMainFragment(
                 }
             }
 
-            NavigationUI.navigateUp(navController, appBarConfiguration)
+            NavigationUI.navigateUp(navController, null)
         }
 
         binding.toolbar.setOnMenuItemClickListener {
@@ -99,38 +89,7 @@ class HolderMainFragment : BaseMainFragment(
                     )
                 }
                 R.id.nav_about_this_app -> {
-                    navController.navigate(
-                        R.id.nav_about_this_app, AboutThisAppFragment.getBundle(
-                            data = AboutThisAppData(
-                                versionName = BuildConfig.VERSION_NAME,
-                                versionCode = BuildConfig.VERSION_CODE.toString(),
-                                sections = listOf(
-                                    AboutThisAppData.AboutThisAppSection(
-                                        header = R.string.about_this_app_read_more,
-                                        items = mutableListOf(
-                                            AboutThisAppData.Url(
-                                                text = getString(R.string.privacy_statement),
-                                                url = getString(R.string.url_privacy_statement),
-                                            ),
-                                            AboutThisAppData.Url(
-                                                text = getString(R.string.about_this_app_accessibility),
-                                                url = getString(R.string.url_accessibility),
-                                            ),
-                                            AboutThisAppData.Url(
-                                                text = getString(R.string.about_this_app_colofon),
-                                                url = getString(R.string.about_this_app_colofon_url),
-                                            ),
-                                            AboutThisAppData.ClearAppData(
-                                                text = getString(R.string.about_this_clear_data)
-                                            )
-                                        )
-                                    )
-                                ),
-                                configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
-                                configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
-                            )
-                        )
-                    )
+
                 }
                 else -> {
                     NavigationUI.onNavDestinationSelected(item, navController)

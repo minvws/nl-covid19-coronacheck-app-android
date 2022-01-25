@@ -8,6 +8,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -16,8 +17,14 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
+import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
+import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentTabsMyOverviewBinding
@@ -26,6 +33,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -51,6 +59,8 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     private val persistenceManager: PersistenceManager by inject()
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
     private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
 
     private val refreshHandler = Handler(Looper.getMainLooper())
     private val refreshRunnable = Runnable {
@@ -212,11 +222,112 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         super.onResume()
         refresh()
 
-        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+        getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
                     inflateMenu(R.menu.overview_toolbar)
+                    setupMenu()
                 }
+            }
+        }
+    }
+
+    private fun setupMenu() {
+        getToolbar()?.let {
+            it.menu.findItem(R.id.action_menu).actionView?.setOnClickListener {
+                val aboutThisAppData = AboutThisAppData(
+                    versionName = BuildConfig.VERSION_NAME,
+                    versionCode = BuildConfig.VERSION_CODE.toString(),
+                    sections = listOf(
+                        AboutThisAppData.AboutThisAppSection(
+                            header = R.string.about_this_app_read_more,
+                            items = mutableListOf(
+                                AboutThisAppData.Url(
+                                    text = getString(R.string.privacy_statement),
+                                    url = getString(R.string.url_privacy_statement),
+                                ),
+                                AboutThisAppData.Url(
+                                    text = getString(R.string.about_this_app_accessibility),
+                                    url = getString(R.string.url_accessibility),
+                                ),
+                                AboutThisAppData.Url(
+                                    text = getString(R.string.about_this_app_colofon),
+                                    url = getString(R.string.about_this_app_colofon_url),
+                                ),
+                                AboutThisAppData.ClearAppData(
+                                    text = getString(R.string.about_this_clear_data)
+                                )
+                            )
+                        )
+                    ),
+                    configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
+                    configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
+                )
+
+                val actionQrCodeType = MenuFragmentDirections.actionQrCodeType()
+                val actionPaperProof = MenuFragmentDirections.actionPaperProof()
+                val actionVisitorPass = MenuFragmentDirections.actionVisitorPass()
+                val actionAboutThisApp = MenuFragmentDirections.actionAboutThisApp(
+                    data = aboutThisAppData
+                )
+
+                findNavControllerSafety()?.navigate(
+                    MyOverviewTabsFragmentDirections.actionMenu(
+                        menuSections = listOf(
+                            MenuSection(
+                                menuItems = listOf(
+                                    MenuSection.MenuItem(
+                                        icon = R.drawable.ic_menu_add,
+                                        title = R.string.holder_menu_listItem_addVaccinationOrTest_title,
+                                        onClick = MenuSection.MenuItem.OnClick.Navigate(
+                                            navigationActionId = actionQrCodeType.actionId,
+                                            navigationArguments = actionQrCodeType.arguments
+                                        )
+                                    )
+                                )
+                            ),
+                            MenuSection(
+                                menuItems = listOf(
+                                    MenuSection.MenuItem(
+                                        icon = R.drawable.ic_menu_paper,
+                                        title = R.string.add_paper_proof,
+                                        onClick = MenuSection.MenuItem.OnClick.Navigate(
+                                            navigationActionId = actionPaperProof.actionId,
+                                            navigationArguments = actionPaperProof.arguments
+                                        )
+                                    ),
+                                    MenuSection.MenuItem(
+                                        icon = R.drawable.ic_menu_briefcase,
+                                        title = R.string.holder_menu_visitorpass,
+                                        onClick = MenuSection.MenuItem.OnClick.Navigate(
+                                            navigationActionId = actionVisitorPass.actionId,
+                                            navigationArguments = actionVisitorPass.arguments
+                                        )
+                                    )
+                                )
+                            ),
+                            MenuSection(
+                                menuItems = listOf(
+                                    MenuSection.MenuItem(
+                                        icon = R.drawable.ic_menu_chatbubble,
+                                        title = R.string.frequently_asked_questions,
+                                        onClick = MenuSection.MenuItem.OnClick.OpenBrowser(
+                                            url = getString(R.string.url_faq)
+                                        )
+                                    ),
+                                    MenuSection.MenuItem(
+                                        icon = R.drawable.ic_menu_info,
+                                        title = R.string.about_this_app,
+                                        onClick = MenuSection.MenuItem.OnClick.Navigate(
+                                            navigationActionId = actionAboutThisApp.actionId,
+                                            navigationArguments = actionAboutThisApp.arguments
+                                        )
+                                    )
+                                )
+                            )
+                        ).toTypedArray()
+                    )
+                )
             }
         }
     }
@@ -225,4 +336,6 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun getToolbar() = (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar()
 }
