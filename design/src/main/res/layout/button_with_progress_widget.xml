@@ -13,7 +13,7 @@
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/loading"
-        android:contentDescription="@string/my_overview_test_result_button_indicator_accessibility_description"
+        android:contentDescription="@string/general_loading_description"
         android:indeterminate="true"
         android:visibility="visible"
         app:indicatorSize="20dp"

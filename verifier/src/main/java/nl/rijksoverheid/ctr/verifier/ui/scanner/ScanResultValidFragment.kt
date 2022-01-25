@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
@@ -29,9 +29,9 @@ class ScanResultValidFragment : Fragment() {
     private var _binding: FragmentScanResultValidBinding? = null
     private val binding get() = _binding!!
 
-    private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
+    private val verificationPolicySelectionUseCase: VerificationPolicySelectionUseCase by inject()
     private val verificationPolicy: VerificationPolicy by lazy {
-        verificationPolicyUseCase.get()
+        verificationPolicySelectionUseCase.get()
     }
 
     private val args: ScanResultValidFragmentArgs by navArgs()
@@ -58,11 +58,8 @@ class ScanResultValidFragment : Fragment() {
                     is VerificationPolicy.VerificationPolicy3G -> {
                         R.style.AppTheme_Scanner_Valid_3G
                     }
-                    is VerificationPolicy.VerificationPolicy2G -> {
-                        R.style.AppTheme_Scanner_Valid_2G
-                    }
-                    is VerificationPolicy.VerificationPolicy2GPlus -> {
-                        R.style.AppTheme_Scanner_Valid_2GPlus
+                    is VerificationPolicy.VerificationPolicy1G -> {
+                        R.style.AppTheme_Scanner_Valid_1G
                     }
                 }
             } else {
@@ -90,15 +87,13 @@ class ScanResultValidFragment : Fragment() {
             }
             is ScanResultValidData.Valid -> {
                 val text = if (featureFlagUseCase.isVerificationPolicyEnabled()) {
+                    //TODO fix copy for 1G
                     when (verificationPolicy) {
-                        is VerificationPolicy.VerificationPolicy2G -> {
+                        is VerificationPolicy.VerificationPolicy1G -> {
                             getString(R.string.verifier_result_access_title_highrisk)
                         }
                         is VerificationPolicy.VerificationPolicy3G -> {
                             getString(R.string.verifier_result_access_title_lowrisk)
-                        }
-                        is VerificationPolicy.VerificationPolicy2GPlus -> {
-                            getString(R.string.verifier_result_access_title_2g_plus)
                         }
                     }
                 } else {

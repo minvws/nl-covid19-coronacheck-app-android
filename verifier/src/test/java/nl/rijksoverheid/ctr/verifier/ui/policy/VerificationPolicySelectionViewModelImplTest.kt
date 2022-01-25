@@ -10,7 +10,7 @@ import org.junit.Test
 
 class VerificationPolicySelectionViewModelImplTest {
 
-    private val verificationPolicyUseCase = mockk<VerificationPolicyUseCase>().apply {
+    private val verificationPolicyUseCase = mockk<VerificationPolicySelectionUseCase>().apply {
         every { store(VerificationPolicy.VerificationPolicy3G) } returns Unit
     }
 

@@ -3,19 +3,18 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,8 +27,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
 
     private val scannerViewModel: ScannerViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
-    private val verificationPolicyUseCase: VerificationPolicyUseCase by inject()
-    private val featureFlagUseCase: FeatureFlagUseCase by inject()
+    private val configVerificationPolicyUseCase: ConfigVerificationPolicyUseCase by inject()
 
     override fun onQrScanned(content: String) {
         scannerViewModel.log()
@@ -53,23 +51,18 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                 description = getString(R.string.camera_rationale_dialog_description),
                 okayButtonText = getString(R.string.ok)
             ),
-            verificationPolicy = verificationPolicyUseCase.get().let {
-                if (featureFlagUseCase.isVerificationPolicyEnabled()) {
-                    Copy.VerificationPolicy(
-                        title = when (it) {
-                            is VerificationPolicy2G -> R.string.verifier_scanner_policy_indication_2g
-                            is VerificationPolicy3G -> R.string.verifier_scanner_policy_indication_3g
-                            is VerificationPolicy2GPlus -> R.string.verifier_scanner_policy_indication_2g_plus
-                        },
-                        indicatorColor = when (it) {
-                            is VerificationPolicy2G -> R.color.primary_blue
-                            is VerificationPolicy3G -> R.color.secondary_green
-                            is VerificationPolicy2GPlus -> R.color.primary_text
-                        }
-                    )
-                } else {
-                    null
-                }
+            verificationPolicy = configVerificationPolicyUseCase.get().let {
+                //TODO fix copies for 1G
+                Copy.VerificationPolicy(
+                    title = when (it) {
+                        is VerificationPolicySelectionState.Policy1G -> R.string.verifier_scanner_policy_indication_2g
+                        else -> R.string.verifier_scanner_policy_indication_3g
+                    },
+                    indicatorColor = when (it) {
+                        is VerificationPolicySelectionState.Policy1G -> R.color.primary_blue
+                        else -> R.color.secondary_green
+                    }
+                )
             }
         )
     }

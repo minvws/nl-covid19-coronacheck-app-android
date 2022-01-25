@@ -89,22 +89,19 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
     }
 
     fun setPolicy(policy: VerificationPolicy) {
-        binding.policyIndicator.setBackgroundTintList(
-            ColorStateList.valueOf(
-                context.getColor(
-                    when (policy) {
-                        VerificationPolicy.VerificationPolicy2G -> R.color.primary_blue
-                        VerificationPolicy.VerificationPolicy3G -> R.color.secondary_green
-                        VerificationPolicy.VerificationPolicy2GPlus -> R.color.black
-                    }
-                )
+        binding.policyIndicator.backgroundTintList = ColorStateList.valueOf(
+            context.getColor(
+                when (policy) {
+                    VerificationPolicy.VerificationPolicy1G -> R.color.primary_blue
+                    VerificationPolicy.VerificationPolicy3G -> R.color.secondary_green
+                }
             )
         )
+        //TODO fix copy for 1G
         binding.policyIndicatorText.setText(
             when (policy) {
-                VerificationPolicy.VerificationPolicy2G -> R.string.verifier_start_scan_qr_policy_indication_2g
+                VerificationPolicy.VerificationPolicy1G -> R.string.verifier_start_scan_qr_policy_indication_2g
                 VerificationPolicy.VerificationPolicy3G -> R.string.verifier_start_scan_qr_policy_indication_3g
-                VerificationPolicy.VerificationPolicy2GPlus -> R.string.verifier_start_scan_qr_policy_indication_2g_plus
             }
         )
     }

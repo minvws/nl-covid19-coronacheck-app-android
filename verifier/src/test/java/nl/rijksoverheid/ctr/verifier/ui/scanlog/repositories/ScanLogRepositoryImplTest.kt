@@ -27,7 +27,7 @@ class ScanLogRepositoryImplTest {
 
         val entity = ScanLogEntity(
             id = 0,
-            policy = VerificationPolicy.VerificationPolicy2G,
+            policy = VerificationPolicy.VerificationPolicy1G,
             date = Instant.parse("2021-01-01T00:00:00.00Z")
         )
 
@@ -50,7 +50,7 @@ class ScanLogRepositoryImplTest {
 
         val entity = ScanLogEntity(
             id = 0,
-            policy = VerificationPolicy.VerificationPolicy2G,
+            policy = VerificationPolicy.VerificationPolicy1G,
             date = Instant.parse("2021-01-01T00:00:00.00Z")
         )
 

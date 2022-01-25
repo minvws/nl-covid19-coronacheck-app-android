@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
@@ -101,7 +101,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
             else -> {
                 navigateSafety(
                     ScanInstructionsFragmentDirections.actionPolicySelection(
-                        selectionType = VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(VerificationPolicyState.None)),
+                        selectionType = VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(VerificationPolicySelectionState.None)),
                         toolbarTitle = getString(R.string.verifier_menu_risksetting),
                         returnUri = arguments?.getString("returnUri"),
                     )

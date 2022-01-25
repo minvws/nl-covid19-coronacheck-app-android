@@ -46,7 +46,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
     @Test
     fun `Creating scan log works as expected`() = runBlocking {
         val scanLogToInsert1 = ScanLogEntity(
-            policy = VerificationPolicy.VerificationPolicy2G,
+            policy = VerificationPolicy.VerificationPolicy1G,
             date = Instant.ofEpochSecond(0)
         )
 
@@ -60,7 +60,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
 
         val expectedScanLog1 = ScanLogEntity(
             id = 1,
-            policy = VerificationPolicy.VerificationPolicy2G,
+            policy = VerificationPolicy.VerificationPolicy1G,
             date = Instant.ofEpochSecond(0)
         )
 
@@ -79,7 +79,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
     @Test
     fun `Deleting scan log works as expected`() = runBlocking {
         val scanLogToInsert1 = ScanLogEntity(
-            policy = VerificationPolicy.VerificationPolicy2G,
+            policy = VerificationPolicy.VerificationPolicy1G,
             date = Instant.ofEpochSecond(0)
         )
 
