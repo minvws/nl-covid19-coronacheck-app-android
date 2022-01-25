@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 @Dao
 interface GreenCardDao {
 
-    @Query("SELECT * FROM green_card")
+    @Query("SELECT * FROM green_card WHERE ")
     suspend fun getAll(): List<GreenCard>
 
     @Query("SELECT * FROM green_card WHERE type = :type AND wallet_id = :walletId")

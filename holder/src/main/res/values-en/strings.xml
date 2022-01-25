@@ -666,4 +666,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   </plurals>
   <string name="holder_dashboard_addCard_title">Nieuwe vaccinatie of test toevoegen</string>
   <string name="general_navigationbar_menu_button_label">Menu</string>
+  <string name="holder_menu_listItem_addVaccinationOrTest_title">Vaccinatie of test toevoegen</string>
 </resources>
