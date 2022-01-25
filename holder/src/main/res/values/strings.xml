@@ -53,7 +53,7 @@
   <string name="my_overview_test_result_expires_in_minutes">Verloopt over %1$s</string>
   <string name="my_overview_test_result_footer">Laat QR-code zien bij ingang</string>
   <string name="my_overview_test_result_button">Bekijk QR</string>
-  <string name="my_overview_test_result_button_indicator_accessibility_description">Bezig met laden, even geduld</string>
+  <string name="general_loading_description">Bezig met laden, even geduld</string>
   <string name="my_overview_no_qr_make_appointment_title">Testafspraak maken</string>
   <string name="my_overview_no_qr_make_appointment_description">Wil je een QR-code maken? Laat je dan eerst testen op corona.</string>
   <string name="my_overview_no_qr_make_appointment_button">Maak afspraak</string>
@@ -665,4 +665,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
     <item quantity="one">minuut</item>
     <item quantity="other">minuten</item>
   </plurals>
+  <string name="holder_dashboard_addCard_title">Nieuwe vaccinatie of test toevoegen</string>
+  <string name="general_navigationbar_menu_button_label">Menu</string>
 </resources>
