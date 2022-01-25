@@ -359,7 +359,7 @@ class GetDashboardItemsUseCaseImpl(
     private fun getExpiredBannerItem(
         greenCard: GreenCard,
     ): DashboardItem {
-        val origin = listOf<OriginEntity>().last()
+        val origin = greenCard.origins.last()
         return when {
             greenCard.greenCardEntity.type is GreenCardType.Domestic && origin.type is OriginType.Vaccination -> {
                 DashboardItem.InfoItem.DomesticVaccinationExpiredItem(greenCard.greenCardEntity)

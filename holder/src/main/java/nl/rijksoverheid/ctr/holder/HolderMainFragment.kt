@@ -10,9 +10,7 @@ package nl.rijksoverheid.ctr.holder
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -60,11 +58,6 @@ class HolderMainFragment : Fragment(R.layout.fragment_main) {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     fun presentLoading(loading: Boolean) {
         if (loading) {
             binding.loading.setAccessibilityFocus()
@@ -76,6 +69,11 @@ class HolderMainFragment : Fragment(R.layout.fragment_main) {
 
     fun getToolbar(): Toolbar {
         return binding.toolbar
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     fun resetMenuItemListener() {
