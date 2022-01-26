@@ -84,13 +84,13 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
             VerificationPolicySelectionState.Policy1G -> {
                 displayPolicyViews(
                     VerificationPolicy.VerificationPolicy1G,
-                    R.string.verifier_risksetting_highrisk_subtitle
+                    R.string.verifier_risksetting_subtitle_1G
                 )
             }
             VerificationPolicySelectionState.Policy3G -> {
                 displayPolicyViews(
                     VerificationPolicy.VerificationPolicy3G,
-                    R.string.verifier_risksetting_lowrisk_subtitle
+                    R.string.verifier_risksetting_subtitle_3G
                 )
             }
         }

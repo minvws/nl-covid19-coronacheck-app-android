@@ -151,8 +151,8 @@
   <string name="verifier_menu_risksetting">Scan-instelling</string>
   <string name="verifier_risksetting_active_title">Scan-instelling aanpassen</string>
   <string name="verifier_risksetting_title">%s-toegang</string>
-  <string name="verifier_risksetting_lowrisk_subtitle">Je kunt toegang geven aan bezoekers met een test-, vaccinatie- of herstelbewijs.</string>
-  <string name="verifier_risksetting_highrisk_subtitle">Je kunt alleen toegang geven aan bezoekers met een vaccinatie- of herstelbewijs.</string>
+  <string name="verifier_risksetting_subtitle_3G">Je kunt toegang geven aan bezoekers met een test-, vaccinatie- of herstelbewijs.</string>
+  <string name="verifier_risksetting_subtitle_1G">Je kunt alleen toegang geven aan bezoekers met een testbewijs.</string>
   <string name="verifier_risksetting_readmore">Welk soort toegang mag ik geven?</string>
   <string name="verifier_risksetting_readmore_url">https://www.rijksoverheid.nl/welketoegang-cc</string>
   <string name="verifier_risksetting_firsttimeuse_title">Kies je scan-instelling</string>
@@ -187,13 +187,12 @@
   <string name="about_this_app_clear_data_confirm">Wis gegevens</string>
   <string name="verifier_result_access_title_policy">%s-controle klaar</string>
   <string name="verifier_result_access_title">Controle klaar</string>
-  <string name="scan_qr_description_2G">Is de QR-code geldig voor jouw locatie en zijn de gegevens hetzelfde als op het identiteitsbewijs? Dan mag je de bezoeker toegang geven.</string>
-  <string name="scan_instructions_4_title_2G">Vinkje = toegang</string>
-  <string name="scan_instructions_4_description_2G">Zie je een vinkje op je scherm? Dan is de QR-code geldig en kloppen de gegevens met het identiteitsbewijs. Je mag de bezoeker toegang geven.</string>
+  <string name="scan_qr_description_1G">Is de QR-code geldig voor jouw locatie en zijn de gegevens hetzelfde als op het identiteitsbewijs? Dan mag je de bezoeker toegang geven.</string>
+  <string name="scan_instructions_4_title_1G">Vinkje = toegang</string>
+  <string name="scan_instructions_4_description_1G">Zie je een vinkje op je scherm? Dan is de QR-code geldig en kloppen de gegevens met het identiteitsbewijs. Je mag de bezoeker toegang geven.</string>
   <string name="scan_result_invalid_reason_description_2G"><![CDATA[Een rood scherm met kruis betekent dat de QR-code niet aan Nederlandse eisen voldoet, of niet geldig is op plekken met 2G-toegang.<br/><br/><b>Dit kun je doen:</b><br/><ol><li>Controleer of de tijd goed staat ingesteld op de telefoon van de bezoeker en die van jou. Zorg dat de datum en tijd op ‘automatisch instellen’ staan. </li><li>Controleer of de bezoeker een origineel bewijs laat zien. Een screenshot van een bewijs kan voor problemen zorgen.</li><li>Vraag de bezoeker om de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li></ol><br/><b>Blijft het scherm rood?</b><br/>Vraag de bezoeker contact op te nemen met de helpdesk van CoronaCheck.<br/><br/><b>Let op:</b> zonder scherm met vinkje mag de bezoeker niet toegelaten worden.]]></string>
   <string name="verifier_risksetting_changeselection_title">Scan-instelling aanpassen</string>
   <string name="scan_log_list_2g_plus">2G+</string>
-  <string name="verifier_risksetting_2g_plus_subtitle">Je kunt alleen toegang geven aan bezoekers met een vaccinatie- of herstelbewijs én een testbewijs.</string>
   <string name="verifier_scanner_honeywell_footer">Liever met de barcode scanner?\nGebruik de scan-toetsen op je toestel.</string>
   <string name="general_navigationbar_menu_button_label">Menu </string>
 </resources>
