@@ -149,10 +149,12 @@
   <string name="scan_log_footer_long_time">App in use for longer than one month</string>
   <string name="scan_log_list_clock_skew_detected">Date or time changed</string>
   <string name="verifier_menu_risksetting">Scan setting</string>
+  <string name="verifier_result_access_title_highrisk">2G check done</string>
   <string name="verifier_risksetting_active_title">Change scan setting</string>
-  <string name="verifier_risksetting_title">3G access</string>
-  <string name="verifier_risksetting_subtitle_3G">You can give access to visitors with a test, vaccination or recovery certificate.</string>
-  <string name="verifier_risksetting_subtitle_1G">You can only give access to visitors with a vaccination or recovery certificate.</string>
+  <string name="verifier_risksetting_lowrisk_title">3G access</string>
+  <string name="verifier_risksetting_lowrisk_subtitle">You can give access to visitors with a test, vaccination or recovery certificate.</string>
+  <string name="verifier_risksetting_highrisk_title">2G access</string>
+  <string name="verifier_risksetting_highrisk_subtitle">You can only give access to visitors with a vaccination or recovery certificate.</string>
   <string name="verifier_risksetting_readmore">Which kind of access can I give?</string>
   <string name="verifier_risksetting_readmore_url">https://www.government.nl/whichaccess-cc</string>
   <string name="verifier_risksetting_firsttimeuse_title">Choose your scan setting</string>
@@ -161,7 +163,8 @@
   <string name="new_in_app_risksetting_subtitle">Only visitors with a vaccination or recovery certificate get 2G access. 3G access is given to visitors carrying a test certificate. Check in advance which kind of access your location can give.</string>
   <string name="verification_policy_selection_error_message">Choose a setting to continue</string>
   <string name="scan_log_message"><![CDATA[The scan setting log keeps track of the type of access used during scanning. A civil enforcement officer may request access to this log.<br/><br/>For privacy reasons, only scan settings used in the last %d minutes are saved on this phone. No personal information is saved. You can read more about this in the <a href=\"https://coronacheck.nl/nl/faq-scanner-in-app\">frequently asked questions</a>.]]></string>
-  <string name="verifier_start_scan_qr_policy_indication"><![CDATA[Set to <b>%s</b> access]]></string>
+  <string name="verifier_start_scan_qr_policy_indication_3g">Set to <b>3G</b> access</string>
+  <string name="verifier_start_scan_qr_policy_indication_2g">Set to <b>2G</b> access</string>
   <string name="verifier_risksetting_start_title">Scan setting</string>
   <string name="verifier_risksetting_start_header">For your location, please specify if you\'re going to give 2G or 3G access. Check which kind of access you can give before you start scanning.</string>
   <string name="verifier_risksetting_setting_button">Set setting</string>
@@ -169,7 +172,8 @@
   <string name="verifier_risksetting_start_readmore_url">https://coronacheck.nl/en/faq-scanner-in-app</string>
   <string name="verifier_home_countdown_title">You can scan again in %s</string>
   <string name="verifier_home_countdown_subtitle">You have to wait for %d minutes because you changed your scan settings while scanning.</string>
-  <string name="verifier_scanner_policy_indication">%s access</string>
+  <string name="verifier_scanner_policy_indication_3g">3G access</string>
+  <string name="verifier_scanner_policy_indication_2g">2G access</string>
   <string name="verifier_risksetting_menu_scan_settings_unselected_title">Kies een instelling waarin je wilt scannen.</string>
   <string name="verifier_risksetting_menu_scan_settings_selected_title"><![CDATA[Choose your scan setting.<br/><br/><b>Please note:</b> if you change scan settings while scanning, you have to wait for %d minutes before you can scan again.]]></string>
   <string name="verifier_risksetting_confirmation_button">Confirm</string>
@@ -178,21 +182,37 @@
   <string name="verifier_risksetting_confirmation_dialog_positive_button">Yes, change</string>
   <string name="verifier_risksetting_confirmation_dialog_negative_button">No, go back</string>
   <string name="verifier_risksetting_changeselection_button">Change</string>
-  <string name="verifier_risksetting_changeselection">Set to %s access</string>
+  <string name="verifier_risksetting_changeselection_3g">Set to 3G access</string>
+  <string name="verifier_risksetting_changeselection_2g">Set to 2G access</string>
   <string name="verifier_scan_instructions_back_to_start">Back to start</string>
   <string name="about_this_clear_data">Clear data</string>
   <string name="about_this_app_clear_data_title">Clear all data?</string>
   <string name="about_this_app_clear_data_description">Clearing will delete all data and certificates from the app and will close the app. You can simply restart it afterwards.</string>
   <string name="about_this_app_clear_data_cancel">Cancel</string>
   <string name="about_this_app_clear_data_confirm">Clear data</string>
-  <string name="verifier_result_access_title_policy">%s check done</string>
+  <string name="verifier_result_access_title_lowrisk">3G check done</string>
   <string name="verifier_result_access_title">Check done</string>
-  <string name="scan_qr_description_1G">Is the QR code valid for your location, and are the details the same as on the proof of identity? Then you can give the visitor access.</string>
+  <string name="scan_qr_description_2G">Is the QR code valid for your location, and are the details the same as on the proof of identity? Then you can give the visitor access.</string>
   <string name="scan_instructions_4_title_2G">Check mark = access</string>
   <string name="scan_instructions_4_description_2G">Does your screen show a check mark? In that case, the QR code is valid and the details are the same as on the proof of identity. You can grant the visitor access.</string>
   <string name="scan_result_invalid_reason_description_2G"><![CDATA[A red screen with a cross means the QR code does not comply with the Dutch regulations, or is not valid for locations with 2G access.<br/><br/><b>Here\'s what you can do:</b><br/><ol><li>Check if the time is set correctly, on the visitor\'s phone as well as your own. Make sure date and time are set to \'set automatically\'.</li><li>Check if the visitor is showing an original certificate. A screenshot of their certificate may cause problems.</li><li>Ask the visitor to completely close the app, and restart it. Please rescan the QR code after.</li></ol><br/><b>Does the screen stay red?</b><br/>Ask the visitor to contact the CoronaCheck help desk.<br/><br/><b>Please note:</b> without a screen with check mark, the visitor cannot be given access.]]></string>
   <string name="verifier_risksetting_changeselection_title">Change scan setting</string>
+  <string name="verifier_scannextinstruction_subtitle">Bewijs 1 uit 2 gescand</string>
+  <string name="verifier_scannextinstruction_title_test">Scan nu het testbewijs</string>
+  <string name="verifier_scannextinstruction_header_test">Het gescande bewijs niet voldoende. Zonder testbewijs mag je de bezoeker geen toegang geven.</string>
+  <string name="verifier_scannextinstruction_button_scan_next_test">Scan testbewijs</string>
+  <string name="verifier_scannextinstruction_button_deny_access_test">Geen testbewijs</string>
+  <string name="verifier_scannextinstruction_title_supplemental">Scan nu een vaccinatie- of herstelbewijs</string>
+  <string name="verifier_scannextinstruction_header_supplemental">Het gescande bewijs niet voldoende. Zonder een vaccinatie- of herstelbewijs mag je de bezoeker geen toegang geven.</string>
+  <string name="verifier_scannextinstruction_button_scan_next_supplemental">Scan aanvullend bewijs</string>
+  <string name="verifier_scannextinstruction_button_deny_access_supplemental">Geen aanvullend bewijs</string>
   <string name="scan_log_list_2g_plus">2G+</string>
+  <string name="verifier_result_access_title_2g_plus">2G+ check done</string>
+  <string name="verifier_risksetting_2g_plus_subtitle">You can only give access to visitors with a vaccination or recovery certificate and a test certificate.</string>
+  <string name="verifier_start_scan_qr_policy_indication_2g_plus">Set to <b>2G+</b> access</string>
+  <string name="verifier_scanner_policy_indication_2g_plus">2G+ access</string>
+  <string name="verifier_risksetting_changeselection_2g_plus">Set to 2G+ access</string>
+  <string name="verifier_result_denied_personal_data_mismatch_title">De QR-codes hebben niet dezelfde persoonsgegevens</string>
+  <string name="verifier_risksetting_2g_plus_title">2G+ access</string>
   <string name="verifier_scanner_honeywell_footer">Prefer the barcode scanner?\nUse the scan buttons on your device.</string>
-  <string name="general_navigationbar_menu_button_label">Menu </string>
 </resources>
