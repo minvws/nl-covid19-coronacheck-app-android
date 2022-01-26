@@ -224,7 +224,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
-                    inflateMenu(R.menu.overview_toolbar)
+                    inflateMenu(R.menu.menu_toolbar)
                     menu.findItem(R.id.action_menu).actionView?.setOnClickListener {
                         menuUtil.showMenu(this@MyOverviewTabsFragment)
                     }

@@ -49,6 +49,8 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.*
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.MenuUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.MenuUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtilImpl
 import nl.rijksoverheid.ctr.verifier.usecase.BuildConfigUseCaseImpl
@@ -98,6 +100,7 @@ fun verifierModule() = module {
     factory<ScanLogListAdapterItemUtil> { ScanLogListAdapterItemUtilImpl() }
     factory<ScanLogFirstInstallTimeAdapterItemUtil> { ScanLogFirstInstallTimeAdapterItemUtilImpl(Clock.systemUTC()) }
     factory<ScanInstructionsButtonUtil> { ScanInstructionsButtonUtilImpl(get()) }
+    factory<MenuUtil> { MenuUtilImpl(get(), get(), get()) }
 
     // ViewModels
     viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get()) }
