@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
@@ -8,6 +9,8 @@ import java.time.Clock
 import java.time.OffsetDateTime
 
 interface GreenCardUtil {
+    suspend fun getAllGreenCards(): List<GreenCard>
+
     fun hasOrigin(greenCards: List<GreenCard>, originType: OriginType): Boolean
 
     fun isExpired(greenCard: GreenCard): Boolean
@@ -29,6 +32,7 @@ interface GreenCardUtil {
 }
 
 class GreenCardUtilImpl(
+    private val holderDatabase: HolderDatabase,
     private val clock: Clock,
     private val credentialUtil: CredentialUtil): GreenCardUtil {
 
@@ -45,6 +49,13 @@ class GreenCardUtilImpl(
             is GreenCardType.Domestic -> ErrorCorrectionLevel.M
             is GreenCardType.Eu -> ErrorCorrectionLevel.Q
         }
+    }
+
+    override suspend fun getAllGreenCards(): List<GreenCard> {
+        return holderDatabase
+            .greenCardDao()
+            .getAll()
+            .filter { it.origins.isNotEmpty() }
     }
 
     override fun hasOrigin(greenCards: List<GreenCard>, originType: OriginType): Boolean {
