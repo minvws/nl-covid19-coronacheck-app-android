@@ -156,14 +156,14 @@
   <string name="verifier_risksetting_readmore">Which kind of access can I give?</string>
   <string name="verifier_risksetting_readmore_url">https://www.government.nl/whichaccess-cc</string>
   <string name="verifier_risksetting_firsttimeuse_title">Choose your scan setting</string>
-  <string name="verifier_risksetting_firsttimeuse_header">For your location, please specify if you\'re going to give 2G or 3G access. Check which kind of access you can give before you start scanning.</string>
-  <string name="new_in_app_risksetting_title">2G or 3G access</string>
-  <string name="new_in_app_risksetting_subtitle">Only visitors with a vaccination or recovery certificate get 2G access. 3G access is given to visitors carrying a test certificate. Check in advance which kind of access your location can give.</string>
+  <string name="verifier_risksetting_firsttimeuse_header">For your location, please specify if you\'re going to give 1G or 3G access. Check which kind of access you can give before you start scanning.</string>
+  <string name="new_in_app_risksetting_title">1G or 3G access</string>
+  <string name="new_in_app_risksetting_subtitle">Only visitors with a test certificate get 1G access. 3G access is given to visitors carrying a test certificate, vaccination certificate or recovery certificate. Check in advance which kind of access your location can give.</string>
   <string name="verification_policy_selection_error_message">Choose a setting to continue</string>
   <string name="scan_log_message"><![CDATA[The scan setting log keeps track of the type of access used during scanning. A civil enforcement officer may request access to this log.<br/><br/>For privacy reasons, only scan settings used in the last %d minutes are saved on this phone. No personal information is saved. You can read more about this in the <a href=\"https://coronacheck.nl/nl/faq-scanner-in-app\">frequently asked questions</a>.]]></string>
   <string name="verifier_start_scan_qr_policy_indication"><![CDATA[Set to <b>%s</b> access]]></string>
   <string name="verifier_risksetting_start_title">Scan setting</string>
-  <string name="verifier_risksetting_start_header">For your location, please specify if you\'re going to give 2G or 3G access. Check which kind of access you can give before you start scanning.</string>
+  <string name="verifier_risksetting_start_header">For your location, please specify if you\'re going to give 1G or 3G access. Check which kind of access you can give before you start scanning.</string>
   <string name="verifier_risksetting_setting_button">Set setting</string>
   <string name="verifier_risksetting_start_readmore">Which kind of access can I give?</string>
   <string name="verifier_risksetting_start_readmore_url">https://coronacheck.nl/en/faq-scanner-in-app</string>
