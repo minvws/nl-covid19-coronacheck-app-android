@@ -499,23 +499,7 @@
   <string name="config_warning_card_button">Read more</string>
   <string name="config_warning_page_title">Please connect to the internet</string>
   <string name="config_warning_page_message"><![CDATA[Every now and then, the CoronaCheck app needs an internet connection to keep working. Without internet, your app will keep working until %1s. Open the app once you have an internet connection. It will automatically work again.<br/><br/>Please connect regularly to prevent any problems.]]></string>
-  <string name="extend_domestic_recovery_green_card_info_card_text">You can extend your Dutch recovery certificate</string>
-  <string name="recover_domestic_recovery_green_card_info_card_text">You can restore your expired Dutch recovery certificate</string>
-  <string name="extended_domestic_recovery_green_card_info_card_text">Your Dutch recovery certificate has been extended</string>
-  <string name="recovered_domestic_recovery_green_card_info_card_text">Your Dutch recovery certificate has been restored</string>
-  <string name="extend_domestic_recovery_green_card_title">Extend recovery certificate</string>
-  <string name="extend_domestic_recovery_green_card_description"><![CDATA[We will extend everyone\'s recovery certificates soon. As a result, your certificate will be valid for one year after the moment of positive testing.<br/><br/>You can also extend your certificate right now if you want to.]]></string>
-  <string name="extend_domestic_recovery_green_card_button">Extend certificate</string>
-  <string name="recover_domestic_recovery_green_card_title">Restore recovery certificate</string>
-  <string name="recover_domestic_recovery_green_card_description"><![CDATA[We will restore your expired recovery certificate soon, because the validity of Dutch recovery certificates will be extended. As a result, your certificate will be valid for one year after the moment of positive testing.<br/><br/>You can also restore your certificate right now if you want to.]]></string>
-  <string name="recovery_domestic_recovery_green_card_button">Extend certificate</string>
-  <string name="extended_domestic_recovery_green_card_bottomsheet_title">Extended recovery certificate</string>
-  <string name="extended_domestic_recovery_green_card_bottomsheet_description">The validity of Dutch recovery certificates has been extended. As a result, your certificate is now valid for one year after the moment of positive testing.</string>
-  <string name="recovered_domestic_recovery_green_card_bottomsheet_title">Restored recovery certificate</string>
-  <string name="recovered_domestic_recovery_green_card_bottomsheet_description">We have restored your expired certificate, because the validity of Dutch recovery certificates has been extended. From now on, a certificate is valid for one year after the moment of positive testing.</string>
   <string name="my_overview_info_card_button_read_more">Read more</string>
-  <string name="extend_domestic_recovery_green_card_toolbar_title">Extend certificate</string>
-  <string name="recover_domestic_recovery_green_card_toolbar_title">Restore certificate</string>
   <string name="dialog_no_browser_title">Couldn’t find browser</string>
   <string name="dialog_no_browser_message">No internet browser was found on this phone to open %1s. Download a browser to open the link.</string>
   <string name="about_this_app_clear_data_title">Clear all data?</string>
@@ -664,4 +648,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
     <item quantity="one">minute</item>
     <item quantity="other">minutes</item>
   </plurals>
+  <string name="holder_dashboard_addCard_title">Nieuwe vaccinatie of test toevoegen</string>
+  <string name="general_navigationbar_menu_button_label">Menu</string>
+  <string name="holder_menu_listItem_addVaccinationOrTest_title">Vaccinatie of test toevoegen</string>
 </resources>

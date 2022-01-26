@@ -19,7 +19,7 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:padding="24dp"
-        android:text="Nieuwe vaccinatie of test toevoegen"
+        android:text="@string/holder_dashboard_addCard_title"
         app:drawableTopCompat="@drawable/ic_plus" />
 
 </androidx.cardview.widget.CardView>
