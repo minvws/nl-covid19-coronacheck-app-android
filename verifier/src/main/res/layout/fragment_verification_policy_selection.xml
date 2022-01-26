@@ -81,8 +81,7 @@
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    android:clickable="false"
-                    android:text="@string/verifier_risksetting_lowrisk_title" />
+                    android:clickable="false" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/subtitle_3g"
@@ -123,8 +122,7 @@
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    android:clickable="false"
-                    android:text="@string/verifier_scanner_policy_indication_2g_plus" />
+                    android:clickable="false" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/subtitle_1G"

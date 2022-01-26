@@ -40,7 +40,6 @@ class ScannerViewModelImpl(
         }
     }
 
-    // TODO use previousScanResult in task 3069
     override fun validate(qrContent: String, returnUri: String?, previousScanResult: VerificationResult?) {
         loadingLiveData.value = Event(true)
         viewModelScope.launch {

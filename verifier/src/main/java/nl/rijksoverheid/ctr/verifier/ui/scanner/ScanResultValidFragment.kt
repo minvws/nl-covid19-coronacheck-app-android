@@ -86,16 +86,8 @@ class ScanResultValidFragment : Fragment() {
                 binding.title.text = getString(R.string.scan_result_demo_title)
             }
             is ScanResultValidData.Valid -> {
-                val text = if (featureFlagUseCase.isVerificationPolicyEnabled()) {
-                    //TODO fix copy for 1G
-                    when (verificationPolicy) {
-                        is VerificationPolicy.VerificationPolicy1G -> {
-                            getString(R.string.verifier_result_access_title_highrisk)
-                        }
-                        is VerificationPolicy.VerificationPolicy3G -> {
-                            getString(R.string.verifier_result_access_title_lowrisk)
-                        }
-                    }
+                val text = if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
+                    getString(R.string.verifier_result_access_title_policy, verificationPolicy.configValue)
                 } else {
                     getString(R.string.verifier_result_access_title)
                 }

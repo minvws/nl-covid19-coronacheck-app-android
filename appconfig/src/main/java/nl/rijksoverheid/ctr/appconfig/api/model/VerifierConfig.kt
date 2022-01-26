@@ -65,7 +65,7 @@ class VerifierConfig(
             scanLockSeconds: Int = 300,
             scanLogStorageSeconds: Int = 3600,
             verifierEnableVerificationPolicyVersion: Int = 0,
-            policiesEnabled: List<String> = listOf("3G"),
+            policiesEnabled: List<String> = listOf("3G", "1G"),
         ) = VerifierConfig(
             verifierMinimumVersion = verifierMinimumVersion,
             verifierMinimumVersionMessage = verifierMinimumVersionMessage,

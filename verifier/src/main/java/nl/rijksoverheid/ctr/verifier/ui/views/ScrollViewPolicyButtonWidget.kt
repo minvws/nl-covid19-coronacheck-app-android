@@ -97,13 +97,8 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
                 }
             )
         )
-        //TODO fix copy for 1G
-        binding.policyIndicatorText.setText(
-            when (policy) {
-                VerificationPolicy.VerificationPolicy1G -> R.string.verifier_start_scan_qr_policy_indication_2g
-                VerificationPolicy.VerificationPolicy3G -> R.string.verifier_start_scan_qr_policy_indication_3g
-            }
-        )
+        binding.policyIndicatorText.text =
+            context.getString(R.string.verifier_start_scan_qr_policy_indication, policy.configValue)
     }
 
     fun lock() {
