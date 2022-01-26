@@ -665,4 +665,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
     <item quantity="one">minuut</item>
     <item quantity="other">minuten</item>
   </plurals>
+  <string name="holder_dashboard_addCard_title">Nieuwe vaccinatie of test toevoegen</string>
+  <string name="general_navigationbar_menu_button_label">Menu</string>
+  <string name="holder_menu_listItem_addVaccinationOrTest_title">Vaccinatie of test toevoegen</string>
 </resources>

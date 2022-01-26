@@ -39,13 +39,7 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
     private val dialogUtil: DialogUtil by inject()
 
     companion object {
-        private const val EXTRA_ABOUT_THIS_APP_DATA = "EXTRA_ABOUT_THIS_APP_DATA"
-
-        fun getBundle(data: AboutThisAppData): Bundle {
-            val bundle = Bundle()
-            bundle.putParcelable(EXTRA_ABOUT_THIS_APP_DATA, data)
-            return bundle
-        }
+        private const val EXTRA_ABOUT_THIS_APP_DATA = "data"
     }
 
     @SuppressLint("StringFormatInvalid")

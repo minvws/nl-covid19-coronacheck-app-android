@@ -43,4 +43,6 @@ dependencies {
     implementation "com.google.android.material:material:${material_version}"
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "com.github.lisawray.groupie:groupie:${groupie_version}"
+    implementation "com.github.lisawray.groupie:groupie-viewbinding:${groupie_version}"
 }
