@@ -13,5 +13,5 @@
         android:id="@+id/action_menu"
         android:title=""
         app:showAsAction="always"
-        app:actionLayout="@layout/toolbar_dashboard_menu" />
+        app:actionLayout="@layout/item_toolbar_menu" />
 </menu>
