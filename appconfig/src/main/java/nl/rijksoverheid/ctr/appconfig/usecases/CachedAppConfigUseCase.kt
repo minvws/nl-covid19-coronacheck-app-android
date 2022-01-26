@@ -58,7 +58,7 @@ class CachedAppConfigUseCaseImpl constructor(
                 appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
                     ?.toObject(moshi) as? HolderConfig
             }
-            return defaultConfig
+            return config ?: defaultConfig
         } catch (exc: Exception) {
             defaultConfig
         }
