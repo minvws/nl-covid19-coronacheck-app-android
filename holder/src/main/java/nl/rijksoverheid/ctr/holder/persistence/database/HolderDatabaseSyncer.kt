@@ -83,25 +83,7 @@ class HolderDatabaseSyncerImpl(
                                     events = events,
                                     remoteGreenCards = remoteGreenCards
                                 )
-
-                            // If the recover domestic recovery info card has been shown, never show it again after a successful sync
-                            // Start showing the info card that says you have recovered
-                            if (persistenceManager.getShowRecoverDomesticRecoveryInfoCard()) {
-                                persistenceManager.setShowRecoverDomesticRecoveryInfoCard(false)
-                                persistenceManager.setHasDismissedRecoveredDomesticRecoveryInfoCard(
-                                    false
-                                )
-                            }
-
-                            // If the extend domestic recovery info card has been shown, never show it again after a successful sync
-                            // Start showing the info card that says you have extended
-                            if (persistenceManager.getShowExtendDomesticRecoveryInfoCard()) {
-                                persistenceManager.setShowExtendDomesticRecoveryInfoCard(false)
-                                persistenceManager.setHasDismissedExtendedDomesticRecoveryInfoCard(
-                                    false
-                                )
-                            }
-
+                            
                             // If we expect the remote green cards to have a certain origin
                             // We ignore the vaccination assessment origin here because you can
                             // fetch send a vaccination assessment event origin but not get a

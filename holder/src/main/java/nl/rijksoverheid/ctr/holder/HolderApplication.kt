@@ -1,7 +1,5 @@
 package nl.rijksoverheid.ctr.holder
 
-import android.util.Log
-import androidx.work.Configuration
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
@@ -12,7 +10,6 @@ import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewRecoveryValidityUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewValidityInfoCardUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
@@ -40,7 +37,6 @@ open class HolderApplication : SharedApplication() {
     private val testResultsMigrationManager: TestResultsMigrationManager by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
-    private val checkNewRecoveryValidityUseCase: CheckNewRecoveryValidityUseCase by inject()
     private val checkNewValidityInfoCardUseCase: CheckNewValidityInfoCardUseCase by inject()
 
     private val holderModules = listOf(
@@ -99,9 +95,6 @@ open class HolderApplication : SharedApplication() {
             }
 
             testResultsMigrationManager.removeOldCredential()
-
-            // check to prevent showing extension option for paper recovery certificates
-            checkNewRecoveryValidityUseCase.checkIfNeedToReAllowRecoveryExtensionCheck()
 
             // check if we need to show the new validity info card use case
             checkNewValidityInfoCardUseCase.check()

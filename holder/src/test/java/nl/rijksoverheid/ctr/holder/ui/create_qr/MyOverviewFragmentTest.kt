@@ -136,7 +136,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.ExtendDomesticRecovery
+                    DashboardItem.InfoItem.ConfigFreshnessWarning(0L)
                 )
             )
         )
@@ -159,7 +159,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.ExtendedDomesticRecovery
+                    DashboardItem.InfoItem.NewValidityItem
                 )
             )
         )
