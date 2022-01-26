@@ -69,8 +69,8 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
                 binding.bottom.setSecondaryButtonClick {
                     infoFragmentUtil.presentAsBottomSheet(childFragmentManager,
                         InfoFragmentData.TitleDescription(
-                            title = getString(R.string.scan_result_invalid_reason_title),//TODO select correct copy in the copies task (3289)
-                            descriptionData = DescriptionData(if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) R.string.scan_result_invalid_reason_description_2G else R.string.scan_result_invalid_reason_description),
+                            title = getString(R.string.scan_result_invalid_reason_title),
+                            descriptionData = DescriptionData(R.string.scan_result_invalid_reason_description),
                         )
                     )
                 }
