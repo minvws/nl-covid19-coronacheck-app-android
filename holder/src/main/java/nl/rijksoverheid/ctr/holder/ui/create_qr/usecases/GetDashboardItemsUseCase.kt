@@ -166,9 +166,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
-            dashboardItems.add(DashboardItem.AddQrButtonItem)
-        }
+        addAddQr(hasEmptyState, dashboardItems)
 
         return dashboardItems
     }
@@ -269,11 +267,20 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
-            dashboardItems.add(DashboardItem.AddQrButtonItem)
-        }
+        addAddQr(hasEmptyState, dashboardItems)
 
         return dashboardItems
+    }
+
+    private fun addAddQr(
+        hasEmptyState: Boolean,
+        dashboardItems: MutableList<DashboardItem>
+    ) {
+        if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
+            dashboardItems.add(DashboardItem.AddQrButtonItem)
+        } else {
+            dashboardItems.add(DashboardItem.AddQrCardItem)
+        }
     }
 
     private suspend fun getGreenCardItems(
