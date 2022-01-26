@@ -88,22 +88,6 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
         }
 
-        if (dashboardItemUtil.shouldShowExtendDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.ExtendDomesticRecovery)
-        }
-
-        if (dashboardItemUtil.shouldShowRecoverDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.RecoverDomesticRecovery)
-        }
-
-        if (dashboardItemUtil.shouldShowRecoveredDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.RecoveredDomesticRecovery)
-        }
-
-        if (dashboardItemUtil.shouldShowExtendedDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.ExtendedDomesticRecovery)
-        }
-
         if (dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
                 events = allEventGroupEntities,
                 domesticGreenCards = domesticGreenCards

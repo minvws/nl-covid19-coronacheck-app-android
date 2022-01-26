@@ -30,10 +30,6 @@ interface DashboardItemUtil {
      */
     fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem>
 
-    fun shouldShowExtendDomesticRecoveryItem(): Boolean
-    fun shouldShowRecoverDomesticRecoveryItem(): Boolean
-    fun shouldShowExtendedDomesticRecoveryItem(): Boolean
-    fun shouldShowRecoveredDomesticRecoveryItem(): Boolean
     fun shouldShowConfigFreshnessWarning(): Boolean
     fun getConfigFreshnessMaxValidity(): Long
     fun shouldShowMissingDutchVaccinationItem(
@@ -129,22 +125,6 @@ class DashboardItemUtilImpl(
                         }.flatten()
                 }
             }.flatten()
-    }
-
-    override fun shouldShowExtendDomesticRecoveryItem(): Boolean {
-        return persistenceManager.getShowExtendDomesticRecoveryInfoCard()
-    }
-
-    override fun shouldShowRecoverDomesticRecoveryItem(): Boolean {
-        return persistenceManager.getShowRecoverDomesticRecoveryInfoCard()
-    }
-
-    override fun shouldShowExtendedDomesticRecoveryItem(): Boolean {
-        return !persistenceManager.getHasDismissedExtendedDomesticRecoveryInfoCard()
-    }
-
-    override fun shouldShowRecoveredDomesticRecoveryItem(): Boolean {
-        return !persistenceManager.getHasDismissedRecoveredDomesticRecoveryInfoCard()
     }
 
     override fun shouldShowConfigFreshnessWarning(): Boolean {
