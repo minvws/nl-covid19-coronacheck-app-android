@@ -3,21 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
     android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="16dp"
     app:cardCornerRadius="15dp"
     app:cardElevation="2dp">
 
     <TextView
         android:id="@+id/text"
+        style="?attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:foreground="?android:selectableItemBackground"
+        android:drawablePadding="16dp"
         android:focusable="true"
         android:gravity="center"
-        android:padding="24dp"
         android:includeFontPadding="false"
-        android:background="?android:selectableItemBackground"
+        android:padding="24dp"
         android:text="Nieuwe vaccinatie of test toevoegen"
-        style="?attr/borderlessButtonStyle"/>
+        app:drawableTopCompat="@drawable/ic_plus" />
 
 </androidx.cardview.widget.CardView>

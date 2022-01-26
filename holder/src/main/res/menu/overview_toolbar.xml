@@ -11,7 +11,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_qr_type"
-        android:icon="@drawable/ic_add"
+        android:icon="@drawable/ic_plus"
         android:title=""
         app:contentDescription="@string/my_overview_add_qr_button"
         app:showAsAction="always" />
