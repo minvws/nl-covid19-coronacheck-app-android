@@ -10,43 +10,21 @@ package nl.rijksoverheid.ctr.holder
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
-import nl.rijksoverheid.ctr.design.BaseMainFragment
-import nl.rijksoverheid.ctr.design.ext.styleTitle
-import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
-import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragment
-import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
-import org.koin.android.ext.android.inject
 
-class HolderMainFragment : BaseMainFragment(
-    R.layout.fragment_main, setOf(
-        R.id.nav_my_overview_tabs,
-        R.id.nav_about_this_app,
-        R.id.nav_paper_proof_explanation,
-        R.id.nav_visitor_pass,
-    )
-) {
+class HolderMainFragment : Fragment(R.layout.fragment_main) {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private var _navController: NavController? = null
     private val navController get() = _navController!!
-    private val cachedAppConfigUseCase: nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase by inject()
-    private val holderCachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-    private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
-    private val intentUtil: IntentUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,12 +35,6 @@ class HolderMainFragment : BaseMainFragment(
             childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         _navController = navHostFragment.navController
 
-        binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        val appBarConfiguration = AppBarConfiguration(
-            topLevelDestinations,
-            binding.drawerLayout
-        )
-
         val defaultToolbarElevation = resources.getDimension(R.dimen.toolbar_elevation)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.toolbar.elevation = if (destination.id == R.id.nav_my_overview_tabs) {
@@ -71,8 +43,7 @@ class HolderMainFragment : BaseMainFragment(
                 defaultToolbarElevation
             }
         }
-        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
+        binding.toolbar.setupWithNavController(navController)
 
         binding.toolbar.setNavigationOnClickListener {
             when (navController.currentDestination?.id) {
@@ -83,87 +54,8 @@ class HolderMainFragment : BaseMainFragment(
                 }
             }
 
-            NavigationUI.navigateUp(navController, appBarConfiguration)
+            NavigationUI.navigateUp(navController, null)
         }
-
-        binding.toolbar.setOnMenuItemClickListener {
-            NavigationUI.onNavDestinationSelected(it, navController)
-        }
-
-        binding.navView.setNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_frequently_asked_questions -> {
-                    intentUtil.openUrl(
-                        context = requireContext(),
-                        url = getString(R.string.url_faq)
-                    )
-                }
-                R.id.nav_about_this_app -> {
-                    navController.navigate(
-                        R.id.nav_about_this_app, AboutThisAppFragment.getBundle(
-                            data = AboutThisAppData(
-                                versionName = BuildConfig.VERSION_NAME,
-                                versionCode = BuildConfig.VERSION_CODE.toString(),
-                                sections = listOf(
-                                    AboutThisAppData.AboutThisAppSection(
-                                        header = R.string.about_this_app_read_more,
-                                        items = mutableListOf(
-                                            AboutThisAppData.Url(
-                                                text = getString(R.string.privacy_statement),
-                                                url = getString(R.string.url_privacy_statement),
-                                            ),
-                                            AboutThisAppData.Url(
-                                                text = getString(R.string.about_this_app_accessibility),
-                                                url = getString(R.string.url_accessibility),
-                                            ),
-                                            AboutThisAppData.Url(
-                                                text = getString(R.string.about_this_app_colofon),
-                                                url = getString(R.string.about_this_app_colofon_url),
-                                            ),
-                                            AboutThisAppData.ClearAppData(
-                                                text = getString(R.string.about_this_clear_data)
-                                            )
-                                        )
-                                    )
-                                ),
-                                configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
-                                configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
-                            )
-                        )
-                    )
-                }
-                else -> {
-                    NavigationUI.onNavDestinationSelected(item, navController)
-                }
-            }
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            true
-        }
-
-        navigationDrawerStyling()
-
-        // Close Navigation Drawer when pressing back if it's open
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
-            OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    binding.drawerLayout.close()
-                    return
-                } else {
-                    requireActivity().finishAndRemoveTask()
-                }
-            }
-        })
-
-        // Show visitor pass menu item if feature is enabled
-        if (holderCachedAppConfigUseCase.getCachedAppConfig().visitorPassEnabled) {
-            binding.navView.menu.findItem(R.id.nav_visitor_pass).isVisible = true
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     fun presentLoading(loading: Boolean) {
@@ -181,39 +73,14 @@ class HolderMainFragment : BaseMainFragment(
         return binding.toolbar
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     fun resetMenuItemListener() {
         binding.toolbar.setOnMenuItemClickListener {
             NavigationUI.onNavDestinationSelected(it, navController)
         }
-    }
-
-    private fun navigationDrawerStyling() {
-        val context = binding.navView.context
-        binding.navView.menu.findItem(R.id.nav_graph_overview)
-            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
-        binding.navView.menu.findItem(R.id.nav_settings)
-            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
-        binding.navView.menu.findItem(R.id.nav_qr_code_type)
-            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
-        binding.navView.menu.findItem(R.id.nav_frequently_asked_questions)
-            .styleTitle(context, R.attr.textAppearanceHeadline4, heading = true)
-        binding.navView.menu.findItem(R.id.nav_about_this_app)
-            .styleTitle(context, R.attr.textAppearanceHeadline3)
-        binding.navView.menu.findItem(R.id.nav_terms_of_use)
-            .styleTitle(context, R.attr.textAppearanceHeadline3)
-        binding.navView.menu.findItem(R.id.nav_paper_proof)
-            .styleTitle(context, R.attr.textAppearanceHeadline3)
-        binding.navView.menu.findItem(R.id.nav_visitor_pass)
-            .styleTitle(context, R.attr.textAppearanceHeadline3)
-
-        // resize drawer according to design
-        val width = activity?.resources?.displayMetrics?.widthPixels ?: return
-        val layoutParams = binding.navView.layoutParams as DrawerLayout.LayoutParams
-        layoutParams.width = (drawerWidthFactor * width).toInt()
-        binding.navView.layoutParams = layoutParams
-    }
-
-    companion object {
-        const val drawerWidthFactor = 0.85f
     }
 }

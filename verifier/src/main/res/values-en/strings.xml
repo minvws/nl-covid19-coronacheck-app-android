@@ -214,4 +214,6 @@
   <string name="verifier_risksetting_changeselection_2g_plus">Set to 2G+ access</string>
   <string name="verifier_result_denied_personal_data_mismatch_title">De QR-codes hebben niet dezelfde persoonsgegevens</string>
   <string name="verifier_risksetting_2g_plus_title">2G+ access</string>
+  <string name="verifier_scanner_honeywell_footer">Prefer the barcode scanner?\nUse the scan buttons on your device.</string>
+  <string name="general_navigationbar_menu_button_label">Menu</string>
 </resources>

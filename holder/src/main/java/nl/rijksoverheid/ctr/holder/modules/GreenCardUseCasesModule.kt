@@ -15,9 +15,6 @@ val greenCardUseCasesModule = module {
     factory<CheckNewValidityInfoCardUseCase> {
         CheckNewValidityInfoCardUseCaseImpl(get(), get(), get())
     }
-    factory<CheckNewRecoveryValidityUseCase> {
-        CheckNewRecoveryValidityUseCaseImpl(get(), get(), get(), get(), get(), get())
-    }
     factory<GetRemoteGreenCardsUseCase> {
         GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }

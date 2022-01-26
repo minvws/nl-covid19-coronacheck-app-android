@@ -14,6 +14,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -24,6 +26,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MenuUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -48,6 +51,9 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     private val persistenceManager: PersistenceManager by inject()
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
     private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
+    private val menuUtil: MenuUtil by inject()
 
     private val refreshHandler = Handler(Looper.getMainLooper())
     private val refreshRunnable = Runnable {
@@ -212,10 +218,13 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         super.onResume()
         refresh()
 
-        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+        getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
-                    inflateMenu(R.menu.overview_toolbar)
+                    inflateMenu(R.menu.menu_toolbar)
+                    menu.findItem(R.id.action_menu).actionView?.setOnClickListener {
+                        menuUtil.showMenu(this@MyOverviewTabsFragment)
+                    }
                 }
             }
         }
@@ -225,4 +234,6 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun getToolbar() = (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar()
 }
