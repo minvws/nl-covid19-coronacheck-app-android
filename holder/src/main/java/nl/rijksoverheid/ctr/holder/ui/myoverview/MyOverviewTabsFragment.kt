@@ -33,6 +33,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MenuUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -61,6 +62,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
+    private val menuUtil: MenuUtil by inject()
 
     private val refreshHandler = Handler(Looper.getMainLooper())
     private val refreshRunnable = Runnable {
@@ -96,7 +98,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     }
 
     private fun observeItems(adapter: DashboardPagerAdapter) {
-        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, { dashboardTabItems ->
+        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner) { dashboardTabItems ->
 
             // Add pager items only once
             if (adapter.itemCount == 0) {
@@ -108,10 +110,14 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                 )
 
                 // Default select the item that we had selected last
-                binding.viewPager.setCurrentItem(persistenceManager.getSelectedDashboardTab(), false)
+                binding.viewPager.setCurrentItem(
+                    persistenceManager.getSelectedDashboardTab(),
+                    false
+                )
 
                 // Register listener so that last selected item is saved
-                binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+                binding.viewPager.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
                         persistenceManager.setSelectedDashboardTab(position)
@@ -120,7 +126,8 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
             }
 
             // This button needs to be shown in this view instead of MyOverviewFragment (which is a single item in the viewpager)
-            val showAddQrButton = dashboardTabItems.first().items.any { it is DashboardItem.AddQrButtonItem && it.show }
+            val showAddQrButton =
+                dashboardTabItems.first().items.any { it is DashboardItem.AddQrButtonItem && it.show }
             binding.addQrButton.visibility = if (showAddQrButton) VISIBLE else GONE
             if (showAddQrButton) {
                 binding.addQrButton.setOnClickListener {
@@ -129,7 +136,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                     )
                 }
             }
-        })
+        }
     }
 
     private fun observeSyncErrors() {
@@ -169,9 +176,9 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     }
 
     private fun observeAppConfig() {
-        appConfigViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
+        appConfigViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
             dashboardViewModel.refresh()
-        })
+        }
     }
 
     private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync) {
@@ -226,108 +233,10 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
                     inflateMenu(R.menu.overview_toolbar)
-                    setupMenu()
+                    menu.findItem(R.id.action_menu).actionView?.setOnClickListener {
+                        menuUtil.showMenu(this@MyOverviewTabsFragment)
+                    }
                 }
-            }
-        }
-    }
-
-    private fun setupMenu() {
-        getToolbar()?.let {
-            it.menu.findItem(R.id.action_menu).actionView?.setOnClickListener {
-                val aboutThisAppData = AboutThisAppData(
-                    versionName = BuildConfig.VERSION_NAME,
-                    versionCode = BuildConfig.VERSION_CODE.toString(),
-                    sections = listOf(
-                        AboutThisAppData.AboutThisAppSection(
-                            header = R.string.about_this_app_read_more,
-                            items = mutableListOf(
-                                AboutThisAppData.Url(
-                                    text = getString(R.string.privacy_statement),
-                                    url = getString(R.string.url_privacy_statement),
-                                ),
-                                AboutThisAppData.Url(
-                                    text = getString(R.string.about_this_app_accessibility),
-                                    url = getString(R.string.url_accessibility),
-                                ),
-                                AboutThisAppData.Url(
-                                    text = getString(R.string.about_this_app_colofon),
-                                    url = getString(R.string.about_this_app_colofon_url),
-                                ),
-                                AboutThisAppData.ClearAppData(
-                                    text = getString(R.string.about_this_clear_data)
-                                )
-                            )
-                        )
-                    ),
-                    configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
-                    configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
-                )
-
-                val actionQrCodeType = MenuFragmentDirections.actionQrCodeType()
-                val actionPaperProof = MenuFragmentDirections.actionPaperProof()
-                val actionVisitorPass = MenuFragmentDirections.actionVisitorPass()
-                val actionAboutThisApp = MenuFragmentDirections.actionAboutThisApp(
-                    data = aboutThisAppData
-                )
-
-                findNavControllerSafety()?.navigate(
-                    MyOverviewTabsFragmentDirections.actionMenu(
-                        menuSections = listOf(
-                            MenuSection(
-                                menuItems = listOf(
-                                    MenuSection.MenuItem(
-                                        icon = R.drawable.ic_menu_add,
-                                        title = R.string.holder_menu_listItem_addVaccinationOrTest_title,
-                                        onClick = MenuSection.MenuItem.OnClick.Navigate(
-                                            navigationActionId = actionQrCodeType.actionId,
-                                            navigationArguments = actionQrCodeType.arguments
-                                        )
-                                    )
-                                )
-                            ),
-                            MenuSection(
-                                menuItems = listOf(
-                                    MenuSection.MenuItem(
-                                        icon = R.drawable.ic_menu_paper,
-                                        title = R.string.add_paper_proof,
-                                        onClick = MenuSection.MenuItem.OnClick.Navigate(
-                                            navigationActionId = actionPaperProof.actionId,
-                                            navigationArguments = actionPaperProof.arguments
-                                        )
-                                    ),
-                                    MenuSection.MenuItem(
-                                        icon = R.drawable.ic_menu_briefcase,
-                                        title = R.string.holder_menu_visitorpass,
-                                        onClick = MenuSection.MenuItem.OnClick.Navigate(
-                                            navigationActionId = actionVisitorPass.actionId,
-                                            navigationArguments = actionVisitorPass.arguments
-                                        )
-                                    )
-                                )
-                            ),
-                            MenuSection(
-                                menuItems = listOf(
-                                    MenuSection.MenuItem(
-                                        icon = R.drawable.ic_menu_chatbubble,
-                                        title = R.string.frequently_asked_questions,
-                                        onClick = MenuSection.MenuItem.OnClick.OpenBrowser(
-                                            url = getString(R.string.url_faq)
-                                        )
-                                    ),
-                                    MenuSection.MenuItem(
-                                        icon = R.drawable.ic_menu_info,
-                                        title = R.string.about_this_app,
-                                        onClick = MenuSection.MenuItem.OnClick.Navigate(
-                                            navigationActionId = actionAboutThisApp.actionId,
-                                            navigationArguments = actionAboutThisApp.arguments
-                                        )
-                                    )
-                                )
-                            )
-                        ).toTypedArray()
-                    )
-                )
             }
         }
     }
