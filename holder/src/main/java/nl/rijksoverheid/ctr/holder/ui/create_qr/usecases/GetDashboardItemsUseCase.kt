@@ -140,6 +140,8 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        addAddQr(hasEmptyState, dashboardItems)
+
         if (dashboardItemUtil.shouldShowCoronaMelderItem(
                 domesticGreenCards,
                 databaseSyncerResult
@@ -149,8 +151,6 @@ class GetDashboardItemsUseCaseImpl(
                 DashboardItem.CoronaMelderItem
             )
         }
-
-        addAddQr(hasEmptyState, dashboardItems)
 
         return dashboardItems
     }
@@ -241,6 +241,8 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        addAddQr(hasEmptyState, dashboardItems)
+
         if (dashboardItemUtil.shouldShowCoronaMelderItem(
                 internationalGreenCards,
                 databaseSyncerResult
@@ -250,8 +252,6 @@ class GetDashboardItemsUseCaseImpl(
                 DashboardItem.CoronaMelderItem
             )
         }
-
-        addAddQr(hasEmptyState, dashboardItems)
 
         return dashboardItems
     }
