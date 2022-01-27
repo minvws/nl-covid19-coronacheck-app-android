@@ -98,8 +98,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
 
         assertDisplayed(R.id.indicationContainer)
         assertDisplayed(
-            R.id.policyIndicatorText,
-            "<b>1G</b>-toegang ingesteld"
+            "1G-toegang ingesteld"
         )
     }
 
@@ -111,8 +110,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
 
         assertDisplayed(R.id.indicationContainer)
         assertDisplayed(
-            R.id.policyIndicatorText,
-            "<b>3G</b>-toegang ingesteld"
+            "3G-toegang ingesteld"
         )
     }
 
@@ -134,8 +132,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         )
 
         assertDisplayed(
-            R.id.policyIndicatorText,
-            "<b>1G</b>-toegang ingesteld"
+            "1G-toegang ingesteld"
         )
         assertNotDisplayed(R.id.button)
     }
@@ -147,8 +144,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         )
 
         assertDisplayed(
-            R.id.policyIndicatorText,
-            "<b>3G</b>-toegang ingesteld"
+            "3G-toegang ingesteld"
         )
         assertNotDisplayed(R.id.button)
     }
