@@ -53,7 +53,7 @@ class ScanResultValidFragment : Fragment() {
         val theme = if (args.validData is ScanResultValidData.Demo) {
             R.style.AppTheme_Scanner_Valid_Demo
         } else {
-            if (featureFlagUseCase.isVerificationPolicyEnabled()) {
+            if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
                 when (verificationPolicy) {
                     is VerificationPolicy.VerificationPolicy3G -> {
                         R.style.AppTheme_Scanner_Valid_3G

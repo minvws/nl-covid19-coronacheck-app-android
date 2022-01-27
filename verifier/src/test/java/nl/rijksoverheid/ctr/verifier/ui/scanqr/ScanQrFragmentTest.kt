@@ -91,7 +91,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `given 2g policy is set, 2g policy indication is shown`() {
+    fun `given 1g policy is set, 1g policy indication is shown`() {
         launchScanQrFragment(
             scannerState = ScannerState.Unlocked(VerificationPolicySelectionState.Policy1G)
         )
@@ -99,7 +99,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         assertDisplayed(R.id.indicationContainer)
         assertDisplayed(
             R.id.policyIndicatorText,
-            R.string.verifier_start_scan_qr_policy_indication_2g
+            "<b>1G</b>-toegang ingesteld"
         )
     }
 
@@ -112,7 +112,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         assertDisplayed(R.id.indicationContainer)
         assertDisplayed(
             R.id.policyIndicatorText,
-            R.string.verifier_start_scan_qr_policy_indication_3g
+            "<b>3G</b>-toegang ingesteld"
         )
     }
 
@@ -128,14 +128,14 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `given scanner is locked in 2G, then there is 2G indication but no button`() {
+    fun `given scanner is locked in 1G, then there is 1G indication but no button`() {
         launchScanQrFragment(
             scannerState = ScannerState.Locked(5000L, VerificationPolicySelectionState.Policy1G)
         )
 
         assertDisplayed(
             R.id.policyIndicatorText,
-            R.string.verifier_start_scan_qr_policy_indication_2g
+            "<b>1G</b>-toegang ingesteld"
         )
         assertNotDisplayed(R.id.button)
     }
@@ -148,7 +148,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
 
         assertDisplayed(
             R.id.policyIndicatorText,
-            R.string.verifier_start_scan_qr_policy_indication_3g
+            "<b>3G</b>-toegang ingesteld"
         )
         assertNotDisplayed(R.id.button)
     }
