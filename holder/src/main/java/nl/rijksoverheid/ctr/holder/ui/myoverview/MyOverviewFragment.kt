@@ -140,15 +140,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 is GreenCardType.Eu -> {
                                     getString(R.string.my_overview_test_result_international_title)
                                 }
-                            },
-                            data = QrCodeFragmentData(
+                            }, data = QrCodeFragmentData(
                                 shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
                                 credentials = credentials,
                                 credentialExpirationTimeSeconds = expiration,
                                 type = greenCard.greenCardEntity.type,
                                 originType = greenCard.origins.first().type
-                            ),
-                            returnUri = arguments?.getString(EXTRA_RETURN_URI)
+                            ), returnUri = arguments?.getString(EXTRA_RETURN_URI)
                         )
                     )
                 },

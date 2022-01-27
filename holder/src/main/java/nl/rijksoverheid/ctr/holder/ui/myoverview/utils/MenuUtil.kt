@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
 import android.content.Context
+import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
@@ -44,62 +45,103 @@ class MenuUtilImpl(
             data = getAboutThisAppData(context)
         )
 
-        return listOf(
-            MenuSection(
-                menuItems = listOf(
-                    MenuSection.MenuItem(
-                        icon = R.drawable.ic_menu_add,
-                        title = R.string.holder_menu_listItem_addVaccinationOrTest_title,
-                        onClick = MenuSection.MenuItem.OnClick.Navigate(
-                            navigationActionId = actionQrCodeType.actionId,
-                            navigationArguments = actionQrCodeType.arguments
-                        )
-                    )
-                )
-            ),
-            MenuSection(
-                menuItems = listOf(
-                    MenuSection.MenuItem(
-                        icon = R.drawable.ic_menu_paper,
-                        title = R.string.add_paper_proof,
-                        onClick = MenuSection.MenuItem.OnClick.Navigate(
-                            navigationActionId = actionPaperProof.actionId,
-                            navigationArguments = actionPaperProof.arguments
-                        )
-                    ),
-                    MenuSection.MenuItem(
-                        icon = R.drawable.ic_menu_briefcase,
-                        title = R.string.holder_menu_visitorpass,
-                        onClick = MenuSection.MenuItem.OnClick.Navigate(
-                            navigationActionId = actionVisitorPass.actionId,
-                            navigationArguments = actionVisitorPass.arguments
-                        )
-                    )
-                )
-            ),
-            MenuSection(
-                menuItems = listOf(
-                    MenuSection.MenuItem(
-                        icon = R.drawable.ic_menu_chatbubble,
-                        title = R.string.frequently_asked_questions,
-                        onClick = MenuSection.MenuItem.OnClick.OpenBrowser(
-                            url = context.getString(R.string.url_faq)
-                        )
-                    ),
-                    MenuSection.MenuItem(
-                        icon = R.drawable.ic_menu_info,
-                        title = R.string.about_this_app,
-                        onClick = MenuSection.MenuItem.OnClick.Navigate(
-                            navigationActionId = actionAboutThisApp.actionId,
-                            navigationArguments = actionAboutThisApp.arguments
-                        )
+        val isVisitorPassEnabled = (cachedAppConfigUseCase.getCachedAppConfig() as HolderConfig).visitorPassEnabled
+
+        val menuSections = mutableListOf<MenuSection>()
+
+        val addVaccinationOrTestMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_add,
+            title = R.string.holder_menu_listItem_addVaccinationOrTest_title,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionQrCodeType.actionId,
+                navigationArguments = actionQrCodeType.arguments
+            )
+        )
+
+        val addPaperProofMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_paper,
+            title = R.string.add_paper_proof,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionPaperProof.actionId,
+                navigationArguments = actionPaperProof.arguments
+            )
+        )
+
+        val addVisitorPassMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_briefcase,
+            title = R.string.holder_menu_visitorpass,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionVisitorPass.actionId,
+                navigationArguments = actionVisitorPass.arguments
+            )
+        )
+
+        val faqMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_chatbubble,
+            title = R.string.frequently_asked_questions,
+            onClick = MenuSection.MenuItem.OnClick.OpenBrowser(
+                url = context.getString(R.string.url_faq)
+            )
+        )
+
+        val aboutThisAppMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_info,
+            title = R.string.about_this_app,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionAboutThisApp.actionId,
+                navigationArguments = actionAboutThisApp.arguments
+            )
+        )
+
+        if (isVisitorPassEnabled) {
+            menuSections.add(
+                MenuSection(
+                    menuItems = listOf(
+                        addVaccinationOrTestMenuItem
                     )
                 )
             )
-        ).toTypedArray()
+
+            menuSections.add(
+                MenuSection(
+                    menuItems = listOf(
+                        addPaperProofMenuItem,
+                        addVisitorPassMenuItem
+                    )
+                )
+            )
+
+            menuSections.add(
+                MenuSection(
+                    menuItems = listOf(
+                        faqMenuItem,
+                        aboutThisAppMenuItem
+                    )
+                )
+            )
+        } else {
+            menuSections.add(
+                MenuSection(
+                    menuItems = listOf(
+                        addVaccinationOrTestMenuItem,
+                        addPaperProofMenuItem
+                    )
+                )
+            )
+
+            menuSections.add(
+                MenuSection(
+                    menuItems = listOf(
+                        faqMenuItem,
+                        aboutThisAppMenuItem
+                    )
+                )
+            )
+        }
+        return menuSections.toTypedArray()
     }
 
-    fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(
+    private fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(
         versionName = BuildConfig.VERSION_NAME,
         versionCode = BuildConfig.VERSION_CODE.toString(),
         sections = listOf(
