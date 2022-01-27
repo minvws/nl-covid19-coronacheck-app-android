@@ -51,6 +51,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val scannerStateCountdownUtil: ScannerStateCountdownUtil by inject()
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
     private val scannerStateUseCase: ScannerStateUseCase by inject()
+    private val configVerificationPolicyUseCase: ConfigVerificationPolicyUseCase by inject()
     private val androidUtil: AndroidUtil by inject()
     private val deeplinkManager: DeeplinkManager by inject()
 
@@ -139,17 +140,26 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     }
 
     private fun onStateUpdated(scannerState: ScannerState) {
-        val imageDrawable = when (scannerState.verificationPolicySelectionState) {
+        when (scannerState.verificationPolicySelectionState) {
             VerificationPolicySelectionState.None -> {
                 binding.bottom.hidePolicyIndication()
-                R.drawable.illustration_scanner_get_started_3g
             }
             VerificationPolicySelectionState.Policy1G -> {
                 binding.bottom.setPolicy(VerificationPolicy1G)
-                R.drawable.illustration_scanner_get_started_1g
             }
             VerificationPolicySelectionState.Policy3G -> {
                 binding.bottom.setPolicy(VerificationPolicy3G)
+            }
+        }
+
+        val imageDrawable = when (configVerificationPolicyUseCase.get()) {
+            VerificationPolicySelectionState.None -> {
+                R.drawable.illustration_scanner_get_started_3g
+            }
+            VerificationPolicySelectionState.Policy1G -> {
+                R.drawable.illustration_scanner_get_started_1g
+            }
+            VerificationPolicySelectionState.Policy3G -> {
                 R.drawable.illustration_scanner_get_started_3g
             }
         }
