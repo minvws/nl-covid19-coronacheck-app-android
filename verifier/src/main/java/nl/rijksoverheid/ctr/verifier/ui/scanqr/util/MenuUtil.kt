@@ -45,46 +45,60 @@ class MenuUtilImpl(
             data = getAboutThisAppData(context)
         )
 
+        val isVerificationPolicyEnabled = featureFlagUseCase.isVerificationPolicySelectionEnabled()
+
+        val menuItems = mutableListOf<MenuSection.MenuItem>()
+
+        val howItWorksMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_paper,
+            title = R.string.scan_instructions_menu_title,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionScanInstructions.actionId,
+                navigationArguments = actionScanInstructions.arguments
+            )
+        )
+
+        val scanSettingsMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_paper,
+            title = R.string.verifier_menu_risksetting,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionPolicySettings.actionId,
+                navigationArguments = actionPolicySettings.arguments
+            )
+        )
+
+        val supportMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_chatbubble,
+            title = R.string.support,
+            onClick = MenuSection.MenuItem.OnClick.OpenBrowser(
+                url = context.getString(R.string.url_faq)
+            )
+        )
+
+        val aboutThisAppMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_info,
+            title = R.string.about_this_app,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionAboutThisApp.actionId,
+                navigationArguments = actionAboutThisApp.arguments
+            )
+        )
+
+        menuItems.add(howItWorksMenuItem)
+        menuItems.add(supportMenuItem)
+        if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
+            menuItems.add(scanSettingsMenuItem)
+        }
+        menuItems.add(aboutThisAppMenuItem)
+
         return listOf(
             MenuSection(
-                menuItems = listOf(
-                    MenuSection.MenuItem(
-                        icon = R.drawable.ic_menu_paper,
-                        title = R.string.scan_instructions_menu_title,
-                        onClick = MenuSection.MenuItem.OnClick.Navigate(
-                            navigationActionId = actionScanInstructions.actionId,
-                            navigationArguments = actionScanInstructions.arguments
-                        )
-                    ),
-                    MenuSection.MenuItem(
-                        icon = R.drawable.ic_menu_paper,
-                        title = R.string.verifier_menu_risksetting,
-                        onClick = MenuSection.MenuItem.OnClick.Navigate(
-                            navigationActionId = actionPolicySettings.actionId,
-                            navigationArguments = actionPolicySettings.arguments
-                        )
-                    ),
-                    MenuSection.MenuItem(
-                        icon = R.drawable.ic_menu_chatbubble,
-                        title = R.string.support,
-                        onClick = MenuSection.MenuItem.OnClick.OpenBrowser(
-                            url = context.getString(R.string.url_faq)
-                        )
-                    ),
-                    MenuSection.MenuItem(
-                        icon = R.drawable.ic_menu_info,
-                        title = R.string.about_this_app,
-                        onClick = MenuSection.MenuItem.OnClick.Navigate(
-                            navigationActionId = actionAboutThisApp.actionId,
-                            navigationArguments = actionAboutThisApp.arguments
-                        )
-                    )
-                )
+                menuItems = menuItems
             )
         ).toTypedArray()
     }
 
-    fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(
+    private fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(
         versionName = BuildConfig.VERSION_NAME,
         versionCode = BuildConfig.VERSION_CODE.toString(),
         sections = mutableListOf(

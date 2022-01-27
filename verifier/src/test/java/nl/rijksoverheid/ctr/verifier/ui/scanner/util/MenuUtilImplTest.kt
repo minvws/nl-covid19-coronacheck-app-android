@@ -5,17 +5,16 @@
  * SPDX-License-Identifier: EUPL-1.2
  */
 
-package nl.rijksoverheid.ctr.holder.ui.create_qr.util
+package nl.rijksoverheid.ctr.verifier.ui.scanner.util
 
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MenuUtilImpl
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.MenuUtilImpl
 import org.junit.Assert
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
@@ -25,43 +24,46 @@ import org.robolectric.RobolectricTestRunner
 class MenuUtilImplTest: AutoCloseKoinTest() {
 
     @Test
-    fun `When visitor pass enabled return correct menu sections`() {
+    fun `When verification policy selection is enabled return correct menu items`() {
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
         val appConfigPersistenceManager = mockk<AppConfigPersistenceManager>(relaxed = true)
+        val featureFlagUseCase = mockk<FeatureFlagUseCase>()
 
         val util = MenuUtilImpl(
             cachedAppConfigUseCase = cachedAppConfigUseCase,
-            appConfigPersistenceManager = appConfigPersistenceManager
+            appConfigPersistenceManager = appConfigPersistenceManager,
+            featureFlagUseCase = featureFlagUseCase
         )
 
-        every { cachedAppConfigUseCase.getCachedAppConfig() } answers { HolderConfig.default(visitorPassEnabled = true) }
+        every { featureFlagUseCase.isVerificationPolicySelectionEnabled() } answers { true }
 
         val menuSections = util.getMenuSections(
             context = ApplicationProvider.getApplicationContext()
         )
 
-        assertEquals(1, menuSections[0].menuItems.size)
-        assertEquals(2, menuSections[1].menuItems.size)
-        assertEquals(2, menuSections[2].menuItems.size)
+        Assert.assertEquals(1, menuSections.size)
+        Assert.assertEquals(4, menuSections.first().menuItems.size)
     }
 
     @Test
-    fun `When visitor pass disabled return correct menu sections`() {
+    fun `When verification policy selection is disabled return correct menu items`() {
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
         val appConfigPersistenceManager = mockk<AppConfigPersistenceManager>(relaxed = true)
+        val featureFlagUseCase = mockk<FeatureFlagUseCase>()
 
         val util = MenuUtilImpl(
             cachedAppConfigUseCase = cachedAppConfigUseCase,
-            appConfigPersistenceManager = appConfigPersistenceManager
+            appConfigPersistenceManager = appConfigPersistenceManager,
+            featureFlagUseCase = featureFlagUseCase
         )
 
-        every { cachedAppConfigUseCase.getCachedAppConfig() } answers { HolderConfig.default(visitorPassEnabled = false) }
+        every { featureFlagUseCase.isVerificationPolicySelectionEnabled() } answers { false }
 
         val menuSections = util.getMenuSections(
             context = ApplicationProvider.getApplicationContext()
         )
 
-        assertEquals(2, menuSections[0].menuItems.size)
-        assertEquals(2, menuSections[1].menuItems.size)
+        Assert.assertEquals(1, menuSections.size)
+        Assert.assertEquals(3, menuSections.first().menuItems.size)
     }
 }
