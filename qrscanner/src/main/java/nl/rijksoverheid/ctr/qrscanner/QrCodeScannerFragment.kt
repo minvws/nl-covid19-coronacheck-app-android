@@ -103,7 +103,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
         getCopy().verificationPolicy?.let {
             binding.policyRiskWidget.visibility = View.VISIBLE
-            binding.policyText.text = getString(it.title)
+            binding.policyText.text = it.title
             binding.policyIndicator.backgroundTintList =
                 ColorStateList.valueOf(requireContext().getColor(it.indicatorColor))
         } ?: run { binding.policyRiskWidget.visibility = View.GONE }
@@ -399,7 +399,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         )
 
         data class VerificationPolicy(
-            @StringRes val title: Int,
+            val title: String,
             @ColorRes val indicatorColor: Int
         )
     }

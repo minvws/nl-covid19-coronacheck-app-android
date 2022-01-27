@@ -35,7 +35,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/verification_policy_indicator_circle" />
 
-            <TextView
+            <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
                 android:id="@+id/policyIndicatorText"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:layout_width="wrap_content"

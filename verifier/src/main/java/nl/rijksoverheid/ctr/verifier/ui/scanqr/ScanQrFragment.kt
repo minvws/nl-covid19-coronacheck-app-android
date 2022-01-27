@@ -215,7 +215,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
     private fun unlockScanner() {
         binding.title.setText(R.string.scan_qr_header)
-        // TODO make sure description text is correct when doing the copies task 3289
         binding.instructionsButton.visibility = VISIBLE
         showDeviationViewIfNeeded()
         binding.bottom.unlock()

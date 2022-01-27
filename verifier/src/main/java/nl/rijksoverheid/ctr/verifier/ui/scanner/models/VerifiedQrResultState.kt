@@ -27,10 +27,4 @@ sealed class VerifiedQrResultState : Parcelable {
 
     @Parcelize
     data class Demo(val verifiedQr: VerificationResult) : VerifiedQrResultState()
-
-    @Parcelize
-    data class PartiallyValid(val verifiedQr: VerificationResult, val isTestResult: Boolean) : VerifiedQrResultState()
-
-    @Parcelize
-    object PersonalDataMismatch: VerifiedQrResultState()
 }

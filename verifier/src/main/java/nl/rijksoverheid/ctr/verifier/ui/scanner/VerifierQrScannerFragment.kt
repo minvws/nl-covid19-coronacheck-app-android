@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
@@ -52,12 +53,11 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                 okayButtonText = getString(R.string.ok)
             ),
             verificationPolicy = configVerificationPolicyUseCase.get().let {
-                //TODO fix copies for 1G
                 Copy.VerificationPolicy(
-                    title = when (it) {
-                        is VerificationPolicySelectionState.Policy1G -> R.string.verifier_scanner_policy_indication_2g
-                        else -> R.string.verifier_scanner_policy_indication_3g
-                    },
+                    title = getString(R.string.verifier_scanner_policy_indication, when(it) {
+                        is VerificationPolicySelectionState.Policy1G -> VerificationPolicy.VerificationPolicy1G.configValue
+                        else -> VerificationPolicy.VerificationPolicy3G.configValue
+                    }),
                     indicatorColor = when (it) {
                         is VerificationPolicySelectionState.Policy1G -> R.color.primary_blue
                         else -> R.color.secondary_green
@@ -114,25 +114,6 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                     R.string.scan_result_unknown_qr_dialog_title,
                     getString(R.string.scan_result_unknown_qr_dialog_message)
                 )
-                is VerifiedQrResultState.PartiallyValid -> {
-                    navigateSafety(VerifierQrScannerFragmentDirections.actionDccScanResult(
-                        data = if (qrResultState.isTestResult) {
-                            DccScanResultFragmentData.ScanVaccinationOrRecovery(
-                                previousScanVaccinationOrRecoveryResult = qrResultState.verifiedQr,
-                            )
-                        } else {
-                            DccScanResultFragmentData.ScanTest(
-                                previousScanTextResult = qrResultState.verifiedQr,
-                            )
-                        }
-                    ))
-                }
-                is VerifiedQrResultState.PersonalDataMismatch -> {
-                    navigateSafety(VerifierQrScannerFragmentDirections.actionScanResultInvalid(
-                        invalidData = ScanResultInvalidData.Error("personal data mismatch"),
-                        title = getString(R.string.verifier_result_denied_personal_data_mismatch_title),
-                    ))
-                }
             }
         })
     }

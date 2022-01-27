@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.verifier.R
  *
  */
 
-fun instructionsExplanationData(isVerificationPolicyEnabled: Boolean): IntroductionData =
+fun instructionsExplanationData(isVerificationPolicySelectionEnabled: Boolean): IntroductionData =
     IntroductionData(
         onboardingItems = listOf(
             OnboardingItem(
@@ -33,10 +33,10 @@ fun instructionsExplanationData(isVerificationPolicyEnabled: Boolean): Introduct
                 description = R.string.scan_instructions_3_description,
                 position = 3
             ),
-            OnboardingItem(//TODO select correct copy in the copies task (3289)
+            OnboardingItem(
                 animationResource = R.raw.scaninstructions_4,
-                titleResource = if (isVerificationPolicyEnabled) R.string.scan_instructions_4_title_2G else R.string.scan_instructions_4_title,
-                description = if (isVerificationPolicyEnabled) R.string.scan_instructions_4_description_2G else R.string.scan_instructions_4_description_2G,
+                titleResource = if (isVerificationPolicySelectionEnabled) R.string.scan_instructions_4_title_1G else R.string.scan_instructions_4_title,
+                description = if (isVerificationPolicySelectionEnabled) R.string.scan_instructions_4_description_1G else R.string.scan_instructions_4_description,
                 position = 4
             ),
             OnboardingItem(
