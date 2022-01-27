@@ -91,7 +91,6 @@ class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
                 }
                 factory {
                     mockk<FeatureFlagUseCase>().apply {
-                        every { isVerificationPolicyEnabled() } answers { true }
                         every { isVerificationPolicySelectionEnabled() } answers { isVerificationPolicySelectionEnabled }
                     }
                 }
