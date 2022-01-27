@@ -67,6 +67,7 @@
   <string name="camera_rationale_dialog_title">Scanner wil toegang tot je camera</string>
   <string name="camera_rationale_dialog_description">Zo kan de app QR-codes scannen</string>
   <string name="scanner_zebra_footer">Liever laserscannen?\nGebruik de gele toetsen op je toestel.</string>
+  <string name="scanner_honeywell_footer">Liever met de barcode scanner?\nGebruik de scan-toetsen op je toestel.</string>
   <string name="app_setup_text">We starten de app voor je op…</string>
   <string name="app_status_deactivated_title">App buiten werking</string>
   <string name="app_status_deactivated_message">Op dit moment is de app niet in gebruik. Ga voor meer informatie naar CoronaCheck.nl</string>
