@@ -79,14 +79,14 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.BoosterItem)
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.CardsItem)
-        assertTrue(dashboardItems.domesticItems[3] is DashboardItem.CoronaMelderItem)
-        assertTrue(dashboardItems.domesticItems[4] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.domesticItems[3] is DashboardItem.AddQrCardItem)
+        assertTrue(dashboardItems.domesticItems[4] is DashboardItem.CoronaMelderItem)
 
         assertEquals(4, dashboardItems.internationalItems.size)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.InfoItem.BoosterItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.InfoItem.OriginInfoItem)
-        assertTrue(dashboardItems.internationalItems[3] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.internationalItems[3] is DashboardItem.AddQrCardItem)
     }
 
     @Test
@@ -109,13 +109,13 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
         assertEquals( 3, dashboardItems.domesticItems.size)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.MissingDutchVaccinationItem)
-        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrCardItem)
 
         assertEquals(4, dashboardItems.internationalItems.size)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.CardsItem)
-        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.CoronaMelderItem)
-        assertTrue(dashboardItems.internationalItems[3] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrCardItem)
+        assertTrue(dashboardItems.internationalItems[3] is DashboardItem.CoronaMelderItem)
     }
 
     @Test
@@ -147,15 +147,15 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.BoosterItem)
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.CardsItem)
-        assertTrue(dashboardItems.domesticItems[3] is DashboardItem.CoronaMelderItem)
-        assertTrue(dashboardItems.domesticItems[4] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.domesticItems[3] is DashboardItem.AddQrCardItem)
+        assertTrue(dashboardItems.domesticItems[4] is DashboardItem.CoronaMelderItem)
 
         assertEquals( 5, dashboardItems.internationalItems.size)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.InfoItem.BoosterItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.CardsItem)
-        assertTrue(dashboardItems.internationalItems[3] is DashboardItem.CoronaMelderItem)
-        assertTrue(dashboardItems.internationalItems[4] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.internationalItems[3] is DashboardItem.AddQrCardItem)
+        assertTrue(dashboardItems.internationalItems[4] is DashboardItem.CoronaMelderItem)
     }
 
     @Test
@@ -232,12 +232,12 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
         assertEquals( 3, dashboardItems.domesticItems.size)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.VisitorPassIncompleteItem)
-        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrCardItem)
 
         assertEquals( 3, dashboardItems.internationalItems.size)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.InfoItem.OriginInfoItem)
-        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrCardItem)
     }
 
     @Test
