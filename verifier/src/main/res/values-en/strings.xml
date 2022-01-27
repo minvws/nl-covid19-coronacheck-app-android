@@ -67,6 +67,7 @@
   <string name="camera_rationale_dialog_title">Scanner wants to access your camera</string>
   <string name="camera_rationale_dialog_description">So the app can scan QR codes</string>
   <string name="scanner_zebra_footer">Prefer laser scanning?\n\nUse the yellow buttons on your device.</string>
+  <string name="scanner_honeywell_footer">Prefer the barcode scanner?\nUse the scan buttons on your device.</string>
   <string name="app_setup_text">We\'re starting the app…</string>
   <string name="app_status_deactivated_title">App out of order</string>
   <string name="app_status_deactivated_message">The app is not in use at the moment. For more information, go to CoronaCheck.nl</string>
