@@ -97,8 +97,7 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
                 }
             )
         )
-        binding.policyIndicatorText.text =
-            context.getString(R.string.verifier_start_scan_qr_policy_indication, policy.configValue)
+        binding.policyIndicatorText.setHtmlText(context.getString(R.string.verifier_start_scan_qr_policy_indication, policy.configValue))
     }
 
     fun lock() {
