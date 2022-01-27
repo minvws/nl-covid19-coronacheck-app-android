@@ -6,19 +6,20 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="16dp"
     app:cardCornerRadius="15dp"
-    app:cardElevation="2dp">
+    app:cardElevation="8dp">
 
     <TextView
         android:id="@+id/text"
         style="?attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?android:selectableItemBackground"
         android:drawablePadding="16dp"
         android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:padding="24dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="24dp"
         android:text="@string/holder_dashboard_addCard_title"
         app:drawableTopCompat="@drawable/ic_plus" />
 
