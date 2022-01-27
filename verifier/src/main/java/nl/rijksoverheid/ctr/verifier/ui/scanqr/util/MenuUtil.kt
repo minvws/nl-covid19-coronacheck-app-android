@@ -45,12 +45,10 @@ class MenuUtilImpl(
             data = getAboutThisAppData(context)
         )
 
-        val isVerificationPolicyEnabled = featureFlagUseCase.isVerificationPolicySelectionEnabled()
-
         val menuItems = mutableListOf<MenuSection.MenuItem>()
 
         val howItWorksMenuItem = MenuSection.MenuItem(
-            icon = R.drawable.ic_menu_paper,
+            icon = R.drawable.ic_menu_question,
             title = R.string.scan_instructions_menu_title,
             onClick = MenuSection.MenuItem.OnClick.Navigate(
                 navigationActionId = actionScanInstructions.actionId,
@@ -59,7 +57,7 @@ class MenuUtilImpl(
         )
 
         val scanSettingsMenuItem = MenuSection.MenuItem(
-            icon = R.drawable.ic_menu_paper,
+            icon = R.drawable.ic_menu_qr,
             title = R.string.verifier_menu_risksetting,
             onClick = MenuSection.MenuItem.OnClick.Navigate(
                 navigationActionId = actionPolicySettings.actionId,
