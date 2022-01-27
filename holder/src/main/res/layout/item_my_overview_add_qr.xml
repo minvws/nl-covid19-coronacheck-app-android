@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dashboardItemAddQrCardRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
@@ -23,4 +24,4 @@
         android:text="@string/holder_dashboard_addCard_title"
         app:drawableTopCompat="@drawable/ic_plus" />
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

@@ -140,7 +140,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        addAddQr(hasEmptyState, dashboardItems)
+        addQrItem(hasEmptyState, dashboardItems)
 
         if (dashboardItemUtil.shouldShowCoronaMelderItem(
                 domesticGreenCards,
@@ -241,7 +241,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        addAddQr(hasEmptyState, dashboardItems)
+        addQrItem(hasEmptyState, dashboardItems)
 
         if (dashboardItemUtil.shouldShowCoronaMelderItem(
                 internationalGreenCards,
@@ -256,7 +256,7 @@ class GetDashboardItemsUseCaseImpl(
         return dashboardItems
     }
 
-    private fun addAddQr(
+    private fun addQrItem(
         hasEmptyState: Boolean,
         dashboardItems: MutableList<DashboardItem>
     ) {
