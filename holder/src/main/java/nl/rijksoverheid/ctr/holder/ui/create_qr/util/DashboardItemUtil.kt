@@ -201,6 +201,6 @@ class DashboardItemUtilImpl(
     }
 
     override fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean {
-        return !allGreenCards.all { greenCardUtil.isExpired(it) }
+        return allGreenCards.isNotEmpty() && !allGreenCards.all { greenCardUtil.isExpired(it) }
     }
 }
