@@ -140,7 +140,9 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        addQrItem(hasEmptyState, dashboardItems)
+        if (dashboardItemUtil.shouldShowAddQrCardItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.AddQrCardItem)
+        }
 
         if (dashboardItemUtil.shouldShowCoronaMelderItem(
                 domesticGreenCards,
@@ -150,6 +152,10 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(
                 DashboardItem.CoronaMelderItem
             )
+        }
+
+        if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
+            dashboardItems.add(DashboardItem.AddQrButtonItem)
         }
 
         return dashboardItems
@@ -241,7 +247,9 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        addQrItem(hasEmptyState, dashboardItems)
+        if (dashboardItemUtil.shouldShowAddQrCardItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.AddQrCardItem)
+        }
 
         if (dashboardItemUtil.shouldShowCoronaMelderItem(
                 internationalGreenCards,
@@ -253,18 +261,11 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        return dashboardItems
-    }
-
-    private fun addQrItem(
-        hasEmptyState: Boolean,
-        dashboardItems: MutableList<DashboardItem>
-    ) {
         if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
             dashboardItems.add(DashboardItem.AddQrButtonItem)
-        } else {
-            dashboardItems.add(DashboardItem.AddQrCardItem)
         }
+
+        return dashboardItems
     }
 
     private suspend fun getGreenCardItems(

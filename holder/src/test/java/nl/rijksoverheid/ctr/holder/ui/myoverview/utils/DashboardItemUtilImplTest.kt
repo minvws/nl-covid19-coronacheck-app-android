@@ -565,6 +565,51 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         assertTrue(shouldShowOriginInfoItem)
     }
 
+    @Test
+    fun `shouldShowAddQrCardItem returns true when there are green cards and at least 1 is not expired`() {
+        val util = getUtil(
+            greenCardUtil = greenCardUtil
+        )
+
+        val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
+            listOf(
+                fakeGreenCard(expirationTime = OffsetDateTime.now().plusDays(1)),
+                fakeGreenCard(expirationTime = OffsetDateTime.now().minusDays(1))
+            )
+        )
+
+        assertTrue(shouldShowAddQrItem)
+    }
+
+    @Test
+    fun `shouldShowAddQrCardItem returns false when there are no green cards`() {
+        val util = getUtil(
+            greenCardUtil = greenCardUtil
+        )
+
+        val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
+            listOf()
+        )
+
+        assertFalse(shouldShowAddQrItem)
+    }
+
+    @Test
+    fun `shouldShowAddQrCardItem returns false when green cards are expired`() {
+        val util = getUtil(
+            greenCardUtil = greenCardUtil
+        )
+
+        val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
+            listOf(
+                fakeGreenCard(expirationTime = OffsetDateTime.now().minusDays(1)),
+                fakeGreenCard(expirationTime = OffsetDateTime.now().minusDays(1))
+            )
+        )
+
+        assertFalse(shouldShowAddQrItem)
+    }
+
     private fun createCardItem(originType: OriginType) = CardItem(
         greenCard = GreenCard(
             greenCardEntity = fakeGreenCardEntity,

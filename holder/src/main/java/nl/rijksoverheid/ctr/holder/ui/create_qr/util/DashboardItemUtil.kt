@@ -56,6 +56,8 @@ interface DashboardItemUtil {
         greenCardType: GreenCardType,
         originType: OriginType
     ): Boolean
+    fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean
+
 }
 
 class DashboardItemUtilImpl(
@@ -196,5 +198,9 @@ class DashboardItemUtilImpl(
 
         // We do not show the origin info item for a domestic test if there is a vaccination assessment green card active (this causes some confusion in the UI)
         return !(hasVaccinationAssessmentOrigin && originInfoTypeOrigin == OriginType.Test && greenCardType == GreenCardType.Domestic)
+    }
+
+    override fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean {
+        return !allGreenCards.all { greenCardUtil.isExpired(it) }
     }
 }
