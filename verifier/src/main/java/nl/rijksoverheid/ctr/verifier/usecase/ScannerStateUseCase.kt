@@ -5,6 +5,8 @@ import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionStateUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionUseCase
 import java.time.Clock
 import java.time.Instant
 
@@ -21,14 +23,14 @@ interface ScannerStateUseCase {
 
 class ScannerStateUseCaseImpl(
     private val clock: Clock,
-    private val configVerificationPolicyUseCase: ConfigVerificationPolicyUseCase,
+    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase,
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
     private val persistenceManager: PersistenceManager,
     private val featureFlagUseCase: FeatureFlagUseCase,
 ) : ScannerStateUseCase {
 
     override fun get(): ScannerState {
-        val verificationPolicyState = configVerificationPolicyUseCase.get()
+        val verificationPolicyState = verificationPolicySelectionStateUseCase.get()
 
         val now = Instant.now(clock)
         val lockSeconds =

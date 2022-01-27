@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionStateUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
@@ -28,7 +29,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
 
     private val scannerViewModel: ScannerViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
-    private val configVerificationPolicyUseCase: ConfigVerificationPolicyUseCase by inject()
+    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
 
     override fun onQrScanned(content: String) {
         scannerViewModel.log()
@@ -39,6 +40,17 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
     }
 
     override fun getCopy(): Copy {
+        val verificationPolicyCopy = when(verificationPolicySelectionStateUseCase.get()) {
+            VerificationPolicySelectionState.None -> null
+            VerificationPolicySelectionState.Policy1G -> Copy.VerificationPolicy(
+                title = getString(R.string.verifier_scanner_policy_indication, VerificationPolicy.VerificationPolicy1G.configValue),
+                indicatorColor = R.color.primary_blue
+            )
+            VerificationPolicySelectionState.Policy3G -> Copy.VerificationPolicy(
+                title = getString(R.string.verifier_scanner_policy_indication, VerificationPolicy.VerificationPolicy3G.configValue),
+                indicatorColor = R.color.secondary_green
+            )
+        }
         return Copy(
             title = getString(R.string.scanner_custom_title),
             message = getString(R.string.scan_qr_instructions_button),
@@ -52,18 +64,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                 description = getString(R.string.camera_rationale_dialog_description),
                 okayButtonText = getString(R.string.ok)
             ),
-            verificationPolicy = configVerificationPolicyUseCase.get().let {
-                Copy.VerificationPolicy(
-                    title = getString(R.string.verifier_scanner_policy_indication, when(it) {
-                        is VerificationPolicySelectionState.Policy1G -> VerificationPolicy.VerificationPolicy1G.configValue
-                        else -> VerificationPolicy.VerificationPolicy3G.configValue
-                    }),
-                    indicatorColor = when (it) {
-                        is VerificationPolicySelectionState.Policy1G -> R.color.primary_blue
-                        else -> R.color.secondary_green
-                    }
-                )
-            }
+            verificationPolicy = verificationPolicyCopy
         )
     }
 
