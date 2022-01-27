@@ -81,7 +81,6 @@ class ZebraManagerImpl(
     private val dataWedgeResultBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             intent.getStringExtra(ZebraConstants.DATAWEDGE_INTENT_KEY_DATA)?.let {
-                // suspendScanner()  // done now in Fragment.onPause
                 onDatawedgeResultListener.invoke(it)
             }
         }
@@ -197,7 +196,6 @@ class ZebraManagerImpl(
 
     override fun teardownZebraScanner() {
         if (isZebraDevice() && (zebraIntentSet)) {
-            // suspendScanner()  // this is now already done in the Fragment.onPause
             context.unregisterReceiver(dataWedgeResultBroadcastReceiver)
             context.unregisterReceiver(dataWedgeProfileResultBroadcastReceiver)
             zebraIntentSet = false

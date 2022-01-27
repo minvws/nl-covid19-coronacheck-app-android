@@ -76,7 +76,6 @@ class HoneywellManagerImpl(
     }
 
     override fun resumeScanner() {
-
         val resultFilter = IntentFilter()
         resultFilter.addAction(HONEYWELL_INTENT_ACTION_BARCODE_DATA_FILTER_ACTION)
         context.registerReceiver(dataWedgeResultBroadcastReceiver, resultFilter)
@@ -116,16 +115,13 @@ class HoneywellManagerImpl(
     override fun setupHoneywellScanner(onDatawedgeResultListener: (data: String) -> Unit) {
         if (isHoneywellDevice() && !honeywellIntentSet) {
             this.onDatawedgeResultListener = onDatawedgeResultListener
-
             honeywellIntentSet = true
         }
     }
 
     override fun teardownHoneywellScanner() {
         if (isHoneywellDevice() && (honeywellIntentSet)) {
-            // suspendScanner()
             honeywellIntentSet = false
         }
     }
-
 }
