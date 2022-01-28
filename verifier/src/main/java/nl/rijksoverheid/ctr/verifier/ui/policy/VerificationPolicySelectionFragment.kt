@@ -91,8 +91,8 @@ class VerificationPolicySelectionFragment :
 
     private fun presentWarningDialog() {
         val currentPolicyState = verificationPolicySelectionStateUseCase.get()
-        val policyHasNotChanged = currentPolicyState is VerificationPolicySelectionState.Policy1G && binding.policy1G.isChecked ||
-                currentPolicyState is VerificationPolicySelectionState.Policy3G && binding.policy3G.isChecked
+        val policyHasNotChanged = currentPolicyState is VerificationPolicySelectionState.Selection.Policy1G && binding.policy1G.isChecked ||
+                currentPolicyState is VerificationPolicySelectionState.Selection.Policy3G && binding.policy3G.isChecked
         when {
             currentPolicyState is VerificationPolicySelectionState.None -> {
                 storeSelection()
@@ -195,25 +195,29 @@ class VerificationPolicySelectionFragment :
 
     private fun policy3GSelected() {
         policyChecked(binding.policy3G.id)
-        policySelected(VerificationPolicySelectionState.Policy3G)
+        policySelected(VerificationPolicySelectionState.Selection.Policy3G)
     }
 
     private fun policy1GSelected() {
         policyChecked(binding.policy1G.id)
-        policySelected(VerificationPolicySelectionState.Policy1G)
+        policySelected(VerificationPolicySelectionState.Selection.Policy1G)
     }
 
     private fun policySelected(state: VerificationPolicySelectionState) {
         when (state) {
-            VerificationPolicySelectionState.Policy3G -> {
+            VerificationPolicySelectionState.Selection.Policy3G -> {
                 binding.policy3G.isChecked = true
                 binding.policy1G.isChecked = false
             }
-            VerificationPolicySelectionState.Policy1G -> {
+            VerificationPolicySelectionState.Selection.Policy1G -> {
                 binding.policy3G.isChecked = false
                 binding.policy1G.isChecked = true
             }
             VerificationPolicySelectionState.None -> {
+                binding.policy3G.isChecked = false
+                binding.policy1G.isChecked = false
+            }
+            VerificationPolicySelectionState.Only1G -> {
                 binding.policy3G.isChecked = false
                 binding.policy1G.isChecked = false
             }

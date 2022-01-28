@@ -144,10 +144,11 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             VerificationPolicySelectionState.None -> {
                 binding.bottom.hidePolicyIndication()
             }
-            VerificationPolicySelectionState.Policy1G -> {
+            VerificationPolicySelectionState.Selection.Policy1G,
+            VerificationPolicySelectionState.Only1G -> {
                 binding.bottom.setPolicy(VerificationPolicy1G)
             }
-            VerificationPolicySelectionState.Policy3G -> {
+            VerificationPolicySelectionState.Selection.Policy3G -> {
                 binding.bottom.setPolicy(VerificationPolicy3G)
             }
         }
@@ -156,10 +157,11 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             VerificationPolicySelectionState.None -> {
                 R.drawable.illustration_scanner_get_started_3g
             }
-            VerificationPolicySelectionState.Policy1G -> {
+            VerificationPolicySelectionState.Selection.Policy1G,
+            VerificationPolicySelectionState.Only1G -> {
                 R.drawable.illustration_scanner_get_started_1g
             }
-            VerificationPolicySelectionState.Policy3G -> {
+            VerificationPolicySelectionState.Selection.Policy3G -> {
                 R.drawable.illustration_scanner_get_started_3g
             }
         }

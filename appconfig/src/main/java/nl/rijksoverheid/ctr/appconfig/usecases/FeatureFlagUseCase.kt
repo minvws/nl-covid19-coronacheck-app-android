@@ -14,6 +14,7 @@ interface FeatureFlagUseCase {
     @Deprecated("this is used now only from the holder app and it will change in a forecoming holder ticket")
     fun isVerificationPolicyEnabled(): Boolean
     fun isVerificationPolicySelectionEnabled(): Boolean
+    fun is1GOnlyEnabled(): Boolean
 }
 
 class FeatureFlagUseCaseImpl(
@@ -29,5 +30,12 @@ class FeatureFlagUseCaseImpl(
     override fun isVerificationPolicySelectionEnabled(): Boolean {
         val verificationPoliciesEnabled = appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
         return verificationPoliciesEnabled.size > 1
+    }
+
+    override fun is1GOnlyEnabled(): Boolean {
+        val verificationPoliciesEnabled =
+            appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+        return verificationPoliciesEnabled.size == 1 &&
+                verificationPoliciesEnabled.first() == VerificationPolicy1G.configValue
     }
 }

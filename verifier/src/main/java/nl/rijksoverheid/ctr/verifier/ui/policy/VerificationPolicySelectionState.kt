@@ -10,11 +10,20 @@ import kotlinx.parcelize.Parcelize
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class VerificationPolicySelectionState: Parcelable {
+sealed class VerificationPolicySelectionState : Parcelable {
+
     @Parcelize
     object None : VerificationPolicySelectionState()
+
+    sealed class Selection : VerificationPolicySelectionState() {
+
+        @Parcelize
+        object Policy3G : VerificationPolicySelectionState()
+
+        @Parcelize
+        object Policy1G : VerificationPolicySelectionState()
+    }
+
     @Parcelize
-    object Policy3G : VerificationPolicySelectionState()
-    @Parcelize
-    object Policy1G : VerificationPolicySelectionState()
+    object Only1G: VerificationPolicySelectionState()
 }
