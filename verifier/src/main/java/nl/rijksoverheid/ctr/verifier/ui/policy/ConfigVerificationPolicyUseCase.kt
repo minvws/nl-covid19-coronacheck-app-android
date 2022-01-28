@@ -26,7 +26,7 @@ class ConfigVerificationPolicyUseCaseImpl(
      * 2. Directly from the config (if one and only one policy is offered by the config)
      */
     override fun get(): VerificationPolicySelectionState {
-        val verificationPoliciesEnabled = cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+        val verificationPoliciesEnabled = cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled + listOf("1G")
 
         // make sure there is no selection stored if config value changed
         // (eg it was ["3G", "1G"] and user selected 3G and then the config value changed to ["1G"])
