@@ -46,20 +46,8 @@ class MyOverviewInfoCardItem(
         }
 
         when (infoItem) {
-            is DashboardItem.InfoItem.ExtendDomesticRecovery -> {
-                viewBinding.text.setText(R.string.extend_domestic_recovery_green_card_info_card_text)
-            }
-            is DashboardItem.InfoItem.RecoverDomesticRecovery -> {
-                viewBinding.text.setText(R.string.recover_domestic_recovery_green_card_info_card_text)
-            }
             is DashboardItem.InfoItem.ConfigFreshnessWarning -> {
                 viewBinding.text.setText(R.string.config_warning_card_message)
-            }
-            is DashboardItem.InfoItem.ExtendedDomesticRecovery -> {
-                viewBinding.text.setText(R.string.extended_domestic_recovery_green_card_info_card_text)
-            }
-            is DashboardItem.InfoItem.RecoveredDomesticRecovery -> {
-                viewBinding.text.setText(R.string.recovered_domestic_recovery_green_card_info_card_text)
             }
             is DashboardItem.InfoItem.ClockDeviationItem -> {
                 viewBinding.text.setText(R.string.my_overview_clock_deviation_description)

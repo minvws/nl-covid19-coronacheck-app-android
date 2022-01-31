@@ -30,10 +30,6 @@ interface DashboardItemUtil {
      */
     fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem>
 
-    fun shouldShowExtendDomesticRecoveryItem(): Boolean
-    fun shouldShowRecoverDomesticRecoveryItem(): Boolean
-    fun shouldShowExtendedDomesticRecoveryItem(): Boolean
-    fun shouldShowRecoveredDomesticRecoveryItem(): Boolean
     fun shouldShowConfigFreshnessWarning(): Boolean
     fun getConfigFreshnessMaxValidity(): Long
     fun shouldShowMissingDutchVaccinationItem(
@@ -60,6 +56,8 @@ interface DashboardItemUtil {
         greenCardType: GreenCardType,
         originType: OriginType
     ): Boolean
+    fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean
+
 }
 
 class DashboardItemUtilImpl(
@@ -131,22 +129,6 @@ class DashboardItemUtilImpl(
             }.flatten()
     }
 
-    override fun shouldShowExtendDomesticRecoveryItem(): Boolean {
-        return persistenceManager.getShowExtendDomesticRecoveryInfoCard()
-    }
-
-    override fun shouldShowRecoverDomesticRecoveryItem(): Boolean {
-        return persistenceManager.getShowRecoverDomesticRecoveryInfoCard()
-    }
-
-    override fun shouldShowExtendedDomesticRecoveryItem(): Boolean {
-        return !persistenceManager.getHasDismissedExtendedDomesticRecoveryInfoCard()
-    }
-
-    override fun shouldShowRecoveredDomesticRecoveryItem(): Boolean {
-        return !persistenceManager.getHasDismissedRecoveredDomesticRecoveryInfoCard()
-    }
-
     override fun shouldShowConfigFreshnessWarning(): Boolean {
         // return true if config is older than 10 days && less than 28 days
        return appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning()
@@ -216,5 +198,9 @@ class DashboardItemUtilImpl(
 
         // We do not show the origin info item for a domestic test if there is a vaccination assessment green card active (this causes some confusion in the UI)
         return !(hasVaccinationAssessmentOrigin && originInfoTypeOrigin == OriginType.Test && greenCardType == GreenCardType.Domestic)
+    }
+
+    override fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean {
+        return allGreenCards.isNotEmpty() && !allGreenCards.all { greenCardUtil.isExpired(it) }
     }
 }

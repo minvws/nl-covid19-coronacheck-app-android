@@ -11,6 +11,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.design.R.*
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
@@ -21,11 +22,13 @@ import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.DeeplinkManager
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.policy.*
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.MenuUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtil
 import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 import org.koin.android.ext.android.inject
@@ -54,6 +57,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val configVerificationPolicyUseCase: ConfigVerificationPolicyUseCase by inject()
     private val androidUtil: AndroidUtil by inject()
     private val deeplinkManager: DeeplinkManager by inject()
+    private val menuUtil: MenuUtil by inject()
 
     private var scannerStateCountDownTimer: ScannerStateCountDownTimer? = null
 
@@ -127,11 +131,23 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     override fun onResume() {
         super.onResume()
         startTimer()
+
+        getToolbar().let { toolbar ->
+            if (toolbar?.menu?.size() == 0) {
+                toolbar.apply {
+                    inflateMenu(nl.rijksoverheid.ctr.design.R.menu.menu_toolbar)
+                    menu.findItem(nl.rijksoverheid.ctr.design.R.id.action_menu).actionView?.setOnClickListener {
+                        menuUtil.showMenu(this@ScanQrFragment)
+                    }
+                }
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
         stopTimer()
+        getToolbar()?.menu?.clear()
     }
 
     override fun onDestroyView() {
@@ -235,4 +251,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private fun updateTitle(timeLeft: String) {
         binding.title.text = getString(R.string.verifier_home_countdown_title, timeLeft)
     }
+
+    private fun getToolbar() = (parentFragment?.parentFragment as VerifierMainFragment?)?.getToolbar()
 }

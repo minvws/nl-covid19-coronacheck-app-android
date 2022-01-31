@@ -57,14 +57,6 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         infoItem: DashboardItem.InfoItem
     ) {
         when (infoItem) {
-            is DashboardItem.InfoItem.ExtendedDomesticRecovery ->
-                onExtendedDomesticRecoveryClicked(myOverviewFragment)
-            is DashboardItem.InfoItem.RecoveredDomesticRecovery ->
-                onRecoveredDomesticRecoveryClicked(myOverviewFragment)
-            is DashboardItem.InfoItem.ExtendDomesticRecovery ->
-                onExtendDomesticRecoveryClicked(myOverviewFragment)
-            is DashboardItem.InfoItem.RecoverDomesticRecovery ->
-                onRecoverDomesticRecoveryClicked(myOverviewFragment)
             is DashboardItem.InfoItem.ConfigFreshnessWarning ->
                 onConfigRefreshClicked(myOverviewFragment, infoItem)
             is DashboardItem.InfoItem.ClockDeviationItem ->
@@ -152,51 +144,6 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
 
     private fun onMissingDutchVaccinationItemClicked(myOverviewFragment: MyOverviewFragment) {
         myOverviewFragment.navigateSafety(MyOverviewTabsFragmentDirections.actionMissingDutchCertificate())
-    }
-
-    private fun onExtendedDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
-        infoFragmentUtil.presentAsBottomSheet(
-            myOverviewFragment.childFragmentManager,
-            InfoFragmentData.TitleDescription(
-                title = myOverviewFragment.getString(R.string.extended_domestic_recovery_green_card_bottomsheet_title),
-                descriptionData = DescriptionData(
-                    R.string.extended_domestic_recovery_green_card_bottomsheet_description,
-                    htmlLinksEnabled = true
-                ),
-            )
-        )
-    }
-
-    private fun onRecoveredDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
-        infoFragmentUtil.presentAsBottomSheet(
-            myOverviewFragment.childFragmentManager,
-            InfoFragmentData.TitleDescription(
-                title = myOverviewFragment.getString(R.string.recovered_domestic_recovery_green_card_bottomsheet_title),
-                descriptionData = DescriptionData(R.string.recovered_domestic_recovery_green_card_bottomsheet_description),
-            )
-        )
-    }
-
-    private fun onExtendDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
-        myOverviewFragment.navigateSafety(
-            MyOverviewFragmentDirections.actionSyncGreenCards(
-                toolbarTitle = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_toolbar_title),
-                title = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_title),
-                description = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_description),
-                button = myOverviewFragment.getString(R.string.extend_domestic_recovery_green_card_button)
-            )
-        )
-    }
-
-    private fun onRecoverDomesticRecoveryClicked(myOverviewFragment: MyOverviewFragment) {
-        myOverviewFragment.navigateSafety(
-            MyOverviewFragmentDirections.actionSyncGreenCards(
-                toolbarTitle = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_toolbar_title),
-                title = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_title),
-                description = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_description),
-                button = myOverviewFragment.getString(R.string.recover_domestic_recovery_green_card_button)
-            )
-        )
     }
 
     private fun onConfigRefreshClicked(
@@ -370,12 +317,6 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
 
         // Clear preference so it doesn't show again
         when (infoItem) {
-            is DashboardItem.InfoItem.RecoveredDomesticRecovery -> {
-                myOverviewFragment.dashboardViewModel.dismissRecoveredDomesticRecoveryInfoCard()
-            }
-            is DashboardItem.InfoItem.ExtendedDomesticRecovery -> {
-                myOverviewFragment.dashboardViewModel.dismissExtendedDomesticRecoveryInfoCard()
-            }
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCardEntity)
             }
@@ -387,9 +328,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             }
             is DashboardItem.InfoItem.ClockDeviationItem,
             is DashboardItem.InfoItem.ConfigFreshnessWarning,
-            is DashboardItem.InfoItem.ExtendDomesticRecovery,
             is DashboardItem.InfoItem.OriginInfoItem,
-            is DashboardItem.InfoItem.RecoverDomesticRecovery,
             is DashboardItem.InfoItem.AppUpdate,
             is DashboardItem.InfoItem.MissingDutchVaccinationItem,
             is DashboardItem.InfoItem.TestCertificate3GValidity,
