@@ -18,20 +18,29 @@ interface VerificationPolicySelectionStateUseCase {
 class VerificationPolicySelectionStateUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val featureFlagUseCase: FeatureFlagUseCase
-): VerificationPolicySelectionStateUseCase {
+) : VerificationPolicySelectionStateUseCase {
 
     /**
      * if set, get the user selected verification policy or none otherwise
      */
     override fun get(): VerificationPolicySelectionState {
         return if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
-            when (persistenceManager.getVerificationPolicySelected()) {
-                VerificationPolicy.VerificationPolicy3G -> VerificationPolicySelectionState.Policy3G
-                VerificationPolicy.VerificationPolicy1G -> VerificationPolicySelectionState.Policy1G
-                else -> VerificationPolicySelectionState.None
-            }
+            getSelectedPolicyState()
         } else {
-            VerificationPolicySelectionState.None
+            getForcedPolicyState()
         }
     }
+
+    private fun getForcedPolicyState() = when (persistenceManager.getVerificationPolicySelected()) {
+        VerificationPolicy.VerificationPolicy3G -> VerificationPolicySelectionState.Policy3G
+        VerificationPolicy.VerificationPolicy1G -> VerificationPolicySelectionState.Policy1G
+        else -> VerificationPolicySelectionState.Policy3G
+    }
+
+    private fun getSelectedPolicyState() =
+        when (persistenceManager.getVerificationPolicySelected()) {
+            VerificationPolicy.VerificationPolicy3G -> VerificationPolicySelectionState.Selection.Policy3G
+            VerificationPolicy.VerificationPolicy1G -> VerificationPolicySelectionState.Selection.Policy1G
+            else -> VerificationPolicySelectionState.Selection.None
+        }
 }

@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.ui.policy
 
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy1G
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 
@@ -12,32 +13,37 @@ import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfig
  *
  */
 interface ConfigVerificationPolicyUseCase {
-    fun get(): VerificationPolicySelectionState
+    fun update()
 }
 
 class ConfigVerificationPolicyUseCaseImpl(
-    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase,
     private val cachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
     private val persistenceManager: PersistenceManager,
-): ConfigVerificationPolicyUseCase {
+) : ConfigVerificationPolicyUseCase {
+
     /**
      * The verification policy state of the app can be determined in two ways:
      * 1. From what the user has selected in the [VerificationPolicySelectionFragment] (that is only if more than one policies are offered by the config)
      * 2. Directly from the config (if one and only one policy is offered by the config)
      */
-    override fun get(): VerificationPolicySelectionState {
-        val verificationPoliciesEnabled = cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+    override fun update() {
+        val verificationPoliciesEnabled =
+            cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
 
-        // make sure there is no selection stored if config value changed
-        // (eg it was ["3G", "1G"] and user selected 3G and then the config value changed to ["1G"])
-        if (verificationPoliciesEnabled.size == 1) {
+        // Reset policy set when settings change from 1 policy to multiple selectable policies
+        if (!persistenceManager.getIsPolicySelectable() && verificationPoliciesEnabled.size > 1) {
             persistenceManager.removeVerificationPolicySelectionSet()
         }
 
-        return when {
-            verificationPoliciesEnabled.size == 1 && verificationPoliciesEnabled.first() == VerificationPolicy1G.configValue -> VerificationPolicySelectionState.Policy1G
-            verificationPoliciesEnabled.size > 1 -> verificationPolicySelectionStateUseCase.get()
-            else -> VerificationPolicySelectionState.None
+        // Set selection policy on single policy
+        if (verificationPoliciesEnabled.size == 1) {
+            when (verificationPoliciesEnabled.first()) {
+                VerificationPolicy1G.configValue -> persistenceManager.setVerificationPolicySelected(VerificationPolicy1G)
+                VerificationPolicy3G.configValue -> persistenceManager.setVerificationPolicySelected(VerificationPolicy3G)
+            }
         }
+
+        // Store current config setting whether policy setting is selectable
+        persistenceManager.setIsPolicySelectable(verificationPoliciesEnabled.size > 1)
     }
 }

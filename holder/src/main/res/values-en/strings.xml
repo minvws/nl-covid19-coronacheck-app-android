@@ -108,7 +108,7 @@
   <string name="testresult_to_qr_code_title">Your test result is now being made into a QR code</string>
   <string name="testresult_to_qr_code_description">That you tested negative (no coronavirus) on February 2 at 14:06 will be processed into the QR code. The CoronaCheck app only shows the anonymous QR code, without test details.</string>
   <string name="button_continue">Continue</string>
-  <string name="commercial_test_error_invalid_code">This code is invalid. A valid code looks like this: VAC-YYYYYYYYY1-F2.</string>
+  <string name="commercial_test_error_invalid_code">This code is invalid. A valid code looks like this: BRB-YYYYYYYYY1-Z2.</string>
   <string name="commercial_test_error_invalid_combination">Invalid combination. Enter the 6-digit verification code.</string>
   <string name="commercial_test_error_unknown_test_provider">Retrieval code is from an unknown test location</string>
   <string name="commercial_test_error_empty_retrieval_code">Please enter a retrieval code first</string>
@@ -648,7 +648,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
     <item quantity="one">minute</item>
     <item quantity="other">minutes</item>
   </plurals>
+  <string name="holder_dashboard_addCard_title">Add new vaccination or test</string>
   <string name="general_menu">Menu</string>
-  <string name="holder_dashboard_addCard_title">Nieuwe vaccinatie of test toevoegen</string>
   <string name="holder_menu_listItem_addVaccinationOrTest_title">Vaccinatie of test toevoegen</string>
 </resources>

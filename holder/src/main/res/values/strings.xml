@@ -108,7 +108,7 @@
   <string name="testresult_to_qr_code_title">Van jouw testuitslag wordt nu een QR-code gemaakt</string>
   <string name="testresult_to_qr_code_description">In de QR-code staat dat je negatief getest bent op 2 februari om 14:06.\nIn de CoronaCheck-app is alleen de anonieme QR-code zichtbaar, zonder testdetails.</string>
   <string name="button_continue">Verder</string>
-  <string name="commercial_test_error_invalid_code">Deze code is niet geldig. Een code ziet er bijvoorbeeld zo uit: VAC-YYYYYYYYY1-F2.</string>
+  <string name="commercial_test_error_invalid_code">Deze code is niet geldig. Een code ziet er bijvoorbeeld zo uit: BRB-YYYYYYYYY1-Z2.</string>
   <string name="commercial_test_error_invalid_combination">Geen geldige combinatie. Vul de 6-cijferige verificatiecode in.</string>
   <string name="commercial_test_error_unknown_test_provider">Ophaalcode is van een onbekende testlocatie</string>
   <string name="commercial_test_error_empty_retrieval_code">Graag eerst een ophaalcode invullen</string>

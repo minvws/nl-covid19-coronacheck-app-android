@@ -56,10 +56,10 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
         val policySelectionAction = VerificationPolicyInfoFragmentDirections.actionPolicySelection(
             selectionType = VerificationPolicySelectionType.Default(scannerStateUseCase.get()),
             toolbarTitle = getString(
-                if (verificationPolicySelectionStateUseCase.get() != VerificationPolicySelectionState.None) {
-                    R.string.verifier_risksetting_changeselection_title
-                } else {
+                if (verificationPolicySelectionStateUseCase.get() is VerificationPolicySelectionState.Selection.None) {
                     R.string.verifier_menu_risksetting
+                } else {
+                    R.string.verifier_risksetting_changeselection_title
                 }
             ),
         )
@@ -73,21 +73,24 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
         binding.separator2.visibility = VISIBLE
         binding.policySettingHeader.visibility = VISIBLE
         binding.policySettingBody.visibility = VISIBLE
-        binding.policySettingHeader.text = getString(R.string.verifier_risksetting_changeselection, verificationPolicy.configValue)
+        binding.policySettingHeader.text =
+            getString(R.string.verifier_risksetting_changeselection, verificationPolicy.configValue)
         binding.policySettingBody.text = getString(bodyTextStringId)
     }
 
     private fun setupPolicy() {
         when (scannerStateUseCase.get().verificationPolicySelectionState) {
-            VerificationPolicySelectionState.None -> {
+            VerificationPolicySelectionState.Selection.None -> {
             }
-            VerificationPolicySelectionState.Policy1G -> {
+            VerificationPolicySelectionState.Policy1G,
+            VerificationPolicySelectionState.Selection.Policy1G -> {
                 displayPolicyViews(
                     VerificationPolicy.VerificationPolicy1G,
                     R.string.verifier_risksetting_subtitle_1G
                 )
             }
-            VerificationPolicySelectionState.Policy3G -> {
+            VerificationPolicySelectionState.Policy3G,
+            VerificationPolicySelectionState.Selection.Policy3G -> {
                 displayPolicyViews(
                     VerificationPolicy.VerificationPolicy3G,
                     R.string.verifier_risksetting_subtitle_3G

@@ -152,7 +152,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     }
 
     private fun launchFragment(
-        policySelectionState: VerificationPolicySelectionState = VerificationPolicySelectionState.None,
+        policySelectionState: VerificationPolicySelectionState = VerificationPolicySelectionState.Selection.None,
         selectionType: VerificationPolicySelectionType = VerificationPolicySelectionType.FirstTimeUse(
             ScannerState.Unlocked(policySelectionState)
         ),
@@ -172,9 +172,11 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
                 recentScanLogsLiveDataEvent.postValue(Event(scannerUsedRecently))
             }
             coEvery { radioButtonSelected } returns when (policySelectionState) {
-                VerificationPolicySelectionState.None -> null
-                VerificationPolicySelectionState.Policy1G -> R.id.policy1G
-                VerificationPolicySelectionState.Policy3G -> R.id.policy3G
+                VerificationPolicySelectionState.Selection.None -> null
+                VerificationPolicySelectionState.Policy1G,
+                VerificationPolicySelectionState.Selection.Policy1G -> R.id.policy1G
+                VerificationPolicySelectionState.Policy3G,
+                VerificationPolicySelectionState.Selection.Policy3G-> R.id.policy3G
             }
             coEvery { updateRadioButton(any()) } returns Unit
             coEvery { storeSelection(any()) } returns Unit

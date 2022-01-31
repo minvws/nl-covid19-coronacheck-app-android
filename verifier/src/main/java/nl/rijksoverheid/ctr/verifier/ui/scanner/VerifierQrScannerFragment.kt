@@ -9,7 +9,6 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionStateUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
@@ -41,12 +40,14 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
 
     override fun getCopy(): Copy {
         val verificationPolicyCopy = when(verificationPolicySelectionStateUseCase.get()) {
-            VerificationPolicySelectionState.None -> null
-            VerificationPolicySelectionState.Policy1G -> Copy.VerificationPolicy(
+            VerificationPolicySelectionState.Selection.None,
+            VerificationPolicySelectionState.Policy1G,
+            VerificationPolicySelectionState.Policy3G -> null
+            VerificationPolicySelectionState.Selection.Policy1G -> Copy.VerificationPolicy(
                 title = getString(R.string.verifier_scanner_policy_indication, VerificationPolicy.VerificationPolicy1G.configValue),
                 indicatorColor = R.color.primary_blue
             )
-            VerificationPolicySelectionState.Policy3G -> Copy.VerificationPolicy(
+            VerificationPolicySelectionState.Selection.Policy3G -> Copy.VerificationPolicy(
                 title = getString(R.string.verifier_scanner_policy_indication, VerificationPolicy.VerificationPolicy3G.configValue),
                 indicatorColor = R.color.secondary_green
             )
