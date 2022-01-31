@@ -68,5 +68,4 @@
         android:visibility="invisible"
         android:text="@string/verifier_result_access_title_highrisk"/>
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
