@@ -79,7 +79,7 @@ class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
     }
 
     private fun launchFragment(
-        verificationPolicySelectionState: VerificationPolicySelectionState = None,
+        verificationPolicySelectionState: VerificationPolicySelectionState = Selection.None,
         isVerificationPolicySelectionEnabled: Boolean = true,
     ) {
         loadKoinModules(
