@@ -123,7 +123,7 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
         viewModel.testResult.observe(viewLifecycleOwner, EventObserver {
             when (it) {
                 is TestResult.EmptyToken -> showTokenError(getFragmentData().noUniqueCodeEntered)
-                is TestResult.InvalidToken -> showTokenError(R.string.commercial_test_error_invalid_code)
+                is TestResult.InvalidToken -> showTokenError(getFragmentData().invalidTokenText)
                 is TestResult.UnknownTestProvider -> showTokenError(R.string.commercial_test_error_unknown_test_provider)
                 is TestResult.NegativeTestResult -> showNegativeTestResult(it)
                 is TestResult.NoNegativeTestResult -> {

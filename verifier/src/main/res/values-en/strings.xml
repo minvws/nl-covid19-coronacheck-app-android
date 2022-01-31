@@ -193,7 +193,6 @@
   <string name="scan_result_invalid_reason_description_2G"><![CDATA[A red screen with a cross means the QR code does not comply with the Dutch regulations, or is not valid for locations with 2G access.<br/><br/><b>Here\'s what you can do:</b><br/><ol><li>Check if the time is set correctly, on the visitor\'s phone as well as your own. Make sure date and time are set to \'set automatically\'.</li><li>Check if the visitor is showing an original certificate. A screenshot of their certificate may cause problems.</li><li>Ask the visitor to completely close the app, and restart it. Please rescan the QR code after.</li></ol><br/><b>Does the screen stay red?</b><br/>Ask the visitor to contact the CoronaCheck help desk.<br/><br/><b>Please note:</b> without a screen with check mark, the visitor cannot be given access.]]></string>
   <string name="verifier_risksetting_changeselection_title">Change scan setting</string>
   <string name="scan_log_list_2g_plus">2G+</string>
-  <string name="general_menu">Menu </string>
   <string name="new_in_app_1G_title">1G access</string>
   <string name="new_in_app_1G_subtitle">At locations where the coronavirus entry pass is being used, only visitors with a test certificate get access (1G access). The CoronaCheck scanner only shows a screen with check mark when scanning a test certificate.</string>
   <string name="verifier_result_access_title_2g_plus">2G+ check done</string>
@@ -204,5 +203,5 @@
   <string name="verifier_result_denied_personal_data_mismatch_title">De QR-codes hebben niet dezelfde persoonsgegevens</string>
   <string name="verifier_risksetting_2g_plus_title">2G+ access</string>
   <string name="verifier_scanner_honeywell_footer">Prefer the barcode scanner?\nUse the scan buttons on your device.</string>
-  <string name="general_navigationbar_menu_button_label">Menu</string>
+  <string name="general_menu">Menu</string>
 </resources>
