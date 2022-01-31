@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -118,15 +117,13 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
             }
 
             // This button needs to be shown in this view instead of MyOverviewFragment (which is a single item in the viewpager)
-            val showAddQrButton =
-                dashboardTabItems.first().items.any { it is DashboardItem.AddQrButtonItem && it.show }
-            binding.addQrButton.visibility = if (showAddQrButton) VISIBLE else GONE
-            if (showAddQrButton) {
-                binding.addQrButton.setOnClickListener {
-                    navigateSafety(
-                        MyOverviewFragmentDirections.actionQrType()
-                    )
-                }
+            binding.addQrButton.isVisible = dashboardTabItems.any { dashboardTabItem ->
+                dashboardTabItem.items.any { it is DashboardItem.AddQrButtonItem }
+            }
+            binding.addQrButton.setOnClickListener {
+                navigateSafety(
+                    MyOverviewFragmentDirections.actionQrType()
+                )
             }
         }
     }
