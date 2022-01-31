@@ -57,6 +57,41 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
     }
 
     @Test
+    fun `Events with different scopes can both exists in the database`() = runBlocking {
+        val wallet = getDummyWallet()
+
+        // Insert entities into database
+        insertWalletInDatabase(
+            wallet = wallet
+        )
+
+        val eventGroup1 = EventGroupEntity(
+            id = 1,
+            walletId = 1,
+            providerIdentifier = "ggd",
+            type = OriginType.Recovery,
+            scope = "firstepisode",
+            maxIssuedAt = OffsetDateTime.now(),
+            jsonData = "".toByteArray()
+        )
+
+        val eventGroup2 = EventGroupEntity(
+            id = 2,
+            walletId = 1,
+            providerIdentifier = "ggd",
+            type = OriginType.Recovery,
+            scope = "recovery",
+            maxIssuedAt = OffsetDateTime.now(),
+            jsonData = "".toByteArray()
+        )
+
+        db.eventGroupDao().insertAll(listOf(eventGroup1, eventGroup2))
+
+        assertEquals("firstepisode", db.eventGroupDao().getAll()[0].scope)
+        assertEquals("recovery", db.eventGroupDao().getAll()[1].scope)
+    }
+
+    @Test
     fun `Remove wallet clears correct database entries`() = runBlocking {
         val wallet = getDummyWallet()
 
