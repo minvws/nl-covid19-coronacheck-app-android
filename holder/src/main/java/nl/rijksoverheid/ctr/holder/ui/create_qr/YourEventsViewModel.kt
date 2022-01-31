@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -37,7 +38,8 @@ abstract class YourEventsViewModel : ViewModel() {
         flow: Flow,
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         originType: OriginType,
-        removePreviousEvents: Boolean
+        removePreviousEvents: Boolean,
+        afterIncompleteVaccination: Boolean
     )
 
     abstract fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>)
@@ -53,7 +55,8 @@ class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val holderDatabase: HolderDatabase,
-    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil
+    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil,
+    private val scopeUtil: ScopeUtil
 ) : YourEventsViewModel() {
 
     override fun saveNegativeTest2(flow: Flow, negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
@@ -109,7 +112,8 @@ class YourEventsViewModelImpl(
         flow: Flow,
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         originType: OriginType,
-        removePreviousEvents: Boolean
+        removePreviousEvents: Boolean,
+        afterIncompleteVaccination: Boolean
     ) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
@@ -118,7 +122,11 @@ class YourEventsViewModelImpl(
                 val result = saveEventsUseCase.saveRemoteProtocols3(
                     remoteProtocols3 = remoteProtocols3,
                     originType = originType,
-                    removePreviousEvents = removePreviousEvents
+                    removePreviousEvents = removePreviousEvents,
+                    scope = scopeUtil.getScopeForOriginType(
+                        originType = originType,
+                        withIncompleteVaccination = afterIncompleteVaccination
+                    )
                 )
 
                 when (result) {

@@ -27,12 +27,14 @@ interface GetEventProvidersWithTokensUseCase {
      * @param eventProviders A list of all the event providers
      * @param tokens A list of all tokens
      * @param filter events to filter by type
+     * @param scope optional parameter to specify the scope of the filter
      * @param targetProviderIds used to filter on specific target providers
      */
     suspend fun get(
         eventProviders: List<RemoteConfigProviders.EventProvider>,
         tokens: List<RemoteAccessTokens.Token>,
         filter: String,
+        scope: String?,
         targetProviderIds: List<String>? = null,
     ): List<EventProviderWithTokenResult>
 }
@@ -46,6 +48,7 @@ class GetEventProvidersWithTokensUseCaseImpl(
         eventProviders: List<RemoteConfigProviders.EventProvider>,
         tokens: List<RemoteAccessTokens.Token>,
         filter: String,
+        scope: String?,
         targetProviderIds: List<String>?
     ): List<EventProviderWithTokenResult> {
 
@@ -72,6 +75,7 @@ class GetEventProvidersWithTokensUseCaseImpl(
                 url = eventProvider.unomiUrl,
                 token = token.unomi,
                 filter = filter,
+                scope = scope,
                 signingCertificateBytes = eventProvider.cms,
                 provider = eventProvider.providerIdentifier,
             )

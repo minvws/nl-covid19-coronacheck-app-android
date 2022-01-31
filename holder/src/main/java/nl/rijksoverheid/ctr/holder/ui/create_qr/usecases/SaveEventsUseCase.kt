@@ -25,7 +25,8 @@ interface SaveEventsUseCase {
     suspend fun saveRemoteProtocols3(
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         originType: OriginType,
-        removePreviousEvents: Boolean
+        removePreviousEvents: Boolean,
+        scope: String?
     ): SaveEventsUseCaseImpl.SaveEventResult
 
     suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean
@@ -47,7 +48,8 @@ class SaveEventsUseCaseImpl(
                 providerIdentifier = negativeTest2.providerIdentifier,
                 type = OriginType.Test,
                 maxIssuedAt = negativeTest2.result?.sampleDate!!,
-                jsonData = rawResponse
+                jsonData = rawResponse,
+                scope = null
             )
 
             // Save entity in database
@@ -76,6 +78,7 @@ class SaveEventsUseCaseImpl(
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         originType: OriginType,
         removePreviousEvents: Boolean,
+        scope: String?
     ): SaveEventResult {
         try {
             val entities = remoteProtocols3.map { remoteProtocol3 ->
@@ -85,7 +88,8 @@ class SaveEventsUseCaseImpl(
                     providerIdentifier = remoteProtocol3.key.providerIdentifier,
                     type = originType,
                     maxIssuedAt = getMaxIssuedAt(remoteEvents),
-                    jsonData = remoteProtocol3.value
+                    jsonData = remoteProtocol3.value,
+                    scope = scope
                 )
             }
 

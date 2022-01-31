@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 
 /*
@@ -32,6 +33,7 @@ interface GetMijnCnEventsUsecase {
 class GetMijnCnEventsUsecaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase,
+    private val scopeUtil: ScopeUtil
 ) : GetMijnCnEventsUsecase {
 
     override suspend fun getEvents(
@@ -57,12 +59,15 @@ class GetMijnCnEventsUsecaseImpl(
             return EventsResult.Error.noProvidersError(originType)
         }
 
-
         return if (eventProviders.isNotEmpty()) {
             // We have received providers that claim to have events for us so we get those events for each provider
             val filter = EventProviderRepository.getFilter(originType)
+            val scope = scopeUtil.getScopeForRemoteOriginType(
+                remoteOriginType = originType,
+                withIncompleteVaccination = withIncompleteVaccination
+            )
 
-                val eventResults = eventProviders.map { eventProvider ->
+            val eventResults = eventProviders.map { eventProvider ->
                 getRemoteEventsUseCase.getRemoteEvents(
                     eventProvider = eventProvider,
                     token = RemoteAccessTokens.Token(
@@ -70,7 +75,8 @@ class GetMijnCnEventsUsecaseImpl(
                         unomi = "",
                         event = jwt
                     ),
-                    filter = filter
+                    filter = filter,
+                    scope = scope
                 )
             }
 

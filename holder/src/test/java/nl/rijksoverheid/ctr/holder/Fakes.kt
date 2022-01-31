@@ -452,6 +452,7 @@ fun fakeEventProviderRepository(
         url: String,
         token: String,
         filter: String,
+        scope: String?,
         signingCertificateBytes: ByteArray,
         provider: String,
     ): NetworkRequestResult<RemoteUnomi> {
@@ -463,6 +464,7 @@ fun fakeEventProviderRepository(
         token: String,
         signingCertificateBytes: ByteArray,
         filter: String,
+        scope: String?,
         provider: String,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
         return events.invoke(url)
@@ -699,11 +701,12 @@ fun fakeEventGroupEntity(
     walletId: Int = 1,
     providerIdentifier: String = "",
     type: OriginType = OriginType.Vaccination,
+    scope: String? = null,
     maxIssuedAt: OffsetDateTime = OffsetDateTime.of(
         2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
     ),
     jsonData: ByteArray = ByteArray(1)
-) = EventGroupEntity(id, walletId, providerIdentifier, type, maxIssuedAt, jsonData)
+) = EventGroupEntity(id, walletId, providerIdentifier, type, scope, maxIssuedAt, jsonData)
 
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),
