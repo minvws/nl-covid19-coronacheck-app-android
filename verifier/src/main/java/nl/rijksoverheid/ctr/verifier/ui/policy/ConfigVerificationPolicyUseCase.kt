@@ -43,7 +43,7 @@ class ConfigVerificationPolicyUseCaseImpl(
             }
         }
 
-        // Store current config setting of whether policy setting is selectable for
+        // Store current config setting whether policy setting is selectable
         persistenceManager.setIsPolicySelectable(verificationPoliciesEnabled.size > 1)
     }
 }
