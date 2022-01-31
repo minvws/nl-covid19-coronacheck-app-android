@@ -31,6 +31,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
 import nl.rijksoverheid.ctr.zebrascanner.ZebraManager
+import nl.rijksoverheid.ctr.honeywellscanner.HoneywellManager
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.error.NoBeanDefFoundException
@@ -45,6 +46,11 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     private var _binding: FragmentScannerBinding? = null
     val binding get() = _binding!!
     private val zebraManager: ZebraManager? = try {
+        get()
+    } catch (e: NoBeanDefFoundException) {
+        null
+    }
+    private val honeywellManager: HoneywellManager? = try {
         get()
     } catch (e: NoBeanDefFoundException) {
         null
@@ -82,6 +88,14 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             })
 
             binding.zebraContrainer.visibility = View.VISIBLE
+        }
+        else if(honeywellManager?.isHoneywellDevice() == true){
+            // Setup Honeywell scanner
+            honeywellManager.setupHoneywellScanner(onDatawedgeResultListener = {
+                onQrScanned(it)
+            })
+
+            binding.honeywellContrainer.visibility = View.VISIBLE
         }
 
         // Set overlay to software accelerated only to fix transparency on certain devices
@@ -137,12 +151,9 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     protected fun setUpScanner(forceCamera: Boolean = false) {
-        if (forceCamera || zebraManager == null || !zebraManager.isZebraDevice()) {
+        if (forceCamera || ((zebraManager == null || !zebraManager.isZebraDevice()) && (honeywellManager == null || !honeywellManager.isHoneywellDevice()))) {
             setupCamera()
         } else {
-            // Enable Zebra scanners
-            zebraManager.resumeScanner()
-
             binding.toolbar.menu.findItem(R.id.camera).isVisible = true
             binding.toolbar.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
@@ -343,9 +354,25 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         _binding = null
         requireActivity().requestedOrientation =
             ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-        // Teardown Zebra scanner if one is running
+        // Teardown Device Manufacturer scanner if one is running
         zebraManager?.teardownZebraScanner()
+        honeywellManager?.teardownHoneywellScanner()
     }
+
+    // Handle users swapping between apps meanwhile
+
+    override fun onResume() {
+        super.onResume()
+        zebraManager?.resumeScanner()
+        honeywellManager?.resumeScanner()
+    }
+
+    override fun onPause() {
+        zebraManager?.suspendScanner()
+        honeywellManager?.suspendScanner()
+        super.onPause()
+    }
+
 
     /**
      *  [androidx.camera.core.ImageAnalysis], [androidx.camera.core.Preview] requires enum value of
