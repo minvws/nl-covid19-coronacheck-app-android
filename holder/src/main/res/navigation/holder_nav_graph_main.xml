@@ -379,14 +379,6 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/action_could_not_create_qr"
-            app:destination="@id/nav_could_not_create_qr"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
             android:id="@+id/action_mijn_cn"
             app:destination="@id/nav_mijn_cn"
             app:enterAnim="@anim/slide_in_right"
@@ -669,6 +661,16 @@
             app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_my_overview_tabs"
             app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_my_overview"
+            app:destination="@id/nav_graph_overview"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_graph_overview"
+            app:popUpToInclusive="true" />
 
     </fragment>
 

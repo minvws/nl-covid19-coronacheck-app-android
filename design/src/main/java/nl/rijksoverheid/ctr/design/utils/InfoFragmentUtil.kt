@@ -53,7 +53,6 @@ class InfoFragmentUtilImpl: InfoFragmentUtil {
         )
     }
 
-
     override fun presentFullScreen(currentFragment: Fragment,
                                    @IdRes infoFragmentNavigationId: Int,
                                    toolbarTitle: String,
