@@ -22,6 +22,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -48,7 +49,7 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
             )
         )
         assertHasBackground(R.id.root, R.color.secondary_green)
-        assertDisplayed(R.id.title, R.string.verifier_result_access_title_lowrisk)
+        assertDisplayed(R.id.title, R.string.verifier_result_access_title)
     }
 
     @Test
@@ -79,7 +80,7 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
                 }
                 factory {
                     mockk<FeatureFlagUseCase>().apply {
-                        every { isVerificationPolicyEnabled() } answers { true }
+                        every { isVerificationPolicySelectionEnabled() } answers { false }
                     }
                 }
             }

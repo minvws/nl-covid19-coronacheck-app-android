@@ -42,7 +42,7 @@ class IntroductionStatusUseCaseImplTest {
         every { introductionData.newFeatures } returns listOf(mockk())
         every { introductionData.newFeatureVersion } returns 2
         every { introductionPersistenceManager.getNewFeaturesSeen(2) } returns false
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { true }
+        every { featureFlagUseCase.isVerificationPolicySelectionEnabled() } answers { true }
 
         assertEquals(
             introductionStatusUseCase.get(),

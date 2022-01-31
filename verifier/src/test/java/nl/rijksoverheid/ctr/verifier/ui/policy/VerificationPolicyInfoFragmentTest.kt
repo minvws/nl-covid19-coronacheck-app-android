@@ -9,10 +9,8 @@ import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assert
 import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
-import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState.*
 import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 import org.junit.Test
@@ -21,6 +19,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -30,6 +29,7 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
+@Config(qualifiers = "nl-land")
 class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
@@ -43,25 +43,23 @@ class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
         launchFragment()
 
         assertNotDisplayed(R.id.separator1)
-        assertNotDisplayed(R.id.separator2)
         assertNotDisplayed(R.id.policySettingHeader)
         assertNotDisplayed(R.id.policySettingBody)
         assertDisplayed(R.id.bottom)
     }
 
     @Test
-    fun `given 2g policy is set, 2g policy related views are displayed`() {
+    fun `given 1g policy is set, 1g policy related views are displayed`() {
         launchFragment(
             verificationPolicySelectionState = Policy1G
         )
 
         assertDisplayed(R.id.separator1)
-        assertDisplayed(R.id.separator2)
         assertDisplayed(
             R.id.policySettingHeader,
-            R.string.verifier_start_scan_qr_policy_indication_2g
+            "1G-toegang ingesteld"
         )
-        assertDisplayed(R.id.policySettingBody, R.string.verifier_risksetting_highrisk_subtitle)
+        assertDisplayed(R.id.policySettingBody, R.string.verifier_risksetting_subtitle_1G)
         assertNotDisplayed(R.id.bottom)
     }
 
@@ -72,12 +70,11 @@ class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
         )
 
         assertDisplayed(R.id.separator1)
-        assertDisplayed(R.id.separator2)
         assertDisplayed(
             R.id.policySettingHeader,
-            R.string.verifier_start_scan_qr_policy_indication_3g
+            "3G-toegang ingesteld"
         )
-        assertDisplayed(R.id.policySettingBody, R.string.verifier_risksetting_lowrisk_subtitle)
+        assertDisplayed(R.id.policySettingBody, R.string.verifier_risksetting_subtitle_3G)
         assertNotDisplayed(R.id.bottom)
     }
 
@@ -94,7 +91,6 @@ class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
                 }
                 factory {
                     mockk<FeatureFlagUseCase>().apply {
-                        every { isVerificationPolicyEnabled() } answers { true }
                         every { isVerificationPolicySelectionEnabled() } answers { isVerificationPolicySelectionEnabled }
                     }
                 }

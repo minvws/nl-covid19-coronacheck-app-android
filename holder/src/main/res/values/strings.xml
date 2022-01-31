@@ -394,8 +394,8 @@
   <string name="add_paper_proof_description">Vul de lettercombinatie in. Deze heb je samen met het papieren bewijs gekregen.</string>
   <string name="add_paper_proof_input_header">Lettercombinatie</string>
   <string name="add_paper_proof_input_hint">Bijv. FLBRXQ</string>
-  <string name="add_paper_proof_input_invalid">Deze lettercombinatie bestaat niet</string>
-  <string name="add_paper_proof_input_not_6_chars">Vul de 6-letterige combinatie in</string>
+  <string name="add_paper_proof_input_invalid">Deze lettercombinatie is niet geldig. Een combinatie ziet er bijvoorbeeld zo uit: FLBRXQ.</string>
+  <string name="add_paper_proof_input_not_6_chars">Graag eerst een lettercombinatie invullen</string>
   <string name="add_paper_proof_no_letter_combination_button">Geen lettercombinatie?</string>
   <string name="no_letter_combination_dialog_title">Geen lettercombinatie?</string>
   <string name="no_letter_combination_dialog_description"><![CDATA[Het is dan niet mogelijk om je bewijzen op deze manier aan de app toe te voegen.<br/><br/>Je hebt alleen een lettercombinatie als je jouw papieren bewijzen hebt aangevraagd bij je zorgverlener, of opgestuurd hebt gekregen per post.<br/><br/><b>Heb je zelf je bewijs geprint?</b><br/>Je kunt dan je bewijzen toevoegen aan de app met behulp van DigiD.]]></string>
@@ -576,7 +576,7 @@
   <string name="holder_dashboard_newvaliditybanner_url">https://www.rijksoverheid.nl/coronabewijs</string>
   <string name="visitorpass_token_next">Volgende</string>
   <string name="visitorpass_code_review_placeholder_screenreader">Vul hier je beoordelingscode in</string>
-  <string name="visitorpass_token_error_empty_token">Graag je beoordelingscode invullen</string>
+  <string name="visitorpass_token_error_empty_token">Graag eerst een beoordelingscode invullen</string>
   <string name="visitorpass_token_error_unknown_provider">Deze testlocatie is (nog) niet bij ons bekend. Neem contact op met de locatie waar je bent getest.</string>
   <string name="visitorpass_token_error_invalid_combination">Geen geldige combinatie. Vul de 6-cijferige verificatiecode in.</string>
   <string name="visitorpass_token_modal_notoken_title">Heb je geen beoordelingscode?</string>

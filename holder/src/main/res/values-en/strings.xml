@@ -111,8 +111,8 @@
   <string name="commercial_test_error_invalid_code">This code is invalid. A valid code looks like this: VAC-YYYYYYYYY1-F2.</string>
   <string name="commercial_test_error_invalid_combination">Invalid combination. Enter the 6-digit verification code.</string>
   <string name="commercial_test_error_unknown_test_provider">Retrieval code is from an unknown test location</string>
-  <string name="commercial_test_error_empty_retrieval_code">Please fill out a retrieval code first</string>
-  <string name="commercial_test_error_empty_verification_code">Please fill out a verification code first</string>
+  <string name="commercial_test_error_empty_retrieval_code">Please enter a retrieval code first</string>
+  <string name="commercial_test_error_empty_verification_code">Please enter a verification code first</string>
   <string name="no_negative_test_result_title">No negative test result</string>
   <string name="no_negative_test_result_description"><![CDATA[No negative test result available.]]></string>
   <string name="test_result_not_known_title">Test result not yet known</string>
@@ -394,8 +394,8 @@
   <string name="add_paper_proof_description">Please enter the letter combination. You’ve received this together with the paper certificate.</string>
   <string name="add_paper_proof_input_header">Letter combination</string>
   <string name="add_paper_proof_input_hint">E.g. FLBRXQ</string>
-  <string name="add_paper_proof_input_invalid">This letter combination doesn\'t exist</string>
-  <string name="add_paper_proof_input_not_6_chars">Enter the 6-letter combination.</string>
+  <string name="add_paper_proof_input_invalid">This letter combination is invalid. A valid combination looks like this: FLBRXQ.</string>
+  <string name="add_paper_proof_input_not_6_chars">Please enter a letter combination first</string>
   <string name="add_paper_proof_no_letter_combination_button">No letter combination?</string>
   <string name="no_letter_combination_dialog_title">No letter combination?</string>
   <string name="no_letter_combination_dialog_description"><![CDATA[Then you won\'t be able to add your certificates to the app this way.<br/><br/>You only have a letter combination if you requested your paper certificates from your healthcare provider, or had them delivered by mail.<br/><br/><b>Did you print your certificate yourself?</b><br/>Then you can add your certificates to the app using DigiD.]]></string>
@@ -575,7 +575,7 @@
   <string name="holder_dashboard_newvaliditybanner_url">https://www.government.nl/covid-certificate</string>
   <string name="visitorpass_token_next">Next</string>
   <string name="visitorpass_code_review_placeholder_screenreader">Enter your approval code here</string>
-  <string name="visitorpass_token_error_empty_token">Please enter your approval code</string>
+  <string name="visitorpass_token_error_empty_token">Please enter an approval code first</string>
   <string name="visitorpass_token_error_unknown_provider">This test location is not known to us. Please contact the location who tested you.</string>
   <string name="visitorpass_token_error_invalid_combination">Invalid combination. Enter the 6-digit verification code.</string>
   <string name="visitorpass_token_modal_notoken_title">Don\'t have an approval code?</string>
@@ -648,6 +648,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
     <item quantity="one">minute</item>
     <item quantity="other">minutes</item>
   </plurals>
+  <string name="general_menu">Menu</string>
   <string name="holder_dashboard_addCard_title">Nieuwe vaccinatie of test toevoegen</string>
   <string name="general_menu">Menu</string>
   <string name="holder_menu_listItem_addVaccinationOrTest_title">Vaccinatie of test toevoegen</string>
