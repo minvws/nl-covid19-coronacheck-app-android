@@ -154,13 +154,6 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         if (forceCamera || ((zebraManager == null || !zebraManager.isZebraDevice()) && (honeywellManager == null || !honeywellManager.isHoneywellDevice()))) {
             setupCamera()
         } else {
-
-            /* this is now done in the onResume() */
-            // Enable Zebra scanners
-            // zebraManager.resumeScanner()
-            // Enable Honeywell scanners
-            // honeywellManager?.resumeScanner()
-
             binding.toolbar.menu.findItem(R.id.camera).isVisible = true
             binding.toolbar.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
