@@ -745,7 +745,7 @@
     <fragment
         android:id="@+id/nav_menu"
         android:name="nl.rijksoverheid.ctr.design.fragments.menu.MenuFragment"
-        android:label="@string/general_navigationbar_menu_button_label">
+        android:label="@string/general_menu">
 
         <argument
             android:name="menuSections"

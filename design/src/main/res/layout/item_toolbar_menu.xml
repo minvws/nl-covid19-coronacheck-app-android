@@ -18,7 +18,7 @@
         android:textColor="@color/primary_text"
         android:textStyle="bold"
         android:textSize="14sp"
-        android:text="@string/general_navigationbar_menu_button_label"
+        android:text="@string/general_menu"
         android:textAllCaps="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
