@@ -33,7 +33,9 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
 
 val MIGRATION_3_4 = object : Migration(3, 4) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("ALTER TABLE event_group ADD COLUMN scope VARCHAR")
+        database.execSQL("ALTER TABLE event_group ADD COLUMN scope TEXT")
+        database.execSQL("DROP INDEX index_event_group_provider_identifier_type")
+        database.execSQL("CREATE UNIQUE INDEX index_event_group_provider_identifier_type_scope ON event_group(provider_identifier, type, scope)")
     }
 }
 

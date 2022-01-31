@@ -1,9 +1,7 @@
 package nl.rijksoverheid.ctr.holder.persistence.database
 
-import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry
-import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -34,6 +32,20 @@ class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
 
         // Assert no errors
         val cursor = dbV2.query("SELECT * FROM green_card")
+        assertNotNull(cursor)
+    }
+
+    @Test
+    fun testMigration3To4() {
+        // Our database before the migration
+        val dbV1 = helper.createDatabase(DATABASE_NAME, 3)
+        dbV1.close()
+
+        // The database after the migration
+        val dbV2 = helper.runMigrationsAndValidate(DATABASE_NAME, 4, true, MIGRATION_3_4)
+
+        // Assert no errors
+        val cursor = dbV2.query("SELECT * FROM event_group")
         assertNotNull(cursor)
     }
 }
