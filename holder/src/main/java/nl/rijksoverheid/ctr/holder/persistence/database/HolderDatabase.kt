@@ -31,9 +31,15 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
     }
 }
 
+val MIGRATION_3_4 = object : Migration(3, 4) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE event_group ADD COLUMN scope VARCHAR")
+    }
+}
+
 @Database(
     entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class, OriginEntity::class],
-    version = 3
+    version = 4
 )
 @TypeConverters(HolderDatabaseConverter::class)
 abstract class HolderDatabase : RoomDatabase() {
@@ -49,7 +55,7 @@ abstract class HolderDatabase : RoomDatabase() {
                 SupportFactory(SQLiteDatabase.getBytes(secretKeyUseCase.json().toCharArray()))
             return Room
                 .databaseBuilder(context, HolderDatabase::class.java, "holder-database")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                 .apply {
                     if (isProd) {
                         openHelperFactory(supportFactory)

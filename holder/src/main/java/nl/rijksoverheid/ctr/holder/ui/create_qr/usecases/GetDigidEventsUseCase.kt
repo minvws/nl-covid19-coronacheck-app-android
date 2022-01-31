@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
@@ -37,7 +38,8 @@ class GetDigidEventsUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase,
-    private val getRemoteEventsUseCase: GetRemoteEventsUseCase
+    private val getRemoteEventsUseCase: GetRemoteEventsUseCase,
+    private val scopeUtil: ScopeUtil
 ) : GetDigidEventsUseCase {
 
     override suspend fun getEvents(
@@ -71,8 +73,8 @@ class GetDigidEventsUseCaseImpl(
 
         val filter = EventProviderRepository.getFilter(originType)
 
-        val scope = EventProviderRepository.getScope(
-            originType = originType,
+        val scope = scopeUtil.getScopeForRemoteOriginType(
+            remoteOriginType = originType,
             withIncompleteVaccination = withIncompleteVaccination
         )
 

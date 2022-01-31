@@ -55,7 +55,8 @@ class SaveEventsUseCaseImplTest {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
                 remoteProtocols3,
                 OriginType.Vaccination,
-                true
+                true,
+                null
             )
 
             coVerify { eventGroupDao.deleteAll() }
@@ -83,7 +84,8 @@ class SaveEventsUseCaseImplTest {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
                 remoteProtocols3,
                 OriginType.Recovery,
-                true
+                true,
+                null
             )
 
             coVerify { eventGroupDao.deleteAll() }
@@ -110,7 +112,8 @@ class SaveEventsUseCaseImplTest {
         providerIdentifier = remoteEvents.providerIdentifier,
         type = eventType,
         maxIssuedAt = remoteEvents.events!!.first().getDate()!!,
-        jsonData = byteArray
+        jsonData = byteArray,
+        scope = null
     )
 
     private fun createRemoteProtocol3(remoteEvent: RemoteEvent) = RemoteProtocol3(

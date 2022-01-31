@@ -31,6 +31,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
@@ -169,7 +170,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                getFlow(), type.remoteEvents, type.originType, false
+                                getFlow(), type.remoteEvents, type.originType, false, args.afterIncompleteVaccination
                             )
                         }
                     }
@@ -178,7 +179,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             replaceCertificateDialog(type.remoteEvents, type.originType)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                getFlow(), type.remoteEvents, type.originType, false
+                                getFlow(), type.remoteEvents, type.originType, false, args.afterIncompleteVaccination
                             )
                         }
                     }
@@ -301,7 +302,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     flow = getFlow(),
                     remoteProtocols3 = remoteEvents,
                     originType = originType,
-                    removePreviousEvents = true
+                    removePreviousEvents = true,
+                    afterIncompleteVaccination = args.afterIncompleteVaccination
                 )
             },
             negativeButtonText = R.string.your_events_replace_dialog_negative_button,

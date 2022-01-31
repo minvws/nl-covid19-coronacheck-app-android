@@ -701,11 +701,12 @@ fun fakeEventGroupEntity(
     walletId: Int = 1,
     providerIdentifier: String = "",
     type: OriginType = OriginType.Vaccination,
+    scope: String? = null,
     maxIssuedAt: OffsetDateTime = OffsetDateTime.of(
         2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
     ),
     jsonData: ByteArray = ByteArray(1)
-) = EventGroupEntity(id, walletId, providerIdentifier, type, maxIssuedAt, jsonData)
+) = EventGroupEntity(id, walletId, providerIdentifier, type, scope, maxIssuedAt, jsonData)
 
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),

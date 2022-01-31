@@ -90,6 +90,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                     ZoneOffset.UTC
                 ),
                 jsonData = "".toByteArray(),
+                scope = null,
                 providerIdentifier = "1"
             ),
             EventGroupEntity(
@@ -99,6 +100,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 maxIssuedAt = LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay().atOffset(
                     ZoneOffset.UTC
                 ),
+                scope = null,
                 jsonData = "".toByteArray(),
                 providerIdentifier = "2"
             )

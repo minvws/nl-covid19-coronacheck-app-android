@@ -36,25 +36,6 @@ interface EventProviderRepository {
                 }
             }
         }
-
-        fun getScope(originType: RemoteOriginType,
-                     withIncompleteVaccination: Boolean): String? {
-            return when (originType) {
-                is RemoteOriginType.Vaccination -> {
-                    null
-                }
-                is RemoteOriginType.Recovery -> {
-                    if (withIncompleteVaccination) {
-                        "firstepisode"
-                    } else {
-                        "recovery"
-                    }
-                }
-                is RemoteOriginType.Test -> {
-                    null
-                }
-            }
-        }
     }
 
     suspend fun getUnomi(
