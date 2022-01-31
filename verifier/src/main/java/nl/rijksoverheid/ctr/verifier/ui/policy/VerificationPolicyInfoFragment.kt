@@ -73,13 +73,16 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
         binding.separator2.visibility = VISIBLE
         binding.policySettingHeader.visibility = VISIBLE
         binding.policySettingBody.visibility = VISIBLE
-        binding.policySettingHeader.text = getString(R.string.verifier_risksetting_changeselection, verificationPolicy.configValue)
+        binding.policySettingHeader.text =
+            getString(R.string.verifier_risksetting_changeselection, verificationPolicy.configValue)
         binding.policySettingBody.text = getString(bodyTextStringId)
     }
 
     private fun setupPolicy() {
         when (scannerStateUseCase.get().verificationPolicySelectionState) {
-            VerificationPolicySelectionState.None, VerificationPolicySelectionState.Policy1G -> {
+            VerificationPolicySelectionState.Selection.None,
+            VerificationPolicySelectionState.Policy1G,
+            VerificationPolicySelectionState.Policy3G -> {
             }
             VerificationPolicySelectionState.Selection.Policy1G -> {
                 displayPolicyViews(

@@ -25,6 +25,8 @@ interface PersistenceManager {
     fun saveRandomKey(key: String)
     fun getLastScanLockTimeSeconds(): Long
     fun storeLastScanLockTimeSeconds(seconds: Long)
+    fun setIsPolicySelectable(isSelectable: Boolean)
+    fun getIsPolicySelectable(): Boolean
 }
 
 class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
@@ -37,6 +39,7 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         const val VERIFICATION_POLICY_SET = "VERIFICATION_POLICY_SET"
         const val RANDOM_KEY = "RANDOM_KEY"
         const val LAST_SCAN_LOCK_TIME_SECONDS = "LAST_SCAN_LOCK_TIME_SECONDS"
+        const val IS_POLICY_SELECTABLE = "IS_POLICY_SELECTABLE"
     }
 
     override fun setScanInstructionsSeen() {
@@ -98,5 +101,13 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
 
     override fun storeLastScanLockTimeSeconds(seconds: Long) {
         sharedPreferences.edit().putLong(LAST_SCAN_LOCK_TIME_SECONDS, seconds).apply()
+    }
+
+    override fun setIsPolicySelectable(isSelectable: Boolean) {
+       sharedPreferences.edit().putBoolean(IS_POLICY_SELECTABLE, isSelectable).apply()
+    }
+
+    override fun getIsPolicySelectable(): Boolean {
+        return sharedPreferences.getBoolean(IS_POLICY_SELECTABLE, false)
     }
 }

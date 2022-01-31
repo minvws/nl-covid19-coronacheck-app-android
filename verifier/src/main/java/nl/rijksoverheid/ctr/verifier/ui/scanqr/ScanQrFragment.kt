@@ -7,10 +7,10 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
-import nl.rijksoverheid.ctr.design.R.*
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
@@ -156,7 +156,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
     private fun onStateUpdated(scannerState: ScannerState) {
         when (scannerState.verificationPolicySelectionState) {
-            VerificationPolicySelectionState.None -> {
+            VerificationPolicySelectionState.Selection.None,
+            VerificationPolicySelectionState.Policy3G -> {
                 binding.bottom.hidePolicyIndication()
             }
             VerificationPolicySelectionState.Selection.Policy1G,
@@ -169,14 +170,13 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         }
 
         val imageDrawable = when (configVerificationPolicyUseCase.get()) {
-            VerificationPolicySelectionState.None -> {
-                R.drawable.illustration_scanner_get_started_3g
-            }
-            VerificationPolicySelectionState.Selection.Policy1G,
-            VerificationPolicySelectionState.Policy1G -> {
+            VerificationPolicySelectionState.Policy1G,
+            VerificationPolicySelectionState.Selection.Policy1G -> {
                 R.drawable.illustration_scanner_get_started_1g
             }
-            VerificationPolicySelectionState.Selection.Policy3G -> {
+            VerificationPolicySelectionState.Policy3G,
+            VerificationPolicySelectionState.Selection.Policy3G,
+            VerificationPolicySelectionState.Selection.None -> {
                 R.drawable.illustration_scanner_get_started_3g
             }
         }

@@ -12,18 +12,21 @@ import kotlinx.parcelize.Parcelize
  */
 sealed class VerificationPolicySelectionState : Parcelable {
 
-    @Parcelize
-    object None : VerificationPolicySelectionState()
-
     sealed class Selection : VerificationPolicySelectionState() {
 
         @Parcelize
-        object Policy3G : VerificationPolicySelectionState()
+        object Policy3G : Selection()
 
         @Parcelize
-        object Policy1G : VerificationPolicySelectionState()
+        object Policy1G : Selection()
+
+        @Parcelize
+        object None : Selection()
     }
 
     @Parcelize
     object Policy1G: VerificationPolicySelectionState()
+
+    @Parcelize
+    object Policy3G: VerificationPolicySelectionState()
 }
