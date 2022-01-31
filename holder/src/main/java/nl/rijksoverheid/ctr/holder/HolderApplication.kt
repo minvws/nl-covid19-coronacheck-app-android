@@ -85,8 +85,6 @@ open class HolderApplication : SharedApplication() {
 
         // Create default wallet in database if empty
         GlobalScope.launch {
-            val events = holderDatabase.eventGroupDao().getAll()
-
             if (holderDatabase.walletDao().getAll().isEmpty()) {
                 holderDatabase.walletDao().insert(
                     WalletEntity(

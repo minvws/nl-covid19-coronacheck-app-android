@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.persistence.database.entities
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
