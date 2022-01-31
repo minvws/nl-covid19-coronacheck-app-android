@@ -13,11 +13,10 @@ import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfig
  *
  */
 interface ConfigVerificationPolicyUseCase {
-    fun get(): VerificationPolicySelectionState
+    fun update()
 }
 
 class ConfigVerificationPolicyUseCaseImpl(
-    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase,
     private val cachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
     private val persistenceManager: PersistenceManager,
 ) : ConfigVerificationPolicyUseCase {
@@ -27,7 +26,7 @@ class ConfigVerificationPolicyUseCaseImpl(
      * 1. From what the user has selected in the [VerificationPolicySelectionFragment] (that is only if more than one policies are offered by the config)
      * 2. Directly from the config (if one and only one policy is offered by the config)
      */
-    override fun get(): VerificationPolicySelectionState {
+    override fun update() {
         val verificationPoliciesEnabled =
             cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
 
@@ -46,7 +45,5 @@ class ConfigVerificationPolicyUseCaseImpl(
 
         // Store current config setting of whether policy setting is selectable for
         persistenceManager.setIsPolicySelectable(verificationPoliciesEnabled.size > 1)
-
-        return verificationPolicySelectionStateUseCase.get()
     }
 }

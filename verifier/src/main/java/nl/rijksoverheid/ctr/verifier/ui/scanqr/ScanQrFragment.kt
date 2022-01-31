@@ -86,6 +86,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configVerificationPolicyUseCase.update()
+
         _binding = FragmentScanQrBinding.bind(view)
         binding.instructionsButton.setOnClickListener {
             navigateSafety(R.id.nav_scan_qr, ScanQrFragmentDirections.actionScanInstructions())
@@ -169,7 +171,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             }
         }
 
-        val imageDrawable = when (configVerificationPolicyUseCase.get()) {
+        val imageDrawable = when (scannerState.verificationPolicySelectionState) {
             VerificationPolicySelectionState.Policy1G,
             VerificationPolicySelectionState.Selection.Policy1G -> {
                 R.drawable.illustration_scanner_get_started_1g
