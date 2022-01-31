@@ -11,7 +11,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_menu"
-        android:title=""
+        android:title="@string/general_menu"
         app:showAsAction="always"
         app:actionLayout="@layout/item_toolbar_menu" />
 </menu>

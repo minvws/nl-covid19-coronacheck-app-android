@@ -25,6 +25,7 @@ sealed class InputTokenFragmentData(
     @StringRes val noResultScreenToolbarTitle: Int,
     @StringRes val noResultScreenTitle: Int,
     @StringRes val noResultScreenDescription: Int,
+    @StringRes val invalidTokenText: Int,
     @StringRes val buttonText: Int,
 ): Parcelable {
     @Parcelize
@@ -41,6 +42,7 @@ sealed class InputTokenFragmentData(
         noResultScreenToolbarTitle = R.string.commercial_test_type_title,
         noResultScreenTitle = R.string.no_negative_test_result_title,
         noResultScreenDescription = R.string.no_negative_test_result_description,
+        invalidTokenText = R.string.commercial_test_error_invalid_code,
         buttonText = R.string.commercial_test_button,
     )
 
@@ -58,6 +60,7 @@ sealed class InputTokenFragmentData(
         noResultScreenToolbarTitle = R.string.holder_event_vaccination_assessment_toolbar_title,
         noResultScreenTitle = R.string.holder_event_vaccination_assessment_nolist_title,
         noResultScreenDescription = R.string.holder_event_vaccination_assessment_nolist_message,
+        invalidTokenText = R.string.visitorpass_token_error_invalid_code,
         buttonText = R.string.onboarding_next,
     )
 }

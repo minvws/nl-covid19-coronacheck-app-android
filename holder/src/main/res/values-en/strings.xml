@@ -648,7 +648,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
     <item quantity="one">minute</item>
     <item quantity="other">minutes</item>
   </plurals>
-  <string name="holder_dashboard_addCard_title">Add new vaccination or test</string>
   <string name="general_menu">Menu</string>
+  <string name="holder_dashboard_addCard_title">Nieuwe vaccinatie of test toevoegen</string>
   <string name="holder_menu_listItem_addVaccinationOrTest_title">Vaccinatie of test toevoegen</string>
 </resources>
