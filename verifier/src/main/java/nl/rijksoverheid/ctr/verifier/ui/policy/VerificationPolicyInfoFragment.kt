@@ -56,7 +56,7 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
         val policySelectionAction = VerificationPolicyInfoFragmentDirections.actionPolicySelection(
             selectionType = VerificationPolicySelectionType.Default(scannerStateUseCase.get()),
             toolbarTitle = getString(
-                if (verificationPolicySelectionStateUseCase.get() is VerificationPolicySelectionState.Selection) {
+                if (verificationPolicySelectionStateUseCase.get() is VerificationPolicySelectionState.Selection.None) {
                     R.string.verifier_menu_risksetting
                 } else {
                     R.string.verifier_risksetting_changeselection_title
@@ -80,16 +80,16 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
 
     private fun setupPolicy() {
         when (scannerStateUseCase.get().verificationPolicySelectionState) {
-            VerificationPolicySelectionState.Selection.None,
-            VerificationPolicySelectionState.Policy1G,
-            VerificationPolicySelectionState.Policy3G -> {
+            VerificationPolicySelectionState.Selection.None -> {
             }
+            VerificationPolicySelectionState.Policy1G,
             VerificationPolicySelectionState.Selection.Policy1G -> {
                 displayPolicyViews(
                     VerificationPolicy.VerificationPolicy1G,
                     R.string.verifier_risksetting_subtitle_1G
                 )
             }
+            VerificationPolicySelectionState.Policy3G,
             VerificationPolicySelectionState.Selection.Policy3G -> {
                 displayPolicyViews(
                     VerificationPolicy.VerificationPolicy3G,
