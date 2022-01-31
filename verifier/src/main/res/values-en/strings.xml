@@ -143,6 +143,7 @@
   <string name="scan_log_list_no_items">No certificates scanned</string>
   <string name="scan_log_list_now">now</string>
   <string name="scan_log_list_entry">Scanned between %1$d and %2$d certificates</string>
+  <string name="scan_log_list_highrisk">2G</string>
   <string name="scan_log_list_lowrisk">3G</string>
   <string name="scan_log_footer_in_use">App in use since %s</string>
   <string name="scan_log_footer_long_time">App in use for longer than one month</string>
@@ -189,7 +190,11 @@
   <string name="scan_qr_description_1G">Is the QR code valid for your location, and are the details the same as on the proof of identity? Then you can give the visitor access.</string>
   <string name="scan_instructions_4_title_1G">Check mark = access</string>
   <string name="scan_instructions_4_description_1G">Does your screen show a check mark? In that case, the QR code is valid and the details are the same as on the proof of identity. You can grant the visitor access.</string>
+  <string name="scan_result_invalid_reason_description_2G"><![CDATA[A red screen with a cross means the QR code does not comply with the Dutch regulations, or is not valid for locations with 2G access.<br/><br/><b>Here\'s what you can do:</b><br/><ol><li>Check if the time is set correctly, on the visitor\'s phone as well as your own. Make sure date and time are set to \'set automatically\'.</li><li>Check if the visitor is showing an original certificate. A screenshot of their certificate may cause problems.</li><li>Ask the visitor to completely close the app, and restart it. Please rescan the QR code after.</li></ol><br/><b>Does the screen stay red?</b><br/>Ask the visitor to contact the CoronaCheck help desk.<br/><br/><b>Please note:</b> without a screen with check mark, the visitor cannot be given access.]]></string>
   <string name="verifier_risksetting_changeselection_title">Change scan setting</string>
+  <string name="scan_log_list_2g_plus">2G+</string>
   <string name="verifier_scanner_honeywell_footer">Prefer the barcode scanner?\nUse the scan buttons on your device.</string>
-  <string name="general_navigationbar_menu_button_label">Menu </string>
+  <string name="general_menu">Menu </string>
+  <string name="new_in_app_1G_title">1G access</string>
+  <string name="new_in_app_1G_subtitle">At locations where the coronavirus entry pass is being used, only visitors with a test certificate get access (1G access). The CoronaCheck scanner only shows a screen with check mark when scanning a test certificate.</string>
 </resources>

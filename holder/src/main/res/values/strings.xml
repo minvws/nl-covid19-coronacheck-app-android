@@ -394,8 +394,8 @@
   <string name="add_paper_proof_description">Vul de lettercombinatie in. Deze heb je samen met het papieren bewijs gekregen.</string>
   <string name="add_paper_proof_input_header">Lettercombinatie</string>
   <string name="add_paper_proof_input_hint">Bijv. FLBRXQ</string>
-  <string name="add_paper_proof_input_invalid">Deze lettercombinatie bestaat niet</string>
-  <string name="add_paper_proof_input_not_6_chars">Vul de 6-letterige combinatie in</string>
+  <string name="add_paper_proof_input_invalid">Deze lettercombinatie is niet geldig. Een combinatie ziet er bijvoorbeeld zo uit: FLBRXQ.</string>
+  <string name="add_paper_proof_input_not_6_chars">Graag eerst een lettercombinatie invullen</string>
   <string name="add_paper_proof_no_letter_combination_button">Geen lettercombinatie?</string>
   <string name="no_letter_combination_dialog_title">Geen lettercombinatie?</string>
   <string name="no_letter_combination_dialog_description"><![CDATA[Het is dan niet mogelijk om je bewijzen op deze manier aan de app toe te voegen.<br/><br/>Je hebt alleen een lettercombinatie als je jouw papieren bewijzen hebt aangevraagd bij je zorgverlener, of opgestuurd hebt gekregen per post.<br/><br/><b>Heb je zelf je bewijs geprint?</b><br/>Je kunt dan je bewijzen toevoegen aan de app met behulp van DigiD.]]></string>
@@ -499,23 +499,7 @@
   <string name="config_warning_card_button">Lees meer</string>
   <string name="config_warning_page_title">Maak verbinding met het internet</string>
   <string name="config_warning_page_message"><![CDATA[De CoronaCheck-app heeft af en toe internet nodig om te blijven werken. Zonder internetverbinding werkt jouw app nog tot %1s. Open de app zodra je internet hebt. Dan doet deze het gewoon weer.<br/><br/>Maak regelmatig verbinding om problemen te voorkomen.]]></string>
-  <string name="extend_domestic_recovery_green_card_info_card_text">Je kunt je Nederlandse herstelbewijs verlengen</string>
-  <string name="recover_domestic_recovery_green_card_info_card_text">Je kunt je verlopen Nederlandse herstelbewijs terugzetten</string>
-  <string name="extended_domestic_recovery_green_card_info_card_text">Je Nederlandse herstelbewijs is verlengd</string>
-  <string name="recovered_domestic_recovery_green_card_info_card_text">Je Nederlandse herstelbewijs is teruggezet</string>
-  <string name="extend_domestic_recovery_green_card_title">Herstelbewijs verlengen</string>
-  <string name="extend_domestic_recovery_green_card_description"><![CDATA[Binnenkort verlengen we voor iedereen het herstelbewijs. Hierdoor wordt je herstelbewijs een jaar geldig vanaf het moment dat je positief bent getest.<br/><br/>Je kunt je bewijs ook nu alvast verlengen als je dat wilt.]]></string>
-  <string name="extend_domestic_recovery_green_card_button">Verleng bewijs</string>
-  <string name="recover_domestic_recovery_green_card_title">Herstelbewijs terugzetten</string>
-  <string name="recover_domestic_recovery_green_card_description"><![CDATA[Binnenkort zetten we jouw verlopen herstelbewijs terug, omdat de geldigheid van Nederlandse herstelbewijzen wordt verlengd. Daardoor wordt je bewijs een jaar geldig vanaf het moment dat je positief bent getest.<br/><br/>Je kunt je bewijs ook nu alvast terugzetten als je dat wilt.]]></string>
-  <string name="recovery_domestic_recovery_green_card_button">Verleng bewijs</string>
-  <string name="extended_domestic_recovery_green_card_bottomsheet_title">Verlengd herstelbewijs</string>
-  <string name="extended_domestic_recovery_green_card_bottomsheet_description">De geldigheid van Nederlandse herstelbewijzen is verlengd. Daardoor is je bewijs nu een jaar geldig vanaf het moment dat je positief bent getest.</string>
-  <string name="recovered_domestic_recovery_green_card_bottomsheet_title">Teruggezet herstelbewijs</string>
-  <string name="recovered_domestic_recovery_green_card_bottomsheet_description">We hebben je verlopen bewijs teruggezet, omdat de geldigheid van Nederlandse herstelbewijzen is verlengd. Een bewijs is nu een jaar geldig vanaf het moment dat je positief bent getest.</string>
   <string name="my_overview_info_card_button_read_more">Lees meer</string>
-  <string name="extend_domestic_recovery_green_card_toolbar_title">Bewijs verlengen</string>
-  <string name="recover_domestic_recovery_green_card_toolbar_title">Bewijs terugzetten</string>
   <string name="dialog_no_browser_title">Geen browser gevonden</string>
   <string name="dialog_no_browser_message">Er is op deze telefoon geen internetbrowser gevonden waarmee %1s geopend kan worden. Download een browser om de link te kunnen openen.</string>
   <string name="about_this_app_clear_data_title">Alle gegevens wissen?</string>
@@ -592,7 +576,7 @@
   <string name="holder_dashboard_newvaliditybanner_url">https://www.rijksoverheid.nl/coronabewijs</string>
   <string name="visitorpass_token_next">Volgende</string>
   <string name="visitorpass_code_review_placeholder_screenreader">Vul hier je beoordelingscode in</string>
-  <string name="visitorpass_token_error_empty_token">Graag je beoordelingscode invullen</string>
+  <string name="visitorpass_token_error_empty_token">Graag eerst een beoordelingscode invullen</string>
   <string name="visitorpass_token_error_unknown_provider">Deze testlocatie is (nog) niet bij ons bekend. Neem contact op met de locatie waar je bent getest.</string>
   <string name="visitorpass_token_error_invalid_combination">Geen geldige combinatie. Vul de 6-cijferige verificatiecode in.</string>
   <string name="visitorpass_token_modal_notoken_title">Heb je geen beoordelingscode?</string>
@@ -665,4 +649,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
     <item quantity="one">minuut</item>
     <item quantity="other">minuten</item>
   </plurals>
+  <string name="holder_dashboard_addCard_title">Nieuwe vaccinatie of test toevoegen</string>
+  <string name="general_menu">Menu</string>
+  <string name="holder_menu_listItem_addVaccinationOrTest_title">Vaccinatie of test toevoegen</string>
 </resources>
