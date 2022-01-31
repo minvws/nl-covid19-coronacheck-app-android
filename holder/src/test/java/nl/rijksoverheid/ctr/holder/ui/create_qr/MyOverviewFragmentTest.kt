@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.fragment.app.testing.withFragment
 import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -39,6 +40,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /*
@@ -136,7 +138,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.ExtendDomesticRecovery
+                    DashboardItem.InfoItem.ConfigFreshnessWarning(0L)
                 )
             )
         )
@@ -159,7 +161,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.ExtendedDomesticRecovery
+                    DashboardItem.InfoItem.NewValidityItem
                 )
             )
         )
@@ -374,7 +376,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.AddQrButtonItem(true)
+                    DashboardItem.AddQrButtonItem
                 )
             )
         )
@@ -393,12 +395,52 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.AddQrButtonItem(true)
+                    DashboardItem.AddQrButtonItem
                 )
             )
         )
 
         performActionOnView(ViewMatchers.withId(R.id.addQrButton), ViewActions.click())
+
+        Assert.assertEquals(navController.currentDestination?.id, R.id.nav_qr_code_type)
+    }
+
+    @Test
+    fun `Ad qr card should be displayed when add qr card item is presented`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.AddQrCardItem
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemAddQrCardRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is MaterialCardView }
+            }
+        )
+        assertDisplayed(R.id.text, R.string.holder_dashboard_addCard_title)
+    }
+
+    @Test
+    fun `Clicking Add qr card should navigate to qr code type`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.AddQrCardItem
+                )
+            )
+        )
+
+        performActionOnView(ViewMatchers.withId(R.id.text), ViewActions.click())
 
         Assert.assertEquals(navController.currentDestination?.id, R.id.nav_qr_code_type)
     }

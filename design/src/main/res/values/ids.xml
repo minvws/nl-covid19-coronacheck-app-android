@@ -29,4 +29,5 @@
     <item name="dialog_no_browser_title" type="string" />
     <item name="dialog_no_browser_message" type="string" />
     <item name="ok" type="string" />
+    <item name="general_navigationbar_menu_button_label" type="string" />
 </resources>
