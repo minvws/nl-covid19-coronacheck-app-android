@@ -73,12 +73,14 @@ class GetMijnCnEventsUseCaseImplTest {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider1,
                     any(),
+                    any(),
                     any()
                 )
             } returns RemoteEventsResult.Success(signedModel1)
             coEvery {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider2,
+                    any(),
                     any(),
                     any()
                 )
@@ -108,6 +110,7 @@ class GetMijnCnEventsUseCaseImplTest {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider1,
                     any(),
+                    any(),
                     any()
                 )
             } returns RemoteEventsResult.Success(signedModel1)
@@ -115,6 +118,7 @@ class GetMijnCnEventsUseCaseImplTest {
             coEvery {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider2,
+                    any(),
                     any(),
                     any()
                 )
@@ -146,12 +150,14 @@ class GetMijnCnEventsUseCaseImplTest {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider1,
                     any(),
+                    any(),
                     any()
                 )
             } returns RemoteEventsResult.Success(signedModel1)
             coEvery {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider2,
+                    any(),
                     any(),
                     any()
                 )
@@ -181,12 +187,14 @@ class GetMijnCnEventsUseCaseImplTest {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider1,
                     any(),
+                    any(),
                     any()
                 )
             } returns RemoteEventsResult.Error(httpError)
             coEvery {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider2,
+                    any(),
                     any(),
                     any()
                 )
@@ -227,12 +235,14 @@ class GetMijnCnEventsUseCaseImplTest {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider1,
                     any(),
+                    any(),
                     any()
                 )
             } returns RemoteEventsResult.Error(httpError)
             coEvery {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider2,
+                    any(),
                     any(),
                     any()
                 )

@@ -29,10 +29,29 @@ interface EventProviderRepository {
                     "vaccination"
                 }
                 is RemoteOriginType.Recovery -> {
-                    "positivetest,recovery"
+                    "positivetest"
                 }
                 is RemoteOriginType.Test -> {
                     "negativetest"
+                }
+            }
+        }
+
+        fun getScope(originType: RemoteOriginType,
+                     withIncompleteVaccination: Boolean): String? {
+            return when (originType) {
+                is RemoteOriginType.Vaccination -> {
+                    null
+                }
+                is RemoteOriginType.Recovery -> {
+                    if (withIncompleteVaccination) {
+                        "firstepisode"
+                    } else {
+                        "recovery"
+                    }
+                }
+                is RemoteOriginType.Test -> {
+                    null
                 }
             }
         }
@@ -42,6 +61,7 @@ interface EventProviderRepository {
         url: String,
         token: String,
         filter: String,
+        scope: String?,
         signingCertificateBytes: ByteArray,
         provider: String,
     ): NetworkRequestResult<RemoteUnomi>
@@ -51,6 +71,7 @@ interface EventProviderRepository {
         token: String,
         signingCertificateBytes: ByteArray,
         filter: String,
+        scope: String?,
         provider: String,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>>
 }
@@ -64,9 +85,16 @@ class EventProviderRepositoryImpl(
         url: String,
         token: String,
         filter: String,
+        scope: String?,
         signingCertificateBytes: ByteArray,
         provider: String,
     ): NetworkRequestResult<RemoteUnomi> {
+        val params = mutableMapOf<String, String>()
+        params["filter"] = filter
+        scope?.let {
+            params["scope"] = scope
+        }
+
         return networkRequestResultFactory.createResult(
             step = HolderStep.UnomiNetworkRequest,
             provider = provider,
@@ -74,7 +102,7 @@ class EventProviderRepositoryImpl(
             testProviderApiClient.getUnomi(
                 url = url,
                 authorization = "Bearer $token",
-                params = mapOf("filter" to filter),
+                params = params,
                 certificate = SigningCertificate(signingCertificateBytes)
             ).model
         }
@@ -85,8 +113,15 @@ class EventProviderRepositoryImpl(
         token: String,
         signingCertificateBytes: ByteArray,
         filter: String,
+        scope: String?,
         provider: String,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
+        val params = mutableMapOf<String, String>()
+        params["filter"] = filter
+        scope?.let {
+            params["scope"] = scope
+        }
+
         return networkRequestResultFactory.createResult(
             step = HolderStep.EventNetworkRequest,
             provider = provider,
@@ -94,7 +129,7 @@ class EventProviderRepositoryImpl(
             testProviderApiClient.getEvents(
                 url = url,
                 authorization = "Bearer $token",
-                params = mapOf("filter" to filter),
+                params = params,
                 certificate = SigningCertificate(signingCertificateBytes)
             )
         }

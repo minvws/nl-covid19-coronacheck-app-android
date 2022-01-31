@@ -71,11 +71,17 @@ class GetDigidEventsUseCaseImpl(
 
         val filter = EventProviderRepository.getFilter(originType)
 
+        val scope = EventProviderRepository.getScope(
+            originType = originType,
+            withIncompleteVaccination = withIncompleteVaccination
+        )
+
         // Fetch event providers that have events for us
         val eventProviderWithTokensResults = getEventProvidersWithTokensUseCase.get(
             eventProviders = eventProviders,
             tokens = tokens.tokens,
             filter = filter,
+            scope = scope,
             targetProviderIds = targetProviderIds
         )
 
@@ -90,7 +96,8 @@ class GetDigidEventsUseCaseImpl(
                 getRemoteEventsUseCase.getRemoteEvents(
                     eventProvider = it.eventProvider,
                     token = it.token,
-                    filter = filter
+                    filter = filter,
+                    scope = scope
                 )
             }
 
@@ -122,7 +129,6 @@ class GetDigidEventsUseCaseImpl(
                         errorResults = errorResults
                     )
                 } else {
-
                     // We do have events
                     EventsResult.Success(
                         signedModels = signedModels,

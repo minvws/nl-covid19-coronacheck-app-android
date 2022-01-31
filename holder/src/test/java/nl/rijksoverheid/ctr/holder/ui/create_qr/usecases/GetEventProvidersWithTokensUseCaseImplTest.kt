@@ -103,6 +103,7 @@ class GetEventProvidersWithTokensUseCaseImplTest {
             usecase.get(
                 eventProviders = listOf(eventProvider1, eventProvider2),
                 tokens = listOf(tokenProvider1, tokenProvider2),
+                scope = null,
                 filter = "vaccination"
             )
         )
@@ -151,7 +152,8 @@ class GetEventProvidersWithTokensUseCaseImplTest {
             usecase.get(
                 eventProviders = listOf(eventProvider1, eventProvider2),
                 tokens = listOf(tokenProvider1, tokenProvider2),
-                filter = "vaccination"
+                filter = "vaccination",
+                scope = null
             )
         )
     }
@@ -195,7 +197,8 @@ class GetEventProvidersWithTokensUseCaseImplTest {
             usecase.get(
                 eventProviders = listOf(eventProvider1, eventProvider2),
                 tokens = listOf(tokenProvider1, tokenProvider2),
-                filter = "vaccination"
+                filter = "vaccination",
+                scope = null
             )
         )
     }
