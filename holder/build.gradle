@@ -10,7 +10,7 @@ def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
-version = "2.8.1"
+version = "2.9"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
