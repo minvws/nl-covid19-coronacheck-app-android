@@ -79,7 +79,7 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
 
     private fun setupPolicy() {
         when (scannerStateUseCase.get().verificationPolicySelectionState) {
-            VerificationPolicySelectionState.None, VerificationPolicySelectionState.Only1G -> {
+            VerificationPolicySelectionState.None, VerificationPolicySelectionState.Policy1G -> {
             }
             VerificationPolicySelectionState.Selection.Policy1G -> {
                 displayPolicyViews(

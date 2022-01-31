@@ -7,7 +7,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
@@ -161,7 +160,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
                 binding.bottom.hidePolicyIndication()
             }
             VerificationPolicySelectionState.Selection.Policy1G,
-            VerificationPolicySelectionState.Only1G -> {
+            VerificationPolicySelectionState.Policy1G -> {
                 binding.bottom.setPolicy(VerificationPolicy1G)
             }
             VerificationPolicySelectionState.Selection.Policy3G -> {
@@ -174,7 +173,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
                 R.drawable.illustration_scanner_get_started_3g
             }
             VerificationPolicySelectionState.Selection.Policy1G,
-            VerificationPolicySelectionState.Only1G -> {
+            VerificationPolicySelectionState.Policy1G -> {
                 R.drawable.illustration_scanner_get_started_1g
             }
             VerificationPolicySelectionState.Selection.Policy3G -> {

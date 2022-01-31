@@ -33,7 +33,7 @@ class VerificationPolicySelectionStateUseCaseImpl(
                 }
             }
             featureFlagUseCase.is1GOnlyEnabled() -> {
-                VerificationPolicySelectionState.Only1G
+                VerificationPolicySelectionState.Policy1G
             }
             else -> {
                 VerificationPolicySelectionState.None

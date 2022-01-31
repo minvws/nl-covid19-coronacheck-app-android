@@ -217,7 +217,7 @@ class VerificationPolicySelectionFragment :
                 binding.policy3G.isChecked = false
                 binding.policy1G.isChecked = false
             }
-            VerificationPolicySelectionState.Only1G -> {
+            VerificationPolicySelectionState.Policy1G -> {
                 binding.policy3G.isChecked = false
                 binding.policy1G.isChecked = false
             }

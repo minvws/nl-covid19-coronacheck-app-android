@@ -40,7 +40,7 @@ class ConfigVerificationPolicyUseCaseImpl(
         }
 
         return when {
-            verificationPoliciesEnabled.size == 1 && verificationPoliciesEnabled.first() == VerificationPolicy1G.configValue -> VerificationPolicySelectionState.Only1G
+            verificationPoliciesEnabled.size == 1 && verificationPoliciesEnabled.first() == VerificationPolicy1G.configValue -> VerificationPolicySelectionState.Policy1G
             verificationPoliciesEnabled.size > 1 -> verificationPolicySelectionStateUseCase.get()
             else -> VerificationPolicySelectionState.None
         }
