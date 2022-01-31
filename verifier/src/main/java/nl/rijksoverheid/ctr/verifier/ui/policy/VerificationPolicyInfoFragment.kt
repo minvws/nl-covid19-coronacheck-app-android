@@ -7,6 +7,7 @@ import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicyInfoBinding
 import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
@@ -65,14 +66,14 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
         navigateSafety(policySelectionAction)
     }
 
-    private fun displayPolicyViews(headerTextStringId: Int, bodyTextStringId: Int) {
+    private fun displayPolicyViews(verificationPolicy: VerificationPolicy, bodyTextStringId: Int) {
         binding.bottom.visibility = GONE
         binding.adjustButton.visibility = VISIBLE
         binding.separator1.visibility = VISIBLE
         binding.separator2.visibility = VISIBLE
         binding.policySettingHeader.visibility = VISIBLE
         binding.policySettingBody.visibility = VISIBLE
-        binding.policySettingHeader.text = getString(headerTextStringId)
+        binding.policySettingHeader.text = getString(R.string.verifier_risksetting_changeselection, verificationPolicy.configValue)
         binding.policySettingBody.text = getString(bodyTextStringId)
     }
 
@@ -81,16 +82,15 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
             VerificationPolicySelectionState.None -> {
             }
             VerificationPolicySelectionState.Policy1G -> {
-                // TODO change copies used
                 displayPolicyViews(
-                    R.string.verifier_start_scan_qr_policy_indication_2g,
-                    R.string.verifier_risksetting_highrisk_subtitle
+                    VerificationPolicy.VerificationPolicy1G,
+                    R.string.verifier_risksetting_subtitle_1G
                 )
             }
             VerificationPolicySelectionState.Policy3G -> {
                 displayPolicyViews(
-                    R.string.verifier_start_scan_qr_policy_indication_3g,
-                    R.string.verifier_risksetting_lowrisk_subtitle
+                    VerificationPolicy.VerificationPolicy3G,
+                    R.string.verifier_risksetting_subtitle_3G
                 )
             }
         }

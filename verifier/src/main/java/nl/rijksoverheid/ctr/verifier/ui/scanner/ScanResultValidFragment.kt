@@ -53,7 +53,7 @@ class ScanResultValidFragment : Fragment() {
         val theme = if (args.validData is ScanResultValidData.Demo) {
             R.style.AppTheme_Scanner_Valid_Demo
         } else {
-            if (featureFlagUseCase.isVerificationPolicyEnabled()) {
+            if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
                 when (verificationPolicy) {
                     is VerificationPolicy.VerificationPolicy3G -> {
                         R.style.AppTheme_Scanner_Valid_3G
@@ -86,16 +86,8 @@ class ScanResultValidFragment : Fragment() {
                 binding.title.text = getString(R.string.scan_result_demo_title)
             }
             is ScanResultValidData.Valid -> {
-                val text = if (featureFlagUseCase.isVerificationPolicyEnabled()) {
-                    //TODO fix copy for 1G
-                    when (verificationPolicy) {
-                        is VerificationPolicy.VerificationPolicy1G -> {
-                            getString(R.string.verifier_result_access_title_highrisk)
-                        }
-                        is VerificationPolicy.VerificationPolicy3G -> {
-                            getString(R.string.verifier_result_access_title_lowrisk)
-                        }
-                    }
+                val text = if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
+                    getString(R.string.verifier_result_access_title_policy, verificationPolicy.configValue)
                 } else {
                     getString(R.string.verifier_result_access_title)
                 }

@@ -39,7 +39,7 @@ class IntroductionStatusUseCaseImpl(
                 !introductionPersistenceManager.getNewTermsSeen(introductionData.newTerms.version)
 
     private fun newFeaturesAvailable() = introductionData.newFeatures.isNotEmpty() &&
-            !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion) && featureFlagUseCase.isVerificationPolicyEnabled()
+            !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion) && featureFlagUseCase.isVerificationPolicySelectionEnabled()
 
     private fun introductionIsNotFinished() =
         !introductionPersistenceManager.getIntroductionFinished()

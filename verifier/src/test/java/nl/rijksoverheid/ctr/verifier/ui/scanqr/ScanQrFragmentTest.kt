@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
+import com.adevinta.android.barista.assertion.BaristaImageViewAssertions.assertHasDrawable
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
@@ -13,8 +14,10 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
+import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
@@ -91,15 +94,14 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `given 2g policy is set, 2g policy indication is shown`() {
+    fun `given 1g policy is set, 1g policy indication is shown`() {
         launchScanQrFragment(
             scannerState = ScannerState.Unlocked(VerificationPolicySelectionState.Policy1G)
         )
 
         assertDisplayed(R.id.indicationContainer)
         assertDisplayed(
-            R.id.policyIndicatorText,
-            R.string.verifier_start_scan_qr_policy_indication_2g
+            "1G-toegang ingesteld"
         )
     }
 
@@ -111,8 +113,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
 
         assertDisplayed(R.id.indicationContainer)
         assertDisplayed(
-            R.id.policyIndicatorText,
-            R.string.verifier_start_scan_qr_policy_indication_3g
+            "3G-toegang ingesteld"
         )
     }
 
@@ -128,14 +129,13 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `given scanner is locked in 2G, then there is 2G indication but no button`() {
+    fun `given scanner is locked in 1G, then there is 1G indication but no button`() {
         launchScanQrFragment(
             scannerState = ScannerState.Locked(5000L, VerificationPolicySelectionState.Policy1G)
         )
 
         assertDisplayed(
-            R.id.policyIndicatorText,
-            R.string.verifier_start_scan_qr_policy_indication_2g
+            "1G-toegang ingesteld"
         )
         assertNotDisplayed(R.id.button)
     }
@@ -147,16 +147,33 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         )
 
         assertDisplayed(
-            R.id.policyIndicatorText,
-            R.string.verifier_start_scan_qr_policy_indication_3g
+            "3G-toegang ingesteld"
         )
         assertNotDisplayed(R.id.button)
+    }
+
+    @Test
+    fun `given scanner config is 1G, then the green image is shown`() {
+        launchScanQrFragment(
+            configVerificationPolicyState = VerificationPolicySelectionState.Policy1G
+        )
+
+        assertHasDrawable(R.id.image, R.drawable.illustration_scanner_get_started_1g)
+    }
+
+    @Test
+    fun `given scanner config is 3G, then the green image is shown`() {
+        launchScanQrFragment(
+            configVerificationPolicyState = VerificationPolicySelectionState.Policy3G
+        )
+
+        assertHasDrawable(R.id.image, R.drawable.illustration_scanner_get_started_3g)
     }
 
     private fun launchScanQrFragment(
         scannerNavigationState: ScannerNavigationState? = null,
         scannerState: ScannerState = ScannerState.Unlocked(VerificationPolicySelectionState.None),
-
+        configVerificationPolicyState: VerificationPolicySelectionState = VerificationPolicySelectionState.None,
         ) {
 
         val fakeScannerStateLiveData = MutableLiveData<Event<ScannerState>>()
@@ -184,6 +201,18 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
                 factory {
                     mockk<ScannerStateUseCase>().apply {
                         every { get() } returns scannerState
+                    }
+                }
+
+                factory {
+                    mockk<ConfigVerificationPolicyUseCase>().apply {
+                        every { get() } returns configVerificationPolicyState
+                    }
+                }
+
+                factory {
+                    mockk< AndroidUtil>().apply {
+                        every { isSmallScreen() } returns false
                     }
                 }
 

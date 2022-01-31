@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="32dp"
-        tools:text="@string/scan_result_valid_title"
+        tools:text="@string/scan_result_demo_title"
         android:textAlignment="center"
         android:textAppearance="?attr/textAppearanceHeadline5"
         app:layout_constraintEnd_toEndOf="@+id/image"
@@ -65,8 +65,7 @@
         app:layout_constraintTop_toBottomOf="@id/title"
         android:textAppearance="?attr/textAppearanceBody1"
         android:textAlignment="center"
-        android:visibility="invisible"
-        android:text="@string/verifier_result_access_title_highrisk"/>
+        android:visibility="invisible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

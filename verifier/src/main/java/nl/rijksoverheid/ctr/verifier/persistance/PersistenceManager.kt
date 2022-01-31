@@ -20,6 +20,7 @@ interface PersistenceManager {
     fun setVerificationPolicySelected(policy: VerificationPolicy)
     fun getVerificationPolicySelected(): VerificationPolicy?
     fun isVerificationPolicySelectionSet(): Boolean
+    fun removeVerificationPolicySelectionSet()
     fun getRandomKey(): String?
     fun saveRandomKey(key: String)
     fun getLastScanLockTimeSeconds(): Long
@@ -77,6 +78,10 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
 
     override fun isVerificationPolicySelectionSet(): Boolean {
         return sharedPreferences.contains(VERIFICATION_POLICY_SET)
+    }
+
+    override fun removeVerificationPolicySelectionSet() {
+        sharedPreferences.edit().remove(VERIFICATION_POLICY_SET).apply()
     }
 
     override fun getRandomKey(): String? {

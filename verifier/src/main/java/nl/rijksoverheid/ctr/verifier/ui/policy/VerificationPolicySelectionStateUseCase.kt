@@ -24,7 +24,7 @@ class VerificationPolicySelectionStateUseCaseImpl(
      * if set, get the user selected verification policy or none otherwise
      */
     override fun get(): VerificationPolicySelectionState {
-        return if (featureFlagUseCase.isVerificationPolicyEnabled()) {
+        return if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
             when (persistenceManager.getVerificationPolicySelected()) {
                 VerificationPolicy.VerificationPolicy3G -> VerificationPolicySelectionState.Policy3G
                 VerificationPolicy.VerificationPolicy1G -> VerificationPolicySelectionState.Policy1G

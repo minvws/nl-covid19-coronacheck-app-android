@@ -45,6 +45,9 @@ class VerificationPolicySelectionFragment :
 
         _binding = FragmentVerificationPolicySelectionBinding.bind(view)
 
+        binding.policy3G.text = getString(R.string.verifier_risksetting_title, VerificationPolicy3G.configValue)
+        binding.policy1G.text = getString(R.string.verifier_risksetting_title, VerificationPolicy1G.configValue)
+
         binding.link.setOnClickListener {
             getString(R.string.verifier_risksetting_start_readmore_url).launchUrl(requireContext())
         }

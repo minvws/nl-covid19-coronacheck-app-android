@@ -81,8 +81,7 @@
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    android:clickable="false"
-                    android:text="@string/verifier_risksetting_lowrisk_title" />
+                    android:clickable="false" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/subtitle_3g"
@@ -94,7 +93,7 @@
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textColor="@color/secondary_text"
                     android:paddingEnd="16dp"
-                    android:text="@string/verifier_risksetting_lowrisk_subtitle" />
+                    android:text="@string/verifier_risksetting_subtitle_3G" />
 
                 <View
                     android:layout_width="match_parent"
@@ -123,8 +122,7 @@
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    android:clickable="false"
-                    android:text="@string/verifier_scanner_policy_indication_2g_plus" />
+                    android:clickable="false" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/subtitle_1G"
@@ -136,7 +134,7 @@
                     android:paddingStart="56dp"
                     android:paddingEnd="16dp"
                     android:textSize="16sp"
-                    android:text="@string/verifier_risksetting_2g_plus_subtitle" />
+                    android:text="@string/verifier_risksetting_subtitle_1G" />
 
                 <View
                     android:layout_width="match_parent"
