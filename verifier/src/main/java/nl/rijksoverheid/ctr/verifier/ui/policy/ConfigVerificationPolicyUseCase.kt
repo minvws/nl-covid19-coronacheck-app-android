@@ -46,7 +46,7 @@ class ConfigVerificationPolicyUseCaseImpl(
                 VerificationPolicy1G.configValue -> persistenceManager.setVerificationPolicySelected(
                     VerificationPolicy1G
                 )
-                VerificationPolicy3G.configValue -> persistenceManager.setVerificationPolicySelected(
+                else -> persistenceManager.setVerificationPolicySelected(
                     VerificationPolicy3G
                 )
             }

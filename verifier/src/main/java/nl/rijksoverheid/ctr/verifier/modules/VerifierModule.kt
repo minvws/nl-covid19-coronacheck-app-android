@@ -71,7 +71,7 @@ fun verifierModule() = module {
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
-            get()
+            get(), get()
         )
     }
 

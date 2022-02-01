@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.verifier.persistance
 
 import android.content.SharedPreferences
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 
 /*
@@ -31,7 +33,10 @@ interface PersistenceManager {
     fun setNewPolicyRulesSeen(hasSeen: Boolean)
 }
 
-class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
+class SharedPreferencesPersistenceManager(
+    private val sharedPreferences: SharedPreferences,
+    private val moshi: Moshi
+) :
     PersistenceManager {
 
     companion object {
@@ -107,11 +112,17 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
     }
 
     override fun getEnabledPolicies(): List<String> {
-        return sharedPreferences.getStringSet(ENABLED_POLICIES, emptySet())?.toList() ?: emptyList()
+        val type = Types.newParameterizedType(List::class.java, String::class.java)
+        val adapter = moshi.adapter<List<String>>(type)
+        val policies = sharedPreferences.getString(ENABLED_POLICIES, adapter.toJson(listOf("3G")))
+        return policies?.let { adapter.fromJson(policies) }  ?: listOf("3G")
     }
 
+
     override fun setEnabledPolicies(policies: List<String>) {
-        sharedPreferences.edit().putStringSet(ENABLED_POLICIES, policies.toSet()).apply()
+        val type = Types.newParameterizedType(List::class.java, String::class.java)
+        val adapter = moshi.adapter<List<String>>(type)
+        sharedPreferences.edit().putString(ENABLED_POLICIES, adapter.toJson(policies)).apply()
     }
 
     override fun getNewPolicyRulesSeen(): Boolean {
