@@ -27,6 +27,8 @@ interface PersistenceManager {
     fun storeLastScanLockTimeSeconds(seconds: Long)
     fun getEnabledPolicies(): List<String>
     fun setEnabledPolicies(policies: List<String>)
+    fun getNewPolicyRulesSeen(): Boolean
+    fun setNewPolicyRulesSeen(hasSeen: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
@@ -40,6 +42,7 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         const val RANDOM_KEY = "RANDOM_KEY"
         const val LAST_SCAN_LOCK_TIME_SECONDS = "LAST_SCAN_LOCK_TIME_SECONDS"
         const val ENABLED_POLICIES = "ENABLED_POLICIES"
+        const val NEW_POLICY_RULES_SEEN = "NEW_POLICY_RULES_SEEN"
     }
 
     override fun setScanInstructionsSeen() {
@@ -109,5 +112,13 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
 
     override fun setEnabledPolicies(policies: List<String>) {
         sharedPreferences.edit().putStringSet(ENABLED_POLICIES, policies.toSet()).apply()
+    }
+
+    override fun getNewPolicyRulesSeen(): Boolean {
+        return sharedPreferences.getBoolean(NEW_POLICY_RULES_SEEN, true)
+    }
+
+    override fun setNewPolicyRulesSeen(hasSeen: Boolean) {
+        sharedPreferences.edit().putBoolean(NEW_POLICY_RULES_SEEN, hasSeen).apply()
     }
 }

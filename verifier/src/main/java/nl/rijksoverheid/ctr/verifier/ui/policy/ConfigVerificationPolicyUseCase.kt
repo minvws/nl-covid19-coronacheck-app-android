@@ -33,13 +33,22 @@ class ConfigVerificationPolicyUseCaseImpl(
         // Reset policy set config enabled policies change
         if (persistenceManager.getEnabledPolicies() != verificationPoliciesEnabled) {
             persistenceManager.removeVerificationPolicySelectionSet()
+
+            // When change contains 1G the new rules should be shown
+            if (verificationPoliciesEnabled.contains(VerificationPolicy1G.configValue)) {
+                persistenceManager.setNewPolicyRulesSeen(false)
+            }
         }
 
         // Set selection policy on single policy
         if (verificationPoliciesEnabled.size == 1) {
             when (verificationPoliciesEnabled.first()) {
-                VerificationPolicy1G.configValue -> persistenceManager.setVerificationPolicySelected(VerificationPolicy1G)
-                VerificationPolicy3G.configValue -> persistenceManager.setVerificationPolicySelected(VerificationPolicy3G)
+                VerificationPolicy1G.configValue -> persistenceManager.setVerificationPolicySelected(
+                    VerificationPolicy1G
+                )
+                VerificationPolicy3G.configValue -> persistenceManager.setVerificationPolicySelected(
+                    VerificationPolicy3G
+                )
             }
         }
 
