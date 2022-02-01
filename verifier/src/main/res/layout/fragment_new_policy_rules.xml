@@ -27,6 +27,7 @@
                 android:layout_marginTop="16dp"
                 android:paddingHorizontal="16dp"
                 android:scaleType="centerInside"
+                android:src="@drawable/illustration_scanner_get_started_1g"
                 app:layout_constraintBottom_toTopOf="@+id/title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

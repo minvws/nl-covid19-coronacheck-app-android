@@ -107,6 +107,7 @@ fun verifierModule() = module {
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get(), get()) }
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get(), get()) }
     viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
+    viewModel<NewPolicyRulesViewModel> { NewPolicyRulesViewModelImpl(get(), get(), get()) }
 
     // Repositories
     factory<ScanLogRepository> { ScanLogRepositoryImpl(get(), get()) }
@@ -125,6 +126,7 @@ fun verifierModule() = module {
     factory<ScannerNavigationStateUseCase> { ScannerNavigationStateUseCaseImpl(get(), get(), get()) }
     factory<ScannerStateUseCase> { ScannerStateUseCaseImpl(get(), get(), get(), get(), get()) }
     factory<ScannerStateCountdownUtil> { ScannerStateCountdownUtilImpl(get(), get(), get()) }
+    factory<NewPolicyRulesItemUseCase> { NewPolicyRulesItemUseCaseImpl(get()) }
 
     viewModel<VerificationPolicySelectionViewModel> { VerificationPolicySelectionViewModelImpl(get(), get()) }
 
