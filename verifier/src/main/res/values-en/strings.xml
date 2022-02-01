@@ -195,7 +195,7 @@
   <string name="scan_log_list_2g_plus">2G+</string>
   <string name="verifier_scanner_honeywell_footer">Prefer the barcode scanner?\nUse the scan buttons on your device.</string>
   <string name="general_menu">Menu </string>
-  <string name="new_policy_1G_title">1G or 3G access</string>
-  <string name="new_policy_1G_subtitle">Translation to be added</string>
+  <string name="new_policy_1G_title">1G access</string>
+  <string name="new_policy_1G_subtitle">Only visitors with a test certificate get access at places where the coronavirus entry pass is being used (1G access). The CoronaCheck scanner only shows a screen with a check mark when scanning a test certificate.</string>
   <string name="new_policy_subtitle">New policy</string>
 </resources>

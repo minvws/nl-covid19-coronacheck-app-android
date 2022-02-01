@@ -195,10 +195,10 @@
   <string name="create_qr_explanation_menu_title">QR-code maken</string>
   <string name="create_qr_explanation_menu_title_alternative">Voeg een QR-code toe</string>
   <string name="qr_code_type_title">Wat wil je toevoegen?</string>
-  <string name="qr_code_type_description">Geef aan wat voor bewijs je wilt toevoegen. Je kunt meerdere bewijzen tegelijk hebben.</string>
-  <string name="qr_code_type_negative_test_title">Testbewijs</string>
+  <string name="qr_code_type_description">Geef aan wat je wilt toevoegen aan je bewijs.</string>
+  <string name="qr_code_type_negative_test_title">Negatieve test</string>
   <string name="qr_code_type_negative_test_description">Uit de test blijkt dat ik geen corona heb</string>
-  <string name="qr_code_type_vaccination_title">Vaccinatiebewijs</string>
+  <string name="qr_code_type_vaccination_title">Vaccinatie</string>
   <string name="qr_code_type_vaccination_description">Ik heb een (booster)vaccinatie gehad</string>
   <string name="get_vaccination_title">Gegevens van je vaccinatie ophalen</string>
   <string name="get_vaccination_description"><![CDATA[Heb je een (booster)vaccinatie gehad? Log in met DigiD om al je vaccinatiegegevens op te halen.]]></string>
@@ -351,7 +351,7 @@
   <string name="get_recovery_description"><![CDATA[Heb je corona gehad? Dan kun je van de positieve testuitslag een herstelbewijs maken. Log in met DigiD om een testuitslag op te halen.]]></string>
   <string name="no_positive_test_result_title">Geen positieve testuitslag beschikbaar</string>
   <string name="no_positive_test_result_description"><![CDATA[Ben je net getest? Het kan een paar uur duren voordat je uitslag beschikbaar is. Probeer het later nog eens.<br/><br/>Al even geleden getest? Neem dan contact op met je testlocatie om te controleren of je gegevens goed in het systeem staan.<br/><br/>Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
-  <string name="qr_code_type_recovery_title">Herstelbewijs</string>
+  <string name="qr_code_type_recovery_title">Positieve test</string>
   <string name="qr_code_type_recovery_description">Uit de test blijkt dat ik corona heb gehad</string>
   <string name="your_test_result_explanation_positive_test_result">positief (corona)</string>
   <string name="recovery_explanation_description_header">De volgende gegevens zijn opgehaald bij de testlocatie:</string>

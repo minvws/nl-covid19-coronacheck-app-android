@@ -195,10 +195,10 @@
   <string name="create_qr_explanation_menu_title">Make QR code</string>
   <string name="create_qr_explanation_menu_title_alternative">Add a QR code</string>
   <string name="qr_code_type_title">What would you like to add?</string>
-  <string name="qr_code_type_description">Indicate what kind of certificate you would like to add. You can have multiple certificates.</string>
-  <string name="qr_code_type_negative_test_title">Test certificate</string>
+  <string name="qr_code_type_description">Indicate what you would like to add to your certificate.</string>
+  <string name="qr_code_type_negative_test_title">Negative test</string>
   <string name="qr_code_type_negative_test_description">The test proves I do not have coronavirus</string>
-  <string name="qr_code_type_vaccination_title">Vaccination certificate</string>
+  <string name="qr_code_type_vaccination_title">Vaccination</string>
   <string name="qr_code_type_vaccination_description">I received a (booster) vaccination</string>
   <string name="get_vaccination_title">Retrieve vaccination details</string>
   <string name="get_vaccination_description"><![CDATA[Did you receive a (booster) vaccination? Log in using DigiD to retrieve all your vaccination details.]]></string>
@@ -351,7 +351,7 @@
   <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Log in with DigiD to retrieve your test result.]]></string>
   <string name="no_positive_test_result_title">No positive test result available</string>
   <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Please contact your test location to verify if your details were entered into the system correctly.<br/><br/>Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
-  <string name="qr_code_type_recovery_title">Recovery certificate</string>
+  <string name="qr_code_type_recovery_title">Positive test</string>
   <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
   <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
   <string name="recovery_explanation_description_header">The following details were retrieved at the test location:</string>
@@ -650,5 +650,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   </plurals>
   <string name="holder_dashboard_addCard_title">Add new vaccination or test</string>
   <string name="general_menu">Menu</string>
-  <string name="holder_menu_listItem_addVaccinationOrTest_title">Vaccinatie of test toevoegen</string>
+  <string name="holder_menu_listItem_addVaccinationOrTest_title">Add vaccination or test</string>
 </resources>
