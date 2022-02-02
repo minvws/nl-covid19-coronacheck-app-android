@@ -44,6 +44,9 @@ class ConfigVerificationPolicyUseCaseImpl(
             if (verificationPoliciesEnabled.contains(VerificationPolicy1G.configValue)) {
                 persistenceManager.setNewPolicyRulesSeen(false)
             }
+
+            // Store current config setting of enabled policies
+            persistenceManager.setEnabledPolicies(verificationPoliciesEnabled)
         }
 
         // Set selection policy on single policy
@@ -57,9 +60,6 @@ class ConfigVerificationPolicyUseCaseImpl(
                 )
             }
         }
-
-        // Store current config setting of enabled policies
-        persistenceManager.setEnabledPolicies(verificationPoliciesEnabled)
 
         return policyUpdated
     }

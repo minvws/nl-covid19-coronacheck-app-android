@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.persistance
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -91,8 +92,9 @@ class SharedPreferencesPersistenceManager(
         return sharedPreferences.contains(VERIFICATION_POLICY_SET)
     }
 
+    @SuppressLint("ApplySharedPref") // Should be done synchronously as it's done right before restart of app
     override fun removeVerificationPolicySelectionSet() {
-        sharedPreferences.edit().remove(VERIFICATION_POLICY_SET).apply()
+        sharedPreferences.edit().remove(VERIFICATION_POLICY_SET).commit()
     }
 
     override fun getRandomKey(): String? {
@@ -115,21 +117,23 @@ class SharedPreferencesPersistenceManager(
         val type = Types.newParameterizedType(List::class.java, String::class.java)
         val adapter = moshi.adapter<List<String>>(type)
         val policies = sharedPreferences.getString(ENABLED_POLICIES, adapter.toJson(listOf("3G")))
-        return policies?.let { adapter.fromJson(policies) }  ?: listOf("3G")
+        return policies?.let { adapter.fromJson(policies) } ?: listOf("3G")
     }
 
 
+    @SuppressLint("ApplySharedPref") // Should be done synchronously as it's done right before restart of app
     override fun setEnabledPolicies(policies: List<String>) {
         val type = Types.newParameterizedType(List::class.java, String::class.java)
         val adapter = moshi.adapter<List<String>>(type)
-        sharedPreferences.edit().putString(ENABLED_POLICIES, adapter.toJson(policies)).apply()
+        sharedPreferences.edit().putString(ENABLED_POLICIES, adapter.toJson(policies)).commit()
     }
 
     override fun getNewPolicyRulesSeen(): Boolean {
         return sharedPreferences.getBoolean(NEW_POLICY_RULES_SEEN, true)
     }
 
+    @SuppressLint("ApplySharedPref") // Should be done synchronously as it's done right before restart of app
     override fun setNewPolicyRulesSeen(hasSeen: Boolean) {
-        sharedPreferences.edit().putBoolean(NEW_POLICY_RULES_SEEN, hasSeen).apply()
+        sharedPreferences.edit().putBoolean(NEW_POLICY_RULES_SEEN, hasSeen).commit()
     }
 }

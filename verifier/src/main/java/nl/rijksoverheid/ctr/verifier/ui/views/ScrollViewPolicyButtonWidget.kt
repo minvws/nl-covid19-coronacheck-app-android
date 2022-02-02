@@ -89,6 +89,7 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
     }
 
     fun setPolicy(policy: VerificationPolicy) {
+        binding.indicationContainer.visibility = VISIBLE
         binding.policyIndicator.backgroundTintList = ColorStateList.valueOf(
             context.getColor(
                 when (policy) {
