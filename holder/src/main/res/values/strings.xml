@@ -652,4 +652,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_dashboard_addCard_title">Nieuwe vaccinatie of test toevoegen</string>
   <string name="general_menu">Menu</string>
   <string name="holder_menu_listItem_addVaccinationOrTest_title">Vaccinatie of test toevoegen</string>
+  <string name="general_vaccinationcertificate">vaccinatiebewijs</string>
+  <string name="general_recoverycertificate">herstelbewijs</string>
+  <string name="general_testcertificate">testbewijs</string>
 </resources>

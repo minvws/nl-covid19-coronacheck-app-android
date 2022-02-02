@@ -651,4 +651,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_addCard_title">Add new vaccination or test</string>
   <string name="general_menu">Menu</string>
   <string name="holder_menu_listItem_addVaccinationOrTest_title">Add vaccination or test</string>
+  <string name="general_vaccinationcertificate">vaccination certificate</string>
+  <string name="general_recoverycertificate">recovery certificate</string>
+  <string name="general_testcertificate">test certificate</string>
 </resources>
