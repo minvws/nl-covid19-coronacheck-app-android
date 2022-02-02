@@ -198,4 +198,5 @@
   <string name="new_policy_1G_title">1G access</string>
   <string name="new_policy_1G_subtitle">Only visitors with a test certificate get access at places where the coronavirus entry pass is being used (1G access). The CoronaCheck scanner only shows a screen with a check mark when scanning a test certificate.</string>
   <string name="new_policy_subtitle">New policy</string>
+  <string name="page_indicator_label">Page %1$d of %2$d</string>
 </resources>
