@@ -30,4 +30,5 @@
     <item name="dialog_no_browser_message" type="string" />
     <item name="ok" type="string" />
     <item name="general_menu" type="string" />
+    <item name="page_indicator_label" type="string" />
 </resources>

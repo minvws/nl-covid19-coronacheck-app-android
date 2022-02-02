@@ -158,7 +158,7 @@
   <string name="create_qr_code_description"><![CDATA[In de QR-code staat dat je <b>negatief getest</b> bent (geen corona) op <b>%1$s om %2$s</b>.<br\><br\>In deze app is alleen de anonieme QR-code zichtbaar, zonder verdere testinformatie.]]></string>
   <string name="create_qr_code_button">Naar mijn QR</string>
   <string name="back">Terug</string>
-  <string name="onboarding_page_indicator_label">Pagina %1$s van %2$s</string>
+  <string name="page_indicator_label">Pagina %1$d van %2$d</string>
   <string name="accessibility_label_your_qr">Hier wordt een afbeelding getoond van jouw QR-code.</string>
   <string name="accessibility_testresult_icon_description">Informatie over je negatieve testuitslag</string>
   <string name="menu_close">Sluiten</string>
@@ -395,7 +395,7 @@
   <string name="add_paper_proof_input_header">Lettercombinatie</string>
   <string name="add_paper_proof_input_hint">Bijv. FLBRXQ</string>
   <string name="add_paper_proof_input_invalid">Deze lettercombinatie is niet geldig. Een combinatie ziet er bijvoorbeeld zo uit: FLBRXQ.</string>
-  <string name="add_paper_proof_input_not_6_chars">Graag eerst een lettercombinatie invullen</string>
+  <string name="add_paper_proof_input_empty">Graag eerst een lettercombinatie invullen</string>
   <string name="add_paper_proof_no_letter_combination_button">Geen lettercombinatie?</string>
   <string name="no_letter_combination_dialog_title">Geen lettercombinatie?</string>
   <string name="no_letter_combination_dialog_description"><![CDATA[Het is dan niet mogelijk om je bewijzen op deze manier aan de app toe te voegen.<br/><br/>Je hebt alleen een lettercombinatie als je jouw papieren bewijzen hebt aangevraagd bij je zorgverlener, of opgestuurd hebt gekregen per post.<br/><br/><b>Heb je zelf je bewijs geprint?</b><br/>Je kunt dan je bewijzen toevoegen aan de app met behulp van DigiD.]]></string>

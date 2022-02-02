@@ -198,4 +198,5 @@
   <string name="new_policy_1G_title">1G-toegang</string>
   <string name="new_policy_1G_subtitle">Op plekken waar het coronatoegangsbewijs gebruikt wordt, krijgen alleen bezoekers met een testbewijs toegang (1G-toegang). De CoronaCheck scanner geeft alleen een scherm met vinkje bij het scannen van een testbewijs.</string>
   <string name="new_policy_subtitle">Nieuwe regels</string>
+  <string name="page_indicator_label">Pagina %1$d van %2$d</string>
 </resources>
