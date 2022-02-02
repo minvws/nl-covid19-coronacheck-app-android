@@ -20,10 +20,10 @@ class PaperProofCodeUseCaseImpl: PaperProofCodeUseCase {
             }
         }
 
-        return if (code.length == PaperProofCodeUseCase.CHARS_COUNT) {
-            PaperProofCodeResult.Valid
-        } else {
-            PaperProofCodeResult.NotSixCharacters
+        return when (code.length) {
+            0 -> PaperProofCodeResult.Empty
+            6 -> PaperProofCodeResult.Valid
+            else -> PaperProofCodeResult.Invalid
         }
     }
 }

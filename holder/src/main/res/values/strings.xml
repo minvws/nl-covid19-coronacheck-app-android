@@ -395,7 +395,7 @@
   <string name="add_paper_proof_input_header">Lettercombinatie</string>
   <string name="add_paper_proof_input_hint">Bijv. FLBRXQ</string>
   <string name="add_paper_proof_input_invalid">Deze lettercombinatie is niet geldig. Een combinatie ziet er bijvoorbeeld zo uit: FLBRXQ.</string>
-  <string name="add_paper_proof_input_not_6_chars">Graag eerst een lettercombinatie invullen</string>
+  <string name="add_paper_proof_input_empty">Graag eerst een lettercombinatie invullen</string>
   <string name="add_paper_proof_no_letter_combination_button">Geen lettercombinatie?</string>
   <string name="no_letter_combination_dialog_title">Geen lettercombinatie?</string>
   <string name="no_letter_combination_dialog_description"><![CDATA[Het is dan niet mogelijk om je bewijzen op deze manier aan de app toe te voegen.<br/><br/>Je hebt alleen een lettercombinatie als je jouw papieren bewijzen hebt aangevraagd bij je zorgverlener, of opgestuurd hebt gekregen per post.<br/><br/><b>Heb je zelf je bewijs geprint?</b><br/>Je kunt dan je bewijzen toevoegen aan de app met behulp van DigiD.]]></string>
