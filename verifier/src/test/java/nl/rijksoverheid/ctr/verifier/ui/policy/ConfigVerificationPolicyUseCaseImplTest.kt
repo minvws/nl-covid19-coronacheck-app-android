@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.policy
 
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -10,6 +11,7 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.database.VerifierDatabase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class ConfigVerificationPolicyUseCaseImplTest {
     private val cachedAppConfigUseCase = mockk<VerifierCachedAppConfigUseCase>()
@@ -71,8 +73,8 @@ class ConfigVerificationPolicyUseCaseImplTest {
     }
 
     @Test
-    fun `persist currently enabled policies`() = runBlocking {
-        every { persistenceManager.getEnabledPolicies() } returns listOf("3G")
+    fun `persist currently enabled policies on change`() = runBlocking {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("3G", "1G")
         every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
             policiesEnabled = listOf("3G")
         )
@@ -104,5 +106,49 @@ class ConfigVerificationPolicyUseCaseImplTest {
         configVerificationPolicyUseCase.updatePolicy()
 
         verify(exactly = 0) { persistenceManager.setNewPolicyRulesSeen(any()) }
+    }
+
+    @Test
+    fun `when policy from config changes, policy updated should be given`() = runBlocking {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("3G")
+        every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
+            policiesEnabled = listOf("3G", "1G")
+        )
+
+        assertEquals(true, configVerificationPolicyUseCase.updatePolicy())
+    }
+
+    @Test
+    fun `when policy from config doesn't change, policy not updated should be given`() = runBlocking {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("3G", "1G")
+        every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
+            policiesEnabled = listOf("3G", "1G")
+        )
+
+        assertEquals(false, configVerificationPolicyUseCase.updatePolicy())
+    }
+
+    @Test
+    fun `scan log should be cleared when policy from config changes`() = runBlocking {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("3G")
+        every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
+            policiesEnabled = listOf("3G", "1G")
+        )
+
+        configVerificationPolicyUseCase.updatePolicy()
+
+        coVerify { verifierDatabase.scanLogDao().deleteAll() }
+    }
+
+    @Test
+    fun `scan log should not be cleared when policy stays the same`() = runBlocking {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("3G", "1G")
+        every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
+            policiesEnabled = listOf("3G", "1G")
+        )
+
+        configVerificationPolicyUseCase.updatePolicy()
+
+        coVerify(exactly = 0) { verifierDatabase.scanLogDao().deleteAll() }
     }
 }
