@@ -103,8 +103,8 @@ fun verifierModule() = module {
     factory<MenuUtil> { MenuUtilImpl(get(), get(), get()) }
 
     // ViewModels
-    viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get()) }
-    viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get(), get()) }
+    viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get(), get()) }
+    viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get(), get(), get()) }
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get(), get()) }
     viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
     viewModel<NewPolicyRulesViewModel> { NewPolicyRulesViewModelImpl(get(), get(), get()) }
@@ -122,7 +122,7 @@ fun verifierModule() = module {
 
     factory<VerificationPolicySelectionUseCase> { VerificationPolicySelectionUseCaseImpl(get(), get()) }
     factory<VerificationPolicySelectionStateUseCase> { VerificationPolicySelectionStateUseCaseImpl(get(), get()) }
-    factory<ConfigVerificationPolicyUseCase> { ConfigVerificationPolicyUseCaseImpl(get(), get()) }
+    factory<ConfigVerificationPolicyUseCase> { ConfigVerificationPolicyUseCaseImpl(get(), get(), get()) }
     factory<ScannerNavigationStateUseCase> { ScannerNavigationStateUseCaseImpl(get(), get(), get()) }
     factory<ScannerStateUseCase> { ScannerStateUseCaseImpl(get(), get(), get(), get(), get()) }
     factory<ScannerStateCountdownUtil> { ScannerStateCountdownUtilImpl(get(), get(), get()) }

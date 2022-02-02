@@ -10,12 +10,12 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -74,8 +74,12 @@ class VerifierMainActivity : AppCompatActivity() {
             navController.navigate(R.id.action_introduction, IntroductionFragment.getBundle(it))
         })
 
-        appConfigViewModel.appStatusLiveData.observe(this, {
+        appConfigViewModel.appStatusLiveData.observe(this) {
             handleAppStatus(it, navController)
+        }
+
+        verifierMainActivityViewModel.isPolicyUpdatedLiveData.observe(this, EventObserver {
+            if (it) navController.navigate(R.id.action_main)
         })
 
         navController.addOnDestinationChangedListener { _, destination, arguments ->
@@ -111,7 +115,11 @@ class VerifierMainActivity : AppCompatActivity() {
             return
         }
 
-        if (appStatus !is AppStatus.NoActionRequired) navigateToAppStatus(appStatus, navController)
+        if (appStatus !is AppStatus.NoActionRequired) {
+            navigateToAppStatus(appStatus, navController)
+        } else {
+            verifierMainActivityViewModel.policyUpdate()
+        }
     }
 
     private fun navigateToAppStatus(
