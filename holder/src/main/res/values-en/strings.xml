@@ -395,7 +395,7 @@
   <string name="add_paper_proof_input_header">Letter combination</string>
   <string name="add_paper_proof_input_hint">E.g. FLBRXQ</string>
   <string name="add_paper_proof_input_invalid">This letter combination is invalid. A valid combination looks like this: FLBRXQ.</string>
-  <string name="add_paper_proof_input_not_6_chars">Please enter a letter combination first</string>
+  <string name="add_paper_proof_input_empty">Please enter a letter combination first</string>
   <string name="add_paper_proof_no_letter_combination_button">No letter combination?</string>
   <string name="no_letter_combination_dialog_title">No letter combination?</string>
   <string name="no_letter_combination_dialog_description"><![CDATA[Then you won\'t be able to add your certificates to the app this way.<br/><br/>You only have a letter combination if you requested your paper certificates from your healthcare provider, or had them delivered by mail.<br/><br/><b>Did you print your certificate yourself?</b><br/>Then you can add your certificates to the app using DigiD.]]></string>

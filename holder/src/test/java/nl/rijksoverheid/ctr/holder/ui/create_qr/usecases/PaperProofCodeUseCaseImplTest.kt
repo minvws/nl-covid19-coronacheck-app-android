@@ -9,18 +9,18 @@ class PaperProofCodeUseCaseImplTest {
     private val usecase = PaperProofCodeUseCaseImpl()
 
     @Test
-    fun `Code with less than six chars returns NotSixCharacters`() {
-        assertEquals(PaperProofCodeResult.NotSixCharacters, usecase.validate("234"))
+    fun `Empty code returns Empty`() {
+        assertEquals(PaperProofCodeResult.Empty, usecase.validate(""))
     }
 
     @Test
-    fun `Code with more than six chars returns NotSixCharacters`() {
-        assertEquals(PaperProofCodeResult.NotSixCharacters, usecase.validate("234234234"))
+    fun `Code with more less than six chars returns Invalid`() {
+        assertEquals(PaperProofCodeResult.Invalid, usecase.validate("234"))
     }
 
     @Test
-    fun `Code with invalid chars returns Invalid`() {
-        assertEquals(PaperProofCodeResult.Invalid, usecase.validate("111111"))
+    fun `Code with more than six chars returns Invalid`() {
+        assertEquals(PaperProofCodeResult.Invalid, usecase.validate("234234234"))
     }
 
     @Test
