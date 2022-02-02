@@ -20,10 +20,12 @@ class ScannerNavigationStateUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val scannerStateUseCase: ScannerStateUseCase,
     private val featureFlagUseCase: FeatureFlagUseCase
-): ScannerNavigationStateUseCase {
+) : ScannerNavigationStateUseCase {
     override fun get(): ScannerNavigationState {
         return if (!persistenceManager.getScanInstructionsSeen()) {
             ScannerNavigationState.Instructions
+        } else if (!persistenceManager.getNewPolicyRulesSeen()) {
+            ScannerNavigationState.NewPolicyRules
         } else if (!persistenceManager.isVerificationPolicySelectionSet() && featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
             ScannerNavigationState.VerificationPolicySelection
         } else {

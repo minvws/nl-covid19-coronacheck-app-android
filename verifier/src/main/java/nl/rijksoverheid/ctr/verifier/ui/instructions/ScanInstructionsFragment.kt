@@ -98,6 +98,13 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                     navigateSafety(R.id.nav_scan_qr, bundleOf("returnUri" to arguments?.getString("returnUri")))
                 }
             }
+            is ScannerNavigationState.NewPolicyRules -> {
+                navigateSafety(
+                    ScanInstructionsFragmentDirections.actionNewPolicyRules(
+                        returnUri = arguments?.getString("returnUri")
+                    )
+                )
+            }
             else -> {
                 navigateSafety(
                     ScanInstructionsFragmentDirections.actionPolicySelection(

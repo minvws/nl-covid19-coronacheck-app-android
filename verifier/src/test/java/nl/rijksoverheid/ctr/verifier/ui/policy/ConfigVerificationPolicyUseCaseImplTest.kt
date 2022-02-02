@@ -17,8 +17,8 @@ class ConfigVerificationPolicyUseCaseImplTest {
         ConfigVerificationPolicyUseCaseImpl(cachedAppConfigUseCase, persistenceManager)
 
     @Test
-    fun `when policy from config changes from not selectable to selectable, the selected policy should be cleared`() {
-        every { persistenceManager.getIsPolicySelectable() } returns false
+    fun `when policy from config changes, the selected policy should be cleared`() {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("3G")
         every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
             policiesEnabled = listOf("3G", "1G")
         )
@@ -29,8 +29,8 @@ class ConfigVerificationPolicyUseCaseImplTest {
     }
 
     @Test
-    fun `when policy is selectable and stays selectable, don't clear the selected policy`() {
-        every { persistenceManager.getIsPolicySelectable() } returns true
+    fun `when policy doesn't change, don't clear the selected policy`() {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("3G", "1G")
         every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
             policiesEnabled = listOf("3G", "1G")
         )
@@ -42,6 +42,7 @@ class ConfigVerificationPolicyUseCaseImplTest {
 
     @Test
     fun `when policy is only 1G, set the policy to 1G`() {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("1G")
         every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
             policiesEnabled = listOf("1G")
         )
@@ -53,6 +54,7 @@ class ConfigVerificationPolicyUseCaseImplTest {
 
     @Test
     fun `when policy is only 3G, set the policy to 3G`() {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("3G")
         every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
             policiesEnabled = listOf("3G")
         )
@@ -63,24 +65,38 @@ class ConfigVerificationPolicyUseCaseImplTest {
     }
 
     @Test
-    fun `persist policy is not selectable when there is only 1 policy`() {
+    fun `persist currently enabled policies`() {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("3G")
         every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
             policiesEnabled = listOf("3G")
         )
 
         configVerificationPolicyUseCase.update()
 
-        verify { persistenceManager.setIsPolicySelectable(false) }
+        verify { persistenceManager.setEnabledPolicies(listOf("3G")) }
     }
 
     @Test
-    fun `persist policy is selectable when there are multiple policies`() {
+    fun `set new policy rules seen to false when new policy contains 1G`() {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("1G")
         every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
             policiesEnabled = listOf("3G", "1G")
         )
 
         configVerificationPolicyUseCase.update()
 
-        verify { persistenceManager.setIsPolicySelectable(true) }
+        verify { persistenceManager.setNewPolicyRulesSeen(false) }
+    }
+
+    @Test
+    fun `don't set new policy rules seen when policy doesn't change`() {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("3G", "1G")
+        every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
+            policiesEnabled = listOf("3G", "1G")
+        )
+
+        configVerificationPolicyUseCase.update()
+
+        verify(exactly = 0) { persistenceManager.setNewPolicyRulesSeen(any()) }
     }
 }

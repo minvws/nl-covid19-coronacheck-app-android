@@ -61,21 +61,21 @@ class MyOverViewGreenCardAdapterUtilImpl(
                     when (origin.type) {
                         is OriginType.Test -> {
                             viewBinding.title.text =
-                                context.getString(R.string.qr_code_type_negative_test_title)
+                                context.getString(R.string.general_testcertificate).capitalize()
                             setEuTestOrigin(
                                 viewBinding, it, originState, origin
                             )
                         }
                         is OriginType.Vaccination -> {
                             viewBinding.title.text =
-                                context.getString(R.string.qr_code_type_vaccination_title)
+                                context.getString(R.string.general_vaccinationcertificate).capitalize()
                             setEuVaccinationOrigin(
                                 viewBinding, it, origin
                             )
                         }
                         is OriginType.Recovery -> {
                             viewBinding.title.text =
-                                context.getString(R.string.qr_code_type_recovery_title)
+                                context.getString(R.string.general_recoverycertificate).capitalize()
                             setEuRecoveryOrigin(viewBinding, originState, origin)
                         }
                         is OriginType.VaccinationAssessment -> {

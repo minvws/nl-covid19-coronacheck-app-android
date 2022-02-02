@@ -30,20 +30,29 @@ class ConfigVerificationPolicyUseCaseImpl(
         val verificationPoliciesEnabled =
             cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
 
-        // Reset policy set when settings change from 1 policy to multiple selectable policies
-        if (!persistenceManager.getIsPolicySelectable() && verificationPoliciesEnabled.size > 1) {
+        // Reset policy set config enabled policies change
+        if (persistenceManager.getEnabledPolicies() != verificationPoliciesEnabled) {
             persistenceManager.removeVerificationPolicySelectionSet()
+
+            // When change contains 1G the new rules should be shown
+            if (verificationPoliciesEnabled.contains(VerificationPolicy1G.configValue)) {
+                persistenceManager.setNewPolicyRulesSeen(false)
+            }
         }
 
         // Set selection policy on single policy
         if (verificationPoliciesEnabled.size == 1) {
             when (verificationPoliciesEnabled.first()) {
-                VerificationPolicy1G.configValue -> persistenceManager.setVerificationPolicySelected(VerificationPolicy1G)
-                VerificationPolicy3G.configValue -> persistenceManager.setVerificationPolicySelected(VerificationPolicy3G)
+                VerificationPolicy1G.configValue -> persistenceManager.setVerificationPolicySelected(
+                    VerificationPolicy1G
+                )
+                else -> persistenceManager.setVerificationPolicySelected(
+                    VerificationPolicy3G
+                )
             }
         }
 
-        // Store current config setting whether policy setting is selectable
-        persistenceManager.setIsPolicySelectable(verificationPoliciesEnabled.size > 1)
+        // Store current config setting of enabled policies
+        persistenceManager.setEnabledPolicies(verificationPoliciesEnabled)
     }
 }

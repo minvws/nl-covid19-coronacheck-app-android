@@ -17,7 +17,8 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy1G
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.DeeplinkManager
 import nl.rijksoverheid.ctr.verifier.R
@@ -25,7 +26,9 @@ import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.verifier.ui.policy.*
+import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.MenuUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtil
@@ -68,7 +71,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
     private fun startTimer() {
         stopTimer()
-        val lockTimer = ScannerStateCountDownTimer(scannerStateCountdownUtil, ::updateTitle, ::onTimerFinish)
+        val lockTimer =
+            ScannerStateCountDownTimer(scannerStateCountdownUtil, ::updateTitle, ::onTimerFinish)
         lockTimer.start()
         scannerStateCountDownTimer = lockTimer
     }
@@ -206,17 +210,32 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
     private fun goToNextScreen(scannerNavigationState: ScannerNavigationState) {
         when (scannerNavigationState) {
-            is ScannerNavigationState.Instructions -> findNavController().navigate(ScanQrFragmentDirections.actionScanInstructions(
-                returnUri = deeplinkReturnUri()
-            ))
-            is ScannerNavigationState.VerificationPolicySelection -> findNavControllerSafety()?.navigate(
-                ScanQrFragmentDirections.actionPolicySelection(
-                    selectionType = VerificationPolicySelectionType.FirstTimeUse(scannerStateUseCase.get()),
-                    toolbarTitle = getString(R.string.verifier_menu_risksetting),
-                    returnUri = deeplinkReturnUri(),
+            is ScannerNavigationState.Instructions -> findNavController().navigate(
+                ScanQrFragmentDirections.actionScanInstructions(
+                    returnUri = deeplinkReturnUri()
                 )
             )
-            is ScannerNavigationState.Scanner -> scannerUtil.launchScanner(requireActivity(), deeplinkReturnUri())
+            is ScannerNavigationState.VerificationPolicySelection ->
+                findNavControllerSafety()?.navigate(
+                    ScanQrFragmentDirections.actionPolicySelection(
+                        selectionType = VerificationPolicySelectionType.FirstTimeUse(
+                            scannerStateUseCase.get()
+                        ),
+                        toolbarTitle = getString(R.string.verifier_menu_risksetting),
+                        returnUri = deeplinkReturnUri(),
+                    )
+                )
+            is ScannerNavigationState.Scanner -> scannerUtil.launchScanner(
+                requireActivity(),
+                deeplinkReturnUri()
+            )
+            is ScannerNavigationState.NewPolicyRules -> {
+                findNavControllerSafety()?.navigate(
+                    ScanQrFragmentDirections.actionNewPolicyRules(
+                        returnUri = deeplinkReturnUri()
+                    )
+                )
+            }
         }
     }
 
@@ -237,8 +256,10 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private fun lockScanner() {
         binding.instructionsButton.visibility = GONE
         binding.clockdeviationView.root.visibility = GONE
-        binding.description.text = getString(R.string.verifier_home_countdown_subtitle,
-            TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong()))
+        binding.description.text = getString(
+            R.string.verifier_home_countdown_subtitle,
+            TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
+        )
         binding.bottom.lock()
     }
 
@@ -253,5 +274,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         binding.title.text = getString(R.string.verifier_home_countdown_title, timeLeft)
     }
 
-    private fun getToolbar() = (parentFragment?.parentFragment as VerifierMainFragment?)?.getToolbar()
+    private fun getToolbar() =
+        (parentFragment?.parentFragment as VerifierMainFragment?)?.getToolbar()
 }

@@ -54,6 +54,14 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_new_policy_rules"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/nav_new_policy_rules" />
+
     </fragment>
 
     <fragment
@@ -155,6 +163,14 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
+        <action
+            android:id="@+id/action_new_policy_rules"
+            app:destination="@id/nav_new_policy_rules"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -198,6 +214,25 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/nav_new_policy_rules"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.NewPolicyRulesFragment"
+        android:label="">
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/action_policy_selection"
+            app:destination="@id/nav_policy_selection"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 </navigation>

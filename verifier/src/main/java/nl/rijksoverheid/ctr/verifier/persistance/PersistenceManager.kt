@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.verifier.persistance
 
 import android.content.SharedPreferences
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 
 /*
@@ -25,11 +27,16 @@ interface PersistenceManager {
     fun saveRandomKey(key: String)
     fun getLastScanLockTimeSeconds(): Long
     fun storeLastScanLockTimeSeconds(seconds: Long)
-    fun setIsPolicySelectable(isSelectable: Boolean)
-    fun getIsPolicySelectable(): Boolean
+    fun getEnabledPolicies(): List<String>
+    fun setEnabledPolicies(policies: List<String>)
+    fun getNewPolicyRulesSeen(): Boolean
+    fun setNewPolicyRulesSeen(hasSeen: Boolean)
 }
 
-class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedPreferences) :
+class SharedPreferencesPersistenceManager(
+    private val sharedPreferences: SharedPreferences,
+    private val moshi: Moshi
+) :
     PersistenceManager {
 
     companion object {
@@ -39,7 +46,8 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         const val VERIFICATION_POLICY_SET = "VERIFICATION_POLICY_SET"
         const val RANDOM_KEY = "RANDOM_KEY"
         const val LAST_SCAN_LOCK_TIME_SECONDS = "LAST_SCAN_LOCK_TIME_SECONDS"
-        const val IS_POLICY_SELECTABLE = "IS_POLICY_SELECTABLE"
+        const val ENABLED_POLICIES = "ENABLED_POLICIES"
+        const val NEW_POLICY_RULES_SEEN = "NEW_POLICY_RULES_SEEN"
     }
 
     override fun setScanInstructionsSeen() {
@@ -103,11 +111,25 @@ class SharedPreferencesPersistenceManager(private val sharedPreferences: SharedP
         sharedPreferences.edit().putLong(LAST_SCAN_LOCK_TIME_SECONDS, seconds).apply()
     }
 
-    override fun setIsPolicySelectable(isSelectable: Boolean) {
-       sharedPreferences.edit().putBoolean(IS_POLICY_SELECTABLE, isSelectable).apply()
+    override fun getEnabledPolicies(): List<String> {
+        val type = Types.newParameterizedType(List::class.java, String::class.java)
+        val adapter = moshi.adapter<List<String>>(type)
+        val policies = sharedPreferences.getString(ENABLED_POLICIES, adapter.toJson(listOf("3G")))
+        return policies?.let { adapter.fromJson(policies) }  ?: listOf("3G")
     }
 
-    override fun getIsPolicySelectable(): Boolean {
-        return sharedPreferences.getBoolean(IS_POLICY_SELECTABLE, false)
+
+    override fun setEnabledPolicies(policies: List<String>) {
+        val type = Types.newParameterizedType(List::class.java, String::class.java)
+        val adapter = moshi.adapter<List<String>>(type)
+        sharedPreferences.edit().putString(ENABLED_POLICIES, adapter.toJson(policies)).apply()
+    }
+
+    override fun getNewPolicyRulesSeen(): Boolean {
+        return sharedPreferences.getBoolean(NEW_POLICY_RULES_SEEN, true)
+    }
+
+    override fun setNewPolicyRulesSeen(hasSeen: Boolean) {
+        sharedPreferences.edit().putBoolean(NEW_POLICY_RULES_SEEN, hasSeen).apply()
     }
 }
