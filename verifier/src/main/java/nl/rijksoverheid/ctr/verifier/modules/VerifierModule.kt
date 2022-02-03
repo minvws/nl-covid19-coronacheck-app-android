@@ -24,8 +24,6 @@ import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCaseImpl
-import nl.rijksoverheid.ctr.verifier.ui.instructions.InstructionsNavigateStateUseCase
-import nl.rijksoverheid.ctr.verifier.ui.instructions.InstructionsNavigateStateUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsButtonUtil
 import nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsButtonUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.policy.*
@@ -93,7 +91,6 @@ fun verifierModule() = module {
     factory<ScanLogsCleanupUseCase> { ScanLogsCleanupUseCaseImpl(Clock.systemUTC(), get(), get()) }
     factory<LogScanUseCase> { LogScanUseCaseImpl(Clock.systemUTC(), get(), get()) }
     factory<ScannerUsedRecentlyUseCase> { ScannerUsedRecentlyUseCaseImpl(get(), get(), get()) }
-    factory<InstructionsNavigateStateUseCase> { InstructionsNavigateStateUseCaseImpl(get(), get(), get()) }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }
