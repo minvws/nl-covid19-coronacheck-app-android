@@ -48,6 +48,7 @@
                 style="?attr/borderlessButtonStyle"
                 android:layout_marginStart="8dp"
                 android:textColor="@color/link"
+                android:gravity="start"
                 app:layout_constraintTop_toBottomOf="@id/introduction"
                 app:layout_constraintStart_toStartOf="@+id/introduction" />
 
