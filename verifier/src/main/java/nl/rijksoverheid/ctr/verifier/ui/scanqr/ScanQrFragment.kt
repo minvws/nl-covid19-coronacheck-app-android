@@ -26,7 +26,6 @@ import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
@@ -251,6 +250,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     }
 
     private fun lockScanner() {
+        binding.title.visibility = VISIBLE
         binding.instructionsButton.visibility = GONE
         binding.clockdeviationView.root.visibility = GONE
         binding.description.text = getString(
@@ -261,8 +261,10 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     }
 
     private fun unlockScanner() {
+        binding.title.visibility = GONE
         binding.title.setText(R.string.scan_qr_header)
         binding.instructionsButton.visibility = VISIBLE
+        binding.description.text = getString(R.string.scan_qr_description)
         showDeviationViewIfNeeded()
         binding.bottom.unlock()
     }
