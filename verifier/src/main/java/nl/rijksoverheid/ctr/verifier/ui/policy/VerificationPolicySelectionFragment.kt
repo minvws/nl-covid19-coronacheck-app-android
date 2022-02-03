@@ -117,7 +117,7 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun closeScreen() {
-        findNavControllerSafety()?.popBackStack(R.id.nav_policy_settings, true)
+        findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
     }
 
     private fun setupScreenForFirstTimeUse() {
