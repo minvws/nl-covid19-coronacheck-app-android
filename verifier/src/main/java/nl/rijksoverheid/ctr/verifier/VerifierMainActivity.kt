@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -10,15 +11,16 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -74,9 +76,16 @@ class VerifierMainActivity : AppCompatActivity() {
             navController.navigate(R.id.action_introduction, IntroductionFragment.getBundle(it))
         })
 
-        appConfigViewModel.appStatusLiveData.observe(this, {
+        appConfigViewModel.appStatusLiveData.observe(this) {
+            verifierMainActivityViewModel.policyUpdate()
             handleAppStatus(it, navController)
-        })
+        }
+
+        verifierMainActivityViewModel.isPolicyUpdatedLiveData.observe(
+            this, EventObserver { policyUpdated ->
+                if (policyUpdated) restartApp()
+            }
+        )
 
         navController.addOnDestinationChangedListener { _, destination, arguments ->
             if (destination.id == R.id.nav_main) {
@@ -97,6 +106,13 @@ class VerifierMainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun restartApp() {
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        val mainIntent = Intent.makeRestartActivityTask(intent?.component)
+        startActivity(mainIntent)
+        Runtime.getRuntime().exit(0)
     }
 
     private fun isIntroductionFinished() =
@@ -121,7 +137,8 @@ class VerifierMainActivity : AppCompatActivity() {
         val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to appStatus)
         // don't navigate to the same app status fragment, if it is already open
         // otherwise, it can open again on top of the previous one looking like a glitch
-        val currentAppStatus = navController.currentBackStackEntry?.arguments?.get(AppStatusFragment.EXTRA_APP_STATUS)
+        val currentAppStatus =
+            navController.currentBackStackEntry?.arguments?.get(AppStatusFragment.EXTRA_APP_STATUS)
         if (appStatus != currentAppStatus) {
             navController.navigate(R.id.action_app_status, bundle)
         }

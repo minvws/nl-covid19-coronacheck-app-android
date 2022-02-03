@@ -56,7 +56,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val scannerStateCountdownUtil: ScannerStateCountdownUtil by inject()
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
     private val scannerStateUseCase: ScannerStateUseCase by inject()
-    private val configVerificationPolicyUseCase: ConfigVerificationPolicyUseCase by inject()
     private val androidUtil: AndroidUtil by inject()
     private val deeplinkManager: DeeplinkManager by inject()
     private val menuUtil: MenuUtil by inject()
@@ -89,8 +88,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        configVerificationPolicyUseCase.update()
 
         _binding = FragmentScanQrBinding.bind(view)
         binding.instructionsButton.setOnClickListener {
