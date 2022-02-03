@@ -8,7 +8,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -19,6 +18,7 @@ import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionStateUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
@@ -37,11 +37,11 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
     private val scannerUtil: ScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val scanInstructionsButtonUtil: ScanInstructionsButtonUtil by inject()
-    private val featureFlagUseCase: FeatureFlagUseCase by inject()
+    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
     private var _binding: FragmentScanInstructionsBinding? = null
     private val binding get() = _binding!!
 
-    private val onboardingItems by lazy { instructionsExplanationData(featureFlagUseCase.isVerificationPolicySelectionEnabled()).onboardingItems }
+    private val onboardingItems by lazy { instructionsExplanationData(verificationPolicySelectionStateUseCase.get()).onboardingItems }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
