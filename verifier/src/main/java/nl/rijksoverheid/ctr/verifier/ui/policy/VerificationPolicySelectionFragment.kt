@@ -170,8 +170,7 @@ class VerificationPolicySelectionFragment :
         } else {
             binding.errorContainer.visibility = GONE
             allRadioButtons().forEach {
-                it.buttonTintList =
-                    ColorStateList.valueOf(requireContext().getColor(R.color.link))
+                it.isUseMaterialThemeColors = true
             }
         }
     }
