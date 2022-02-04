@@ -29,12 +29,11 @@ interface PersistenceManager {
     fun saveRandomKey(key: String)
     fun getLastScanLockTimeSeconds(): Long
     fun storeLastScanLockTimeSeconds(seconds: Long)
-    fun getEnabledPolicies(): List<VerificationPolicy>
-    fun setEnabledPolicies(policies: List<VerificationPolicy>)
+    fun getEnabledPolicies(): List<String>
+    fun setEnabledPolicies(policies: List<String>)
     fun getNewPolicyRulesSeen(): Boolean
     fun setNewPolicyRulesSeen(hasSeen: Boolean)
 }
-
 class SharedPreferencesPersistenceManager(
     private val sharedPreferences: SharedPreferences,
     private val moshi: Moshi
@@ -114,18 +113,18 @@ class SharedPreferencesPersistenceManager(
         sharedPreferences.edit().putLong(LAST_SCAN_LOCK_TIME_SECONDS, seconds).apply()
     }
 
-    override fun getEnabledPolicies(): List<VerificationPolicy> {
-        val type = Types.newParameterizedType(List::class.java, VerificationPolicy::class.java)
-        val adapter = moshi.adapter<List<VerificationPolicy>>(type)
-        val policies = sharedPreferences.getString(ENABLED_POLICIES, adapter.toJson(listOf(VerificationPolicy3G)))
-        return policies?.let { adapter.fromJson(policies) } ?: listOf(VerificationPolicy3G)
+    override fun getEnabledPolicies(): List<String> {
+        val type = Types.newParameterizedType(List::class.java, String::class.java)
+        val adapter = moshi.adapter<List<String>>(type)
+        val policies = sharedPreferences.getString(ENABLED_POLICIES, adapter.toJson(listOf("3G")))
+        return policies?.let { adapter.fromJson(policies) } ?: listOf("3G")
     }
 
 
     @SuppressLint("ApplySharedPref") // Should be done synchronously as it's done right before restart of app
-    override fun setEnabledPolicies(policies: List<VerificationPolicy>) {
-        val type = Types.newParameterizedType(List::class.java, VerificationPolicy::class.java)
-        val adapter = moshi.adapter<List<VerificationPolicy>>(type)
+    override fun setEnabledPolicies(policies: List<String>) {
+        val type = Types.newParameterizedType(List::class.java, String::class.java)
+        val adapter = moshi.adapter<List<String>>(type)
         sharedPreferences.edit().putString(ENABLED_POLICIES, adapter.toJson(policies)).commit()
     }
 

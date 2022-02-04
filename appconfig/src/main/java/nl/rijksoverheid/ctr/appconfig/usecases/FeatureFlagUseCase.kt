@@ -29,7 +29,7 @@ class FeatureFlagUseCaseImpl(
 
     override fun isVerificationPolicySelectionEnabled(): Boolean {
         val verificationPoliciesEnabled = appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
-            .mapNotNull { VerificationPolicy.fromConfigValue(it) }
+            .filter { VerificationPolicy.fromConfigValue(it) != null }
         return verificationPoliciesEnabled.size > 1
     }
 }

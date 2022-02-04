@@ -52,4 +52,16 @@ class FeatureFlagUseCaseImplTest {
 
         assertTrue(usecase.isVerificationPolicySelectionEnabled())
     }
+
+    @Test
+    fun `isVerificationPolicySelectionEnabled returns false if verificationPoliciesEnabled has unsupported elements`() {
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
+        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled } answers { listOf("2G", "3G") }
+
+        val usecase = FeatureFlagUseCaseImpl(
+            cachedAppConfigUseCase
+        )
+
+        assertFalse(usecase.isVerificationPolicySelectionEnabled())
+    }
 }
