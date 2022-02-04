@@ -8,7 +8,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
@@ -16,6 +15,8 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidBinding
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionStateUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
@@ -30,7 +31,7 @@ import java.util.concurrent.TimeUnit
 class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid) {
 
     private val infoFragmentUtil: InfoFragmentUtil by inject()
-    private val featureFlagUseCase: FeatureFlagUseCase by inject()
+    private val selectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable { navigateToScanner() }
@@ -70,7 +71,13 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
                     infoFragmentUtil.presentAsBottomSheet(childFragmentManager,
                         InfoFragmentData.TitleDescription(
                             title = getString(R.string.scan_result_invalid_reason_title),
-                            descriptionData = DescriptionData(R.string.scan_result_invalid_reason_description),
+                            descriptionData = DescriptionData(
+                                when (selectionStateUseCase.get()) {
+                                    is VerificationPolicySelectionState.Selection,
+                                    is VerificationPolicySelectionState.Policy1G -> R.string.scan_result_invalid_reason_description_1G
+                                    is VerificationPolicySelectionState.Policy3G -> R.string.scan_result_invalid_reason_description
+                                }
+                            )
                         )
                     )
                 }
