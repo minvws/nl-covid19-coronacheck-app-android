@@ -39,12 +39,6 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
         )
     }
 
-    init {
-        Handler().postDelayed({
-            onQrScanned("")
-        }, 2000)
-    }
-
     override fun getCopy(): Copy {
         val verificationPolicyCopy = when(verificationPolicySelectionStateUseCase.get()) {
             VerificationPolicySelectionState.Selection.None,
