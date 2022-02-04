@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 abstract class VerificationPolicySelectionViewModel: ViewModel() {
     var radioButtonSelected: Int? = null
     val scannerUsedRecentlyLiveData: LiveData<Event<Boolean>> = MutableLiveData()
+    val storedVerificationPolicySelection: LiveData<Event<Unit>> = MutableLiveData()
 
     abstract fun storeSelection(verificationPolicy: VerificationPolicy)
     abstract fun updateRadioButton(checkedId: Int)
@@ -25,12 +26,15 @@ abstract class VerificationPolicySelectionViewModel: ViewModel() {
  *
  */
 class VerificationPolicySelectionViewModelImpl(
-    private val verificationPolicyUseCase: VerificationPolicyUseCase,
+    private val verificationPolicySelectionUseCase: VerificationPolicySelectionUseCase,
     private val scannerUsedRecentlyUseCase: ScannerUsedRecentlyUseCase,
 ) : VerificationPolicySelectionViewModel() {
 
     override fun storeSelection(verificationPolicy: VerificationPolicy) {
-        verificationPolicyUseCase.store(verificationPolicy)
+        viewModelScope.launch {
+            verificationPolicySelectionUseCase.store(verificationPolicy)
+            (storedVerificationPolicySelection as MutableLiveData).postValue(Event(Unit))
+        }
     }
 
     override fun updateRadioButton(checkedId: Int) {

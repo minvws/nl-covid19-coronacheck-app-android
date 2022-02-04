@@ -49,7 +49,8 @@ data class HolderConfig(
     @Json(name = "androidEnableVerificationPolicyVersion") val holderEnableVerificationPolicyVersion: Int,
     @Json(name = "visitorPassEnabled") val visitorPassEnabled: Boolean,
     @Json(name = "vaccinationAssessmentEventValidityDays") val vaccinationAssessmentEventValidityDays: Int,
-    @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean
+    @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean,
+    @Json(name = "verificationPolicies") val verificationPolicies: List<String> = emptyList(),
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -62,7 +63,8 @@ data class HolderConfig(
     holderDeeplinkDomains,
     holderClockDeviationThresholdSeconds,
     holderConfigAlmostOutOfDateWarningSeconds,
-    holderEnableVerificationPolicyVersion
+    holderEnableVerificationPolicyVersion,
+    verificationPolicies,
 ) {
 
     companion object {
@@ -101,7 +103,8 @@ data class HolderConfig(
             showNewValidityInfoCard: Boolean = false,
             visitorPassEnabled: Boolean = false,
             vaccinationAssessmentEventValidityDays: Int = 14,
-            mijnCnEnabled: Boolean = false
+            mijnCnEnabled: Boolean = false,
+            policiesEnabled: List<String> = emptyList(),
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -139,7 +142,8 @@ data class HolderConfig(
             holderEnableVerificationPolicyVersion = 0,
             visitorPassEnabled = visitorPassEnabled,
             vaccinationAssessmentEventValidityDays = vaccinationAssessmentEventValidityDays,
-            mijnCnEnabled = mijnCnEnabled
+            mijnCnEnabled = mijnCnEnabled,
+            verificationPolicies = policiesEnabled,
         )
     }
 }

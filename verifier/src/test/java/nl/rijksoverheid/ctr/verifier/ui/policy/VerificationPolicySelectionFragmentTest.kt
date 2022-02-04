@@ -21,6 +21,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.design.utils.DialogUtilImpl
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
@@ -76,24 +77,24 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given first time use and policy selected, when click to continue, then no error is shown, selection is stored and scanner is launched`() {
         launchFragment(
-            policyState = VerificationPolicyState.Policy2G
+            policySelectionState = VerificationPolicySelectionState.Policy1G
         )
 
-        clickOn(R.id.policy2G_container)
+        clickOn(R.id.policy1G_container)
         clickOn(R.id.confirmationButton)
 
         assertNotDisplayed(R.id.error_container)
         verify { scannerUtil.launchScanner(any()) }
-        verify { verificationPolicySelectionViewModel.storeSelection(VerificationPolicy.VerificationPolicy2G) }
+        verify { verificationPolicySelectionViewModel.storeSelection(VerificationPolicy.VerificationPolicy1G) }
     }
 
     @Test
-    fun `given default policy selection fragment and stored 2g selection, when confirming 3g selection, then correct subheader and confirmation dialog show up`() {
+    fun `given default policy selection fragment and stored 2g selection, when confirming 3g selection, then correct subheader and confirmation dialog show up`() = runBlocking {
         launchFragment(
-            policyState = VerificationPolicyState.Policy2G,
+            policySelectionState = VerificationPolicySelectionState.Policy1G,
             selectionType = VerificationPolicySelectionType.Default(
                 ScannerState.Unlocked(
-                    VerificationPolicyState.Policy2G
+                    VerificationPolicySelectionState.Policy1G
                 )
             ),
         )
@@ -120,15 +121,15 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given default policy selection fragment and stored 2g selection, when confirming 2g selection, then goes to home screen`() {
         launchFragment(
-            policyState = VerificationPolicyState.Policy2G,
+            policySelectionState = VerificationPolicySelectionState.Policy1G,
             selectionType = VerificationPolicySelectionType.Default(
                 ScannerState.Unlocked(
-                    VerificationPolicyState.Policy2G
+                    VerificationPolicySelectionState.Policy1G
                 )
             ),
         )
 
-        clickOn(R.id.policy2G_container)
+        clickOn(R.id.policy1G_container)
         clickOn(R.id.confirmationButton)
 
         assertEquals(navController.currentDestination?.id, R.id.nav_scan_qr)
@@ -137,10 +138,10 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given default policy selection fragment and scan not used recently, then correct subheader is showing`() {
         launchFragment(
-            policyState = VerificationPolicyState.Policy2G,
+            policySelectionState = VerificationPolicySelectionState.Policy1G,
             selectionType = VerificationPolicySelectionType.Default(
                 ScannerState.Unlocked(
-                    VerificationPolicyState.Policy2G
+                    VerificationPolicySelectionState.Policy1G
                 )
             ),
             scannerUsedRecently = false,
@@ -152,30 +153,31 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     }
 
     private fun launchFragment(
-        policyState: VerificationPolicyState = VerificationPolicyState.None,
+        policySelectionState: VerificationPolicySelectionState = VerificationPolicySelectionState.Selection.None,
         selectionType: VerificationPolicySelectionType = VerificationPolicySelectionType.FirstTimeUse(
-            ScannerState.Unlocked(policyState)
+            ScannerState.Unlocked(policySelectionState)
         ),
         scannerUsedRecently: Boolean = true,
     ) {
 
         val verificationPolicyStateUseCase =
-            mockk<VerificationPolicyStateUseCase>(relaxed = true).apply {
-                every { get() } returns policyState
+            mockk<VerificationPolicySelectionStateUseCase>(relaxed = true).apply {
+                every { get() } returns policySelectionState
             }
 
         val recentScanLogsLiveDataEvent = MutableLiveData<Event<Boolean>>()
 
-        verificationPolicySelectionViewModel = mockk<VerificationPolicySelectionViewModel>().apply {
+        verificationPolicySelectionViewModel = mockk<VerificationPolicySelectionViewModel>(relaxed = true).apply {
             coEvery { scannerUsedRecentlyLiveData } returns recentScanLogsLiveDataEvent
             coEvery { didScanRecently() } answers {
                 recentScanLogsLiveDataEvent.postValue(Event(scannerUsedRecently))
             }
-            coEvery { radioButtonSelected } returns when (policyState) {
-                VerificationPolicyState.None -> null
-                VerificationPolicyState.Policy2G -> R.id.policy2G
-                VerificationPolicyState.Policy3G -> R.id.policy3G
-                VerificationPolicyState.Policy2GPlus -> R.id.policy2G_plus
+            coEvery { radioButtonSelected } returns when (policySelectionState) {
+                VerificationPolicySelectionState.Selection.None -> null
+                VerificationPolicySelectionState.Policy1G,
+                VerificationPolicySelectionState.Selection.Policy1G -> R.id.policy1G
+                VerificationPolicySelectionState.Policy3G,
+                VerificationPolicySelectionState.Selection.Policy3G-> R.id.policy3G
             }
             coEvery { updateRadioButton(any()) } returns Unit
             coEvery { storeSelection(any()) } returns Unit

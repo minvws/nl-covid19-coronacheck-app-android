@@ -45,6 +45,10 @@ import java.util.concurrent.TimeUnit
  */
 class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
+    private companion object {
+        const val ORIENTATION_CHANGED = "orientationChanged"
+    }
+
     private var _binding: FragmentQrCodesBinding? = null
     private val binding get() = _binding!!
     private fun safeBindingBlock(block: (binding: FragmentQrCodesBinding) -> Unit) {
@@ -79,9 +83,11 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
         requireActivity().window.attributes = params
 
-        // If there is a savedInstanceState known we tread this as process death occurred.
+        // If there is a savedInstanceState and it's not because of orientation change, we treat this as process death occurred.
         // In that case QrCodesFragment is launched before the init of the app, which we do not want.
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null &&
+            !savedInstanceState.getBoolean(ORIENTATION_CHANGED, false)
+        ) {
             findNavController().popBackStack()
         }
     }
@@ -392,5 +398,10 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
         requireActivity().requestedOrientation =
             ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(ORIENTATION_CHANGED, requireActivity().isChangingConfigurations)
     }
 }

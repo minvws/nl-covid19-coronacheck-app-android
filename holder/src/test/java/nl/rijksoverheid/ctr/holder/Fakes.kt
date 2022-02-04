@@ -63,14 +63,6 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         }
 
-        override fun dismissRecoveredDomesticRecoveryInfoCard() {
-
-        }
-
-        override fun dismissExtendedDomesticRecoveryInfoCard() {
-
-        }
-
         override fun dismissNewValidityInfoCard() {
 
         }
@@ -338,46 +330,6 @@ fun fakePersistenceManager(
 
         }
 
-        override fun setShouldCheckRecoveryGreenCardRevisedValidity(check: Boolean) {
-
-        }
-
-        override fun getShouldCheckRecoveryGreenCardRevisedValidity(): Boolean {
-            return true
-        }
-
-        override fun setShowExtendDomesticRecoveryInfoCard(show: Boolean) {
-
-        }
-
-        override fun getShowExtendDomesticRecoveryInfoCard(): Boolean {
-            return true
-        }
-
-        override fun setShowRecoverDomesticRecoveryInfoCard(show: Boolean) {
-
-        }
-
-        override fun getShowRecoverDomesticRecoveryInfoCard(): Boolean {
-            return true
-        }
-
-        override fun setHasDismissedExtendedDomesticRecoveryInfoCard(dismissed: Boolean) {
-
-        }
-
-        override fun getHasDismissedExtendedDomesticRecoveryInfoCard(): Boolean {
-            return true
-        }
-
-        override fun setHasDismissedRecoveredDomesticRecoveryInfoCard(dismissed: Boolean) {
-
-        }
-
-        override fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean {
-            return true
-        }
-
         override fun getCheckNewValidityInfoCard(): Boolean {
             return false
         }
@@ -500,6 +452,7 @@ fun fakeEventProviderRepository(
         url: String,
         token: String,
         filter: String,
+        scope: String?,
         signingCertificateBytes: ByteArray,
         provider: String,
     ): NetworkRequestResult<RemoteUnomi> {
@@ -511,6 +464,7 @@ fun fakeEventProviderRepository(
         token: String,
         signingCertificateBytes: ByteArray,
         filter: String,
+        scope: String?,
         provider: String,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
         return events.invoke(url)
@@ -524,6 +478,10 @@ fun fakeGreenCardUtil(
     isExpiring: Boolean = false,
     hasNoActiveCredentials: Boolean = false
 ) = object : GreenCardUtil {
+    override suspend fun getAllGreenCards(): List<GreenCard> {
+        return listOf()
+    }
+
     override fun hasOrigin(greenCards: List<GreenCard>, originType: OriginType): Boolean {
         return true
     }
@@ -743,11 +701,12 @@ fun fakeEventGroupEntity(
     walletId: Int = 1,
     providerIdentifier: String = "",
     type: OriginType = OriginType.Vaccination,
+    scope: String? = null,
     maxIssuedAt: OffsetDateTime = OffsetDateTime.of(
         2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
     ),
     jsonData: ByteArray = ByteArray(1)
-) = EventGroupEntity(id, walletId, providerIdentifier, type, maxIssuedAt, jsonData)
+) = EventGroupEntity(id, walletId, providerIdentifier, type, scope, maxIssuedAt, jsonData)
 
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),

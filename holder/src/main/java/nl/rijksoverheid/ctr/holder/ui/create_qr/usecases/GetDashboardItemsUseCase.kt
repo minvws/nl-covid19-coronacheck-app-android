@@ -88,22 +88,6 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
         }
 
-        if (dashboardItemUtil.shouldShowExtendDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.ExtendDomesticRecovery)
-        }
-
-        if (dashboardItemUtil.shouldShowRecoverDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.RecoverDomesticRecovery)
-        }
-
-        if (dashboardItemUtil.shouldShowRecoveredDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.RecoveredDomesticRecovery)
-        }
-
-        if (dashboardItemUtil.shouldShowExtendedDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.ExtendedDomesticRecovery)
-        }
-
         if (dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
                 events = allEventGroupEntities,
                 domesticGreenCards = domesticGreenCards
@@ -156,6 +140,10 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowAddQrCardItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.AddQrCardItem)
+        }
+
         if (dashboardItemUtil.shouldShowCoronaMelderItem(
                 domesticGreenCards,
                 databaseSyncerResult
@@ -166,9 +154,9 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        dashboardItems.add(
-            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState))
-        )
+        if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
+            dashboardItems.add(DashboardItem.AddQrButtonItem)
+        }
 
         return dashboardItems
     }
@@ -259,6 +247,10 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowAddQrCardItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.AddQrCardItem)
+        }
+
         if (dashboardItemUtil.shouldShowCoronaMelderItem(
                 internationalGreenCards,
                 databaseSyncerResult
@@ -269,9 +261,9 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        dashboardItems.add(
-            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState))
-        )
+        if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
+            dashboardItems.add(DashboardItem.AddQrButtonItem)
+        }
 
         return dashboardItems
     }

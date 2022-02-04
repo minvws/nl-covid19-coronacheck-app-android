@@ -5,17 +5,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -26,12 +26,12 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MenuUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 /*
@@ -51,6 +51,9 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     private val persistenceManager: PersistenceManager by inject()
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
     private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
+    private val menuUtil: MenuUtil by inject()
 
     private val refreshHandler = Handler(Looper.getMainLooper())
     private val refreshRunnable = Runnable {
@@ -86,7 +89,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     }
 
     private fun observeItems(adapter: DashboardPagerAdapter) {
-        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner, { dashboardTabItems ->
+        dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner) { dashboardTabItems ->
 
             // Add pager items only once
             if (adapter.itemCount == 0) {
@@ -98,10 +101,14 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
                 )
 
                 // Default select the item that we had selected last
-                binding.viewPager.setCurrentItem(persistenceManager.getSelectedDashboardTab(), false)
+                binding.viewPager.setCurrentItem(
+                    persistenceManager.getSelectedDashboardTab(),
+                    false
+                )
 
                 // Register listener so that last selected item is saved
-                binding.viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
+                binding.viewPager.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
                         persistenceManager.setSelectedDashboardTab(position)
@@ -110,16 +117,15 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
             }
 
             // This button needs to be shown in this view instead of MyOverviewFragment (which is a single item in the viewpager)
-            val showAddQrButton = dashboardTabItems.first().items.any { it is DashboardItem.AddQrButtonItem && it.show }
-            binding.addQrButton.visibility = if (showAddQrButton) VISIBLE else GONE
-            if (showAddQrButton) {
-                binding.addQrButton.setOnClickListener {
-                    navigateSafety(
-                        MyOverviewFragmentDirections.actionQrType()
-                    )
-                }
+            binding.addQrButton.isVisible = dashboardTabItems.any { dashboardTabItem ->
+                dashboardTabItem.items.any { it is DashboardItem.AddQrButtonItem }
             }
-        })
+            binding.addQrButton.setOnClickListener {
+                navigateSafety(
+                    MyOverviewFragmentDirections.actionQrType()
+                )
+            }
+        }
     }
 
     private fun observeSyncErrors() {
@@ -159,9 +165,9 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     }
 
     private fun observeAppConfig() {
-        appConfigViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
+        appConfigViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
             dashboardViewModel.refresh()
-        })
+        }
     }
 
     private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync) {
@@ -212,10 +218,13 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         super.onResume()
         refresh()
 
-        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+        getToolbar().let { toolbar ->
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
-                    inflateMenu(R.menu.overview_toolbar)
+                    inflateMenu(R.menu.menu_toolbar)
+                    menu.findItem(R.id.action_menu).actionView?.setOnClickListener {
+                        menuUtil.showMenu(this@MyOverviewTabsFragment)
+                    }
                 }
             }
         }
@@ -225,4 +234,6 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun getToolbar() = (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar()
 }

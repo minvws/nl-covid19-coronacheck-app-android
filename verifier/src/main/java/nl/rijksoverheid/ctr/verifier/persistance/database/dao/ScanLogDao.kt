@@ -21,4 +21,7 @@ interface ScanLogDao {
 
     @Delete
     suspend fun delete(entities: List<ScanLogEntity>)
+
+    @Query("DELETE FROM scan_log")
+    suspend fun deleteAll()
 }

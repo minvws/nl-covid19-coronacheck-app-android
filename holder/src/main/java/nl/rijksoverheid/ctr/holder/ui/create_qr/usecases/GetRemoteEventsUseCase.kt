@@ -15,6 +15,7 @@ interface GetRemoteEventsUseCase {
     suspend fun getRemoteEvents(
         eventProvider: RemoteConfigProviders.EventProvider,
         filter: String,
+        scope: String?,
         token: RemoteAccessTokens.Token
     ): RemoteEventsResult
 }
@@ -25,6 +26,7 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
     override suspend fun getRemoteEvents(
         eventProvider: RemoteConfigProviders.EventProvider,
         filter: String,
+        scope: String?,
         token: RemoteAccessTokens.Token
     ): RemoteEventsResult {
 
@@ -33,6 +35,7 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
                 url = eventProvider.eventUrl,
                 token = token.event,
                 filter = filter,
+                scope = scope,
                 signingCertificateBytes = eventProvider.cms,
                 provider = eventProvider.providerIdentifier,
             )) {

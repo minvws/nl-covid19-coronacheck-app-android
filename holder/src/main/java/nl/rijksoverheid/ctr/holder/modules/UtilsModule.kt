@@ -50,4 +50,6 @@ fun utilsModule(versionCode: Int) = module {
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
     factory<MyOverviewInfoCardItemUtil> { MyOverviewInfoCardItemUtilImpl() }
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
+    factory<MenuUtil> { MenuUtilImpl(get(), get()) }
+    factory<ScopeUtil> { ScopeUtilImpl() }
 }

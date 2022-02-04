@@ -27,16 +27,6 @@ interface PersistenceManager {
     fun setHasDismissedUnsecureDeviceDialog(value : Boolean)
     fun showSyncGreenCardsItem(): Boolean
     fun setShowSyncGreenCardsItem(show: Boolean)
-    fun setShouldCheckRecoveryGreenCardRevisedValidity(check: Boolean)
-    fun getShouldCheckRecoveryGreenCardRevisedValidity(): Boolean
-    fun setShowExtendDomesticRecoveryInfoCard(show: Boolean)
-    fun getShowExtendDomesticRecoveryInfoCard(): Boolean
-    fun setShowRecoverDomesticRecoveryInfoCard(show: Boolean)
-    fun getShowRecoverDomesticRecoveryInfoCard(): Boolean
-    fun setHasDismissedExtendedDomesticRecoveryInfoCard(dismissed: Boolean)
-    fun getHasDismissedExtendedDomesticRecoveryInfoCard(): Boolean
-    fun setHasDismissedRecoveredDomesticRecoveryInfoCard(dismissed: Boolean)
-    fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean
     fun getCheckNewValidityInfoCard(): Boolean
     fun setCheckNewValidityInfoCard(check: Boolean)
     fun getHasDismissedNewValidityInfoCard(): Boolean
@@ -135,46 +125,6 @@ class SharedPreferencesPersistenceManager(
 
     override fun setShowSyncGreenCardsItem(show: Boolean) {
         sharedPreferences.edit().putBoolean(SHOW_SYNC_GREEN_CARDS_ITEM, show).commit()
-    }
-
-    override fun setShouldCheckRecoveryGreenCardRevisedValidity(check: Boolean) {
-        sharedPreferences.edit().putBoolean(SHOULD_CHECK_RECOVERY_GREEN_CARD_REVISED_VALIDITY, check).commit()
-    }
-
-    override fun getShouldCheckRecoveryGreenCardRevisedValidity(): Boolean {
-        return sharedPreferences.getBoolean(SHOULD_CHECK_RECOVERY_GREEN_CARD_REVISED_VALIDITY, true)
-    }
-
-    override fun setShowExtendDomesticRecoveryInfoCard(show: Boolean) {
-        sharedPreferences.edit().putBoolean(SHOW_EXTEND_DOMESTIC_RECOVERY_INFO_CARD, show).commit()
-    }
-
-    override fun getShowExtendDomesticRecoveryInfoCard(): Boolean {
-        return sharedPreferences.getBoolean(SHOW_EXTEND_DOMESTIC_RECOVERY_INFO_CARD, false)
-    }
-
-    override fun setShowRecoverDomesticRecoveryInfoCard(show: Boolean) {
-        sharedPreferences.edit().putBoolean(SHOW_RECOVER_DOMESTIC_RECOVERY_INFO_CARD, show).commit()
-    }
-
-    override fun getShowRecoverDomesticRecoveryInfoCard(): Boolean {
-        return sharedPreferences.getBoolean(SHOW_RECOVER_DOMESTIC_RECOVERY_INFO_CARD, false)
-    }
-
-    override fun setHasDismissedExtendedDomesticRecoveryInfoCard(dismissed: Boolean) {
-        sharedPreferences.edit().putBoolean(HAS_DISMISSED_EXTENDED_DOMESTIC_RECOVERY_INFO_CARD, dismissed).commit()
-    }
-
-    override fun getHasDismissedExtendedDomesticRecoveryInfoCard(): Boolean {
-        return sharedPreferences.getBoolean(HAS_DISMISSED_EXTENDED_DOMESTIC_RECOVERY_INFO_CARD, true)
-    }
-
-    override fun setHasDismissedRecoveredDomesticRecoveryInfoCard(dismissed: Boolean) {
-        sharedPreferences.edit().putBoolean(HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD, dismissed).commit()
-    }
-
-    override fun getHasDismissedRecoveredDomesticRecoveryInfoCard(): Boolean {
-        return sharedPreferences.getBoolean(HAS_DISMISSED_RECOVERED_DOMESTIC_RECOVERY_INFO_CARD, true)
     }
 
     override fun getCheckNewValidityInfoCard(): Boolean {

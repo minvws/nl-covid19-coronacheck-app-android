@@ -3,9 +3,12 @@ package nl.rijksoverheid.ctr.verifier.ui.scanqr
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
 
 /*
@@ -29,6 +32,7 @@ class ScanQrViewModelImpl(
     private val persistenceManager: PersistenceManager,
     private val scannerNavigationStateUseCase: ScannerNavigationStateUseCase,
     private val scannerStateUseCase: ScannerStateUseCase,
+    private val policyUseCase: ConfigVerificationPolicyUseCase
 ) : ScanQrViewModel() {
 
     override fun hasSeenScanInstructions(): Boolean {
@@ -42,9 +46,12 @@ class ScanQrViewModelImpl(
     }
 
     override fun checkPolicyUpdate() {
-        (scannerStateLiveData as MutableLiveData).postValue(
-            Event(scannerStateUseCase.get())
-        )
+        viewModelScope.launch {
+            policyUseCase.updatePolicy()
+            (scannerStateLiveData as MutableLiveData).postValue(
+                Event(scannerStateUseCase.get())
+            )
+        }
     }
 
     override fun nextScreen() {

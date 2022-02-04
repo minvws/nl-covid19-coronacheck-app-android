@@ -4,7 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -35,6 +40,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     private val intentUtil: IntentUtil by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
+    private val infoFragmentUtil: InfoFragmentUtil by inject()
 
     override fun onButtonClickWithRetryAction() {
         loginWithDigiD()
@@ -127,12 +133,22 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                             )
                         )
                     } else {
-                        findNavController().navigate(
-                            GetEventsFragmentDirections.actionCouldNotCreateQr(
+                        val test = InfoFragmentDirections.actionMyOverview()
+                        infoFragmentUtil.presentFullScreen(
+                            currentFragment = this,
+                            infoFragmentDirections = GetEventsFragmentDirections.actionInfoFragment(
                                 toolbarTitle = copy.toolbarTitle,
-                                title = copy.hasNoEventsTitle,
-                                description = copy.hasNoEventsDescription,
-                                buttonTitle = getString(R.string.back_to_overview)
+                                data = InfoFragmentData.TitleDescriptionWithButton(
+                                    title = copy.hasNoEventsTitle,
+                                    descriptionData = DescriptionData(
+                                        htmlTextString = copy.hasNoEventsDescription
+                                    ),
+                                    primaryButtonData = ButtonData.NavigationButton(
+                                        text = getString(R.string.back_to_overview),
+                                        navigationActionId = test.actionId,
+                                        navigationArguments = test.arguments
+                                    )
+                                )
                             )
                         )
                     }

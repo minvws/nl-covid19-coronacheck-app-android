@@ -46,6 +46,22 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_menu"
+            app:destination="@id/nav_menu"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_new_policy_rules"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:destination="@id/nav_new_policy_rules" />
+
     </fragment>
 
     <fragment
@@ -105,6 +121,10 @@
         android:label="@string/about_this_app"
         tools:layout="@layout/fragment_about_app">
 
+        <argument
+            android:name="data"
+            app:argType="nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData" />
+
         <action
             android:id="@+id/action_scan_log"
             app:destination="@id/nav_scan_log"
@@ -143,6 +163,76 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
+        <action
+            android:id="@+id/action_new_policy_rules"
+            app:destination="@id/nav_new_policy_rules"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_menu"
+        android:name="nl.rijksoverheid.ctr.design.fragments.menu.MenuFragment"
+        android:label="@string/general_menu">
+
+        <argument
+            android:name="menuSections"
+            app:argType="nl.rijksoverheid.ctr.design.fragments.menu.MenuSection[]" />
+
+        <action
+            android:id="@+id/action_scan_qr"
+            app:destination="@id/nav_scan_qr"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_scan_instructions"
+            app:destination="@id/nav_scan_instructions"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_policy_settings"
+            app:destination="@id/nav_policy_settings"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_about_this_app"
+            app:destination="@id/nav_about_this_app"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/nav_new_policy_rules"
+        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.NewPolicyRulesFragment"
+        android:label="">
+
+        <argument
+            android:name="returnUri"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/action_policy_selection"
+            app:destination="@id/nav_policy_selection"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 </navigation>

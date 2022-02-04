@@ -8,7 +8,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -18,7 +17,8 @@ import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionStateUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScannerNavigationState
@@ -37,11 +37,11 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
     private val scannerUtil: ScannerUtil by inject()
     private val scanQrViewModel: ScanQrViewModel by viewModel()
     private val scanInstructionsButtonUtil: ScanInstructionsButtonUtil by inject()
-    private val featureFlagUseCase: FeatureFlagUseCase by inject()
+    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
     private var _binding: FragmentScanInstructionsBinding? = null
     private val binding get() = _binding!!
 
-    private val onboardingItems by lazy { instructionsExplanationData(featureFlagUseCase.isVerificationPolicyEnabled()).onboardingItems }
+    private val onboardingItems by lazy { instructionsExplanationData(verificationPolicySelectionStateUseCase.get()).onboardingItems }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,10 +98,17 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                     navigateSafety(R.id.nav_scan_qr, bundleOf("returnUri" to arguments?.getString("returnUri")))
                 }
             }
+            is ScannerNavigationState.NewPolicyRules -> {
+                navigateSafety(
+                    ScanInstructionsFragmentDirections.actionNewPolicyRules(
+                        returnUri = arguments?.getString("returnUri")
+                    )
+                )
+            }
             else -> {
                 navigateSafety(
                     ScanInstructionsFragmentDirections.actionPolicySelection(
-                        selectionType = VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(VerificationPolicyState.None)),
+                        selectionType = VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(VerificationPolicySelectionState.Selection.None)),
                         toolbarTitle = getString(R.string.verifier_menu_risksetting),
                         returnUri = arguments?.getString("returnUri"),
                     )
@@ -206,9 +213,13 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        clearToolbar()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        clearToolbar()
         _binding = null
     }
 

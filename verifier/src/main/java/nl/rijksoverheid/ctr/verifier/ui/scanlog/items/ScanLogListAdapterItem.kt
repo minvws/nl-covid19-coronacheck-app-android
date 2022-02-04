@@ -31,11 +31,7 @@ class ScanLogListAdapterItem(val item: ScanLogItem.ListScanLogItem): BindableIte
         // Apply correct color to icon that is part of the text
         viewBinding.skew.tintDrawable(R.color.error)
 
-        viewBinding.type.text = when (item.scanLog.policy) {
-            is VerificationPolicy.VerificationPolicy2G -> context.getString(R.string.scan_log_list_highrisk)
-            is VerificationPolicy.VerificationPolicy3G -> context.getString(R.string.scan_log_list_lowrisk)
-            is VerificationPolicy.VerificationPolicy2GPlus -> context.getString(R.string.scan_log_list_2g_plus)
-        }
+        viewBinding.type.text = item.scanLog.policy.configValue
         viewBinding.time.text = util.getTimeString(context, scanLog.from, scanLog.to, item.index == 0)
         viewBinding.amount.text = util.getAmountString(context, scanLog.count)
 

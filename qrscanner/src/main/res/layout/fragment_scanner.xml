@@ -104,11 +104,11 @@
                 android:id="@+id/zebra_contrainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="icon,zebra_footer"
+                app:constraint_referenced_ids="zebra_icon,zebra_footer"
                 android:visibility="gone"/>
 
             <ImageView
-                android:id="@+id/icon"
+                android:id="@+id/zebra_icon"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginBottom="4dp"
@@ -128,6 +128,39 @@
                 android:layout_marginBottom="8dp"
                 android:gravity="center_horizontal"
                 android:text="@string/scanner_zebra_footer"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/honeywell_contrainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="honeywell_icon,honeywell_footer"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/honeywell_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_honeywell_scanner"
+                app:layout_constraintBottom_toTopOf="@id/honeywell_footer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scanner_footer"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/honeywell_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/overlay_cutout_margin"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_horizontal"
+                android:text="@string/scanner_honeywell_footer"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -174,6 +207,7 @@
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/primary_text"
                 tools:text="3G-toegang" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.cardview.widget.CardView>

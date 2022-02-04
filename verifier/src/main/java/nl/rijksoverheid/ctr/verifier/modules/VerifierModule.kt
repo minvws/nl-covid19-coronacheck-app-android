@@ -24,8 +24,6 @@ import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCaseImpl
-import nl.rijksoverheid.ctr.verifier.ui.instructions.InstructionsNavigateStateUseCase
-import nl.rijksoverheid.ctr.verifier.ui.instructions.InstructionsNavigateStateUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsButtonUtil
 import nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsButtonUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.policy.*
@@ -49,6 +47,8 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCaseImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanner.utils.ScannerUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.*
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.MenuUtil
+import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.MenuUtilImpl
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtil
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.util.ScannerStateCountdownUtilImpl
 import nl.rijksoverheid.ctr.verifier.usecase.BuildConfigUseCaseImpl
@@ -69,7 +69,7 @@ fun verifierModule() = module {
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
-            get()
+            get(), get()
         )
     }
 
@@ -91,19 +91,20 @@ fun verifierModule() = module {
     factory<ScanLogsCleanupUseCase> { ScanLogsCleanupUseCaseImpl(Clock.systemUTC(), get(), get()) }
     factory<LogScanUseCase> { LogScanUseCaseImpl(Clock.systemUTC(), get(), get()) }
     factory<ScannerUsedRecentlyUseCase> { ScannerUsedRecentlyUseCaseImpl(get(), get(), get()) }
-    factory<InstructionsNavigateStateUseCase> { InstructionsNavigateStateUseCaseImpl(get(), get(), get()) }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }
     factory<ScanLogListAdapterItemUtil> { ScanLogListAdapterItemUtilImpl() }
     factory<ScanLogFirstInstallTimeAdapterItemUtil> { ScanLogFirstInstallTimeAdapterItemUtilImpl(Clock.systemUTC()) }
     factory<ScanInstructionsButtonUtil> { ScanInstructionsButtonUtilImpl(get()) }
+    factory<MenuUtil> { MenuUtilImpl(get(), get(), get()) }
 
     // ViewModels
-    viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get()) }
-    viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get(), get()) }
+    viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get(), get()) }
+    viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get(), get(), get()) }
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get(), get()) }
     viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
+    viewModel<NewPolicyRulesViewModel> { NewPolicyRulesViewModelImpl(get(), get(), get()) }
 
     // Repositories
     factory<ScanLogRepository> { ScanLogRepositoryImpl(get(), get()) }
@@ -116,11 +117,13 @@ fun verifierModule() = module {
             .add(KotlinJsonAdapterFactory()).build()
     }
 
-    factory<VerificationPolicyUseCase> { VerificationPolicyUseCaseImpl(get(), get()) }
-    factory<VerificationPolicyStateUseCase> { VerificationPolicyStateUseCaseImpl(get(), get()) }
+    factory<VerificationPolicySelectionUseCase> { VerificationPolicySelectionUseCaseImpl(get(), get(), get()) }
+    factory<VerificationPolicySelectionStateUseCase> { VerificationPolicySelectionStateUseCaseImpl(get(), get()) }
+    factory<ConfigVerificationPolicyUseCase> { ConfigVerificationPolicyUseCaseImpl(get(), get(), get()) }
     factory<ScannerNavigationStateUseCase> { ScannerNavigationStateUseCaseImpl(get(), get(), get()) }
-    factory<ScannerStateUseCase> { ScannerStateUseCaseImpl(get(), get(), get(), get()) }
+    factory<ScannerStateUseCase> { ScannerStateUseCaseImpl(get(), get(), get(), get(), get()) }
     factory<ScannerStateCountdownUtil> { ScannerStateCountdownUtilImpl(get(), get(), get()) }
+    factory<NewPolicyRulesItemUseCase> { NewPolicyRulesItemUseCaseImpl(get()) }
 
     viewModel<VerificationPolicySelectionViewModel> { VerificationPolicySelectionViewModelImpl(get(), get()) }
 

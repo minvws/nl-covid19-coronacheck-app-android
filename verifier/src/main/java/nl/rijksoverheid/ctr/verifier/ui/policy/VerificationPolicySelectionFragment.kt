@@ -10,7 +10,6 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicySelectionBinding
@@ -39,12 +38,15 @@ class VerificationPolicySelectionFragment :
 
     private val dialogUtil: DialogUtil by inject()
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase by inject()
-    private val verificationPolicyStateUseCase: VerificationPolicyStateUseCase by inject()
+    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentVerificationPolicySelectionBinding.bind(view)
+
+        binding.policy3G.text = getString(R.string.verifier_risksetting_title, VerificationPolicy3G.configValue)
+        binding.policy1G.text = getString(R.string.verifier_risksetting_title, VerificationPolicy1G.configValue)
 
         binding.link.setOnClickListener {
             getString(R.string.verifier_risksetting_start_readmore_url).launchUrl(requireContext())
@@ -54,6 +56,10 @@ class VerificationPolicySelectionFragment :
             setupScreenBasedOnType(it)
         })
 
+        viewModel.storedVerificationPolicySelection.observe(viewLifecycleOwner, EventObserver {
+            closeScreen()
+        })
+
         viewModel.didScanRecently()
     }
 
@@ -61,15 +67,15 @@ class VerificationPolicySelectionFragment :
         val selectionType = args.selectionType
         when (selectionType) {
             is VerificationPolicySelectionType.FirstTimeUse -> setupScreenForFirstTimeUse()
-            is VerificationPolicySelectionType.Default -> setupScreenForDefaultSelectionType(selectionType.state.verificationPolicyState, scanUsedRecently)
+            is VerificationPolicySelectionType.Default -> setupScreenForDefaultSelectionType(selectionType.state.verificationPolicySelectionState, scanUsedRecently)
         }
         setupRadioGroup(selectionType)
     }
 
-    private fun setupScreenForDefaultSelectionType(verificationPolicyState: VerificationPolicyState, scanUsedRecently: Boolean) {
+    private fun setupScreenForDefaultSelectionType(verificationPolicySelectionState: VerificationPolicySelectionState, scanUsedRecently: Boolean) {
         binding.subHeader.setHtmlText(
             htmlText =
-            if (verificationPolicyState != VerificationPolicyState.None && scanUsedRecently) {
+            if (verificationPolicySelectionState != VerificationPolicySelectionState.Selection.None && scanUsedRecently) {
                 getString(
                     R.string.verifier_risksetting_menu_scan_settings_selected_title,
                     TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
@@ -81,21 +87,19 @@ class VerificationPolicySelectionFragment :
         binding.link.visibility = GONE
         binding.confirmationButton.setOnClickListener {
             onConfirmationButtonClicked {
-                presentWarningDialog()
+                presentWarningDialog(scanUsedRecently)
             }
         }
         binding.confirmationButton.text = getString(R.string.verifier_risksetting_confirmation_button)
     }
 
-    private fun presentWarningDialog() {
-        val currentPolicyState = verificationPolicyStateUseCase.get()
-        val policyHasNotChanged = currentPolicyState is VerificationPolicyState.Policy2G && binding.policy2G.isChecked ||
-                currentPolicyState is VerificationPolicyState.Policy2GPlus && binding.policy2GPlus.isChecked ||
-                currentPolicyState is VerificationPolicyState.Policy3G && binding.policy3G.isChecked
+    private fun presentWarningDialog(scanUsedRecently: Boolean) {
+        val currentPolicyState = verificationPolicySelectionStateUseCase.get()
+        val policyHasNotChanged = currentPolicyState is VerificationPolicySelectionState.Selection.Policy1G && binding.policy1G.isChecked ||
+                currentPolicyState is VerificationPolicySelectionState.Selection.Policy3G && binding.policy3G.isChecked
         when {
-            currentPolicyState is VerificationPolicyState.None -> {
+            currentPolicyState is VerificationPolicySelectionState.Selection.None || !scanUsedRecently -> {
                 storeSelection()
-                closeScreen()
             }
             policyHasNotChanged -> closeScreen()
             else -> dialogUtil.presentDialog(
@@ -108,7 +112,6 @@ class VerificationPolicySelectionFragment :
                 positiveButtonText = R.string.verifier_risksetting_confirmation_dialog_positive_button,
                 positiveButtonCallback = {
                     storeSelection()
-                    closeScreen()
                 },
                 negativeButtonText = R.string.verifier_risksetting_confirmation_dialog_negative_button
             )
@@ -116,7 +119,7 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun closeScreen() {
-        findNavControllerSafety()?.popBackStack(R.id.nav_policy_settings, true)
+        findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
     }
 
     private fun setupScreenForFirstTimeUse() {
@@ -133,7 +136,7 @@ class VerificationPolicySelectionFragment :
     }
 
     private fun onConfirmationButtonClicked(onClick: () -> Unit) {
-        val policySelected = binding.policy3G.isChecked || binding.policy2G.isChecked || binding.policy2GPlus.isChecked
+        val policySelected = binding.policy3G.isChecked || binding.policy1G.isChecked
         if (policySelected) {
             onClick()
         } else {
@@ -143,23 +146,22 @@ class VerificationPolicySelectionFragment :
 
     private fun storeSelection() {
         val policy = when {
-            binding.policy2G.isChecked -> VerificationPolicy2G
-            binding.policy2GPlus.isChecked -> VerificationPolicy2GPlus
-            binding.policy2G.isChecked -> VerificationPolicy3G
+            binding.policy3G.isChecked -> VerificationPolicy3G
+            binding.policy1G.isChecked -> VerificationPolicy1G
             else -> return
         }
         viewModel.storeSelection(policy)
     }
 
+    private fun allRadioButtons() = listOf(binding.policy3G, binding.policy1G)
+
     private fun toggleError(error: Boolean) {
         if (error) {
             binding.errorContainer.visibility = VISIBLE
-            binding.policy2G.buttonTintList =
-                ColorStateList.valueOf(requireContext().getColor(R.color.error))
-            binding.policy2GPlus.buttonTintList =
-                ColorStateList.valueOf(requireContext().getColor(R.color.error))
-            binding.policy3G.buttonTintList =
-                ColorStateList.valueOf(requireContext().getColor(R.color.error))
+            allRadioButtons().forEach {
+                it.buttonTintList =
+                    ColorStateList.valueOf(requireContext().getColor(R.color.error))
+            }
 
             // scroll all the way down so the user notices the error
             binding.scroll.post {
@@ -169,73 +171,55 @@ class VerificationPolicySelectionFragment :
             }
         } else {
             binding.errorContainer.visibility = GONE
-            binding.policy2G.buttonTintList =
-                ColorStateList.valueOf(requireContext().getColor(R.color.link))
-            binding.policy2GPlus.buttonTintList =
-                ColorStateList.valueOf(requireContext().getColor(R.color.link))
-            binding.policy3G.buttonTintList =
-                ColorStateList.valueOf(requireContext().getColor(R.color.link))
+            allRadioButtons().forEach {
+                it.buttonTintList =
+                    ColorStateList.valueOf(requireContext().getColor(R.color.link))
+            }
         }
     }
 
     private fun setupRadioGroup(selectionType: VerificationPolicySelectionType) {
-        policySelected(selectionType.state.verificationPolicyState)
+        policySelected(selectionType.state.verificationPolicySelectionState)
 
         when (viewModel.radioButtonSelected) {
-            binding.policy2G.id -> policy2GSelected()
-            binding.policy2GPlus.id -> policy2GPlusSelected()
             binding.policy3G.id -> policy3GSelected()
-        }
-
-        binding.policy2GContainer.setOnClickListener {
-            policy2GSelected()
-        }
-
-        binding.policy2GPlusContainer.setOnClickListener {
-            policy2GPlusSelected()
+            binding.policy1G.id -> policy1GSelected()
         }
 
         binding.policy3GContainer.setOnClickListener {
             policy3GSelected()
         }
-    }
 
-    private fun policy2GSelected() {
-        policyChecked(binding.policy2G.id)
-        policySelected(VerificationPolicyState.Policy2G)
-    }
-
-    private fun policy2GPlusSelected() {
-        policyChecked(binding.policy2GPlus.id)
-        policySelected(VerificationPolicyState.Policy2GPlus)
+        binding.policy1GContainer.setOnClickListener {
+            policy1GSelected()
+        }
     }
 
     private fun policy3GSelected() {
         policyChecked(binding.policy3G.id)
-        policySelected(VerificationPolicyState.Policy3G)
+        policySelected(VerificationPolicySelectionState.Selection.Policy3G)
     }
 
-    private fun policySelected(state: VerificationPolicyState) {
+    private fun policy1GSelected() {
+        policyChecked(binding.policy1G.id)
+        policySelected(VerificationPolicySelectionState.Selection.Policy1G)
+    }
+
+    private fun policySelected(state: VerificationPolicySelectionState) {
         when (state) {
-            VerificationPolicyState.Policy2G -> {
-                binding.policy2G.isChecked = true
-                binding.policy2GPlus.isChecked = false
-                binding.policy3G.isChecked = false
-            }
-            VerificationPolicyState.Policy2GPlus -> {
-                binding.policy2G.isChecked = false
-                binding.policy2GPlus.isChecked = true
-                binding.policy3G.isChecked = false
-            }
-            VerificationPolicyState.Policy3G -> {
-                binding.policy2G.isChecked = false
-                binding.policy2GPlus.isChecked = false
+            VerificationPolicySelectionState.Policy3G,
+            VerificationPolicySelectionState.Selection.Policy3G -> {
                 binding.policy3G.isChecked = true
+                binding.policy1G.isChecked = false
             }
-            VerificationPolicyState.None -> {
-                binding.policy2G.isChecked = false
-                binding.policy2GPlus.isChecked = false
+            VerificationPolicySelectionState.Policy1G,
+            VerificationPolicySelectionState.Selection.Policy1G -> {
                 binding.policy3G.isChecked = false
+                binding.policy1G.isChecked = true
+            }
+            VerificationPolicySelectionState.Selection.None -> {
+                binding.policy3G.isChecked = false
+                binding.policy1G.isChecked = false
             }
         }
     }

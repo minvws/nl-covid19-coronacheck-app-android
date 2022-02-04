@@ -45,7 +45,7 @@ class GetEventsViewModelImpl(
         originType: RemoteOriginType,
         withIncompleteVaccination: Boolean
     ) {
-        getEvents() {
+        getEvents {
             getDigidEventsUseCase.getEvents(
                 jwt = jwt,
                 originType = originType,
@@ -59,7 +59,7 @@ class GetEventsViewModelImpl(
         originType: RemoteOriginType,
         withIncompleteVaccination: Boolean
     ) {
-        getEvents() {
+        getEvents {
             mijnCnEventsUsecase.getEvents(
                 jwt = jwt,
                 originType = originType,

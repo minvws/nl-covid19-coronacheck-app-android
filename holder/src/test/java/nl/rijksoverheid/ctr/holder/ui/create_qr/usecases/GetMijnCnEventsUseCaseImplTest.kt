@@ -1,11 +1,13 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
 import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -32,6 +34,9 @@ class GetMijnCnEventsUseCaseImplTest {
     private val eventsError = mockk<NetworkRequestResult.Failed.Error>()
     private val jwt = "jwt"
     private val originType = RemoteOriginType.Test
+    private val scopeUtil: ScopeUtil = mockk<ScopeUtil>().apply {
+        every { getScopeForRemoteOriginType(any(), any()) } answers { null }
+    }
 
     private val remoteEventProviders = listOf(eventProvider1, eventProvider2)
     val eventProviders = remoteEventProviders.map { EventProvider(it.providerIdentifier, it.name) }
@@ -39,7 +44,8 @@ class GetMijnCnEventsUseCaseImplTest {
     private suspend fun getEvents(): EventsResult {
         val getEventsUseCase = GetMijnCnEventsUsecaseImpl(
             configProvidersUseCase,
-            getRemoteEventsUseCase
+            getRemoteEventsUseCase,
+            scopeUtil
         )
         return getEventsUseCase.getEvents(jwt, originType, false)
     }
@@ -73,12 +79,14 @@ class GetMijnCnEventsUseCaseImplTest {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider1,
                     any(),
+                    any(),
                     any()
                 )
             } returns RemoteEventsResult.Success(signedModel1)
             coEvery {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider2,
+                    any(),
                     any(),
                     any()
                 )
@@ -108,6 +116,7 @@ class GetMijnCnEventsUseCaseImplTest {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider1,
                     any(),
+                    any(),
                     any()
                 )
             } returns RemoteEventsResult.Success(signedModel1)
@@ -115,6 +124,7 @@ class GetMijnCnEventsUseCaseImplTest {
             coEvery {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider2,
+                    any(),
                     any(),
                     any()
                 )
@@ -146,12 +156,14 @@ class GetMijnCnEventsUseCaseImplTest {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider1,
                     any(),
+                    any(),
                     any()
                 )
             } returns RemoteEventsResult.Success(signedModel1)
             coEvery {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider2,
+                    any(),
                     any(),
                     any()
                 )
@@ -181,12 +193,14 @@ class GetMijnCnEventsUseCaseImplTest {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider1,
                     any(),
+                    any(),
                     any()
                 )
             } returns RemoteEventsResult.Error(httpError)
             coEvery {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider2,
+                    any(),
                     any(),
                     any()
                 )
@@ -227,12 +241,14 @@ class GetMijnCnEventsUseCaseImplTest {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider1,
                     any(),
+                    any(),
                     any()
                 )
             } returns RemoteEventsResult.Error(httpError)
             coEvery {
                 getRemoteEventsUseCase.getRemoteEvents(
                     provider2,
+                    any(),
                     any(),
                     any()
                 )

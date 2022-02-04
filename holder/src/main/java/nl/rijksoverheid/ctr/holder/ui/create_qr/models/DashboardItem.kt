@@ -19,18 +19,8 @@ sealed class DashboardItem {
         @StringRes val buttonText: Int? = null
     ) : DashboardItem() {
 
-        object ExtendDomesticRecovery :
-            InfoItem(isDismissible = false, hasButton = true)
-
-        object RecoverDomesticRecovery :
-            InfoItem(isDismissible = false, hasButton = true)
-
         data class ConfigFreshnessWarning(val maxValidityDate: Long) :
             InfoItem(isDismissible = false, hasButton = true)
-
-        object ExtendedDomesticRecovery : InfoItem(isDismissible = true, hasButton = true)
-
-        object RecoveredDomesticRecovery : InfoItem(isDismissible = true, hasButton = true)
 
         data class OriginInfoItem(
             val greenCardType: GreenCardType,
@@ -101,5 +91,7 @@ sealed class DashboardItem {
         )
     }
 
-    data class AddQrButtonItem(val show: Boolean) : DashboardItem()
+    object AddQrButtonItem : DashboardItem()
+
+    object AddQrCardItem : DashboardItem()
 }

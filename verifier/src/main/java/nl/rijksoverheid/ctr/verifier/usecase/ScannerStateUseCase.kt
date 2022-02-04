@@ -1,9 +1,12 @@
 package nl.rijksoverheid.ctr.verifier.usecase
 
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyStateUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionStateUseCase
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionUseCase
 import java.time.Clock
 import java.time.Instant
 
@@ -20,26 +23,32 @@ interface ScannerStateUseCase {
 
 class ScannerStateUseCaseImpl(
     private val clock: Clock,
-    private val verificationPolicyStateUseCase: VerificationPolicyStateUseCase,
+    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase,
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
-    private val persistenceManager: PersistenceManager
-): ScannerStateUseCase {
+    private val persistenceManager: PersistenceManager,
+    private val featureFlagUseCase: FeatureFlagUseCase,
+) : ScannerStateUseCase {
 
     override fun get(): ScannerState {
-        val verificationPolicyState = verificationPolicyStateUseCase.get()
+        val verificationPolicyState = verificationPolicySelectionStateUseCase.get()
 
         val now = Instant.now(clock)
-        val lockSeconds = verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong()
+        val lockSeconds =
+            verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong()
 
         val lastScanLockTimeSeconds = persistenceManager.getLastScanLockTimeSeconds()
 
-        val policyChangeIsAllowed = Instant.ofEpochSecond(lastScanLockTimeSeconds).plusSeconds(lockSeconds).isBefore(now)
+        val policyChangeIsAllowed =
+            !featureFlagUseCase.isVerificationPolicySelectionEnabled() ||
+            Instant.ofEpochSecond(
+                lastScanLockTimeSeconds
+            ).plusSeconds(lockSeconds).isBefore(now)
 
         return when {
             policyChangeIsAllowed -> ScannerState.Unlocked(verificationPolicyState)
             else -> ScannerState.Locked(
                 lastScanLockTimeSeconds = lastScanLockTimeSeconds,
-                verificationPolicyState = verificationPolicyState
+                verificationPolicySelectionState = verificationPolicyState
             )
         }
     }

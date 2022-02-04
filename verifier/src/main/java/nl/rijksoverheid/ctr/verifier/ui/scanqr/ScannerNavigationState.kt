@@ -12,4 +12,5 @@ sealed class ScannerNavigationState {
     data class Scanner(val isLocked: Boolean): ScannerNavigationState()
     object Instructions: ScannerNavigationState()
     object VerificationPolicySelection: ScannerNavigationState()
+    object NewPolicyRules: ScannerNavigationState()
 }

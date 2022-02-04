@@ -7,6 +7,7 @@ import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicyInfoBinding
 import nl.rijksoverheid.ctr.verifier.usecase.ScannerStateUseCase
@@ -25,7 +26,7 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
     private val binding get() = _binding!!
 
     private val scannerStateUseCase: ScannerStateUseCase by inject()
-    private val verificationPolicyStateUseCase: VerificationPolicyStateUseCase by inject()
+    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,41 +56,44 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
         val policySelectionAction = VerificationPolicyInfoFragmentDirections.actionPolicySelection(
             selectionType = VerificationPolicySelectionType.Default(scannerStateUseCase.get()),
             toolbarTitle = getString(
-                if (verificationPolicyStateUseCase.get() != VerificationPolicyState.None) {
-                    R.string.verifier_risksetting_changeselection_title
-                } else {
+                if (verificationPolicySelectionStateUseCase.get() is VerificationPolicySelectionState.Selection.None) {
                     R.string.verifier_menu_risksetting
+                } else {
+                    R.string.verifier_risksetting_changeselection_title
                 }
             ),
         )
         navigateSafety(policySelectionAction)
     }
 
-    private fun displayPolicyViews(headerTextStringId: Int, bodyTextStringId: Int) {
+    private fun displayPolicyViews(verificationPolicy: VerificationPolicy, bodyTextStringId: Int) {
         binding.bottom.visibility = GONE
         binding.adjustButton.visibility = VISIBLE
         binding.separator1.visibility = VISIBLE
         binding.separator2.visibility = VISIBLE
         binding.policySettingHeader.visibility = VISIBLE
         binding.policySettingBody.visibility = VISIBLE
-        binding.policySettingHeader.text = getString(headerTextStringId)
+        binding.policySettingHeader.text =
+            getString(R.string.verifier_risksetting_changeselection, verificationPolicy.configValue)
         binding.policySettingBody.text = getString(bodyTextStringId)
     }
 
     private fun setupPolicy() {
-        when (scannerStateUseCase.get().verificationPolicyState) {
-            VerificationPolicyState.None -> {
+        when (scannerStateUseCase.get().verificationPolicySelectionState) {
+            VerificationPolicySelectionState.Selection.None -> {
             }
-            VerificationPolicyState.Policy2G -> {
+            VerificationPolicySelectionState.Policy1G,
+            VerificationPolicySelectionState.Selection.Policy1G -> {
                 displayPolicyViews(
-                    R.string.verifier_start_scan_qr_policy_indication_2g,
-                    R.string.verifier_risksetting_highrisk_subtitle
+                    VerificationPolicy.VerificationPolicy1G,
+                    R.string.verifier_risksetting_subtitle_1G
                 )
             }
-            VerificationPolicyState.Policy3G -> {
+            VerificationPolicySelectionState.Policy3G,
+            VerificationPolicySelectionState.Selection.Policy3G -> {
                 displayPolicyViews(
-                    R.string.verifier_start_scan_qr_policy_indication_3g,
-                    R.string.verifier_risksetting_lowrisk_subtitle
+                    VerificationPolicy.VerificationPolicy3G,
+                    R.string.verifier_risksetting_subtitle_3G
                 )
             }
         }

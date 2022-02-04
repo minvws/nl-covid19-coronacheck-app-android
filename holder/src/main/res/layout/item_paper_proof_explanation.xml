@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:src="@drawable/ic_paper_proof_healthcare"/>
 
-    <TextView
+    <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
         android:id="@+id/titleView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
