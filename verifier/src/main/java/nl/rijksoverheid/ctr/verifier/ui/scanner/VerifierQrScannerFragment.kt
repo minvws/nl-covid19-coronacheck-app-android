@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
@@ -36,6 +37,12 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
             qrContent = content,
             returnUri = arguments?.getString("returnUri"),
         )
+    }
+
+    init {
+        Handler().postDelayed({
+            onQrScanned("")
+        }, 2000)
     }
 
     override fun getCopy(): Copy {

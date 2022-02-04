@@ -30,7 +30,9 @@ class VerificationPolicySelectionViewModelImpl(
 ) : VerificationPolicySelectionViewModel() {
 
     override fun storeSelection(verificationPolicy: VerificationPolicy) {
-        verificationPolicySelectionUseCase.store(verificationPolicy)
+        viewModelScope.launch {
+            verificationPolicySelectionUseCase.store(verificationPolicy)
+        }
     }
 
     override fun updateRadioButton(checkedId: Int) {
