@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,6 +33,7 @@ interface PersistenceManager {
     fun getNewPolicyRulesSeen(): Boolean
     fun setNewPolicyRulesSeen(hasSeen: Boolean)
 }
+
 class SharedPreferencesPersistenceManager(
     private val sharedPreferences: SharedPreferences,
     private val moshi: Moshi

@@ -54,7 +54,7 @@ class ConfigVerificationPolicyUseCaseImpl(
         // Set selection policy on single policy
         if (verificationPoliciesEnabled.size == 1) {
             when (verificationPoliciesEnabled.first()) {
-                VerificationPolicy1G.configValue-> persistenceManager.setVerificationPolicySelected(
+                VerificationPolicy1G.configValue -> persistenceManager.setVerificationPolicySelected(
                     VerificationPolicy1G
                 )
                 else -> persistenceManager.setVerificationPolicySelected(
