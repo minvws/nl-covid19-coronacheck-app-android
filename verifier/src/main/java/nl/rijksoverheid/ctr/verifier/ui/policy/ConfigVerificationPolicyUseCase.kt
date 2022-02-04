@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.policy
 
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy1G
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
@@ -33,6 +34,7 @@ class ConfigVerificationPolicyUseCaseImpl(
 
         val verificationPoliciesEnabled =
             cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+                .mapNotNull { VerificationPolicy.fromConfigValue(it) }
 
         // Reset policy settings on policy change
         if (persistenceManager.getEnabledPolicies() != verificationPoliciesEnabled) {
@@ -41,7 +43,7 @@ class ConfigVerificationPolicyUseCaseImpl(
             verifierDatabase.scanLogDao().deleteAll()
 
             // When change contains 1G the new rules should be shown
-            if (verificationPoliciesEnabled.contains(VerificationPolicy1G.configValue)) {
+            if (verificationPoliciesEnabled.contains(VerificationPolicy1G)) {
                 persistenceManager.setNewPolicyRulesSeen(false)
             }
 
@@ -52,7 +54,7 @@ class ConfigVerificationPolicyUseCaseImpl(
         // Set selection policy on single policy
         if (verificationPoliciesEnabled.size == 1) {
             when (verificationPoliciesEnabled.first()) {
-                VerificationPolicy1G.configValue -> persistenceManager.setVerificationPolicySelected(
+                VerificationPolicy1G -> persistenceManager.setVerificationPolicySelected(
                     VerificationPolicy1G
                 )
                 else -> persistenceManager.setVerificationPolicySelected(
