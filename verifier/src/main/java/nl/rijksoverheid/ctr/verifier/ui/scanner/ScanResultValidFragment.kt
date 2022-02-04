@@ -11,13 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidBinding
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionStateUseCase
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import org.koin.android.ext.android.inject
@@ -35,7 +36,7 @@ class ScanResultValidFragment : Fragment() {
     }
 
     private val args: ScanResultValidFragmentArgs by navArgs()
-    private val featureFlagUseCase: FeatureFlagUseCase by inject()
+    private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
     private val autoCloseRunnable = Runnable {
@@ -82,10 +83,14 @@ class ScanResultValidFragment : Fragment() {
                 binding.title.text = getString(R.string.scan_result_demo_title)
             }
             is ScanResultValidData.Valid -> {
-                val text = if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
-                    getString(R.string.verifier_result_access_title_policy, verificationPolicy.configValue)
-                } else {
-                    getString(R.string.verifier_result_access_title)
+                val text = when (verificationPolicySelectionStateUseCase.get()) {
+                    is VerificationPolicySelectionState.Policy1G,
+                    is VerificationPolicySelectionState.Selection.Policy1G,
+                    is VerificationPolicySelectionState.Selection.Policy3G -> getString(
+                        R.string.verifier_result_access_title_policy, verificationPolicy.configValue
+                    )
+                    is VerificationPolicySelectionState.Policy3G,
+                    is VerificationPolicySelectionState.Selection.None -> getString(R.string.verifier_result_access_title)
                 }
                 binding.title.text = text
             }
