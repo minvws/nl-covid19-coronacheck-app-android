@@ -14,12 +14,13 @@ import java.time.Instant
  */
 interface VerificationPolicySelectionUseCase {
     fun get(): VerificationPolicy
-    fun store(verificationPolicy: VerificationPolicy)
+    suspend fun store(verificationPolicy: VerificationPolicy)
 }
 
 class VerificationPolicySelectionUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
+    private val didScannerUsedRecentlyUseCase: ScannerUsedRecentlyUseCase
 ): VerificationPolicySelectionUseCase {
 
     // use only when the policy is set already
@@ -27,12 +28,12 @@ class VerificationPolicySelectionUseCaseImpl(
         return persistenceManager.getVerificationPolicySelected() ?: VerificationPolicy.VerificationPolicy3G
     }
 
-    override fun store(verificationPolicy: VerificationPolicy) {
+    override suspend fun store(verificationPolicy: VerificationPolicy) {
         val nowSeconds = Instant.now(clock).epochSecond
 
         // don't store a lock change the first time policy is set
         // or there is no change in the policy set
-        if (persistenceManager.isVerificationPolicySelectionSet() && persistenceManager.getVerificationPolicySelected() != verificationPolicy) {
+        if (persistenceManager.isVerificationPolicySelectionSet() && persistenceManager.getVerificationPolicySelected() != verificationPolicy && didScannerUsedRecentlyUseCase.get()) {
             persistenceManager.storeLastScanLockTimeSeconds(nowSeconds)
         }
 

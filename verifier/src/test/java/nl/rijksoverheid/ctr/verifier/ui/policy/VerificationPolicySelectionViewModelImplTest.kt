@@ -1,28 +1,40 @@
 package nl.rijksoverheid.ctr.verifier.ui.policy
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
+import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
+import org.robolectric.RobolectricTestRunner
 
-class VerificationPolicySelectionViewModelImplTest {
+@RunWith(RobolectricTestRunner::class)
+class VerificationPolicySelectionViewModelImplTest: AutoCloseKoinTest() {
 
     private val verificationPolicyUseCase = mockk<VerificationPolicySelectionUseCase>().apply {
-        every { store(VerificationPolicy.VerificationPolicy3G) } returns Unit
+        coEvery { store(VerificationPolicy.VerificationPolicy3G) } returns Unit
     }
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
     @Test
-    fun `policy selected is stored`() {
+    fun `policy selected is stored`() = runBlocking {
         val viewModel = VerificationPolicySelectionViewModelImpl(verificationPolicyUseCase, mockk())
 
         viewModel.storeSelection(VerificationPolicy.VerificationPolicy3G)
 
-        verify { verificationPolicyUseCase.store(VerificationPolicy.VerificationPolicy3G) }
+        coVerify { verificationPolicyUseCase.store(VerificationPolicy.VerificationPolicy3G) }
+    }
+
+    @Test
+    fun `policy selected is not stored`() = runBlocking {
+        val viewModel = VerificationPolicySelectionViewModelImpl(verificationPolicyUseCase, mockk())
+
+        viewModel.storeSelection(VerificationPolicy.VerificationPolicy3G)
+
+        coVerify { verificationPolicyUseCase.store(VerificationPolicy.VerificationPolicy3G) }
     }
 }

@@ -56,6 +56,10 @@ class VerificationPolicySelectionFragment :
             setupScreenBasedOnType(it)
         })
 
+        viewModel.storedVerificationPolicySelection.observe(viewLifecycleOwner, EventObserver {
+            closeScreen()
+        })
+
         viewModel.didScanRecently()
     }
 
@@ -83,20 +87,19 @@ class VerificationPolicySelectionFragment :
         binding.link.visibility = GONE
         binding.confirmationButton.setOnClickListener {
             onConfirmationButtonClicked {
-                presentWarningDialog()
+                presentWarningDialog(scanUsedRecently)
             }
         }
         binding.confirmationButton.text = getString(R.string.verifier_risksetting_confirmation_button)
     }
 
-    private fun presentWarningDialog() {
+    private fun presentWarningDialog(scanUsedRecently: Boolean) {
         val currentPolicyState = verificationPolicySelectionStateUseCase.get()
         val policyHasNotChanged = currentPolicyState is VerificationPolicySelectionState.Selection.Policy1G && binding.policy1G.isChecked ||
                 currentPolicyState is VerificationPolicySelectionState.Selection.Policy3G && binding.policy3G.isChecked
         when {
-            currentPolicyState is VerificationPolicySelectionState.Selection.None -> {
+            currentPolicyState is VerificationPolicySelectionState.Selection.None || !scanUsedRecently -> {
                 storeSelection()
-                closeScreen()
             }
             policyHasNotChanged -> closeScreen()
             else -> dialogUtil.presentDialog(
@@ -109,7 +112,6 @@ class VerificationPolicySelectionFragment :
                 positiveButtonText = R.string.verifier_risksetting_confirmation_dialog_positive_button,
                 positiveButtonCallback = {
                     storeSelection()
-                    closeScreen()
                 },
                 negativeButtonText = R.string.verifier_risksetting_confirmation_dialog_negative_button
             )

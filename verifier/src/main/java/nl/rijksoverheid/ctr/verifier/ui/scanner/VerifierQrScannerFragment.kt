@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.design.utils.DialogUtil

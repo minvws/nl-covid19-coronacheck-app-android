@@ -117,7 +117,7 @@ fun verifierModule() = module {
             .add(KotlinJsonAdapterFactory()).build()
     }
 
-    factory<VerificationPolicySelectionUseCase> { VerificationPolicySelectionUseCaseImpl(get(), get()) }
+    factory<VerificationPolicySelectionUseCase> { VerificationPolicySelectionUseCaseImpl(get(), get(), get()) }
     factory<VerificationPolicySelectionStateUseCase> { VerificationPolicySelectionStateUseCaseImpl(get(), get()) }
     factory<ConfigVerificationPolicyUseCase> { ConfigVerificationPolicyUseCaseImpl(get(), get(), get()) }
     factory<ScannerNavigationStateUseCase> { ScannerNavigationStateUseCaseImpl(get(), get(), get()) }
