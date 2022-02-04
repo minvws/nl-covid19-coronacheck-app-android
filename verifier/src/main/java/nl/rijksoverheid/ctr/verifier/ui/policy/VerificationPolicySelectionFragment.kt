@@ -71,7 +71,7 @@ class VerificationPolicySelectionFragment :
     private fun setupScreenForDefaultSelectionType(verificationPolicySelectionState: VerificationPolicySelectionState, scanUsedRecently: Boolean) {
         binding.subHeader.setHtmlText(
             htmlText =
-            if (verificationPolicySelectionState != VerificationPolicySelectionState.Selection.None && scanUsedRecently) {
+            if (verificationPolicySelectionState != VerificationPolicySelectionState.Selection.None) {
                 getString(
                     R.string.verifier_risksetting_menu_scan_settings_selected_title,
                     TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
@@ -83,18 +83,18 @@ class VerificationPolicySelectionFragment :
         binding.link.visibility = GONE
         binding.confirmationButton.setOnClickListener {
             onConfirmationButtonClicked {
-                presentWarningDialog()
+                presentWarningDialog(scanUsedRecently)
             }
         }
         binding.confirmationButton.text = getString(R.string.verifier_risksetting_confirmation_button)
     }
 
-    private fun presentWarningDialog() {
+    private fun presentWarningDialog(scanUsedRecently: Boolean) {
         val currentPolicyState = verificationPolicySelectionStateUseCase.get()
         val policyHasNotChanged = currentPolicyState is VerificationPolicySelectionState.Selection.Policy1G && binding.policy1G.isChecked ||
                 currentPolicyState is VerificationPolicySelectionState.Selection.Policy3G && binding.policy3G.isChecked
         when {
-            currentPolicyState is VerificationPolicySelectionState.Selection.None -> {
+            currentPolicyState is VerificationPolicySelectionState.Selection.None || !scanUsedRecently -> {
                 storeSelection()
                 closeScreen()
             }
