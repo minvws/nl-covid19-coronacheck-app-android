@@ -56,6 +56,10 @@ class VerificationPolicySelectionFragment :
             setupScreenBasedOnType(it)
         })
 
+        viewModel.storedVerificationPolicySelection.observe(viewLifecycleOwner, EventObserver {
+            closeScreen()
+        })
+
         viewModel.didScanRecently()
     }
 
@@ -71,7 +75,7 @@ class VerificationPolicySelectionFragment :
     private fun setupScreenForDefaultSelectionType(verificationPolicySelectionState: VerificationPolicySelectionState, scanUsedRecently: Boolean) {
         binding.subHeader.setHtmlText(
             htmlText =
-            if (verificationPolicySelectionState != VerificationPolicySelectionState.Selection.None) {
+            if (verificationPolicySelectionState != VerificationPolicySelectionState.Selection.None && scanUsedRecently) {
                 getString(
                     R.string.verifier_risksetting_menu_scan_settings_selected_title,
                     TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
@@ -96,7 +100,6 @@ class VerificationPolicySelectionFragment :
         when {
             currentPolicyState is VerificationPolicySelectionState.Selection.None || !scanUsedRecently -> {
                 storeSelection()
-                closeScreen()
             }
             policyHasNotChanged -> closeScreen()
             else -> dialogUtil.presentDialog(
@@ -109,7 +112,6 @@ class VerificationPolicySelectionFragment :
                 positiveButtonText = R.string.verifier_risksetting_confirmation_dialog_positive_button,
                 positiveButtonCallback = {
                     storeSelection()
-                    closeScreen()
                 },
                 negativeButtonText = R.string.verifier_risksetting_confirmation_dialog_negative_button
             )

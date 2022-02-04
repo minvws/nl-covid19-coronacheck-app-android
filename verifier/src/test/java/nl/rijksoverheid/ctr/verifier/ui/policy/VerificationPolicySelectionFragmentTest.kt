@@ -21,6 +21,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.design.utils.DialogUtilImpl
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
@@ -88,7 +89,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `given default policy selection fragment and stored 2g selection, when confirming 3g selection, then correct subheader and confirmation dialog show up`() {
+    fun `given default policy selection fragment and stored 2g selection, when confirming 3g selection, then correct subheader and confirmation dialog show up`() = runBlocking {
         launchFragment(
             policySelectionState = VerificationPolicySelectionState.Policy1G,
             selectionType = VerificationPolicySelectionType.Default(
@@ -166,7 +167,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
         val recentScanLogsLiveDataEvent = MutableLiveData<Event<Boolean>>()
 
-        verificationPolicySelectionViewModel = mockk<VerificationPolicySelectionViewModel>().apply {
+        verificationPolicySelectionViewModel = mockk<VerificationPolicySelectionViewModel>(relaxed = true).apply {
             coEvery { scannerUsedRecentlyLiveData } returns recentScanLogsLiveDataEvent
             coEvery { didScanRecently() } answers {
                 recentScanLogsLiveDataEvent.postValue(Event(scannerUsedRecently))
