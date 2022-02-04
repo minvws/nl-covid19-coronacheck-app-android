@@ -34,6 +34,21 @@
                 app:layout_constraintVertical_bias="0"
                 app:layout_constraintVertical_chainStyle="packed" />
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lockedAnimation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingHorizontal="16dp"
+                android:scaleType="centerInside"
+                app:layout_constraintBottom_toTopOf="@+id/title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:visibility="gone" />
+
             <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
                 android:id="@+id/title"
                 android:layout_width="0dp"

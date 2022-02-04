@@ -4,12 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.airbnb.lottie.LottieDrawable.INFINITE
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -193,7 +193,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         }
 
         when (scannerState) {
-            is ScannerState.Locked -> lockScanner()
+            is ScannerState.Locked -> lockScanner(scannerState.verificationPolicySelectionState)
             is ScannerState.Unlocked -> unlockScanner()
         }
     }
@@ -250,7 +250,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         binding.clockdeviationView.root.isGone = !clockDeviationUseCase.hasDeviation()
     }
 
-    private fun lockScanner() {
+    private fun lockScanner(selectionState: VerificationPolicySelectionState) {
+        binding.image.visibility = INVISIBLE
         binding.title.visibility = VISIBLE
         binding.instructionsButton.visibility = GONE
         binding.clockdeviationView.root.visibility = GONE
@@ -259,15 +260,28 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
             TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
         )
         binding.bottom.lock()
+
+        binding.lockedAnimation.visibility = VISIBLE
+        binding.lockedAnimation.setAnimation(
+            if (selectionState == VerificationPolicySelectionState.Selection.Policy1G) {
+                R.raw.lock_3g_to_1g
+            } else {
+                R.raw.lock_1g_to_3g
+            }
+        )
+        binding.lockedAnimation.repeatCount = INFINITE
+        binding.lockedAnimation.playAnimation()
     }
 
     private fun unlockScanner() {
+        binding.image.visibility = VISIBLE
         binding.title.visibility = GONE
         binding.title.setText(R.string.scan_qr_header)
         binding.instructionsButton.visibility = VISIBLE
         binding.description.text = getString(R.string.scan_qr_description)
         showDeviationViewIfNeeded()
         binding.bottom.unlock()
+        binding.lockedAnimation.visibility = GONE
     }
 
     private fun updateTitle(timeLeft: String) {
