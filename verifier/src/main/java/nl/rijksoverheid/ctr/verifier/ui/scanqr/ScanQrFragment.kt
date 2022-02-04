@@ -221,10 +221,11 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
                         returnUri = deeplinkReturnUri(),
                     )
                 )
-            is ScannerNavigationState.Scanner -> scannerUtil.launchScanner(
-                requireActivity(),
-                deeplinkReturnUri()
-            )
+            is ScannerNavigationState.Scanner -> {
+                if (!scannerNavigationState.isLocked) {
+                    scannerUtil.launchScanner(requireActivity(), deeplinkReturnUri())
+                }
+            }
             is ScannerNavigationState.NewPolicyRules -> {
                 findNavControllerSafety()?.navigate(
                     ScanQrFragmentDirections.actionNewPolicyRules(
