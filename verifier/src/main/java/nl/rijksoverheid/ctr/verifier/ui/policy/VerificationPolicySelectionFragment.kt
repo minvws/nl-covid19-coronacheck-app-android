@@ -10,7 +10,8 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy1G
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentVerificationPolicySelectionBinding
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
@@ -130,6 +131,9 @@ class VerificationPolicySelectionFragment :
 
     private fun closeScreen() {
         findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
+        if (args.selectionType is VerificationPolicySelectionType.FirstTimeUse) {
+            scannerUtil.launchScanner(requireActivity(), arguments?.getString("returnUri"))
+        }
     }
 
     private fun setupScreenForFirstTimeUse(selectionType: VerificationPolicySelectionType.FirstTimeUse) {
@@ -152,9 +156,6 @@ class VerificationPolicySelectionFragment :
             else -> return
         }
         viewModel.storeSelection(policy)
-
-        findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
-        scannerUtil.launchScanner(requireActivity(), arguments?.getString("returnUri"))
     }
 
     private fun allRadioButtons() = listOf(binding.policy3G, binding.policy1G)
