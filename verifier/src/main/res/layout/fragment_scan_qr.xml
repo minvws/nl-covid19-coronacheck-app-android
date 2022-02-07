@@ -49,19 +49,26 @@
                 app:layout_constraintVertical_chainStyle="packed"
                 android:visibility="gone" />
 
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/imageBarrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:barrierAllowsGoneWidgets="true"
+                app:constraint_referenced_ids="lockedAnimation" />
+
             <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
                 android:paddingHorizontal="16dp"
                 android:text="@string/scan_qr_header"
                 android:visibility="gone"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 app:layout_constraintBottom_toTopOf="@+id/description"
-                app:layout_constraintEnd_toEndOf="@+id/image"
-                app:layout_constraintStart_toStartOf="@+id/image"
-                app:layout_constraintTop_toBottomOf="@+id/image" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageBarrier" />
 
             <TextView
                 android:id="@+id/description"
@@ -71,9 +78,8 @@
                 android:paddingHorizontal="16dp"
                 android:text="@string/scan_qr_description"
                 android:textAppearance="?attr/textAppearanceBody1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/image"
-                app:layout_constraintStart_toStartOf="@+id/image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
 
             <com.google.android.material.button.MaterialButton

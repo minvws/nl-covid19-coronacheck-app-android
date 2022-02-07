@@ -251,7 +251,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     }
 
     private fun lockScanner(selectionState: VerificationPolicySelectionState) {
-        binding.image.visibility = INVISIBLE
+        binding.image.visibility = GONE
         binding.title.visibility = VISIBLE
         binding.instructionsButton.visibility = GONE
         binding.clockdeviationView.root.visibility = GONE
