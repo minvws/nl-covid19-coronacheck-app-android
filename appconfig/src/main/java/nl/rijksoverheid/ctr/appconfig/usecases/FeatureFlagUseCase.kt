@@ -8,6 +8,7 @@
 
 package nl.rijksoverheid.ctr.appconfig.usecases
 
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
 
 interface FeatureFlagUseCase {
@@ -28,6 +29,7 @@ class FeatureFlagUseCaseImpl(
 
     override fun isVerificationPolicySelectionEnabled(): Boolean {
         val verificationPoliciesEnabled = appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+            .filter { VerificationPolicy.fromConfigValue(it) != null }
         return verificationPoliciesEnabled.size > 1
     }
 }

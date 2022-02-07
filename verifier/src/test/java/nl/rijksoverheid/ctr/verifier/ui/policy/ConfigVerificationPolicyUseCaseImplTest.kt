@@ -151,4 +151,16 @@ class ConfigVerificationPolicyUseCaseImplTest {
 
         coVerify(exactly = 0) { verifierDatabase.scanLogDao().deleteAll() }
     }
+
+    @Test
+    fun `Not supported policies should be filtered out`() = runBlocking {
+        every { persistenceManager.getEnabledPolicies() } returns listOf("3G", "1G")
+        every { cachedAppConfigUseCase.getCachedAppConfig() } returns VerifierConfig.default(
+            policiesEnabled = listOf("3G", "2G")
+        )
+
+        configVerificationPolicyUseCase.updatePolicy()
+
+        verify { persistenceManager.setEnabledPolicies(listOf("3G")) }
+    }
 }
