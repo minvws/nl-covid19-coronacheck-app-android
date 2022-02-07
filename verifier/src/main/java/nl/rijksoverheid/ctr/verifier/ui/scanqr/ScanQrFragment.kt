@@ -263,10 +263,10 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
 
         binding.lockedAnimation.visibility = VISIBLE
         binding.lockedAnimation.setAnimation(
-            if (selectionState == VerificationPolicySelectionState.Selection.Policy1G) {
-                R.raw.lock_3g_to_1g
-            } else {
-                R.raw.lock_1g_to_3g
+            when (selectionState) {
+                VerificationPolicySelectionState.Selection.Policy1G -> R.raw.lock_3g_to_1g
+                VerificationPolicySelectionState.Selection.Policy3G -> R.raw.lock_1g_to_3g
+                else -> R.raw.lock_1g_to_3g
             }
         )
         binding.lockedAnimation.repeatCount = INFINITE
