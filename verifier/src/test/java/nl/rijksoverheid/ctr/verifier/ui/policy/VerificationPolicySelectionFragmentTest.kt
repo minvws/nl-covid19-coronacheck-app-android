@@ -67,7 +67,10 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `given first time use and no policy selected, when click to continue, then error is shown`() {
-        launchFragment()
+        launchFragment(
+            isPolicySelected = false,
+            scannerUsedRecently = false
+        )
 
         clickOn(R.id.confirmationButton)
 
@@ -77,19 +80,21 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given first time use and policy selected, when click to continue, then no error is shown, selection is stored and scanner is launched`() {
         launchFragment(
-            policySelectionState = VerificationPolicySelectionState.Policy1G
+            policySelectionState = VerificationPolicySelectionState.Policy1G,
+            scannerUsedRecently = false,
+            isPolicySelected = true
         )
 
         clickOn(R.id.policy1G_container)
         clickOn(R.id.confirmationButton)
 
         assertNotDisplayed(R.id.error_container)
-        verify { scannerUtil.launchScanner(any()) }
+//        verify { scannerUtil.launchScanner(any()) }
         verify { verificationPolicySelectionViewModel.storeSelection(VerificationPolicy.VerificationPolicy1G) }
     }
 
     @Test
-    fun `given default policy selection fragment and stored 2g selection, when confirming 3g selection, then correct subheader and confirmation dialog show up`() = runBlocking {
+    fun `given default policy selection fragment and stored 1g selection, when confirming 3g selection, then correct subheader and confirmation dialog show up`() = runBlocking {
         launchFragment(
             policySelectionState = VerificationPolicySelectionState.Policy1G,
             selectionType = VerificationPolicySelectionType.Default(
@@ -158,6 +163,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
             ScannerState.Unlocked(policySelectionState)
         ),
         scannerUsedRecently: Boolean = true,
+        isPolicySelected: Boolean = true
     ) {
 
         val verificationPolicyStateUseCase =
@@ -166,11 +172,24 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
             }
 
         val recentScanLogsLiveDataEvent = MutableLiveData<Event<Boolean>>()
+        val policySelected = MutableLiveData<Boolean>()
+        val policyChangeWarning = MutableLiveData<Event<Unit>>()
+        val storedSelection = MutableLiveData<Event<Unit>>()
 
         verificationPolicySelectionViewModel = mockk<VerificationPolicySelectionViewModel>(relaxed = true).apply {
             coEvery { scannerUsedRecentlyLiveData } returns recentScanLogsLiveDataEvent
+            coEvery { policySelectedLiveData } returns policySelected
+            coEvery { policyChangeWarningLiveData } returns policyChangeWarning
+            coEvery { storedVerificationPolicySelection } returns storedSelection
             coEvery { didScanRecently() } answers {
                 recentScanLogsLiveDataEvent.postValue(Event(scannerUsedRecently))
+            }
+            coEvery { onConfirmationButtonClicked(isPolicySelected, scannerUsedRecently, selectionType) } answers {
+                if (scannerUsedRecently && selectionType is VerificationPolicySelectionType.Default) {
+                    policyChangeWarning.postValue(Event(Unit))
+                } else {
+                    policySelected.postValue(isPolicySelected)
+                }
             }
             coEvery { radioButtonSelected } returns when (policySelectionState) {
                 VerificationPolicySelectionState.Selection.None -> null
@@ -180,7 +199,9 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
                 VerificationPolicySelectionState.Selection.Policy3G-> R.id.policy3G
             }
             coEvery { updateRadioButton(any()) } returns Unit
-            coEvery { storeSelection(any()) } returns Unit
+            coEvery { storeSelection(any()) } answers {
+                storedSelection.postValue(Event(Unit))
+            }
         }
 
         loadKoinModules(
