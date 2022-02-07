@@ -17,7 +17,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
-import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.makeIndeterminateAccessible
 
 class HolderMainFragment : Fragment(R.layout.fragment_main) {
 
@@ -59,13 +59,10 @@ class HolderMainFragment : Fragment(R.layout.fragment_main) {
     }
 
     fun presentLoading(loading: Boolean) {
-        if (loading) {
-            binding.loading.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
-            binding.loading.setAccessibilityFocus()
-            binding.loading.announceForAccessibility(getString(R.string.general_loading_description))
-        } else {
-            binding.loading.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
-        }
+        binding.loading.makeIndeterminateAccessible(
+            context = requireContext(),
+            isLoading = loading
+        )
         binding.loading.visibility = if (loading) View.VISIBLE else View.GONE
     }
 

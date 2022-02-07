@@ -350,7 +350,7 @@
   <string name="get_recovery_title">Gegevens van je herstel ophalen</string>
   <string name="get_recovery_description"><![CDATA[Heb je corona gehad? Dan kun je van de positieve testuitslag een herstelbewijs maken. Log in met DigiD om een testuitslag op te halen.]]></string>
   <string name="no_positive_test_result_title">Geen positieve testuitslag beschikbaar</string>
-  <string name="no_positive_test_result_description"><![CDATA[Ben je net getest? Het kan een paar uur duren voordat je uitslag beschikbaar is. Probeer het later nog eens.<br/><br/>Al even geleden getest? Neem dan contact op met je testlocatie om te controleren of je gegevens goed in het systeem staan.<br/><br/>Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
+  <string name="no_positive_test_result_description"><![CDATA[Ben je net getest? Het kan een paar uur duren voordat je uitslag beschikbaar is. Probeer het later nog eens.<br/><br/>Al even geleden getest? Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="qr_code_type_recovery_title">Positieve test</string>
   <string name="qr_code_type_recovery_description">Uit de test blijkt dat ik corona heb gehad</string>
   <string name="your_test_result_explanation_positive_test_result">positief (corona)</string>
@@ -515,18 +515,18 @@
   <string name="qr_card_vaccination_title_domestic_with_doses">Vaccinatiebewijs (%1$s doses):</string>
   <string name="add_paper_proof_why_only_international_title">Waarom alleen internationaal?</string>
   <string name="add_paper_proof_why_only_international_description">Met de gegevens in internationale QR-codes kan ook direct een Nederlands bewijs gemaakt worden. Zo hoef je ze niet allebei te scannen.</string>
-  <string name="international_certificate_created_description"><![CDATA[Je hebt geen Nederlands vaccinatiebewijs. Hiervoor moet je volledig gevaccineerd zijn, of hersteld van corona vóór je eerste prik.<br/><br/><b>Krijg je nog een nieuwe prik?</b><br/>Voeg opnieuw een vaccinatiebewijs toe nadat je prik is gezet. Je krijgt dan ook een Nederlands bewijs.<br/><br/><b>Corona gehad voor je eerste prik?</b><br/>Haal je positieve testuitslag op. Je krijgt dan ook een Nederlands bewijs.]]></string>
+  <string name="international_certificate_created_description"><![CDATA[Met jouw vaccinatie(s) heb je helaas geen recht op een Nederlands vaccinatiebewijs.<br/><br/><b>Krijg je nog een nieuwe vaccinatie?</b><br/>Voeg opnieuw een vaccinatie toe nadat je prik is gezet. Je krijgt dan ook een Nederlands bewijs.<br/><br/><b>Corona gehad vóór je eerste vaccinatie?</b><br/>Dan heb je vaak maar één prik nodig om volledig gevaccineerd te zijn. Haal je positieve testuitslag op om deze aan je vaccinatiebewijs toe te voegen.]]></string>
   <string name="international_certificate_created_title">Er is alleen een internationaal bewijs gemaakt</string>
   <string name="international_certificate_created_toolbar_title">Bewijs gemaakt</string>
   <string name="international_certificate_created_retrieve_test_button">Haal mijn testuitslag op</string>
   <string name="missing_dutch_certificate_info_card_text">Je hebt geen Nederlands vaccinatiebewijs</string>
   <string name="missing_dutch_certificate_title">Geen Nederlands vaccinatiebewijs</string>
-  <string name="missing_dutch_certificate_introduction">Je hebt geen Nederlands vaccinatiebewijs. Hiervoor moet je volledig gevaccineerd zijn, of hersteld van corona vóór je eerste prik.</string>
-  <string name="missing_dutch_certificate_second_vaccine_explanation"><![CDATA[<br/><b>Nieuwe prik gehad?</b><br/>Haal opnieuw je vaccinaties op. Je krijgt dan een Nederlands bewijs.]]></string>
+  <string name="missing_dutch_certificate_introduction">Met jouw vaccinatie(s) heb je helaas geen recht op een Nederlands vaccinatiebewijs.</string>
+  <string name="missing_dutch_certificate_second_vaccine_explanation"><![CDATA[<br/><b>Nieuwe vaccinatie gehad?</b><br/>Haal opnieuw je vaccinaties op. Je krijgt dan een Nederlands bewijs.]]></string>
   <string name="missing_dutch_certificate_retrieve_vaccination_button">Haal mijn vaccinaties op</string>
-  <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<b>Corona gehad voor je eerste prik?</b><br/>Haal je positieve testuitslag op. Je krijgt dan een Nederlands bewijs.]]></string>
+  <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<b>Corona gehad vóór je eerste vaccinatie?</b><br/>Dan heb je vaak maar één prik nodig om volledig gevaccineerd te zijn. Haal je positieve testuitslag op om deze aan je vaccinatiebewijs toe te voegen.]]></string>
   <string name="missing_dutch_certificate_retrieve_test_button">Haal mijn testuitslag op</string>
-  <string name="missing_dutch_certificate_explanation_more"><![CDATA[<br/><b>Meer weten?</b><br/>Bekijk de  <a href=\"https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/\">meestgestelde vragen</a> voor andere mogelijke oorzaken.]]></string>
+  <string name="missing_dutch_certificate_explanation_more"><![CDATA[<br/><b>Meer weten?</b><br/>Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/onderwerpen/coronavirus-coronabewijs-en-coronatoegangsbewijs/vaccinatiebewijs/eisen-en-geldigheid\">deze pagina over de eisen en geldigheid van het vaccinatiebewijs</a>.]]></string>
   <string name="certificate_created_toolbar_title">Bewijs gemaakt</string>
   <string name="certificate_created_vaccination_recovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
   <string name="certificate_created_vaccination_recovery_description"><![CDATA[Er is een Nederlands vaccinatiebewijs gemaakt.<br><br>Van je positieve testuitslag kon ook een herstelbewijs gemaakt worden.]]></string>
