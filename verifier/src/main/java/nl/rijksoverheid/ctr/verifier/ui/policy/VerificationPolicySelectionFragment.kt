@@ -60,22 +60,30 @@ class VerificationPolicySelectionFragment :
             closeScreen()
         })
 
+        viewModel.policySelectedLiveData.observe(viewLifecycleOwner) { policySelected ->
+            if (policySelected) storeSelection() else toggleError(true)
+        }
+
+        viewModel.policyChangeWarningLiveData.observe(viewLifecycleOwner, EventObserver {
+            presentWarningDialog()
+        })
+
         viewModel.didScanRecently()
     }
 
     private fun setupScreenBasedOnType(scanUsedRecently: Boolean) {
         val selectionType = args.selectionType
         when (selectionType) {
-            is VerificationPolicySelectionType.FirstTimeUse -> setupScreenForFirstTimeUse()
-            is VerificationPolicySelectionType.Default -> setupScreenForDefaultSelectionType(selectionType.state.verificationPolicySelectionState, scanUsedRecently)
+            is VerificationPolicySelectionType.FirstTimeUse -> setupScreenForFirstTimeUse(selectionType)
+            is VerificationPolicySelectionType.Default -> setupScreenForDefaultSelectionType(selectionType, scanUsedRecently)
         }
         setupRadioGroup(selectionType)
     }
 
-    private fun setupScreenForDefaultSelectionType(verificationPolicySelectionState: VerificationPolicySelectionState, scanUsedRecently: Boolean) {
+    private fun setupScreenForDefaultSelectionType(selectionType: VerificationPolicySelectionType, scanUsedRecently: Boolean) {
         binding.subHeader.setHtmlText(
             htmlText =
-            if (verificationPolicySelectionState != VerificationPolicySelectionState.Selection.None && scanUsedRecently) {
+            if (selectionType.state.verificationPolicySelectionState != VerificationPolicySelectionState.Selection.None && scanUsedRecently) {
                 getString(
                     R.string.verifier_risksetting_menu_scan_settings_selected_title,
                     TimeUnit.SECONDS.toMinutes(verifierCachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong())
@@ -86,23 +94,25 @@ class VerificationPolicySelectionFragment :
         )
         binding.link.visibility = GONE
         binding.confirmationButton.setOnClickListener {
-            onConfirmationButtonClicked {
-                presentWarningDialog(scanUsedRecently)
-            }
+            viewModel.onConfirmationButtonClicked(
+                isPolicySelected = binding.policy3G.isChecked || binding.policy1G.isChecked,
+                scannedRecently = scanUsedRecently,
+                selectionType = selectionType
+            )
         }
         binding.confirmationButton.text = getString(R.string.verifier_risksetting_confirmation_button)
     }
 
-    private fun presentWarningDialog(scanUsedRecently: Boolean) {
+    private fun presentWarningDialog() {
         val currentPolicyState = verificationPolicySelectionStateUseCase.get()
-        val policyHasNotChanged = currentPolicyState is VerificationPolicySelectionState.Selection.Policy1G && binding.policy1G.isChecked ||
-                currentPolicyState is VerificationPolicySelectionState.Selection.Policy3G && binding.policy3G.isChecked
-        when {
-            currentPolicyState is VerificationPolicySelectionState.Selection.None || !scanUsedRecently -> {
-                storeSelection()
-            }
-            policyHasNotChanged -> closeScreen()
-            else -> dialogUtil.presentDialog(
+        val policyHasNotChanged =
+            currentPolicyState is VerificationPolicySelectionState.Selection.Policy1G && binding.policy1G.isChecked ||
+                    currentPolicyState is VerificationPolicySelectionState.Selection.Policy3G && binding.policy3G.isChecked
+
+        if (policyHasNotChanged) {
+            closeScreen()
+        } else {
+            dialogUtil.presentDialog(
                 context = requireContext(),
                 title = R.string.verifier_risksetting_confirmation_dialog_title,
                 message = getString(
@@ -122,26 +132,17 @@ class VerificationPolicySelectionFragment :
         findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
     }
 
-    private fun setupScreenForFirstTimeUse() {
+    private fun setupScreenForFirstTimeUse(selectionType: VerificationPolicySelectionType.FirstTimeUse) {
         binding.subHeader.setHtmlText(R.string.verifier_risksetting_firsttimeuse_header)
         binding.confirmationButton.text = getString(R.string.scan_qr_button)
         binding.confirmationButton.setOnClickListener {
-            onConfirmationButtonClicked {
-                storeSelection()
-                findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
-                scannerUtil.launchScanner(requireActivity(), arguments?.getString("returnUri"))
-            }
+            viewModel.onConfirmationButtonClicked(
+                isPolicySelected = binding.policy3G.isChecked || binding.policy1G.isChecked,
+                scannedRecently = false,
+                selectionType = selectionType
+            )
         }
         binding.header.visibility = VISIBLE
-    }
-
-    private fun onConfirmationButtonClicked(onClick: () -> Unit) {
-        val policySelected = binding.policy3G.isChecked || binding.policy1G.isChecked
-        if (policySelected) {
-            onClick()
-        } else {
-            toggleError(true)
-        }
     }
 
     private fun storeSelection() {
@@ -151,6 +152,9 @@ class VerificationPolicySelectionFragment :
             else -> return
         }
         viewModel.storeSelection(policy)
+
+        findNavControllerSafety()?.popBackStack(R.id.nav_scan_qr, false)
+        scannerUtil.launchScanner(requireActivity(), arguments?.getString("returnUri"))
     }
 
     private fun allRadioButtons() = listOf(binding.policy3G, binding.policy1G)
