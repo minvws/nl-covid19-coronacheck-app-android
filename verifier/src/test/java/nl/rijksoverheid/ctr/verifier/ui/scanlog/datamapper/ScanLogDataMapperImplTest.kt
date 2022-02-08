@@ -78,7 +78,7 @@ class ScanLogDataMapperImplTest {
                     ZoneId.of("UTC")
                 ),
                 to = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:15:00.00Z"),
+                    Instant.parse("2021-01-01T00:12:00.00Z"),
                     ZoneId.of("UTC")
                 )
             ),
@@ -91,7 +91,7 @@ class ScanLogDataMapperImplTest {
                     ZoneId.of("UTC")
                 ),
                 to = OffsetDateTime.ofInstant(
-                    Instant.parse("2021-01-01T00:10:00.00Z"),
+                    Instant.parse("2021-01-01T00:15:00.00Z"),
                     ZoneId.of("UTC")
                 )
             )

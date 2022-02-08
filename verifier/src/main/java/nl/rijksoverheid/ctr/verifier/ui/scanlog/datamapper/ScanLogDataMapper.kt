@@ -25,8 +25,11 @@ class ScanLogDataMapperImpl: ScanLogDataMapper {
 
         entities.forEach { entity ->
             if (currentScanLogBuilder == null || entity.policy != currentScanLogBuilder?.policy || currentTime?.isAfter(entity.date) == true) {
-                currentScanLogBuilder?.let {
-                    scanLogs.add(it.build())
+                currentScanLogBuilder?.let { builder ->
+                    // Show logging as continuous by setting the to date to when then the first scan happens after policy switch
+                    if (!builder.skew) builder.to = entity.date.toOffsetDateTimeUtc()
+
+                    scanLogs.add(builder.build())
                 }
                 currentScanLogBuilder = ScanLogBuilder()
                 currentScanLogBuilder?.policy = entity.policy
