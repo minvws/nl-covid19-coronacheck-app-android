@@ -38,8 +38,6 @@
                 android:id="@+id/lockedAnimation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:paddingHorizontal="16dp"
                 android:scaleType="centerInside"
                 app:layout_constraintBottom_toTopOf="@+id/title"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +53,7 @@
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
                 app:barrierAllowsGoneWidgets="true"
-                app:constraint_referenced_ids="lockedAnimation" />
+                app:constraint_referenced_ids="lockedAnimation, image" />
 
             <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
                 android:id="@+id/title"
@@ -64,6 +62,7 @@
                 android:paddingHorizontal="16dp"
                 android:text="@string/scan_qr_header"
                 android:visibility="gone"
+                app:layout_goneMarginTop="16dp"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 app:layout_constraintBottom_toTopOf="@+id/description"
                 app:layout_constraintEnd_toEndOf="parent"
