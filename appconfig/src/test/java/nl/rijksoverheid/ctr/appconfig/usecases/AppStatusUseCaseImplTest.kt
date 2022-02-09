@@ -5,6 +5,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfig
@@ -30,6 +31,11 @@ import java.time.ZoneId
  */
 class AppStatusUseCaseImplTest {
 
+    private val moshi = Moshi
+        .Builder()
+        .add(DisclosurePolicyJsonAdapter())
+        .build()
+
     private val publicKeys =
         "{\"cl_keys\":[]}".toResponseBody("application/json".toMediaType()).source().readUtf8()
 
@@ -43,7 +49,7 @@ class AppStatusUseCaseImplTest {
             holderAppDeactivated = appDeactivated,
             holderInformationURL = "dummy",
             holderRecommendedVersion = recommendedVersion
-        ).toJson(Moshi.Builder().build()).toResponseBody("application/json".toMediaType()).source()
+        ).toJson(moshi).toResponseBody("application/json".toMediaType()).source()
             .readUtf8()
 
     private fun getVerifierConfig(
@@ -53,7 +59,7 @@ class AppStatusUseCaseImplTest {
         VerifierConfig.default(
             verifierRecommendedVersion = recommendedVersion,
             upgradeRecommendationIntervalHours = recommendedInterval
-        ).toJson(Moshi.Builder().build()).toResponseBody("application/json".toMediaType()).source()
+        ).toJson(moshi).toResponseBody("application/json".toMediaType()).source()
             .readUtf8()
 
     @Test
@@ -63,7 +69,7 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build(),
+                moshi = moshi,
                 isVerifierApp = false,
                 recommendedUpdatePersistenceManager = mockk(relaxed = true)
             )
@@ -85,7 +91,7 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build(),
+                moshi = moshi,
                 isVerifierApp = false,
                 recommendedUpdatePersistenceManager = mockk(relaxed = true)
             )
@@ -107,7 +113,7 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build(),
+                moshi = moshi,
                 isVerifierApp = false,
                 recommendedUpdatePersistenceManager = mockk(relaxed = true)
             )
@@ -139,7 +145,7 @@ class AppStatusUseCaseImplTest {
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(
                     lastFetchedSeconds = 20
                 ),
-                moshi = Moshi.Builder().build(),
+                moshi = moshi,
                 isVerifierApp = false,
                 recommendedUpdatePersistenceManager = mockk(relaxed = true)
             )
@@ -168,7 +174,7 @@ class AppStatusUseCaseImplTest {
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(
                     lastFetchedSeconds = 70
                 ),
-                moshi = Moshi.Builder().build(),
+                moshi = moshi,
                 isVerifierApp = false,
                 recommendedUpdatePersistenceManager = mockk(relaxed = true)
             )
@@ -191,7 +197,7 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build(),
+                moshi = moshi,
                 isVerifierApp = true,
                 recommendedUpdatePersistenceManager = recommendedUpdatePersistenceManager
             )
@@ -219,7 +225,7 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build(),
+                moshi = moshi,
                 isVerifierApp = true,
                 recommendedUpdatePersistenceManager = recommendedUpdatePersistenceManager
             )
@@ -250,7 +256,7 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build(),
+                moshi = moshi,
                 isVerifierApp = false,
                 recommendedUpdatePersistenceManager = recommendedUpdatePersistenceManager
             )
@@ -278,7 +284,7 @@ class AppStatusUseCaseImplTest {
                 clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
                 appConfigPersistenceManager = fakeAppConfigPersistenceManager(),
-                moshi = Moshi.Builder().build(),
+                moshi = moshi,
                 isVerifierApp = false,
                 recommendedUpdatePersistenceManager = recommendedUpdatePersistenceManager
             )

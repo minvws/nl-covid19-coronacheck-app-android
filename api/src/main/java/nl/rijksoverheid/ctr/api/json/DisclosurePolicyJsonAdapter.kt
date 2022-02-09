@@ -31,6 +31,12 @@ class DisclosurePolicyJsonAdapter : JsonAdapter<DisclosurePolicy>() {
 
     @ToJson
     override fun toJson(writer: JsonWriter, value: DisclosurePolicy?) {
-        writer.value(value?.stringValue)
+        val results = value?.stringValue?.split(",") ?: listOf()
+
+        writer.beginArray()
+        results.forEach {
+            writer.value(it)
+        }
+        writer.endArray()
     }
 }
