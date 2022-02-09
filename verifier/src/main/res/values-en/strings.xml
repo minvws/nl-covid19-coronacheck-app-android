@@ -29,7 +29,7 @@
   <string name="about_this_app">About this app</string>
   <string name="give_us_feedback">Give us feedback</string>
   <string name="scan_qr_header">Scan your visitors\' QR codes</string>
-  <string name="scan_qr_description">Is the QR code valid and are the details the same as on the proof of identity? Then you can give the visitor access.</string>
+  <string name="scan_qr_description">Scan your visitors\' QR codes. Is the QR code valid and are the details the same as on the proof of identity? Then you can give the visitor access.</string>
   <string name="scan_qr_button">Start scanning</string>
   <string name="scan_result_demo_title">Demo QR code scanned</string>
   <string name="scan_result_valid_last_name">Last name</string>
@@ -108,7 +108,7 @@
   <string name="new_terms_no_consent_dialog_message">You don\'t have access to the CoronaCheck Scanner app if you don\'t agree to the updated policy.</string>
   <string name="new_terms_no_consent_dialog_button">OK</string>
   <string name="accessibility_logo_label_ministry">Logo Central Government</string>
-  <string name="url_faq">https://www.coronacheck.nl/en/faq-scanner-in-app</string>
+  <string name="url_faq">https://coronacheck.nl/en/faq-scanner-in-app</string>
   <string name="url_privacy_statement">https://coronacheck.nl/en/privacy-in-app</string>
   <string name="url_terms_of_use">https://coronacheck.nl/en/gebruikersvoorwaarden-in-app</string>
   <string name="about_this_app_read_more">Read more:</string>
@@ -166,7 +166,7 @@
   <string name="verifier_risksetting_start_header">For your location, please specify if you\'re going to give 1G or 3G access. Check which kind of access you can give before you start scanning.</string>
   <string name="verifier_risksetting_setting_button">Set setting</string>
   <string name="verifier_risksetting_start_readmore">Which kind of access can I give?</string>
-  <string name="verifier_risksetting_start_readmore_url">https://coronacheck.nl/en/faq-scanner-in-app</string>
+  <string name="verifier_risksetting_start_readmore_url">https://www.government.nl/whichaccess-cc</string>
   <string name="verifier_home_countdown_title">You can scan again in %s</string>
   <string name="verifier_home_countdown_subtitle">You have to wait for %d minutes because you changed your scan settings while scanning.</string>
   <string name="verifier_scanner_policy_indication">%s access</string>
@@ -187,7 +187,7 @@
   <string name="about_this_app_clear_data_confirm">Clear data</string>
   <string name="verifier_result_access_title_policy">%s check done</string>
   <string name="verifier_result_access_title">Check done</string>
-  <string name="scan_qr_description_1G">Is the QR code valid for your location, and are the details the same as on the proof of identity? Then you can give the visitor access.</string>
+  <string name="scan_qr_description_1G">Scan your visitors\' QR codes. Is the QR code valid for your location, and are the details the same as on the proof of identity? Then you can give the visitor access.</string>
   <string name="scan_instructions_4_title_1G">Check mark = access</string>
   <string name="scan_instructions_4_description_1G">Does your screen show a check mark? In that case, the QR code is valid and the details are the same as on the proof of identity. You can grant the visitor access.</string>
   <string name="scan_result_invalid_reason_description_1G"><![CDATA[A red screen with a cross means the QR code does not comply with the Dutch regulations, or is not valid for your location.<br/><br/><b>Here\'s what you can do:</b><br/><ol><li>Check if the time is set correctly, on the visitor\'s phone as well as your own. Make sure date and time are set to \'set automatically\'.</li><li>Check if the visitor is showing an original certificate. A screenshot of their certificate may cause problems.</li><li>Ask the visitor to completely close the app, and restart it. Please rescan the QR code after.</li></ol><br/><b>Does the screen stay red?</b><br/>Ask the visitor to contact the CoronaCheck help desk.<br/><br/><b>Please note:</b> without a screen with check mark, the visitor cannot be given access.]]></string>
@@ -199,4 +199,5 @@
   <string name="new_policy_1G_subtitle">Only visitors with a test certificate get access at places where the coronavirus entry pass is being used (1G access). The CoronaCheck scanner only shows a screen with a check mark when scanning a test certificate.</string>
   <string name="new_policy_subtitle">New policy</string>
   <string name="page_indicator_label">Page %1$d of %2$d</string>
+  <string name="general_loading_description">Loading, please wait</string>
 </resources>

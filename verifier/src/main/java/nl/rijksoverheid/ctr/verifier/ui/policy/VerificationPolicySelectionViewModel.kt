@@ -8,14 +8,21 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 
-abstract class VerificationPolicySelectionViewModel: ViewModel() {
+abstract class VerificationPolicySelectionViewModel : ViewModel() {
     var radioButtonSelected: Int? = null
     val scannerUsedRecentlyLiveData: LiveData<Event<Boolean>> = MutableLiveData()
     val storedVerificationPolicySelection: LiveData<Event<Unit>> = MutableLiveData()
+    val policyChangeWarningLiveData: LiveData<Event<Unit>> = MutableLiveData()
+    val policySelectedLiveData: LiveData<Boolean> = MutableLiveData()
 
     abstract fun storeSelection(verificationPolicy: VerificationPolicy)
     abstract fun updateRadioButton(checkedId: Int)
     abstract fun didScanRecently()
+    abstract fun onConfirmationButtonClicked(
+        isPolicySelected: Boolean,
+        scannedRecently: Boolean,
+        selectionType: VerificationPolicySelectionType
+    )
 }
 
 /*
@@ -49,5 +56,18 @@ class VerificationPolicySelectionViewModelImpl(
                 )
             )
         }
+    }
+
+    override fun onConfirmationButtonClicked(
+        isPolicySelected: Boolean,
+        scannedRecently: Boolean,
+        selectionType: VerificationPolicySelectionType
+    ) {
+        if (scannedRecently && selectionType is VerificationPolicySelectionType.Default) {
+            (policyChangeWarningLiveData as MutableLiveData).postValue(Event(Unit))
+            return
+        }
+
+        (policySelectedLiveData as MutableLiveData).postValue(isPolicySelected)
     }
 }

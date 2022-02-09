@@ -29,7 +29,7 @@
   <string name="about_this_app">Over deze app</string>
   <string name="give_us_feedback">Geef ons feedback</string>
   <string name="scan_qr_header">Scan de QR-codes van je bezoekers</string>
-  <string name="scan_qr_description">Is de QR-code geldig en zijn de gegevens hetzelfde als op het identiteitsbewijs? Dan mag je de bezoeker toegang geven.</string>
+  <string name="scan_qr_description">Scan de QR-codes van je bezoekers. Is de QR-code geldig en zijn de gegevens hetzelfde als op het identiteitsbewijs? Dan mag je de bezoeker toegang geven.</string>
   <string name="scan_qr_button">Start scannen</string>
   <string name="scan_result_demo_title">Demo QR-code gescand</string>
   <string name="scan_result_valid_last_name">Achternaam</string>
@@ -108,7 +108,7 @@
   <string name="new_terms_no_consent_dialog_message">Je hebt geen toegang de CoronaCheck-app zonder akkoord te gaan met de bijgewerkte voorwaarden.</string>
   <string name="new_terms_no_consent_dialog_button">Ok</string>
   <string name="accessibility_logo_label_ministry">Logo Rijksoverheid</string>
-  <string name="url_faq">https://www.coronacheck.nl/nl/faq-scanner-in-app</string>
+  <string name="url_faq">https://coronacheck.nl/nl/faq-scanner-in-app</string>
   <string name="url_privacy_statement">https://coronacheck.nl/nl/privacy-in-app</string>
   <string name="url_terms_of_use">https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app</string>
   <string name="about_this_app_read_more">Lees meer:</string>
@@ -166,7 +166,7 @@
   <string name="verifier_risksetting_start_header">Stel voor jouw locatie in of je 1G- of 3G-toegang gaat geven. Controleer voordat je gaat scannen welk soort toegang je mag geven.</string>
   <string name="verifier_risksetting_setting_button">Instellen</string>
   <string name="verifier_risksetting_start_readmore">Welk soort toegang mag ik geven?</string>
-  <string name="verifier_risksetting_start_readmore_url">https://coronacheck.nl/nl/faq-scanner-in-app</string>
+  <string name="verifier_risksetting_start_readmore_url">https://www.rijksoverheid.nl/welketoegang-cc</string>
   <string name="verifier_home_countdown_title">Je kunt weer scannen over %s</string>
   <string name="verifier_home_countdown_subtitle">Je moet %d minuten wachten omdat je tijdens het scannen jouw scan-instelling hebt aangepast.</string>
   <string name="verifier_scanner_policy_indication">%s-toegang</string>
@@ -187,7 +187,7 @@
   <string name="about_this_app_clear_data_confirm">Wis gegevens</string>
   <string name="verifier_result_access_title_policy">%s-controle klaar</string>
   <string name="verifier_result_access_title">Controle klaar</string>
-  <string name="scan_qr_description_1G">Is de QR-code geldig op jouw locatie en zijn de gegevens hetzelfde als op het identiteitsbewijs? Dan mag je de bezoeker toegang geven.</string>
+  <string name="scan_qr_description_1G">Scan de QR-codes van je bezoekers. Is de QR-code geldig op jouw locatie en zijn de gegevens hetzelfde als op het identiteitsbewijs? Dan mag je de bezoeker toegang geven.</string>
   <string name="scan_instructions_4_title_1G">Vinkje = toegang</string>
   <string name="scan_instructions_4_description_1G">Zie je een vinkje op je scherm? Dan is de QR-code geldig en kloppen de gegevens met het identiteitsbewijs. Je mag de bezoeker toegang geven.</string>
   <string name="scan_result_invalid_reason_description_1G"><![CDATA[Een rood scherm met kruis betekent dat de QR-code niet aan Nederlandse eisen voldoet, of niet geldig is op jouw locatie.<br/><br/><b>Dit kun je doen:</b><br/><ol><li>Controleer of de tijd goed staat ingesteld op de telefoon van de bezoeker en die van jou. Zorg dat de datum en tijd op ‘automatisch instellen’ staan. </li><li>Controleer of de bezoeker een origineel bewijs laat zien. Een screenshot van een bewijs kan voor problemen zorgen.</li><li>Vraag de bezoeker om de app volledig af te sluiten en opnieuw op te starten. Scan daarna opnieuw de QR-code.</li></ol><br/><b>Blijft het scherm rood?</b><br/>Vraag de bezoeker contact op te nemen met de helpdesk van CoronaCheck.<br/><br/><b>Let op:</b> zonder scherm met vinkje mag de bezoeker niet toegelaten worden.]]></string>
@@ -199,4 +199,5 @@
   <string name="new_policy_1G_subtitle">Op plekken waar het coronatoegangsbewijs gebruikt wordt, krijgen alleen bezoekers met een testbewijs toegang (1G-toegang). De CoronaCheck scanner geeft alleen een scherm met vinkje bij het scannen van een testbewijs.</string>
   <string name="new_policy_subtitle">Nieuwe regels</string>
   <string name="page_indicator_label">Pagina %1$d van %2$d</string>
+  <string name="general_loading_description">Bezig met laden, even geduld</string>
 </resources>

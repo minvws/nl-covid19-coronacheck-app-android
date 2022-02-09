@@ -350,7 +350,7 @@
   <string name="get_recovery_title">Retrieve recovery details</string>
   <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Log in with DigiD to retrieve your test result.]]></string>
   <string name="no_positive_test_result_title">No positive test result available</string>
-  <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Please contact your test location to verify if your details were entered into the system correctly.<br/><br/>Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
+  <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="qr_code_type_recovery_title">Positive test</string>
   <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
   <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
@@ -515,18 +515,18 @@
   <string name="qr_card_vaccination_title_domestic_with_doses">Vaccination certificate (%1$s doses):</string>
   <string name="add_paper_proof_why_only_international_title">Why only international?</string>
   <string name="add_paper_proof_why_only_international_description">You can use the details in international QR codes to immediately create a Dutch certificate as well. This way you won\'t have to scan them both.</string>
-  <string name="international_certificate_created_description"><![CDATA[You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.<br/><br/><b>Still have to get a new vaccination?</b><br/>Please add a vaccination certificate again after getting your vaccination. You will also receive a Dutch certificate then.<br/><br/><b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
+  <string name="international_certificate_created_description"><![CDATA[Your vaccination(s) unfortunately don\'t entitle you to a Dutch vaccination certificate.<br/><br/><b>Still have to get a new vaccination?</b><br/>Please add a vaccination again after you’ve had yours. You will also receive a Dutch certificate then.<br/><br/><b>Had coronavirus before your first vaccination?</b><br/>Then you\'re normally considered fully vaccinated with one vaccination. Retrieve your positive test result to add this to your vaccination certificate.]]></string>
   <string name="international_certificate_created_title">Only an international certificate was created</string>
   <string name="international_certificate_created_toolbar_title">Certificate created</string>
   <string name="international_certificate_created_retrieve_test_button">Retrieve my test result</string>
   <string name="missing_dutch_certificate_info_card_text">You don\'t have a Dutch vaccination certificate</string>
   <string name="missing_dutch_certificate_title">No Dutch vaccination certificate</string>
-  <string name="missing_dutch_certificate_introduction">You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.</string>
+  <string name="missing_dutch_certificate_introduction">Your vaccination(s) unfortunately don\'t entitle you to a Dutch vaccination certificate.</string>
   <string name="missing_dutch_certificate_second_vaccine_explanation"><![CDATA[<br/><b>Had a new vaccination?</b><br/>Please retrieve your vaccination details again. You will receive a Dutch certificate.]]></string>
   <string name="missing_dutch_certificate_retrieve_vaccination_button">Retrieve my vaccinations</string>
-  <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
+  <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<b>Had coronavirus before your first vaccination?</b><br/>Then you\'re normally considered fully vaccinated with one vaccination. Retrieve your positive test result to add this to your vaccination certificate.]]></string>
   <string name="missing_dutch_certificate_retrieve_test_button">Retrieve my test result</string>
-  <string name="missing_dutch_certificate_explanation_more"><![CDATA[<b>Want to know more?</b><br/>Read the <a href=\"https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/\">frequently asked questions</a> for other possible reasons.]]></string>
+  <string name="missing_dutch_certificate_explanation_more"><![CDATA[<br/><b>Want to know more?</b><br/>Find more information on <a href=\"https://www.government.nl/topics/coronavirus-covid-19/covid-certificate/proof-of-vaccination/requirements-and-validity\">this page about the requirements and validity of the vaccination certificate</a>.]]></string>
   <string name="certificate_created_toolbar_title">Certificate created</string>
   <string name="certificate_created_vaccination_recovery_title">Created vaccination and recovery certificates</string>
   <string name="certificate_created_vaccination_recovery_description"><![CDATA[A Dutch vaccination certificate has been created.<br><br>Your positive test result was suitable for creating a recovery certificate as well.]]></string>
