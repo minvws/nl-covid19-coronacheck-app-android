@@ -654,4 +654,8 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="general_vaccinationcertificate">vaccination certificate</string>
   <string name="general_recoverycertificate">recovery certificate</string>
   <string name="general_testcertificate">test certificate</string>
+  <string name="dummy_1">Bewijs voor 3G-toegang</string>
+  <string name="dummy_2">3G</string>
+  <string name="dummy_3">Bewijs voor 1g-toegang</string>
+  <string name="dummy_4">1G</string>
 </resources>

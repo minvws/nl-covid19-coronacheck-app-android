@@ -32,6 +32,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -199,7 +200,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                disclosurePolicy = DisclosurePolicy.ThreeG
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG
                             )
                         )
                     )
@@ -246,21 +247,21 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                disclosurePolicy = DisclosurePolicy.ThreeG
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG
                             ),
                             DashboardItem.CardsItem.CardItem(
                                 greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                disclosurePolicy = DisclosurePolicy.ThreeG
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG
                             ),
                             DashboardItem.CardsItem.CardItem(
                                 greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                disclosurePolicy = DisclosurePolicy.ThreeG
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG
                             )
                         )
                     )

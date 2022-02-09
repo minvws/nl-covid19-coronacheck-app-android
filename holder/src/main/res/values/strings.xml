@@ -655,4 +655,8 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="general_vaccinationcertificate">vaccinatiebewijs</string>
   <string name="general_recoverycertificate">herstelbewijs</string>
   <string name="general_testcertificate">testbewijs</string>
+  <string name="dummy_1">Bewijs voor 3G-toegang</string>
+  <string name="dummy_2">3G</string>
+  <string name="dummy_3">Bewijs voor 1g-toegang</string>
+  <string name="dummy_4">1G</string>
 </resources>

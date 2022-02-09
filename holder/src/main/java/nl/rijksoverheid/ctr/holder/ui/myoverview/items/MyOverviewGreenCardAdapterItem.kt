@@ -21,6 +21,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -84,14 +86,27 @@ class MyOverviewGreenCardAdapterItem(
             )
         )
 
-        when (cards.first().greenCard.greenCardEntity.type) {
+        val card = cards.first()
+
+        when (card.greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
+                viewBinding.internationalImageContainer.visibility = View.VISIBLE
+                viewBinding.domesticImageContainer.visibility = View.GONE
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
-                viewBinding.imageView.setImageResource(R.drawable.ic_international_card)
             }
             is GreenCardType.Domestic -> {
+                viewBinding.internationalImageContainer.visibility = View.GONE
+                viewBinding.domesticImageContainer.visibility = View.VISIBLE
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
-                viewBinding.imageView.setImageResource(R.drawable.ic_dutch_card)
+
+                when (card.disclosurePolicy) {
+                    is GreenCardDisclosurePolicy.OneG -> {
+                        viewBinding.domesticDisclosurePolicy.setText(R.string.dummy_4)
+                    }
+                    is GreenCardDisclosurePolicy.ThreeG -> {
+                        viewBinding.domesticDisclosurePolicy.setText(R.string.dummy_2)
+                    }
+                }
             }
         }
 

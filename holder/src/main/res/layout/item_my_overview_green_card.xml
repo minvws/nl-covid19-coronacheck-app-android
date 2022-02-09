@@ -32,7 +32,9 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:clipChildren="false"
-                android:padding="24dp">
+                android:paddingStart="24dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="24dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/headerContainer"
@@ -42,15 +44,79 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
-                    <ImageView
-                        android:id="@+id/imageView"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/internationalImageContainer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="@id/title"
+                        android:paddingEnd="24dp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/title"
-                        tools:src="@drawable/ic_international_card"
-                        tools:ignore="ContentDescription" />
+                        app:layout_constraintBottom_toBottomOf="@id/title"
+                        app:layout_constraintTop_toTopOf="@id/title">
+
+                        <ImageView
+                            android:id="@+id/internationalImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_international_card"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:ignore="ContentDescription" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <FrameLayout
+                        android:id="@+id/domesticImageContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:background="@drawable/shape_item_my_overview_green_card_domestic_image_container"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/title"
+                        app:layout_constraintTop_toTopOf="@id/title">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="20dp"
+                            android:paddingVertical="16dp">
+
+                            <ImageView
+                                android:id="@+id/domesticImage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_dutch_card"
+                                android:layout_gravity="center_vertical"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                style="@style/App.TextAppearance.MaterialComponents.Headline6.Montserrat"
+                                android:id="@+id/domesticDisclosurePolicy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:textColor="@color/primary_blue"
+                                android:layout_marginStart="16dp"
+                                android:includeFontPadding="false"
+                                tools:text="@string/dummy_2" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                    <androidx.constraintlayout.widget.Barrier
+                        android:id="@+id/imageContainers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:barrierDirection="start"
+                        app:constraint_referenced_ids="internationalImageContainer,domesticImageContainer" />
 
                     <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
                         android:id="@+id/title"
@@ -59,7 +125,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:textAppearance="?attr/textAppearanceHeadline6"
-                        app:layout_constraintEnd_toStartOf="@id/imageView"
+                        app:layout_constraintEnd_toStartOf="@id/imageContainers"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="@string/my_overview_test_result_title" />
