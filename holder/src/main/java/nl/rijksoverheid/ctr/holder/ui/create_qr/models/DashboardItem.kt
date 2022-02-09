@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 sealed class DashboardItem {
 
@@ -87,7 +88,8 @@ sealed class DashboardItem {
             val greenCard: GreenCard,
             val originStates: List<OriginState>,
             val credentialState: CredentialState,
-            val databaseSyncerResult: DatabaseSyncerResult
+            val databaseSyncerResult: DatabaseSyncerResult,
+            val disclosurePolicy: DisclosurePolicy
         )
     }
 

@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 
 /*
@@ -51,6 +52,7 @@ data class HolderConfig(
     @Json(name = "vaccinationAssessmentEventValidityDays") val vaccinationAssessmentEventValidityDays: Int,
     @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean,
     @Json(name = "verificationPolicies") val verificationPolicies: List<String> = emptyList(),
+    @Json(name = "disclosurePolicy") val disclosurePolicy: DisclosurePolicy
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -105,6 +107,7 @@ data class HolderConfig(
             vaccinationAssessmentEventValidityDays: Int = 14,
             mijnCnEnabled: Boolean = false,
             policiesEnabled: List<String> = emptyList(),
+            disclosurePolicy: DisclosurePolicy = DisclosurePolicy.ThreeG
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -144,6 +147,7 @@ data class HolderConfig(
             vaccinationAssessmentEventValidityDays = vaccinationAssessmentEventValidityDays,
             mijnCnEnabled = mijnCnEnabled,
             verificationPolicies = policiesEnabled,
+            disclosurePolicy = disclosurePolicy
         )
     }
 }
