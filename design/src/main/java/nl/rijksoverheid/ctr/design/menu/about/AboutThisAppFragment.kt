@@ -99,6 +99,10 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         if (BuildConfig.DEBUG || context?.packageName == "nl.rijksoverheid.ctr.holder.acc") {
             bindScannerDeeplinkButton(binding.deeplinkScannerButton)
         }
+
+        if (BuildConfig.DEBUG || context?.packageName == "nl.rijksoverheid.ctr.holder.acc") {
+            bindDebugPolicyButtons(binding)
+        }
     }
 
     private fun showClearAppDataDialog() {
@@ -123,5 +127,9 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         deeplinkScannerButton.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply { data = Uri.parse(link) })
         }
+    }
+
+    private fun bindDebugPolicyButtons(binding: FragmentAboutAppBinding) {
+
     }
 }
