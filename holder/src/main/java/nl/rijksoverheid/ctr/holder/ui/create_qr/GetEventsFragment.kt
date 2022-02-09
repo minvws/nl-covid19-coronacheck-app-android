@@ -141,7 +141,8 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                                 data = InfoFragmentData.TitleDescriptionWithButton(
                                     title = copy.hasNoEventsTitle,
                                     descriptionData = DescriptionData(
-                                        htmlTextString = copy.hasNoEventsDescription
+                                        htmlTextString = copy.hasNoEventsDescription,
+                                        htmlLinksEnabled = true
                                     ),
                                     primaryButtonData = ButtonData.NavigationButton(
                                         text = getString(R.string.back_to_overview),
