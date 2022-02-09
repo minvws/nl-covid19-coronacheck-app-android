@@ -57,6 +57,7 @@ class SharedPreferencesPersistenceManager(
         const val CHECK_VALIDITY_INFO_CARD = "CHECK_VALIDITY_INFO_CARD"
         const val HAS_DISMISSED_VALIDITY_INFO_CARD = "HAS_DISMISSED_VALIDITY_INFO_CARD"
         const val HAS_DISMISSED_BOOSTER_INFO_CARD = "HAS_DISMISSED_BOOSTER_INFO_CARD"
+        const val DEBUG_DISCLOSURE_POLICY = "DEBUG_DISCLOSURE_POLICY"
     }
 
     override fun saveSecretKeyJson(json: String) {

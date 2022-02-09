@@ -17,6 +17,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.BuildConfig
 import nl.rijksoverheid.ctr.design.R
@@ -25,8 +26,10 @@ import nl.rijksoverheid.ctr.design.databinding.AboutThisAppSectionBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTimeNumerical
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import org.koin.android.ext.android.inject
 import java.time.Instant
@@ -37,6 +40,7 @@ import java.time.ZoneOffset
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
     private val dialogUtil: DialogUtil by inject()
+    private val policyPersistenceManager: DebugDisclosurePolicyPersistenceManager by inject()
 
     companion object {
         private const val EXTRA_ABOUT_THIS_APP_DATA = "data"
@@ -99,6 +103,11 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         if (BuildConfig.DEBUG || context?.packageName == "nl.rijksoverheid.ctr.holder.acc") {
             bindScannerDeeplinkButton(binding.deeplinkScannerButton)
         }
+
+        // On test and acceptance builds show buttons to set policy locally
+        if (BuildConfig.DEBUG || context?.packageName == "nl.rijksoverheid.ctr.holder.acc") {
+            bindDebugPolicyButtons(binding)
+        }
     }
 
     private fun showClearAppDataDialog() {
@@ -123,5 +132,34 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         deeplinkScannerButton.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply { data = Uri.parse(link) })
         }
+    }
+
+    private fun bindDebugPolicyButtons(binding: FragmentAboutAppBinding) {
+        with(binding) {
+            policyButtons.isVisible = true
+            oneGPolicyButton.setOnClickListener {
+                policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneG)
+                restartApp()
+            }
+            threeGPolicyButton.setOnClickListener {
+                policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.ThreeG)
+                restartApp()
+            }
+            oneGThreeGPolicyButton.setOnClickListener {
+                policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneAndThreeG)
+                restartApp()
+            }
+            configPolicyButton.setOnClickListener {
+                policyPersistenceManager.setDebugDisclosurePolicy(null)
+                restartApp()
+            }
+        }
+    }
+
+    private fun restartApp() {
+        val intent = context?.packageManager?.getLaunchIntentForPackage(requireContext().packageName)
+        val mainIntent = Intent.makeRestartActivityTask(intent?.component)
+        startActivity(mainIntent)
+        Runtime.getRuntime().exit(0)
     }
 }
