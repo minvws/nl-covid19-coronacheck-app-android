@@ -1,7 +1,5 @@
 package nl.rijksoverheid.ctr.holder
 
-import android.util.Log
-import androidx.work.Configuration
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
@@ -9,12 +7,10 @@ import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.*
-import nl.rijksoverheid.ctr.holder.persistence.HolderWorkerFactory
-import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerWrapper
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewRecoveryValidityUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewValidityInfoCardUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
@@ -34,16 +30,14 @@ import org.koin.core.module.Module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class HolderApplication : SharedApplication(), Configuration.Provider {
+open class HolderApplication : SharedApplication() {
 
     private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
     private val testResultsMigrationManager: TestResultsMigrationManager by inject()
-    private val holderWorkerFactory: HolderWorkerFactory by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
-    private val workerManagerWrapper: WorkerManagerWrapper by inject()
-    private val checkNewRecoveryValidityUseCase: CheckNewRecoveryValidityUseCase by inject()
+    private val checkNewValidityInfoCardUseCase: CheckNewValidityInfoCardUseCase by inject()
 
     private val holderModules = listOf(
         storageModule,
@@ -51,7 +45,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         eventsUseCasesModule,
         secretUseCasesModule,
         testProvidersUseCasesModule,
-        utilsModule,
+        utilsModule(BuildConfig.VERSION_CODE),
         viewModels,
         cardUtilsModule,
         repositoriesModule,
@@ -89,9 +83,6 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         // Generate and store secret key to be used by rest of the app
         secretKeyUseCase.persist()
 
-        // cancel pending refresh credentials jobs scheduled from app version 2.1.7
-        workerManagerWrapper.cancel(this)
-
         // Create default wallet in database if empty
         GlobalScope.launch {
             if (holderDatabase.walletDao().getAll().isEmpty()) {
@@ -105,8 +96,8 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
 
             testResultsMigrationManager.removeOldCredential()
 
-            // check to prevent showing extension option for paper recovery certificates
-            checkNewRecoveryValidityUseCase.checkIfNeedToReAllowRecoveryExtensionCheck()
+            // check if we need to show the new validity info card use case
+            checkNewValidityInfoCardUseCase.check()
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
@@ -116,16 +107,5 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
 
     override fun getAdditionalModules(): List<Module> {
         return listOf(holderPreferenceModule, holderMobileCoreModule)
-    }
-
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder().apply {
-            setMinimumLoggingLevel(if (BuildConfig.DEBUG) {
-                Log.DEBUG
-            } else {
-                Log.ERROR
-            })
-            setWorkerFactory(holderWorkerFactory)
-        }.build()
     }
 }

@@ -14,7 +14,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 @JsonClass(generateAdapter = true)
 data class RemoteConfigProviders(
     @Json(name = "corona_test_providers") val testProviders: List<TestProvider>,
-    @Json(name = "event_providers") val eventProviders: List<EventProvider>
+    @Json(name = "event_providers") val eventProviders: List<EventProvider>,
+    @Json(name = "event_providers_bes") val eventProvidersBes: List<EventProvider>
 ) {
 
     @JsonClass(generateAdapter = true)
@@ -56,11 +57,11 @@ data class RemoteConfigProviders(
         val tls: ByteArray,
         val usage: List<String>,
     ) {
-        fun supports(originType: OriginType): Boolean {
+        fun supports(originType: RemoteOriginType): Boolean {
             return when (originType) {
-                OriginType.Recovery -> usage.contains("r")
-                OriginType.Test -> usage.contains("nt") || usage.contains("pt")
-                OriginType.Vaccination -> usage.contains("v")
+                RemoteOriginType.Recovery -> usage.contains("r")
+                RemoteOriginType.Test -> usage.contains("nt") || usage.contains("pt")
+                RemoteOriginType.Vaccination -> usage.contains("v")
             }
         }
         companion object {

@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.verifier.ui.instructions
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -12,7 +13,7 @@ import nl.rijksoverheid.ctr.verifier.R
  *
  */
 
-val instructionsExplanationData: IntroductionData by lazy {
+fun instructionsExplanationData(selectionState: VerificationPolicySelectionState): IntroductionData =
     IntroductionData(
         onboardingItems = listOf(
             OnboardingItem(
@@ -35,9 +36,16 @@ val instructionsExplanationData: IntroductionData by lazy {
             ),
             OnboardingItem(
                 animationResource = R.raw.scaninstructions_4,
-                titleResource = R.string.scan_instructions_4_title,
-                description = R.string.scan_instructions_4_description,
-                position = 4
+                titleResource = when (selectionState) {
+                    is VerificationPolicySelectionState.Selection,
+                    is VerificationPolicySelectionState.Policy1G -> R.string.scan_instructions_4_title_1G
+                    is VerificationPolicySelectionState.Policy3G -> R.string.scan_instructions_4_title
+                },
+                description = when (selectionState) {
+                    is VerificationPolicySelectionState.Selection,
+                    is VerificationPolicySelectionState.Policy1G -> R.string.scan_instructions_4_description_1G
+                    is VerificationPolicySelectionState.Policy3G -> R.string.scan_instructions_4_description
+                }
             ),
             OnboardingItem(
                 animationResource = R.raw.scaninstructions_5,
@@ -47,4 +55,3 @@ val instructionsExplanationData: IntroductionData by lazy {
             ),
         )
     )
-}

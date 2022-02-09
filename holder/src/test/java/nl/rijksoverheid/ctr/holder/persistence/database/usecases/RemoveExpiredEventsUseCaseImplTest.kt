@@ -32,7 +32,8 @@ class RemoveExpiredEventsUseCaseImplTest {
         appConfig = HolderConfig.default(
             vaccinationEventValidityDays = 10,
             testEventValidityHours = TimeUnit.DAYS.toHours(20).toInt(),
-            recoveryEventValidityDays = 30
+            recoveryEventValidityDays = 30,
+            vaccinationAssessmentEventValidityDays = 40
         )
     )
 
@@ -57,6 +58,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Vaccination,
             maxIssuedAt = firstJanuaryDate.minusDays(10),
+            scope = null,
             jsonData = "".toByteArray()
         )
 
@@ -71,6 +73,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Vaccination,
             maxIssuedAt = firstJanuaryDate.minusDays(9),
+            scope = null,
             jsonData = "".toByteArray()
         )
 
@@ -85,6 +88,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Test,
             maxIssuedAt = firstJanuaryDate.minusDays(20),
+            scope = null,
             jsonData = "".toByteArray()
         )
 
@@ -99,6 +103,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Test,
             maxIssuedAt = firstJanuaryDate.minusDays(19),
+            scope = null,
             jsonData = "".toByteArray()
         )
 
@@ -113,6 +118,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Recovery,
             maxIssuedAt = firstJanuaryDate.minusDays(30),
+            scope = null,
             jsonData = "".toByteArray()
         )
 
@@ -127,6 +133,37 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Recovery,
             maxIssuedAt = firstJanuaryDate.minusDays(29),
+            scope = null,
+            jsonData = "".toByteArray()
+        )
+
+        usecase.execute(listOf(eventGroup))
+        coVerify(exactly = 0) { eventGroupDao.delete(eventGroup) }
+    }
+
+    @Test
+    fun `VaccinationAssessment event is cleared from database when expired`() = runBlocking {
+        val eventGroup = EventGroupEntity(
+            walletId = 1,
+            providerIdentifier = "",
+            type = OriginType.VaccinationAssessment,
+            maxIssuedAt = firstJanuaryDate.minusDays(40),
+            scope = null,
+            jsonData = "".toByteArray()
+        )
+
+        usecase.execute(listOf(eventGroup))
+        coVerify { eventGroupDao.delete(eventGroup) }
+    }
+
+    @Test
+    fun `Vaccination Assessment event is not cleared from database when not expired`() = runBlocking {
+        val eventGroup = EventGroupEntity(
+            walletId = 1,
+            providerIdentifier = "",
+            type = OriginType.VaccinationAssessment,
+            maxIssuedAt = firstJanuaryDate.minusDays(39),
+            scope = null,
             jsonData = "".toByteArray()
         )
 

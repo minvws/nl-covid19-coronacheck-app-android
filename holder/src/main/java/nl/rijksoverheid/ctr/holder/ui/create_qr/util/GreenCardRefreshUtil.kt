@@ -8,7 +8,6 @@
 
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -24,10 +23,11 @@ interface GreenCardRefreshUtil {
 
 class GreenCardRefreshUtilImpl(
     private val holderDatabase: HolderDatabase,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val greenCardUtil: GreenCardUtil,
     private val clock: Clock,
     private val credentialUtil: CredentialUtil,
+    private val originUtil: OriginUtil
 ) : GreenCardRefreshUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
@@ -35,14 +35,31 @@ class GreenCardRefreshUtilImpl(
     override suspend fun shouldRefresh(): Boolean {
         val credentialRenewalDays = holderConfig.credentialRenewalDays.toLong()
 
-        val greenCardExpiring = holderDatabase.greenCardDao().getAll().firstOrNull { greenCard ->
-            val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(greenCard.credentialEntities.lastOrNull()?.expirationTime ?: OffsetDateTime.now(clock))
+        val greenCards = holderDatabase.greenCardDao().getAll()
+
+        val greenCardExpiring = greenCards.firstOrNull { greenCard ->
+            val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(
+                greenCard.credentialEntities.lastOrNull()?.expirationTime
+                    ?: OffsetDateTime.now(clock)
+            )
             val latestCredential = greenCard.credentialEntities.maxByOrNull { it.expirationTime }
-            val latestCredentialExpiring = latestCredential?.let { credentialUtil.isExpiring(credentialRenewalDays, latestCredential) } ?: false
+            val latestCredentialExpiring = latestCredential?.let {
+                credentialUtil.isExpiring(credentialRenewalDays, latestCredential)
+            } ?: false
             hasNewCredentials && latestCredentialExpiring
         }
 
-        return greenCardExpiring != null
+        // It can be that a green card has no credentials but they will be available in the future.
+        // A refresh should be done in the case there are valid origins within the threshold.
+        val hasValidFutureOrigins = greenCards
+            .filter { it.credentialEntities.isEmpty() }
+            .any { greenCard ->
+                greenCard.origins.any {
+                    originUtil.isValidWithinRenewalThreshold(credentialRenewalDays, it)
+                }
+            }
+
+        return greenCardExpiring != null || hasValidFutureOrigins
     }
 
     override suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean {

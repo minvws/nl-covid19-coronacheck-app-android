@@ -3,4 +3,23 @@
     <style name="AppTheme.Launcher" parent="AppTheme">
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
+
+    <style name="AppTheme.Scanner.Valid.3G" parent="AppTheme">
+        <item name="android:background">@color/secondary_green</item>
+    </style>
+
+    <style name="AppTheme.Scanner.Valid.1G" parent="AppTheme">
+        <item name="android:background">@color/primary_blue</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="AppTheme.Scanner.Valid.Demo" parent="AppTheme">
+        <item name="android:background">@color/grey_2</item>
+    </style>
+
+    <style name="AppTheme.Scanner.Invalid" parent="AppTheme">
+        <item name="android:background">@color/grey_2</item>
+    </style>
+
 </resources>

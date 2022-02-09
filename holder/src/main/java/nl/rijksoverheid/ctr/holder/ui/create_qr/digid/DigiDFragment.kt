@@ -9,9 +9,12 @@ import net.openid.appauth.browser.VersionRange
 import net.openid.appauth.browser.VersionedBrowserMatcher
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
 
 
 /*
@@ -23,8 +26,21 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  */
 abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutId) {
 
-    protected val digidViewModel: DigiDViewModel by sharedViewModel()
+    protected val digidViewModel: LoginViewModel by sharedViewModel(named(LoginQualifier.DIGID))
+    protected val mijnCnViewModel: LoginViewModel by viewModel(named(LoginQualifier.MIJN_CN))
     private val authService by lazy {
+        val appAuthConfig = AppAuthConfiguration.Builder()
+            .setBrowserMatcher(BrowserAllowList(*getSupportedBrowsers()))
+            .build()
+        AuthorizationService(requireActivity(), appAuthConfig)
+    }
+
+    private val loginResultMijnCn =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            mijnCnViewModel.handleActivityResult(it, authService)
+        }
+
+    private val authServiceMijnCn by lazy {
         val appAuthConfig = AppAuthConfiguration.Builder()
             .setBrowserMatcher(BrowserAllowList(*getSupportedBrowsers()))
             .build()
@@ -38,6 +54,10 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
 
     fun loginWithDigiD() {
         digidViewModel.login(loginResult, authService)
+    }
+
+    fun loginWithMijnCN() {
+        mijnCnViewModel.login(loginResultMijnCn, authServiceMijnCn)
     }
 
     /**
@@ -62,11 +82,11 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
         )
     }
 
-    protected fun getDialogTitleFromOriginType(originType: OriginType): Int {
+    protected fun getDialogTitleFromOriginType(originType: RemoteOriginType): Int {
         return when (originType) {
-            OriginType.Recovery -> R.string.error_get_events_missing_events_dialog_title_recoveries
-            OriginType.Test -> R.string.error_get_events_missing_events_dialog_title_testresults
-            OriginType.Vaccination -> R.string.error_get_events_missing_events_dialog_title_vaccines
+            RemoteOriginType.Recovery -> R.string.error_get_events_missing_events_dialog_title_recoveries
+            RemoteOriginType.Test -> R.string.error_get_events_missing_events_dialog_title_testresults
+            RemoteOriginType.Vaccination -> R.string.error_get_events_missing_events_dialog_title_vaccines
         }
     }
 

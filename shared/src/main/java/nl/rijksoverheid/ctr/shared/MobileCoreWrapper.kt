@@ -12,16 +12,12 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import mobilecore.Mobilecore
-import mobilecore.Mobilecore.VERIFICATION_POLICY_3G
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
 import nl.rijksoverheid.ctr.shared.ext.successJsonObject
 import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
-import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
-import nl.rijksoverheid.ctr.shared.models.VerificationResult
-import nl.rijksoverheid.ctr.shared.models.VerificationResultDetails
+import nl.rijksoverheid.ctr.shared.models.*
 import org.json.JSONObject
 import java.lang.reflect.Type
 
@@ -40,7 +36,7 @@ interface MobileCoreWrapper {
 
     // returns error message, if initializing failed
     fun initializeVerifier(configFilesPath: String): String?
-    fun verify(credential: ByteArray): VerificationResult
+    fun verify(credential: ByteArray, policy: VerificationPolicy): VerificationResult
 }
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
@@ -122,8 +118,8 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         }
     }
 
-    override fun verify(credential: ByteArray): VerificationResult {
-        val result = Mobilecore.verify(credential, VERIFICATION_POLICY_3G)
+    override fun verify(credential: ByteArray, policy: VerificationPolicy): VerificationResult {
+        val result = Mobilecore.verify(credential, policy.libraryValue)
         return VerificationResult(
             status = result.status,
             details = VerificationResultDetails(

@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
@@ -23,7 +23,7 @@ class GetDashboardItemsUseCaseImpl(
     private val credentialUtil: CredentialUtil,
     private val originUtil: OriginUtil,
     private val dashboardItemUtil: DashboardItemUtil,
-    private val persistenceManager: PersistenceManager
+    private val dashboardItemEmptyStateUtil: DashboardItemEmptyStateUtil
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -35,7 +35,8 @@ class GetDashboardItemsUseCaseImpl(
             domesticItems = getDomesticItems(
                 allGreenCards = allGreenCards,
                 databaseSyncerResult = databaseSyncerResult,
-                isLoadingNewCredentials = isLoadingNewCredentials
+                isLoadingNewCredentials = isLoadingNewCredentials,
+                allEventGroupEntities = allEventGroupEntities
             ),
             internationalItems = getInternationalItems(
                 allGreenCards = allGreenCards,
@@ -46,7 +47,8 @@ class GetDashboardItemsUseCaseImpl(
         )
     }
 
-    private fun getDomesticItems(
+    private suspend fun getDomesticItems(
+        allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
         isLoadingNewCredentials: Boolean,
@@ -55,6 +57,15 @@ class GetDashboardItemsUseCaseImpl(
         val domesticGreenCards =
             allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
 
+        val hasVisitorPassIncompleteItem = dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
+            events = allEventGroupEntities,
+            domesticGreenCards = domesticGreenCards
+        )
+        val hasEmptyState = dashboardItemEmptyStateUtil.hasEmptyState(
+            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
+            allGreenCards = allGreenCards
+        )
+
         // Apply distinctBy here so that for two european green cards we do not get a two banners
         // saying "the certificate isn't valid in NL"
         val internationalGreenCards = allGreenCards
@@ -62,32 +73,29 @@ class GetDashboardItemsUseCaseImpl(
             .distinctBy { it.greenCardEntity.type }
 
         val headerText = dashboardItemUtil.getHeaderItemText(
+            emptyState = hasEmptyState,
             greenCardType = GreenCardType.Domestic,
-            allGreenCards = allGreenCards
+            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
         )
 
-        dashboardItems.add(
-            DashboardItem.HeaderItem(text = headerText)
-        )
+        dashboardItems.add(DashboardItem.HeaderItem(text = headerText))
 
-        if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
+        if (dashboardItemUtil.isAppUpdateAvailable()) {
+            dashboardItems.add(DashboardItem.InfoItem.AppUpdate)
+        }
+
+        if (dashboardItemUtil.shouldShowClockDeviationItem(hasEmptyState, allGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
         }
 
-        if (dashboardItemUtil.shouldShowExtendDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.ExtendDomesticRecovery)
-        }
-
-        if (dashboardItemUtil.shouldShowRecoverDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.RecoverDomesticRecovery)
-        }
-
-        if (dashboardItemUtil.shouldShowRecoveredDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.RecoveredDomesticRecovery)
-        }
-
-        if (dashboardItemUtil.shouldShowExtendedDomesticRecoveryItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.ExtendedDomesticRecovery)
+        if (dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
+                events = allEventGroupEntities,
+                domesticGreenCards = domesticGreenCards
+            )
+        ) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.VisitorPassIncompleteItem
+            )
         }
 
         if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
@@ -98,8 +106,25 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowNewValidityItem()) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.NewValidityItem
+            )
+        }
+
+        if (dashboardItemUtil.shouldShowBoosterItem(domesticGreenCards)) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.BoosterItem
+            )
+        }
+
+        if (dashboardItemUtil.shouldShowTestCertificate3GValidityItem(domesticGreenCards)) {
+            dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
+        }
+
         dashboardItems.addAll(
             getGreenCardItems(
+                greenCards = allGreenCards,
                 greenCardType = GreenCardType.Domestic,
                 greenCardsForSelectedType = domesticGreenCards,
                 greenCardsForUnselectedType = internationalGreenCards,
@@ -109,21 +134,29 @@ class GetDashboardItemsUseCaseImpl(
             )
         )
 
-        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
+        if (dashboardItemUtil.shouldShowPlaceholderItem(hasEmptyState)) {
             dashboardItems.add(
                 DashboardItem.PlaceholderCardItem(greenCardType = GreenCardType.Domestic)
             )
         }
 
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(domesticGreenCards, databaseSyncerResult)) {
+        if (dashboardItemUtil.shouldShowAddQrCardItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.AddQrCardItem)
+        }
+
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(
+                domesticGreenCards,
+                databaseSyncerResult
+            )
+        ) {
             dashboardItems.add(
                 DashboardItem.CoronaMelderItem
             )
         }
 
-        dashboardItems.add(
-            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
-        )
+        if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
+            dashboardItems.add(DashboardItem.AddQrButtonItem)
+        }
 
         return dashboardItems
     }
@@ -140,27 +173,46 @@ class GetDashboardItemsUseCaseImpl(
         val internationalGreenCards =
             allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
 
+        val hasVisitorPassIncompleteItem = dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
+            events = allEventGroupEntities,
+            domesticGreenCards = domesticGreenCards
+        )
+        val hasEmptyState = dashboardItemEmptyStateUtil.hasEmptyState(
+            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
+            allGreenCards = allGreenCards,
+        )
+
         val headerText = dashboardItemUtil.getHeaderItemText(
+            emptyState = hasEmptyState,
             greenCardType = GreenCardType.Eu,
-            allGreenCards = allGreenCards
+            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
         )
 
         dashboardItems.add(
             DashboardItem.HeaderItem(text = headerText)
         )
 
-        if (dashboardItemUtil.shouldShowClockDeviationItem(allGreenCards)) {
+        if (dashboardItemUtil.isAppUpdateAvailable()) {
+            dashboardItems.add(DashboardItem.InfoItem.AppUpdate)
+        }
+
+        if (dashboardItemUtil.shouldShowClockDeviationItem(hasEmptyState, allGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
         }
 
-        if (dashboardItemUtil.shouldAddSyncGreenCardsItem(allEventGroupEntities, allGreenCards)) {
-            // Enable the ability to show GreenCardsSyncedItem (after successful sync)
-            persistenceManager.setHasDismissedSyncedGreenCardsItem(false)
-            dashboardItems.add(DashboardItem.InfoItem.RefreshEuVaccinations)
-        }
+        // If the incomplete visitor pass banner shows in domestic, we show the relevant missing origin banner in EU
+        if (dashboardItemUtil.shouldShowVisitorPassIncompleteItem(
+                events = allEventGroupEntities,
+                domesticGreenCards = domesticGreenCards
+            )
+        ) {
 
-        if (dashboardItemUtil.shouldAddGreenCardsSyncedItem(allGreenCards)) {
-            dashboardItems.add(DashboardItem.InfoItem.RefreshedEuVaccinations)
+            dashboardItems.add(
+                DashboardItem.InfoItem.OriginInfoItem(
+                    greenCardType = GreenCardType.Eu,
+                    originType = OriginType.VaccinationAssessment
+                )
+            )
         }
 
         if (dashboardItemUtil.shouldShowConfigFreshnessWarning()) {
@@ -171,8 +223,15 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowBoosterItem(domesticGreenCards)) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.BoosterItem
+            )
+        }
+
         dashboardItems.addAll(
             getGreenCardItems(
+                greenCards = allGreenCards,
                 greenCardType = GreenCardType.Eu,
                 greenCardsForSelectedType = internationalGreenCards,
                 greenCardsForUnselectedType = domesticGreenCards,
@@ -182,26 +241,35 @@ class GetDashboardItemsUseCaseImpl(
             )
         )
 
-        if (dashboardItemUtil.shouldShowPlaceholderItem(allGreenCards)) {
+        if (dashboardItemUtil.shouldShowPlaceholderItem(hasEmptyState)) {
             dashboardItems.add(
                 DashboardItem.PlaceholderCardItem(greenCardType = GreenCardType.Eu)
             )
         }
 
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(internationalGreenCards, databaseSyncerResult)) {
+        if (dashboardItemUtil.shouldShowAddQrCardItem(allGreenCards)) {
+            dashboardItems.add(DashboardItem.AddQrCardItem)
+        }
+
+        if (dashboardItemUtil.shouldShowCoronaMelderItem(
+                internationalGreenCards,
+                databaseSyncerResult
+            )
+        ) {
             dashboardItems.add(
                 DashboardItem.CoronaMelderItem
             )
         }
 
-        dashboardItems.add(
-            DashboardItem.AddQrButtonItem(dashboardItemUtil.shouldAddQrButtonItem(allGreenCards))
-        )
+        if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
+            dashboardItems.add(DashboardItem.AddQrButtonItem)
+        }
 
         return dashboardItems
     }
 
-    private fun getGreenCardItems(
+    private suspend fun getGreenCardItems(
+        greenCards: List<GreenCard>,
         greenCardType: GreenCardType,
         greenCardsForSelectedType: List<GreenCard>,
         greenCardsForUnselectedType: List<GreenCard>,
@@ -214,7 +282,9 @@ class GetDashboardItemsUseCaseImpl(
         val items = greenCardsForSelectedType
             .map { greenCard ->
                 if (greenCardUtil.isExpired(greenCard)) {
-                    DashboardItem.InfoItem.GreenCardExpiredItem(greenCard = greenCard)
+                    getExpiredBannerItem(
+                        greenCard = greenCard
+                    )
                 } else {
                     mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
                 }
@@ -235,20 +305,28 @@ class GetDashboardItemsUseCaseImpl(
             if (!allValidOriginsForSelectedType.map { it.type }
                     .contains(originForUnselectedType.type)) {
 
-                items.add(
-                    if (greenCardType == GreenCardType.Domestic
-                        && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(greenCardsForSelectedType, greenCardsForUnselectedType)
-                    ) {
-                        DashboardItem.InfoItem.MissingDutchVaccinationItem
-                    } else {
-                        DashboardItem.InfoItem.OriginInfoItem(
-                            greenCardType = greenCardType,
-                            originType = originForUnselectedType.type
-                        )
-                    }
-                )
+                if (dashboardItemUtil.shouldShowOriginInfoItem(
+                        greenCards = greenCards,
+                        greenCardType = greenCardType,
+                        originType = originForUnselectedType.type
+                    )) {
+                    items.add(
+                        if (greenCardType == GreenCardType.Domestic
+                            && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(
+                                greenCardsForSelectedType,
+                                greenCardsForUnselectedType
+                            )
+                        ) {
+                            DashboardItem.InfoItem.MissingDutchVaccinationItem
+                        } else {
+                            DashboardItem.InfoItem.OriginInfoItem(
+                                greenCardType = greenCardType,
+                                originType = originForUnselectedType.type
+                            )
+                        }
+                    )
+                }
             }
-
         }
 
         // Always order by origin type
@@ -258,7 +336,7 @@ class GetDashboardItemsUseCaseImpl(
                     it.cards.first().originStates.first().origin.type.order
                 }
                 is DashboardItem.InfoItem.OriginInfoItem -> {
-                    it.originType.order
+                    0
                 }
                 else -> {
                     0
@@ -267,6 +345,26 @@ class GetDashboardItemsUseCaseImpl(
         }
 
         return items
+    }
+
+    private fun getExpiredBannerItem(
+        greenCard: GreenCard,
+    ): DashboardItem {
+        val origin = greenCard.origins.last()
+        return when {
+            greenCard.greenCardEntity.type is GreenCardType.Domestic && origin.type is OriginType.Vaccination -> {
+                DashboardItem.InfoItem.DomesticVaccinationExpiredItem(greenCard.greenCardEntity)
+            }
+            greenCard.greenCardEntity.type is GreenCardType.Domestic && origin.type is OriginType.VaccinationAssessment -> {
+                DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem(greenCard.greenCardEntity)
+            }
+            else -> {
+                DashboardItem.InfoItem.GreenCardExpiredItem(
+                    greenCardEntity = greenCard.greenCardEntity,
+                    originType = origin.type
+                )
+            }
+        }
     }
 
     private fun mapGreenCardsItem(

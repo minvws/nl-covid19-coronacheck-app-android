@@ -39,16 +39,16 @@
                 android:padding="16dp"
                 android:src="@drawable/ic_qr_codes_previous"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/qrVaccinationDosis"
-                app:layout_constraintEnd_toStartOf="@+id/qrVaccinationDosis"
+                app:layout_constraintBottom_toBottomOf="@+id/qr_vaccination_dose"
+                app:layout_constraintEnd_toStartOf="@+id/qr_vaccination_dose"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/qrVaccinationDosis"
+                app:layout_constraintTop_toTopOf="@+id/qr_vaccination_dose"
                 tools:visibility="visible"
                 android:contentDescription="@string/qr_code_previous_button" />
 
             <TextView
-                android:id="@+id/qrVaccinationDosis"
+                android:id="@+id/qr_vaccination_dose"
                 style="@style/App.TextAppearance.MaterialComponents.Headline6.Montserrat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,10 +69,10 @@
                 android:padding="16dp"
                 android:src="@drawable/ic_qr_codes_next"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/qrVaccinationDosis"
+                app:layout_constraintBottom_toBottomOf="@+id/qr_vaccination_dose"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/qrVaccinationDosis"
-                app:layout_constraintTop_toTopOf="@+id/qrVaccinationDosis"
+                app:layout_constraintStart_toEndOf="@+id/qr_vaccination_dose"
+                app:layout_constraintTop_toTopOf="@+id/qr_vaccination_dose"
                 tools:visibility="visible"
                 android:contentDescription="@string/qr_code_next_button" />
 

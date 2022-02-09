@@ -14,17 +14,17 @@ import nl.rijksoverheid.ctr.shared.models.VerificationResult
 
 sealed class VerifiedQrResultState : Parcelable {
     @Parcelize
-    data class Valid(val verifiedQr: VerificationResult) : VerifiedQrResultState(), Parcelable
+    data class Valid(val verifiedQr: VerificationResult) : VerifiedQrResultState()
 
     @Parcelize
-    data class InvalidInNL(val verifiedQr: VerificationResult) : VerifiedQrResultState(), Parcelable
+    data class InvalidInNL(val verifiedQr: VerificationResult) : VerifiedQrResultState()
 
     @Parcelize
-    data class UnknownQR(val verifiedQr: VerificationResult) : VerifiedQrResultState(), Parcelable
+    data class UnknownQR(val verifiedQr: VerificationResult) : VerifiedQrResultState()
 
     @Parcelize
-    data class Error(val error: String) : VerifiedQrResultState(), Parcelable
+    data class Error(val error: String) : VerifiedQrResultState()
 
     @Parcelize
-    data class Demo(val verifiedQr: VerificationResult) : VerifiedQrResultState(), Parcelable
+    data class Demo(val verifiedQr: VerificationResult) : VerifiedQrResultState()
 }

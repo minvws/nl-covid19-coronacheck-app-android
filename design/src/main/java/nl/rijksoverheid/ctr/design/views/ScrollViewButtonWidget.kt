@@ -38,6 +38,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
         elevation = 0f
         WidgetScrollViewButtonBinding.inflate(LayoutInflater.from(context), this)
         binding = WidgetScrollViewButtonBinding.bind(this)
+        isFocusable = false
 
         context.theme.obtainStyledAttributes(
             attrs,
@@ -116,7 +117,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
         binding.button.text = text
     }
 
-    private fun setSecondaryButtonText(text: String) {
+    fun setSecondaryButtonText(text: String) {
         binding.secondaryButton.text = text
         binding.secondaryButton.visibility = View.VISIBLE
     }

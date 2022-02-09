@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.fragment.app.testing.withFragment
 import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -39,6 +40,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /*
@@ -136,7 +138,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.ExtendDomesticRecovery
+                    DashboardItem.InfoItem.ConfigFreshnessWarning(0L)
                 )
             )
         )
@@ -159,7 +161,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.ExtendedDomesticRecovery
+                    DashboardItem.InfoItem.NewValidityItem
                 )
             )
         )
@@ -192,7 +194,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     DashboardItem.CardsItem(
                         listOf(
                             DashboardItem.CardsItem.CardItem(
-                                greenCard = fakeGreenCard,
+                                greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success()
@@ -238,19 +240,19 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                     DashboardItem.CardsItem(
                         listOf(
                             DashboardItem.CardsItem.CardItem(
-                                greenCard = fakeGreenCard,
+                                greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success()
                             ),
                             DashboardItem.CardsItem.CardItem(
-                                greenCard = fakeGreenCard,
+                                greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success()
                             ),
                             DashboardItem.CardsItem.CardItem(
-                                greenCard = fakeGreenCard,
+                                greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success()
@@ -286,7 +288,10 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.GreenCardExpiredItem(fakeGreenCard)
+                    DashboardItem.InfoItem.GreenCardExpiredItem(
+                        greenCardEntity = fakeGreenCard().greenCardEntity,
+                        originType = OriginType.Vaccination
+                    )
                 )
             )
         )
@@ -300,6 +305,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 assertTrue { view is CardView }
             }
         )
+
         assertNotDisplayed(R.id.button)
 
         // dismiss card
@@ -310,13 +316,43 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
+    fun `Expired vaccination card has a read more`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.DomesticVaccinationExpiredItem(
+                        greenCardEntity = fakeGreenCard().greenCardEntity
+                    )
+                )
+            )
+        )
+
+        // assert display of card
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemInfoRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+
+        assertDisplayed(R.id.button)
+    }
+
+    @Test
     fun `Origin card cannot be dismissed and should have a read more`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.OriginInfoItem(GreenCardType.Domestic, OriginType.Vaccination)
+                    DashboardItem.InfoItem.OriginInfoItem(
+                        GreenCardType.Domestic,
+                        OriginType.Vaccination
+                    )
                 )
             )
         )
@@ -340,7 +376,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.AddQrButtonItem(true)
+                    DashboardItem.AddQrButtonItem
                 )
             )
         )
@@ -359,7 +395,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.AddQrButtonItem(true)
+                    DashboardItem.AddQrButtonItem
                 )
             )
         )
@@ -367,6 +403,70 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         performActionOnView(ViewMatchers.withId(R.id.addQrButton), ViewActions.click())
 
         Assert.assertEquals(navController.currentDestination?.id, R.id.nav_qr_code_type)
+    }
+
+    @Test
+    fun `Ad qr card should be displayed when add qr card item is presented`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.AddQrCardItem
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemAddQrCardRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is MaterialCardView }
+            }
+        )
+        assertDisplayed(R.id.text, R.string.holder_dashboard_addCard_title)
+    }
+
+    @Test
+    fun `Clicking Add qr card should navigate to qr code type`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.AddQrCardItem
+                )
+            )
+        )
+
+        performActionOnView(ViewMatchers.withId(R.id.text), ViewActions.click())
+
+        Assert.assertEquals(navController.currentDestination?.id, R.id.nav_qr_code_type)
+    }
+
+    @Test
+    fun `3G validity card cannot be dismissed and should have a read more`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.TestCertificate3GValidity
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemInfoRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+        assertNotDisplayed(R.id.close)
+        assertDisplayed(R.id.button)
     }
 
     private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<MyOverviewTabsFragment> {

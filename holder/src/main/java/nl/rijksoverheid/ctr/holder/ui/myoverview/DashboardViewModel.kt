@@ -14,14 +14,17 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewRecoveryValidityUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import java.time.Clock
+import java.time.Instant
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
 
@@ -30,10 +33,9 @@ abstract class DashboardViewModel : ViewModel() {
     open val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
-    abstract fun removeGreenCard(greenCard: GreenCard)
-    abstract fun dismissRefreshedEuVaccinationsInfoCard()
-    abstract fun dismissRecoveredDomesticRecoveryInfoCard()
-    abstract fun dismissExtendedDomesticRecoveryInfoCard()
+    abstract fun removeGreenCard(greenCardEntity: GreenCardEntity)
+    abstract fun dismissNewValidityInfoCard()
+    abstract fun dismissBoosterInfoCard()
 
     companion object {
         val RETRY_FAILED_REQUEST_AFTER_SECONDS = if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(10)
@@ -42,11 +44,12 @@ abstract class DashboardViewModel : ViewModel() {
 
 class DashboardViewModelImpl(
     private val holderDatabase: HolderDatabase,
+    private val greenCardUtil: GreenCardUtil,
     private val getDashboardItemsUseCase: GetDashboardItemsUseCase,
     private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
-    private val checkNewRecoveryValidityUseCase: CheckNewRecoveryValidityUseCase
+    private val clock: Clock,
 ): DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -57,8 +60,6 @@ class DashboardViewModelImpl(
     override fun refresh(dashboardSync: DashboardSync) {
         viewModelScope.launch {
             mutex.withLock {
-                checkNewRecoveryValidityUseCase.check()
-
                 val previousSyncResult = databaseSyncerResultLiveData.value?.peekContent()
                 val hasDoneRefreshCall = previousSyncResult != null
 
@@ -84,7 +85,7 @@ class DashboardViewModelImpl(
                     }
                 }
 
-                val allGreenCards = holderDatabase.greenCardDao().getAll()
+                val allGreenCards = greenCardUtil.getAllGreenCards()
                 val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
 
                 refreshDashboardTabItems(
@@ -115,22 +116,14 @@ class DashboardViewModelImpl(
         }
     }
 
-    override fun removeGreenCard(greenCard: GreenCard) {
+    override fun removeGreenCard(greenCardEntity: GreenCardEntity) {
         viewModelScope.launch {
-            holderDatabase.greenCardDao().delete(greenCard.greenCardEntity)
+            holderDatabase.greenCardDao().delete(greenCardEntity)
         }
     }
 
-    override fun dismissRefreshedEuVaccinationsInfoCard() {
-        persistenceManager.setHasDismissedSyncedGreenCardsItem(true)
-    }
-
-    override fun dismissRecoveredDomesticRecoveryInfoCard() {
-        persistenceManager.setHasDismissedRecoveredDomesticRecoveryInfoCard(true)
-    }
-
-    override fun dismissExtendedDomesticRecoveryInfoCard() {
-        persistenceManager.setHasDismissedExtendedDomesticRecoveryInfoCard(true)
+    override fun dismissNewValidityInfoCard() {
+        persistenceManager.setHasDismissedNewValidityInfoCard(true)
     }
 
     private suspend fun refreshDashboardTabItems(
@@ -166,5 +159,12 @@ class DashboardViewModelImpl(
         (dashboardTabItemsLiveData as MutableLiveData<List<DashboardTabItem>>).postValue(
             dashboardTabItems
         )
+    }
+
+    override fun dismissBoosterInfoCard() {
+        val nowEpochSeconds = Instant.now(clock).epochSecond
+        persistenceManager.setHasDismissedBoosterInfoCard(nowEpochSeconds)
+        // remove it from both the domestic and the international tab
+        refresh(DashboardSync.DisableSync)
     }
 }

@@ -13,7 +13,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.util.encoders.Base64
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
-import org.junit.Ignore
 import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.security.cert.CertificateFactory

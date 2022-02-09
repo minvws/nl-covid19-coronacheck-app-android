@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.introduction.ui.status.usecases
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
@@ -19,9 +20,10 @@ class IntroductionStatusUseCaseImplTest {
 
     private val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
     private val introductionData: IntroductionData = mockk()
+    private val featureFlagUseCase: FeatureFlagUseCase = mockk()
 
     private val introductionStatusUseCase = IntroductionStatusUseCaseImpl(
-        introductionPersistenceManager, introductionData
+        introductionPersistenceManager, introductionData, featureFlagUseCase
     )
 
     @Test
@@ -40,6 +42,7 @@ class IntroductionStatusUseCaseImplTest {
         every { introductionData.newFeatures } returns listOf(mockk())
         every { introductionData.newFeatureVersion } returns 2
         every { introductionPersistenceManager.getNewFeaturesSeen(2) } returns false
+        every { featureFlagUseCase.isVerificationPolicySelectionEnabled() } answers { true }
 
         assertEquals(
             introductionStatusUseCase.get(),

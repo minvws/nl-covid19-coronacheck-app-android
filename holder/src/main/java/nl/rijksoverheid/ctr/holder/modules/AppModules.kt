@@ -9,6 +9,8 @@ import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCase
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCaseImpl
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
+import nl.rijksoverheid.ctr.holder.usecase.BuildConfigUseCaseImpl
+import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -32,13 +34,11 @@ val appModule = module {
 
     factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get()) }
 
-    factory<WorkerManagerWrapper> { WorkerManagerWrapperImpl(androidContext(), get()) }
-
     factory<ReturnToExternalAppUseCase> {
         ReturnToExternalAppUseCaseImpl(get())
     }
 
-    factory {
-        HolderWorkerFactory(get(), get())
+    factory<BuildConfigUseCase> {
+        BuildConfigUseCaseImpl()
     }
 }

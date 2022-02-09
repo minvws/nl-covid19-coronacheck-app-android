@@ -9,28 +9,29 @@
 package nl.rijksoverheid.ctr.qrscanner
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuItemCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.doOnLayout
-import androidx.core.view.updateMargins
+import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
 import nl.rijksoverheid.ctr.zebrascanner.ZebraManager
+import nl.rijksoverheid.ctr.honeywellscanner.HoneywellManager
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.error.NoBeanDefFoundException
@@ -49,12 +50,17 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     } catch (e: NoBeanDefFoundException) {
         null
     }
+    private val honeywellManager: HoneywellManager? = try {
+        get()
+    } catch (e: NoBeanDefFoundException) {
+        null
+    }
 
     companion object {
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
     }
-    
+
     private val qrCodeProcessor: QrCodeProcessor by inject()
 
     private val requestPermissionLauncher =
@@ -75,13 +81,21 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentScannerBinding.bind(view)
-        if(zebraManager?.isZebraDevice() == true){
+        if (zebraManager?.isZebraDevice() == true) {
             // Setup Zebra scanner
             zebraManager.setupZebraScanner(onDatawedgeResultListener = {
                 onQrScanned(it)
             })
 
             binding.zebraContrainer.visibility = View.VISIBLE
+        }
+        else if(honeywellManager?.isHoneywellDevice() == true){
+            // Setup Honeywell scanner
+            honeywellManager.setupHoneywellScanner(onDatawedgeResultListener = {
+                onQrScanned(it)
+            })
+
+            binding.honeywellContrainer.visibility = View.VISIBLE
         }
 
         // Set overlay to software accelerated only to fix transparency on certain devices
@@ -91,22 +105,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             findNavController().navigateUp()
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            binding.toolbar.setPadding(0, insets.systemWindowInsetTop, 0, 0)
-            (binding.scannerFooterContainer.layoutParams as ConstraintLayout.LayoutParams).updateMargins(
-                bottom = insets.systemWindowInsetBottom
-            )
-            insets
-        }
-
-        binding.scannerFooter.run {
-            text = getCopy().message
-            getCopy().onMessageClicked?.let { onClicked ->
-                paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
-                setOnClickListener { onClicked.invoke() }
-            }
-        }
-        binding.toolbar.title = getCopy().title
+        setCopy()
 
         // Show header below overlay window after overlay finishes drawing
         binding.overlay.doOnLayout {
@@ -115,8 +114,36 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             set.setGuidelineBegin(binding.headerGuideline.id, binding.overlay.bottomOfOverlayWindow)
             set.applyTo(binding.root)
         }
+
+        getCopy().verificationPolicy?.let {
+            binding.policyRiskWidget.visibility = View.VISIBLE
+            binding.policyText.text = it.title
+            binding.policyIndicator.backgroundTintList =
+                ColorStateList.valueOf(requireContext().getColor(it.indicatorColor))
+        } ?: run { binding.policyRiskWidget.visibility = View.GONE }
     }
 
+    private fun setCopy() {
+        val copy = getCopy()
+        binding.toolbar.title = copy.title
+        binding.scannerFooter.text = copy.message
+        binding.scannerFooterButton.text = copy.message
+
+        if (copy.onMessageClicked != null) {
+            binding.scannerFooterButton.paintFlags =
+                binding.scannerFooterButton.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+            binding.scannerFooterButton.setOnClickListener { copy.onMessageClicked.invoke() }
+
+            // For accessibility there is a separation when the footer is clickable as button or not as text view
+            binding.scannerFooterButton.visibility = View.VISIBLE
+            binding.scannerFooter.visibility = View.GONE
+        } else {
+            binding.scannerFooterButton.visibility = View.GONE
+            binding.scannerFooter.visibility = View.VISIBLE
+        }
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onStart() {
         super.onStart()
         setUpScanner()
@@ -124,12 +151,9 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     protected fun setUpScanner(forceCamera: Boolean = false) {
-        if (forceCamera || zebraManager == null || zebraManager.isZebraDevice() == false) {
+        if (forceCamera || ((zebraManager == null || !zebraManager.isZebraDevice()) && (honeywellManager == null || !honeywellManager.isHoneywellDevice()))) {
             setupCamera()
         } else {
-            // Enable Zebra scanners
-            zebraManager.resumeScanner()
-
             binding.toolbar.menu.findItem(R.id.camera).isVisible = true
             binding.toolbar.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
@@ -193,10 +217,6 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         // reopening the scanner in quick succession. Since the CameraProvider has a limit of 3 usecases this
         // can cause crashes otherwise
         cameraProvider.unbindAll()
-
-        val imageAnalyzer = ImageAnalysis.Builder()
-            .setTargetAspectRatio(aspectRatio)
-            .build()
 
         // Bind Usecases for retrieving preview feed from the camera and image processing
         bindPreviewUseCase(cameraProvider, previewView, cameraSelector, aspectRatio)
@@ -334,9 +354,25 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         _binding = null
         requireActivity().requestedOrientation =
             ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-        // Teardown Zebra scanner if one is running
+        // Teardown Device Manufacturer scanner if one is running
         zebraManager?.teardownZebraScanner()
+        honeywellManager?.teardownHoneywellScanner()
     }
+
+    // Handle users swapping between apps meanwhile
+
+    override fun onResume() {
+        super.onResume()
+        zebraManager?.resumeScanner()
+        honeywellManager?.resumeScanner()
+    }
+
+    override fun onPause() {
+        zebraManager?.suspendScanner()
+        honeywellManager?.suspendScanner()
+        super.onPause()
+    }
+
 
     /**
      *  [androidx.camera.core.ImageAnalysis], [androidx.camera.core.Preview] requires enum value of
@@ -369,7 +405,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(rationaleDialog.title)
                 .setMessage(rationaleDialog.description)
-                .setPositiveButton(rationaleDialog.okayButtonText) { dialog, which ->
+                .setPositiveButton(rationaleDialog.okayButtonText) { _, _ ->
                     requestPermission()
                 }
                 .show()
@@ -380,12 +416,18 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         val title: String,
         val message: String,
         val rationaleDialog: RationaleDialog? = null,
-        val onMessageClicked: (() -> Unit)? = null
+        val onMessageClicked: (() -> Unit)? = null,
+        val verificationPolicy: VerificationPolicy? = null,
     ) {
         data class RationaleDialog(
             val title: String,
             val description: String,
             val okayButtonText: String
+        )
+
+        data class VerificationPolicy(
+            val title: String,
+            @ColorRes val indicatorColor: Int
         )
     }
 }

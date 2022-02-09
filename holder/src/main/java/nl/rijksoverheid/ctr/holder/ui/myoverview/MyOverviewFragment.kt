@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import org.koin.android.ext.android.inject
@@ -97,11 +98,23 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                     // Handled by MyOverviewTabsFragment
                 }
                 is DashboardItem.InfoItem -> addInfoCard(adapterItems, dashboardItem)
-                is DashboardItem.CoronaMelderItem -> adapterItems.add(MyOverviewCoronaMelderAdapterItem())
+                is DashboardItem.CoronaMelderItem -> adapterItems.add(
+                    MyOverviewCoronaMelderAdapterItem()
+                )
+                is DashboardItem.AddQrCardItem -> addAddQrCardItem(adapterItems)
             }
         }
 
         section.update(adapterItems)
+    }
+
+    private fun addAddQrCardItem(adapterItems: MutableList<BindableItem<*>>) {
+        adapterItems.add(
+            MyOverviewAddQrCardItem(
+                onButtonClick = {
+                    findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionQrType())
+                })
+        )
     }
 
     private fun addInfoCard(
@@ -140,15 +153,13 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                 is GreenCardType.Eu -> {
                                     getString(R.string.my_overview_test_result_international_title)
                                 }
-                            },
-                            data = QrCodeFragmentData(
+                            }, data = QrCodeFragmentData(
                                 shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
                                 credentials = credentials,
                                 credentialExpirationTimeSeconds = expiration,
                                 type = greenCard.greenCardEntity.type,
                                 originType = greenCard.origins.first().type
-                            ),
-                            returnUri = arguments?.getString(EXTRA_RETURN_URI)
+                            ), returnUri = arguments?.getString(EXTRA_RETURN_URI)
                         )
                     )
                 },

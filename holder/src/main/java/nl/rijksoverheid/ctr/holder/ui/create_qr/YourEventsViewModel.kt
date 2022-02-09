@@ -10,14 +10,16 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.persistence.database.util.DomesticVaccinationRecoveryCombinationUtil
+import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.Flow
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -31,11 +33,13 @@ abstract class YourEventsViewModel : ViewModel() {
     val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
     val conflictingEventsResult: LiveData<Event<Boolean>> = MutableLiveData()
 
-    abstract fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
+    abstract fun saveNegativeTest2(flow: Flow, negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
     abstract fun saveRemoteProtocol3Events(
+        flow: Flow,
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         originType: OriginType,
-        removePreviousEvents: Boolean
+        removePreviousEvents: Boolean,
+        afterIncompleteVaccination: Boolean
     )
 
     abstract fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>)
@@ -51,10 +55,11 @@ class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val holderDatabase: HolderDatabase,
-    private val combinationUtil: DomesticVaccinationRecoveryCombinationUtil
+    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil,
+    private val scopeUtil: ScopeUtil
 ) : YourEventsViewModel() {
 
-    override fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
+    override fun saveNegativeTest2(flow: Flow, negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
@@ -63,6 +68,7 @@ class YourEventsViewModelImpl(
                     is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
                         // Send all events to database and create green cards, origins and credentials
                         val databaseSyncerResult = holderDatabaseSyncer.sync(
+                            flow = flow,
                             expectedOriginType = OriginType.Test
                         )
 
@@ -103,9 +109,11 @@ class YourEventsViewModelImpl(
     }
 
     override fun saveRemoteProtocol3Events(
+        flow: Flow,
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         originType: OriginType,
-        removePreviousEvents: Boolean
+        removePreviousEvents: Boolean,
+        afterIncompleteVaccination: Boolean
     ) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
@@ -114,13 +122,18 @@ class YourEventsViewModelImpl(
                 val result = saveEventsUseCase.saveRemoteProtocols3(
                     remoteProtocols3 = remoteProtocols3,
                     originType = originType,
-                    removePreviousEvents = removePreviousEvents
+                    removePreviousEvents = removePreviousEvents,
+                    scope = scopeUtil.getScopeForOriginType(
+                        originType = originType,
+                        withIncompleteVaccination = afterIncompleteVaccination
+                    )
                 )
 
                 when (result) {
                     is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
                         // Send all events to database and create green cards, origins and credentials
                         val databaseSyncerResult = holderDatabaseSyncer.sync(
+                            flow = flow,
                             expectedOriginType = getExpectedOriginType(originType)
                         )
 
@@ -152,6 +165,6 @@ class YourEventsViewModelImpl(
      */
     private suspend fun getExpectedOriginType(originType: OriginType): OriginType? {
         val events = holderDatabase.eventGroupDao().getAll()
-        return if (!combinationUtil.hasVaccinationAndRecoveryEvents(events)) originType else null
+        return if (!yourEventFragmentEndStateUtil.hasVaccinationAndRecoveryEvents(events)) originType else null
     }
 }

@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.databinding.FragmentInfoBottomsheetBinding
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 
 /*
@@ -67,8 +68,7 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 htmlTextString?.let {
                     setHtmlText(
                         htmlText = it,
-                        htmlLinksEnabled = htmlLinksEnabled,
-                        htmlTextColor = htmlTextColor,
+                        htmlLinksEnabled = htmlLinksEnabled
                     )
                 }
                 customLinkIntent?.let { enableCustomLinks { context.startActivity(it) } }
@@ -78,12 +78,25 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
             is InfoFragmentData.TitleDescription -> {
             }
             is InfoFragmentData.TitleDescriptionWithButton -> {
-                binding.button.visibility = View.VISIBLE
-                binding.button.apply {
-                    val buttonData = expandedBottomSheetData.buttonData
-                    if (buttonData is ButtonData.LinkButton) {
-                        text = buttonData.text
-                        setOnClickListener { buttonData.link.launchUrl(context) }
+                when (val buttonData = expandedBottomSheetData.secondaryButtonData) {
+                    is ButtonData.LinkButton -> {
+                        binding.linkButton.run {
+                            text = buttonData.text
+                            setOnClickListener { buttonData.link.launchUrl(context) }
+                            binding.linkButton.visibility = View.VISIBLE
+                        }
+                    }
+                    is ButtonData.NavigationButton -> {
+                        binding.navigationButton.run {
+                            text = buttonData.text
+                            setOnClickListener {
+                                findNavControllerSafety()?.navigate(
+                                    buttonData.navigationActionId,
+                                    buttonData.navigationArguments
+                                )
+                            }
+                            binding.navigationButton.visibility = View.VISIBLE
+                        }
                     }
                 }
             }

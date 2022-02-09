@@ -14,6 +14,8 @@ interface OriginUtil {
      * If the origin subtitle should be hiden in the [MyOverviewGreenCardAdapterItem]
      */
     fun hideSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean
+
+    fun isValidWithinRenewalThreshold(credentialRenewalDays: Long, origin: OriginEntity) : Boolean
 }
 
 class OriginUtilImpl(private val clock: Clock): OriginUtil {
@@ -42,6 +44,14 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
         // Hack to hide the subtitle if expirationTime is very far in the future
         // We still want to show the subtitle when the origin state is in the future to show valid from time
         return (greenCardType == GreenCardType.Domestic && ChronoUnit.YEARS.between(OffsetDateTime.now(clock), originState.origin.expirationTime) >= PRESENT_SUBTITLE_WHEN_LESS_THEN_YEARS) && originState !is OriginState.Future
+    }
+
+    override fun isValidWithinRenewalThreshold(
+        credentialRenewalDays: Long, origin: OriginEntity
+    ): Boolean {
+        val now = OffsetDateTime.now(clock)
+        val thresholdEndDate = now.plusDays(credentialRenewalDays)
+        return origin.validFrom < thresholdEndDate && origin.expirationTime > now
     }
 }
 

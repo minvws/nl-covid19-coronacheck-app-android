@@ -8,9 +8,11 @@
 
 package nl.rijksoverheid.ctr.shared.ext
 
+import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DimenRes
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.forEach
 
 fun View.setVisible(isVisible: Boolean) {
@@ -37,4 +39,12 @@ fun View.children(): List<View> {
         }
     }
     return children
+}
+
+fun View.setStatusBarTextColorWhite() {
+    WindowInsetsControllerCompat((context as Activity).window, this).isAppearanceLightStatusBars = false
+}
+
+fun View.setStatusBarTextColorBlack() {
+    WindowInsetsControllerCompat((context as Activity).window, this).isAppearanceLightStatusBars = true
 }

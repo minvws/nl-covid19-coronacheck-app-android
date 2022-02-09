@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
@@ -26,15 +25,15 @@ val eventsUseCasesModule = module {
         GetRemoteEventsUseCaseImpl(get())
     }
     factory<QrCodeUseCase> {
-        val clockDeviationUseCase = get<ClockDeviationUseCase>()
         QrCodeUseCaseImpl(
             get(),
             get(),
             get(),
-            clockDeviationUseCase.getAdjustedClock(Clock.systemDefaultZone())
+            get()
         )
     }
-    factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get()) }
+    factory<GetDigidEventsUseCase> { GetDigidEventsUseCaseImpl(get(), get(), get(), get(), get()) }
+    factory<GetMijnCnEventsUsecase> { GetMijnCnEventsUsecaseImpl(get(), get(), get()) }
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get()) }
     factory<ValidatePaperProofUseCase> {
         ValidatePaperProofUseCaseImpl(get(), get())

@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.modules
 
 import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models.PrivacyPolicyItem
@@ -41,7 +42,17 @@ val verifierIntroductionModule = module {
             newTerms = NewTerms(
                 version = 1,
                 needsConsent = true
-            )
+            ),
+            newFeatures = listOf(
+                NewFeatureItem(
+                    R.drawable.common_full_open_on_phone,
+                    R.string.new_in_app_risksetting_title,
+                    R.string.new_in_app_risksetting_subtitle,
+                    R.color.primary_blue,
+                    R.color.light_blue,
+                )
+            ),
+            newFeatureVersion = 1,
         )
     }
 }

@@ -4,11 +4,13 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import nl.rijksoverheid.ctr.holder.modules.qualifier.ErrorResponseQualifier
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.OriginTypeJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteCouplingStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
+import nl.rijksoverheid.ctr.shared.models.MijnCnErrorResponse
 import okhttp3.ResponseBody
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -32,9 +34,15 @@ val responsesModule = module {
         )
     }
 
-    single<Converter<ResponseBody, CoronaCheckErrorResponse>>(named("ResponseError")) {
+    single<Converter<ResponseBody, CoronaCheckErrorResponse>>(named(ErrorResponseQualifier.CORONA_CHECK)) {
         get<Retrofit>(Retrofit::class).responseBodyConverter(
             CoronaCheckErrorResponse::class.java, emptyArray()
+        )
+    }
+
+    single<Converter<ResponseBody, MijnCnErrorResponse>>(named(ErrorResponseQualifier.MIJN_CN)) {
+        get<Retrofit>(Retrofit::class).responseBodyConverter(
+            MijnCnErrorResponse::class.java, emptyArray()
         )
     }
 
@@ -54,6 +62,7 @@ val responsesModule = module {
                 PolymorphicJsonAdapterFactory.of(
                     RemoteEvent::class.java, "type"
                 )
+                    .withSubtype(RemoteEventVaccinationAssessment::class.java, "vaccinationassessment")
                     .withSubtype(RemoteEventPositiveTest::class.java, "positivetest")
                     .withSubtype(RemoteEventRecovery::class.java, "recovery")
                     .withSubtype(RemoteEventNegativeTest::class.java, "negativetest")

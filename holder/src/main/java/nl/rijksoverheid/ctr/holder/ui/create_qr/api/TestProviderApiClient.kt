@@ -10,7 +10,10 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.api
 
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.post.GetTestResultPostData
 import retrofit2.http.*
 
@@ -44,5 +47,4 @@ interface TestProviderApiClient {
         @Body params: Map<String, String>,
         @Tag certificate: SigningCertificate,
     ): SignedResponseWithModel<RemoteProtocol3>
-
 }

@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.SignedResponseWithModel
@@ -22,20 +23,16 @@ interface EventProviderRepository {
         /**
          * Get filter for backend endpoints
          */
-        fun getFilter(originType: OriginType, withIncompleteVaccination: Boolean): String {
+        fun getFilter(originType: RemoteOriginType): String {
             return when (originType) {
-                is OriginType.Vaccination -> {
+                is RemoteOriginType.Vaccination -> {
                     "vaccination"
                 }
-                is OriginType.Recovery -> {
-                    // Only fetch positive tests when completing an incomplete 1/X vaccination into a 1/1
-                    if (withIncompleteVaccination) {
-                        "positivetest"
-                    } else {
-                        "positivetest,recovery"
-                    }
+                // TODO Change to positivetest only when GGD accepts scope parameter
+                is RemoteOriginType.Recovery -> {
+                    "positivetest,recovery"
                 }
-                is OriginType.Test -> {
+                is RemoteOriginType.Test -> {
                     "negativetest"
                 }
             }
@@ -46,6 +43,7 @@ interface EventProviderRepository {
         url: String,
         token: String,
         filter: String,
+        scope: String?,
         signingCertificateBytes: ByteArray,
         provider: String,
     ): NetworkRequestResult<RemoteUnomi>
@@ -55,6 +53,7 @@ interface EventProviderRepository {
         token: String,
         signingCertificateBytes: ByteArray,
         filter: String,
+        scope: String?,
         provider: String,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>>
 }
@@ -68,9 +67,17 @@ class EventProviderRepositoryImpl(
         url: String,
         token: String,
         filter: String,
+        scope: String?,
         signingCertificateBytes: ByteArray,
         provider: String,
     ): NetworkRequestResult<RemoteUnomi> {
+        val params = mutableMapOf<String, String>()
+        params["filter"] = filter
+        // TODO Enable when GGD accepts scope parameter
+//        scope?.let {
+//            params["scope"] = scope
+//        }
+
         return networkRequestResultFactory.createResult(
             step = HolderStep.UnomiNetworkRequest,
             provider = provider,
@@ -78,7 +85,7 @@ class EventProviderRepositoryImpl(
             testProviderApiClient.getUnomi(
                 url = url,
                 authorization = "Bearer $token",
-                params = mapOf("filter" to filter),
+                params = params,
                 certificate = SigningCertificate(signingCertificateBytes)
             ).model
         }
@@ -89,8 +96,16 @@ class EventProviderRepositoryImpl(
         token: String,
         signingCertificateBytes: ByteArray,
         filter: String,
+        scope: String?,
         provider: String,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
+        val params = mutableMapOf<String, String>()
+        params["filter"] = filter
+        // TODO Enable when GGD accepts scope parameter
+//        scope?.let {
+//            params["scope"] = scope
+//        }
+
         return networkRequestResultFactory.createResult(
             step = HolderStep.EventNetworkRequest,
             provider = provider,
@@ -98,7 +113,7 @@ class EventProviderRepositoryImpl(
             testProviderApiClient.getEvents(
                 url = url,
                 authorization = "Bearer $token",
-                params = mapOf("filter" to filter),
+                params = params,
                 certificate = SigningCertificate(signingCertificateBytes)
             )
         }
