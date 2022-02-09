@@ -23,6 +23,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import java.time.Clock
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -36,6 +37,7 @@ abstract class DashboardViewModel : ViewModel() {
     abstract fun removeGreenCard(greenCardEntity: GreenCardEntity)
     abstract fun dismissNewValidityInfoCard()
     abstract fun dismissBoosterInfoCard()
+    abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
 
     companion object {
         val RETRY_FAILED_REQUEST_AFTER_SECONDS = if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(10)
@@ -166,5 +168,9 @@ class DashboardViewModelImpl(
         persistenceManager.setHasDismissedBoosterInfoCard(nowEpochSeconds)
         // remove it from both the domestic and the international tab
         refresh(DashboardSync.DisableSync)
+    }
+
+    override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
+        persistenceManager.setPolicyBannerDismissed(disclosurePolicy)
     }
 }

@@ -97,6 +97,7 @@ class MyOverviewInfoCardItem(
             is DashboardItem.InfoItem.BoosterItem -> {
                 viewBinding.text.setText(R.string.holder_dashboard_addBoosterBanner_title)
             }
+            is DashboardItem.InfoItem.DisclosurePolicyItem -> TODO()
         }
 
         viewBinding.button.setOnClickListener {

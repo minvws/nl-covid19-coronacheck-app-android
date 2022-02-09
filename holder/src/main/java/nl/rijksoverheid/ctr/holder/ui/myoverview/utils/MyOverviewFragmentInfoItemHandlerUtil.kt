@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
@@ -84,6 +83,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.BoosterItem -> {
                 onBoosterItemClicked(myOverviewFragment)
             }
+            is DashboardItem.InfoItem.DisclosurePolicyItem -> TODO()
         }
     }
 
@@ -338,6 +338,9 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             }
             is DashboardItem.InfoItem.BoosterItem -> {
                 myOverviewFragment.dashboardViewModel.dismissBoosterInfoCard()
+            }
+            is DashboardItem.InfoItem.DisclosurePolicyItem -> {
+                myOverviewFragment.dashboardViewModel.dismissPolicyInfo(infoItem.disclosurePolicy)
             }
         }
     }
