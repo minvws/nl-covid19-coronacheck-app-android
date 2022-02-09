@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.persistence
 
 import android.content.SharedPreferences
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,9 +33,6 @@ interface PersistenceManager {
     fun setHasDismissedNewValidityInfoCard(dismissed: Boolean)
     fun getHasDismissedBoosterInfoCard(): Long
     fun setHasDismissedBoosterInfoCard(dismissedAtEpochSeconds: Long)
-
-    fun getDebugDisclosurePolicy(): DisclosurePolicy?
-    fun setDebugDisclosurePolicy(value: String)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -154,14 +150,5 @@ class SharedPreferencesPersistenceManager(
 
     override fun setHasDismissedBoosterInfoCard(dismissedAtEpochSeconds: Long) {
         sharedPreferences.edit().putLong(HAS_DISMISSED_BOOSTER_INFO_CARD, dismissedAtEpochSeconds).apply()
-    }
-
-    override fun getDebugDisclosurePolicy(): DisclosurePolicy? {
-        val value = sharedPreferences.getString(DEBUG_DISCLOSURE_POLICY, "") ?: ""
-        return DisclosurePolicy.fromString(value)
-    }
-
-    override fun setDebugDisclosurePolicy(value: String) {
-        sharedPreferences.edit().putString(DEBUG_DISCLOSURE_POLICY, value).apply()
     }
 }
