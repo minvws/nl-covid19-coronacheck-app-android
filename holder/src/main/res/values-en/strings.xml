@@ -654,8 +654,20 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="general_vaccinationcertificate">vaccination certificate</string>
   <string name="general_recoverycertificate">recovery certificate</string>
   <string name="general_testcertificate">test certificate</string>
-  <string name="dummy_1">Bewijs voor 3G-toegang</string>
-  <string name="dummy_2">3G</string>
-  <string name="dummy_3">Bewijs voor 1g-toegang</string>
-  <string name="dummy_4">1G</string>
+  <string name="holder_dashboard_only3GaccessBanner_title">Op je bewijs staat nu 3G. Dit betekent dat je bewijs geschikt is voor plekken in Nederland die 3G-toegang geven.</string>
+  <string name="holder_dashboard_only3GaccessBanner_button">Lees meer op…</string>
+  <string name="holder_dashboard_domesticQRCard_3G_title">Bewijs voor 3G-toegang</string>
+  <string name="holder_dashboard_domesticQRCard_3G_label">3G</string>
+  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message">Bekijk vooraf of de locatie die je bezoekt een bewijs voor <a href="https://coronacheck.nl/404">3G- of 1G toegang</a> vraagt.</string>
+  <string name="holder_dashboard_3Gand1GaccessBanner_title">Vanaf nu zijn er 2 aparte QR-codes voor 3G- en 1G-toegang</string>
+  <string name="holder_dashboard_3Gand1GaccessBanner_button">Lees meer op…</string>
+  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess">Controleer vooraf of je een bewijs voor <a href="https://coronacheck.nl/404">3G- of 1G toegang</a> nodig hebt. Laat bij de ingang ook je identiteitsbewijs zien.</string>
+  <string name="holder_dashboard_domesticQRCard_1G_title">Bewijs voor 1G-toegang</string>
+  <string name="holder_dashboard_domesticQRCard_1G_label">1G</string>
+  <string name="holder_dashboard_empty_domestic_only1Gaccess_message">Wil je naar een plek met <a href="https://coronacheck.nl/404">1G-toegang</a>? Dan heb je een testbewijs nodig.</string>
+  <string name="holder_dashboard_only1GaccessBanner_title">Vanaf nu heb je een testbewijs nodig voor 1G toegang</string>
+  <string name="holder_dashboard_only1GaccessBanner_button">Lees meer op…</string>
+  <string name="holder_dashboard_empty_international_only1Gaccess_message">Ben je in het buitenland of ga je de grens over? Gebruik dan altijd jouw internationale bewijs. Controleer voor vertrek welk bewijs je nodig hebt. Je kunt een bewijs toevoegen als je bent gevaccineerd, hersteld of getest.</string>
+  <string name="holder_dashboard_intro_domestic_only1Gaccess">Met een testbewijs kan je naar plekken met <a href="https://coronacheck.nl/404">1G-toegang</a>. Laat bij de ingang ook je identiteitsbewijs zien.</string>
+  <string name="holder_dashboard_domesticQRCard_3G_inactive_label">Dit bewijs wordt nu niet gebruikt in Nederland.</string>
 </resources>

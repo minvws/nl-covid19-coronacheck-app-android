@@ -401,7 +401,7 @@ class GetDashboardItemsUseCaseImpl(
             originStates = nonExpiredOriginStates,
             credentialState = credentialState,
             databaseSyncerResult = databaseSyncerResult,
-            disclosurePolicy = GreenCardDisclosurePolicy.ThreeG
+            disclosurePolicy = GreenCardDisclosurePolicy.OneG
         )
 
         return DashboardItem.CardsItem(listOf(greenCardItem))

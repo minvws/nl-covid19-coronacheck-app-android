@@ -26,7 +26,10 @@ import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-data class AdapterCard(val greenCard: GreenCard, val originStates: List<OriginState>)
+data class AdapterCard(
+    val greenCard: GreenCard,
+    val originStates: List<OriginState>,
+    val disclosurePolicy: GreenCardDisclosurePolicy)
 
 class MyOverviewGreenCardAdapterItem(
     private val cards: List<DashboardItem.CardsItem.CardItem>,
@@ -98,15 +101,6 @@ class MyOverviewGreenCardAdapterItem(
                 viewBinding.internationalImageContainer.visibility = View.GONE
                 viewBinding.domesticImageContainer.visibility = View.VISIBLE
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
-
-                when (card.disclosurePolicy) {
-                    is GreenCardDisclosurePolicy.OneG -> {
-                        viewBinding.domesticDisclosurePolicy.setText(R.string.dummy_4)
-                    }
-                    is GreenCardDisclosurePolicy.ThreeG -> {
-                        viewBinding.domesticDisclosurePolicy.setText(R.string.dummy_2)
-                    }
-                }
             }
         }
 
@@ -130,7 +124,7 @@ class MyOverviewGreenCardAdapterItem(
 
         myOverViewGreenCardAdapterUtil.setContent(
             ViewBindingWrapperImpl(viewBinding),
-            cards.map { AdapterCard(it.greenCard, it.originStates) }
+            cards.map { AdapterCard(it.greenCard, it.originStates, it.disclosurePolicy) }
                 .sortedByDescending { it.originStates.first().origin.eventTime },
         )
 

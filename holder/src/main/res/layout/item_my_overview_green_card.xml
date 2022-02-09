@@ -98,14 +98,14 @@
 
                             <TextView
                                 style="@style/App.TextAppearance.MaterialComponents.Headline6.Montserrat"
-                                android:id="@+id/domesticDisclosurePolicy"
+                                android:id="@+id/domesticPolicyLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:textColor="@color/primary_blue"
                                 android:layout_marginStart="16dp"
                                 android:includeFontPadding="false"
-                                tools:text="@string/dummy_2" />
+                                tools:text="@string/holder_dashboard_domesticQRCard_1G_label" />
 
                         </LinearLayout>
 

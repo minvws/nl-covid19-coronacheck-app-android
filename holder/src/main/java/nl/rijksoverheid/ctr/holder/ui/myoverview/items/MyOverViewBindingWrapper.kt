@@ -15,6 +15,7 @@ interface ViewBindingWrapper {
     val title: TextView
     val description: LinearLayout
     val expiresIn: TextView
+    val policyLabel: TextView
 }
 
 class ViewBindingWrapperImpl(private val viewBinding: ItemMyOverviewGreenCardBinding) :
@@ -28,4 +29,7 @@ class ViewBindingWrapperImpl(private val viewBinding: ItemMyOverviewGreenCardBin
 
     override val expiresIn: TextView
         get() = viewBinding.expiresIn
+
+    override val policyLabel: TextView
+        get() = viewBinding.domesticPolicyLabel
 }
