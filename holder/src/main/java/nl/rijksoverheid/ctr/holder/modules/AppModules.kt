@@ -31,7 +31,8 @@ val appModule = module {
             get(),
             androidContext().filesDir.path,
             get(),
-            isDebugApp(androidContext())
+            isDebugApp(androidContext()),
+            get()
         )
     }
 

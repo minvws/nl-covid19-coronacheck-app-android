@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface DisclosurePolicyPersistenceManager {
     fun getDebugDisclosurePolicy(): DisclosurePolicy?
-    fun setDebugDisclosurePolicy(value: DisclosurePolicy?)
+    fun setDebugDisclosurePolicy(policy: DisclosurePolicy?)
 }
 
 class DisclosurePolicyPersistenceManagerImpl(
@@ -32,6 +32,6 @@ class DisclosurePolicyPersistenceManagerImpl(
     }
 
     override fun setDebugDisclosurePolicy(policy: DisclosurePolicy?) {
-        sharedPreferences.edit().putString(DEBUG_DISCLOSURE_POLICY, policy?.stringValue).apply()
+        sharedPreferences.edit().putString(DEBUG_DISCLOSURE_POLICY, policy?.stringValue).commit()
     }
 }

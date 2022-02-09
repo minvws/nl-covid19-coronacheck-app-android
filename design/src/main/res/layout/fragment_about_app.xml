@@ -80,62 +80,58 @@
             app:layout_constraintTop_toBottomOf="@id/config_version"
             tools:ignore="HardcodedText" />
 
-        <TextView
-            android:id="@+id/disclosure_policy"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Disclosure Policy:"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/deeplink_scanner_button"
-            tools:ignore="HardcodedText" />
-
-
+        <!--On test and acceptance builds show buttons to set policy locally-->
         <LinearLayout
             android:id="@+id/policy_buttons"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/disclosure_policy">
+            app:layout_constraintTop_toBottomOf="@id/deeplink_scanner_button">
+
+            <TextView
+                style="@style/App.TextAppearance.MaterialComponents.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Disclosure Policy:"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/deeplink_scanner_button"
+                tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/one_g_policyButton"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginTop="4dp"
                 android:text="1G"
                 tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/three_g_policy_button"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginTop="4dp"
                 android:text="3G"
                 tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/one_g_three_g_policy_button"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginTop="4dp"
                 android:text="1G + 3G"
                 tools:ignore="HardcodedText" />
 
-
             <Button
                 android:id="@+id/config_policy_button"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginTop="4dp"
                 android:text="Config"
                 tools:ignore="HardcodedText" />
 

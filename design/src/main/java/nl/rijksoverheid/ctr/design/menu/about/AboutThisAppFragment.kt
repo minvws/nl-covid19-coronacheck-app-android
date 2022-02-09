@@ -104,6 +104,7 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             bindScannerDeeplinkButton(binding.deeplinkScannerButton)
         }
 
+        // On test and acceptance builds show buttons to set policy locally
         if (BuildConfig.DEBUG || context?.packageName == "nl.rijksoverheid.ctr.holder.acc") {
             bindDebugPolicyButtons(binding)
         }
@@ -135,20 +136,30 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
     private fun bindDebugPolicyButtons(binding: FragmentAboutAppBinding) {
         with(binding) {
-            disclosurePolicy.isVisible = true
             policyButtons.isVisible = true
             oneGPolicyButton.setOnClickListener {
                 persistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneG)
+                restartApp()
             }
             threeGPolicyButton.setOnClickListener {
                 persistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.ThreeG)
+                restartApp()
             }
             oneGThreeGPolicyButton.setOnClickListener {
                 persistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneAndThreeG)
+                restartApp()
             }
             configPolicyButton.setOnClickListener {
                 persistenceManager.setDebugDisclosurePolicy(null)
+                restartApp()
             }
         }
+    }
+
+    private fun restartApp() {
+        val intent = context?.packageManager?.getLaunchIntentForPackage(requireContext().packageName)
+        val mainIntent = Intent.makeRestartActivityTask(intent?.component)
+        startActivity(mainIntent)
+        Runtime.getRuntime().exit(0)
     }
 }
