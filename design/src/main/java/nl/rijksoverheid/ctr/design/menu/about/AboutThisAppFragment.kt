@@ -26,7 +26,7 @@ import nl.rijksoverheid.ctr.design.databinding.AboutThisAppSectionBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTimeNumerical
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
-import nl.rijksoverheid.ctr.shared.DisclosurePolicyPersistenceManager
+import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -40,7 +40,7 @@ import java.time.ZoneOffset
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
     private val dialogUtil: DialogUtil by inject()
-    private val persistenceManager: DisclosurePolicyPersistenceManager by inject()
+    private val policyPersistenceManager: DebugDisclosurePolicyPersistenceManager by inject()
 
     companion object {
         private const val EXTRA_ABOUT_THIS_APP_DATA = "data"
@@ -138,19 +138,19 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         with(binding) {
             policyButtons.isVisible = true
             oneGPolicyButton.setOnClickListener {
-                persistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneG)
+                policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneG)
                 restartApp()
             }
             threeGPolicyButton.setOnClickListener {
-                persistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.ThreeG)
+                policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.ThreeG)
                 restartApp()
             }
             oneGThreeGPolicyButton.setOnClickListener {
-                persistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneAndThreeG)
+                policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneAndThreeG)
                 restartApp()
             }
             configPolicyButton.setOnClickListener {
-                persistenceManager.setDebugDisclosurePolicy(null)
+                policyPersistenceManager.setDebugDisclosurePolicy(null)
                 restartApp()
             }
         }

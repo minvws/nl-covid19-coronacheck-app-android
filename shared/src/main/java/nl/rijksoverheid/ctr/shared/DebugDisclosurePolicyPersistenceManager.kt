@@ -13,14 +13,14 @@ package nl.rijksoverheid.ctr.shared
 import android.content.SharedPreferences
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
-interface DisclosurePolicyPersistenceManager {
+interface DebugDisclosurePolicyPersistenceManager {
     fun getDebugDisclosurePolicy(): DisclosurePolicy?
     fun setDebugDisclosurePolicy(policy: DisclosurePolicy?)
 }
 
-class DisclosurePolicyPersistenceManagerImpl(
+class DebugDisclosurePolicyPersistenceManagerImpl(
     private val sharedPreferences: SharedPreferences
-) : DisclosurePolicyPersistenceManager {
+) : DebugDisclosurePolicyPersistenceManager {
 
     companion object {
         const val DEBUG_DISCLOSURE_POLICY = "DEBUG_DISCLOSURE_POLICY"
