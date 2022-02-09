@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.modules
 
+import android.content.Context
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
 import nl.rijksoverheid.ctr.holder.persistence.*
@@ -9,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCase
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCaseImpl
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
+import nl.rijksoverheid.ctr.design.BuildConfig
 import nl.rijksoverheid.ctr.holder.usecase.BuildConfigUseCaseImpl
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import org.koin.android.ext.koin.androidContext
@@ -28,7 +30,8 @@ val appModule = module {
         CachedAppConfigUseCaseImpl(
             get(),
             androidContext().filesDir.path,
-            get()
+            get(),
+            isDebugApp(androidContext())
         )
     }
 
@@ -42,3 +45,6 @@ val appModule = module {
         BuildConfigUseCaseImpl()
     }
 }
+
+private fun isDebugApp(androidContext: Context) =
+    BuildConfig.DEBUG || androidContext.packageName == "nl.rijksoverheid.ctr.holder.acc"

@@ -90,7 +90,8 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/deeplink_scanner_button" />
+            app:layout_constraintTop_toBottomOf="@id/deeplink_scanner_button"
+            tools:ignore="HardcodedText" />
 
 
         <LinearLayout

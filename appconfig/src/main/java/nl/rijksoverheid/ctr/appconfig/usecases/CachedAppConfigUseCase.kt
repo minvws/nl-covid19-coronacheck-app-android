@@ -27,8 +27,7 @@ class CachedAppConfigUseCaseImpl constructor(
     private val appConfigStorageManager: AppConfigStorageManager,
     private val filesDirPath: String,
     private val moshi: Moshi,
-    private val isVerifierApp: Boolean,
-    private val isDebugApp: Boolean
+    private val isVerifierApp: Boolean
 ) : CachedAppConfigUseCase {
     private val configFile = File(filesDirPath, "config.json")
 
@@ -56,9 +55,8 @@ class CachedAppConfigUseCaseImpl constructor(
                 appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
                     ?.toObject(moshi) as? VerifierConfig
             } else {
-                (appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
-                    ?.toObject(moshi) as? HolderConfig)
-                    ?.let { if (isDebugApp) it.copy() else it }
+                appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
+                    ?.toObject(moshi) as? HolderConfig
             }
             return config ?: defaultConfig
         } catch (exc: Exception) {

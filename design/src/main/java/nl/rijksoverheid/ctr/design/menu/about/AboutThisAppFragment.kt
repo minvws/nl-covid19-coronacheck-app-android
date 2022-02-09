@@ -17,6 +17,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.BuildConfig
 import nl.rijksoverheid.ctr.design.R
@@ -25,8 +26,10 @@ import nl.rijksoverheid.ctr.design.databinding.AboutThisAppSectionBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTimeNumerical
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.shared.DisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import org.koin.android.ext.android.inject
 import java.time.Instant
@@ -37,6 +40,7 @@ import java.time.ZoneOffset
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
     private val dialogUtil: DialogUtil by inject()
+    private val persistenceManager: DisclosurePolicyPersistenceManager by inject()
 
     companion object {
         private const val EXTRA_ABOUT_THIS_APP_DATA = "data"
@@ -130,6 +134,21 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
     }
 
     private fun bindDebugPolicyButtons(binding: FragmentAboutAppBinding) {
-
+        with(binding) {
+            disclosurePolicy.isVisible = true
+            policyButtons.isVisible = true
+            oneGPolicyButton.setOnClickListener {
+                persistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneG)
+            }
+            threeGPolicyButton.setOnClickListener {
+                persistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.ThreeG)
+            }
+            oneGThreeGPolicyButton.setOnClickListener {
+                persistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneAndThreeG)
+            }
+            configPolicyButton.setOnClickListener {
+                persistenceManager.setDebugDisclosurePolicy(null)
+            }
+        }
     }
 }

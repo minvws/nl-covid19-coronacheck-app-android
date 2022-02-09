@@ -48,8 +48,7 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
             get(),
             androidContext().filesDir.path,
             get(),
-            isVerifierApp(androidContext()),
-            isDebugApp(androidContext())
+            isVerifierApp(androidContext())
         )
     }
     factory<PersistConfigUseCase> {
@@ -88,6 +87,3 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
 
 fun isVerifierApp(applicationContext: Context): Boolean =
     applicationContext.packageName.contains("verifier")
-
-fun isDebugApp(applicationContext: Context): Boolean =
-    BuildConfig.DEBUG || applicationContext.packageName == "nl.rijksoverheid.ctr.holder.acc"

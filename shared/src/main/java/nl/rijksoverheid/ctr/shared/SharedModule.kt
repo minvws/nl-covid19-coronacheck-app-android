@@ -27,4 +27,5 @@ val sharedModule = module {
             ).toList()
         )
     }
+    factory<DisclosurePolicyPersistenceManager> { DisclosurePolicyPersistenceManagerImpl(get()) }
 }
