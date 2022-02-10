@@ -90,7 +90,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
     private fun onDisclosurePolicyItemClicked() {
-        // TODO: Add url link
+        // TODO: Add url link. Ticket: #3574
     }
 
     private fun onBoosterItemClicked(myOverviewFragment: MyOverviewFragment) {
