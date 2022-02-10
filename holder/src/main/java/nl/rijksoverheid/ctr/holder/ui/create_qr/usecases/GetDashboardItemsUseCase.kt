@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -29,7 +28,8 @@ class GetDashboardItemsUseCaseImpl(
     private val originUtil: OriginUtil,
     private val dashboardItemUtil: DashboardItemUtil,
     private val dashboardItemEmptyStateUtil: DashboardItemEmptyStateUtil,
-    private val headerItemTextUtil: HeaderItemTextUtil
+    private val headerItemTextUtil: HeaderItemTextUtil,
+    private val cardItemUtil: CardItemUtil
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -405,8 +405,12 @@ class GetDashboardItemsUseCaseImpl(
             originStates = nonExpiredOriginStates,
             credentialState = credentialState,
             databaseSyncerResult = databaseSyncerResult,
-            disclosurePolicy = GreenCardDisclosurePolicy.OneG,
-            greenCardEnabledState = GreenCardEnabledState.Enabled
+            disclosurePolicy = cardItemUtil.getDisclosurePolicy(
+                greenCard = greenCard
+            ),
+            greenCardEnabledState = cardItemUtil.getEnabledState(
+                greenCard = greenCard
+            )
         )
 
         return DashboardItem.CardsItem(listOf(greenCardItem))
