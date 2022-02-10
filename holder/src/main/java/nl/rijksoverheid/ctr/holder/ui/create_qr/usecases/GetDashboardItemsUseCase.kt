@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.HeaderItemTextUtil
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
@@ -27,7 +28,8 @@ class GetDashboardItemsUseCaseImpl(
     private val credentialUtil: CredentialUtil,
     private val originUtil: OriginUtil,
     private val dashboardItemUtil: DashboardItemUtil,
-    private val dashboardItemEmptyStateUtil: DashboardItemEmptyStateUtil
+    private val dashboardItemEmptyStateUtil: DashboardItemEmptyStateUtil,
+    private val headerItemTextUtil: HeaderItemTextUtil
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -76,7 +78,7 @@ class GetDashboardItemsUseCaseImpl(
             .filter { it.greenCardEntity.type == GreenCardType.Eu }
             .distinctBy { it.greenCardEntity.type }
 
-        val headerText = dashboardItemUtil.getHeaderItemText(
+        val headerText = headerItemTextUtil.getText(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Domestic,
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
@@ -186,7 +188,7 @@ class GetDashboardItemsUseCaseImpl(
             allGreenCards = allGreenCards,
         )
 
-        val headerText = dashboardItemUtil.getHeaderItemText(
+        val headerText = headerItemTextUtil.getText(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Eu,
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
