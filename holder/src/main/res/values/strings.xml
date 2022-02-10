@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string name="general_readmore">Lees meer</string>
   <string name="holder_dcc_alert_message">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
   <string name="holder_recovery_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="holder_test_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
@@ -486,20 +487,16 @@
   <string name="qr_code_next_button">Volgende QR-code</string>
   <string name="my_overview_results_button">Bekijk QR-codes</string>
   <string name="dashboard_item_refresh_eu_vaccinations_text">Je kunt je internationale vaccinatiebewijs vernieuwen</string>
-  <string name="dashboard_item_refresh_eu_vaccinations_button">Lees meer</string>
   <string name="refresh_eu_items_title">Vaccinatiebewijs vernieuwen</string>
   <string name="refresh_eu_items_description"><![CDATA[Binnenkort vernieuwen we voor iedereen het vaccinatiebewijs. Daardoor krijg je ook toegang tot QR-codes van eerdere prikken.<br/><br/>Dat is bijvoorbeeld handig voor mensen die ergens heen willen waar hun laatste prik nog niet geldig is.<br/><br/>Je kunt je bewijs ook nu alvast vernieuwen als je dat wilt.]]></string>
   <string name="refresh_eu_items_button">Vernieuw bewijs</string>
   <string name="refresh_eu_items_toolbar_title">Bewijs vernieuwen</string>
   <string name="dashboard_item_refreshed_eu_vaccinations_text">Jouw vaccinatiebewijs is vernieuwd</string>
-  <string name="dashboard_item_refreshed_eu_vaccinations_button">Lees meer</string>
   <string name="refreshed_eu_items_title">Vernieuwd vaccinatiebewijs</string>
   <string name="refreshed_eu_items_description"><![CDATA[We hebben voor iedereen het vaccinatiebewijs vernieuwd. Je hebt nu ook toegang tot QR-codes van eerdere prikken.<br/><br/>Dat is bijvoorbeeld handig voor mensen die ergens heen willen waar hun laatste prik nog niet geldig is.<br/><br/><a href=\"https://coronacheck.nl/nl/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/\">Lees hier meer over je vernieuwde vaccinatiebewijs</a>.]]></string>
   <string name="config_warning_card_message">Maak binnenkort verbinding met het internet</string>
-  <string name="config_warning_card_button">Lees meer</string>
   <string name="config_warning_page_title">Maak verbinding met het internet</string>
   <string name="config_warning_page_message"><![CDATA[De CoronaCheck-app heeft af en toe internet nodig om te blijven werken. Zonder internetverbinding werkt jouw app nog tot %1s. Open de app zodra je internet hebt. Dan doet deze het gewoon weer.<br/><br/>Maak regelmatig verbinding om problemen te voorkomen.]]></string>
-  <string name="my_overview_info_card_button_read_more">Lees meer</string>
   <string name="dialog_no_browser_title">Geen browser gevonden</string>
   <string name="dialog_no_browser_message">Er is op deze telefoon geen internetbrowser gevonden waarmee %1s geopend kan worden. Download een browser om de link te kunnen openen.</string>
   <string name="about_this_app_clear_data_title">Alle gegevens wissen?</string>
@@ -656,19 +653,15 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="general_recoverycertificate">herstelbewijs</string>
   <string name="general_testcertificate">testbewijs</string>
   <string name="holder_dashboard_only3GaccessBanner_title">Op je bewijs staat nu 3G. Dit betekent dat je bewijs geschikt is voor plekken in Nederland die 3G-toegang geven.</string>
-  <string name="holder_dashboard_only3GaccessBanner_button">Lees meer op…</string>
   <string name="holder_dashboard_domesticQRCard_3G_title">Bewijs voor 3G-toegang</string>
   <string name="holder_dashboard_domesticQRCard_3G_label">3G</string>
   <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message">Bekijk vooraf of de locatie die je bezoekt een bewijs voor <a href="https://coronacheck.nl/404">3G- of 1G toegang</a> vraagt.</string>
   <string name="holder_dashboard_3Gand1GaccessBanner_title">Vanaf nu zijn er 2 aparte QR-codes voor 3G- en 1G-toegang</string>
-  <string name="holder_dashboard_3Gand1GaccessBanner_button">Lees meer op…</string>
   <string name="holder_dashboard_intro_domestic_3Gand1Gaccess">Controleer vooraf of je een bewijs voor <a href="https://coronacheck.nl/404">3G- of 1G toegang</a> nodig hebt. Laat bij de ingang ook je identiteitsbewijs zien.</string>
   <string name="holder_dashboard_domesticQRCard_1G_title">Bewijs voor 1G-toegang</string>
   <string name="holder_dashboard_domesticQRCard_1G_label">1G</string>
   <string name="holder_dashboard_empty_domestic_only1Gaccess_message">Wil je naar een plek met <a href="https://coronacheck.nl/404">1G-toegang</a>? Dan heb je een testbewijs nodig.</string>
   <string name="holder_dashboard_only1GaccessBanner_title">Vanaf nu heb je een testbewijs nodig voor 1G toegang</string>
-  <string name="holder_dashboard_only1GaccessBanner_button">Lees meer op…</string>
-  <string name="holder_dashboard_empty_international_only1Gaccess_message">Ben je in het buitenland of ga je de grens over? Gebruik dan altijd jouw internationale bewijs. Controleer voor vertrek welk bewijs je nodig hebt. Je kunt een bewijs toevoegen als je bent gevaccineerd, hersteld of getest.</string>
   <string name="holder_dashboard_intro_domestic_only1Gaccess">Met een testbewijs kan je naar plekken met <a href="https://coronacheck.nl/404">1G-toegang</a>. Laat bij de ingang ook je identiteitsbewijs zien.</string>
   <string name="holder_dashboard_domesticQRCard_3G_inactive_label">Dit bewijs wordt nu niet gebruikt in Nederland.</string>
 </resources>

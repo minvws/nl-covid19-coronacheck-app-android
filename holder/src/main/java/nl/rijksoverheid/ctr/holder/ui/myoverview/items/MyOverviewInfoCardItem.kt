@@ -41,7 +41,7 @@ class MyOverviewInfoCardItem(
 
         viewBinding.button.run {
             visibility = if (infoItem.hasButton) View.VISIBLE else View.GONE
-            setText(infoItem.buttonText ?: R.string.my_overview_info_card_button_read_more)
+            setText(infoItem.buttonText ?: R.string.general_readmore)
         }
 
         when (infoItem) {
