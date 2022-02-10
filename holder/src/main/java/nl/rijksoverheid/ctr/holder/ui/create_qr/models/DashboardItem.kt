@@ -90,7 +90,8 @@ sealed class DashboardItem {
             val originStates: List<OriginState>,
             val credentialState: CredentialState,
             val databaseSyncerResult: DatabaseSyncerResult,
-            val disclosurePolicy: GreenCardDisclosurePolicy
+            val disclosurePolicy: GreenCardDisclosurePolicy,
+            val greenCardEnabledState: GreenCardEnabledState
         )
     }
 

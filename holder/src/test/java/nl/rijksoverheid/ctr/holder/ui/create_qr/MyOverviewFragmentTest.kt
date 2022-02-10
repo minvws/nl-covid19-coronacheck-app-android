@@ -29,6 +29,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -200,7 +201,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
+                                greenCardEnabledState = GreenCardEnabledState.Enabled
                             )
                         )
                     )
@@ -247,21 +249,24 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
+                                greenCardEnabledState = GreenCardEnabledState.Enabled
                             ),
                             DashboardItem.CardsItem.CardItem(
                                 greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
+                                greenCardEnabledState = GreenCardEnabledState.Enabled
                             ),
                             DashboardItem.CardsItem.CardItem(
                                 greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                 databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
+                                greenCardEnabledState = GreenCardEnabledState.Enabled
                             )
                         )
                     )

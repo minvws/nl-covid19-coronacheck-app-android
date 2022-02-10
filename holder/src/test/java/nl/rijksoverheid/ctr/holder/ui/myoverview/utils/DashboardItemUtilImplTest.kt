@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CardItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
@@ -629,7 +630,8 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         originStates = listOf(),
         credentialState = CardsItem.CredentialState.HasCredential(mockk()),
         databaseSyncerResult = mockk(),
-        disclosurePolicy = GreenCardDisclosurePolicy.ThreeG
+        disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
+        greenCardEnabledState = GreenCardEnabledState.Enabled
     )
 
     private fun getEvent(originType: OriginType) = EventGroupEntity(
