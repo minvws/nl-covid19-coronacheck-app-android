@@ -4,7 +4,6 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -20,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.C
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -551,8 +551,8 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `showPolicyInfoItem returns the config policy when it's not the same as the one dismissed`() {
         val util = getUtil(
-            appConfigUseCase = mockk {
-                every { getCachedAppConfig().disclosurePolicy } returns DisclosurePolicy.ThreeG
+            holderFeatureFlagUseCase = mockk {
+                every { getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
             },
             persistenceManager = mockk {
                 every { getPolicyBannerDismissed() } returns DisclosurePolicy.OneG
@@ -565,8 +565,8 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `showPolicyInfoItem returns null when the config policy is the same as the one dismissed`() {
         val util = getUtil(
-            appConfigUseCase = mockk {
-                every { getCachedAppConfig().disclosurePolicy } returns DisclosurePolicy.ThreeG
+            holderFeatureFlagUseCase = mockk {
+                every { getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
             },
             persistenceManager = mockk {
                 every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
@@ -628,13 +628,15 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         appConfigFreshnessUseCase: AppConfigFreshnessUseCase = mockk(relaxed = true),
         appConfigUseCase: CachedAppConfigUseCase = mockk(relaxed = true),
         buildConfigUseCase: BuildConfigUseCase = mockk(relaxed = true),
-        greenCardUtil: GreenCardUtil = mockk(relaxed = true)
+        greenCardUtil: GreenCardUtil = mockk(relaxed = true),
+        holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk(relaxed = true)
     ) = DashboardItemUtilImpl(
         clockDeviationUseCase = clockDeviationUseCase,
         persistenceManager = persistenceManager,
         appConfigFreshnessUseCase = appConfigFreshnessUseCase,
         appConfigUseCase = appConfigUseCase,
         buildConfigUseCase = buildConfigUseCase,
-        greenCardUtil = greenCardUtil
+        greenCardUtil = greenCardUtil,
+        holderFeatureFlagUseCase = holderFeatureFlagUseCase
     )
 }
