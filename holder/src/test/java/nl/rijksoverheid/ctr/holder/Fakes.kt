@@ -70,6 +70,10 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
         override fun dismissBoosterInfoCard() {
 
         }
+
+        override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
+
+        }
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {
@@ -351,6 +355,14 @@ fun fakePersistenceManager(
         }
 
         override fun setHasDismissedBoosterInfoCard(dismissedAtEpochSeconds: Long) {
+
+        }
+
+        override fun getPolicyBannerDismissed(): DisclosurePolicy? {
+            return DisclosurePolicy.ThreeG
+        }
+
+        override fun setPolicyBannerDismissed(policy: DisclosurePolicy) {
 
         }
     }
