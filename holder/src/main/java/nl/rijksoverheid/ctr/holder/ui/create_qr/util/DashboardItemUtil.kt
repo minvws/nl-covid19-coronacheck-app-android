@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
@@ -61,6 +62,7 @@ class DashboardItemUtilImpl(
     private val appConfigUseCase: CachedAppConfigUseCase,
     private val buildConfigUseCase: BuildConfigUseCase,
     private val greenCardUtil: GreenCardUtil,
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
 ) : DashboardItemUtil {
 
     override fun shouldShowClockDeviationItem(emptyState: Boolean, allGreenCards: List<GreenCard>) =
@@ -165,7 +167,7 @@ class DashboardItemUtilImpl(
     }
 
     override fun showPolicyInfoItem(): DisclosurePolicy? {
-        val disclosurePolicy = appConfigUseCase.getCachedAppConfig().disclosurePolicy
+        val disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
         return if (persistenceManager.getPolicyBannerDismissed() != disclosurePolicy) {
             disclosurePolicy
         } else {
