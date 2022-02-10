@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
@@ -44,7 +45,10 @@ class MyOverviewGreenCardAdapterItem(
     override fun bind(viewBinding: ItemMyOverviewGreenCardBinding, position: Int) {
         applyStyling(viewBinding = viewBinding)
         setContent(viewBinding = viewBinding)
-        initButton(viewBinding = viewBinding)
+        initButton(
+            viewBinding = viewBinding,
+            card = cards.first()
+        )
         accessibility(
             viewBinding = viewBinding,
             greenCardType = cards.first().greenCard.greenCardEntity.type
@@ -66,18 +70,29 @@ class MyOverviewGreenCardAdapterItem(
         ViewCompat.setAccessibilityHeading(viewBinding.title, true)
     }
 
-    private fun initButton(viewBinding: ItemMyOverviewGreenCardBinding) {
-        viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
-            val mainCredentialState = cards.first().credentialState
-            if (mainCredentialState is HasCredential) {
-                val credentials = cards.mapNotNull {
-                    (it.credentialState as? HasCredential)?.credential?.data
+    private fun initButton(viewBinding: ItemMyOverviewGreenCardBinding, card: DashboardItem.CardsItem.CardItem) {
+        when (card.greenCardEnabledState) {
+            is GreenCardEnabledState.Enabled -> {
+                viewBinding.buttonWithProgressWidgetContainer.visibility = View.VISIBLE
+                viewBinding.disabledState.visibility = View.GONE
+                viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
+                    val mainCredentialState = cards.first().credentialState
+                    if (mainCredentialState is HasCredential) {
+                        val credentials = cards.mapNotNull {
+                            (it.credentialState as? HasCredential)?.credential?.data
+                        }
+                        onButtonClick.invoke(
+                            cards.first().greenCard,
+                            credentials,
+                            mainCredentialState.credential.expirationTime.toEpochSecond()
+                        )
+                    }
                 }
-                onButtonClick.invoke(
-                    cards.first().greenCard,
-                    credentials,
-                    mainCredentialState.credential.expirationTime.toEpochSecond()
-                )
+            }
+            is GreenCardEnabledState.Disabled -> {
+                viewBinding.buttonWithProgressWidgetContainer.visibility = View.GONE
+                viewBinding.disabledState.visibility = View.VISIBLE
+                viewBinding.disabledState.setText(card.greenCardEnabledState.text)
             }
         }
     }

@@ -72,7 +72,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="visible"
-                        android:background="@drawable/shape_item_my_overview_green_card_domestic_image_container"
+                        android:background="@drawable/shape_item_my_overview_green_card_background_left_corners"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="@id/title"
                         app:layout_constraintTop_toTopOf="@id/title">
@@ -149,13 +149,12 @@
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textStyle="bold"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@id/buttonWithProgressWidgetContainer"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/description"
                     tools:text="Verloopt in 5 uur 59 min"
-                    tools:visibility="visible" />
+                    tools:visibility="invisible" />
 
                 <nl.rijksoverheid.ctr.design.views.ButtonWithProgressWidget
                     android:id="@+id/buttonWithProgressWidgetContainer"
@@ -167,6 +166,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/expires_in"
                     tools:text="@string/my_overview_test_result_button" />
+
+                <TextView
+                    android:id="@+id/disabledState"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?textAppearanceBody1"
+                    android:background="@drawable/shape_item_my_overview_green_card_background_corners"
+                    android:padding="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintTop_toBottomOf="@id/expires_in"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="@string/holder_dashboard_domesticQRCard_3G_inactive_label" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
