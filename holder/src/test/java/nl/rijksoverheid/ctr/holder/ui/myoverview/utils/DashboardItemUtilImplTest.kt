@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -628,7 +629,7 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         originStates = listOf(),
         credentialState = CardsItem.CredentialState.HasCredential(mockk()),
         databaseSyncerResult = mockk(),
-        disclosurePolicy = DisclosurePolicy.ThreeG
+        disclosurePolicy = GreenCardDisclosurePolicy.ThreeG
     )
 
     private fun getEvent(originType: OriginType) = EventGroupEntity(

@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
 interface GetDashboardItemsUseCase {
     suspend fun getItems(
@@ -404,7 +405,7 @@ class GetDashboardItemsUseCaseImpl(
             originStates = nonExpiredOriginStates,
             credentialState = credentialState,
             databaseSyncerResult = databaseSyncerResult,
-            disclosurePolicy = DisclosurePolicy.ThreeG
+            disclosurePolicy = GreenCardDisclosurePolicy.OneG
         )
 
         return DashboardItem.CardsItem(listOf(greenCardItem))
