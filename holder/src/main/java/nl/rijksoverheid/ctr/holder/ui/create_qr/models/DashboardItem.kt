@@ -73,6 +73,12 @@ sealed class DashboardItem {
             hasButton = true,
             buttonText = R.string.holder_dashboard_addBoosterBanner_button_addBooster
         )
+
+        data class DisclosurePolicyItem(val disclosurePolicy: DisclosurePolicy) :
+            InfoItem(
+                isDismissible = true,
+                hasButton = true
+            )
     }
 
     object CoronaMelderItem : DashboardItem()

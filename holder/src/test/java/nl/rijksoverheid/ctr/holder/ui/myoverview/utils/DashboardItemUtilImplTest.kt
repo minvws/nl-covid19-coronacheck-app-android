@@ -9,7 +9,10 @@ import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
@@ -27,11 +30,10 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import java.lang.IllegalStateException
 import java.time.OffsetDateTime
 
 @RunWith(RobolectricTestRunner::class)
-class DashboardItemUtilImplTest: AutoCloseKoinTest() {
+class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     private val greenCardUtil: GreenCardUtil by inject()
 
@@ -611,6 +613,34 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         )
 
         assertFalse(shouldShowAddQrItem)
+    }
+
+    @Test
+    fun `showPolicyInfoItem returns the config policy when it's not the same as the one dismissed`() {
+        val util = getUtil(
+            appConfigUseCase = mockk {
+                every { getCachedAppConfig().disclosurePolicy } returns DisclosurePolicy.ThreeG
+            },
+            persistenceManager = mockk {
+                every { getPolicyBannerDismissed() } returns DisclosurePolicy.OneG
+            }
+        )
+
+        assertEquals(DisclosurePolicy.ThreeG, util.showPolicyInfoItem())
+    }
+
+    @Test
+    fun `showPolicyInfoItem returns null when the config policy is the same as the one dismissed`() {
+        val util = getUtil(
+            appConfigUseCase = mockk {
+                every { getCachedAppConfig().disclosurePolicy } returns DisclosurePolicy.ThreeG
+            },
+            persistenceManager = mockk {
+                every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
+            }
+        )
+
+        assertEquals(null, util.showPolicyInfoItem())
     }
 
     private fun createCardItem(originType: OriginType) = CardItem(

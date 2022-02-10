@@ -5,11 +5,13 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.fakeEventGroupEntity
 import nl.rijksoverheid.ctr.holder.fakeGreenCard
+import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -33,6 +35,9 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             factory {
                 mockk<BuildConfigUseCase>().apply {
                     every { getVersionCode() } returns 99999
+                }
+                mockk<PersistenceManager>(relaxed = true).apply {
+                    every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
                 }
             }
         })

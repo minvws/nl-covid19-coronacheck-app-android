@@ -480,6 +480,75 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         assertDisplayed(R.id.button)
     }
 
+    @Test
+    fun `policy info card can be dismissed and should have a read more`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.ThreeG)
+                )
+            )
+        )
+
+        assertCustomAssertionAtPosition(
+            listId = R.id.recyclerView,
+            position = 0,
+            targetViewId = R.id.dashboardItemInfoRoot,
+            viewAssertion = ViewAssertion { view, _ ->
+                assertTrue { view is CardView }
+            }
+        )
+        assertDisplayed(R.id.close)
+        assertDisplayed(R.id.button)
+    }
+
+    @Test
+    fun `policy info for 3G should be shown on 3G disclosure policy`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.ThreeG)
+                )
+            )
+        )
+
+        assertDisplayed(R.id.text, R.string.holder_dashboard_only3GaccessBanner_title)
+    }
+
+    @Test
+    fun `policy info for 1G should be shown on 1G disclosure policy`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.OneG)
+                )
+            )
+        )
+
+        assertDisplayed(R.id.text, R.string.holder_dashboard_only1GaccessBanner_title)
+    }
+
+    @Test
+    fun `policy info for 1G+3G should be shown on 1G+3G disclosure policy`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.OneAndThreeG)
+                )
+            )
+        )
+
+        assertDisplayed(R.id.text, R.string.holder_dashboard_3Gand1GaccessBanner_title)
+    }
+
     private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<MyOverviewTabsFragment> {
         loadKoinModules(
             module(override = true) {

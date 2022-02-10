@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface DashboardItemUtil {
     fun getHeaderItemText(emptyState: Boolean, greenCardType: GreenCardType, hasVisitorPassIncompleteItem: Boolean): Int
@@ -57,7 +58,7 @@ interface DashboardItemUtil {
         originType: OriginType
     ): Boolean
     fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean
-
+    fun showPolicyInfoItem(): DisclosurePolicy?
 }
 
 class DashboardItemUtilImpl(
@@ -202,5 +203,14 @@ class DashboardItemUtilImpl(
 
     override fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean {
         return allGreenCards.isNotEmpty() && !allGreenCards.all { greenCardUtil.isExpired(it) }
+    }
+
+    override fun showPolicyInfoItem(): DisclosurePolicy? {
+        val disclosurePolicy = appConfigUseCase.getCachedAppConfig().disclosurePolicy
+        return if (persistenceManager.getPolicyBannerDismissed() != disclosurePolicy) {
+            disclosurePolicy
+        } else {
+            null
+        }
     }
 }
