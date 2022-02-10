@@ -31,8 +31,7 @@ class QrInfoScreenUtilImplTest : AutoCloseKoinTest() {
                 ApplicationProvider.getApplicationContext()
             ),
             CountryUtilImpl(),
-            mockk(),
-            fakeCachedAppConfigUseCase(),
+            fakeCachedAppConfigUseCase()
         )
 
     @Test

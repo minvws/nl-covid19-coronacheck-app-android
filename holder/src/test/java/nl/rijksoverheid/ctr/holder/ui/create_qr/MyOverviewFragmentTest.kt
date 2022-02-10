@@ -457,30 +457,6 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `3G validity card cannot be dismissed and should have a read more`() {
-        startFragment(
-            DashboardTabItem(
-                title = R.string.travel_button_domestic,
-                greenCardType = GreenCardType.Domestic,
-                items = listOf(
-                    DashboardItem.InfoItem.TestCertificate3GValidity
-                )
-            )
-        )
-
-        assertCustomAssertionAtPosition(
-            listId = R.id.recyclerView,
-            position = 0,
-            targetViewId = R.id.dashboardItemInfoRoot,
-            viewAssertion = ViewAssertion { view, _ ->
-                assertTrue { view is CardView }
-            }
-        )
-        assertNotDisplayed(R.id.close)
-        assertDisplayed(R.id.button)
-    }
-
-    @Test
     fun `policy info card can be dismissed and should have a read more`() {
         startFragment(
             DashboardTabItem(
@@ -548,7 +524,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
 
         assertDisplayed(R.id.text, R.string.holder_dashboard_3Gand1GaccessBanner_title)
     }
-
+    
     private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<MyOverviewTabsFragment> {
         loadKoinModules(
             module(override = true) {

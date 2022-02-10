@@ -42,9 +42,6 @@ interface DashboardItemUtil {
         databaseSyncerResult: DatabaseSyncerResult
     ): Boolean
     fun shouldShowNewValidityItem(): Boolean
-    fun shouldShowTestCertificate3GValidityItem(
-        domesticGreenCards: List<GreenCard>
-    ): Boolean
     fun shouldShowVisitorPassIncompleteItem(
         events: List<EventGroupEntity>,
         domesticGreenCards: List<GreenCard>
@@ -65,7 +62,6 @@ class DashboardItemUtilImpl(
     private val clockDeviationUseCase: ClockDeviationUseCase,
     private val persistenceManager: PersistenceManager,
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
-    private val featureFlagUseCase: FeatureFlagUseCase,
     private val appConfigUseCase: CachedAppConfigUseCase,
     private val buildConfigUseCase: BuildConfigUseCase,
     private val greenCardUtil: GreenCardUtil,
@@ -160,15 +156,6 @@ class DashboardItemUtilImpl(
     override fun shouldShowNewValidityItem(): Boolean {
         return !persistenceManager.getHasDismissedNewValidityInfoCard()
                 && appConfigUseCase.getCachedAppConfig().showNewValidityInfoCard
-    }
-
-    override fun shouldShowTestCertificate3GValidityItem(domesticGreenCards: List<GreenCard>): Boolean {
-        val isFeatureEnabled = featureFlagUseCase.isVerificationPolicyEnabled()
-        val has3GTest = domesticGreenCards.any { greenCard ->
-            greenCard.origins.any { it.type == OriginType.Test }
-                    && greenCard.credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G }
-        }
-        return isFeatureEnabled && has3GTest
     }
 
     override fun shouldShowVisitorPassIncompleteItem(

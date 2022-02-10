@@ -296,73 +296,6 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         assertFalse(shouldShowCoronaMelderItem)
     }
 
-
-    @Test
-    fun `shouldShowTestCertificate3GValidityItem returns false if test has 2g category`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { true }
-
-        val util = getUtil(
-            featureFlagUseCase = featureFlagUseCase
-        )
-
-        val greenCard = fakeGreenCard(
-            greenCardType = GreenCardType.Domestic,
-            originType = OriginType.Test,
-            category = "2"
-        )
-
-        val shouldShowTestCertificate3GValidityItem = util.shouldShowTestCertificate3GValidityItem(
-            domesticGreenCards = listOf(greenCard)
-        )
-
-        assertFalse(shouldShowTestCertificate3GValidityItem)
-    }
-
-    @Test
-    fun `shouldShowTestCertificate3GValidityItem returns true if test has 3g category`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { true }
-
-        val util = getUtil(
-            featureFlagUseCase = featureFlagUseCase
-        )
-
-        val greenCard = fakeGreenCard(
-            greenCardType = GreenCardType.Domestic,
-            originType = OriginType.Test,
-            category = "3"
-        )
-
-        val shouldShowTestCertificate3GValidityItem = util.shouldShowTestCertificate3GValidityItem(
-            domesticGreenCards = listOf(greenCard)
-        )
-
-        assertTrue(shouldShowTestCertificate3GValidityItem)
-    }
-
-    @Test
-    fun `shouldShowTestCertificate3GValidityItem returns false if test has 3g category and feature disabled`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
-
-        val util = getUtil(
-            featureFlagUseCase = featureFlagUseCase
-        )
-
-        val greenCard = fakeGreenCard(
-            greenCardType = GreenCardType.Domestic,
-            originType = OriginType.Test,
-            category = "3"
-        )
-
-        val shouldShowTestCertificate3GValidityItem = util.shouldShowTestCertificate3GValidityItem(
-            domesticGreenCards = listOf(greenCard)
-        )
-
-        assertFalse(shouldShowTestCertificate3GValidityItem)
-    }
-
     @Test
     fun `App update is available when the recommended version is higher than current version`() {
         val appConfigUseCase: CachedAppConfigUseCase = mockk()
@@ -693,7 +626,6 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         clockDeviationUseCase: ClockDeviationUseCase = mockk(relaxed = true),
         persistenceManager: PersistenceManager = mockk(relaxed = true),
         appConfigFreshnessUseCase: AppConfigFreshnessUseCase = mockk(relaxed = true),
-        featureFlagUseCase: FeatureFlagUseCase = mockk(relaxed = true),
         appConfigUseCase: CachedAppConfigUseCase = mockk(relaxed = true),
         buildConfigUseCase: BuildConfigUseCase = mockk(relaxed = true),
         greenCardUtil: GreenCardUtil = mockk(relaxed = true)
@@ -701,7 +633,6 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         clockDeviationUseCase = clockDeviationUseCase,
         persistenceManager = persistenceManager,
         appConfigFreshnessUseCase = appConfigFreshnessUseCase,
-        featureFlagUseCase = featureFlagUseCase,
         appConfigUseCase = appConfigUseCase,
         buildConfigUseCase = buildConfigUseCase,
         greenCardUtil = greenCardUtil

@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import org.json.JSONObject
@@ -35,8 +36,7 @@ class QrInfoScreenUtilImpl(
     private val application: Application,
     private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
     private val countryUtil: CountryUtil,
-    private val featureFlagUseCase: FeatureFlagUseCase,
-    cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : QrInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
@@ -45,7 +45,7 @@ class QrInfoScreenUtilImpl(
         val title = application.getString(R.string.qr_explanation_title_domestic)
 
         val description = application.getString(
-            if (featureFlagUseCase.isVerificationPolicyEnabled() && category == Mobilecore.VERIFICATION_POLICY_3G) {
+            if (category == Mobilecore.VERIFICATION_POLICY_3G) {
                 R.string.qr_explanation_description_domestic_2G
             } else {
                 R.string.qr_explanation_description_domestic

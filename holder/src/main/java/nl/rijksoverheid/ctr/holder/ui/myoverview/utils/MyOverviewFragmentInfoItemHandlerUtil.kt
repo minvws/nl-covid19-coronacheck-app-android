@@ -74,9 +74,6 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.NewValidityItem -> {
                 onNewValidityInfoClicked(myOverviewFragment.requireContext())
             }
-            is DashboardItem.InfoItem.TestCertificate3GValidity -> {
-                onTestCertificate3GValidityClicked(myOverviewFragment)
-            }
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
                 onVisitorPassIncompleteClicked(myOverviewFragment)
             }
@@ -337,7 +334,6 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.OriginInfoItem,
             is DashboardItem.InfoItem.AppUpdate,
             is DashboardItem.InfoItem.MissingDutchVaccinationItem,
-            is DashboardItem.InfoItem.TestCertificate3GValidity,
             is DashboardItem.InfoItem.VisitorPassIncompleteItem,
             is DashboardItem.InfoItem.NewValidityItem -> {
                 myOverviewFragment.dashboardViewModel.dismissNewValidityInfoCard()
