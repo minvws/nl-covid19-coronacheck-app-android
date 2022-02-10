@@ -146,12 +146,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
             descriptionLayout = viewBinding.description,
             originState = originState,
             showTime = false,
-            subtitle = context.getString(
-                if (credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G } && featureFlagUseCase.isVerificationPolicyEnabled()) {
-                    R.string.holder_my_overview_test_result_validity_3g
-                } else {
-                    R.string.qr_card_validity_valid
-                },
+            subtitle = context.getString(R.string.qr_card_validity_valid,
                 origin.expirationTime.formatDateTime(context)
             )
         )

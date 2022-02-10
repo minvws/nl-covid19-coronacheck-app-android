@@ -122,14 +122,10 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowTestCertificate3GValidityItem(domesticGreenCards)) {
-            dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
-        }
-
         dashboardItemUtil.showPolicyInfoItem()?.let {
             dashboardItems.add(DashboardItem.InfoItem.DisclosurePolicyItem(it))
         }
-
+        
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCards = allGreenCards,
