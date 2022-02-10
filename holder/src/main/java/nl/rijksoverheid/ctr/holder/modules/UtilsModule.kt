@@ -52,4 +52,6 @@ fun utilsModule(versionCode: Int) = module {
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
     factory<MenuUtil> { MenuUtilImpl(get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
+    factory<HeaderItemTextUtil> { HeaderItemTextUtilImpl(get()) }
+    factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
 }

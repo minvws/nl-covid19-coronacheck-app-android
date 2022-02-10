@@ -7,7 +7,6 @@
 
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 
 interface DashboardItemEmptyStateUtil {
