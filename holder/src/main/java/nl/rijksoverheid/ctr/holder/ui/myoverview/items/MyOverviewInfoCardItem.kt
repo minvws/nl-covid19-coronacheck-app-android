@@ -4,11 +4,10 @@ import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewInfoCardBinding
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType.*
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -97,7 +96,15 @@ class MyOverviewInfoCardItem(
             is DashboardItem.InfoItem.BoosterItem -> {
                 viewBinding.text.setText(R.string.holder_dashboard_addBoosterBanner_title)
             }
-            is DashboardItem.InfoItem.DisclosurePolicyItem -> TODO()
+            is DashboardItem.InfoItem.DisclosurePolicyItem -> {
+                viewBinding.text.setText(
+                    when (infoItem.disclosurePolicy) {
+                        DisclosurePolicy.OneG -> R.string.holder_dashboard_only1GaccessBanner_title
+                        DisclosurePolicy.ThreeG -> R.string.holder_dashboard_only3GaccessBanner_title
+                        DisclosurePolicy.OneAndThreeG -> R.string.holder_dashboard_3Gand1GaccessBanner_title
+                    }
+                )
+            }
         }
 
         viewBinding.button.setOnClickListener {

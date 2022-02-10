@@ -83,8 +83,14 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.BoosterItem -> {
                 onBoosterItemClicked(myOverviewFragment)
             }
-            is DashboardItem.InfoItem.DisclosurePolicyItem -> TODO()
+            is DashboardItem.InfoItem.DisclosurePolicyItem -> {
+                onDisclosurePolicyItemClicked()
+            }
         }
+    }
+
+    private fun onDisclosurePolicyItemClicked() {
+        // TODO: Add url link
     }
 
     private fun onBoosterItemClicked(myOverviewFragment: MyOverviewFragment) {
