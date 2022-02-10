@@ -1,9 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
-import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
@@ -13,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
@@ -65,6 +64,7 @@ class DashboardItemUtilImpl(
     private val appConfigUseCase: CachedAppConfigUseCase,
     private val buildConfigUseCase: BuildConfigUseCase,
     private val greenCardUtil: GreenCardUtil,
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
 ) : DashboardItemUtil {
 
     override fun getHeaderItemText(
@@ -193,7 +193,7 @@ class DashboardItemUtilImpl(
     }
 
     override fun showPolicyInfoItem(): DisclosurePolicy? {
-        val disclosurePolicy = appConfigUseCase.getCachedAppConfig().disclosurePolicy
+        val disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
         return if (persistenceManager.getPolicyBannerDismissed() != disclosurePolicy) {
             disclosurePolicy
         } else {
