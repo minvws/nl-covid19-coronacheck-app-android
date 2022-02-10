@@ -42,7 +42,7 @@ class HeaderItemTextUtilImpl(
                 return when (featureFlagUseCase.getDisclosurePolicy()) {
                     is DisclosurePolicy.OneG -> {
                         if (emptyState) {
-                            R.string.holder_dashboard_empty_international_only1Gaccess_message
+                            R.string.holder_dashboard_empty_domestic_only1Gaccess_message
                         } else {
                             R.string.holder_dashboard_intro_domestic_only1Gaccess
                         }

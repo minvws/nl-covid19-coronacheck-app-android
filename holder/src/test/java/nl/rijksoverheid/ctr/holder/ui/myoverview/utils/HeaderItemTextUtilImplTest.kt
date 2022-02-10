@@ -24,7 +24,7 @@ class HeaderItemTextUtilImplTest {
             policy = DisclosurePolicy.OneG
         )
 
-        Assert.assertEquals(R.string.holder_dashboard_empty_international_only1Gaccess_message,
+        Assert.assertEquals(R.string.holder_dashboard_empty_domestic_only1Gaccess_message,
             util.getText(
                 tabType = GreenCardType.Domestic,
                 emptyState = true,
