@@ -681,6 +681,42 @@ fun fakeGreenCard(
     )
 )
 
+fun fakeGreenCardWithOrigins(
+    greenCardType: GreenCardType = GreenCardType.Domestic,
+    originTypes: List<OriginType> = listOf(OriginType.Vaccination),
+    eventTime: OffsetDateTime = OffsetDateTime.now(),
+    expirationTime: OffsetDateTime = OffsetDateTime.now(),
+    validFrom: OffsetDateTime = OffsetDateTime.now(),
+    category: String? = null
+) = GreenCard(
+    greenCardEntity = GreenCardEntity(
+        id = 0,
+        walletId = 0,
+        type = greenCardType
+    ),
+    origins = originTypes.map {
+        OriginEntity(
+            id = 0,
+            greenCardId = 0,
+            type = it,
+            eventTime = eventTime,
+            expirationTime = expirationTime,
+            validFrom = validFrom
+        )
+    },
+    credentialEntities = listOf(
+        CredentialEntity(
+            id = 0,
+            greenCardId = 0,
+            data = "".toByteArray(),
+            credentialVersion = 0,
+            validFrom = validFrom,
+            expirationTime = expirationTime,
+            category = category
+        )
+    )
+)
+
 val fakeDomesticVaccinationGreenCard = fakeGreenCard(GreenCardType.Eu, OriginType.Vaccination)
 val fakeDomesticTestGreenCard = fakeGreenCard(GreenCardType.Eu, OriginType.Test)
 
