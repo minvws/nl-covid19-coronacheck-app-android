@@ -9,12 +9,12 @@ import mobilecore.Mobilecore
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class VerificationPolicy(val libraryValue: String, val configValue: String) {
+sealed class VerificationPolicy(val libraryValue: Long, val configValue: String) {
     object VerificationPolicy3G : VerificationPolicy(Mobilecore.VERIFICATION_POLICY_3G, "3G")
     object VerificationPolicy1G : VerificationPolicy(Mobilecore.VERIFICATION_POLICY_1G, "1G")
 
     companion object {
-        fun fromString(value: String?): VerificationPolicy? = when (value) {
+        fun fromLibraryValue(value: Long?): VerificationPolicy? = when (value) {
             Mobilecore.VERIFICATION_POLICY_3G -> VerificationPolicy3G
             Mobilecore.VERIFICATION_POLICY_1G -> VerificationPolicy1G
             else -> null

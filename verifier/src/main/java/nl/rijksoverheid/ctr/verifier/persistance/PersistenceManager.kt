@@ -76,15 +76,12 @@ class SharedPreferencesPersistenceManager(
     }
 
     override fun setVerificationPolicySelected(policy: VerificationPolicy) {
-        sharedPreferences.edit().putString(VERIFICATION_POLICY_SET, policy.libraryValue).apply()
+        sharedPreferences.edit().putLong(VERIFICATION_POLICY_SET, policy.libraryValue).apply()
     }
 
     override fun getVerificationPolicySelected(): VerificationPolicy? {
-        return VerificationPolicy.fromString(
-            sharedPreferences.getString(
-                VERIFICATION_POLICY_SET,
-                null
-            )
+        return VerificationPolicy.fromLibraryValue(
+            sharedPreferences.getLong(VERIFICATION_POLICY_SET, -1L)
         )
     }
 

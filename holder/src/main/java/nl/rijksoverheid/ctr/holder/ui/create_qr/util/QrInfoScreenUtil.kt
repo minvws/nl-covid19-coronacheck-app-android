@@ -26,7 +26,7 @@ import java.time.format.DateTimeParseException
 import java.util.*
 
 interface QrInfoScreenUtil {
-    fun getForDomesticQr(personalDetails: PersonalDetails, category: String?): QrInfoScreen
+    fun getForDomesticQr(personalDetails: PersonalDetails, category: Long?): QrInfoScreen
     fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): QrInfoScreen
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen
     fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): QrInfoScreen
@@ -41,7 +41,7 @@ class QrInfoScreenUtilImpl(
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
-    override fun getForDomesticQr(personalDetails: PersonalDetails, category: String?): QrInfoScreen {
+    override fun getForDomesticQr(personalDetails: PersonalDetails, category: Long?): QrInfoScreen {
         val title = application.getString(R.string.qr_explanation_title_domestic)
 
         val description = application.getString(
