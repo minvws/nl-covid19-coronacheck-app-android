@@ -29,7 +29,8 @@ class GetDashboardItemsUseCaseImpl(
     private val dashboardItemUtil: DashboardItemUtil,
     private val dashboardItemEmptyStateUtil: DashboardItemEmptyStateUtil,
     private val headerItemTextUtil: HeaderItemTextUtil,
-    private val cardItemUtil: CardItemUtil
+    private val cardItemUtil: CardItemUtil,
+    private val splitDomesticGreenCardsUseCase: SplitDomesticGreenCardsUseCase
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -60,6 +61,7 @@ class GetDashboardItemsUseCaseImpl(
         isLoadingNewCredentials: Boolean,
     ): List<DashboardItem> {
         val dashboardItems = mutableListOf<DashboardItem>()
+
         val domesticGreenCards =
             allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
 
@@ -132,7 +134,9 @@ class GetDashboardItemsUseCaseImpl(
             getGreenCardItems(
                 greenCards = allGreenCards,
                 greenCardType = GreenCardType.Domestic,
-                greenCardsForSelectedType = domesticGreenCards,
+                greenCardsForSelectedType = splitDomesticGreenCardsUseCase.getSplittedDomesticGreenCards(
+                    domesticGreenCards = domesticGreenCards
+                ),
                 greenCardsForUnselectedType = internationalGreenCards,
                 databaseSyncerResult = databaseSyncerResult,
                 isLoadingNewCredentials = isLoadingNewCredentials,
