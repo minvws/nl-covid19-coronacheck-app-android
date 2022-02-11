@@ -34,7 +34,7 @@ data class AdapterCard(
 
 class MyOverviewGreenCardAdapterItem(
     private val cards: List<DashboardItem.CardsItem.CardItem>,
-    private val onButtonClick: (greenCard: GreenCard, credentials: List<ByteArray>, credentialExpirationTimeSeconds: Long) -> Unit,
+    private val onButtonClick: (cardItem: DashboardItem.CardsItem.CardItem, credentials: List<ByteArray>, credentialExpirationTimeSeconds: Long) -> Unit,
     private val onRetryClick: () -> Unit = {}
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
@@ -82,7 +82,7 @@ class MyOverviewGreenCardAdapterItem(
                             (it.credentialState as? HasCredential)?.credential?.data
                         }
                         onButtonClick.invoke(
-                            cards.first().greenCard,
+                            cards.first(),
                             credentials,
                             mainCredentialState.credential.expirationTime.toEpochSecond()
                         )

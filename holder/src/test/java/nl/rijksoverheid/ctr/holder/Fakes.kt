@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
@@ -24,6 +25,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
@@ -386,7 +388,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             secretKey: ByteArray,
             credential: ByteArray,
             currentTimeMillis: Long,
-            disclosurePolicy: String
+            disclosurePolicy: GreenCardDisclosurePolicy
         ): String {
             return ""
         }
@@ -518,6 +520,10 @@ fun fakeGreenCardUtil(
     override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
         return hasNoActiveCredentials
     }
+
+    override fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean {
+        return true
+    }
 }
 
 fun fakeGetRemoteGreenCardUseCase(
@@ -571,7 +577,7 @@ fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object : ReadEuropeanCr
 fun fakeQrCodeUsecase() = object : QrCodeUseCase {
     override suspend fun qrCode(
         credential: ByteArray,
-        shouldDisclose: Boolean,
+        shouldDisclose: QrCodeFragmentData.ShouldDisclose,
         qrCodeWidth: Int,
         qrCodeHeight: Int,
         errorCorrectionLevel: ErrorCorrectionLevel
@@ -682,6 +688,42 @@ fun fakeGreenCard(
     )
 )
 
+fun fakeGreenCardWithOrigins(
+    greenCardType: GreenCardType = GreenCardType.Domestic,
+    originTypes: List<OriginType> = listOf(OriginType.Vaccination),
+    eventTime: OffsetDateTime = OffsetDateTime.now(),
+    expirationTime: OffsetDateTime = OffsetDateTime.now(),
+    validFrom: OffsetDateTime = OffsetDateTime.now(),
+    category: String? = null
+) = GreenCard(
+    greenCardEntity = GreenCardEntity(
+        id = 0,
+        walletId = 0,
+        type = greenCardType
+    ),
+    origins = originTypes.map {
+        OriginEntity(
+            id = 0,
+            greenCardId = 0,
+            type = it,
+            eventTime = eventTime,
+            expirationTime = expirationTime,
+            validFrom = validFrom
+        )
+    },
+    credentialEntities = listOf(
+        CredentialEntity(
+            id = 0,
+            greenCardId = 0,
+            data = "".toByteArray(),
+            credentialVersion = 0,
+            validFrom = validFrom,
+            expirationTime = expirationTime,
+            category = category
+        )
+    )
+)
+
 val fakeDomesticVaccinationGreenCard = fakeGreenCard(GreenCardType.Eu, OriginType.Vaccination)
 val fakeDomesticTestGreenCard = fakeGreenCard(GreenCardType.Eu, OriginType.Test)
 
@@ -759,6 +801,32 @@ fun fakeOriginEntity(
     validFrom: OffsetDateTime = OffsetDateTime.now(),
     doseNumber: Int? = null
 ) = OriginEntity(id, greenCardId, type, eventTime, expirationTime, validFrom, doseNumber)
+
+fun fakeCardsItems(originTypes: List<OriginType>): List<DashboardItem.CardsItem> {
+    return originTypes.map {
+        fakeCardsItem(
+            originType = it
+        )
+    }
+}
+
+fun fakeCardsItem(
+    originType: OriginType = OriginType.Vaccination,
+    greenCard: GreenCard = fakeGreenCard(originType = originType)
+): DashboardItem.CardsItem {
+    return DashboardItem.CardsItem(
+        cards = listOf(
+            DashboardItem.CardsItem.CardItem(
+                greenCard = greenCard,
+                originStates = listOf(OriginState.Valid(fakeOriginEntity(type = originType))),
+                credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
+                databaseSyncerResult = DatabaseSyncerResult.Success(),
+                disclosurePolicy = GreenCardDisclosurePolicy.OneG,
+                greenCardEnabledState = GreenCardEnabledState.Enabled
+            )
+        )
+    )
+}
 
 
 

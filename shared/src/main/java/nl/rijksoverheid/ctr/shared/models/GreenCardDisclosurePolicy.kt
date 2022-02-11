@@ -7,7 +7,15 @@
 
 package nl.rijksoverheid.ctr.shared.models
 
-sealed class GreenCardDisclosurePolicy() {
-    object OneG: GreenCardDisclosurePolicy()
-    object ThreeG: GreenCardDisclosurePolicy()
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+
+sealed class GreenCardDisclosurePolicy: Parcelable {
+
+    @Parcelize
+    object OneG: GreenCardDisclosurePolicy(), Parcelable
+
+    @Parcelize
+    object ThreeG: GreenCardDisclosurePolicy(), Parcelable
 }

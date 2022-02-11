@@ -5,8 +5,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import java.time.Clock
 import java.time.OffsetDateTime
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface GreenCardUtil {
     suspend fun getAllGreenCards(): List<GreenCard>
@@ -29,6 +31,13 @@ interface GreenCardUtil {
     fun isExpiring(renewalDays: Long, greenCard: GreenCard): Boolean
 
     fun hasNoActiveCredentials(greenCard: GreenCard): Boolean
+
+    /**
+     * When in 1G or 1G/3G [DisclosurePolicy] mode, this returns true if we are dealing with
+     * a green card that was splitted to represent a single green card that has a test origin
+     * @param greenCard The greencard to check
+     */
+    fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean
 }
 
 class GreenCardUtilImpl(
@@ -74,5 +83,10 @@ class GreenCardUtilImpl(
 
     override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
         return credentialUtil.getActiveCredential(greenCard.credentialEntities) == null
+    }
+
+    override fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean {
+        return greenCard.greenCardEntity.type == GreenCardType.Domestic &&
+                greenCard.origins.size == 1 && hasOrigin(listOf(greenCard), OriginType.Test)
     }
 }
