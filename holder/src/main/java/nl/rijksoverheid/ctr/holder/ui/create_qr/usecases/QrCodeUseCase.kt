@@ -45,7 +45,7 @@ class QrCodeUseCaseImpl(
                 secretKey.toByteArray(),
                 credential,
                 Clock.systemDefaultZone().millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis(),
-                Mobilecore.DISCLOSURE_POLICY_3G
+                Mobilecore.DISCLOSURE_POLICY_3G // TODO: set appropriate policy
             ) else String(credential)
 
             qrCodeUtil.createQrCode(
