@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CardItemUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
@@ -49,6 +50,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     }
 
     private val myOverviewFragmentInfoItemHandlerUtil: MyOverviewFragmentInfoItemHandlerUtil by inject()
+    private val cardItemUtil: CardItemUtil by inject()
     val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
         ViewModelOwner.from(
             requireParentFragment()
@@ -143,10 +145,10 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         adapterItems.add(
             MyOverviewGreenCardAdapterItem(
                 cards = dashboardItem.cards,
-                onButtonClick = { greenCard, credentials, expiration ->
+                onButtonClick = { cardItem, credentials, expiration ->
                     navigateSafety(
                         MyOverviewFragmentDirections.actionQrCode(
-                            toolbarTitle = when (greenCard.greenCardEntity.type) {
+                            toolbarTitle = when (cardItem.greenCard.greenCardEntity.type) {
                                 is GreenCardType.Domestic -> {
                                     getString(R.string.domestic_qr_code_title)
                                 }
@@ -154,11 +156,11 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                                     getString(R.string.my_overview_test_result_international_title)
                                 }
                             }, data = QrCodeFragmentData(
-                                shouldDisclose = greenCard.greenCardEntity.type == GreenCardType.Domestic,
+                                shouldDisclose = cardItemUtil.shouldDisclose(cardItem),
                                 credentials = credentials,
                                 credentialExpirationTimeSeconds = expiration,
-                                type = greenCard.greenCardEntity.type,
-                                originType = greenCard.origins.first().type
+                                type = cardItem.greenCard.greenCardEntity.type,
+                                originType = cardItem.greenCard.origins.first().type
                             ), returnUri = arguments?.getString(EXTRA_RETURN_URI)
                         )
                     )

@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.shared.models.*
 import org.json.JSONObject
+import timber.log.Timber
 import java.lang.reflect.Type
 
 interface MobileCoreWrapper {
@@ -26,7 +27,7 @@ interface MobileCoreWrapper {
     fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential
     fun readCredential(credentials: ByteArray): ByteArray
     fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String
-    fun disclose(secretKey: ByteArray, credential: ByteArray, currentTimeMillis: Long, disclosurePolicy: String): String
+    fun disclose(secretKey: ByteArray, credential: ByteArray, currentTimeMillis: Long, disclosurePolicy: GreenCardDisclosurePolicy): String
     fun generateHolderSk(): String
     fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential>
     fun readEuropeanCredential(credential: ByteArray): JSONObject
@@ -70,11 +71,20 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         return String(result.value)
     }
 
-    override fun disclose(secretKey: ByteArray, credential: ByteArray, currentTimeMillis: Long, disclosurePolicy: String): String {
+    override fun disclose(secretKey: ByteArray, credential: ByteArray, currentTimeMillis: Long, disclosurePolicy: GreenCardDisclosurePolicy): String {
+        val disclosurePolicyString = when (disclosurePolicy) {
+            is GreenCardDisclosurePolicy.OneG -> {
+                Mobilecore.DISCLOSURE_POLICY_1G
+            }
+            is GreenCardDisclosurePolicy.ThreeG -> {
+                Mobilecore.DISCLOSURE_POLICY_3G
+            }
+        }
+
         return Mobilecore.discloseWithTime(
             secretKey,
             credential,
-            disclosurePolicy,
+            disclosurePolicyString,
             currentTimeMillis / 1000L,
         ).successString()
     }

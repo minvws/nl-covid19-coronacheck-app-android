@@ -10,7 +10,9 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
@@ -23,6 +25,10 @@ interface CardItemUtil {
     fun getEnabledState(
         greenCard: GreenCard
     ): GreenCardEnabledState
+
+    fun shouldDisclose(
+        cardItem: DashboardItem.CardsItem.CardItem
+    ): QrCodeFragmentData.ShouldDisclose
 }
 
 class CardItemUtilImpl(
@@ -78,6 +84,19 @@ class CardItemUtilImpl(
             }
             is GreenCardType.Eu -> {
                 GreenCardEnabledState.Enabled
+            }
+        }
+    }
+
+    override fun shouldDisclose(cardItem: DashboardItem.CardsItem.CardItem): QrCodeFragmentData.ShouldDisclose {
+        return when (cardItem.greenCard.greenCardEntity.type) {
+            is GreenCardType.Domestic -> {
+                QrCodeFragmentData.ShouldDisclose.Disclose(
+                    cardItem.disclosurePolicy
+                )
+            }
+            is GreenCardType.Eu -> {
+                QrCodeFragmentData.ShouldDisclose.DoNotDiclose
             }
         }
     }

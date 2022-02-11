@@ -24,6 +24,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
@@ -386,7 +387,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             secretKey: ByteArray,
             credential: ByteArray,
             currentTimeMillis: Long,
-            disclosurePolicy: String
+            disclosurePolicy: GreenCardDisclosurePolicy
         ): String {
             return ""
         }
@@ -575,7 +576,7 @@ fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object : ReadEuropeanCr
 fun fakeQrCodeUsecase() = object : QrCodeUseCase {
     override suspend fun qrCode(
         credential: ByteArray,
-        shouldDisclose: Boolean,
+        shouldDisclose: QrCodeFragmentData.ShouldDisclose,
         qrCodeWidth: Int,
         qrCodeHeight: Int,
         errorCorrectionLevel: ErrorCorrectionLevel

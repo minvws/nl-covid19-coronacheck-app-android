@@ -6,7 +6,9 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,7 +33,7 @@ class QrCodesResultUseCaseImplTest {
             greenCardType = GreenCardType.Domestic,
             originType = OriginType.Vaccination,
             credentials = listOf("".toByteArray()),
-            shouldDisclose = true,
+            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
             qrCodeHeight = 0,
             qrCodeWidth = 0
         )
@@ -44,7 +46,7 @@ class QrCodesResultUseCaseImplTest {
             greenCardType = GreenCardType.Domestic,
             originType = OriginType.Recovery,
             credentials = listOf("".toByteArray()),
-            shouldDisclose = true,
+            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
             qrCodeHeight = 0,
             qrCodeWidth = 0
         )
@@ -57,7 +59,7 @@ class QrCodesResultUseCaseImplTest {
             greenCardType = GreenCardType.Domestic,
             originType = OriginType.Test,
             credentials = listOf("".toByteArray()),
-            shouldDisclose = true,
+            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
             qrCodeHeight = 0, 
             qrCodeWidth = 0
         )
@@ -70,7 +72,7 @@ class QrCodesResultUseCaseImplTest {
             greenCardType = GreenCardType.Eu,
             originType = OriginType.Recovery,
             credentials = listOf("".toByteArray()),
-            shouldDisclose = true,
+            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
             qrCodeHeight = 0,
             qrCodeWidth = 0
         )
@@ -83,7 +85,7 @@ class QrCodesResultUseCaseImplTest {
             greenCardType = GreenCardType.Eu,
             originType = OriginType.Test,
             credentials = listOf("".toByteArray()),
-            shouldDisclose = true,
+            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
             qrCodeHeight = 0,
             qrCodeWidth = 0
         )
@@ -96,7 +98,7 @@ class QrCodesResultUseCaseImplTest {
             greenCardType = GreenCardType.Eu,
             originType = OriginType.Vaccination,
             credentials = listOf("".toByteArray()),
-            shouldDisclose = true,
+            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
             qrCodeHeight = 0,
             qrCodeWidth = 0
         )
