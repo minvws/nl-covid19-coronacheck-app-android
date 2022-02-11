@@ -45,8 +45,8 @@ class QrInfoScreenUtilImpl(
         val title = application.getString(R.string.qr_explanation_title_domestic)
 
         val description = application.getString(
-            if (category == Mobilecore.VERIFICATION_POLICY_3G) {
-                R.string.qr_explanation_description_domestic_2G
+            if (category == Mobilecore.VERIFICATION_POLICY_1G) {
+                R.string.holder_qr_explanation_description_domestic_1G
             } else {
                 R.string.qr_explanation_description_domestic
             },
