@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.HeaderItemTextUtil
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
@@ -30,7 +31,8 @@ class GetDashboardItemsUseCaseImpl(
     private val dashboardItemEmptyStateUtil: DashboardItemEmptyStateUtil,
     private val headerItemTextUtil: HeaderItemTextUtil,
     private val cardItemUtil: CardItemUtil,
-    private val splitDomesticGreenCardsUseCase: SplitDomesticGreenCardsUseCase
+    private val splitDomesticGreenCardsUseCase: SplitDomesticGreenCardsUseCase,
+    private val sortGreenCardItemsUseCase: SortGreenCardItemsUseCase
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -278,7 +280,7 @@ class GetDashboardItemsUseCaseImpl(
         return dashboardItems
     }
 
-    private suspend fun getGreenCardItems(
+    private fun getGreenCardItems(
         greenCards: List<GreenCard>,
         greenCardType: GreenCardType,
         greenCardsForSelectedType: List<GreenCard>,
@@ -339,22 +341,7 @@ class GetDashboardItemsUseCaseImpl(
             }
         }
 
-        // Always order by origin type
-        items.sortBy {
-            when (it) {
-                is DashboardItem.CardsItem -> {
-                    it.cards.first().originStates.first().origin.type.order
-                }
-                is DashboardItem.InfoItem.OriginInfoItem -> {
-                    0
-                }
-                else -> {
-                    0
-                }
-            }
-        }
-
-        return items
+        return sortGreenCardItemsUseCase.sort(items)
     }
 
     private fun getExpiredBannerItem(
