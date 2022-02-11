@@ -23,12 +23,12 @@ class VerifierDatabaseConverters {
     }
 
     @TypeConverter
-    fun fromStringToVerificationPolicy(value: Long?): VerificationPolicy? {
-        return value?.let { VerificationPolicy.fromLibraryValue(it) }
+    fun fromStringToVerificationPolicy(value: String?): VerificationPolicy? {
+        return value?.let { VerificationPolicy.fromString(it) }
     }
 
     @TypeConverter
-    fun fromVerificationPolicyToString(policy: VerificationPolicy?): Long? {
+    fun fromVerificationPolicyToString(policy: VerificationPolicy?): String? {
         return policy?.libraryValue
     }
 }
