@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodeUtil
@@ -43,7 +44,8 @@ class QrCodeUseCaseImpl(
             val qrCodeContent = if (shouldDisclose) mobileCoreWrapper.disclose(
                 secretKey.toByteArray(),
                 credential,
-                Clock.systemDefaultZone().millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis()
+                Clock.systemDefaultZone().millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis(),
+                Mobilecore.DISCLOSURE_POLICY_3G // TODO: set appropriate policy
             ) else String(credential)
 
             qrCodeUtil.createQrCode(
