@@ -517,6 +517,10 @@ fun fakeGreenCardUtil(
     override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
         return hasNoActiveCredentials
     }
+
+    override fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean {
+        return true
+    }
 }
 
 fun fakeGetRemoteGreenCardUseCase(
