@@ -9,14 +9,17 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.holder.fakeCardsItem
 import nl.rijksoverheid.ctr.holder.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
@@ -154,6 +157,38 @@ class CardItemUtilImplTest: AutoCloseKoinTest() {
         )
 
         assertEquals(GreenCardEnabledState.Enabled, getEnabledState)
+    }
+
+    @Test
+    fun `shouldDisclose returns Disclose if domestic green card`() {
+        val cardItem = fakeCardsItem(
+            greenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Domestic
+            ),
+            originType = OriginType.Vaccination
+        ).cards.first()
+
+        val util = getUtil(
+            disclosurePolicy = DisclosurePolicy.ThreeG
+        )
+
+        assertTrue(util.shouldDisclose(cardItem) is QrCodeFragmentData.ShouldDisclose.Disclose)
+    }
+
+    @Test
+    fun `shouldDisclose returns DoNotDisclose if international green card`() {
+        val cardItem = fakeCardsItem(
+            greenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Eu
+            ),
+            originType = OriginType.Vaccination
+        ).cards.first()
+
+        val util = getUtil(
+            disclosurePolicy = DisclosurePolicy.ThreeG
+        )
+
+        assertTrue(util.shouldDisclose(cardItem) is QrCodeFragmentData.ShouldDisclose.DoNotDiclose)
     }
 
     private fun getUtil(

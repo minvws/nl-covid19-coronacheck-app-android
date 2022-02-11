@@ -9,16 +9,12 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.holder.fakeGreenCard
-import nl.rijksoverheid.ctr.holder.fakeOriginEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.fakeCardsItems
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SortGreenCardItemsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,7 +29,7 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
     @Test
     fun `Items are ordered by defined order`() {
-        val items = getCardsItem(
+        val items = fakeCardsItems(
             originTypes = listOf(
                 OriginType.Vaccination,
                 OriginType.Test,
@@ -62,7 +58,7 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
     @Test
     fun `Domestic green card with single test origin is always on top if policy is set to 1G`() {
-        val items = getCardsItem(
+        val items = fakeCardsItems(
             originTypes = listOf(
                 OriginType.Vaccination,
                 OriginType.Test
@@ -86,7 +82,7 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
 
     @Test
     fun `Domestic green card with single test origin is always on bottom if policy is set to 1G-3G`() {
-        val items = getCardsItem(
+        val items = fakeCardsItems(
             originTypes = listOf(
                 OriginType.Vaccination,
                 OriginType.Test
@@ -106,23 +102,6 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
         // Second item is green card with single test origin
         assertEquals(1, (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.size)
         assertEquals(OriginType.Test, (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type)
-    }
-
-    private fun getCardsItem(originTypes: List<OriginType>): List<DashboardItem> {
-        return originTypes.map {
-            DashboardItem.CardsItem(
-                cards = listOf(
-                    DashboardItem.CardsItem.CardItem(
-                        greenCard = fakeGreenCard(originType = it),
-                        originStates = listOf(OriginState.Valid(fakeOriginEntity(type = it))),
-                        credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
-                        databaseSyncerResult = DatabaseSyncerResult.Success(),
-                        disclosurePolicy = GreenCardDisclosurePolicy.OneG,
-                        greenCardEnabledState = GreenCardEnabledState.Enabled
-                    )
-                )
-            )
-        }
     }
 
     private fun getUtil(

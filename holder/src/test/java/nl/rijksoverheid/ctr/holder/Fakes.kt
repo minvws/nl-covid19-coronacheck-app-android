@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
@@ -800,6 +801,32 @@ fun fakeOriginEntity(
     validFrom: OffsetDateTime = OffsetDateTime.now(),
     doseNumber: Int? = null
 ) = OriginEntity(id, greenCardId, type, eventTime, expirationTime, validFrom, doseNumber)
+
+fun fakeCardsItems(originTypes: List<OriginType>): List<DashboardItem.CardsItem> {
+    return originTypes.map {
+        fakeCardsItem(
+            originType = it
+        )
+    }
+}
+
+fun fakeCardsItem(
+    greenCard: GreenCard = fakeGreenCard(),
+    originType: OriginType = OriginType.Vaccination
+): DashboardItem.CardsItem {
+    return DashboardItem.CardsItem(
+        cards = listOf(
+            DashboardItem.CardsItem.CardItem(
+                greenCard = greenCard,
+                originStates = listOf(OriginState.Valid(fakeOriginEntity(type = originType))),
+                credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
+                databaseSyncerResult = DatabaseSyncerResult.Success(),
+                disclosurePolicy = GreenCardDisclosurePolicy.OneG,
+                greenCardEnabledState = GreenCardEnabledState.Enabled
+            )
+        )
+    )
+}
 
 
 
