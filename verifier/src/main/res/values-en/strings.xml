@@ -50,7 +50,7 @@
   <string name="scan_result_european_in_nl_dialog_message">You have scanned an international QR code. In the Netherlands, CoronaCheck users should show their Dutch QR code.</string>
   <string name="scan_result_valid_reason_title">Are the details incorrect?</string>
   <string name="scan_result_valid_reason_description"><![CDATA[You cannot grant the visitor access if the details on your screen are different from those on the identity document.<br/><br/><b>Please note: sometimes not all details are shown</b><br/>This is done to protect the visitor\'s privacy. You will see a hyphen (-) in the field. In this case, verify only the details you\'re seeing.]]></string>
-  <string name="about_this_app_description"><![CDATA[CoronaCheck Scanner is created to help certain places and activities safely open their doors. Think about football matches and cafes, for example.<br/><br/>Visitors can create a coronavirus pass with a QR code of their vaccination, negative test result, or recovery from coronavirus. Using this app, only visitors with a coronavirus pass are given access. This way, more and more places can be visited safely.]]></string>
+  <string name="about_this_app_description"><![CDATA[CoronaCheck Scanner is created to help certain places and activities safely open their doors.<br/><br/>Visitors can create a coronavirus pass with a QR code of their vaccination, negative test result, or recovery from coronavirus. Using this app, only visitors with a coronavirus pass are given access. This way, more and more places can be visited safely.]]></string>
   <string name="scan_instructions">About scanning</string>
   <string name="scan_instructions_1_title">Scan the QR code</string>
   <string name="scan_instructions_1_description">Use your phone\'s camera to scan visitors\' QR codes, in the CoronaCheck app or on paper. Tourists can show their QR code in a foreign app or on paper.</string>
@@ -166,7 +166,7 @@
   <string name="verifier_risksetting_start_header">For your location, please specify if you\'re going to give 1G or 3G access. Check which kind of access you can give before you start scanning.</string>
   <string name="verifier_risksetting_setting_button">Set setting</string>
   <string name="verifier_risksetting_start_readmore">Which kind of access can I give?</string>
-  <string name="verifier_risksetting_start_readmore_url">https://www.government.nl/whichaccess-cc</string>
+  <string name="verifier_risksetting_start_readmore_url">https://coronacheck.nl/en/whichaccess-cc</string>
   <string name="verifier_home_countdown_title">You can scan again in %s</string>
   <string name="verifier_home_countdown_subtitle">You have to wait for %d minutes because you changed your scan settings while scanning.</string>
   <string name="verifier_scanner_policy_indication">%s access</string>

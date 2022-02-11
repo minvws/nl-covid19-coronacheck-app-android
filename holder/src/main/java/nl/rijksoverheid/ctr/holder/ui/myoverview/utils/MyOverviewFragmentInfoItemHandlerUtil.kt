@@ -9,19 +9,20 @@ import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.holder.MainNavDirections
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.design.utils.IntentUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
-import nl.rijksoverheid.ctr.holder.MainNavDirections
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -81,13 +82,24 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
                 onBoosterItemClicked(myOverviewFragment)
             }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
-                onDisclosurePolicyItemClicked()
+                onDisclosurePolicyItemClicked(
+                    myOverviewFragment.requireContext(),
+                    infoItem.disclosurePolicy
+                )
             }
         }
     }
 
-    private fun onDisclosurePolicyItemClicked() {
-        // TODO: Add url link. Ticket: #3574
+    private fun onDisclosurePolicyItemClicked(
+        context: Context,
+        disclosurePolicy: DisclosurePolicy
+    ) {
+        val urlResource = when (disclosurePolicy) {
+            DisclosurePolicy.OneG -> R.string.holder_dashboard_only1GaccessBanner_link
+            DisclosurePolicy.ThreeG -> R.string.holder_dashboard_only3GaccessBanner_link
+            DisclosurePolicy.OneAndThreeG -> R.string.holder_dashboard_3Gand1GaccessBanner_link
+        }
+        context.getString(urlResource).launchUrl(context)
     }
 
     private fun onBoosterItemClicked(myOverviewFragment: MyOverviewFragment) {

@@ -654,13 +654,26 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_dashboard_only3GaccessBanner_title">Op je bewijs staat nu 3G. Dit betekent dat je bewijs geschikt is voor plekken in Nederland die 3G-toegang geven.</string>
   <string name="holder_dashboard_domesticQRCard_3G_title">Bewijs voor 3G-toegang</string>
   <string name="holder_dashboard_domesticQRCard_3G_label">3G</string>
-  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message">Bekijk vooraf of de locatie die je bezoekt een bewijs voor <a href="https://coronacheck.nl/404">3G- of 1G toegang</a> vraagt.</string>
+  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message">Bekijk vooraf of de locatie die je bezoekt een bewijs voor <a href="https://coronacheck.nl/toegangsregels">3G- of 1G toegang</a> vraagt.</string>
   <string name="holder_dashboard_3Gand1GaccessBanner_title">Vanaf nu zijn er 2 aparte QR-codes voor 3G- en 1G-toegang</string>
-  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess">Controleer vooraf of je een bewijs voor <a href="https://coronacheck.nl/404">3G- of 1G toegang</a> nodig hebt. Laat bij de ingang ook je identiteitsbewijs zien.</string>
+  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess">Controleer vooraf of je een bewijs voor <a href="https://coronacheck.nl/toegangsregels">3G- of 1G toegang</a> nodig hebt. Laat bij de ingang ook je identiteitsbewijs zien.</string>
   <string name="holder_dashboard_domesticQRCard_1G_title">Bewijs voor 1G-toegang</string>
   <string name="holder_dashboard_domesticQRCard_1G_label">1G</string>
-  <string name="holder_dashboard_empty_domestic_only1Gaccess_message">Wil je naar een plek met <a href="https://coronacheck.nl/404">1G-toegang</a>? Dan heb je een testbewijs nodig.</string>
+  <string name="holder_dashboard_empty_domestic_only1Gaccess_message">Wil je naar een plek met <a href="https://coronacheck.nl/en/toegangsregels">1G-toegang</a>? Dan heb je een testbewijs nodig.</string>
   <string name="holder_dashboard_only1GaccessBanner_title">Vanaf nu heb je een testbewijs nodig voor 1G toegang</string>
-  <string name="holder_dashboard_intro_domestic_only1Gaccess">Met een testbewijs kan je naar plekken met <a href="https://coronacheck.nl/404">1G-toegang</a>. Laat bij de ingang ook je identiteitsbewijs zien.</string>
+  <string name="holder_dashboard_intro_domestic_only1Gaccess">Met een testbewijs kan je naar plekken met <a href="https://coronacheck.nl/en/toegangsregels">1G-toegang</a>. Laat bij de ingang ook je identiteitsbewijs zien.</string>
   <string name="holder_dashboard_domesticQRCard_3G_inactive_label">Dit bewijs wordt nu niet gebruikt in Nederland.</string>
+  <string name="general_newintheapp">Nieuw in de app</string>
+  <string name="holder_newintheapp_content_only3G_title">Alleen 3G-toegang</string>
+  <string name="holder_newintheapp_content_only3G_body">Vanaf nu zijn er in Nederland alleen nog plekken met 3G-toegang. Een bewijs van vaccinatie, test of herstel geeft je hiervoor toegang.</string>
+  <string name="holder_newintheapp_content_only3G_button_next">Volgende</string>
+  <string name="holder_newintheapp_content_3Gand1G_title">Aparte bewijzen voor 3G- en 1G-toegang</string>
+  <string name="holder_newintheapp_content_3Gand1G_body">Vanaf nu zijn er plekken in Nederland die 3G- of 1G-toegang geven. Een bewijs van vaccinatie, test of herstel geeft 3G-toegang. Alleen een testbewijs geeft 1G-toegang. Voor 3G- en 1G-toegang krijg je een apart bewijs.</string>
+  <string name="holder_newintheapp_content_3Gand1G_button_next">Volgende</string>
+  <string name="holder_newintheapp_content_only1G_title">Alleen 1G-toegang</string>
+  <string name="holder_newintheapp_content_only1G_body">Op sommige plekken wordt er vanaf nu 1G-toegang gegeven. Je een testbewijs nodig om 1G-toegang te krijgen. Op andere plekken hoef je geen coronatoegangsbewijs meer te laten zien.</string>
+  <string name="holder_newintheapp_content_only1G_button_next">Volgende</string>
+  <string name="holder_dashboard_only3GaccessBanner_link">https://coronacheck.nl/toegangsregels</string>
+  <string name="holder_dashboard_3Gand1GaccessBanner_link">https://coronacheck.nl/toegangsregels</string>
+  <string name="holder_dashboard_only1GaccessBanner_link">https://coronacheck.nl/toegangsregels</string>
 </resources>
