@@ -18,10 +18,9 @@ data class QrCodeFragmentData(
     sealed class ShouldDisclose: Parcelable {
 
         @Parcelize
-        object DoNotDiclose: ShouldDisclose(), Parcelable
+        object DoNotDisclose: ShouldDisclose(), Parcelable
 
         @Parcelize
         data class Disclose(val disclosurePolicy: GreenCardDisclosurePolicy): ShouldDisclose(), Parcelable
     }
-
 }

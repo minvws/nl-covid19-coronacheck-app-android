@@ -20,7 +20,7 @@ interface SplitDomesticGreenCardsUseCase {
      * @param domesticGreenCards The locally stored domestic green cards
      * @return The splitted domestic green cards to present
      */
-    fun getSplittedDomesticGreenCards(domesticGreenCards: List<GreenCard>): List<GreenCard>
+    fun getSplitDomesticGreenCards(domesticGreenCards: List<GreenCard>): List<GreenCard>
 }
 
 class SplitDomesticGreenCardsUseCaseImpl(
@@ -28,7 +28,7 @@ class SplitDomesticGreenCardsUseCaseImpl(
     private val greenCardUtil: GreenCardUtil
 ): SplitDomesticGreenCardsUseCase {
 
-    override fun getSplittedDomesticGreenCards(domesticGreenCards: List<GreenCard>): List<GreenCard> {
+    override fun getSplitDomesticGreenCards(domesticGreenCards: List<GreenCard>): List<GreenCard> {
         return when (featureFlagUseCase.getDisclosurePolicy()) {
             is DisclosurePolicy.OneG -> splitTestDomesticGreenCard(domesticGreenCards)
             is DisclosurePolicy.OneAndThreeG -> splitTestDomesticGreenCard(domesticGreenCards)

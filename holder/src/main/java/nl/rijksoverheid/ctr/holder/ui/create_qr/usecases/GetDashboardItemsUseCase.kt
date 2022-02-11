@@ -136,7 +136,7 @@ class GetDashboardItemsUseCaseImpl(
             getGreenCardItems(
                 greenCards = allGreenCards,
                 greenCardType = GreenCardType.Domestic,
-                greenCardsForSelectedType = splitDomesticGreenCardsUseCase.getSplittedDomesticGreenCards(
+                greenCardsForSelectedType = splitDomesticGreenCardsUseCase.getSplitDomesticGreenCards(
                     domesticGreenCards = domesticGreenCards
                 ),
                 greenCardsForUnselectedType = internationalGreenCards,

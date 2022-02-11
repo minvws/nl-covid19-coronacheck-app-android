@@ -188,7 +188,7 @@ class CardItemUtilImplTest: AutoCloseKoinTest() {
             disclosurePolicy = DisclosurePolicy.ThreeG
         )
 
-        assertTrue(util.shouldDisclose(cardItem) is QrCodeFragmentData.ShouldDisclose.DoNotDiclose)
+        assertTrue(util.shouldDisclose(cardItem) is QrCodeFragmentData.ShouldDisclose.DoNotDisclose)
     }
 
     private fun getUtil(

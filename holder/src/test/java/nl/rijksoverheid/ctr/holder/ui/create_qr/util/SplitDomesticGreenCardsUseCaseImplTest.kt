@@ -36,7 +36,7 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
             originTypes = listOf(OriginType.Vaccination, OriginType.Recovery, OriginType.Test)
         )
 
-        val splittedGreenCards = util.getSplittedDomesticGreenCards(
+        val splittedGreenCards = util.getSplitDomesticGreenCards(
             domesticGreenCards = listOf(greenCard)
         )
 
@@ -58,7 +58,7 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
             originTypes = listOf(OriginType.Vaccination, OriginType.Recovery)
         )
 
-        val splittedGreenCards = util.getSplittedDomesticGreenCards(
+        val splittedGreenCards = util.getSplitDomesticGreenCards(
             domesticGreenCards = listOf(greenCard)
         )
 
@@ -78,7 +78,7 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
             originTypes = listOf(OriginType.Vaccination, OriginType.Recovery, OriginType.Test)
         )
 
-        val splittedGreenCards = util.getSplittedDomesticGreenCards(
+        val splittedGreenCards = util.getSplitDomesticGreenCards(
             domesticGreenCards = listOf(greenCard)
         )
 
@@ -100,7 +100,7 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
             originTypes = listOf(OriginType.Vaccination, OriginType.Recovery)
         )
 
-        val splittedGreenCards = util.getSplittedDomesticGreenCards(
+        val splittedGreenCards = util.getSplitDomesticGreenCards(
             domesticGreenCards = listOf(greenCard)
         )
 
@@ -120,7 +120,7 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
             originTypes = listOf(OriginType.Vaccination, OriginType.Recovery, OriginType.Test)
         )
 
-        val splittedGreenCards = util.getSplittedDomesticGreenCards(
+        val splittedGreenCards = util.getSplitDomesticGreenCards(
             domesticGreenCards = listOf(greenCard)
         )
 

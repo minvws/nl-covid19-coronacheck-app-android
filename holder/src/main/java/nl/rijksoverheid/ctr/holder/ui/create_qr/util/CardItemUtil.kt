@@ -96,7 +96,7 @@ class CardItemUtilImpl(
                 )
             }
             is GreenCardType.Eu -> {
-                QrCodeFragmentData.ShouldDisclose.DoNotDiclose
+                QrCodeFragmentData.ShouldDisclose.DoNotDisclose
             }
         }
     }
