@@ -95,7 +95,7 @@ class QrCodesResultUseCaseImpl(
         return QrCodesResult.SingleQrCode(
             QrCodeData.Domestic(
                 bitmap = qrCodeBitmap,
-                readDomesticCredential = mobileCoreWrapper.readDomesticCredential(credential)
+                readDomesticCredential = mobileCoreWrapper.readDomesticCredential(credential),
             )
         )
     }

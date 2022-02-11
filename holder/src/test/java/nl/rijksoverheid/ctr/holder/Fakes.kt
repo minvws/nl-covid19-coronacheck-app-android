@@ -811,8 +811,8 @@ fun fakeCardsItems(originTypes: List<OriginType>): List<DashboardItem.CardsItem>
 }
 
 fun fakeCardsItem(
-    greenCard: GreenCard = fakeGreenCard(),
-    originType: OriginType = OriginType.Vaccination
+    originType: OriginType = OriginType.Vaccination,
+    greenCard: GreenCard = fakeGreenCard(originType = originType)
 ): DashboardItem.CardsItem {
     return DashboardItem.CardsItem(
         cards = listOf(
