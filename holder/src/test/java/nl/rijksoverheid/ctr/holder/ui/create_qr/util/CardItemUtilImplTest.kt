@@ -29,7 +29,7 @@ class CardItemUtilImplTest: AutoCloseKoinTest() {
     private val greenCardUtil: GreenCardUtil by inject()
 
     @Test
-    fun `getDisclosurePolicy returns 1G if disclosure policy is 1G and green card is in domestic tab`() {
+    fun `getDisclosurePolicy returns 3G if disclosure policy is 1G and green card is in domestic tab and green card has vaccination origin`() {
         val util = getUtil(
             disclosurePolicy = DisclosurePolicy.OneG
         )
@@ -41,11 +41,27 @@ class CardItemUtilImplTest: AutoCloseKoinTest() {
             )
         )
 
+        assertEquals(GreenCardDisclosurePolicy.ThreeG, greenCardDisclosurePolicy)
+    }
+
+    @Test
+    fun `getDisclosurePolicy returns 1G if disclosure policy is 1G and green card is in domestic tab and green card has test origin`() {
+        val util = getUtil(
+            disclosurePolicy = DisclosurePolicy.OneG
+        )
+
+        val greenCardDisclosurePolicy = util.getDisclosurePolicy(
+            greenCard = fakeGreenCard(
+                originType = OriginType.Test,
+                greenCardType = GreenCardType.Domestic
+            )
+        )
+
         assertEquals(GreenCardDisclosurePolicy.OneG, greenCardDisclosurePolicy)
     }
 
     @Test
-    fun `getDisclosurePolicy returns 3G if disclosure policy is 3G and green card is in domestic tab`() {
+    fun `getDisclosurePolicy returns 3G if disclosure policy is 3G and green card is in domestic tab and green card has vaccination origin`() {
         val util = getUtil(
             disclosurePolicy = DisclosurePolicy.ThreeG
         )
@@ -53,6 +69,22 @@ class CardItemUtilImplTest: AutoCloseKoinTest() {
         val greenCardDisclosurePolicy = util.getDisclosurePolicy(
             greenCard = fakeGreenCard(
                 originType = OriginType.Vaccination,
+                greenCardType = GreenCardType.Domestic
+            )
+        )
+
+        assertEquals(GreenCardDisclosurePolicy.ThreeG, greenCardDisclosurePolicy)
+    }
+
+    @Test
+    fun `getDisclosurePolicy returns 3G if disclosure policy is 3G and green card is in domestic tab and green card has test origin`() {
+        val util = getUtil(
+            disclosurePolicy = DisclosurePolicy.ThreeG
+        )
+
+        val greenCardDisclosurePolicy = util.getDisclosurePolicy(
+            greenCard = fakeGreenCard(
+                originType = OriginType.Test,
                 greenCardType = GreenCardType.Domestic
             )
         )

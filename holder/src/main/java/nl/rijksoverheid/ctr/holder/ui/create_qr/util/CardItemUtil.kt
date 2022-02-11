@@ -33,18 +33,28 @@ class CardItemUtilImpl(
     override fun getDisclosurePolicy(
         greenCard: GreenCard
     ): GreenCardDisclosurePolicy {
-        return when (greenCard.greenCardEntity.type) {
+            return when (greenCard.greenCardEntity.type) {
             is GreenCardType.Domestic -> {
+                val isGreenCardWithSingleTestOrigin = greenCard.origins.size == 1 && greenCardUtil.hasOrigin(
+                    listOf(greenCard), OriginType.Test)
+
                 when (featureFlagUseCase.getDisclosurePolicy()) {
                     is DisclosurePolicy.OneG -> {
-                        GreenCardDisclosurePolicy.OneG
+                        if (isGreenCardWithSingleTestOrigin) {
+                            GreenCardDisclosurePolicy.OneG
+                        } else {
+                            GreenCardDisclosurePolicy.ThreeG
+                        }
                     }
                     is DisclosurePolicy.ThreeG -> {
                         GreenCardDisclosurePolicy.ThreeG
                     }
                     is DisclosurePolicy.OneAndThreeG -> {
-                        // TODO Return OneG based on credential category
-                        GreenCardDisclosurePolicy.ThreeG
+                        if (isGreenCardWithSingleTestOrigin) {
+                            GreenCardDisclosurePolicy.OneG
+                        } else {
+                            GreenCardDisclosurePolicy.ThreeG
+                        }
                     }
                 }
             }
