@@ -37,12 +37,14 @@ class SplitDomesticGreenCardsUseCaseImpl(
     }
 
     private fun splitTestDomesticGreenCard(domesticGreenCards: List<GreenCard>): List<GreenCard> {
+        val origins = domesticGreenCards.firstOrNull()?.origins ?: return domesticGreenCards
+
         val hasTestOrigin = greenCardUtil.hasOrigin(
             greenCards = domesticGreenCards,
             originType = OriginType.Test
         )
 
-        return if (hasTestOrigin) {
+        return if (hasTestOrigin && origins.size > 1) {
             domesticGreenCards
                 .map {
                     it.copy(
@@ -53,7 +55,7 @@ class SplitDomesticGreenCardsUseCaseImpl(
                 .also { greenCards ->
                     greenCards.add(
                         greenCards.first().copy(
-                            origins = domesticGreenCards.first().origins.filter { origin -> origin.type is OriginType.Test }
+                            origins = origins.filter { origin -> origin.type is OriginType.Test }
                         )
                     )
                 }
