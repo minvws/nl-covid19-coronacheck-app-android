@@ -21,10 +21,7 @@ import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assert
 import com.adevinta.android.barista.internal.performActionOnView
 import com.google.android.material.card.MaterialCardView
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
-import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.fakeAppConfigViewModel
-import nl.rijksoverheid.ctr.holder.fakeDashboardViewModel
-import nl.rijksoverheid.ctr.holder.fakeGreenCard
+import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
@@ -300,8 +297,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.GreenCardExpiredItem(
-                        greenCardEntity = fakeGreenCard().greenCardEntity,
-                        originType = OriginType.Vaccination
+                        greenCardType = fakeGreenCard().greenCardEntity.type,
+                        originEntity = fakeOriginEntity(type = OriginType.Vaccination)
                     )
                 )
             )
@@ -334,7 +331,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.DomesticVaccinationExpiredItem(
-                        greenCardEntity = fakeGreenCard().greenCardEntity
+                        originEntity = fakeOriginEntity()
                     )
                 )
             )

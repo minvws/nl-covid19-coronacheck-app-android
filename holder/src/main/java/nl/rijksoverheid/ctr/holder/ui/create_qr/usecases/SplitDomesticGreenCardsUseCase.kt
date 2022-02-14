@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 interface SplitDomesticGreenCardsUseCase {
 
     /**
-     * Split the domestic green cards based on the [DisclosurePolicy] that is set
+     * Split the domestic green cards by origins based on the [DisclosurePolicy] that is set
      * @param domesticGreenCards The locally stored domestic green cards
      * @return The splitted domestic green cards to present
      */

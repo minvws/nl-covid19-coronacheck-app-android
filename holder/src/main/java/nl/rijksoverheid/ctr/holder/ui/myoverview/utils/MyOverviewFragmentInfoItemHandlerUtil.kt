@@ -333,13 +333,13 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         // Clear preference so it doesn't show again
         when (infoItem) {
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCardEntity)
+                myOverviewFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
             is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
-                myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCardEntity)
+                myOverviewFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
             is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
-                myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCardEntity)
+                myOverviewFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
             is DashboardItem.InfoItem.ClockDeviationItem,
             is DashboardItem.InfoItem.ConfigFreshnessWarning,

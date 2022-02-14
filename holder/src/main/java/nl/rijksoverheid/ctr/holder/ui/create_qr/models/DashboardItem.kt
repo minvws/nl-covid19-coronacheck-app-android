@@ -33,17 +33,17 @@ sealed class DashboardItem {
 
         object ClockDeviationItem : InfoItem(isDismissible = false, hasButton = true)
 
-        data class GreenCardExpiredItem(val greenCardEntity: GreenCardEntity, val originType: OriginType) : InfoItem(
+        data class GreenCardExpiredItem(val greenCardType: GreenCardType, val originEntity: OriginEntity) : InfoItem(
             isDismissible = true,
             hasButton = false
         )
 
-        data class DomesticVaccinationExpiredItem(val greenCardEntity: GreenCardEntity): InfoItem(
+        data class DomesticVaccinationExpiredItem(val originEntity: OriginEntity): InfoItem(
             isDismissible = true,
             hasButton = true
         )
 
-        data class DomesticVaccinationAssessmentExpiredItem(val greenCardEntity: GreenCardEntity): InfoItem(
+        data class DomesticVaccinationAssessmentExpiredItem(val originEntity: OriginEntity): InfoItem(
             isDismissible = true,
             hasButton = true
         )

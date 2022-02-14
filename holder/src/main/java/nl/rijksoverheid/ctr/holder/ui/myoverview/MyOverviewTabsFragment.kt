@@ -51,8 +51,6 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     private val persistenceManager: PersistenceManager by inject()
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
     private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
-    private val appConfigPersistenceManager: AppConfigPersistenceManager by inject()
     private val menuUtil: MenuUtil by inject()
 
     private val refreshHandler = Handler(Looper.getMainLooper())
