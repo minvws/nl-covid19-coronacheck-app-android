@@ -46,11 +46,6 @@ class SplitDomesticGreenCardsUseCaseImpl(
 
         return if (hasTestOrigin && origins.size > 1) {
             domesticGreenCards
-                .map {
-                    it.copy(
-                        origins = it.origins.filter { origin -> origin.type !is OriginType.Test }
-                    )
-                }
                 .toMutableList()
                 .also { greenCards ->
                     greenCards.add(
