@@ -2,16 +2,14 @@ package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.fragment.AutoCloseFragment
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultInvalidBinding
@@ -28,15 +26,25 @@ import java.util.concurrent.TimeUnit
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid) {
+class ScanResultInvalidFragment : AutoCloseFragment(R.layout.fragment_scan_result_invalid) {
 
     private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val selectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
 
-    private val autoCloseHandler = Handler(Looper.getMainLooper())
-    private val autoCloseRunnable = Runnable { navigateToScanner() }
-
     private val args: ScanResultInvalidFragmentArgs by navArgs()
+
+    override fun aliveForSeconds(): Long {
+       return if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(
+            3
+        )
+    }
+
+    override fun navigateToCloseAt() {
+        navigateSafety(
+            R.id.nav_scan_result_invalid,
+            ScanResultInvalidFragmentDirections.actionNavQrScanner()
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -104,19 +112,5 @@ class ScanResultInvalidFragment : Fragment(R.layout.fragment_scan_result_invalid
             R.id.nav_scan_result_invalid,
             ScanResultInvalidFragmentDirections.actionNavQrScanner()
         )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val autoCloseDuration =
-            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.MINUTES.toMillis(
-                3
-            )
-        autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDuration)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        autoCloseHandler.removeCallbacks(autoCloseRunnable)
     }
 }
