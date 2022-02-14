@@ -26,7 +26,7 @@ interface SplitDomesticGreenCardsUseCase {
 class SplitDomesticGreenCardsUseCaseImpl(
     private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val greenCardUtil: GreenCardUtil
-): SplitDomesticGreenCardsUseCase {
+) : SplitDomesticGreenCardsUseCase {
 
     override fun getSplitDomesticGreenCards(domesticGreenCards: List<GreenCard>): List<GreenCard> {
         return when (featureFlagUseCase.getDisclosurePolicy()) {
@@ -37,24 +37,18 @@ class SplitDomesticGreenCardsUseCaseImpl(
     }
 
     private fun splitTestDomesticGreenCard(domesticGreenCards: List<GreenCard>): List<GreenCard> {
-        val hasTestOrigin = greenCardUtil.hasOrigin(
+        val hasTestOriginToSplit = greenCardUtil.hasOrigin(
             greenCards = domesticGreenCards,
             originType = OriginType.Test
-        )
+        ) && domesticGreenCards.first().origins.size > 1
 
-        return if (hasTestOrigin) {
+        return if (hasTestOriginToSplit) {
             domesticGreenCards
-                .map {
-                    it.copy(
-                        origins = it.origins.filter { origin -> origin.type !is OriginType.Test }
-                    )
-                }
                 .toMutableList()
                 .also { greenCards ->
                     greenCards.add(
                         greenCards.first().copy(
-                            origins = domesticGreenCards.first().origins.filter { origin -> origin.type is OriginType.Test }
-                        )
+                            origins = domesticGreenCards.first().origins.filter { origin -> origin.type is OriginType.Test })
                     )
                 }
         } else {

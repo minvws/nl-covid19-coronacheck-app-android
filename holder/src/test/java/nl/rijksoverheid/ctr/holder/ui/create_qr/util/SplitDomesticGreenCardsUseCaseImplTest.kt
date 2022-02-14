@@ -27,7 +27,7 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
     private val greenCardUtil: GreenCardUtil by inject()
 
     @Test
-    fun `getSplittedDomesticGreenCards splits green card by test origin on 1G policy set with test origin`() {
+    fun `getSplittedDomesticGreenCards splits a new green card with test origin on 1G policy set with test origin`() {
         val util = getUtil(
             disclosurePolicy = DisclosurePolicy.OneG
         )
@@ -41,9 +41,10 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
         )
 
         assertEquals(2, splittedGreenCards.size)
-        assertEquals(2, splittedGreenCards.first().origins.size)
+        assertEquals(3, splittedGreenCards.first().origins.size)
         assertEquals(OriginType.Vaccination, splittedGreenCards.first().origins.first().type)
         assertEquals(OriginType.Recovery, splittedGreenCards.first().origins[1].type)
+        assertEquals(OriginType.Test, splittedGreenCards.first().origins[2].type)
         assertEquals(1, splittedGreenCards[1].origins.size)
         assertEquals(OriginType.Test, splittedGreenCards[1].origins.first().type)
     }
@@ -69,7 +70,7 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getSplittedDomesticGreenCards splits green card by test origin on 1G-3G policy set with test origin`() {
+    fun `getSplittedDomesticGreenCards splits a new green card with test origin on 1G-3G policy set with test origin`() {
         val util = getUtil(
             disclosurePolicy = DisclosurePolicy.OneAndThreeG
         )
@@ -83,9 +84,10 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
         )
 
         assertEquals(2, splittedGreenCards.size)
-        assertEquals(2, splittedGreenCards.first().origins.size)
+        assertEquals(3, splittedGreenCards.first().origins.size)
         assertEquals(OriginType.Vaccination, splittedGreenCards.first().origins.first().type)
         assertEquals(OriginType.Recovery, splittedGreenCards.first().origins[1].type)
+        assertEquals(OriginType.Test, splittedGreenCards.first().origins[2].type)
         assertEquals(1, splittedGreenCards[1].origins.size)
         assertEquals(OriginType.Test, splittedGreenCards[1].origins.first().type)
     }
@@ -129,6 +131,23 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
         assertEquals(OriginType.Vaccination, splittedGreenCards.first().origins.first().type)
         assertEquals(OriginType.Recovery, splittedGreenCards.first().origins[1].type)
         assertEquals(OriginType.Test, splittedGreenCards.first().origins[2].type)
+    }
+
+    @Test
+    fun `getSplitDomesticGreenCards does not split green card when there is only one origin`() {
+        val util = getUtil(
+            disclosurePolicy = DisclosurePolicy.OneG
+        )
+
+        val greenCard = fakeGreenCardWithOrigins(
+            originTypes = listOf(OriginType.Test)
+        )
+
+        val splitGreenCards = util.getSplitDomesticGreenCards(
+            domesticGreenCards = listOf(greenCard)
+        )
+
+        assertEquals(1, splitGreenCards.size)
     }
 
     private fun getUtil(
