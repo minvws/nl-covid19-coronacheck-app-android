@@ -33,13 +33,13 @@ class NewPolicyRulesViewModelImpl(
 ) : NewPolicyRulesViewModel() {
 
     override fun init() {
-        persistenceManager.setNewPolicyRulesSeen(true)
-
         val policyItem = newPolicyRulesItemUseCase.get()
         (newPolicyRules as MutableLiveData).postValue(policyItem)
     }
 
     override fun nextScreen() {
+        persistenceManager.setNewPolicyRulesSeen(true)
+
         val nextScreenState = scannerNavigationStateUseCase.get()
         (scannerNavigationStateEvent as MutableLiveData).postValue(Event(nextScreenState))
     }
