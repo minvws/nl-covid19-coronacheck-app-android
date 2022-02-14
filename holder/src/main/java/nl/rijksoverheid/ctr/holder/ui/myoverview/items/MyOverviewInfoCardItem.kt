@@ -53,8 +53,8 @@ class MyOverviewInfoCardItem(
             }
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 val expiredItemText = util.getExpiredItemText(
-                    greenCardType = infoItem.greenCardEntity.type,
-                    originType = infoItem.originType
+                    greenCardType = infoItem.greenCardType,
+                    originType = infoItem.originEntity.type
                 )
                 viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
             }

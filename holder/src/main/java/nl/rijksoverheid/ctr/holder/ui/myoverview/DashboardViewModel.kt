@@ -16,8 +16,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
@@ -34,7 +36,7 @@ abstract class DashboardViewModel : ViewModel() {
     open val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
-    abstract fun removeGreenCard(greenCardEntity: GreenCardEntity)
+    abstract fun removeOrigin(originEntity: OriginEntity)
     abstract fun dismissNewValidityInfoCard()
     abstract fun dismissBoosterInfoCard()
     abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
@@ -52,6 +54,7 @@ class DashboardViewModelImpl(
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
+    private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase
 ): DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -90,6 +93,10 @@ class DashboardViewModelImpl(
                 val allGreenCards = greenCardUtil.getAllGreenCards()
                 val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
 
+                removeExpiredGreenCardsUseCase.execute(
+                    allGreenCards = allGreenCards
+                )
+
                 refreshDashboardTabItems(
                     allGreenCards = allGreenCards,
                     databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent()
@@ -118,9 +125,12 @@ class DashboardViewModelImpl(
         }
     }
 
-    override fun removeGreenCard(greenCardEntity: GreenCardEntity) {
+    /**
+     * Remove the origin from a green card.
+     */
+    override fun removeOrigin(originEntity: OriginEntity) {
         viewModelScope.launch {
-            holderDatabase.greenCardDao().delete(greenCardEntity)
+            holderDatabase.originDao().delete(originEntity)
         }
     }
 

@@ -350,15 +350,15 @@ class GetDashboardItemsUseCaseImpl(
         val origin = greenCard.origins.last()
         return when {
             greenCard.greenCardEntity.type is GreenCardType.Domestic && origin.type is OriginType.Vaccination -> {
-                DashboardItem.InfoItem.DomesticVaccinationExpiredItem(greenCard.greenCardEntity)
+                DashboardItem.InfoItem.DomesticVaccinationExpiredItem(origin)
             }
             greenCard.greenCardEntity.type is GreenCardType.Domestic && origin.type is OriginType.VaccinationAssessment -> {
-                DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem(greenCard.greenCardEntity)
+                DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem(origin)
             }
             else -> {
                 DashboardItem.InfoItem.GreenCardExpiredItem(
-                    greenCardEntity = greenCard.greenCardEntity,
-                    originType = origin.type
+                    greenCardType = greenCard.greenCardEntity.type,
+                    originEntity = origin
                 )
             }
         }

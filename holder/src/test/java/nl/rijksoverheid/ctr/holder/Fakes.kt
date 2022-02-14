@@ -61,7 +61,7 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
                 .postValue(tabItems)
         }
 
-        override fun removeGreenCard(greenCardEntity: GreenCardEntity) {
+        override fun removeOrigin(originEntity: OriginEntity) {
 
         }
 

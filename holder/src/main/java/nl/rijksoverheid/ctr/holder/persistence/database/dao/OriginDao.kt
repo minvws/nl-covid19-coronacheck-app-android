@@ -1,9 +1,7 @@
 package nl.rijksoverheid.ctr.holder.persistence.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 
 /*
@@ -24,6 +22,9 @@ interface OriginDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: OriginEntity)
+
+    @Delete
+    suspend fun delete(entity: OriginEntity)
 
     @Query("DELETE FROM origin")
     suspend fun deleteAll()
