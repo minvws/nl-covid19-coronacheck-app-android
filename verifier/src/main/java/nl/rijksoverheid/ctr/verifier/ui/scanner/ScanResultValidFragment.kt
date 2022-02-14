@@ -1,15 +1,11 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.fragment.AutoCloseFragment
@@ -24,7 +20,6 @@ import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionUseCas
 import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
-
 
 class ScanResultValidFragment : AutoCloseFragment(0) {
 
