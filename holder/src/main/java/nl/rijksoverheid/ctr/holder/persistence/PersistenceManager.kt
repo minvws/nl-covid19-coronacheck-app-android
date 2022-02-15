@@ -36,6 +36,8 @@ interface PersistenceManager {
     fun setHasDismissedBoosterInfoCard(dismissedAtEpochSeconds: Long)
     fun getPolicyBannerDismissed(): DisclosurePolicy?
     fun setPolicyBannerDismissed(policy: DisclosurePolicy)
+    fun getPolicyScreenSeen(): DisclosurePolicy?
+    fun setPolicyScreenSeen(policy: DisclosurePolicy)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -61,6 +63,7 @@ class SharedPreferencesPersistenceManager(
         const val HAS_DISMISSED_VALIDITY_INFO_CARD = "HAS_DISMISSED_VALIDITY_INFO_CARD"
         const val HAS_DISMISSED_BOOSTER_INFO_CARD = "HAS_DISMISSED_BOOSTER_INFO_CARD"
         const val POLICY_BANNER_DISMISSED = "POLICY_BANNER_DISMISSED"
+        const val POLICY_SCREEN_SEEN = "POLICY_SCREEN_SEEN"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -162,5 +165,14 @@ class SharedPreferencesPersistenceManager(
 
     override fun setPolicyBannerDismissed(policy: DisclosurePolicy) {
         sharedPreferences.edit().putString(POLICY_BANNER_DISMISSED, policy.stringValue).apply()
+    }
+
+    override fun getPolicyScreenSeen(): DisclosurePolicy? {
+        val value = sharedPreferences.getString(POLICY_SCREEN_SEEN, "") ?: ""
+        return DisclosurePolicy.fromString(value)
+    }
+
+    override fun setPolicyScreenSeen(policy: DisclosurePolicy) {
+        sharedPreferences.edit().putString(POLICY_SCREEN_SEEN, policy.stringValue).apply()
     }
 }

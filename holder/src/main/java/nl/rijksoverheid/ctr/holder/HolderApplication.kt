@@ -54,7 +54,8 @@ open class HolderApplication : SharedApplication() {
         errorsModule(BuildConfig.FLAVOR),
         retrofitModule(BuildConfig.BASE_API_URL),
         responsesModule,
-        qrScannerModule
+        qrScannerModule,
+        disclosurePolicyModule
     ).toTypedArray()
 
     override fun onCreate() {
