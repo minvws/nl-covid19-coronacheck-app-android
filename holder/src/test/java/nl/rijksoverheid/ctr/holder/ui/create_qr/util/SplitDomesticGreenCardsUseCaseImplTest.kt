@@ -41,10 +41,9 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
         )
 
         assertEquals(2, splittedGreenCards.size)
-        assertEquals(3, splittedGreenCards.first().origins.size)
+        assertEquals(2, splittedGreenCards.first().origins.size)
         assertEquals(OriginType.Vaccination, splittedGreenCards.first().origins.first().type)
         assertEquals(OriginType.Recovery, splittedGreenCards.first().origins[1].type)
-        assertEquals(OriginType.Test, splittedGreenCards.first().origins[2].type)
         assertEquals(1, splittedGreenCards[1].origins.size)
         assertEquals(OriginType.Test, splittedGreenCards[1].origins.first().type)
     }
@@ -84,10 +83,9 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
         )
 
         assertEquals(2, splittedGreenCards.size)
-        assertEquals(3, splittedGreenCards.first().origins.size)
+        assertEquals(2, splittedGreenCards.first().origins.size)
         assertEquals(OriginType.Vaccination, splittedGreenCards.first().origins.first().type)
         assertEquals(OriginType.Recovery, splittedGreenCards.first().origins[1].type)
-        assertEquals(OriginType.Test, splittedGreenCards.first().origins[2].type)
         assertEquals(1, splittedGreenCards[1].origins.size)
         assertEquals(OriginType.Test, splittedGreenCards[1].origins.first().type)
     }

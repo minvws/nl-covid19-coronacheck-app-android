@@ -37,20 +37,31 @@ class SplitDomesticGreenCardsUseCaseImpl(
     }
 
     private fun splitTestDomesticGreenCard(domesticGreenCards: List<GreenCard>): List<GreenCard> {
+        val domesticGreenCard = domesticGreenCards.first()
+
         val hasTestOriginToSplit = greenCardUtil.hasOrigin(
             greenCards = domesticGreenCards,
             originType = OriginType.Test
-        ) && domesticGreenCards.first().origins.size > 1
+        ) && domesticGreenCard.origins.size > 1
 
         return if (hasTestOriginToSplit) {
-            domesticGreenCards
-                .toMutableList()
-                .also { greenCards ->
-                    greenCards.add(
-                        greenCards.first().copy(
-                            origins = domesticGreenCards.first().origins.filter { origin -> origin.type is OriginType.Test })
-                    )
-                }
+            val splitGreenCards = mutableListOf<GreenCard>()
+
+            // Remove test origin from first green card
+            splitGreenCards.add(
+                domesticGreenCard.copy(
+                    origins = domesticGreenCard.origins.filterNot { origin -> origin.type is OriginType.Test }
+                )
+            )
+
+            // Add test origin to new green card
+            splitGreenCards.add(
+                domesticGreenCard.copy(
+                    origins = domesticGreenCard.origins.filter { origin -> origin.type is OriginType.Test }
+                )
+            )
+
+            splitGreenCards
         } else {
             domesticGreenCards
         }
