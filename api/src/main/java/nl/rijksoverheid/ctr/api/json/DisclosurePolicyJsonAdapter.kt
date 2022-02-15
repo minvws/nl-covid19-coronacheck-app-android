@@ -25,7 +25,7 @@ class DisclosurePolicyJsonAdapter : JsonAdapter<DisclosurePolicy>() {
             results.contains("3G") && results.contains("1G") -> DisclosurePolicy.OneAndThreeG
             results.contains("1G") -> DisclosurePolicy.OneG
             results.contains("3G") -> DisclosurePolicy.ThreeG
-            else -> error("Disclosure policy not known")
+            else -> DisclosurePolicy.ThreeG
         }
     }
 
