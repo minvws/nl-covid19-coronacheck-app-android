@@ -11,15 +11,15 @@
   <string name="onboarding_screen_3_title">Mandatory ID check</string>
   <string name="onboarding_screen_3_description">Always ask visitors to show their proof of identity. Check whether the details on your screen match the details on their ID document. All good? Then the visitor is allowed to enter.</string>
   <string name="onboarding_screen_4_title">Who is the scanner for?</string>
-  <string name="onboarding_screen_4_description"><![CDATA[With this app, you can receive visitors again. But only if your location or activity falls under the designated locations.]]></string>
+  <string name="onboarding_screen_4_description">With this app, you can receive visitors again. But only if your location or activity falls under the designated locations.</string>
   <string name="onboarding_next">Next</string>
   <string name="onboarding_finish">Get started</string>
   <string name="onboarding_step">Step %1$s</string>
   <string name="privacy_policy_title">Acceptable use policy</string>
-  <string name="privacy_policy_description"><![CDATA[The <a href=\"https://coronacheck.nl/en/gebruikersvoorwaarden-in-app\">acceptable use policy</a> details how CoronaCheck Scanner uses your data and what your rights are.]]></string>
-  <string name="privacy_policy_1"><![CDATA[Location data are <b>not saved or used</b>]]></string>
-  <string name="privacy_policy_2"><![CDATA[You\'re only allowed to use this data to <b>check the certificate</b>]]></string>
-  <string name="privacy_policy_3"><![CDATA[The visitor\'s data is <b>not centrally stored anywhere</b>]]></string>
+  <string name="privacy_policy_description">The <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">acceptable use policy</a> details how CoronaCheck Scanner uses your data and what your rights are.</string>
+  <string name="privacy_policy_1">Location data are <b>not saved or used</b></string>
+  <string name="privacy_policy_2">You\'re only allowed to use this data to <b>check the certificate</b></string>
+  <string name="privacy_policy_3">The visitor\'s data is <b>not centrally stored anywhere</b></string>
   <string name="privacy_policy_checkbox_text">I\'ve read and agree to the acceptable use policy.</string>
   <string name="dialog_error_title">Technical error</string>
   <string name="dialog_error_message">Sorry, there was a technical error</string>
@@ -61,7 +61,7 @@
   <string name="scan_instructions_3_description">Details can be left out to protect the visitor\'s privacy. You will see a hyphen (-) instead. In this case, only check the details that are visible.</string>
   <string name="scan_instructions_4_image">Person is holding a phone with a red screen and a black cross.</string>
   <string name="scan_instructions_4_title">Green screen = access</string>
-  <string name="scan_instructions_4_description"><![CDATA[Does your screen turn green and show a check mark? In that case, the QR code is valid and the details are the same as on the proof of identity. You can grant the visitor access.]]></string>
+  <string name="scan_instructions_4_description">Does your screen turn green and show a check mark? In that case, the QR code is valid and the details are the same as on the proof of identity. You can grant the visitor access.</string>
   <string name="privacy_statement">Acceptable use policy</string>
   <string name="scanner_custom_title">Scan QR code</string>
   <string name="camera_rationale_dialog_title">Scanner wants to access your camera</string>
@@ -100,7 +100,7 @@
   <string name="menu_close">Close</string>
   <string name="new_terms_title">We\'ve updated our policy</string>
   <string name="new_terms_highlights"><![CDATA[<b>Here\'s what changed</b><br/><br/><ul><li>Description of acceptable use policy</li><li>App usage explanation</li><li>Camera usage permission</li></ul>]]></string>
-  <string name="new_terms"><![CDATA[Read the full acceptable use policy <a href=\"https://coronacheck.nl/en/gebruikersvoorwaarden-in-app\">here</a>.]]></string>
+  <string name="new_terms">Read the full acceptable use policy <a href="https://coronacheck.nl/en/gebruikersvoorwaarden-in-app">here</a>.</string>
   <string name="new_terms_consent_button">Next</string>
   <string name="new_terms_consent_needed_positive_button">Agree</string>
   <string name="new_terms_consent_needed_negative_button">Don\'t agree</string>
@@ -132,7 +132,7 @@
   <string name="clockdeviation_card_message">Check your phone\'s time settings. They might be incorrect.</string>
   <string name="clockdeviation_card_button">Read more</string>
   <string name="clockdeviation_page_title">Check your phone\'s time settings</string>
-  <string name="clockdeviation_page_message"><![CDATA[In order to properly use the CoronaCheck Scanner app, it is important that the time on your phone is set correctly. For example, if the clock on your phone is a few minutes ahead, an error might occur while verifying a coronavirus pass.<br/><br/><a href=\"#\">Go to your phone\'s settings</a> and set Date & Time to \'set automatically\'.]]></string>
+  <string name="clockdeviation_page_message">In order to properly use the CoronaCheck Scanner app, it is important that the time on your phone is set correctly. For example, if the clock on your phone is a few minutes ahead, an error might occur while verifying a coronavirus pass.&lt;br/&gt;&lt;br/&gt;<a href="#">Go to your phone\'s settings</a> and set Date &amp; Time to \'set automatically\'.</string>
   <string name="privacy_policy_checkbox_error">To continue, please agree</string>
   <string name="scan_instructions_5_title">Red screen - what happens next?</string>
   <string name="scan_instructions_5_description">Does your screen turn red and show a cross? In that case, you\'ll receive information to assist the visitor. If the screen stays red, you cannot grant the visitor access.</string>
