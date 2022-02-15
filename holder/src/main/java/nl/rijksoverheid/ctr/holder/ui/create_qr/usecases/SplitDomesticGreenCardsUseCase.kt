@@ -29,41 +29,65 @@ class SplitDomesticGreenCardsUseCaseImpl(
 ) : SplitDomesticGreenCardsUseCase {
 
     override fun getSplitDomesticGreenCards(domesticGreenCards: List<GreenCard>): List<GreenCard> {
-        return when (featureFlagUseCase.getDisclosurePolicy()) {
-            is DisclosurePolicy.OneG -> splitTestDomesticGreenCard(domesticGreenCards)
-            is DisclosurePolicy.OneAndThreeG -> splitTestDomesticGreenCard(domesticGreenCards)
+        return when (val disclosurePolicy = featureFlagUseCase.getDisclosurePolicy()) {
+            is DisclosurePolicy.OneG -> splitTestDomesticGreenCard(disclosurePolicy, domesticGreenCards)
+            is DisclosurePolicy.OneAndThreeG -> splitTestDomesticGreenCard(disclosurePolicy, domesticGreenCards)
             is DisclosurePolicy.ThreeG -> domesticGreenCards
         }
     }
 
-    private fun splitTestDomesticGreenCard(domesticGreenCards: List<GreenCard>): List<GreenCard> {
-        val domesticGreenCard = domesticGreenCards.first()
-
-        val hasTestOriginToSplit = greenCardUtil.hasOrigin(
-            greenCards = domesticGreenCards,
-            originType = OriginType.Test
-        ) && domesticGreenCard.origins.size > 1
-
-        return if (hasTestOriginToSplit) {
-            val splitGreenCards = mutableListOf<GreenCard>()
-
-            // Remove test origin from first green card
-            splitGreenCards.add(
-                domesticGreenCard.copy(
-                    origins = domesticGreenCard.origins.filterNot { origin -> origin.type is OriginType.Test }
-                )
+    private fun splitTestDomesticGreenCard(
+        disclosurePolicy: DisclosurePolicy,
+        domesticGreenCards: List<GreenCard>): List<GreenCard> {
+        domesticGreenCards.firstOrNull { domesticGreenCard ->
+            val hasTestOrigin = greenCardUtil.hasOrigin(
+                greenCards = domesticGreenCards,
+                originType = OriginType.Test
             )
 
-            // Add test origin to new green card
-            splitGreenCards.add(
-                domesticGreenCard.copy(
-                    origins = domesticGreenCard.origins.filter { origin -> origin.type is OriginType.Test }
-                )
-            )
+            return if (hasTestOrigin) {
+                val splitGreenCards = mutableListOf<GreenCard>()
 
-            splitGreenCards
-        } else {
-            domesticGreenCards
+                if (domesticGreenCard.origins.size == 1) {
+                    // If we only have one test
+
+                    if (disclosurePolicy == DisclosurePolicy.OneAndThreeG) {
+                        // Exception for 1G/3G mode; duplicate the test card (one for 3G and one for 1G)
+                        splitGreenCards.add(
+                            domesticGreenCard.copy(
+                                origins = domesticGreenCard.origins.filter { origin -> origin.type is OriginType.Test }
+                            )
+                        )
+
+                        splitGreenCards.add(
+                            domesticGreenCard.copy(
+                                origins = domesticGreenCard.origins.filter { origin -> origin.type is OriginType.Test }
+                            )
+                        )
+                    } else {
+                        // No exception, return as is
+                        return listOf(domesticGreenCard)
+                    }
+                } else {
+                    // If we have one test and other origin(s), remove test origin from first green card
+                    splitGreenCards.add(
+                        domesticGreenCard.copy(
+                            origins = domesticGreenCard.origins.filterNot { origin -> origin.type is OriginType.Test }
+                        )
+                    )
+
+                    // Add test origin to new green card
+                    splitGreenCards.add(
+                        domesticGreenCard.copy(
+                            origins = domesticGreenCard.origins.filter { origin -> origin.type is OriginType.Test }
+                        )
+                    )
+                }
+                splitGreenCards
+            } else {
+                domesticGreenCards
+            }
         }
+        return listOf()
     }
 }

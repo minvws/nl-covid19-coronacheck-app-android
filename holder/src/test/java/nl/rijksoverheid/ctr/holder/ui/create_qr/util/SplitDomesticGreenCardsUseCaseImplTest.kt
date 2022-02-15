@@ -91,6 +91,27 @@ class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
     }
 
     @Test
+    fun `getSplittedDomesticGreenCards duplicates green card with test origin on 1G-3G policy set with single test origin`() {
+        val util = getUtil(
+            disclosurePolicy = DisclosurePolicy.OneAndThreeG
+        )
+
+        val greenCard = fakeGreenCardWithOrigins(
+            originTypes = listOf(OriginType.Test)
+        )
+
+        val splittedGreenCards = util.getSplitDomesticGreenCards(
+            domesticGreenCards = listOf(greenCard)
+        )
+
+        assertEquals(2, splittedGreenCards.size)
+        assertEquals(1, splittedGreenCards.first().origins.size)
+        assertEquals(OriginType.Test, splittedGreenCards.first().origins.first().type)
+        assertEquals(1, splittedGreenCards[1].origins.size)
+        assertEquals(OriginType.Test, splittedGreenCards[1].origins.first().type)
+    }
+
+    @Test
     fun `getSplittedDomesticGreenCards does not split green card by test origin on 1G-3G policy set and no test origin`() {
         val util = getUtil(
             disclosurePolicy = DisclosurePolicy.OneAndThreeG
