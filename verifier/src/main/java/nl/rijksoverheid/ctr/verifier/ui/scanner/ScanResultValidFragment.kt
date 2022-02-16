@@ -34,9 +34,7 @@ class ScanResultValidFragment : AutoCloseFragment(0) {
     private val args: ScanResultValidFragmentArgs by navArgs()
     private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
 
-    override fun aliveForSeconds(): Long {
-        return if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toMillis(10) else TimeUnit.MILLISECONDS.toMillis(800)
-    }
+    override fun aliveForMilliseconds(): Long = 800
 
     override fun navigateToCloseAt() {
         navigateSafety(

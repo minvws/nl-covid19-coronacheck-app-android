@@ -51,14 +51,14 @@ abstract class AutoCloseFragment(contentLayoutId: Int) : Fragment(contentLayoutI
     }
 
     /**
-     * Checks if this fragment should close based on [aliveForSeconds]
+     * Checks if this fragment should close based on [aliveForMilliseconds]
      * Navigates to [navigateToCloseAt] when finished
      */
     private fun checkShouldClose() {
         val fragmentCreatedInstant = Instant.ofEpochSecond(fragmentCreatedTimestamp)
         val nowInstant = Instant.now(Clock.systemUTC())
 
-        if (fragmentCreatedInstant.plusSeconds(aliveForSeconds()).isBefore(nowInstant)) {
+        if (fragmentCreatedInstant.plusMillis(aliveForMilliseconds()).isBefore(nowInstant)) {
             navigateToCloseAt()
         }
     }
@@ -70,6 +70,6 @@ abstract class AutoCloseFragment(contentLayoutId: Int) : Fragment(contentLayoutI
         outState.putLong(FRAGMENT_CREATED_TIMESTAMP, fragmentCreatedTimestamp)
     }
 
-    abstract fun aliveForSeconds(): Long
+    abstract fun aliveForMilliseconds(): Long
     abstract fun navigateToCloseAt()
 }

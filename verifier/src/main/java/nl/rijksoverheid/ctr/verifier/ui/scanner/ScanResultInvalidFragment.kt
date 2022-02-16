@@ -33,10 +33,12 @@ class ScanResultInvalidFragment : AutoCloseFragment(R.layout.fragment_scan_resul
 
     private val args: ScanResultInvalidFragmentArgs by navArgs()
 
-    override fun aliveForSeconds(): Long {
-       return if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(
-            3
-        )
+    override fun aliveForMilliseconds(): Long {
+       return if (BuildConfig.FLAVOR == "acc") {
+           TimeUnit.SECONDS.toMillis(10)
+       } else {
+           TimeUnit.MINUTES.toSeconds(3)
+       }
     }
 
     override fun navigateToCloseAt() {
