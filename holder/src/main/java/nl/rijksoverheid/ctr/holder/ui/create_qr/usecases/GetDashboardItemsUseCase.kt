@@ -7,12 +7,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.HeaderItemTextUtil
-import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
 interface GetDashboardItemsUseCase {
     suspend fun getItems(
@@ -292,13 +288,18 @@ class GetDashboardItemsUseCaseImpl(
 
         // Loop through all green cards that exists in the database and map them to UI models
         val items = greenCardsForSelectedType
-            .map { greenCard ->
+            .mapIndexed { index, greenCard ->
                 if (greenCardUtil.isExpired(greenCard)) {
                     getExpiredBannerItem(
                         greenCard = greenCard
                     )
                 } else {
-                    mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
+                    mapGreenCardsItem(
+                        greenCard = greenCard,
+                        greenCardIndex = index,
+                        isLoadingNewCredentials = isLoadingNewCredentials,
+                        databaseSyncerResult = databaseSyncerResult
+                    )
                 }
             }
             .let { if (combineVaccinations) dashboardItemUtil.combineEuVaccinationItems(it) else it }
@@ -366,6 +367,7 @@ class GetDashboardItemsUseCaseImpl(
 
     private fun mapGreenCardsItem(
         greenCard: GreenCard,
+        greenCardIndex: Int,
         isLoadingNewCredentials: Boolean,
         databaseSyncerResult: DatabaseSyncerResult
     ): DashboardItem.CardsItem {
@@ -397,6 +399,7 @@ class GetDashboardItemsUseCaseImpl(
             credentialState = credentialState,
             databaseSyncerResult = databaseSyncerResult,
             disclosurePolicy = cardItemUtil.getDisclosurePolicy(
+                greenCardIndex = greenCardIndex,
                 greenCard = greenCard
             ),
             greenCardEnabledState = cardItemUtil.getEnabledState(
