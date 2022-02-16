@@ -20,9 +20,12 @@ interface NewDisclosurePolicySeenUseCase {
 class NewDisclosurePolicySeenUseCaseImpl(
     private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val persistenceManager: PersistenceManager
-): NewDisclosurePolicySeenUseCase {
+) : NewDisclosurePolicySeenUseCase {
 
     override fun get(): Boolean {
-        return featureFlagUseCase.getDisclosurePolicy() != persistenceManager.getPolicyScreenSeen()
+        val currentPolicy = featureFlagUseCase.getDisclosurePolicy()
+        return (currentPolicy != persistenceManager.getPolicyScreenSeen()).also { isNewPolicy ->
+            if (isNewPolicy) persistenceManager.setPolicyScreenSeen(currentPolicy)
+        }
     }
 }

@@ -13,22 +13,22 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 abstract class NewDisclosurePolicyViewModel : ViewModel() {
     val disclosurePolicyLiveData: LiveData<DisclosurePolicy> = MutableLiveData()
 
-   abstract fun init()
-   abstract fun onNextClicked()
+    abstract fun init()
 }
 
-class NewDisclosurePolicyViewModelImpl : NewDisclosurePolicyViewModel() {
+class NewDisclosurePolicyViewModelImpl(
+    private val featureFlagUseCase: HolderFeatureFlagUseCase
+) : NewDisclosurePolicyViewModel() {
 
     override fun init() {
-
-    }
-
-    override fun onNextClicked() {
-
+        (disclosurePolicyLiveData as MutableLiveData).postValue(
+            featureFlagUseCase.getDisclosurePolicy()
+        )
     }
 }

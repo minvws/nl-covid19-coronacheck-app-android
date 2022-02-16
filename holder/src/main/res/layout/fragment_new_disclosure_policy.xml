@@ -60,7 +60,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/subTitle"
                 tools:text="Title" />
 
-            <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+            <TextView
                 android:id="@+id/description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

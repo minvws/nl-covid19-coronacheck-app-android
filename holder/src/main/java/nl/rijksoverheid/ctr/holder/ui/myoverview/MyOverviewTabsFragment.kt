@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MenuUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -170,9 +171,11 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     }
 
     private fun observePolicyUpdate() {
-        dashboardViewModel.showNewPolicyRulesLiveData.observe(viewLifecycleOwner, EventObserver {
-            if (it) {
-
+        dashboardViewModel.showNewPolicyRulesLiveData.observe(viewLifecycleOwner, EventObserver { shouldShow ->
+            if (shouldShow) {
+                findNavControllerSafety()?.navigate(
+                    MyOverviewTabsFragmentDirections.actionNewDisclosurePolicy()
+                )
             }
         })
     }
