@@ -11,15 +11,15 @@
   <string name="onboarding_screen_3_title">Verplichte controle identiteitsbewijs</string>
   <string name="onboarding_screen_3_description">Vraag bezoekers altijd om een identiteitsbewijs te laten zien. Controleer of de gegevens op jouw scherm hetzelfde zijn als op het identiteitsbewijs. Check? Dan mag de bezoeker naar binnen.</string>
   <string name="onboarding_screen_4_title">Voor wie is de scanner?</string>
-  <string name="onboarding_screen_4_description">Met behulp van deze app kun je weer bezoekers ontvangen. Maar alleen als jouw locatie of activiteit onder de aangewezen locaties valt.</string>
+  <string name="onboarding_screen_4_description"><![CDATA[Met behulp van deze app kun je weer bezoekers ontvangen. Maar alleen als jouw locatie of activiteit onder de aangewezen locaties valt.]]></string>
   <string name="onboarding_next">Volgende</string>
   <string name="onboarding_finish">Aan de slag</string>
   <string name="onboarding_step">Stap %1$s</string>
   <string name="privacy_policy_title">Voorwaarden voor gebruik</string>
-  <string name="privacy_policy_description">In de <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">gebruiksvoorwaarden</a> staat hoe CoronaCheck Scanner werkt en wat je rechten zijn.</string>
-  <string name="privacy_policy_1">Er worden <b>geen locatiegegevens</b> gebruikt of bewaard</string>
-  <string name="privacy_policy_2">Je mag gegevens van de bezoeker alleen gebruiken voor <b>controle van het bewijs</b></string>
-  <string name="privacy_policy_3">Gegevens van de bezoeker worden <b>nergens centraal opgeslagen</b></string>
+  <string name="privacy_policy_description"><![CDATA[In de <a href=\"https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app\">gebruiksvoorwaarden</a> staat hoe CoronaCheck Scanner werkt en wat je rechten zijn.]]></string>
+  <string name="privacy_policy_1"><![CDATA[Er worden <b>geen locatiegegevens</b> gebruikt of bewaard]]></string>
+  <string name="privacy_policy_2"><![CDATA[Je mag gegevens van de bezoeker alleen gebruiken voor <b>controle van het bewijs</b>]]></string>
+  <string name="privacy_policy_3"><![CDATA[Gegevens van de bezoeker worden <b>nergens centraal opgeslagen</b>]]></string>
   <string name="privacy_policy_checkbox_text">Ik heb de gebruikersvoorwaarden gelezen en ga hiermee akkoord</string>
   <string name="dialog_error_title">Technische fout</string>
   <string name="dialog_error_message">Excuus, er is een technische fout opgetreden</string>
@@ -61,7 +61,7 @@
   <string name="scan_instructions_3_description">Gegevens kunnen wegvallen om de privacy van de bezoeker te beschermen. Je ziet dan een streepje (-) staan. Controleer in dat geval alleen de gegevens die je wel ziet.</string>
   <string name="scan_instructions_4_image">Persoon houdt een telefoon vast met een rood scherm en een zwart kruis.</string>
   <string name="scan_instructions_4_title">Groen scherm = toegang</string>
-  <string name="scan_instructions_4_description">Kleurt je scherm groen met een vinkje? Dan is de QR-code geldig en kloppen de gegevens met het identiteitsbewijs. Je mag de bezoeker toegang geven.</string>
+  <string name="scan_instructions_4_description"><![CDATA[Kleurt je scherm groen met een vinkje? Dan is de QR-code geldig en kloppen de gegevens met het identiteitsbewijs. Je mag de bezoeker toegang geven.]]></string>
   <string name="privacy_statement">Gebruikersvoorwaarden</string>
   <string name="scanner_custom_title">Scan QR-code</string>
   <string name="camera_rationale_dialog_title">Scanner wil toegang tot je camera</string>
@@ -100,7 +100,7 @@
   <string name="menu_close">Sluiten</string>
   <string name="new_terms_title">Onze voorwaarden zijn vernieuwd</string>
   <string name="new_terms_highlights"><![CDATA[<b>Dit is veranderd</b><br/><br/><ul><li>Beschrijving van gebruiksregels</li><li>Uitleg over gebruik van de app</li><li>Toestemming voor gebruik camera</li></ul>]]></string>
-  <string name="new_terms">Lees <a href="https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app">hier</a> de volledige gebruikersvoorwaarden.</string>
+  <string name="new_terms"><![CDATA[Lees <a href=\"https://coronacheck.nl/nl/gebruikersvoorwaarden-in-app\">hier</a> de volledige gebruikersvoorwaarden.]]></string>
   <string name="new_terms_consent_button">Volgende</string>
   <string name="new_terms_consent_needed_positive_button">Akkoord</string>
   <string name="new_terms_consent_needed_negative_button">Niet akkoord</string>
