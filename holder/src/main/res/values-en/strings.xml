@@ -653,14 +653,14 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_only3GaccessBanner_title">A Dutch certificate currently gives 3G access. This means a certificate is valid anywhere a coronavirus pass is required.</string>
   <string name="holder_dashboard_domesticQRCard_3G_title">Certificate for 3G access</string>
   <string name="holder_dashboard_domesticQRCard_3G_label">3G</string>
-  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message">Visiting a venue in The Netherlands? Check in advance whether you need a certificate for <a href="https://coronacheck.nl/en/accesspolicy/3g-1g-access">3G or 1G access</a>.</string>
+  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message"><![CDATA[Visiting a venue in The Netherlands? Check in advance whether you need a certificate for <a href="https://coronacheck.nl/en/accesspolicy/3g-1g-access">3G or 1G access</a>.]]></string>
   <string name="holder_dashboard_3Gand1GaccessBanner_title">The access rules in the Netherlands have changed. There are now separate certificates for venues with 3G access and 1G access.</string>
-  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess">Check in advance whether you need a certificate for <a href="https://coronacheck.nl/en/accesspolicy/3g-1g-access">3G or 1G access</a>. Also show your proof of identity at the entrance.</string>
+  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess"><![CDATA[Check in advance whether you need a certificate for <a href="https://coronacheck.nl/en/accesspolicy/3g-1g-access">3G or 1G access</a>. Also show your proof of identity at the entrance.]]></string>
   <string name="holder_dashboard_domesticQRCard_1G_title">Certificate for 3G-access</string>
   <string name="holder_dashboard_domesticQRCard_1G_label">1G</string>
-  <string name="holder_dashboard_empty_domestic_only1Gaccess_message">In the Netherlands, you only get access with a test certificate anywhere a coronavirus pass is required <a href="https://coronacheck.nl/en/accesspolicy/1g-access">(1G access)</a>.</string>
+  <string name="holder_dashboard_empty_domestic_only1Gaccess_message"><![CDATA[In the Netherlands, you only get access with a test certificate anywhere a coronavirus pass is required <a href="https://coronacheck.nl/en/accesspolicy/1g-access">(1G access)</a>.]]></string>
   <string name="holder_dashboard_only1GaccessBanner_title">You can add a certificate for 1G access when you have tested negative</string>
-  <string name="holder_dashboard_intro_domestic_only1Gaccess">Show a certificate for <a href="https://coronacheck.nl/en/accesspolicy/1g-access">1G access</a> in the Netherlands if a coronavirus pass is required. Also show your proof of identity.</string>
+  <string name="holder_dashboard_intro_domestic_only1Gaccess"><![CDATA[Show a certificate for <a href="https://coronacheck.nl/en/accesspolicy/1g-access">1G access</a> in the Netherlands if a coronavirus pass is required. Also show your proof of identity.]]></string>
   <string name="holder_dashboard_domesticQRCard_3G_inactive_label">This certificate is currently not used in the Netherlands</string>
   <string name="general_newintheapp">New in the app</string>
   <string name="holder_newintheapp_content_only3G_title">3G access only</string>

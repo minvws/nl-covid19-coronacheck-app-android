@@ -654,14 +654,14 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_dashboard_only3GaccessBanner_title">Op dit moment geeft een Nederlands bewijs 3G-toegang. Dit betekent dat een bewijs overal geldig is waar om een coronabewijs wordt gevraagd.</string>
   <string name="holder_dashboard_domesticQRCard_3G_title">Bewijs voor 3G-toegang</string>
   <string name="holder_dashboard_domesticQRCard_3G_label">3G</string>
-  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message">Bezoek je een plek in Nederland? Check vooraf of je een bewijs voor <a href="https://coronacheck.nl/toegangsregels/3g-1g-toegang">3G- of 1G toegang</a> nodig hebt.</string>
+  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message"><![CDATA[Bezoek je een plek in Nederland? Check vooraf of je een bewijs voor <a href="https://coronacheck.nl/toegangsregels/3g-1g-toegang">3G- of 1G toegang</a> nodig hebt.]]></string>
   <string name="holder_dashboard_3Gand1GaccessBanner_title">De Nederlandse toegangsregels zijn veranderd. Er zijn nu aparte bewijzen voor plekken die 3G-toegang en 1G-toegang geven.</string>
-  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess">Check vooraf of je een bewijs voor <a href="https://coronacheck.nl/toegangsregels/3g-1g-toegang">3G- of 1G toegang</a> nodig hebt. Laat ook je identiteitsbewijs zien.</string>
+  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess"><![CDATA[Check vooraf of je een bewijs voor <a href="https://coronacheck.nl/toegangsregels/3g-1g-toegang">3G- of 1G toegang</a> nodig hebt. Laat ook je identiteitsbewijs zien.]]></string>
   <string name="holder_dashboard_domesticQRCard_1G_title">Bewijs voor 1G-toegang</string>
   <string name="holder_dashboard_domesticQRCard_1G_label">1G</string>
-  <string name="holder_dashboard_empty_domestic_only1Gaccess_message">In Nederland krijg je alleen toegang met een testbewijs op plekken waar om een coronabewijs wordt gevraagd <a href="https://coronacheck.nl/toegangsregels/1g-toegang">(1G-toegang)</a>.</string>
+  <string name="holder_dashboard_empty_domestic_only1Gaccess_message"><![CDATA[In Nederland krijg je alleen toegang met een testbewijs op plekken waar om een coronabewijs wordt gevraagd <a href="https://coronacheck.nl/toegangsregels/1g-toegang">(1G-toegang)</a>.]]></string>
   <string name="holder_dashboard_only1GaccessBanner_title">Je kunt een bewijs voor 1G-toegang toevoegen wanneer je negatief getest bent</string>
-  <string name="holder_dashboard_intro_domestic_only1Gaccess">Laat in Nederland een bewijs voor <a href="https://coronacheck.nl/toegangsregels/1g-toegang">1G-toegang</a> zien als om een coronabewijs wordt gevraagd. Laat ook je identiteitsbewijs zien.</string>
+  <string name="holder_dashboard_intro_domestic_only1Gaccess"><![CDATA[Laat in Nederland een bewijs voor <a href="https://coronacheck.nl/toegangsregels/1g-toegang">1G-toegang</a> zien als om een coronabewijs wordt gevraagd. Laat ook je identiteitsbewijs zien.]]></string>
   <string name="holder_dashboard_domesticQRCard_3G_inactive_label">Dit bewijs wordt nu niet gebruikt in Nederland</string>
   <string name="general_newintheapp">Nieuw in de app</string>
   <string name="holder_newintheapp_content_only3G_title">Alleen 3G-toegang</string>
