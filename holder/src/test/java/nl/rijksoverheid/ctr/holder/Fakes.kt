@@ -367,6 +367,14 @@ fun fakePersistenceManager(
         override fun setPolicyBannerDismissed(policy: DisclosurePolicy) {
 
         }
+
+        override fun getPolicyScreenSeen(): DisclosurePolicy? {
+            return DisclosurePolicy.ThreeG
+        }
+
+        override fun setPolicyScreenSeen(policy: DisclosurePolicy) {
+            TODO("Not yet implemented")
+        }
     }
 }
 
