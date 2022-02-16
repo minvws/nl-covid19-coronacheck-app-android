@@ -17,7 +17,7 @@ interface NewDisclosurePolicySeenUseCase {
     fun get(): Boolean
 }
 
-class NewDisclosurePolicySeenUseCaseImpl(
+class ShowDisclosurePolicyUseCaseImpl(
     private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val persistenceManager: PersistenceManager
 ) : NewDisclosurePolicySeenUseCase {
