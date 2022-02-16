@@ -23,7 +23,9 @@ import org.koin.android.ext.android.inject
 class MenuFragment: Fragment(R.layout.fragment_menu) {
 
     private val intentUtil: IntentUtil by inject()
-    private val menuSections by lazy { (requireArguments().getParcelableArray("menuSections") as Array<MenuSection>).toList() }
+
+    // See https://stackoverflow.com/a/56368961
+    private val menuSections by lazy { (requireArguments().getParcelableArray("menuSections")?.map { it as MenuSection })?.toList() ?: listOf() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
