@@ -373,7 +373,7 @@ fun fakePersistenceManager(
         }
 
         override fun setPolicyScreenSeen(policy: DisclosurePolicy) {
-            TODO("Not yet implemented")
+
         }
     }
 }
