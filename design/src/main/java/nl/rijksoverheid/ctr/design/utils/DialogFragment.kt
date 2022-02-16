@@ -43,6 +43,13 @@ class DialogFragment: DialogFragment() {
         viewModel.onDismissCallback?.invoke()
     }
 
+    override fun onStop() {
+        // prevent DialogFragment recreation after process death
+        // since the button callbacks cannot be stored in state
+        dismissAllowingStateLoss()
+        super.onStop()
+    }
+
     fun show(
         manager: FragmentManager,
         tag: String?,
