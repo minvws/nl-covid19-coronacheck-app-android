@@ -23,9 +23,9 @@ class DisclosurePolicyJsonAdapter : JsonAdapter<DisclosurePolicy>() {
             reader.endArray()
 
             return when {
-                results.contains("3G") && results.contains("1G") -> DisclosurePolicy.OneAndThreeG
-                results.contains("1G") -> DisclosurePolicy.OneG
-                results.contains("3G") -> DisclosurePolicy.ThreeG
+                results.contains("3G") && results.contains("1G") && results.size == 2 -> DisclosurePolicy.OneAndThreeG
+                results.contains("1G") && results.size == 1 -> DisclosurePolicy.OneG
+                results.contains("3G") && results.size == 1 -> DisclosurePolicy.ThreeG
                 else -> DisclosurePolicy.ThreeG
             }
         } catch (e: Exception) {
