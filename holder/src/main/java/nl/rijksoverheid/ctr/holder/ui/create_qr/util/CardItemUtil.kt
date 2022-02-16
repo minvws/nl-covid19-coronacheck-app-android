@@ -19,7 +19,8 @@ import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
 interface CardItemUtil {
     fun getDisclosurePolicy(
-        greenCard: GreenCard
+        greenCard: GreenCard,
+        greenCardIndex: Int
     ): GreenCardDisclosurePolicy
 
     fun getEnabledState(
@@ -37,8 +38,9 @@ class CardItemUtilImpl(
 ): CardItemUtil {
 
     override fun getDisclosurePolicy(
-        greenCard: GreenCard
-    ): GreenCardDisclosurePolicy {
+        greenCard: GreenCard,
+        greenCardIndex: Int
+        ): GreenCardDisclosurePolicy {
             return when (greenCard.greenCardEntity.type) {
             is GreenCardType.Domestic -> {
                 val isGreenCardWithSingleTestOrigin = greenCard.origins.size == 1 && greenCardUtil.hasOrigin(
@@ -57,7 +59,11 @@ class CardItemUtilImpl(
                     }
                     is DisclosurePolicy.OneAndThreeG -> {
                         if (isGreenCardWithSingleTestOrigin) {
-                            GreenCardDisclosurePolicy.OneG
+                            if (greenCardIndex == 0) {
+                                GreenCardDisclosurePolicy.ThreeG
+                            } else {
+                                GreenCardDisclosurePolicy.OneG
+                            }
                         } else {
                             GreenCardDisclosurePolicy.ThreeG
                         }

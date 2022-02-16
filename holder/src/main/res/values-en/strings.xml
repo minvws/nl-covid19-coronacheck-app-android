@@ -23,16 +23,16 @@
   <string name="onboarding_next">Next</string>
   <string name="onboarding_finish">Get started</string>
   <string name="privacy_policy_title">This is how the app uses your data</string>
-  <string name="privacy_policy_description">The <a href="https://coronacheck.nl/en/privacy-in-app">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:</string>
-  <string name="privacy_policy_1">Your data is <b>not centrally stored anywhere</b></string>
-  <string name="privacy_policy_2">No location data is <b>used or saved</b></string>
+  <string name="privacy_policy_description"><![CDATA[The <a href=\"https://coronacheck.nl/en/privacy-in-app\">privacy statement</a> details how CoronaCheck handles your data. These are the most important points:]]></string>
+  <string name="privacy_policy_1"><![CDATA[Your data is <b>not centrally stored anywhere</b>]]></string>
+  <string name="privacy_policy_2"><![CDATA[No location data is <b>used or saved</b>]]></string>
   <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data.</string>
   <string name="my_overview">My certificates</string>
-  <string name="my_overview_description">Visiting a venue within the Netherlands? Show both your Dutch QR code and your proof of identity at the entrance.</string>
-  <string name="my_overview_description_eu">Are you abroad or planning to cross the border? Then always use the international QR code below. Please check before leaving which certificate you need.</string>
+  <string name="my_overview_description">Visiting a location within the Netherlands? Show both your Dutch QR code and your proof of identity at the entrance of the location you\'re visiting.</string>
+  <string name="my_overview_description_eu"><![CDATA[Are you abroad or planning to cross the border? Then always use the international QR code below. Please check before leaving which certificate you need.]]></string>
   <string name="my_overview_description_eu_button_text">Which certificate is needed where I’m heading?</string>
   <string name="my_overview_description_eu_button_link">https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands</string>
-  <string name="my_overview_no_qr_description">You can create a QR code if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>.</string>
+  <string name="my_overview_no_qr_description"><![CDATA[You can create a QR code if you\'re vaccinated, if you\'ve had corona or by taking a test at an <a href=\"https://coronacheck.nl/en/testafspraak-in-app\">affiliated test location</a>.]]></string>
   <string name="dialog_error_title">Sorry, something went wrong</string>
   <string name="dialog_error_message">Because of a technical error.</string>
   <string name="dialog_error_message_with_error_code">Because of a technical error (%1$s).</string>
@@ -93,7 +93,7 @@
   <string name="commercial_test_scanner_custom_title">Scan QR code</string>
   <string name="commercial_test_scanner_custom_message">Point your phone at the QR code the test location gave you.</string>
   <string name="your_negative_test_results_title">Are the details correct?</string>
-  <string name="your_negative_test_results_description">Are the details correct? This test result is retrieved from the test location. If the details are correct, you can create a certificate.</string>
+  <string name="your_negative_test_results_description"><![CDATA[Are the details correct? This test result is retrieved from the test location. If the details are correct, you can create a certificate.]]></string>
   <string name="your_negative_test_results_header">Retrieved test result</string>
   <string name="your_negative_test_results_row_title">Negative test result</string>
   <string name="your_negative_test_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Your details: %2$s]]></string>
@@ -101,7 +101,7 @@
   <string name="your_negative_test_results_row_personal_details">Identification details: %1$s</string>
   <string name="your_negative_test_results_row_button">Make certificate</string>
   <string name="your_negative_test_results_explanation_title">More about test results</string>
-  <string name="your_negative_test_results_explanation_paragraph_1">Your test result states your test result, the time of testing, and a minimum amount of personal data.&lt;br\&gt;&lt;br\&gt;Your details consist of: (1) the first letter of your first name, (2) the first letter of your last name, (3) your day of birth and (4) your month of birth.</string>
+  <string name="your_negative_test_results_explanation_paragraph_1"><![CDATA[Your test result states your test result, the time of testing, and a minimum amount of personal data.<br\><br\>Your details consist of: (1) the first letter of your first name, (2) the first letter of your last name, (3) your day of birth and (4) your month of birth.]]></string>
   <string name="your_negative_test_results_explanation_paragraph_2"><![CDATA[<b>Are these details incorrect?</b><br/>Please contact your test location. They can help you change these details.]]></string>
   <string name="your_negative_test_results_characteristic_format">Characteristic %1$s is %2$s</string>
   <string name="testresult_not_known_title">Test result not yet known</string>
@@ -115,13 +115,13 @@
   <string name="commercial_test_error_empty_retrieval_code">Please enter a retrieval code first</string>
   <string name="commercial_test_error_empty_verification_code">Please enter a verification code first</string>
   <string name="no_negative_test_result_title">No negative test result</string>
-  <string name="no_negative_test_result_description">No negative test result available.</string>
+  <string name="no_negative_test_result_description"><![CDATA[No negative test result available.]]></string>
   <string name="test_result_not_known_title">Test result not yet known</string>
   <string name="test_result_not_known_description"><![CDATA[Please try again later.<br/><br/>If you have any questions, contact your test location.]]></string>
   <string name="about_this_app_description"><![CDATA[CoronaCheck is created to reopen society step by step. This way, we can head out more often and travel abroad.<br/><br/>CoronaCheck creates a coronavirus pass from your vaccination, negative test result or if you\'ve had coronavirus and are recovered. Your coronavirus pass has a QR code. Have it scanned for access to places or activities in The Netherlands, or to travel internationally (the EU Digital COVID Certificate).]]></string>
   <string name="test_result_already_signed_title">Test result already retrieved</string>
   <string name="test_result_already_signed_description"><![CDATA[Your test result has already been retrieved. And it\'s already been made into a QR code.<br/><br/>Is this not correct? Contact the test location.]]></string>
-  <string name="item_test_result_expired">Your QR code has expired.&lt;br\&gt;&lt;br/&gt;Get tested again.</string>
+  <string name="item_test_result_expired"><![CDATA[Your QR code has expired.<br\><br/>Get tested again.]]></string>
   <string name="test_appointment_info_toolbar_title">Make test appointment</string>
   <string name="camera_rationale_dialog_title">CoronaCheck wants to access your camera</string>
   <string name="camera_rationale_dialog_description">This is the only way the app can scan your QR code.</string>
@@ -202,7 +202,7 @@
   <string name="qr_code_type_vaccination_title">Vaccination</string>
   <string name="qr_code_type_vaccination_description">I received a (booster) vaccination</string>
   <string name="get_vaccination_title">Retrieve vaccination details</string>
-  <string name="get_vaccination_description">Did you receive a (booster) vaccination? Log in using DigiD to retrieve all your vaccination details.</string>
+  <string name="get_vaccination_description"><![CDATA[Did you receive a (booster) vaccination? Log in using DigiD to retrieve all your vaccination details.]]></string>
   <string name="get_vaccination_button">Log in with DigiD</string>
   <string name="get_vaccination_no_digid_button">I don\'t have DigiD</string>
   <string name="your_retrieved_vaccinations_title">Your retrieved vaccinations</string>
@@ -221,7 +221,7 @@
   <string name="travel_fragment_footer">The Dutch QR code only contains your initials, your birth month, and your day of birth.</string>
   <string name="travel_fragment_footer_eu">The international QR code contains the following details: your name, date of birth, and information about the vaccine.</string>
   <string name="dialog_negative_test_result_something_wrong_title">Is something wrong?</string>
-  <string name="dialog_negative_test_result_something_wrong_description">Please contact your test location. They can help you change these details.</string>
+  <string name="dialog_negative_test_result_something_wrong_description"><![CDATA[Please contact your test location. They can help you change these details.]]></string>
   <string name="validity_type_european_title">International</string>
   <string name="validity_type_dutch_title">The Netherlands</string>
   <string name="qr_explanation_title_domestic">About my Dutch QR code</string>
@@ -323,11 +323,11 @@
   <string name="no_test_results_title">No test result available</string>
   <string name="no_test_results_description"><![CDATA[There is no available data of your test result. This can have various causes. Read the <a href=\"https://www.coronacheck.nl/en/guidepost\"> Guidepost</a> for more information.<br/><br/>Already got a negative test result from the GGD? It can take a few hours until your details are available. Try again later.]]></string>
   <string name="not_yet_tested_title">Were you not tested yet?</string>
-  <string name="not_yet_tested_description">For a test certificate, you must take a test first at an affiliated test location. Does the test prove you don\'t have coronavirus? Then you can make a certificate.</string>
+  <string name="not_yet_tested_description"><![CDATA[For a test certificate, you must take a test first at an affiliated test location. Does the test prove you don\'t have coronavirus? Then you can make a certificate.]]></string>
   <string name="not_yet_tested_button">Make an appointment</string>
-  <string name="privacy_policy_3">The QR code contains a minimum amount of <b>personal data</b>.</string>
+  <string name="privacy_policy_3"><![CDATA[The QR code contains a minimum amount of <b>personal data</b>.]]></string>
   <string name="choose_provider_no_digid">I don\'t have DigiD</string>
-  <string name="new_terms">Read the full privacy statement <a href="https://coronacheck.nl/en/privacy-in-app">here</a>.</string>
+  <string name="new_terms"><![CDATA[Read the full privacy statement <a href=\"https://coronacheck.nl/en/privacy-in-app\">here</a>.]]></string>
   <string name="too_busy_title">Sorry, it is really busy</string>
   <string name="too_busy_description">There are currently many visitors on the affiliated partner\'s website. We can\'t retrieve your details now. Please try again later.</string>
   <string name="no_digid_url">https://www.digid.nl/en/apply-or-activate-digid</string>
@@ -337,7 +337,7 @@
   <string name="coronacheck_error_description">Contact our helpdesk and give them error code (%1$s) or try again later.</string>
   <string name="missing_events_title">Details possibly incomplete</string>
   <string name="missing_events_description">Due to increased traffic or an outage at one of the parties, some details may be missing. Please try again later.</string>
-  <string name="dialog_vaccination_something_wrong_description">Please contact the care provider who vaccinated you. This can be the GGD, your general practitioner, or a doctor belonging to a healthcare facility. They can help you change these details.</string>
+  <string name="dialog_vaccination_something_wrong_description"><![CDATA[Please contact the care provider who vaccinated you. This can be the GGD, your general practitioner, or a doctor belonging to a healthcare facility. They can help you change these details.]]></string>
   <string name="dialog_title_no_internet">Connect to the internet</string>
   <string name="dialog_update_credentials_no_internet">\"The QR code sometimes needs an internet connection. Without an internet connection, your QR code can be used for 3 more days. When you’re connected, you’ll be able to use the QR code again for a longer period of time.\"</string>
   <string name="dialog_credentials_expired_no_internet">You need an internet connection to regain access to your QR code.</string>
@@ -349,7 +349,7 @@
   <string name="your_positive_test_description">Are the details correct? If the details about your test are correct, you can create a certificate.</string>
   <string name="positive_test_title">Positive test result</string>
   <string name="get_recovery_title">Retrieve recovery details</string>
-  <string name="get_recovery_description">Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Log in with DigiD to retrieve your test result.</string>
+  <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Log in with DigiD to retrieve your test result.]]></string>
   <string name="no_positive_test_result_title">No positive test result available</string>
   <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="qr_code_type_recovery_title">Positive test</string>
@@ -376,7 +376,7 @@
   <string name="my_overview_green_card_not_valid_title_recovery">About your recovery certificate</string>
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands, because the type of test is not accepted.<br/><br/>You’ve only got an international QR code.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason could be that the type of test is not accepted, or that the test is no longer valid abroad. An international recovery certificate can only be made with a PCR-test that is less than 180 days old. Read more about the possible causes on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost</a>.]]></string>
-  <string name="my_overview_green_card_server_error">The app periodically needs a connection to the server to refresh your QR codes. We failed to reach the server because of an error. <a href="#">Try again</a></string>
+  <string name="my_overview_green_card_server_error"><![CDATA[The app periodically needs a connection to the server to refresh your QR codes. We failed to reach the server because of an error. <a href=\"#\">Try again</a>]]></string>
   <string name="my_overview_green_card_server_error_after_retry"><![CDATA[Sorry, we weren’t able to refresh your QR code. Open the app again in 10 minutes.<br/><br/>Still not working? Please call the help desk at 0800-1421 (free) and provide the following error code: A 075]]></string>
   <string name="my_overview_green_card_internet_error"><![CDATA[Connect to the internet to make sure your QR code works again.<br/><a href=\"#\">Try again</a>]]></string>
   <string name="dialog_faultyvaccination28June_title">Vaccination certificate corrected</string>
@@ -385,7 +385,7 @@
   <string name="dialog_faultyvaccination28June_refresh_error_message">Please retrieve your details again via the app.</string>
   <string name="my_overview_qr_placeholder_header">Find your Dutch certificate here later</string>
   <string name="my_overview_qr_placeholder_header_eu">Find your international certificate here later</string>
-  <string name="my_overview_qr_placeholder_description">You can add a certificate if you\'re vaccinated, if you\'ve had coronavirus or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app">affiliated test location</a>.</string>
+  <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had coronavirus or by taking a test at an <a href=\"https://coronacheck.nl/en/testafspraak-in-app\">affiliated test location</a>.]]></string>
   <string name="my_overview_qr_placeholder_description_eu">Are you abroad, or planning to cross the border? Then always use your international certificate. Please check before leaving which certificate you need.</string>
   <string name="my_overview_qr_placeholder_button_eu">Which certificate is needed where I\'m heading?</string>
   <string name="my_overview_qr_placeholder_button_link_eu">https://www.coronacheck.nl/en/wegwijzer</string>
@@ -400,7 +400,7 @@
   <string name="add_paper_proof_no_letter_combination_button">No letter combination?</string>
   <string name="no_letter_combination_dialog_title">No letter combination?</string>
   <string name="no_letter_combination_dialog_description"><![CDATA[Then you won\'t be able to add your certificates to the app this way.<br/><br/>You only have a letter combination if you requested your paper certificates from your healthcare provider, or had them delivered by mail.<br/><br/><b>Did you print your certificate yourself?</b><br/>Then you can add your certificates to the app using DigiD.]]></string>
-  <string name="add_paper_proof_explanation_description">You can add paper certificates to the app if you received them in one of the following ways:</string>
+  <string name="add_paper_proof_explanation_description"><![CDATA[You can add paper certificates to the app if you received them in one of the following ways:]]></string>
   <string name="add_paper_proof_explanation_healthcare_item_title">From your healthcare provider</string>
   <string name="add_paper_proof_explanation_healthcare_item_subtitle">Your general practitioner or another healthcare provider has printed your certificates for you</string>
   <string name="add_paper_proof_explanation_mail_item_title">Sent to you by mail</string>
@@ -534,7 +534,7 @@
   <string name="retrieve_test_result_toolbar_title">Retrieve test result</string>
   <string name="retrieve_test_result_title">Retrieve details about your positive test</string>
   <string name="retrieve_test_result_description">Log in with DigiD. Details about your positive test will be retrieved automatically.</string>
-  <string name="dashboard_coronamelder_tip"><b>Tip:</b> Prevent the spread of coronavirus, use <a href="https://coronamelder.nl/app">CoronaMelder</a> too.</string>
+  <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Prevent the spread of coronavirus, use <a href=\"https://coronamelder.nl/app\">CoronaMelder</a> too.]]></string>
   <string name="certificate_created_vaccination_title">Vaccination certificate instead of recovery certificate</string>
   <string name="certificate_created_vaccination_description"><![CDATA[You were tested positive for coronavirus too long ago. That is why your test result is no longer valid for creating a recovery certificate.<br><br>Because you were tested positive before your first vaccination, one shot means you’re fully vaccinated. Therefore, a full vaccination certificate has been created instead.<br><br>For more information, please check the <a href=\"https://coronacheck.nl/en/guidepost\"> Guidepost</a>.]]></string>
   <string name="no_certificate_created_toolbar_title">No certificate created</string>
@@ -598,7 +598,7 @@
   <string name="holder_event_vaccination_assessment_about_date_of_birth">Date of birth:</string>
   <string name="your_vaccination_explanation_name">Name:</string>
   <string name="your_vaccination_explanation_birthday">Date of birth:</string>
-  <string name="holder_event_vaccination_assessment_wrong_body">Please go back to the desk that reviewed your vaccination. They can help you change your details. For more information, please visit <a href="https://www.government.nl/entry-pass-visitors-cc">www.government.nl/entry-pass-visitors</a>.</string>
+  <string name="holder_event_vaccination_assessment_wrong_body"><![CDATA[Please go back to the desk that reviewed your vaccination. They can help you change your details. For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="holder_event_vaccination_assessment_alert_message">Doing so will stop the addition of your vaccination approval and you will have to retrieve your details again later.</string>
   <string name="visitorpass_token_error_invalid_code">This code is invalid. A valid code looks like this: VAC-YYYYYYYYY1-F2.</string>
   <string name="holder_event_vaccination_assessment_list_message">Are the details correct? If the details are correct, you can add your vaccination approval to the app.</string>
@@ -653,14 +653,14 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_only3GaccessBanner_title">A Dutch certificate currently gives 3G access. This means a certificate is valid anywhere a coronavirus pass is required.</string>
   <string name="holder_dashboard_domesticQRCard_3G_title">Certificate for 3G access</string>
   <string name="holder_dashboard_domesticQRCard_3G_label">3G</string>
-  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message">Visiting a venue in The Netherlands? Check in advance whether you need a certificate for <a href="https://coronacheck.nl/en/accesspolicy/3g-1g-access">3G or 1G access</a>.</string>
+  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message"><![CDATA[Visiting a venue in The Netherlands? Check in advance whether you need a certificate for <a href="https://coronacheck.nl/en/accesspolicy/3g-1g-access">3G or 1G access</a>.]]></string>
   <string name="holder_dashboard_3Gand1GaccessBanner_title">The access rules in the Netherlands have changed. There are now separate certificates for venues with 3G access and 1G access.</string>
-  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess">Check in advance whether you need a certificate for <a href="https://coronacheck.nl/en/accesspolicy/3g-1g-access">3G or 1G access</a>. Also show your proof of identity at the entrance.</string>
+  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess"><![CDATA[Check in advance whether you need a certificate for <a href="https://coronacheck.nl/en/accesspolicy/3g-1g-access">3G or 1G access</a>. Also show your proof of identity at the entrance.]]></string>
   <string name="holder_dashboard_domesticQRCard_1G_title">Certificate for 3G-access</string>
   <string name="holder_dashboard_domesticQRCard_1G_label">1G</string>
-  <string name="holder_dashboard_empty_domestic_only1Gaccess_message">In the Netherlands, you only get access with a test certificate anywhere a coronavirus pass is required <a href="https://coronacheck.nl/en/accesspolicy/1g-access">(1G access)</a>.</string>
+  <string name="holder_dashboard_empty_domestic_only1Gaccess_message"><![CDATA[In the Netherlands, you only get access with a test certificate anywhere a coronavirus pass is required <a href="https://coronacheck.nl/en/accesspolicy/1g-access">(1G access)</a>.]]></string>
   <string name="holder_dashboard_only1GaccessBanner_title">You can add a certificate for 1G access when you have tested negative</string>
-  <string name="holder_dashboard_intro_domestic_only1Gaccess">Show a certificate for <a href="https://coronacheck.nl/en/accesspolicy/1g-access">1G access</a> in the Netherlands if a coronavirus pass is required. Also show your proof of identity.</string>
+  <string name="holder_dashboard_intro_domestic_only1Gaccess"><![CDATA[Show a certificate for <a href="https://coronacheck.nl/en/accesspolicy/1g-access">1G access</a> in the Netherlands if a coronavirus pass is required. Also show your proof of identity.]]></string>
   <string name="holder_dashboard_domesticQRCard_3G_inactive_label">This certificate is currently not used in the Netherlands</string>
   <string name="general_newintheapp">New in the app</string>
   <string name="holder_newintheapp_content_only3G_title">3G access only</string>

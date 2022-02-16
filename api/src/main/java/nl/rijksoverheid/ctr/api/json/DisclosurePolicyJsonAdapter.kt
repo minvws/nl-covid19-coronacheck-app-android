@@ -14,18 +14,22 @@ class DisclosurePolicyJsonAdapter : JsonAdapter<DisclosurePolicy>() {
 
     @FromJson
     override fun fromJson(reader: JsonReader): DisclosurePolicy {
-        val results = mutableListOf<String>()
-        reader.beginArray();
-        while (reader.hasNext()) {
-            results.add(reader.nextString())
-        }
-        reader.endArray()
+        try {
+            val results = mutableListOf<String>()
+            reader.beginArray();
+            while (reader.hasNext()) {
+                results.add(reader.nextString())
+            }
+            reader.endArray()
 
-        return when {
-            results.contains("3G") && results.contains("1G") -> DisclosurePolicy.OneAndThreeG
-            results.contains("1G") -> DisclosurePolicy.OneG
-            results.contains("3G") -> DisclosurePolicy.ThreeG
-            else -> error("Disclosure policy not known")
+            return when {
+                results.contains("3G") && results.contains("1G") && results.size == 2 -> DisclosurePolicy.OneAndThreeG
+                results.contains("1G") && results.size == 1 -> DisclosurePolicy.OneG
+                results.contains("3G") && results.size == 1 -> DisclosurePolicy.ThreeG
+                else -> DisclosurePolicy.ThreeG
+            }
+        } catch (e: Exception) {
+            return DisclosurePolicy.ThreeG
         }
     }
 

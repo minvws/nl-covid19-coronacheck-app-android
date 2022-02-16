@@ -38,10 +38,12 @@ class ScanResultPersonalDetailsFragment :
 
     private val args: ScanResultPersonalDetailsFragmentArgs by navArgs()
 
-    override fun aliveForSeconds(): Long {
-        return if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(
-            3
-        )
+    override fun aliveForMilliseconds(): Long {
+        return if (BuildConfig.FLAVOR == "acc") {
+            TimeUnit.SECONDS.toMillis(10)
+        } else {
+            TimeUnit.MINUTES.toMillis(3)
+        }
     }
 
     override fun navigateToCloseAt() {
