@@ -37,7 +37,7 @@ class ScanResultInvalidFragment : AutoCloseFragment(R.layout.fragment_scan_resul
        return if (BuildConfig.FLAVOR == "acc") {
            TimeUnit.SECONDS.toMillis(10)
        } else {
-           TimeUnit.MINUTES.toSeconds(3)
+           TimeUnit.MINUTES.toMillis(3)
        }
     }
 
