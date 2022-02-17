@@ -37,6 +37,7 @@ class QrCodeUtilImpl : QrCodeUtil {
         )
         hints[EncodeHintType.MARGIN] = 0
         hints[EncodeHintType.ERROR_CORRECTION] = errorCorrectionLevel
+        hints[EncodeHintType.QR_VERSION] = 26
         val bitMatrix = multiFormatWriter.encode(
             qrCodeContent,
             BarcodeFormat.QR_CODE,

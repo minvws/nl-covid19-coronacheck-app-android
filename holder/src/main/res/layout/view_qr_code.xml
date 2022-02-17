@@ -13,7 +13,6 @@
         android:adjustViewBounds="false"
         android:contentDescription="@string/accessibility_label_your_qr"
         android:focusable="true"
-        android:paddingHorizontal="16dp"
         android:scaleType="fitCenter"
         tools:layout_height="400dp" />
 
