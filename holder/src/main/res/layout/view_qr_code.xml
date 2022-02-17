@@ -14,6 +14,7 @@
         android:contentDescription="@string/accessibility_label_your_qr"
         android:focusable="true"
         android:scaleType="fitCenter"
+        android:paddingHorizontal="16dp"
         tools:layout_height="400dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
