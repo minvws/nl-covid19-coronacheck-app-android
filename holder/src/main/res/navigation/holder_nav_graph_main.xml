@@ -798,6 +798,12 @@
     <fragment
         android:id="@+id/nav_new_disclosure_policy"
         android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.NewDisclosurePolicyFragment"
-        android:label="" />
+        android:label="" >
+
+        <argument
+            android:name="disclosurePolicy"
+            app:argType="nl.rijksoverheid.ctr.shared.models.DisclosurePolicy" />
+
+    </fragment>
 
 </navigation>

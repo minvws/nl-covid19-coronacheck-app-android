@@ -13,6 +13,7 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNewDisclosurePolicyBinding
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
@@ -23,17 +24,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewDisclosurePolicyFragment : Fragment(R.layout.fragment_new_disclosure_policy) {
 
-    private val newDisclosurePolicyViewModel: NewDisclosurePolicyViewModel by viewModel()
     private val androidUtil: AndroidUtil by inject()
+    private val args: NewDisclosurePolicyFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentNewDisclosurePolicyBinding.bind(view)
         bindButton(binding)
         handleSmallScreen(binding)
-        setObserver(binding)
-
-        newDisclosurePolicyViewModel.init()
+        setPolicyText(args.disclosurePolicy, binding)
     }
 
     private fun handleSmallScreen(binding: FragmentNewDisclosurePolicyBinding) {
@@ -41,12 +40,6 @@ class NewDisclosurePolicyFragment : Fragment(R.layout.fragment_new_disclosure_po
             binding.image.visibility = View.GONE
         } else {
             binding.image.visibility = View.VISIBLE
-        }
-    }
-
-    private fun setObserver(binding: FragmentNewDisclosurePolicyBinding) {
-        newDisclosurePolicyViewModel.disclosurePolicyLiveData.observe(viewLifecycleOwner) {
-            setPolicyText(it, binding)
         }
     }
 

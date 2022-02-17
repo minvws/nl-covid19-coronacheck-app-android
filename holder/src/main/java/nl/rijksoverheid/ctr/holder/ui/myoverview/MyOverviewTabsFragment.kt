@@ -14,8 +14,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -171,13 +169,12 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
     }
 
     private fun observePolicyUpdate() {
-        dashboardViewModel.showNewPolicyRulesLiveData.observe(viewLifecycleOwner, EventObserver { shouldShow ->
-            if (shouldShow) {
+        dashboardViewModel.showNewPolicyRulesLiveData.observe(
+            viewLifecycleOwner, EventObserver {
                 findNavControllerSafety()?.navigate(
-                    MyOverviewTabsFragmentDirections.actionNewDisclosurePolicy()
+                    MyOverviewTabsFragmentDirections.actionNewDisclosurePolicy(it)
                 )
-            }
-        })
+            })
     }
 
     private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync) {

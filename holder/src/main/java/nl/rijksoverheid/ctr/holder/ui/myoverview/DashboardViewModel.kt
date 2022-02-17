@@ -23,7 +23,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.NewDisclosurePolicySeenUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ShowDisclosurePolicyUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import java.time.Clock
@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit
 abstract class DashboardViewModel : ViewModel() {
     val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
     val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
-    val showNewPolicyRulesLiveData: LiveData<Event<Boolean>> = MutableLiveData()
+    val showNewPolicyRulesLiveData: LiveData<Event<DisclosurePolicy>> = MutableLiveData()
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
@@ -56,7 +56,7 @@ class DashboardViewModelImpl(
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
     private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
-    private val newDisclosurePolicySeenUseCase: NewDisclosurePolicySeenUseCase
+    private val showDisclosurePolicyUseCase: ShowDisclosurePolicyUseCase
 ) : DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -68,9 +68,10 @@ class DashboardViewModelImpl(
         viewModelScope.launch {
             refreshCredentials(dashboardSync)
 
-            (showNewPolicyRulesLiveData as MutableLiveData).postValue(
-                Event(newDisclosurePolicySeenUseCase.get())
-            )
+            showDisclosurePolicyUseCase.get()?.let {
+                (showNewPolicyRulesLiveData as MutableLiveData).postValue(Event(it))
+                persistenceManager.setPolicyScreenSeen(it)
+            }
         }
     }
 

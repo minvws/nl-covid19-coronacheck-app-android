@@ -44,5 +44,4 @@ val viewModels = module {
     viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
     viewModel<DashboardViewModel> { DashboardViewModelImpl(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel<SyncGreenCardsViewModel> { SyncGreenCardsViewModelImpl(get(), get()) }
-    viewModel<NewDisclosurePolicyViewModel> { NewDisclosurePolicyViewModelImpl(get()) }
 }
