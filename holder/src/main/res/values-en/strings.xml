@@ -676,5 +676,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_3Gand1GaccessBanner_link">https://coronacheck.nl/en/toegangsregels/3g-1g-certificate</string>
   <string name="holder_dashboard_only1GaccessBanner_link">https://coronacheck.nl/en/toegangsregels/1g-certificate</string>
   <string name="general_newpolicy">New policy</string>
-  <string name="holder_dashboard_accessibility_notification">Close notification</string>
+  <string name="holder_dashboard_accessibility_notification_close">Close notification</string>
+  <string name="holder_dashboard_accessibility_notification">Notification</string>
 </resources>
