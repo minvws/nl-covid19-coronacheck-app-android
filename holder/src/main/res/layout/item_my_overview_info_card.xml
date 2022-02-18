@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
     android:layout_marginHorizontal="16dp"
+    android:focusable="true"
     app:cardCornerRadius="15dp"
     app:cardElevation="2dp">
 
@@ -25,7 +26,6 @@
             app:layout_goneMarginEnd="24dp"
             app:layout_goneMarginBottom="24dp"
             android:textAppearance="?attr/textAppearanceBody1"
-            android:focusable="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/button"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/actionBarItemBackground"
-            android:contentDescription="@string/menu_close"
+            android:contentDescription="@string/holder_dashboard_accessibility_notification"
             android:src="@drawable/ic_close"
             android:visibility="gone"
             android:padding="24dp"
