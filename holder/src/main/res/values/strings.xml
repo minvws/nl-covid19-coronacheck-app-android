@@ -679,4 +679,5 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="general_newpolicy">Nieuwe regels</string>
   <string name="holder_dashboard_accessibility_notification_close">Sluiten notificatie</string>
   <string name="holder_dashboard_accessibility_notification">Notificatie</string>
+  <string name="holder_dashboard_accessibility_green_card">Bewijs</string>
 </resources>

@@ -678,4 +678,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="general_newpolicy">New policy</string>
   <string name="holder_dashboard_accessibility_notification_close">Close notification</string>
   <string name="holder_dashboard_accessibility_notification">Notification</string>
+  <string name="holder_dashboard_accessibility_green_card">Certificate</string>
 </resources>
