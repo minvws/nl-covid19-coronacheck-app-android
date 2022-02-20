@@ -30,7 +30,7 @@ abstract class AutoCloseFragment(contentLayoutId: Int) : Fragment(contentLayoutI
     }
 
     // Time when this fragment was created
-    private var fragmentCreatedTimestamp = Instant.now(Clock.systemUTC()).epochSecond
+    private var fragmentCreatedTimestamp: Long = Instant.now(Clock.systemUTC()).toEpochMilli()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,7 +55,7 @@ abstract class AutoCloseFragment(contentLayoutId: Int) : Fragment(contentLayoutI
      * Navigates to [navigateToCloseAt] when finished
      */
     private fun checkShouldClose() {
-        val fragmentCreatedInstant = Instant.ofEpochSecond(fragmentCreatedTimestamp)
+        val fragmentCreatedInstant = Instant.ofEpochMilli(fragmentCreatedTimestamp)
         val nowInstant = Instant.now(Clock.systemUTC())
 
         if (fragmentCreatedInstant.plusMillis(aliveForMilliseconds()).isBefore(nowInstant)) {
