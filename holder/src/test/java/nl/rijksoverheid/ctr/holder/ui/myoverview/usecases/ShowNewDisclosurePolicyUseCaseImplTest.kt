@@ -12,20 +12,19 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.usecases
 
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
-class ShowDisclosurePolicyUseCaseImplTest {
+class ShowNewDisclosurePolicyUseCaseImplTest {
 
     private val featureFlagUseCase: HolderFeatureFlagUseCase = mockk()
     private val persistenceManager: PersistenceManager = mockk(relaxed = true)
 
-    private val newDisclosurePolicySeen = ShowDisclosurePolicyUseCaseImpl(
+    private val newDisclosurePolicySeen = ShowNewDisclosurePolicyUseCaseImpl(
         featureFlagUseCase, persistenceManager
     )
 
@@ -34,7 +33,7 @@ class ShowDisclosurePolicyUseCaseImplTest {
         every { featureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
         every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.ThreeG
 
-        assertTrue(newDisclosurePolicySeen.get())
+        assertEquals(DisclosurePolicy.OneG, newDisclosurePolicySeen.get())
     }
 
     @Test
@@ -42,16 +41,6 @@ class ShowDisclosurePolicyUseCaseImplTest {
         every { featureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
         every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.ThreeG
 
-        assertFalse(newDisclosurePolicySeen.get())
-    }
-
-    @Test
-    fun `policy screen seen should be set to the current policy when it should be shown`() {
-        every { featureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
-        every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.ThreeG
-
-        newDisclosurePolicySeen.get()
-
-        verify { persistenceManager.setPolicyScreenSeen(DisclosurePolicy.OneG) }
+        assertNull(newDisclosurePolicySeen.get())
     }
 }

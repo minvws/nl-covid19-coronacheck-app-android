@@ -23,7 +23,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ShowDisclosurePolicyUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ShowNewDisclosurePolicyUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import java.time.Clock
@@ -56,7 +56,7 @@ class DashboardViewModelImpl(
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
     private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
-    private val showDisclosurePolicyUseCase: ShowDisclosurePolicyUseCase
+    private val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase
 ) : DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -68,7 +68,7 @@ class DashboardViewModelImpl(
         viewModelScope.launch {
             refreshCredentials(dashboardSync)
 
-            showDisclosurePolicyUseCase.get()?.let {
+            showNewDisclosurePolicyUseCase.get()?.let {
                 (showNewPolicyRulesLiveData as MutableLiveData).postValue(Event(it))
                 persistenceManager.setPolicyScreenSeen(it)
             }

@@ -10,10 +10,10 @@
 
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ShowDisclosurePolicyUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ShowDisclosurePolicyUseCaseImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ShowNewDisclosurePolicyUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ShowNewDisclosurePolicyUseCaseImpl
 import org.koin.dsl.module
 
 val disclosurePolicyModule = module {
-    factory<ShowDisclosurePolicyUseCase> { ShowDisclosurePolicyUseCaseImpl(get(), get()) }
+    factory<ShowNewDisclosurePolicyUseCase> { ShowNewDisclosurePolicyUseCaseImpl(get(), get()) }
 }
