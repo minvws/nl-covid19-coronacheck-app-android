@@ -68,16 +68,18 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         binding.image.setImageBitmap(qrCodeData.bitmap)
         binding.image.setAccessibilityFocus()
         binding.overlayButton.setOnClickListener {
-            binding.overlay.visibility = View.GONE
+            // using View.INVISIBLE instead View.GONE cause the latter breaks
+            // the click listener for physical keyboards accessibility
+            binding.overlay.visibility = View.INVISIBLE
             onOverlayButtonClicked.invoke()
         }
         if (isOverlayStateReset) {
-            binding.overlay.visibility = if (isHidden(qrCodeData)) View.VISIBLE else View.GONE
+            binding.overlay.visibility = if (isHidden(qrCodeData)) View.VISIBLE else View.INVISIBLE
         }
     }
 
     fun resetOverlay(qrCodeData: QrCodeData) {
-        binding.overlay.visibility = if (isHidden(qrCodeData)) View.VISIBLE else View.GONE
+        binding.overlay.visibility = if (isHidden(qrCodeData)) View.VISIBLE else View.INVISIBLE
     }
 
     private fun isHidden(qrCodeData: QrCodeData) =
