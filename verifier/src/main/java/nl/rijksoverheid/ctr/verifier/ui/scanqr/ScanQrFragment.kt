@@ -261,6 +261,8 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         )
         binding.bottom.lock()
 
+        showDeviationViewIfNeeded()
+
         binding.lockedAnimation.visibility = if (!androidUtil.isSmallScreen()) VISIBLE else GONE
         binding.lockedAnimation.setAnimation(
             when (selectionState) {
