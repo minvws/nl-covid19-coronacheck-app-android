@@ -40,8 +40,10 @@ class MyOverviewInfoCardItem(
         }
 
         viewBinding.button.run {
+            val buttonTextId = infoItem.buttonText ?: R.string.general_readmore
             visibility = if (infoItem.hasButton) View.VISIBLE else View.GONE
-            setText(infoItem.buttonText ?: R.string.general_readmore)
+            setText(buttonTextId)
+            contentDescription = context.getString(buttonTextId)
         }
 
         when (infoItem) {
