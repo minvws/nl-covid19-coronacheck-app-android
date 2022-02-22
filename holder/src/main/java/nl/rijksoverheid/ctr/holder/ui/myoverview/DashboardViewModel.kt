@@ -55,8 +55,7 @@ class DashboardViewModelImpl(
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
-    private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
-    private val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase
+    private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase
 ) : DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -67,11 +66,6 @@ class DashboardViewModelImpl(
     override fun refresh(dashboardSync: DashboardSync) {
         viewModelScope.launch {
             refreshCredentials(dashboardSync)
-
-            showNewDisclosurePolicyUseCase.get()?.let {
-                (showNewPolicyRulesLiveData as MutableLiveData).postValue(Event(it))
-                persistenceManager.setPolicyScreenSeen(it)
-            }
         }
     }
 

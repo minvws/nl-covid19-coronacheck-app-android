@@ -30,19 +30,21 @@ class IntroductionViewModelImpl(
 ) : IntroductionViewModel() {
 
     init {
-        introductionStatusUseCase.get().takeIf { it != IntroductionStatus.IntroductionFinished.NoActionRequired }?.let {
-            (introductionStatusLiveData as MutableLiveData).postValue(Event(it))
-        }
+        introductionStatusUseCase.get()
+            .takeIf { it !is IntroductionStatus.IntroductionFinished.NoActionRequired }
+            ?.let { (introductionStatusLiveData as MutableLiveData).postValue(Event(it)) }
     }
 
     override fun getIntroductionStatus() = introductionStatusUseCase.get()
 
     override fun saveIntroductionFinished(introductionData: IntroductionData) {
         introductionPersistenceManager.saveIntroductionFinished()
-        introductionData.newTerms?.let {
-            introductionPersistenceManager.saveNewTermsSeen(it.version)
+        introductionPersistenceManager.saveNewTermsSeen(introductionData.newTerms.version)
+        introductionData.newFeatureVersion?.let {
+            introductionPersistenceManager.saveNewFeaturesSeen(
+                it
+            )
         }
-        introductionPersistenceManager.saveNewFeaturesSeen(introductionData.newFeatureVersion)
     }
 
     override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
@@ -50,8 +52,11 @@ class IntroductionViewModelImpl(
     }
 
     override fun onConfigUpdated() {
-        introductionStatusUseCase.get().takeIf { it is IntroductionStatus.IntroductionFinished.NewPolicy }?.let {
-            (introductionStatusLiveData as MutableLiveData).postValue(Event(it))
-        }
+        introductionStatusUseCase.get()
+            .takeIf {
+                it is IntroductionStatus.IntroductionFinished.NewFeatures ||
+                        it is IntroductionStatus.IntroductionFinished.ConsentNeeded
+            }
+            ?.let { (introductionStatusLiveData as MutableLiveData).postValue(Event(it)) }
     }
 }

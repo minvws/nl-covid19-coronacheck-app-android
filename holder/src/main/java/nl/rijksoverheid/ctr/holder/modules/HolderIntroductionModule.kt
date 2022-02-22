@@ -69,5 +69,5 @@ val holderIntroductionModule = module {
             hideConsent = true
         )
     }
-    factory<IntroductionStatusUseCase> { HolderIntroductionStatusUseCaseImpl(get(), get(), get()) }
+    factory<IntroductionStatusUseCase> { HolderIntroductionStatusUseCaseImpl(get(), get(), get(), get()) }
 }

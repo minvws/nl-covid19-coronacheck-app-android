@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -35,21 +36,21 @@ class IntroductionStatusFragment : Fragment() {
 
         when (introductionStatus) {
             is IntroductionStatus.IntroductionNotFinished -> {
-                findNavController().navigate(
+                findNavControllerSafety()?.navigate(
                     IntroductionStatusFragmentDirections.actionSetup(
                         introductionStatus.introductionData
                     )
                 )
             }
             is IntroductionStatus.IntroductionFinished.ConsentNeeded -> {
-                findNavController().navigate(
+                findNavControllerSafety()?.navigate(
                     IntroductionStatusFragmentDirections.actionNewTerms(
                         introductionStatus.introductionData
                     )
                 )
             }
             is IntroductionStatus.IntroductionFinished.NewFeatures -> {
-                findNavController().navigate(
+                findNavControllerSafety()?.navigate(
                     IntroductionStatusFragmentDirections.actionNavNewFeatures(
                         introductionStatus.introductionData
                     )

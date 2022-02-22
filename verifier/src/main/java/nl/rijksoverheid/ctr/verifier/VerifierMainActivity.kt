@@ -79,6 +79,7 @@ class VerifierMainActivity : AppCompatActivity() {
         appConfigViewModel.appStatusLiveData.observe(this) {
             verifierMainActivityViewModel.policyUpdate()
             handleAppStatus(it, navController)
+            introductionViewModel.onConfigUpdated()
         }
 
         verifierMainActivityViewModel.isPolicyUpdatedLiveData.observe(

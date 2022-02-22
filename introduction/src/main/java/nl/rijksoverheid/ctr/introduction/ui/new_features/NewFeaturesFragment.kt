@@ -86,7 +86,9 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
     }
 
     private fun finishFlow() {
-        introductionViewModel.saveNewFeaturesFinished(args.introductionData.newFeatureVersion)
+        args.introductionData.newFeatureVersion?.let {
+            introductionViewModel.saveNewFeaturesFinished(it)
+        }
         when (introductionViewModel.getIntroductionStatus()) {
             is IntroductionStatus.IntroductionFinished.ConsentNeeded -> navigateToTerms()
             else -> navigateToMain()

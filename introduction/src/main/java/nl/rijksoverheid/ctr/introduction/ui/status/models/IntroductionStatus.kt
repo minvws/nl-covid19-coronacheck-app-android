@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.introduction.ui.status.models
 
 import android.os.Parcelable
-import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 
@@ -22,12 +21,6 @@ sealed class IntroductionStatus : Parcelable {
 
         @Parcelize
         data class NewFeatures(val introductionData: IntroductionData) : IntroductionFinished(), Parcelable
-
-        @Parcelize
-        data class NewPolicy(
-            @StringRes val title: Int,
-            @StringRes val body: Int
-        ) : IntroductionFinished(), Parcelable
     }
 
     @Parcelize
