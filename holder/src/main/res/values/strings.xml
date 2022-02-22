@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string name="holder_fetchRemoteEvents_title">Gegevens ophalen</string>
   <string name="general_readmore">Lees meer</string>
   <string name="holder_dcc_alert_message">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
   <string name="holder_recovery_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
@@ -77,7 +78,7 @@
   <string name="commercial_test_type_qr_code_title">Ik heb een QR-code</string>
   <string name="commercial_test_type_no_code_title">Heb je geen ophaalcode?</string>
   <string name="commercial_test_type_no_code_received_title">Geen verificatiecode gekregen?</string>
-  <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een ophaalcode met cijfers en letters.<br\><br\>Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met je testlocatie.]]></string>
+  <string name="commercial_test_type_no_code_description"><![CDATA[Je krijgt van de testlocatie een ophaalcode met cijfers en letters.<br/><br/>Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met je testlocatie.]]></string>
   <string name="commercial_test_code_title">Testuitslag ophalen</string>
   <string name="commercial_test_code_description">Vul jouw ophaalcode in. Deze heb je van je testlocatie gekregen.</string>
   <string name="commercial_test_unique_code_header">Ophaalcode</string>
@@ -323,7 +324,7 @@
   <string name="no_test_results_title">Geen testuitslag beschikbaar</string>
   <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testuitslag beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Heb je al een negatieve testuitslag van de GGD gekregen? Het kan een paar uur duren voordat je de uitslag hier kunt ophalen. Probeer het later opnieuw.]]></string>
   <string name="not_yet_tested_title">Ben je nog niet getest?</string>
-  <string name="not_yet_tested_description"><![CDATA[Voor een testbewijs moet je eerst een test doen bij een aangesloten testlocatie. Blijkt uit de test dat je geen corona hebt? Dan kun je een bewijs maken. ]]></string>
+  <string name="not_yet_tested_description"><![CDATA[Voor een testbewijs moet je eerst een test doen bij een aangesloten testlocatie. Blijkt uit de test dat je geen corona hebt? Dan kun je een bewijs maken.]]></string>
   <string name="not_yet_tested_button">Maak een afspraak</string>
   <string name="privacy_policy_3"><![CDATA[In de QR-code staan minimale <b>persoonsgegevens</b>.]]></string>
   <string name="choose_provider_no_digid">Ik heb geen DigiD</string>
@@ -654,14 +655,14 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_dashboard_only3GaccessBanner_title">Op dit moment geeft een Nederlands bewijs 3G-toegang. Dit betekent dat een bewijs overal geldig is waar om een coronabewijs wordt gevraagd.</string>
   <string name="holder_dashboard_domesticQRCard_3G_title">Bewijs voor 3G-toegang</string>
   <string name="holder_dashboard_domesticQRCard_3G_label">3G</string>
-  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message"><![CDATA[Bezoek je een plek in Nederland? Check vooraf of je een bewijs voor <a href="https://coronacheck.nl/toegangsregels/3g-1g-toegang">3G- of 1G toegang</a> nodig hebt.]]></string>
+  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message"><![CDATA[Bezoek je een plek in Nederland? Check vooraf of je een bewijs voor <a href=\"https://coronacheck.nl/toegangsregels/3g-1g-toegang\">3G- of 1G toegang</a> nodig hebt.]]></string>
   <string name="holder_dashboard_3Gand1GaccessBanner_title">De Nederlandse toegangsregels zijn veranderd. Er zijn nu aparte bewijzen voor plekken die 3G-toegang en 1G-toegang geven.</string>
-  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess"><![CDATA[Check vooraf of je een bewijs voor <a href="https://coronacheck.nl/toegangsregels/3g-1g-toegang">3G- of 1G toegang</a> nodig hebt. Laat ook je identiteitsbewijs zien.]]></string>
+  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess"><![CDATA[Check vooraf of je een bewijs voor <a href=\"https://coronacheck.nl/toegangsregels/3g-1g-toegang\">3G- of 1G toegang</a> nodig hebt. Laat ook je identiteitsbewijs zien.]]></string>
   <string name="holder_dashboard_domesticQRCard_1G_title">Bewijs voor 1G-toegang</string>
   <string name="holder_dashboard_domesticQRCard_1G_label">1G</string>
-  <string name="holder_dashboard_empty_domestic_only1Gaccess_message"><![CDATA[In Nederland krijg je alleen toegang met een testbewijs op plekken waar om een coronabewijs wordt gevraagd <a href="https://coronacheck.nl/toegangsregels/1g-toegang">(1G-toegang)</a>.]]></string>
+  <string name="holder_dashboard_empty_domestic_only1Gaccess_message"><![CDATA[In Nederland krijg je alleen toegang met een testbewijs op plekken waar om een coronabewijs wordt gevraagd <a href=\"https://coronacheck.nl/toegangsregels/1g-toegang\">(1G-toegang)</a>.]]></string>
   <string name="holder_dashboard_only1GaccessBanner_title">Je kunt een bewijs voor 1G-toegang toevoegen wanneer je negatief getest bent</string>
-  <string name="holder_dashboard_intro_domestic_only1Gaccess"><![CDATA[Laat in Nederland een bewijs voor <a href="https://coronacheck.nl/toegangsregels/1g-toegang">1G-toegang</a> zien als om een coronabewijs wordt gevraagd. Laat ook je identiteitsbewijs zien.]]></string>
+  <string name="holder_dashboard_intro_domestic_only1Gaccess"><![CDATA[Laat in Nederland een bewijs voor <a href=\"https://coronacheck.nl/toegangsregels/1g-toegang\">1G-toegang</a> zien als om een coronabewijs wordt gevraagd. Laat ook je identiteitsbewijs zien.]]></string>
   <string name="holder_dashboard_domesticQRCard_3G_inactive_label">Dit bewijs wordt nu niet gebruikt in Nederland</string>
   <string name="general_newintheapp">Nieuw in de app</string>
   <string name="holder_newintheapp_content_only3G_title">Alleen 3G-toegang</string>
@@ -677,7 +678,10 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_dashboard_3Gand1GaccessBanner_link">https://coronacheck.nl/toegangsregels/3g-1g-bewijs</string>
   <string name="holder_dashboard_only1GaccessBanner_link">https://coronacheck.nl/toegangsregels/1g-bewijs</string>
   <string name="general_newpolicy">Nieuwe regels</string>
-  <string name="holder_dashboard_accessibility_notification_close">Sluiten notificatie</string>
   <string name="holder_dashboard_accessibility_notification">Notificatie</string>
+  <string name="holder_dashboard_accessibility_notification_close">Sluiten notificatie</string>
   <string name="holder_dashboard_accessibility_green_card">Bewijs</string>
+  <string name="holder_addVaccine_alsoCollectPositiveTestResults_checkbox">Haal ook mijn positieve testuitslag op</string>
+  <string name="holder_listRemoteEvents_message">Je bent weer uitgelogd bij DigiD. Als de gegevens kloppen kun je een bewijs maken.</string>
+  <string name="holder_listRemoteEvents_paperflow_message">Met deze gegevens kun je een bewijs maken.</string>
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string name="holder_fetchRemoteEvents_title">Retrieve details</string>
   <string name="general_readmore">Read more</string>
   <string name="holder_dcc_alert_message">You can try to add a paper certificate again later.</string>
   <string name="holder_recovery_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
@@ -28,7 +29,7 @@
   <string name="privacy_policy_2"><![CDATA[No location data is <b>used or saved</b>]]></string>
   <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data.</string>
   <string name="my_overview">My certificates</string>
-  <string name="my_overview_description">Visiting a location within the Netherlands? Show both your Dutch QR code and your proof of identity at the entrance of the location you\'re visiting.</string>
+  <string name="my_overview_description">Visiting a venue within the Netherlands? Show both your Dutch QR code and your proof of identity at the entrance.</string>
   <string name="my_overview_description_eu"><![CDATA[Are you abroad or planning to cross the border? Then always use the international QR code below. Please check before leaving which certificate you need.]]></string>
   <string name="my_overview_description_eu_button_text">Which certificate is needed where I’m heading?</string>
   <string name="my_overview_description_eu_button_link">https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands</string>
@@ -507,7 +508,7 @@
   <string name="accessibility_flash_on">Turn the flashlight on.</string>
   <string name="recover_domestic_recovery_green_card_button">Restore certificate</string>
   <string name="cannot_create_recovery_proof_title">Positive test result no longer valid</string>
-  <string name="cannot_create_recovery_proof_description"><![CDATA[It has been too long ago since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost</a>.]]></string>
+  <string name="cannot_create_recovery_proof_description"><![CDATA[It has been too long ago since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s]]></string>
   <string name="qr_card_vaccination_title_domestic_with_doses">Vaccination certificate (%1$s doses):</string>
   <string name="add_paper_proof_why_only_international_title">Why only international?</string>
@@ -653,14 +654,14 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_only3GaccessBanner_title">A Dutch certificate currently gives you 3G access. This means a certificate is valid anywhere a coronavirus pass is required.</string>
   <string name="holder_dashboard_domesticQRCard_3G_title">Certificate for 3G access</string>
   <string name="holder_dashboard_domesticQRCard_3G_label">3G</string>
-  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message"><![CDATA[Visiting a venue in The Netherlands? Check in advance whether you need a certificate for <a href="https://coronacheck.nl/en/accesspolicy/3g-1g-access">3G or 1G access</a>.]]></string>
+  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message"><![CDATA[Visiting a venue in The Netherlands? Check in advance whether you need a certificate for <a href=\"https://coronacheck.nl/en/accesspolicy/3g-1g-access\">3G or 1G access</a>.]]></string>
   <string name="holder_dashboard_3Gand1GaccessBanner_title">The access rules in the Netherlands have changed. There are now separate certificates for venues with 3G access and 1G access.</string>
-  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess"><![CDATA[Check in advance whether you need a certificate for <a href="https://coronacheck.nl/en/accesspolicy/3g-1g-access">3G or 1G access</a>. Also show your proof of identity at the entrance.]]></string>
-  <string name="holder_dashboard_domesticQRCard_1G_title">Certificate for 1G-access</string>
+  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess"><![CDATA[Check in advance whether you need a certificate for <a href=\"https://coronacheck.nl/en/accesspolicy/3g-1g-access\">3G or 1G access</a>. Also show your proof of identity at the entrance.]]></string>
+  <string name="holder_dashboard_domesticQRCard_1G_title">Certificate for 1G access</string>
   <string name="holder_dashboard_domesticQRCard_1G_label">1G</string>
-  <string name="holder_dashboard_empty_domestic_only1Gaccess_message"><![CDATA[In the Netherlands, you only get access with a test certificate anywhere a coronavirus pass is required <a href="https://coronacheck.nl/en/accesspolicy/1g-access">(1G access)</a>.]]></string>
+  <string name="holder_dashboard_empty_domestic_only1Gaccess_message"><![CDATA[In the Netherlands, you only get access with a test certificate anywhere a coronavirus pass is required <a href=\"https://coronacheck.nl/en/accesspolicy/1g-access\">(1G access)</a>.]]></string>
   <string name="holder_dashboard_only1GaccessBanner_title">You can add a certificate for 1G access when you have tested negative</string>
-  <string name="holder_dashboard_intro_domestic_only1Gaccess"><![CDATA[Show a certificate for <a href="https://coronacheck.nl/en/accesspolicy/1g-access">1G access</a> in the Netherlands if a coronavirus pass is required. Also show your proof of identity.]]></string>
+  <string name="holder_dashboard_intro_domestic_only1Gaccess"><![CDATA[Show a certificate for <a href=\"https://coronacheck.nl/en/accesspolicy/1g-access\">1G access</a> in the Netherlands if a coronavirus pass is required. Also show your proof of identity.]]></string>
   <string name="holder_dashboard_domesticQRCard_3G_inactive_label">This certificate is currently not used in the Netherlands</string>
   <string name="general_newintheapp">New in the app</string>
   <string name="holder_newintheapp_content_only3G_title">3G access only</string>
@@ -676,7 +677,10 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_3Gand1GaccessBanner_link">https://coronacheck.nl/en/toegangsregels/3g-1g-certificate</string>
   <string name="holder_dashboard_only1GaccessBanner_link">https://coronacheck.nl/en/toegangsregels/1g-certificate</string>
   <string name="general_newpolicy">New policy</string>
-  <string name="holder_dashboard_accessibility_notification_close">Close notification</string>
   <string name="holder_dashboard_accessibility_notification">Notification</string>
+  <string name="holder_dashboard_accessibility_notification_close">Close notification</string>
   <string name="holder_dashboard_accessibility_green_card">Certificate</string>
+  <string name="holder_addVaccine_alsoCollectPositiveTestResults_checkbox">Haal ook mijn positieve testuitslag op</string>
+  <string name="holder_listRemoteEvents_message">Je bent weer uitgelogd bij DigiD. Als de gegevens kloppen kun je een bewijs maken.</string>
+  <string name="holder_listRemoteEvents_paperflow_message">You can create a certificate with these details.</string>
 </resources>
