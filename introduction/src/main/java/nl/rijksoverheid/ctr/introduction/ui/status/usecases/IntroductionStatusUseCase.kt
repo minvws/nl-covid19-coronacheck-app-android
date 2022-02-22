@@ -1,11 +1,6 @@
 package nl.rijksoverheid.ctr.introduction.ui.status.usecases
 
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
-import nl.rijksoverheid.ctr.introduction.IntroductionData
-import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionFinished
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionNotFinished
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,32 +11,4 @@ import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.Int
  */
 interface IntroductionStatusUseCase {
     fun get(): IntroductionStatus
-}
-
-class IntroductionStatusUseCaseImpl(
-    private val introductionPersistenceManager: IntroductionPersistenceManager,
-    private val introductionData: IntroductionData,
-    private val featureFlagUseCase: FeatureFlagUseCase
-) : IntroductionStatusUseCase {
-
-    override fun get(): IntroductionStatus {
-        return when {
-            introductionIsNotFinished() -> IntroductionNotFinished(introductionData)
-            newFeaturesAvailable() -> IntroductionFinished.NewFeatures(introductionData)
-            newTermsAvailable() -> IntroductionFinished.ConsentNeeded(introductionData)
-            else -> IntroductionFinished.NoActionRequired
-
-        }
-    }
-
-    private fun newTermsAvailable() =
-        introductionData.newTerms != null &&
-                !introductionPersistenceManager.getNewTermsSeen(introductionData.newTerms.version)
-
-    private fun newFeaturesAvailable() = introductionData.newFeatures.isNotEmpty() &&
-            !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion) && featureFlagUseCase.isVerificationPolicySelectionEnabled()
-
-    private fun introductionIsNotFinished() =
-        !introductionPersistenceManager.getIntroductionFinished()
-
 }

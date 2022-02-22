@@ -21,13 +21,13 @@ abstract class IntroductionViewModel : ViewModel() {
     abstract fun getIntroductionStatus(): IntroductionStatus
     abstract fun saveIntroductionFinished(introductionData: IntroductionData)
     abstract fun saveNewFeaturesFinished(newFeaturesVersion: Int)
+    abstract fun onConfigUpdated()
 }
 
 class IntroductionViewModelImpl(
     private val introductionPersistenceManager: IntroductionPersistenceManager,
     private val introductionStatusUseCase: IntroductionStatusUseCase
-) :
-    IntroductionViewModel() {
+) : IntroductionViewModel() {
 
     init {
         introductionStatusUseCase.get().takeIf { it != IntroductionStatus.IntroductionFinished.NoActionRequired }?.let {
@@ -47,5 +47,11 @@ class IntroductionViewModelImpl(
 
     override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
         introductionPersistenceManager.saveNewFeaturesSeen(newFeaturesVersion)
+    }
+
+    override fun onConfigUpdated() {
+        introductionStatusUseCase.get().takeIf { it is IntroductionStatus.IntroductionFinished.NewPolicy }?.let {
+            (introductionStatusLiveData as MutableLiveData).postValue(Event(it))
+        }
     }
 }

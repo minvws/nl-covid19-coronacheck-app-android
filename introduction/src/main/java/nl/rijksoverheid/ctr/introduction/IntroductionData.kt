@@ -19,7 +19,7 @@ data class IntroductionData(
     val onboardingItems: List<OnboardingItem> = listOf(),
     val privacyPolicyItems: List<PrivacyPolicyItem> = listOf(),
     val newFeatures: List<NewFeatureItem> = listOf(),
-    val newTerms: NewTerms? = null,
+    val newTerms: NewTerms,
     val newFeatureVersion: Int = 0,
     val hideConsent: Boolean = false
 ) : Parcelable
