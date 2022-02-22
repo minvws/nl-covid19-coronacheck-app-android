@@ -14,8 +14,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
@@ -27,6 +25,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MenuUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -68,6 +67,7 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         observeItems(adapter)
         observeSyncErrors()
         observeAppConfig()
+        observePolicyUpdate()
     }
 
     private fun setupViewPager(adapter: DashboardPagerAdapter) {
@@ -166,6 +166,15 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         appConfigViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
             dashboardViewModel.refresh()
         }
+    }
+
+    private fun observePolicyUpdate() {
+        dashboardViewModel.showNewPolicyRulesLiveData.observe(
+            viewLifecycleOwner, EventObserver {
+                findNavControllerSafety()?.navigate(
+                    MyOverviewTabsFragmentDirections.actionNewDisclosurePolicy(it)
+                )
+            })
     }
 
     private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync) {

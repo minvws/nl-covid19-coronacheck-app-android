@@ -13,10 +13,7 @@ import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodesViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodesViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.myoverview.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -45,6 +42,6 @@ val viewModels = module {
     viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get(), get()) }
     viewModel<PaperProofCodeViewModel> { PaperProofCodeViewModelImpl(get()) }
     viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
-    viewModel<DashboardViewModel> { DashboardViewModelImpl(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel<DashboardViewModel> { DashboardViewModelImpl(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel<SyncGreenCardsViewModel> { SyncGreenCardsViewModelImpl(get(), get()) }
 }
