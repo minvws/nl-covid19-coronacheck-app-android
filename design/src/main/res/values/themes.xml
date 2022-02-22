@@ -64,7 +64,7 @@
         <item name="colorOnSurface">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
-        <item name="android:colorControlHighlight">@color/primary_blue</item>
+        <item name="colorControlHighlight">@color/white</item>
     </style>
 
     <style name="ThemeOverlay.AppTheme.Splash" parent="">
