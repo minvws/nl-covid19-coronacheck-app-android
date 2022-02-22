@@ -10,6 +10,7 @@
     android:orientation="vertical"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:contentDescription="@string/holder_dashboard_accessibility_green_card"
     android:screenReaderFocusable="true"
     android:focusable="true">
 
