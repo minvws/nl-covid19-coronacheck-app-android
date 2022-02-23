@@ -67,7 +67,7 @@ class HolderIntroductionStatusUseCaseImpl(
         return when {
             newFeaturesAvailable() && newPolicy != null -> OnboardingFinished.NewFeatures(
                 introductionData.copy(
-                    newFeatures = listOf(getNewPolicyIntroduction(newPolicy)) + introductionData.newFeatures,
+                    newFeatures = introductionData.newFeatures + listOf(getNewPolicyIntroduction(newPolicy)),
                     onPolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 )
             )
