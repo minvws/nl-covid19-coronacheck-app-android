@@ -85,9 +85,9 @@ class HolderMainActivity : AppCompatActivity() {
             )
         })
 
-        appConfigViewModel.appStatusLiveData.observe(this, {
+        appConfigViewModel.appStatusLiveData.observe(this) {
             handleAppStatus(it, navController)
-        })
+        }
 
         deviceRootedViewModel.deviceRootedLiveData.observe(this, EventObserver {
             if (it) {

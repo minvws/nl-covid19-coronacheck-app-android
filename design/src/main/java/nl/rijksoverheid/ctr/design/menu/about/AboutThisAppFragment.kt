@@ -36,7 +36,6 @@ import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
     private val dialogUtil: DialogUtil by inject()
@@ -99,9 +98,12 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             ).formatDayMonthYearTimeNumerical()
         )
 
-        // On test and acceptance builds show button to trigger deeplink to scanner
-        if (BuildConfig.DEBUG || context?.packageName == "nl.rijksoverheid.ctr.holder.acc") {
-            bindScannerDeeplinkButton(binding.deeplinkScannerButton)
+        // On acceptance builds show button to trigger deeplink to scanner
+        if (!aboutThisAppData.deeplinkScannerUrl.isNullOrEmpty()) {
+            bindScannerDeeplinkButton(
+                deeplinkScannerButton = binding.deeplinkScannerButton,
+                url = aboutThisAppData.deeplinkScannerUrl
+            )
         }
 
         // On test and acceptance builds show buttons to set policy locally
@@ -125,12 +127,10 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         (context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
     }
 
-    private fun bindScannerDeeplinkButton(deeplinkScannerButton: Button) {
+    private fun bindScannerDeeplinkButton(deeplinkScannerButton: Button, url: String) {
         deeplinkScannerButton.visibility = View.VISIBLE
-        val link =
-            "https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.acc.coronacheck.nl/app/open?returnUri=scanner-test"
         deeplinkScannerButton.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW).apply { data = Uri.parse(link) })
+            startActivity(Intent(Intent.ACTION_VIEW).apply { data = Uri.parse(url) })
         }
     }
 
