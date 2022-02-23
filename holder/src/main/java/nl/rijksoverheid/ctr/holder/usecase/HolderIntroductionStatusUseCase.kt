@@ -41,13 +41,15 @@ class HolderIntroductionStatusUseCaseImpl(
         return when {
             newFeaturesAvailable() && newPolicy != null -> IntroductionFinished.NewFeatures(
                 introductionData.copy(
-                    newFeatures = listOf(getNewPolicyIntroduction(newPolicy)) + introductionData.newFeatures
+                    newFeatures = listOf(getNewPolicyIntroduction(newPolicy)) + introductionData.newFeatures,
+                    onPolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 )
             )
             !newFeaturesAvailable() && newPolicy != null -> IntroductionFinished.NewFeatures(
                 introductionData.copy(
                     newFeatures = listOf(getNewPolicyIntroduction(newPolicy)),
-                    newFeatureVersion = null
+                    newFeatureVersion = null,
+                    onPolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 )
             )
             else -> IntroductionFinished.NewFeatures(introductionData)
@@ -55,7 +57,6 @@ class HolderIntroductionStatusUseCaseImpl(
     }
 
     private fun getNewPolicyIntroduction(newPolicy: DisclosurePolicy): NewFeatureItem {
-        persistenceManager.setPolicyScreenSeen(newPolicy)
         return when (newPolicy) {
             DisclosurePolicy.OneG -> NewFeatureItem(
                 imageResource = R.drawable.illustration_new_disclosure_policy,

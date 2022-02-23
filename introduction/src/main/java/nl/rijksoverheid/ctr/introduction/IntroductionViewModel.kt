@@ -31,7 +31,7 @@ class IntroductionViewModelImpl(
 
     init {
         introductionStatusUseCase.get()
-            .takeIf { it !is IntroductionStatus.IntroductionFinished.NoActionRequired }
+            .takeIf { it is IntroductionStatus.IntroductionNotFinished }
             ?.let { (introductionStatusLiveData as MutableLiveData).postValue(Event(it)) }
     }
 

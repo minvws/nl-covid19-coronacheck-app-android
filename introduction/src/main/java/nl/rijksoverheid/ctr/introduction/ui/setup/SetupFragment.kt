@@ -46,13 +46,13 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
     }
 
     private fun setObservers() {
-        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
+        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is AppStatus.UpdateRecommended -> showRecommendedUpdateDialog()
                 is AppStatus.NoActionRequired -> navigateToOnboarding()
                 else -> navigateToAppStatus(it)
             }
-        })
+        }
     }
 
     private fun navigateToAppStatus(appStatus: AppStatus) {
