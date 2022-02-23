@@ -20,7 +20,7 @@ class IntroductionFragment : Fragment(R.layout.fragment_introduction) {
         private const val EXTRA_INTRODUCTION_STATUS = "EXTRA_INTRODUCTION_STATUS"
 
         fun getBundle(
-            introductionStatus: IntroductionStatus
+            introductionStatus: IntroductionStatus? = null
         ): Bundle {
             val bundle = Bundle()
             bundle.putParcelable(EXTRA_INTRODUCTION_STATUS, introductionStatus)
@@ -35,9 +35,7 @@ class IntroductionFragment : Fragment(R.layout.fragment_introduction) {
             childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navHostFragment.navController.setGraph(
             R.navigation.introduction_nav_graph, IntroductionStatusFragment.getBundle(
-                introductionStatus = arguments?.getParcelable(
-                    EXTRA_INTRODUCTION_STATUS
-                ) ?: error("IntroductionStatus should be set")
+                introductionStatus = arguments?.getParcelable(EXTRA_INTRODUCTION_STATUS)
             )
         )
     }

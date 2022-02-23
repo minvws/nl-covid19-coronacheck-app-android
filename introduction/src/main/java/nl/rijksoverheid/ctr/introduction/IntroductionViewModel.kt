@@ -19,9 +19,8 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 
 abstract class IntroductionViewModel : ViewModel() {
-    val onboardingRequiredLiveData: LiveData<Event<IntroductionNotFinished>> = MutableLiveData()
-    val introductionNotFinishedLiveData: LiveData<Event<IntroductionNotFinished>> =
-        MutableLiveData()
+    val setupRequiredLiveData: LiveData<Event<Unit>> = MutableLiveData()
+    val introductionNotFinishedLiveData: LiveData<Event<IntroductionNotFinished>> = MutableLiveData()
     val introductionFinishedLiveData: LiveData<Event<IntroductionFinished>> = MutableLiveData()
     abstract fun getIntroductionStatus(): IntroductionStatus
     abstract fun saveIntroductionFinished(introductionData: IntroductionData)
@@ -37,7 +36,7 @@ class IntroductionViewModelImpl(
     init {
         val introductionStatus = introductionStatusUseCase.get()
         if (introductionStatus is IntroductionNotFinished) {
-            (onboardingRequiredLiveData as MutableLiveData).postValue(Event(introductionStatus))
+            (setupRequiredLiveData as MutableLiveData).postValue(Event(Unit))
         }
     }
 

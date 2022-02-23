@@ -19,7 +19,7 @@ class IntroductionStatusFragment : Fragment() {
         private const val EXTRA_INTRODUCTION_STATUS = "EXTRA_INTRODUCTION_STATUS"
 
         fun getBundle(
-            introductionStatus: IntroductionStatus
+            introductionStatus: IntroductionStatus? = null
         ): Bundle {
             val bundle = Bundle()
             bundle.putParcelable(EXTRA_INTRODUCTION_STATUS, introductionStatus)
@@ -35,11 +35,6 @@ class IntroductionStatusFragment : Fragment() {
         )
 
         when (introductionStatus) {
-            is IntroductionStatus.IntroductionNotFinished -> {
-                findNavControllerSafety()?.navigate(
-                    IntroductionStatusFragmentDirections.actionSetup()
-                )
-            }
             is IntroductionStatus.IntroductionFinished.ConsentNeeded -> {
                 findNavControllerSafety()?.navigate(
                     IntroductionStatusFragmentDirections.actionNewTerms(
@@ -54,8 +49,10 @@ class IntroductionStatusFragment : Fragment() {
                     )
                 )
             }
-            is IntroductionStatus.IntroductionFinished.NoActionRequired -> {
-
+            else -> {
+                findNavControllerSafety()?.navigate(
+                    IntroductionStatusFragmentDirections.actionSetup()
+                )
             }
         }
     }
