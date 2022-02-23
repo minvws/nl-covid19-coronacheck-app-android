@@ -35,26 +35,38 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
 
 fun fakeIntroductionViewModel(
     introductionStatus: IntroductionStatus? = null,
+    setupRequired: Boolean = true
 ): IntroductionViewModel {
-
     return object : IntroductionViewModel() {
 
         init {
-            if (introductionStatus != null) {
-                (introductionStatusLiveData as MutableLiveData).postValue(Event(introductionStatus))
+            if (setupRequired) {
+                (setupRequiredLiveData as MutableLiveData).postValue(Event(Unit))
             }
         }
 
         override fun getIntroductionStatus(): IntroductionStatus {
-            return introductionStatus ?: IntroductionStatus.OnboardingFinished.NoActionRequired
+            return introductionStatus ?: IntroductionStatus.IntroductionFinished
+        }
+
+        override fun saveIntroductionFinished(introductionData: IntroductionData) {
+
         }
 
         override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
 
         }
 
-        override fun saveIntroductionFinished(introductionData: IntroductionData) {
-
+        override fun onConfigUpdated() {
+            when (introductionStatus) {
+                is IntroductionStatus.OnboardingFinished -> {
+                    (onboardingFinishedLiveData as MutableLiveData).postValue(Event(introductionStatus))
+                }
+                is IntroductionStatus.OnboardingNotFinished -> {
+                    (onboardingNotFinishedLiveData as MutableLiveData).postValue(Event(introductionStatus))
+                }
+                else -> {}
+            }
         }
     }
 }

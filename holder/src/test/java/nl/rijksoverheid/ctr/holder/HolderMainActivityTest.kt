@@ -10,6 +10,8 @@ import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -42,16 +44,12 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
         scenario.close()
     }
 
+
     @Test
-    fun `If introduction not finished navigate to introduction`() {
+    fun `If onboarding not finished navigate to introduction`() {
         launchHolderMainActivity(
-            introductionStatus = IntroductionStatus.OnboardingNotFinished(
-                IntroductionData(
-                    onboardingItems = listOf(),
-                    privacyPolicyItems = listOf(),
-                    newFeatures = listOf(),
-                    null
-                )
+            fakeIntroductionViewModel(
+                setupRequired = true
             )
         )
 
@@ -64,8 +62,64 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     }
 
     @Test
+    fun `If consent needed navigate to introduction`() {
+        val introductionViewModel = fakeIntroductionViewModel(
+            introductionStatus = IntroductionStatus.OnboardingFinished.ConsentNeeded(
+                IntroductionData(
+                    onboardingItems = listOf(),
+                    privacyPolicyItems = listOf(),
+                    newFeatures = listOf(),
+                    newTerms = NewTerms(1, false)
+                )
+            ),
+            setupRequired = false
+        )
+        launchHolderMainActivity(
+            introductionViewModel
+        )
+
+        scenario.onActivity {
+            introductionViewModel.onConfigUpdated()
+            assertEquals(
+                it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
+                R.id.nav_introduction
+            )
+        }
+    }
+
+    @Test
+    fun `If new features navigate to introduction`() {
+        val introductionViewModel = fakeIntroductionViewModel(
+            introductionStatus = IntroductionStatus.OnboardingFinished.NewFeatures(
+                IntroductionData(
+                    onboardingItems = listOf(),
+                    privacyPolicyItems = listOf(),
+                    newFeatures = listOf(),
+                    newTerms = NewTerms(1, false)
+                )
+            ),
+            setupRequired = false
+        )
+        launchHolderMainActivity(
+            introductionViewModel
+        )
+
+        scenario.onActivity {
+            introductionViewModel.onConfigUpdated()
+            assertEquals(
+                it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
+                R.id.nav_introduction
+            )
+        }
+    }
+
+    @Test
     fun `If introduction finished navigate to main`() {
-        val scenario = launchHolderMainActivity()
+        val scenario = launchHolderMainActivity(
+            fakeIntroductionViewModel(
+                setupRequired = false
+            )
+        )
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
@@ -77,6 +131,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If app status is not NoActionRequired navigate to app status`() {
         val scenario = launchHolderMainActivity(
+            fakeIntroductionViewModel(),
             appStatus = AppStatus.Error
         )
         scenario.onActivity {
@@ -88,15 +143,14 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     }
 
     private fun launchHolderMainActivity(
-        introductionStatus: IntroductionStatus? = null,
+        introductionViewModel: IntroductionViewModel,
         appStatus: AppStatus = AppStatus.NoActionRequired
     ): ActivityScenario<HolderMainActivity> {
+
         loadKoinModules(
             module(override = true) {
                 viewModel {
-                    fakeIntroductionViewModel(
-                        introductionStatus = introductionStatus
-                    )
+                    introductionViewModel
                 }
                 viewModel {
                     fakeAppConfigViewModel(

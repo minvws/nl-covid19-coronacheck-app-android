@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.ui.status.usecases
+package nl.rijksoverheid.ctr.verifier.usecase
 
 import io.mockk.every
 import io.mockk.mockk
@@ -16,13 +16,13 @@ import org.junit.Test
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class IntroductionStatusUseCaseImplTest {
+class VerifierIntroductionStatusUseCaseImplTest {
 
     private val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
     private val introductionData: IntroductionData = mockk()
     private val featureFlagUseCase: FeatureFlagUseCase = mockk()
 
-    private val introductionStatusUseCase = IntroductionStatusUseCaseImpl(
+    private val introductionStatusUseCase = VerifierIntroductionStatusUseCaseImpl(
         introductionPersistenceManager, introductionData, featureFlagUseCase
     )
 
@@ -76,7 +76,7 @@ class IntroductionStatusUseCaseImplTest {
 
         assertEquals(
             introductionStatusUseCase.get(),
-            IntroductionStatus.OnboardingFinished.NoActionRequired
+            IntroductionStatus.IntroductionFinished
         )
     }
 }
