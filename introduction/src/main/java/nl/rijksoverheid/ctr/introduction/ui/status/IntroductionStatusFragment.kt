@@ -37,9 +37,7 @@ class IntroductionStatusFragment : Fragment() {
         when (introductionStatus) {
             is IntroductionStatus.IntroductionNotFinished -> {
                 findNavControllerSafety()?.navigate(
-                    IntroductionStatusFragmentDirections.actionSetup(
-                        introductionStatus.introductionData
-                    )
+                    IntroductionStatusFragmentDirections.actionSetup()
                 )
             }
             is IntroductionStatus.IntroductionFinished.ConsentNeeded -> {

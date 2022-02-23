@@ -72,8 +72,11 @@ class VerifierMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
-            navController.navigate(R.id.action_introduction, IntroductionFragment.getBundle(it))
+        introductionViewModel.onboardingRequiredLiveData.observe(this, EventObserver {
+            navigateToIntroduction(navController, it)
+        })
+        introductionViewModel.introductionFinishedLiveData.observe(this, EventObserver {
+            navigateToIntroduction(navController, it)
         })
 
         appConfigViewModel.appStatusLiveData.observe(this) {
@@ -107,6 +110,15 @@ class VerifierMainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun navigateToIntroduction(
+        navController: NavController,
+        introductionStatus: IntroductionStatus
+    ) {
+        navController.navigate(
+            R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
+        )
     }
 
     private fun restartApp() {

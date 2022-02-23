@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionFinished
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionNotFinished
 import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
@@ -17,7 +19,10 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 
 abstract class IntroductionViewModel : ViewModel() {
-    val introductionStatusLiveData: LiveData<Event<IntroductionStatus>> = MutableLiveData()
+    val onboardingRequiredLiveData: LiveData<Event<IntroductionNotFinished>> = MutableLiveData()
+    val introductionNotFinishedLiveData: LiveData<Event<IntroductionNotFinished>> =
+        MutableLiveData()
+    val introductionFinishedLiveData: LiveData<Event<IntroductionFinished>> = MutableLiveData()
     abstract fun getIntroductionStatus(): IntroductionStatus
     abstract fun saveIntroductionFinished(introductionData: IntroductionData)
     abstract fun saveNewFeaturesFinished(newFeaturesVersion: Int)
@@ -30,9 +35,10 @@ class IntroductionViewModelImpl(
 ) : IntroductionViewModel() {
 
     init {
-        introductionStatusUseCase.get()
-            .takeIf { it is IntroductionStatus.IntroductionNotFinished }
-            ?.let { (introductionStatusLiveData as MutableLiveData).postValue(Event(it)) }
+        val introductionStatus = introductionStatusUseCase.get()
+        if (introductionStatus is IntroductionNotFinished) {
+            (onboardingRequiredLiveData as MutableLiveData).postValue(Event(introductionStatus))
+        }
     }
 
     override fun getIntroductionStatus() = introductionStatusUseCase.get()
@@ -52,11 +58,15 @@ class IntroductionViewModelImpl(
     }
 
     override fun onConfigUpdated() {
-        introductionStatusUseCase.get()
-            .takeIf {
-                it is IntroductionStatus.IntroductionFinished.NewFeatures ||
-                        it is IntroductionStatus.IntroductionFinished.ConsentNeeded
+        when (val introductionStatus = introductionStatusUseCase.get()) {
+            is IntroductionNotFinished -> {
+                (introductionNotFinishedLiveData as MutableLiveData)
+                    .postValue(Event(introductionStatus))
             }
-            ?.let { (introductionStatusLiveData as MutableLiveData).postValue(Event(it)) }
+            is IntroductionFinished -> {
+                (introductionFinishedLiveData as MutableLiveData)
+                    .postValue(Event(introductionStatus))
+            }
+        }
     }
 }

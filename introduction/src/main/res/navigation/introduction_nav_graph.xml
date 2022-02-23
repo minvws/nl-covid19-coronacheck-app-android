@@ -34,10 +34,6 @@
         android:name="nl.rijksoverheid.ctr.introduction.ui.setup.SetupFragment"
         tools:layout="@layout/fragment_setup">
 
-        <argument
-            android:name="introduction_data"
-            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
-
         <action
             android:id="@+id/action_onboarding"
             app:destination="@id/nav_onboarding"

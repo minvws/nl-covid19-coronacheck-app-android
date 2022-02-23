@@ -58,7 +58,8 @@ class HolderMainActivity : AppCompatActivity() {
                 appConfigViewModel.refresh(mobileCoreWrapper, true)
             }
         }
-    private val networkChangeFilter = NetworkRequest.Builder().build() // blank filter for all networks
+    private val networkChangeFilter =
+        NetworkRequest.Builder().build() // blank filter for all networks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -77,12 +78,11 @@ class HolderMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
-            if (navController.graph.id != R.id.action_introduction) {
-                navController.navigate(
-                    R.id.action_introduction, IntroductionFragment.getBundle(it)
-                )
-            }
+        introductionViewModel.onboardingRequiredLiveData.observe(this, EventObserver {
+            navigateToIntroduction(navController, it)
+        })
+        introductionViewModel.introductionFinishedLiveData.observe(this, EventObserver {
+            navigateToIntroduction(navController, it)
         })
 
         appConfigViewModel.appStatusLiveData.observe(this) {
@@ -119,6 +119,14 @@ class HolderMainActivity : AppCompatActivity() {
                 )
             }
         })
+    }
+
+    private fun navigateToIntroduction(
+        navController: NavController, introductionStatus: IntroductionStatus
+    ) {
+        navController.navigate(
+            R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
+        )
     }
 
     private fun handleAppStatus(
