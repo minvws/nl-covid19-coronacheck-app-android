@@ -67,7 +67,6 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         observeItems(adapter)
         observeSyncErrors()
         observeAppConfig()
-        observePolicyUpdate()
     }
 
     private fun setupViewPager(adapter: DashboardPagerAdapter) {
@@ -166,15 +165,6 @@ class MyOverviewTabsFragment : Fragment(R.layout.fragment_tabs_my_overview) {
         appConfigViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
             dashboardViewModel.refresh()
         }
-    }
-
-    private fun observePolicyUpdate() {
-        dashboardViewModel.showNewPolicyRulesLiveData.observe(
-            viewLifecycleOwner, EventObserver {
-                findNavControllerSafety()?.navigate(
-                    MyOverviewTabsFragmentDirections.actionNewDisclosurePolicy(it)
-                )
-            })
     }
 
     private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync) {
