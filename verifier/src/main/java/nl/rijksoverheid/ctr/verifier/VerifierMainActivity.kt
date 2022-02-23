@@ -75,7 +75,7 @@ class VerifierMainActivity : AppCompatActivity() {
         introductionViewModel.setupRequiredLiveData.observe(this, EventObserver {
             navigateToIntroduction(navController)
         })
-        introductionViewModel.introductionFinishedLiveData.observe(this, EventObserver {
+        introductionViewModel.onboardingFinishedLiveData.observe(this, EventObserver {
             navigateToIntroduction(navController, it)
         })
 

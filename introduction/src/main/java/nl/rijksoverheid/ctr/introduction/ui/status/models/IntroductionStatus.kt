@@ -12,18 +12,20 @@ import nl.rijksoverheid.ctr.introduction.IntroductionData
  *
  */
 sealed class IntroductionStatus : Parcelable {
-    sealed class IntroductionFinished : IntroductionStatus() {
-        @Parcelize
-        data class ConsentNeeded(val introductionData: IntroductionData) : IntroductionFinished(), Parcelable
+
+    sealed class OnboardingFinished : IntroductionStatus() {
 
         @Parcelize
-        object NoActionRequired : IntroductionFinished(), Parcelable
+        data class ConsentNeeded(val introductionData: IntroductionData) : OnboardingFinished(), Parcelable
 
         @Parcelize
-        data class NewFeatures(val introductionData: IntroductionData) : IntroductionFinished(), Parcelable
+        data class NewFeatures(val introductionData: IntroductionData) : OnboardingFinished(), Parcelable
     }
 
     @Parcelize
-    data class IntroductionNotFinished(val introductionData: IntroductionData) :
+    data class OnboardingNotFinished(val introductionData: IntroductionData) :
         IntroductionStatus(), Parcelable
+
+    @Parcelize
+    object IntroductionFinished : IntroductionStatus(), Parcelable
 }

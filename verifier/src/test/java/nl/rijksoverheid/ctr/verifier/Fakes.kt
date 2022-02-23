@@ -46,7 +46,7 @@ fun fakeIntroductionViewModel(
         }
 
         override fun getIntroductionStatus(): IntroductionStatus {
-            return introductionStatus ?: IntroductionStatus.IntroductionFinished.NoActionRequired
+            return introductionStatus ?: IntroductionStatus.OnboardingFinished.NoActionRequired
         }
 
         override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {

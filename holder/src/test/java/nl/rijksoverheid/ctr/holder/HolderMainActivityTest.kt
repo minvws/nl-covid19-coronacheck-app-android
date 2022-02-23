@@ -45,7 +45,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If introduction not finished navigate to introduction`() {
         launchHolderMainActivity(
-            introductionStatus = IntroductionStatus.IntroductionNotFinished(
+            introductionStatus = IntroductionStatus.OnboardingNotFinished(
                 IntroductionData(
                     onboardingItems = listOf(),
                     privacyPolicyItems = listOf(),

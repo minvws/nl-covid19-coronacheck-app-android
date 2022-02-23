@@ -32,7 +32,7 @@ class IntroductionStatusUseCaseImplTest {
 
         assertEquals(
             introductionStatusUseCase.get(),
-            IntroductionStatus.IntroductionNotFinished(introductionData)
+            IntroductionStatus.OnboardingNotFinished(introductionData)
         )
     }
 
@@ -46,7 +46,7 @@ class IntroductionStatusUseCaseImplTest {
 
         assertEquals(
             introductionStatusUseCase.get(),
-            IntroductionStatus.IntroductionFinished.NewFeatures(introductionData)
+            IntroductionStatus.OnboardingFinished.NewFeatures(introductionData)
         )
     }
 
@@ -61,7 +61,7 @@ class IntroductionStatusUseCaseImplTest {
 
         assertEquals(
             introductionStatusUseCase.get(),
-            IntroductionStatus.IntroductionFinished.ConsentNeeded(introductionData)
+            IntroductionStatus.OnboardingFinished.ConsentNeeded(introductionData)
         )
     }
 
@@ -76,7 +76,7 @@ class IntroductionStatusUseCaseImplTest {
 
         assertEquals(
             introductionStatusUseCase.get(),
-            IntroductionStatus.IntroductionFinished.NoActionRequired
+            IntroductionStatus.OnboardingFinished.NoActionRequired
         )
     }
 }

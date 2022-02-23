@@ -15,20 +15,26 @@ class VerifierIntroductionStatusUseCaseImpl(
 
     override fun get(): IntroductionStatus {
         return when {
-            introductionIsNotFinished() -> IntroductionStatus.IntroductionNotFinished(
+            introductionIsNotFinished() -> IntroductionStatus.OnboardingNotFinished(
                 introductionData
             )
-            newFeaturesAvailable() -> IntroductionStatus.IntroductionFinished.NewFeatures(introductionData)
-            newTermsAvailable() -> IntroductionStatus.IntroductionFinished.ConsentNeeded(introductionData)
-            else -> IntroductionStatus.IntroductionFinished.NoActionRequired
+            newFeaturesAvailable() -> IntroductionStatus.OnboardingFinished.NewFeatures(introductionData)
+            newTermsAvailable() -> IntroductionStatus.OnboardingFinished.ConsentNeeded(introductionData)
+            else -> IntroductionStatus.IntroductionFinished
         }
     }
 
     private fun newTermsAvailable() =
                 !introductionPersistenceManager.getNewTermsSeen(introductionData.newTerms.version)
 
-    private fun newFeaturesAvailable() = introductionData.newFeatures.isNotEmpty() &&
-            !introductionPersistenceManager.getNewFeaturesSeen(introductionData.newFeatureVersion) && featureFlagUseCase.isVerificationPolicySelectionEnabled()
+    private fun newFeaturesAvailable(): Boolean {
+        val newFeatureVersion = introductionData.newFeatureVersion
+        return introductionData.newFeatures.isNotEmpty() &&
+                newFeatureVersion != null &&
+                !introductionPersistenceManager.getNewFeaturesSeen(newFeatureVersion) &&
+                featureFlagUseCase.isVerificationPolicySelectionEnabled()
+
+    }
 
     private fun introductionIsNotFinished() =
         !introductionPersistenceManager.getIntroductionFinished()

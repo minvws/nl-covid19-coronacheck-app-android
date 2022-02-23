@@ -5,10 +5,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.findNavController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
@@ -40,7 +38,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     fun `On app launch call cleanups`() {
         val verifierMainActivityViewModel = mockk<VerifierMainActivityViewModel>(relaxed = true)
         launchVerifierMainActivity(
-            introductionStatus = IntroductionStatus.IntroductionNotFinished(
+            introductionStatus = IntroductionStatus.OnboardingNotFinished(
                 introductionData = IntroductionData(
                     onboardingItems = listOf(),
                     privacyPolicyItems = listOf(),
@@ -57,7 +55,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If introduction not finished navigate to introduction`() {
         val scenario = launchVerifierMainActivity(
-            introductionStatus = IntroductionStatus.IntroductionNotFinished(
+            introductionStatus = IntroductionStatus.OnboardingNotFinished(
                 introductionData = IntroductionData(
                     onboardingItems = listOf(),
                     privacyPolicyItems = listOf(),
@@ -90,7 +88,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If app status is not NoActionRequired navigate to app status`() {
         val scenario = launchVerifierMainActivity(
-            introductionStatus = IntroductionStatus.IntroductionNotFinished(IntroductionData()),
+            introductionStatus = IntroductionStatus.OnboardingNotFinished(IntroductionData()),
             appStatus = AppStatus.Error,
             verifierMainActivityViewModel = mockk(relaxed = true)
         )

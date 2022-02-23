@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.introduction.ui.status
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 
@@ -35,14 +34,14 @@ class IntroductionStatusFragment : Fragment() {
         )
 
         when (introductionStatus) {
-            is IntroductionStatus.IntroductionFinished.ConsentNeeded -> {
+            is IntroductionStatus.OnboardingFinished.ConsentNeeded -> {
                 findNavControllerSafety()?.navigate(
                     IntroductionStatusFragmentDirections.actionNewTerms(
                         introductionStatus.introductionData
                     )
                 )
             }
-            is IntroductionStatus.IntroductionFinished.NewFeatures -> {
+            is IntroductionStatus.OnboardingFinished.NewFeatures -> {
                 findNavControllerSafety()?.navigate(
                     IntroductionStatusFragmentDirections.actionNavNewFeatures(
                         introductionStatus.introductionData

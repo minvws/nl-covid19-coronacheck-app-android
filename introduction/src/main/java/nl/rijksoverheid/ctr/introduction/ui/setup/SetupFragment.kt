@@ -57,7 +57,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
                 else -> navigateToAppStatus(it)
             }
         }
-        introductionViewModel.introductionNotFinishedLiveData.observe(
+        introductionViewModel.onboardingNotFinishedLiveData.observe(
             viewLifecycleOwner, EventObserver {
                 navigateToOnboarding(it.introductionData)
             })
@@ -85,7 +85,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
             positiveButtonCallback = { intentUtil.openPlayStore(requireContext()) },
             negativeButtonText = R.string.app_status_update_recommended_dismiss_action,
             onDismissCallback = {
-                (introductionViewModel.getIntroductionStatus() as? IntroductionStatus.IntroductionNotFinished)
+                (introductionViewModel.getIntroductionStatus() as? IntroductionStatus.OnboardingNotFinished)
                     ?.introductionData?.let { navigateToOnboarding(it) }
             }
         )

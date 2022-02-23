@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionFinished
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionNotFinished
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.OnboardingFinished
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.OnboardingNotFinished
 import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
@@ -20,8 +20,8 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 
 abstract class IntroductionViewModel : ViewModel() {
     val setupRequiredLiveData: LiveData<Event<Unit>> = MutableLiveData()
-    val introductionNotFinishedLiveData: LiveData<Event<IntroductionNotFinished>> = MutableLiveData()
-    val introductionFinishedLiveData: LiveData<Event<IntroductionFinished>> = MutableLiveData()
+    val onboardingNotFinishedLiveData: LiveData<Event<OnboardingNotFinished>> = MutableLiveData()
+    val onboardingFinishedLiveData: LiveData<Event<OnboardingFinished>> = MutableLiveData()
     abstract fun getIntroductionStatus(): IntroductionStatus
     abstract fun saveIntroductionFinished(introductionData: IntroductionData)
     abstract fun saveNewFeaturesFinished(newFeaturesVersion: Int)
@@ -35,7 +35,7 @@ class IntroductionViewModelImpl(
 
     init {
         val introductionStatus = introductionStatusUseCase.get()
-        if (introductionStatus is IntroductionNotFinished) {
+        if (introductionStatus is OnboardingNotFinished) {
             (setupRequiredLiveData as MutableLiveData).postValue(Event(Unit))
         }
     }
@@ -58,13 +58,16 @@ class IntroductionViewModelImpl(
 
     override fun onConfigUpdated() {
         when (val introductionStatus = introductionStatusUseCase.get()) {
-            is IntroductionNotFinished -> {
-                (introductionNotFinishedLiveData as MutableLiveData)
+            is OnboardingNotFinished -> {
+                (onboardingNotFinishedLiveData as MutableLiveData)
                     .postValue(Event(introductionStatus))
             }
-            is IntroductionFinished -> {
-                (introductionFinishedLiveData as MutableLiveData)
+            is OnboardingFinished -> {
+                (onboardingFinishedLiveData as MutableLiveData)
                     .postValue(Event(introductionStatus))
+            }
+            IntroductionStatus.IntroductionFinished -> {
+
             }
         }
     }

@@ -17,8 +17,8 @@ import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceMana
 import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionFinished
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.IntroductionNotFinished
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.OnboardingFinished
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.OnboardingNotFinished
 import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
@@ -35,14 +35,14 @@ class HolderIntroductionStatusUseCaseImpl(
         return when {
             introductionIsNotFinished() -> getIntroductionNotFinished()
             newFeaturesAvailable() || newPolicy != null -> getNewFeatures(newPolicy)
-            newTermsAvailable() -> IntroductionFinished.ConsentNeeded(introductionData)
-            else -> IntroductionFinished.NoActionRequired
+            newTermsAvailable() -> OnboardingFinished.ConsentNeeded(introductionData)
+            else -> IntroductionStatus.IntroductionFinished
         }
     }
 
-    private fun getIntroductionNotFinished(): IntroductionNotFinished {
+    private fun getIntroductionNotFinished(): OnboardingNotFinished {
         val policy = holderFeatureFlagUseCase.getDisclosurePolicy()
-        return IntroductionNotFinished(
+        return OnboardingNotFinished(
             introductionData.copy(
                 onboardingItems = introductionData.onboardingItems + listOf(
                     OnboardingItem(
@@ -63,22 +63,22 @@ class HolderIntroductionStatusUseCaseImpl(
      * @param[newPolicy] New policy or null if policy is not changed
      * @return New features and/or policy change as new features
      */
-    private fun getNewFeatures(newPolicy: DisclosurePolicy?): IntroductionFinished.NewFeatures {
+    private fun getNewFeatures(newPolicy: DisclosurePolicy?): OnboardingFinished.NewFeatures {
         return when {
-            newFeaturesAvailable() && newPolicy != null -> IntroductionFinished.NewFeatures(
+            newFeaturesAvailable() && newPolicy != null -> OnboardingFinished.NewFeatures(
                 introductionData.copy(
                     newFeatures = listOf(getNewPolicyIntroduction(newPolicy)) + introductionData.newFeatures,
                     onPolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 )
             )
-            !newFeaturesAvailable() && newPolicy != null -> IntroductionFinished.NewFeatures(
+            !newFeaturesAvailable() && newPolicy != null -> OnboardingFinished.NewFeatures(
                 introductionData.copy(
                     newFeatures = listOf(getNewPolicyIntroduction(newPolicy)),
                     newFeatureVersion = null,
                     onPolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 )
             )
-            else -> IntroductionFinished.NewFeatures(introductionData)
+            else -> OnboardingFinished.NewFeatures(introductionData)
         }
     }
 
