@@ -52,7 +52,7 @@ class HolderIntroductionStatusUseCaseImpl(
                         position = introductionData.onboardingItems.size + 1
                     )
                 ),
-                onPolicyChange = { persistenceManager.setPolicyScreenSeen(policy) }
+                savePolicyChange = { persistenceManager.setPolicyScreenSeen(policy) }
             )
         )
     }
@@ -68,14 +68,14 @@ class HolderIntroductionStatusUseCaseImpl(
             newFeaturesAvailable() && newPolicy != null -> OnboardingFinished.NewFeatures(
                 introductionData.copy(
                     newFeatures = introductionData.newFeatures + listOf(getNewPolicyIntroduction(newPolicy)),
-                    onPolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
+                    savePolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 )
             )
             !newFeaturesAvailable() && newPolicy != null -> OnboardingFinished.NewFeatures(
                 introductionData.copy(
                     newFeatures = listOf(getNewPolicyIntroduction(newPolicy)),
                     newFeatureVersion = null,
-                    onPolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
+                    savePolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 )
             )
             else -> OnboardingFinished.NewFeatures(introductionData)
