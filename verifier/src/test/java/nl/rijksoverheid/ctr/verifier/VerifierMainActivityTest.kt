@@ -152,10 +152,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If app status is not NoActionRequired navigate to app status`() {
         val scenario = launchVerifierMainActivity(
-            fakeIntroductionViewModel(
-                introductionStatus = IntroductionStatus.IntroductionFinished,
-                setupRequired = false
-            ),
+            fakeIntroductionViewModel(),
             appStatus = AppStatus.Error,
             verifierMainActivityViewModel = mockk(relaxed = true)
         )
