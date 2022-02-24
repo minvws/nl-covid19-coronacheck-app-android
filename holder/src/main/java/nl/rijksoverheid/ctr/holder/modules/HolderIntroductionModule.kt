@@ -1,11 +1,13 @@
 package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.usecase.HolderIntroductionStatusUseCaseImpl
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCase
 import org.koin.dsl.module
 
 /*
@@ -67,4 +69,5 @@ val holderIntroductionModule = module {
             hideConsent = true
         )
     }
+    factory<IntroductionStatusUseCase> { HolderIntroductionStatusUseCaseImpl(get(), get(), get(), get(), get()) }
 }

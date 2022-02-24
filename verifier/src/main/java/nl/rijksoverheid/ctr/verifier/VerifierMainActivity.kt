@@ -73,7 +73,7 @@ class VerifierMainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
-            navController.navigate(R.id.action_introduction, IntroductionFragment.getBundle(it))
+            navigateToIntroduction(navController, it)
         })
 
         appConfigViewModel.appStatusLiveData.observe(this) {
@@ -108,6 +108,15 @@ class VerifierMainActivity : AppCompatActivity() {
 
     }
 
+    private fun navigateToIntroduction(
+        navController: NavController,
+        introductionStatus: IntroductionStatus
+    ) {
+        navController.navigate(
+            R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
+        )
+    }
+
     private fun restartApp() {
         val intent = packageManager.getLaunchIntentForPackage(packageName)
         val mainIntent = Intent.makeRestartActivityTask(intent?.component)
@@ -127,7 +136,11 @@ class VerifierMainActivity : AppCompatActivity() {
             return
         }
 
-        if (appStatus !is AppStatus.NoActionRequired) navigateToAppStatus(appStatus, navController)
+        if (appStatus !is AppStatus.NoActionRequired) {
+            navigateToAppStatus(appStatus, navController)
+        } else {
+            introductionViewModel.onConfigUpdated()
+        }
     }
 
     private fun navigateToAppStatus(

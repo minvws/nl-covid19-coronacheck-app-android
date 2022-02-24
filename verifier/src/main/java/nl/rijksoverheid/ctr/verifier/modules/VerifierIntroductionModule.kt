@@ -5,7 +5,9 @@ import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCase
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.usecase.VerifierIntroductionStatusUseCaseImpl
 import org.koin.dsl.module
 
 /*
@@ -55,4 +57,5 @@ val verifierIntroductionModule = module {
             newFeatureVersion = 1,
         )
     }
+    factory<IntroductionStatusUseCase> { VerifierIntroductionStatusUseCaseImpl(get(), get(), get()) }
 }

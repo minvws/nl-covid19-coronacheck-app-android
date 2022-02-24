@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit
 abstract class DashboardViewModel : ViewModel() {
     val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
     val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
-    val showNewPolicyRulesLiveData: LiveData<Event<DisclosurePolicy>> = MutableLiveData()
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
@@ -55,8 +54,7 @@ class DashboardViewModelImpl(
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
-    private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
-    private val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase
+    private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase
 ) : DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -67,11 +65,6 @@ class DashboardViewModelImpl(
     override fun refresh(dashboardSync: DashboardSync) {
         viewModelScope.launch {
             refreshCredentials(dashboardSync)
-
-            showNewDisclosurePolicyUseCase.get()?.let {
-                (showNewPolicyRulesLiveData as MutableLiveData).postValue(Event(it))
-                persistenceManager.setPolicyScreenSeen(it)
-            }
         }
     }
 

@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.ui.status.usecases
+package nl.rijksoverheid.ctr.verifier.usecase
 
 import io.mockk.every
 import io.mockk.mockk
@@ -16,28 +16,40 @@ import org.junit.Test
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class IntroductionStatusUseCaseImplTest {
+class VerifierIntroductionStatusUseCaseImplTest {
 
     private val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
     private val introductionData: IntroductionData = mockk()
     private val featureFlagUseCase: FeatureFlagUseCase = mockk()
 
-    private val introductionStatusUseCase = IntroductionStatusUseCaseImpl(
+    private val introductionStatusUseCase = VerifierIntroductionStatusUseCaseImpl(
         introductionPersistenceManager, introductionData, featureFlagUseCase
     )
 
     @Test
+    fun `when setup isn't finished, the status is setup not finished`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns false
+
+        assertEquals(
+            introductionStatusUseCase.get(),
+            IntroductionStatus.SetupNotFinished
+        )
+    }
+
+    @Test
     fun `when introduction isn't finished, the status is introduction not finished`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
 
         assertEquals(
             introductionStatusUseCase.get(),
-            IntroductionStatus.IntroductionNotFinished(introductionData)
+            IntroductionStatus.OnboardingNotFinished(introductionData)
         )
     }
 
     @Test
     fun `when intro is finished and new features are available, the status is new features`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionData.newFeatures } returns listOf(mockk())
         every { introductionData.newFeatureVersion } returns 2
@@ -46,12 +58,13 @@ class IntroductionStatusUseCaseImplTest {
 
         assertEquals(
             introductionStatusUseCase.get(),
-            IntroductionStatus.IntroductionFinished.NewFeatures(introductionData)
+            IntroductionStatus.OnboardingFinished.NewFeatures(introductionData)
         )
     }
 
     @Test
     fun `when intro is finished and new terms are available, the status is consent needed`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionData.newFeatures } returns emptyList()
         every { introductionData.newFeatureVersion } returns 2
@@ -61,12 +74,13 @@ class IntroductionStatusUseCaseImplTest {
 
         assertEquals(
             introductionStatusUseCase.get(),
-            IntroductionStatus.IntroductionFinished.ConsentNeeded(introductionData)
+            IntroductionStatus.OnboardingFinished.ConsentNeeded(introductionData)
         )
     }
 
     @Test
     fun `when intro is finished and there are no new features or terms, the status is no action required`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionData.newFeatures } returns listOf(mockk())
         every { introductionData.newFeatureVersion } returns 2
@@ -76,7 +90,7 @@ class IntroductionStatusUseCaseImplTest {
 
         assertEquals(
             introductionStatusUseCase.get(),
-            IntroductionStatus.IntroductionFinished.NoActionRequired
+            IntroductionStatus.IntroductionFinished
         )
     }
 }

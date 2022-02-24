@@ -102,17 +102,19 @@ fun fakeCachedAppConfigUseCase(
 
 fun fakeIntroductionViewModel(
     introductionStatus: IntroductionStatus? = null,
+    setupRequired: Boolean = true
 ): IntroductionViewModel {
     return object : IntroductionViewModel() {
 
         init {
-            if (introductionStatus != null) {
-                (introductionStatusLiveData as MutableLiveData).postValue(Event(introductionStatus))
+            if (setupRequired) {
+                (introductionStatusLiveData as MutableLiveData)
+                    .postValue(Event(IntroductionStatus.SetupNotFinished))
             }
         }
 
         override fun getIntroductionStatus(): IntroductionStatus {
-            return introductionStatus ?: IntroductionStatus.IntroductionFinished.NoActionRequired
+            return introductionStatus ?: IntroductionStatus.IntroductionFinished
         }
 
         override fun saveIntroductionFinished(introductionData: IntroductionData) {
@@ -123,6 +125,12 @@ fun fakeIntroductionViewModel(
 
         }
 
+        override fun onConfigUpdated() {
+            introductionStatus?.let {
+                (introductionStatusLiveData as MutableLiveData)
+                    .postValue(Event(it))
+            }
+        }
     }
 }
 

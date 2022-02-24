@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -86,9 +85,12 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
     }
 
     private fun finishFlow() {
-        introductionViewModel.saveNewFeaturesFinished(args.introductionData.newFeatureVersion)
+        args.introductionData.newFeatureVersion?.let {
+            introductionViewModel.saveNewFeaturesFinished(it)
+        }
+        args.introductionData.savePolicyChange?.invoke()
         when (introductionViewModel.getIntroductionStatus()) {
-            is IntroductionStatus.IntroductionFinished.ConsentNeeded -> navigateToTerms()
+            is IntroductionStatus.OnboardingFinished.ConsentNeeded -> navigateToTerms()
             else -> navigateToMain()
         }
     }

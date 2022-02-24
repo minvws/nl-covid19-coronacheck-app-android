@@ -4,17 +4,21 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
-import nl.rijksoverheid.ctr.introduction.R
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
+import nl.rijksoverheid.ctr.introduction.R
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -26,8 +30,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class SetupFragment : Fragment(R.layout.fragment_setup) {
 
-    private val args: SetupFragmentArgs by navArgs()
-    private val appStatusViewModel: AppConfigViewModel by viewModel()
+    private val appStatusViewModel: AppConfigViewModel by sharedViewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
@@ -46,25 +49,19 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
     }
 
     private fun setObservers() {
-        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner, {
+        appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is AppStatus.UpdateRecommended -> showRecommendedUpdateDialog()
-                is AppStatus.NoActionRequired -> navigateToOnboarding()
+                is AppStatus.NoActionRequired -> { }
                 else -> navigateToAppStatus(it)
             }
-        })
+        }
     }
 
     private fun navigateToAppStatus(appStatus: AppStatus) {
-        findNavController().navigate(
+        findNavControllerSafety()?.navigate(
             R.id.action_app_status,
             bundleOf(AppStatusFragment.EXTRA_APP_STATUS to appStatus)
-        )
-    }
-
-    private fun navigateToOnboarding() {
-        findNavController().navigate(
-            SetupFragmentDirections.actionOnboarding(args.introductionData)
         )
     }
 
@@ -75,8 +72,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
             message = getString(R.string.app_status_update_recommended_message),
             positiveButtonText = R.string.app_status_update_recommended_action,
             positiveButtonCallback = { intentUtil.openPlayStore(requireContext()) },
-            negativeButtonText = R.string.app_status_update_recommended_dismiss_action,
-            onDismissCallback = { navigateToOnboarding() }
+            negativeButtonText = R.string.app_status_update_recommended_dismiss_action
         )
     }
 }

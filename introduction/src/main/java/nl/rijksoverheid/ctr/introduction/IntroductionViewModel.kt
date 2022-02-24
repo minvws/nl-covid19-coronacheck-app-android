@@ -21,31 +21,44 @@ abstract class IntroductionViewModel : ViewModel() {
     abstract fun getIntroductionStatus(): IntroductionStatus
     abstract fun saveIntroductionFinished(introductionData: IntroductionData)
     abstract fun saveNewFeaturesFinished(newFeaturesVersion: Int)
+    abstract fun onConfigUpdated()
 }
 
 class IntroductionViewModelImpl(
     private val introductionPersistenceManager: IntroductionPersistenceManager,
     private val introductionStatusUseCase: IntroductionStatusUseCase
-) :
-    IntroductionViewModel() {
+) : IntroductionViewModel() {
 
     init {
-        introductionStatusUseCase.get().takeIf { it != IntroductionStatus.IntroductionFinished.NoActionRequired }?.let {
-            (introductionStatusLiveData as MutableLiveData).postValue(Event(it))
-        }
+        postIntroductionStatus()
     }
 
     override fun getIntroductionStatus() = introductionStatusUseCase.get()
 
     override fun saveIntroductionFinished(introductionData: IntroductionData) {
         introductionPersistenceManager.saveIntroductionFinished()
-        introductionData.newTerms?.let {
-            introductionPersistenceManager.saveNewTermsSeen(it.version)
+        introductionPersistenceManager.saveNewTermsSeen(introductionData.newTerms.version)
+        introductionData.newFeatureVersion?.let {
+            introductionPersistenceManager.saveNewFeaturesSeen(
+                it
+            )
         }
-        introductionPersistenceManager.saveNewFeaturesSeen(introductionData.newFeatureVersion)
     }
 
     override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
         introductionPersistenceManager.saveNewFeaturesSeen(newFeaturesVersion)
+    }
+
+    override fun onConfigUpdated() {
+        introductionPersistenceManager.saveSetupFinished()
+        postIntroductionStatus()
+    }
+
+    private fun postIntroductionStatus() {
+        introductionStatusUseCase.get()
+            .takeIf { it !is IntroductionStatus.IntroductionFinished }
+            ?.let {
+                (introductionStatusLiveData as MutableLiveData).postValue(Event(it))
+            }
     }
 }

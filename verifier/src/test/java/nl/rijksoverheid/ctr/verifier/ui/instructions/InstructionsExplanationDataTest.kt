@@ -20,9 +20,9 @@ class InstructionsExplanationDataTest {
     @Test
     fun `on fourth scan instruction with selection state show 1G texts`() {
         val onboardingItem =
-            instructionsExplanationData(
+            onboardingItemList(
                 VerificationPolicySelectionState.Selection.None
-            ).onboardingItems.find { it.animationResource == R.raw.scaninstructions_4 }
+            ).find { it.animationResource == R.raw.scaninstructions_4 }
 
         assertEquals(R.string.scan_instructions_4_title_1G, onboardingItem!!.titleResource)
         assertEquals(R.string.scan_instructions_4_description_1G, onboardingItem.description)
@@ -31,9 +31,9 @@ class InstructionsExplanationDataTest {
     @Test
     fun `on fourth scan instruction with 1G state show 1G texts`() {
         val onboardingItem =
-            instructionsExplanationData(
+            onboardingItemList(
                 VerificationPolicySelectionState.Policy1G
-            ).onboardingItems.find { it.animationResource == R.raw.scaninstructions_4 }
+            ).find { it.animationResource == R.raw.scaninstructions_4 }
 
         assertEquals(R.string.scan_instructions_4_title_1G, onboardingItem!!.titleResource)
         assertEquals(R.string.scan_instructions_4_description_1G, onboardingItem.description)
@@ -42,9 +42,9 @@ class InstructionsExplanationDataTest {
     @Test
     fun `on fourth scan instruction with 3G state show 3G texts`() {
         val onboardingItem =
-            instructionsExplanationData(
+            onboardingItemList(
                 VerificationPolicySelectionState.Policy3G
-            ).onboardingItems.find { it.animationResource == R.raw.scaninstructions_4 }
+            ).find { it.animationResource == R.raw.scaninstructions_4 }
 
         assertEquals(R.string.scan_instructions_4_title, onboardingItem!!.titleResource)
         assertEquals(R.string.scan_instructions_4_description, onboardingItem.description)
