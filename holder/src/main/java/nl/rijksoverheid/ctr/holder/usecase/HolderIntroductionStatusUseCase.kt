@@ -40,6 +40,11 @@ class HolderIntroductionStatusUseCaseImpl(
         }
     }
 
+    /**
+     * Add the current disclosure policy info as onboarding item
+     *
+     * @return Onboarding not finished state with disclosure policy onboarding item added
+     */
     private fun getIntroductionNotFinished(): OnboardingNotFinished {
         val policy = holderFeatureFlagUseCase.getDisclosurePolicy()
         return OnboardingNotFinished(
