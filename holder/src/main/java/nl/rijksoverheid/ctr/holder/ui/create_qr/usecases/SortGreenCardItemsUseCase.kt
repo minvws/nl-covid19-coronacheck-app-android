@@ -38,10 +38,22 @@ class SortGreenCardItemsUseCaseImpl(
                 DashboardItem.InfoItem.MissingDutchVaccinationItem -> -89
                 is DashboardItem.InfoItem.OriginInfoItem -> -88
                 is DashboardItem.PlaceholderCardItem -> -87
-                is DashboardItem.CardsItem -> -86
-                DashboardItem.AddQrButtonItem -> -85
-                DashboardItem.AddQrCardItem -> -84
-                DashboardItem.CoronaMelderItem -> -83
+                is DashboardItem.CardsItem -> {
+                    val cardsItemOrder = -86
+                    val greenCard = it.cards.first().greenCard
+                    val isDomesticTestGreenCard = greenCardUtil.isDomesticTestGreenCard(
+                        greenCard = greenCard
+                    )
+                    // If we are dealing with a domestic test green card and the policy is set to OneG, we always want that card on top
+                    if (isDomesticTestGreenCard && featureFlagUseCase.getDisclosurePolicy() == DisclosurePolicy.OneG) {
+                        cardsItemOrder
+                    } else {
+                        cardsItemOrder + it.cards.first().originStates.first().origin.type.order
+                    }
+                }
+                DashboardItem.AddQrButtonItem -> -80
+                DashboardItem.AddQrCardItem -> -79
+                DashboardItem.CoronaMelderItem -> -78
             }
         }
     }
