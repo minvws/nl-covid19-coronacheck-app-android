@@ -79,7 +79,6 @@ class VerifierMainActivity : AppCompatActivity() {
         appConfigViewModel.appStatusLiveData.observe(this) {
             verifierMainActivityViewModel.policyUpdate()
             handleAppStatus(it, navController)
-            introductionViewModel.onConfigUpdated()
         }
 
         verifierMainActivityViewModel.isPolicyUpdatedLiveData.observe(
@@ -137,7 +136,11 @@ class VerifierMainActivity : AppCompatActivity() {
             return
         }
 
-        if (appStatus !is AppStatus.NoActionRequired) navigateToAppStatus(appStatus, navController)
+        if (appStatus !is AppStatus.NoActionRequired) {
+            navigateToAppStatus(appStatus, navController)
+        } else {
+            introductionViewModel.onConfigUpdated()
+        }
     }
 
     private fun navigateToAppStatus(
