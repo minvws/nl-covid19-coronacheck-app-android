@@ -41,7 +41,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
     private var _binding: FragmentScanInstructionsBinding? = null
     private val binding get() = _binding!!
 
-    private val onboardingItems by lazy { instructionsExplanationData(verificationPolicySelectionStateUseCase.get()) }
+    private val onboardingItems by lazy { onboardingItemList(verificationPolicySelectionStateUseCase.get()) }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

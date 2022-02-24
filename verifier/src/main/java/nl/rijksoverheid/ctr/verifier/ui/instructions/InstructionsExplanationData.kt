@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
  *
  */
 
-fun instructionsExplanationData(selectionState: VerificationPolicySelectionState): List<OnboardingItem> =
+fun onboardingItemList(selectionState: VerificationPolicySelectionState): List<OnboardingItem> =
     listOf(
         OnboardingItem(
             animationResource = R.raw.scaninstructions_1,
