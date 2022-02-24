@@ -24,24 +24,24 @@ class SortGreenCardItemsUseCaseImpl(
     override fun sort(items: List<DashboardItem>): List<DashboardItem> {
         return items.sortedBy {
             when (it) {
-                is DashboardItem.CardsItem -> {
-                    val greenCard = it.cards.first().greenCard
-                    val isDomesticTestGreenCard = greenCardUtil.isDomesticTestGreenCard(
-                        greenCard = greenCard
-                    )
-                    // If we are dealing with a domestic test green card and the policy is set to OneG, we always want that card on top
-                    if (isDomesticTestGreenCard && featureFlagUseCase.getDisclosurePolicy() == DisclosurePolicy.OneG) {
-                        -100
-                    } else {
-                        it.cards.first().originStates.first().origin.type.order
-                    }
-                }
-                is DashboardItem.InfoItem.OriginInfoItem -> {
-                    0
-                }
-                else -> {
-                    0
-                }
+                is DashboardItem.HeaderItem -> -100
+                DashboardItem.InfoItem.ClockDeviationItem -> -99
+                is DashboardItem.InfoItem.ConfigFreshnessWarning -> -98
+                DashboardItem.InfoItem.AppUpdate -> -97
+                DashboardItem.InfoItem.VisitorPassIncompleteItem -> -96
+                is DashboardItem.InfoItem.GreenCardExpiredItem -> -95
+                is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> -94
+                is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> -93
+                DashboardItem.InfoItem.BoosterItem -> -92
+                DashboardItem.InfoItem.NewValidityItem -> -91
+                is DashboardItem.InfoItem.DisclosurePolicyItem -> -90
+                DashboardItem.InfoItem.MissingDutchVaccinationItem -> -89
+                is DashboardItem.InfoItem.OriginInfoItem -> -88
+                is DashboardItem.PlaceholderCardItem -> -87
+                is DashboardItem.CardsItem -> -86
+                DashboardItem.AddQrButtonItem -> -85
+                DashboardItem.AddQrCardItem -> -84
+                DashboardItem.CoronaMelderItem -> -83
             }
         }
     }
