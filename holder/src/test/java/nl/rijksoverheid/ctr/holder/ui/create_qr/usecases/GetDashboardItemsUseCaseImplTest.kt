@@ -33,11 +33,13 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
     fun setup() {
         loadKoinModules(module(override = true) {
             factory {
-                mockk<BuildConfigUseCase>().apply {
-                    every { getVersionCode() } returns 99999
-                }
                 mockk<PersistenceManager>(relaxed = true).apply {
                     every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
+                }
+            }
+            factory {
+                mockk<BuildConfigUseCase>(relaxed = true).apply {
+                    every { getVersionCode() } returns 99999
                 }
             }
         })
