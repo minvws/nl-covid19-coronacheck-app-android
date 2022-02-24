@@ -15,14 +15,15 @@ class VerifierIntroductionStatusUseCaseImpl(
 
     override fun get(): IntroductionStatus {
         return when {
-            introductionIsNotFinished() -> IntroductionStatus.OnboardingNotFinished(
-                introductionData
-            )
+            setupIsNotFinished() -> IntroductionStatus.SetupNotFinished
+            introductionIsNotFinished() -> IntroductionStatus.OnboardingNotFinished(introductionData)
             newFeaturesAvailable() -> IntroductionStatus.OnboardingFinished.NewFeatures(introductionData)
             newTermsAvailable() -> IntroductionStatus.OnboardingFinished.ConsentNeeded(introductionData)
             else -> IntroductionStatus.IntroductionFinished
         }
     }
+
+    private fun setupIsNotFinished() = !introductionPersistenceManager.getSetupFinished()
 
     private fun newTermsAvailable() =
                 !introductionPersistenceManager.getNewTermsSeen(introductionData.newTerms.version)

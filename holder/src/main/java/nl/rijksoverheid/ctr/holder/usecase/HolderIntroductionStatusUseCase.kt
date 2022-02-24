@@ -33,19 +33,22 @@ class HolderIntroductionStatusUseCaseImpl(
     override fun get(): IntroductionStatus {
         val newPolicy = showNewDisclosurePolicyUseCase.get()
         return when {
-            introductionIsNotFinished() -> getIntroductionNotFinished()
+            setupIsNotFinished() -> IntroductionStatus.SetupNotFinished
+            onboardingIsNotFinished() -> getOnboardingNotFinished()
             newFeaturesAvailable() || newPolicy != null -> getNewFeatures(newPolicy)
             newTermsAvailable() -> OnboardingFinished.ConsentNeeded(introductionData)
             else -> IntroductionStatus.IntroductionFinished
         }
     }
 
+    private fun setupIsNotFinished() = !introductionPersistenceManager.getSetupFinished()
+
     /**
      * Add the current disclosure policy info as onboarding item
      *
      * @return Onboarding not finished state with disclosure policy onboarding item added
      */
-    private fun getIntroductionNotFinished(): OnboardingNotFinished {
+    private fun getOnboardingNotFinished(): OnboardingNotFinished {
         val policy = holderFeatureFlagUseCase.getDisclosurePolicy()
         return OnboardingNotFinished(
             introductionData.copy(
@@ -124,7 +127,6 @@ class HolderIntroductionStatusUseCaseImpl(
                 !introductionPersistenceManager.getNewFeaturesSeen(newFeatureVersion)
     }
 
-    private fun introductionIsNotFinished() =
+    private fun onboardingIsNotFinished() =
         !introductionPersistenceManager.getIntroductionFinished()
-
 }

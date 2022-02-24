@@ -27,7 +27,18 @@ class VerifierIntroductionStatusUseCaseImplTest {
     )
 
     @Test
+    fun `when setup isn't finished, the status is setup not finished`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns false
+
+        assertEquals(
+            introductionStatusUseCase.get(),
+            IntroductionStatus.SetupNotFinished
+        )
+    }
+
+    @Test
     fun `when introduction isn't finished, the status is introduction not finished`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
 
         assertEquals(
@@ -38,6 +49,7 @@ class VerifierIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when intro is finished and new features are available, the status is new features`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionData.newFeatures } returns listOf(mockk())
         every { introductionData.newFeatureVersion } returns 2
@@ -52,6 +64,7 @@ class VerifierIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when intro is finished and new terms are available, the status is consent needed`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionData.newFeatures } returns emptyList()
         every { introductionData.newFeatureVersion } returns 2
@@ -67,6 +80,7 @@ class VerifierIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when intro is finished and there are no new features or terms, the status is no action required`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionData.newFeatures } returns listOf(mockk())
         every { introductionData.newFeatureVersion } returns 2

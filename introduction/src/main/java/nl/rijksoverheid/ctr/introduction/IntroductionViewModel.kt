@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.OnboardingFinished
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.OnboardingNotFinished
 import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
@@ -19,9 +17,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 
 abstract class IntroductionViewModel : ViewModel() {
-    val setupRequiredLiveData: LiveData<Event<Unit>> = MutableLiveData()
-    val onboardingNotFinishedLiveData: LiveData<Event<OnboardingNotFinished>> = MutableLiveData()
-    val onboardingFinishedLiveData: LiveData<Event<OnboardingFinished>> = MutableLiveData()
+    val introductionStatusLiveData: LiveData<Event<IntroductionStatus>> = MutableLiveData()
     abstract fun getIntroductionStatus(): IntroductionStatus
     abstract fun saveIntroductionFinished(introductionData: IntroductionData)
     abstract fun saveNewFeaturesFinished(newFeaturesVersion: Int)
@@ -34,10 +30,7 @@ class IntroductionViewModelImpl(
 ) : IntroductionViewModel() {
 
     init {
-        val introductionStatus = introductionStatusUseCase.get()
-        if (introductionStatus is OnboardingNotFinished) {
-            (setupRequiredLiveData as MutableLiveData).postValue(Event(Unit))
-        }
+        postIntroductionStatus()
     }
 
     override fun getIntroductionStatus() = introductionStatusUseCase.get()
@@ -57,18 +50,15 @@ class IntroductionViewModelImpl(
     }
 
     override fun onConfigUpdated() {
-        when (val introductionStatus = introductionStatusUseCase.get()) {
-            is OnboardingNotFinished -> {
-                (onboardingNotFinishedLiveData as MutableLiveData)
-                    .postValue(Event(introductionStatus))
-            }
-            is OnboardingFinished -> {
-                (onboardingFinishedLiveData as MutableLiveData)
-                    .postValue(Event(introductionStatus))
-            }
-            IntroductionStatus.IntroductionFinished -> {
+        introductionPersistenceManager.saveSetupFinished()
+        postIntroductionStatus()
+    }
 
+    private fun postIntroductionStatus() {
+        introductionStatusUseCase.get()
+            .takeIf { it !is IntroductionStatus.IntroductionFinished }
+            ?.let {
+                (introductionStatusLiveData as MutableLiveData).postValue(Event(it))
             }
-        }
     }
 }

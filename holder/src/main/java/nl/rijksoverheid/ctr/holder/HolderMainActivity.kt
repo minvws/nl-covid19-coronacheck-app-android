@@ -78,10 +78,7 @@ class HolderMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        introductionViewModel.setupRequiredLiveData.observe(this, EventObserver {
-            navigateToIntroduction(navController)
-        })
-        introductionViewModel.onboardingFinishedLiveData.observe(this, EventObserver {
+        introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
             navigateToIntroduction(navController, it)
         })
 
@@ -122,7 +119,7 @@ class HolderMainActivity : AppCompatActivity() {
     }
 
     private fun navigateToIntroduction(
-        navController: NavController, introductionStatus: IntroductionStatus? = null
+        navController: NavController, introductionStatus: IntroductionStatus
     ) {
         navController.navigate(
             R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)

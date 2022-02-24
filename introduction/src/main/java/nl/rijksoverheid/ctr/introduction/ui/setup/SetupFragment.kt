@@ -31,7 +31,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     private val appStatusViewModel: AppConfigViewModel by sharedViewModel()
-    private val introductionViewModel: IntroductionViewModel by viewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
@@ -53,26 +52,16 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
         appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is AppStatus.UpdateRecommended -> showRecommendedUpdateDialog()
-                is AppStatus.NoActionRequired -> introductionViewModel.onConfigUpdated()
+                is AppStatus.NoActionRequired -> { }
                 else -> navigateToAppStatus(it)
             }
         }
-        introductionViewModel.onboardingNotFinishedLiveData.observe(
-            viewLifecycleOwner, EventObserver {
-                navigateToOnboarding(it.introductionData)
-            })
     }
 
     private fun navigateToAppStatus(appStatus: AppStatus) {
         findNavControllerSafety()?.navigate(
             R.id.action_app_status,
             bundleOf(AppStatusFragment.EXTRA_APP_STATUS to appStatus)
-        )
-    }
-
-    private fun navigateToOnboarding(introductionData: IntroductionData) {
-        findNavControllerSafety()?.navigate(
-            SetupFragmentDirections.actionOnboarding(introductionData)
         )
     }
 
@@ -83,11 +72,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
             message = getString(R.string.app_status_update_recommended_message),
             positiveButtonText = R.string.app_status_update_recommended_action,
             positiveButtonCallback = { intentUtil.openPlayStore(requireContext()) },
-            negativeButtonText = R.string.app_status_update_recommended_dismiss_action,
-            onDismissCallback = {
-                (introductionViewModel.getIntroductionStatus() as? IntroductionStatus.OnboardingNotFinished)
-                    ?.introductionData?.let { navigateToOnboarding(it) }
-            }
+            negativeButtonText = R.string.app_status_update_recommended_dismiss_action
         )
     }
 }

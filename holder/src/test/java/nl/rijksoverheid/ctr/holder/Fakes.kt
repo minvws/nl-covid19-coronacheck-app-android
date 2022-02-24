@@ -108,7 +108,8 @@ fun fakeIntroductionViewModel(
 
         init {
             if (setupRequired) {
-                (setupRequiredLiveData as MutableLiveData).postValue(Event(Unit))
+                (introductionStatusLiveData as MutableLiveData)
+                    .postValue(Event(IntroductionStatus.SetupNotFinished))
             }
         }
 
@@ -125,14 +126,9 @@ fun fakeIntroductionViewModel(
         }
 
         override fun onConfigUpdated() {
-            when (introductionStatus) {
-                is IntroductionStatus.OnboardingFinished -> {
-                    (onboardingFinishedLiveData as MutableLiveData).postValue(Event(introductionStatus))
-                }
-                is IntroductionStatus.OnboardingNotFinished -> {
-                    (onboardingNotFinishedLiveData as MutableLiveData).postValue(Event(introductionStatus))
-                }
-                else -> {}
+            introductionStatus?.let {
+                (introductionStatusLiveData as MutableLiveData)
+                    .postValue(Event(it))
             }
         }
     }

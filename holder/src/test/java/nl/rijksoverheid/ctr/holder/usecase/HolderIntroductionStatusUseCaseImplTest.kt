@@ -13,6 +13,7 @@ package nl.rijksoverheid.ctr.holder.usecase
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.Assert.assertEquals
+import junit.framework.TestCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ShowNewDisclosurePolicyUseCase
@@ -40,7 +41,19 @@ class HolderIntroductionStatusUseCaseImplTest {
     )
 
     @Test
+    fun `when setup isn't finished, the status is setup not finished`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns false
+        every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneG
+
+        TestCase.assertEquals(
+            introductionStatusUseCase.get(),
+            IntroductionStatus.SetupNotFinished
+        )
+    }
+
+    @Test
     fun `when introduction isn't finished, the status is introduction not finished with `() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneG
@@ -52,6 +65,7 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when intro is finished and new features are available, the status is new features`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionPersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneG
@@ -64,6 +78,7 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when intro is finished and new terms are available, the status is consent needed`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionPersistenceManager.getNewFeaturesSeen(2) } returns true
         every { introductionPersistenceManager.getNewTermsSeen(1) } returns false
@@ -77,6 +92,7 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when intro is finished and there are no new features or terms, the status is no action required`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionPersistenceManager.getNewFeaturesSeen(2) } returns true
         every { introductionPersistenceManager.getNewTermsSeen(1) } returns true
@@ -91,6 +107,7 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when feature flag is 1G, there should be a 1G onboarding item`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneG
@@ -116,6 +133,7 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when feature flag is 3G, there should be a 3G onboarding item`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
@@ -141,6 +159,7 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when feature flag is 1G+3G, there should be a 1G+3G onboarding item`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneAndThreeG
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneAndThreeG
@@ -166,6 +185,7 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when disclosure is 1G+3G, there should be a 1G+3G new feature item added`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionPersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneAndThreeG
@@ -192,6 +212,7 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when disclosure is 1G, there should be a 1G new feature item added`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionPersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneG
@@ -218,6 +239,7 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when disclosure is 3G, there should be a 3G new feature item added`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionPersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
@@ -244,6 +266,7 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when there are no new feature but there is a policy change, there should be a new feature item`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionPersistenceManager.getNewFeaturesSeen(2) } returns true
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
@@ -271,6 +294,7 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when there is new feature but no policy change, there should not be a policy new feature item`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { introductionPersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns null

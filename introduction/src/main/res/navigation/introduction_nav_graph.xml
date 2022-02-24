@@ -16,6 +16,12 @@
             app:popUpToInclusive="true" />
 
         <action
+            android:id="@+id/action_onboarding"
+            app:destination="@id/nav_onboarding"
+            app:popUpTo="@id/nav_introduction"
+            app:popUpToInclusive="true" />
+
+        <action
             android:id="@+id/action_new_terms"
             app:destination="@id/nav_new_terms"
             app:popUpTo="@id/nav_introduction"

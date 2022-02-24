@@ -13,6 +13,13 @@ import nl.rijksoverheid.ctr.introduction.IntroductionData
  */
 sealed class IntroductionStatus : Parcelable {
 
+    @Parcelize
+    object SetupNotFinished : IntroductionStatus(), Parcelable
+
+    @Parcelize
+    data class OnboardingNotFinished(val introductionData: IntroductionData) :
+        IntroductionStatus(), Parcelable
+
     sealed class OnboardingFinished : IntroductionStatus() {
 
         @Parcelize
@@ -21,10 +28,6 @@ sealed class IntroductionStatus : Parcelable {
         @Parcelize
         data class NewFeatures(val introductionData: IntroductionData) : OnboardingFinished(), Parcelable
     }
-
-    @Parcelize
-    data class OnboardingNotFinished(val introductionData: IntroductionData) :
-        IntroductionStatus(), Parcelable
 
     @Parcelize
     object IntroductionFinished : IntroductionStatus(), Parcelable
