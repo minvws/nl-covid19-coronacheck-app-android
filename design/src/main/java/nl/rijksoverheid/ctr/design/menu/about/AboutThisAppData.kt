@@ -17,7 +17,8 @@ data class AboutThisAppData(
     val versionCode: String,
     val sections: List<AboutThisAppSection> = listOf(),
     val configVersionHash: String,
-    val configVersionTimestamp: Long
+    val configVersionTimestamp: Long,
+    val deeplinkScannerUrl: String? = null
 ) : Parcelable {
 
     @Parcelize
