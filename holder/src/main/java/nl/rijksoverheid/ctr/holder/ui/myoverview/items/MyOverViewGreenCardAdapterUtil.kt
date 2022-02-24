@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewGreenCardExpiryUtil
 import nl.rijksoverheid.ctr.shared.ext.capitalize
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import java.time.Clock
 import java.time.Instant
 import java.util.concurrent.TimeUnit
@@ -84,8 +85,16 @@ class MyOverViewGreenCardAdapterUtilImpl(
                     }
                 }
                 is GreenCardType.Domestic -> {
-                    viewBinding.title.text =
-                        context.getString(R.string.my_overview_test_result_title)
+                    when (card.disclosurePolicy) {
+                        is GreenCardDisclosurePolicy.ThreeG -> {
+                            viewBinding.title.text = context.getString(R.string.holder_dashboard_domesticQRCard_3G_title)
+                            viewBinding.policyLabel.text = context.getString(R.string.holder_dashboard_domesticQRCard_3G_label)
+                        }
+                        is GreenCardDisclosurePolicy.OneG -> {
+                            viewBinding.title.text = context.getString(R.string.holder_dashboard_domesticQRCard_1G_title)
+                            viewBinding.policyLabel.text = context.getString(R.string.holder_dashboard_domesticQRCard_1G_label)
+                        }
+                    }
                     card.originStates
                         .sortedBy { state -> state.origin.type.order }
                         .forEach { originState ->
@@ -137,12 +146,7 @@ class MyOverViewGreenCardAdapterUtilImpl(
             descriptionLayout = viewBinding.description,
             originState = originState,
             showTime = false,
-            subtitle = context.getString(
-                if (credentialEntities.any { it.category == Mobilecore.VERIFICATION_POLICY_3G } && featureFlagUseCase.isVerificationPolicyEnabled()) {
-                    R.string.holder_my_overview_test_result_validity_3g
-                } else {
-                    R.string.qr_card_validity_valid
-                },
+            subtitle = context.getString(R.string.qr_card_validity_valid,
                 origin.expirationTime.formatDateTime(context)
             )
         )

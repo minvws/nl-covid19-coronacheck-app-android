@@ -28,9 +28,12 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -206,9 +209,10 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                                         birthMonth = qrCodeData.readDomesticCredential.birthMonth
                                     )
 
+                                    // TODO refactor the disclosurePolicy
                                     infoScreenUtil.getForDomesticQr(
                                         personalDetails = personalDetails,
-                                        category = qrCodeData.readDomesticCredential.category
+                                        disclosurePolicy = (args.data.shouldDisclose as QrCodeFragmentData.ShouldDisclose.Disclose).disclosurePolicy
                                     )
                                 }
                                 is QrCodeData.European -> {

@@ -4,8 +4,10 @@ import android.graphics.Bitmap
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import java.time.Clock
@@ -18,7 +20,7 @@ import java.time.Clock
  *
  */
 interface QrCodeUseCase {
-    suspend fun qrCode(credential: ByteArray, shouldDisclose: Boolean, qrCodeWidth: Int, qrCodeHeight: Int, errorCorrectionLevel: ErrorCorrectionLevel): Bitmap
+    suspend fun qrCode(credential: ByteArray, shouldDisclose: QrCodeFragmentData.ShouldDisclose, qrCodeWidth: Int, qrCodeHeight: Int, errorCorrectionLevel: ErrorCorrectionLevel): Bitmap
 }
 
 class QrCodeUseCaseImpl(
@@ -30,7 +32,7 @@ class QrCodeUseCaseImpl(
 
     override suspend fun qrCode(
         credential: ByteArray,
-        shouldDisclose: Boolean,
+        shouldDisclose: QrCodeFragmentData.ShouldDisclose,
         qrCodeWidth: Int,
         qrCodeHeight: Int,
         errorCorrectionLevel: ErrorCorrectionLevel
@@ -40,10 +42,11 @@ class QrCodeUseCaseImpl(
             val secretKey = persistenceManager.getSecretKeyJson()
                 ?: throw IllegalStateException("Secret key should exist")
 
-            val qrCodeContent = if (shouldDisclose) mobileCoreWrapper.disclose(
+            val qrCodeContent = if (shouldDisclose is QrCodeFragmentData.ShouldDisclose.Disclose) mobileCoreWrapper.disclose(
                 secretKey.toByteArray(),
                 credential,
-                Clock.systemDefaultZone().millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis()
+                Clock.systemDefaultZone().millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis(),
+                shouldDisclose.disclosurePolicy
             ) else String(credential)
 
             qrCodeUtil.createQrCode(

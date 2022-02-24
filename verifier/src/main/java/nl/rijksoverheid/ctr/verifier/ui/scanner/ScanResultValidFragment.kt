@@ -1,17 +1,14 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.fragment.AutoCloseFragment
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.verifier.BuildConfig
@@ -24,8 +21,7 @@ import nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
-
-class ScanResultValidFragment : Fragment() {
+class ScanResultValidFragment : AutoCloseFragment(0) {
 
     private var _binding: FragmentScanResultValidBinding? = null
     private val binding get() = _binding!!
@@ -38,8 +34,9 @@ class ScanResultValidFragment : Fragment() {
     private val args: ScanResultValidFragmentArgs by navArgs()
     private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase by inject()
 
-    private val autoCloseHandler = Handler(Looper.getMainLooper())
-    private val autoCloseRunnable = Runnable {
+    override fun aliveForMilliseconds(): Long = 800
+
+    override fun navigateToCloseAt() {
         navigateSafety(
             R.id.nav_scan_result_valid,
             ScanResultValidFragmentDirections.actionNavQrScanner()
@@ -100,21 +97,14 @@ class ScanResultValidFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val autoCloseDurationMilli =
-            if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else 800
         args.validData.externalReturnAppData?.let {
-            try {
-                startActivity(it.intent)
-                activity?.finishAffinity()
-            } catch (exception: ActivityNotFoundException) {
-                autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDurationMilli)
-            }
-        } ?: autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDurationMilli)
+            startActivity(it.intent)
+            activity?.finishAffinity()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        autoCloseHandler.removeCallbacks(autoCloseRunnable)
     }
 }

@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.QrCodesResultUseCase
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 
 abstract class QrCodesViewModel : ViewModel() {
     val qrCodeDataListLiveData = MutableLiveData<QrCodesResult>()
@@ -19,7 +20,7 @@ abstract class QrCodesViewModel : ViewModel() {
         originType: OriginType,
         size: Int,
         credentials: List<ByteArray>,
-        shouldDisclose: Boolean
+        shouldDisclose: QrCodeFragmentData.ShouldDisclose
     )
 
     abstract fun onReturnUriGiven(uri: String, type: GreenCardType)
@@ -35,7 +36,7 @@ class QrCodesViewModelImpl(
         originType: OriginType,
         size: Int,
         credentials: List<ByteArray>,
-        shouldDisclose: Boolean
+        shouldDisclose: QrCodeFragmentData.ShouldDisclose
     ) {
 
         viewModelScope.launch {

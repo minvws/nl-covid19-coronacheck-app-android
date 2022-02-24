@@ -36,10 +36,11 @@ class NewPolicyRulesViewModelImplTest {
     )
 
     @Test
-    fun `on init set new policy as seen`() {
-        every { newPolicyRulesItemUseCase.get() } returns NewPolicyItem(1, 1)
+    fun `on next screen set new policy as seen`() {
+        val verificationPolicySelection = ScannerNavigationState.VerificationPolicySelection
+        every { scannerNavigationStateUseCase.get() } returns verificationPolicySelection
 
-        viewModel.init()
+        viewModel.nextScreen()
 
         verify { persistenceManager.setNewPolicyRulesSeen(true) }
     }

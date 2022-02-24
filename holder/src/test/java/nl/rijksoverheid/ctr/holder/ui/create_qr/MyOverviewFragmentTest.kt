@@ -21,16 +21,16 @@ import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assert
 import com.adevinta.android.barista.internal.performActionOnView
 import com.google.android.material.card.MaterialCardView
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
-import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.fakeAppConfigViewModel
-import nl.rijksoverheid.ctr.holder.fakeDashboardViewModel
-import nl.rijksoverheid.ctr.holder.fakeGreenCard
+import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -197,7 +197,9 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                                 greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
-                                databaseSyncerResult = DatabaseSyncerResult.Success()
+                                databaseSyncerResult = DatabaseSyncerResult.Success(),
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
+                                greenCardEnabledState = GreenCardEnabledState.Enabled
                             )
                         )
                     )
@@ -243,19 +245,25 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                                 greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
-                                databaseSyncerResult = DatabaseSyncerResult.Success()
+                                databaseSyncerResult = DatabaseSyncerResult.Success(),
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
+                                greenCardEnabledState = GreenCardEnabledState.Enabled
                             ),
                             DashboardItem.CardsItem.CardItem(
                                 greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
-                                databaseSyncerResult = DatabaseSyncerResult.Success()
+                                databaseSyncerResult = DatabaseSyncerResult.Success(),
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
+                                greenCardEnabledState = GreenCardEnabledState.Enabled
                             ),
                             DashboardItem.CardsItem.CardItem(
                                 greenCard = fakeGreenCard(),
                                 originStates = listOf(),
                                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
-                                databaseSyncerResult = DatabaseSyncerResult.Success()
+                                databaseSyncerResult = DatabaseSyncerResult.Success(),
+                                disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
+                                greenCardEnabledState = GreenCardEnabledState.Enabled
                             )
                         )
                     )
@@ -289,8 +297,8 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.GreenCardExpiredItem(
-                        greenCardEntity = fakeGreenCard().greenCardEntity,
-                        originType = OriginType.Vaccination
+                        greenCardType = fakeGreenCard().greenCardEntity.type,
+                        originEntity = fakeOriginEntity(type = OriginType.Vaccination)
                     )
                 )
             )
@@ -323,7 +331,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.DomesticVaccinationExpiredItem(
-                        greenCardEntity = fakeGreenCard().greenCardEntity
+                        originEntity = fakeOriginEntity()
                     )
                 )
             )
@@ -446,13 +454,13 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `3G validity card cannot be dismissed and should have a read more`() {
+    fun `policy info card can be dismissed and should have a read more`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.TestCertificate3GValidity
+                    DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.ThreeG)
                 )
             )
         )
@@ -465,10 +473,55 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
                 assertTrue { view is CardView }
             }
         )
-        assertNotDisplayed(R.id.close)
+        assertDisplayed(R.id.close)
         assertDisplayed(R.id.button)
     }
 
+    @Test
+    fun `policy info for 3G should be shown on 3G disclosure policy`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.ThreeG)
+                )
+            )
+        )
+
+        assertDisplayed(R.id.text, R.string.holder_dashboard_only3GaccessBanner_title)
+    }
+
+    @Test
+    fun `policy info for 1G should be shown on 1G disclosure policy`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.OneG)
+                )
+            )
+        )
+
+        assertDisplayed(R.id.text, R.string.holder_dashboard_only1GaccessBanner_title)
+    }
+
+    @Test
+    fun `policy info for 1G+3G should be shown on 1G+3G disclosure policy`() {
+        startFragment(
+            DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf(
+                    DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.OneAndThreeG)
+                )
+            )
+        )
+
+        assertDisplayed(R.id.text, R.string.holder_dashboard_3Gand1GaccessBanner_title)
+    }
+    
     private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<MyOverviewTabsFragment> {
         loadKoinModules(
             module(override = true) {

@@ -30,7 +30,6 @@ class IntroductionStatusUseCaseImpl(
             newFeaturesAvailable() -> IntroductionFinished.NewFeatures(introductionData)
             newTermsAvailable() -> IntroductionFinished.ConsentNeeded(introductionData)
             else -> IntroductionFinished.NoActionRequired
-
         }
     }
 

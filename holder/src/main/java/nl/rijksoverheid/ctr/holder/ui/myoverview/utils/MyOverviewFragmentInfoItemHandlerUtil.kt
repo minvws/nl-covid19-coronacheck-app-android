@@ -9,20 +9,20 @@ import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.holder.MainNavDirections
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.design.utils.IntentUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
-import nl.rijksoverheid.ctr.holder.MainNavDirections
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -75,16 +75,31 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.NewValidityItem -> {
                 onNewValidityInfoClicked(myOverviewFragment.requireContext())
             }
-            is DashboardItem.InfoItem.TestCertificate3GValidity -> {
-                onTestCertificate3GValidityClicked(myOverviewFragment)
-            }
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
                 onVisitorPassIncompleteClicked(myOverviewFragment)
             }
             is DashboardItem.InfoItem.BoosterItem -> {
                 onBoosterItemClicked(myOverviewFragment)
             }
+            is DashboardItem.InfoItem.DisclosurePolicyItem -> {
+                onDisclosurePolicyItemClicked(
+                    myOverviewFragment.requireContext(),
+                    infoItem.disclosurePolicy
+                )
+            }
         }
+    }
+
+    private fun onDisclosurePolicyItemClicked(
+        context: Context,
+        disclosurePolicy: DisclosurePolicy
+    ) {
+        val urlResource = when (disclosurePolicy) {
+            DisclosurePolicy.OneG -> R.string.holder_dashboard_only1GaccessBanner_link
+            DisclosurePolicy.ThreeG -> R.string.holder_dashboard_only3GaccessBanner_link
+            DisclosurePolicy.OneAndThreeG -> R.string.holder_dashboard_3Gand1GaccessBanner_link
+        }
+        context.getString(urlResource).launchUrl(context)
     }
 
     private fun onBoosterItemClicked(myOverviewFragment: MyOverviewFragment) {
@@ -318,26 +333,28 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         // Clear preference so it doesn't show again
         when (infoItem) {
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCardEntity)
+                myOverviewFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
             is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
-                myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCardEntity)
+                myOverviewFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
             is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
-                myOverviewFragment.dashboardViewModel.removeGreenCard(infoItem.greenCardEntity)
+                myOverviewFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
             is DashboardItem.InfoItem.ClockDeviationItem,
             is DashboardItem.InfoItem.ConfigFreshnessWarning,
             is DashboardItem.InfoItem.OriginInfoItem,
             is DashboardItem.InfoItem.AppUpdate,
             is DashboardItem.InfoItem.MissingDutchVaccinationItem,
-            is DashboardItem.InfoItem.TestCertificate3GValidity,
             is DashboardItem.InfoItem.VisitorPassIncompleteItem,
             is DashboardItem.InfoItem.NewValidityItem -> {
                 myOverviewFragment.dashboardViewModel.dismissNewValidityInfoCard()
             }
             is DashboardItem.InfoItem.BoosterItem -> {
                 myOverviewFragment.dashboardViewModel.dismissBoosterInfoCard()
+            }
+            is DashboardItem.InfoItem.DisclosurePolicyItem -> {
+                myOverviewFragment.dashboardViewModel.dismissPolicyInfo(infoItem.disclosurePolicy)
             }
         }
     }

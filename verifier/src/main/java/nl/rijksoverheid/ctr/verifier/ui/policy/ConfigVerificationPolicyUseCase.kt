@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.ui.policy
 
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy1G
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
@@ -33,6 +34,7 @@ class ConfigVerificationPolicyUseCaseImpl(
 
         val verificationPoliciesEnabled =
             cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+                .filter { VerificationPolicy.fromConfigValue(it) != null }
 
         // Reset policy settings on policy change
         if (persistenceManager.getEnabledPolicies() != verificationPoliciesEnabled) {

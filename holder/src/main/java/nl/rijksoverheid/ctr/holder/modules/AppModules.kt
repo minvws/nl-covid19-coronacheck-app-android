@@ -1,15 +1,17 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.DeviceRootedUseCaseImpl
-import nl.rijksoverheid.ctr.holder.persistence.*
+import android.content.Context
+import nl.rijksoverheid.ctr.appconfig.usecases.*
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManagerImpl
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCase
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCaseImpl
-import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
+import nl.rijksoverheid.ctr.design.BuildConfig
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCaseImpl
 import nl.rijksoverheid.ctr.holder.usecase.BuildConfigUseCaseImpl
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCaseImpl
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -28,6 +30,8 @@ val appModule = module {
         CachedAppConfigUseCaseImpl(
             get(),
             androidContext().filesDir.path,
+            get(),
+            isDebugApp(androidContext()),
             get()
         )
     }
@@ -41,4 +45,11 @@ val appModule = module {
     factory<BuildConfigUseCase> {
         BuildConfigUseCaseImpl()
     }
+
+    factory<HolderFeatureFlagUseCase> {
+        HolderFeatureFlagUseCaseImpl(get())
+    }
 }
+
+private fun isDebugApp(androidContext: Context) =
+    BuildConfig.DEBUG || androidContext.packageName == "nl.rijksoverheid.ctr.holder.acc"

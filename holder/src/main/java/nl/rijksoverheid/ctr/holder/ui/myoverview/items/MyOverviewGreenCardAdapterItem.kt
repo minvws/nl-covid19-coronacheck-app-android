@@ -20,15 +20,21 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-data class AdapterCard(val greenCard: GreenCard, val originStates: List<OriginState>)
+data class AdapterCard(
+    val greenCard: GreenCard,
+    val originStates: List<OriginState>,
+    val disclosurePolicy: GreenCardDisclosurePolicy)
 
 class MyOverviewGreenCardAdapterItem(
     private val cards: List<DashboardItem.CardsItem.CardItem>,
-    private val onButtonClick: (greenCard: GreenCard, credentials: List<ByteArray>, credentialExpirationTimeSeconds: Long) -> Unit,
+    private val onButtonClick: (cardItem: DashboardItem.CardsItem.CardItem, credentials: List<ByteArray>, credentialExpirationTimeSeconds: Long) -> Unit,
     private val onRetryClick: () -> Unit = {}
 ) :
     BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
@@ -39,7 +45,10 @@ class MyOverviewGreenCardAdapterItem(
     override fun bind(viewBinding: ItemMyOverviewGreenCardBinding, position: Int) {
         applyStyling(viewBinding = viewBinding)
         setContent(viewBinding = viewBinding)
-        initButton(viewBinding = viewBinding)
+        initButton(
+            viewBinding = viewBinding,
+            card = cards.first()
+        )
         accessibility(
             viewBinding = viewBinding,
             greenCardType = cards.first().greenCard.greenCardEntity.type
@@ -61,18 +70,29 @@ class MyOverviewGreenCardAdapterItem(
         ViewCompat.setAccessibilityHeading(viewBinding.title, true)
     }
 
-    private fun initButton(viewBinding: ItemMyOverviewGreenCardBinding) {
-        viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
-            val mainCredentialState = cards.first().credentialState
-            if (mainCredentialState is HasCredential) {
-                val credentials = cards.mapNotNull {
-                    (it.credentialState as? HasCredential)?.credential?.data
+    private fun initButton(viewBinding: ItemMyOverviewGreenCardBinding, card: DashboardItem.CardsItem.CardItem) {
+        when (card.greenCardEnabledState) {
+            is GreenCardEnabledState.Enabled -> {
+                viewBinding.buttonWithProgressWidgetContainer.visibility = View.VISIBLE
+                viewBinding.disabledState.visibility = View.GONE
+                viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
+                    val mainCredentialState = cards.first().credentialState
+                    if (mainCredentialState is HasCredential) {
+                        val credentials = cards.mapNotNull {
+                            (it.credentialState as? HasCredential)?.credential?.data
+                        }
+                        onButtonClick.invoke(
+                            cards.first(),
+                            credentials,
+                            mainCredentialState.credential.expirationTime.toEpochSecond()
+                        )
+                    }
                 }
-                onButtonClick.invoke(
-                    cards.first().greenCard,
-                    credentials,
-                    mainCredentialState.credential.expirationTime.toEpochSecond()
-                )
+            }
+            is GreenCardEnabledState.Disabled -> {
+                viewBinding.buttonWithProgressWidgetContainer.visibility = View.GONE
+                viewBinding.disabledState.visibility = View.VISIBLE
+                viewBinding.disabledState.setText(card.greenCardEnabledState.text)
             }
         }
     }
@@ -84,14 +104,18 @@ class MyOverviewGreenCardAdapterItem(
             )
         )
 
-        when (cards.first().greenCard.greenCardEntity.type) {
+        val card = cards.first()
+
+        when (card.greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
+                viewBinding.internationalImageContainer.visibility = View.VISIBLE
+                viewBinding.domesticImageContainer.visibility = View.GONE
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
-                viewBinding.imageView.setImageResource(R.drawable.ic_international_card)
             }
             is GreenCardType.Domestic -> {
+                viewBinding.internationalImageContainer.visibility = View.GONE
+                viewBinding.domesticImageContainer.visibility = View.VISIBLE
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
-                viewBinding.imageView.setImageResource(R.drawable.ic_dutch_card)
             }
         }
 
@@ -115,7 +139,7 @@ class MyOverviewGreenCardAdapterItem(
 
         myOverViewGreenCardAdapterUtil.setContent(
             ViewBindingWrapperImpl(viewBinding),
-            cards.map { AdapterCard(it.greenCard, it.originStates) }
+            cards.map { AdapterCard(it.greenCard, it.originStates, it.disclosurePolicy) }
                 .sortedByDescending { it.originStates.first().origin.eventTime },
         )
 

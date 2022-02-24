@@ -4,98 +4,38 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CardItem
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.DashboardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import java.lang.IllegalStateException
 import java.time.OffsetDateTime
 
 @RunWith(RobolectricTestRunner::class)
-class DashboardItemUtilImplTest: AutoCloseKoinTest() {
+class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     private val greenCardUtil: GreenCardUtil by inject()
-
-    @Test
-    fun `getHeaderItemText returns correct text if domestic and empty state`() {
-        val util = getUtil()
-
-        val headerText = util.getHeaderItemText(
-            emptyState = true,
-            greenCardType = GreenCardType.Domestic,
-            hasVisitorPassIncompleteItem = true,
-        )
-
-        assertEquals(R.string.my_overview_qr_placeholder_description, headerText)
-    }
-
-    @Test
-    fun `getHeaderItemText returns correct text if domestic, no empty state but has hasVisitorPassIncompleteItem`() {
-        val util = getUtil()
-
-        val headerText = util.getHeaderItemText(
-            emptyState = false,
-            greenCardType = GreenCardType.Domestic,
-            hasVisitorPassIncompleteItem = true,
-        )
-
-        assertEquals(R.string.my_overview_qr_placeholder_description, headerText)
-    }
-
-    @Test
-    fun `getHeaderItemText returns correct text if domestic and no empty state`() {
-        val util = getUtil()
-
-        val headerText = util.getHeaderItemText(
-            emptyState = false,
-            greenCardType = GreenCardType.Domestic,
-            hasVisitorPassIncompleteItem = false,
-        )
-
-        assertEquals(R.string.my_overview_description, headerText)
-    }
-
-    @Test
-    fun `getHeaderItemText returns correct text if eu and no empty state`() {
-        val util = getUtil()
-
-        val headerText = util.getHeaderItemText(
-            emptyState = false,
-            greenCardType = GreenCardType.Eu,
-            hasVisitorPassIncompleteItem = true,
-        )
-
-        assertEquals(R.string.my_overview_description_eu, headerText)
-    }
-
-    @Test
-    fun `getHeaderItemText returns correct text if eu and has no green cards`() {
-        val util = getUtil()
-
-        val headerText = util.getHeaderItemText(
-            emptyState = true,
-            greenCardType = GreenCardType.Eu,
-            hasVisitorPassIncompleteItem = true,
-        )
-
-        assertEquals(R.string.my_overview_qr_placeholder_description_eu, headerText)
-    }
 
     @Test
     fun `shouldShowClockDeviationItem returns true if has deviation and no empty state`() {
@@ -289,73 +229,6 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         )
 
         assertFalse(shouldShowCoronaMelderItem)
-    }
-
-
-    @Test
-    fun `shouldShowTestCertificate3GValidityItem returns false if test has 2g category`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { true }
-
-        val util = getUtil(
-            featureFlagUseCase = featureFlagUseCase
-        )
-
-        val greenCard = fakeGreenCard(
-            greenCardType = GreenCardType.Domestic,
-            originType = OriginType.Test,
-            category = "2"
-        )
-
-        val shouldShowTestCertificate3GValidityItem = util.shouldShowTestCertificate3GValidityItem(
-            domesticGreenCards = listOf(greenCard)
-        )
-
-        assertFalse(shouldShowTestCertificate3GValidityItem)
-    }
-
-    @Test
-    fun `shouldShowTestCertificate3GValidityItem returns true if test has 3g category`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { true }
-
-        val util = getUtil(
-            featureFlagUseCase = featureFlagUseCase
-        )
-
-        val greenCard = fakeGreenCard(
-            greenCardType = GreenCardType.Domestic,
-            originType = OriginType.Test,
-            category = "3"
-        )
-
-        val shouldShowTestCertificate3GValidityItem = util.shouldShowTestCertificate3GValidityItem(
-            domesticGreenCards = listOf(greenCard)
-        )
-
-        assertTrue(shouldShowTestCertificate3GValidityItem)
-    }
-
-    @Test
-    fun `shouldShowTestCertificate3GValidityItem returns false if test has 3g category and feature disabled`() {
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
-        every { featureFlagUseCase.isVerificationPolicyEnabled() } answers { false }
-
-        val util = getUtil(
-            featureFlagUseCase = featureFlagUseCase
-        )
-
-        val greenCard = fakeGreenCard(
-            greenCardType = GreenCardType.Domestic,
-            originType = OriginType.Test,
-            category = "3"
-        )
-
-        val shouldShowTestCertificate3GValidityItem = util.shouldShowTestCertificate3GValidityItem(
-            domesticGreenCards = listOf(greenCard)
-        )
-
-        assertFalse(shouldShowTestCertificate3GValidityItem)
     }
 
     @Test
@@ -610,6 +483,34 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         assertFalse(shouldShowAddQrItem)
     }
 
+    @Test
+    fun `showPolicyInfoItem returns the config policy when it's not the same as the one dismissed`() {
+        val util = getUtil(
+            holderFeatureFlagUseCase = mockk {
+                every { getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
+            },
+            persistenceManager = mockk {
+                every { getPolicyBannerDismissed() } returns DisclosurePolicy.OneG
+            }
+        )
+
+        assertEquals(DisclosurePolicy.ThreeG, util.showPolicyInfoItem())
+    }
+
+    @Test
+    fun `showPolicyInfoItem returns null when the config policy is the same as the one dismissed`() {
+        val util = getUtil(
+            holderFeatureFlagUseCase = mockk {
+                every { getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
+            },
+            persistenceManager = mockk {
+                every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
+            }
+        )
+
+        assertEquals(null, util.showPolicyInfoItem())
+    }
+
     private fun createCardItem(originType: OriginType) = CardItem(
         greenCard = GreenCard(
             greenCardEntity = fakeGreenCardEntity,
@@ -626,7 +527,9 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         ),
         originStates = listOf(),
         credentialState = CardsItem.CredentialState.HasCredential(mockk()),
-        databaseSyncerResult = mockk()
+        databaseSyncerResult = mockk(),
+        disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
+        greenCardEnabledState = GreenCardEnabledState.Enabled
     )
 
     private fun getEvent(originType: OriginType) = EventGroupEntity(
@@ -658,17 +561,17 @@ class DashboardItemUtilImplTest: AutoCloseKoinTest() {
         clockDeviationUseCase: ClockDeviationUseCase = mockk(relaxed = true),
         persistenceManager: PersistenceManager = mockk(relaxed = true),
         appConfigFreshnessUseCase: AppConfigFreshnessUseCase = mockk(relaxed = true),
-        featureFlagUseCase: FeatureFlagUseCase = mockk(relaxed = true),
         appConfigUseCase: CachedAppConfigUseCase = mockk(relaxed = true),
         buildConfigUseCase: BuildConfigUseCase = mockk(relaxed = true),
-        greenCardUtil: GreenCardUtil = mockk(relaxed = true)
+        greenCardUtil: GreenCardUtil = mockk(relaxed = true),
+        holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk(relaxed = true)
     ) = DashboardItemUtilImpl(
         clockDeviationUseCase = clockDeviationUseCase,
         persistenceManager = persistenceManager,
         appConfigFreshnessUseCase = appConfigFreshnessUseCase,
-        featureFlagUseCase = featureFlagUseCase,
         appConfigUseCase = appConfigUseCase,
         buildConfigUseCase = buildConfigUseCase,
-        greenCardUtil = greenCardUtil
+        greenCardUtil = greenCardUtil,
+        holderFeatureFlagUseCase = holderFeatureFlagUseCase
     )
 }

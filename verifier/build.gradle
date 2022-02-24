@@ -10,7 +10,7 @@ def appVersionCode =  1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
-version = "3.0.0"
+version = "3.0.1"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
@@ -142,6 +142,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "net.zetetic:android-database-sqlcipher:$sqlcypher_version"
+    implementation "com.airbnb.android:lottie:$lottie_version"
     kapt "androidx.room:room-compiler:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
 

@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.MultipleQrCodesUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 
@@ -18,7 +19,7 @@ interface QrCodesResultUseCase {
         greenCardType: GreenCardType,
         originType: OriginType,
         credentials: List<ByteArray>,
-        shouldDisclose: Boolean,
+        shouldDisclose: QrCodeFragmentData.ShouldDisclose,
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): QrCodesResult
@@ -37,7 +38,7 @@ class QrCodesResultUseCaseImpl(
         greenCardType: GreenCardType,
         originType: OriginType,
         credentials: List<ByteArray>,
-        shouldDisclose: Boolean,
+        shouldDisclose: QrCodeFragmentData.ShouldDisclose,
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): QrCodesResult {
@@ -78,7 +79,7 @@ class QrCodesResultUseCaseImpl(
     private suspend fun getQrCodesResultForDomestic(
         greenCardType: GreenCardType,
         credentials: List<ByteArray>,
-        shouldDisclose: Boolean,
+        shouldDisclose: QrCodeFragmentData.ShouldDisclose,
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): QrCodesResult.SingleQrCode {
@@ -94,7 +95,7 @@ class QrCodesResultUseCaseImpl(
         return QrCodesResult.SingleQrCode(
             QrCodeData.Domestic(
                 bitmap = qrCodeBitmap,
-                readDomesticCredential = mobileCoreWrapper.readDomesticCredential(credential)
+                readDomesticCredential = mobileCoreWrapper.readDomesticCredential(credential),
             )
         )
     }
@@ -102,7 +103,7 @@ class QrCodesResultUseCaseImpl(
     private suspend fun getQrCodesResultForEuropeanVaccination(
         greenCardType: GreenCardType,
         credentials: List<ByteArray>,
-        shouldDisclose: Boolean,
+        shouldDisclose: QrCodeFragmentData.ShouldDisclose,
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): QrCodesResult.MultipleQrCodes {
@@ -121,7 +122,7 @@ class QrCodesResultUseCaseImpl(
         credentials: List<ByteArray>,
         qrCodeWidth: Int,
         qrCodeHeight: Int,
-        shouldDisclose: Boolean,
+        shouldDisclose: QrCodeFragmentData.ShouldDisclose,
         greenCardType: GreenCardType
     ): List<QrCodeData.European.Vaccination> {
         val readEuropeanCredentials =
@@ -153,7 +154,7 @@ class QrCodesResultUseCaseImpl(
     private suspend fun getQrCodesResultForNonVaccination(
         greenCardType: GreenCardType,
         credentials: List<ByteArray>,
-        shouldDisclose: Boolean,
+        shouldDisclose: QrCodeFragmentData.ShouldDisclose,
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): QrCodesResult.SingleQrCode {

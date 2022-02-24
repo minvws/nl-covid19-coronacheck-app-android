@@ -4,11 +4,10 @@ import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewInfoCardBinding
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType.*
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -41,8 +40,10 @@ class MyOverviewInfoCardItem(
         }
 
         viewBinding.button.run {
+            val buttonTextId = infoItem.buttonText ?: R.string.general_readmore
             visibility = if (infoItem.hasButton) View.VISIBLE else View.GONE
-            setText(infoItem.buttonText ?: R.string.my_overview_info_card_button_read_more)
+            setText(buttonTextId)
+            contentDescription = context.getString(buttonTextId)
         }
 
         when (infoItem) {
@@ -54,8 +55,8 @@ class MyOverviewInfoCardItem(
             }
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 val expiredItemText = util.getExpiredItemText(
-                    greenCardType = infoItem.greenCardEntity.type,
-                    originType = infoItem.originType
+                    greenCardType = infoItem.greenCardType,
+                    originType = infoItem.originEntity.type
                 )
                 viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
             }
@@ -81,10 +82,6 @@ class MyOverviewInfoCardItem(
                 viewBinding.text.text =
                     viewBinding.text.context.getString(R.string.missing_dutch_certificate_info_card_text)
             }
-            is DashboardItem.InfoItem.TestCertificate3GValidity -> {
-                viewBinding.text.text =
-                    viewBinding.text.context.getString(R.string.holder_my_overview_3g_test_validity_card)
-            }
             is DashboardItem.InfoItem.AppUpdate -> {
                 viewBinding.text.setText(R.string.recommended_update_card_description)
             }
@@ -96,6 +93,15 @@ class MyOverviewInfoCardItem(
             }
             is DashboardItem.InfoItem.BoosterItem -> {
                 viewBinding.text.setText(R.string.holder_dashboard_addBoosterBanner_title)
+            }
+            is DashboardItem.InfoItem.DisclosurePolicyItem -> {
+                viewBinding.text.setText(
+                    when (infoItem.disclosurePolicy) {
+                        DisclosurePolicy.OneG -> R.string.holder_dashboard_only1GaccessBanner_title
+                        DisclosurePolicy.ThreeG -> R.string.holder_dashboard_only3GaccessBanner_title
+                        DisclosurePolicy.OneAndThreeG -> R.string.holder_dashboard_3Gand1GaccessBanner_title
+                    }
+                )
             }
         }
 

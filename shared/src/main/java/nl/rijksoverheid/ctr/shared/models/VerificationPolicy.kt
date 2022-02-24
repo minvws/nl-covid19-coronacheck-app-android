@@ -19,5 +19,11 @@ sealed class VerificationPolicy(val libraryValue: String, val configValue: Strin
             Mobilecore.VERIFICATION_POLICY_1G -> VerificationPolicy1G
             else -> null
         }
+
+        fun fromConfigValue(value: String): VerificationPolicy? = when (value) {
+            VerificationPolicy3G.configValue -> VerificationPolicy3G
+            VerificationPolicy1G.configValue -> VerificationPolicy1G
+            else -> null
+        }
     }
 }

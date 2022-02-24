@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.persistence
 
 import android.content.SharedPreferences
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -33,6 +34,10 @@ interface PersistenceManager {
     fun setHasDismissedNewValidityInfoCard(dismissed: Boolean)
     fun getHasDismissedBoosterInfoCard(): Long
     fun setHasDismissedBoosterInfoCard(dismissedAtEpochSeconds: Long)
+    fun getPolicyBannerDismissed(): DisclosurePolicy?
+    fun setPolicyBannerDismissed(policy: DisclosurePolicy)
+    fun getPolicyScreenSeen(): DisclosurePolicy?
+    fun setPolicyScreenSeen(policy: DisclosurePolicy)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -57,6 +62,8 @@ class SharedPreferencesPersistenceManager(
         const val CHECK_VALIDITY_INFO_CARD = "CHECK_VALIDITY_INFO_CARD"
         const val HAS_DISMISSED_VALIDITY_INFO_CARD = "HAS_DISMISSED_VALIDITY_INFO_CARD"
         const val HAS_DISMISSED_BOOSTER_INFO_CARD = "HAS_DISMISSED_BOOSTER_INFO_CARD"
+        const val POLICY_BANNER_DISMISSED = "POLICY_BANNER_DISMISSED"
+        const val POLICY_SCREEN_SEEN = "POLICY_SCREEN_SEEN"
     }
 
     override fun saveSecretKeyJson(json: String) {
@@ -149,5 +156,23 @@ class SharedPreferencesPersistenceManager(
 
     override fun setHasDismissedBoosterInfoCard(dismissedAtEpochSeconds: Long) {
         sharedPreferences.edit().putLong(HAS_DISMISSED_BOOSTER_INFO_CARD, dismissedAtEpochSeconds).apply()
+    }
+
+    override fun getPolicyBannerDismissed(): DisclosurePolicy? {
+        val value = sharedPreferences.getString(POLICY_BANNER_DISMISSED, "") ?: ""
+        return DisclosurePolicy.fromString(value)
+    }
+
+    override fun setPolicyBannerDismissed(policy: DisclosurePolicy) {
+        sharedPreferences.edit().putString(POLICY_BANNER_DISMISSED, policy.stringValue).apply()
+    }
+
+    override fun getPolicyScreenSeen(): DisclosurePolicy? {
+        val value = sharedPreferences.getString(POLICY_SCREEN_SEEN, "") ?: ""
+        return if (value.isNotEmpty()) DisclosurePolicy.fromString(value) else DisclosurePolicy.ThreeG
+    }
+
+    override fun setPolicyScreenSeen(policy: DisclosurePolicy) {
+        sharedPreferences.edit().putString(POLICY_SCREEN_SEEN, policy.stringValue).apply()
     }
 }

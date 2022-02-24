@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.shared.utils
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Context
 import android.view.View
-import android.view.ViewGroup
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
 import android.widget.Button
@@ -12,7 +11,8 @@ import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityEventCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
-import androidx.core.view.forEach
+import com.google.android.material.progressindicator.LinearProgressIndicator
+import nl.rijksoverheid.ctr.shared.R
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -216,5 +216,36 @@ object Accessibility {
      */
     fun View.setAccessibilityLabel(label: CharSequence): View {
         return label(this, label)
+    }
+
+    /**
+     * Make the LinearProgressIndicator more accesible by:
+     * - Focusing on the progressbar when loading
+     * - Unfocusing on the progressbar when no longer loading
+     * - Override the default talkback. A indeterminate progress bar reads "0% progress" by default.
+     */
+    fun LinearProgressIndicator.makeIndeterminateAccessible(context: Context, isLoading: Boolean) {
+        if (isLoading) {
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+            setAccessibilityFocus()
+            announceForAccessibility(context.getString(R.string.general_loading_description))
+            accessibilityDelegate = object: View.AccessibilityDelegate() {
+                override fun onInitializeAccessibilityEvent(
+                    host: View?,
+                    event: AccessibilityEvent?
+                ) {
+                    if (event?.eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
+                        announce(
+                            context = context,
+                            message = context.getString(R.string.general_loading_description)
+                        )
+                    } else {
+                        super.onInitializeAccessibilityEvent(host, event)
+                    }
+                }
+            }
+        } else {
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        }
     }
 }

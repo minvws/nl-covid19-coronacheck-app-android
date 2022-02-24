@@ -10,6 +10,7 @@
     android:orientation="vertical"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:contentDescription="@string/holder_dashboard_accessibility_green_card"
     android:screenReaderFocusable="true"
     android:focusable="true">
 
@@ -32,7 +33,9 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:clipChildren="false"
-                android:padding="24dp">
+                android:paddingStart="24dp"
+                android:paddingTop="24dp"
+                android:paddingBottom="24dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/headerContainer"
@@ -42,15 +45,79 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
-                    <ImageView
-                        android:id="@+id/imageView"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/internationalImageContainer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="@id/title"
+                        android:paddingEnd="24dp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/title"
-                        tools:src="@drawable/ic_international_card"
-                        tools:ignore="ContentDescription" />
+                        app:layout_constraintBottom_toBottomOf="@id/title"
+                        app:layout_constraintTop_toTopOf="@id/title">
+
+                        <ImageView
+                            android:id="@+id/internationalImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_international_card"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            tools:ignore="ContentDescription" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <FrameLayout
+                        android:id="@+id/domesticImageContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:background="@drawable/shape_item_my_overview_green_card_background_left_corners"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/title"
+                        app:layout_constraintTop_toTopOf="@id/title">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="20dp"
+                            android:paddingVertical="16dp">
+
+                            <ImageView
+                                android:id="@+id/domesticImage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_dutch_card"
+                                android:layout_gravity="center_vertical"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                style="@style/App.TextAppearance.MaterialComponents.Headline6.Montserrat"
+                                android:id="@+id/domesticPolicyLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:textColor="@color/primary_blue"
+                                android:layout_marginStart="16dp"
+                                android:includeFontPadding="false"
+                                tools:text="@string/holder_dashboard_domesticQRCard_1G_label" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                    <androidx.constraintlayout.widget.Barrier
+                        android:id="@+id/imageContainers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:barrierDirection="start"
+                        app:constraint_referenced_ids="internationalImageContainer,domesticImageContainer" />
 
                     <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
                         android:id="@+id/title"
@@ -59,7 +126,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:textAppearance="?attr/textAppearanceHeadline6"
-                        app:layout_constraintEnd_toStartOf="@id/imageView"
+                        app:layout_constraintEnd_toStartOf="@id/imageContainers"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="@string/my_overview_test_result_title" />
@@ -72,6 +139,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/headerContainer" />
@@ -83,13 +151,13 @@
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textStyle="bold"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@id/buttonWithProgressWidgetContainer"
+                    android:layout_marginEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/description"
                     tools:text="Verloopt in 5 uur 59 min"
-                    tools:visibility="visible" />
+                    tools:visibility="invisible" />
 
                 <nl.rijksoverheid.ctr.design.views.ButtonWithProgressWidget
                     android:id="@+id/buttonWithProgressWidgetContainer"
@@ -101,6 +169,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/expires_in"
                     tools:text="@string/my_overview_test_result_button" />
+
+                <TextView
+                    android:id="@+id/disabledState"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?textAppearanceBody1"
+                    android:background="@drawable/shape_item_my_overview_green_card_background_corners"
+                    android:padding="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintTop_toBottomOf="@id/expires_in"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="@string/holder_dashboard_domesticQRCard_3G_inactive_label" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -14,28 +14,33 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ShowNewDisclosurePolicyUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import java.time.Clock
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
 
 abstract class DashboardViewModel : ViewModel() {
-    open val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
-    open val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
+    val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
+    val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
+    val showNewPolicyRulesLiveData: LiveData<Event<DisclosurePolicy>> = MutableLiveData()
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
-    abstract fun removeGreenCard(greenCardEntity: GreenCardEntity)
+    abstract fun removeOrigin(originEntity: OriginEntity)
     abstract fun dismissNewValidityInfoCard()
     abstract fun dismissBoosterInfoCard()
+    abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
 
     companion object {
         val RETRY_FAILED_REQUEST_AFTER_SECONDS = if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(10)
@@ -50,7 +55,9 @@ class DashboardViewModelImpl(
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
-): DashboardViewModel() {
+    private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
+    private val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase
+) : DashboardViewModel() {
 
     private val mutex = Mutex()
 
@@ -59,66 +66,89 @@ class DashboardViewModelImpl(
      */
     override fun refresh(dashboardSync: DashboardSync) {
         viewModelScope.launch {
-            mutex.withLock {
-                val previousSyncResult = databaseSyncerResultLiveData.value?.peekContent()
-                val hasDoneRefreshCall = previousSyncResult != null
+            refreshCredentials(dashboardSync)
 
-                // Check if we need to load new credentials
-                val shouldLoadNewCredentials = when (dashboardSync) {
-                    is DashboardSync.ForceSync -> {
-                        // Load new credentials if we force it. For example on a retry button click
-                        true
-                    }
-                    is DashboardSync.DisableSync -> {
-                        // Never load new credentials when we don't want to. For example if we are checking to show the clock skew banner
-                        false
-                    }
-                    is DashboardSync.CheckSync -> {
-                        // Load new credentials if no previous refresh has been executed and we should refresh because a credentials for a green card expired
-                        val shouldRefreshCredentials = (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
-
-                        // Load new credentials if we the previous request failed more than once and more than x minutes ago
-                        val shouldRetryFailedRequest = previousSyncResult is DatabaseSyncerResult.Failed.ServerError.MultipleTimes && OffsetDateTime.now().isAfter(previousSyncResult.failedAt.plusSeconds(RETRY_FAILED_REQUEST_AFTER_SECONDS))
-
-                        // Do the actual checks
-                        shouldRefreshCredentials || shouldRetryFailedRequest
-                    }
-                }
-
-                val allGreenCards = greenCardUtil.getAllGreenCards()
-                val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
-
-                refreshDashboardTabItems(
-                    allGreenCards = allGreenCards,
-                    databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent()
-                        ?: DatabaseSyncerResult.Success(),
-                    isLoadingNewCredentials = shouldLoadNewCredentials,
-                    allEventGroupEntities = allEventGroupEntities
-                )
-
-                val databaseSyncerResult = holderDatabaseSyncer.sync(
-                    syncWithRemote = shouldLoadNewCredentials,
-                    previousSyncResult = previousSyncResult
-                )
-
-                (databaseSyncerResultLiveData as MutableLiveData).value = Event(databaseSyncerResult)
-
-                // If we loaded new credentials, we want to update our items again
-                if (shouldLoadNewCredentials) {
-                    refreshDashboardTabItems(
-                        allGreenCards = allGreenCards,
-                        allEventGroupEntities = allEventGroupEntities,
-                        databaseSyncerResult = databaseSyncerResult,
-                        isLoadingNewCredentials = false
-                    )
-                }
+            showNewDisclosurePolicyUseCase.get()?.let {
+                (showNewPolicyRulesLiveData as MutableLiveData).postValue(Event(it))
+                persistenceManager.setPolicyScreenSeen(it)
             }
         }
     }
 
-    override fun removeGreenCard(greenCardEntity: GreenCardEntity) {
+    private suspend fun refreshCredentials(dashboardSync: DashboardSync) {
+        mutex.withLock {
+            val previousSyncResult = databaseSyncerResultLiveData.value?.peekContent()
+            val hasDoneRefreshCall = previousSyncResult != null
+
+            // Check if we need to load new credentials
+            val shouldLoadNewCredentials = when (dashboardSync) {
+                is DashboardSync.ForceSync -> {
+                    // Load new credentials if we force it. For example on a retry button click
+                    true
+                }
+                is DashboardSync.DisableSync -> {
+                    // Never load new credentials when we don't want to. For example if we are checking to show the clock skew banner
+                    false
+                }
+                is DashboardSync.CheckSync -> {
+                    // Load new credentials if no previous refresh has been executed and we should refresh because a credentials for a green card expired
+                    val shouldRefreshCredentials =
+                        (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
+
+                    // Load new credentials if we the previous request failed more than once and more than x minutes ago
+                    val shouldRetryFailedRequest =
+                        previousSyncResult is DatabaseSyncerResult.Failed.ServerError.MultipleTimes && OffsetDateTime.now()
+                            .isAfter(
+                                previousSyncResult.failedAt.plusSeconds(
+                                    RETRY_FAILED_REQUEST_AFTER_SECONDS
+                                )
+                            )
+
+                    // Do the actual checks
+                    shouldRefreshCredentials || shouldRetryFailedRequest
+                }
+            }
+
+            val allGreenCards = greenCardUtil.getAllGreenCards()
+            val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
+
+            removeExpiredGreenCardsUseCase.execute(
+                allGreenCards = allGreenCards
+            )
+
+            refreshDashboardTabItems(
+                allGreenCards = allGreenCards,
+                databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent()
+                    ?: DatabaseSyncerResult.Success(),
+                isLoadingNewCredentials = shouldLoadNewCredentials,
+                allEventGroupEntities = allEventGroupEntities
+            )
+
+            val databaseSyncerResult = holderDatabaseSyncer.sync(
+                syncWithRemote = shouldLoadNewCredentials,
+                previousSyncResult = previousSyncResult
+            )
+
+            (databaseSyncerResultLiveData as MutableLiveData).value = Event(databaseSyncerResult)
+
+            // If we loaded new credentials, we want to update our items again
+            if (shouldLoadNewCredentials) {
+                refreshDashboardTabItems(
+                    allGreenCards = allGreenCards,
+                    allEventGroupEntities = allEventGroupEntities,
+                    databaseSyncerResult = databaseSyncerResult,
+                    isLoadingNewCredentials = false
+                )
+            }
+        }
+    }
+
+    /**
+     * Remove the origin from a green card.
+     */
+    override fun removeOrigin(originEntity: OriginEntity) {
         viewModelScope.launch {
-            holderDatabase.greenCardDao().delete(greenCardEntity)
+            holderDatabase.originDao().delete(originEntity)
         }
     }
 
@@ -166,5 +196,9 @@ class DashboardViewModelImpl(
         persistenceManager.setHasDismissedBoosterInfoCard(nowEpochSeconds)
         // remove it from both the domestic and the international tab
         refresh(DashboardSync.DisableSync)
+    }
+
+    override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
+        persistenceManager.setPolicyBannerDismissed(disclosurePolicy)
     }
 }

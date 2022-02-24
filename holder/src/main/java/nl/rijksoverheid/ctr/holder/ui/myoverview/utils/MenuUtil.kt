@@ -142,6 +142,7 @@ class MenuUtilImpl(
     }
 
     private fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(
+        deeplinkScannerUrl = BuildConfig.DEEPLINK_SCANNER_TEST_URL,
         versionName = BuildConfig.VERSION_NAME,
         versionCode = BuildConfig.VERSION_CODE.toString(),
         sections = listOf(

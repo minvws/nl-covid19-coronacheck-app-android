@@ -6,6 +6,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
 sealed class DashboardItem {
 
@@ -31,22 +33,20 @@ sealed class DashboardItem {
 
         object ClockDeviationItem : InfoItem(isDismissible = false, hasButton = true)
 
-        data class GreenCardExpiredItem(val greenCardEntity: GreenCardEntity, val originType: OriginType) : InfoItem(
+        data class GreenCardExpiredItem(val greenCardType: GreenCardType, val originEntity: OriginEntity) : InfoItem(
             isDismissible = true,
             hasButton = false
         )
 
-        data class DomesticVaccinationExpiredItem(val greenCardEntity: GreenCardEntity): InfoItem(
+        data class DomesticVaccinationExpiredItem(val originEntity: OriginEntity): InfoItem(
             isDismissible = true,
             hasButton = true
         )
 
-        data class DomesticVaccinationAssessmentExpiredItem(val greenCardEntity: GreenCardEntity): InfoItem(
+        data class DomesticVaccinationAssessmentExpiredItem(val originEntity: OriginEntity): InfoItem(
             isDismissible = true,
             hasButton = true
         )
-
-        object TestCertificate3GValidity : InfoItem(isDismissible = false, hasButton = true)
 
         object AppUpdate : InfoItem(
             isDismissible = false,
@@ -71,6 +71,12 @@ sealed class DashboardItem {
             hasButton = true,
             buttonText = R.string.holder_dashboard_addBoosterBanner_button_addBooster
         )
+
+        data class DisclosurePolicyItem(val disclosurePolicy: DisclosurePolicy) :
+            InfoItem(
+                isDismissible = true,
+                hasButton = true
+            )
     }
 
     object CoronaMelderItem : DashboardItem()
@@ -87,7 +93,9 @@ sealed class DashboardItem {
             val greenCard: GreenCard,
             val originStates: List<OriginState>,
             val credentialState: CredentialState,
-            val databaseSyncerResult: DatabaseSyncerResult
+            val databaseSyncerResult: DatabaseSyncerResult,
+            val disclosurePolicy: GreenCardDisclosurePolicy,
+            val greenCardEnabledState: GreenCardEnabledState
         )
     }
 

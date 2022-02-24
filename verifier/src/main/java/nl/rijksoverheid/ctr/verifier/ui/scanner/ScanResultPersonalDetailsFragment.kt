@@ -11,17 +11,15 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.flagEmoji
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.fragment.AutoCloseFragment
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
@@ -31,7 +29,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class ScanResultPersonalDetailsFragment :
-    Fragment(R.layout.fragment_scan_result_valid_personal_details) {
+    AutoCloseFragment(R.layout.fragment_scan_result_valid_personal_details) {
 
     private var _binding: FragmentScanResultValidPersonalDetailsBinding? = null
     private val binding get() = _binding!!
@@ -40,8 +38,15 @@ class ScanResultPersonalDetailsFragment :
 
     private val args: ScanResultPersonalDetailsFragmentArgs by navArgs()
 
-    private val autoCloseHandler = Handler(Looper.getMainLooper())
-    private val autoCloseRunnable = Runnable {
+    override fun aliveForMilliseconds(): Long {
+        return if (BuildConfig.FLAVOR == "acc") {
+            TimeUnit.SECONDS.toMillis(10)
+        } else {
+            TimeUnit.MINUTES.toMillis(3)
+        }
+    }
+
+    override fun navigateToCloseAt() {
         navigateSafety(
             R.id.nav_scan_result_personal_details,
             ScanResultPersonalDetailsFragmentDirections.actionNavMain()
@@ -53,16 +58,6 @@ class ScanResultPersonalDetailsFragment :
         _binding = FragmentScanResultValidPersonalDetailsBinding.bind(view)
         bindButtons()
         presentPersonalDetails()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val autoCloseDuration = if (BuildConfig.FLAVOR == "tst") {
-            TimeUnit.SECONDS.toMillis(10)
-        } else {
-            TimeUnit.SECONDS.toMillis(240)
-        }
-        autoCloseHandler.postDelayed(autoCloseRunnable, autoCloseDuration)
     }
 
     private fun bindButtons() {

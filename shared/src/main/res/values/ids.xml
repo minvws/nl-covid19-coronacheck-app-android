@@ -2,4 +2,5 @@
 <resources>
     <item name="main_nav_host_fragment" type="id" />
     <item name="passport_months" type="array" />
+    <item name="general_loading_description" type="string" />
 </resources>

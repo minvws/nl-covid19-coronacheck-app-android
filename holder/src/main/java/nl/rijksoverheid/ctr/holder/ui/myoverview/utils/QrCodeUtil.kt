@@ -40,8 +40,8 @@ class QrCodeUtilImpl : QrCodeUtil {
         val bitMatrix = multiFormatWriter.encode(
             qrCodeContent,
             BarcodeFormat.QR_CODE,
-            width,
-            height,
+            0,
+            0,
             hints
         )
         val bitmap = Bitmap.createBitmap(
@@ -53,7 +53,13 @@ class QrCodeUtilImpl : QrCodeUtil {
         for (y in 0 until height) {
             val offset = y * width
             for (x in 0 until width) {
-                pixels[offset + x] = if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE
+                val xf: Float = x.toFloat() / width
+                val yf: Float = y.toFloat() / height
+                pixels[offset + x] = if (bitMatrix.get(
+                        (xf * bitMatrix.width.toFloat()).toInt(),
+                        (yf * bitMatrix.height.toFloat()).toInt()
+                    )
+                ) Color.BLACK else Color.WHITE
             }
         }
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height)

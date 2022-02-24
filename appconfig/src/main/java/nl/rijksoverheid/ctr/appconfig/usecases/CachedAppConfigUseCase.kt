@@ -27,7 +27,7 @@ class CachedAppConfigUseCaseImpl constructor(
     private val appConfigStorageManager: AppConfigStorageManager,
     private val filesDirPath: String,
     private val moshi: Moshi,
-    private val isVerifierApp: Boolean,
+    private val isVerifierApp: Boolean
 ) : CachedAppConfigUseCase {
     private val configFile = File(filesDirPath, "config.json")
 

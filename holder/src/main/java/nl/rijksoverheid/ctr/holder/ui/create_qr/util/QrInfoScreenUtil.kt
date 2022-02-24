@@ -15,7 +15,9 @@ import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import org.json.JSONObject
 import java.time.LocalDate
@@ -25,7 +27,7 @@ import java.time.format.DateTimeParseException
 import java.util.*
 
 interface QrInfoScreenUtil {
-    fun getForDomesticQr(personalDetails: PersonalDetails, category: String?): QrInfoScreen
+    fun getForDomesticQr(personalDetails: PersonalDetails, disclosurePolicy: GreenCardDisclosurePolicy): QrInfoScreen
     fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): QrInfoScreen
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen
     fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): QrInfoScreen
@@ -35,20 +37,22 @@ class QrInfoScreenUtilImpl(
     private val application: Application,
     private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
     private val countryUtil: CountryUtil,
-    private val featureFlagUseCase: FeatureFlagUseCase,
-    cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : QrInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
-    override fun getForDomesticQr(personalDetails: PersonalDetails, category: String?): QrInfoScreen {
+    override fun getForDomesticQr(personalDetails: PersonalDetails, disclosurePolicy: GreenCardDisclosurePolicy): QrInfoScreen {
         val title = application.getString(R.string.qr_explanation_title_domestic)
 
         val description = application.getString(
-            if (featureFlagUseCase.isVerificationPolicyEnabled() && category == Mobilecore.VERIFICATION_POLICY_3G) {
-                R.string.qr_explanation_description_domestic_2G
-            } else {
-                R.string.qr_explanation_description_domestic
+            when (disclosurePolicy) {
+                is GreenCardDisclosurePolicy.OneG -> {
+                    R.string.holder_qr_explanation_description_domestic_1G
+                }
+                is GreenCardDisclosurePolicy.ThreeG -> {
+                    R.string.qr_explanation_description_domestic
+                }
             },
             "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
         )

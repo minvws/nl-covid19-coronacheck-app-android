@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string name="holder_fetchRemoteEvents_title">Retrieve details</string>
+  <string name="general_readmore">Read more</string>
   <string name="holder_dcc_alert_message">You can try to add a paper certificate again later.</string>
   <string name="holder_recovery_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="holder_test_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
@@ -27,7 +29,7 @@
   <string name="privacy_policy_2"><![CDATA[No location data is <b>used or saved</b>]]></string>
   <string name="privacy_policy_checkbox_text">I have read the privacy statement and understand how CoronaCheck processes my data.</string>
   <string name="my_overview">My certificates</string>
-  <string name="my_overview_description">Visiting a location within the Netherlands? Show both your Dutch QR code and your proof of identity at the entrance of the location you\'re visiting.</string>
+  <string name="my_overview_description">Visiting a venue within the Netherlands? Show both your Dutch QR code and your proof of identity at the entrance.</string>
   <string name="my_overview_description_eu"><![CDATA[Are you abroad or planning to cross the border? Then always use the international QR code below. Please check before leaving which certificate you need.]]></string>
   <string name="my_overview_description_eu_button_text">Which certificate is needed where I’m heading?</string>
   <string name="my_overview_description_eu_button_link">https://www.netherlandsworldwide.nl/travelling-outside-the-netherlands</string>
@@ -350,7 +352,7 @@
   <string name="get_recovery_title">Retrieve recovery details</string>
   <string name="get_recovery_description"><![CDATA[Have you had coronavirus? Then you can make a recovery certificate of the positive test result. Log in with DigiD to retrieve your test result.]]></string>
   <string name="no_positive_test_result_title">No positive test result available</string>
-  <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Please contact your test location to verify if your details were entered into the system correctly.<br/><br/>Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
+  <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="qr_code_type_recovery_title">Positive test</string>
   <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
   <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
@@ -375,7 +377,7 @@
   <string name="my_overview_green_card_not_valid_title_recovery">About your recovery certificate</string>
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands, because the type of test is not accepted.<br/><br/>You’ve only got an international QR code.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason could be that the type of test is not accepted, or that the test is no longer valid abroad. An international recovery certificate can only be made with a PCR-test that is less than 180 days old. Read more about the possible causes on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost</a>.]]></string>
-  <string name="my_overview_green_card_server_error"><![CDATA[The app periodically needs a connection to the server to refresh your QR code. We failed to reach the server because of an error. <a href=\"#\">Try again</a>]]></string>
+  <string name="my_overview_green_card_server_error"><![CDATA[The app periodically needs a connection to the server to refresh your QR codes. We failed to reach the server because of an error. <a href=\"#\">Try again</a>]]></string>
   <string name="my_overview_green_card_server_error_after_retry"><![CDATA[Sorry, we weren’t able to refresh your QR code. Open the app again in 10 minutes.<br/><br/>Still not working? Please call the help desk at 0800-1421 (free) and provide the following error code: A 075]]></string>
   <string name="my_overview_green_card_internet_error"><![CDATA[Connect to the internet to make sure your QR code works again.<br/><a href=\"#\">Try again</a>]]></string>
   <string name="dialog_faultyvaccination28June_title">Vaccination certificate corrected</string>
@@ -486,20 +488,16 @@
   <string name="qr_code_next_button">Next QR code</string>
   <string name="my_overview_results_button">View QR codes</string>
   <string name="dashboard_item_refresh_eu_vaccinations_text">You can renew your international vaccination certificate</string>
-  <string name="dashboard_item_refresh_eu_vaccinations_button">Read more</string>
   <string name="refresh_eu_items_title">Renew vaccination certificate</string>
   <string name="refresh_eu_items_description"><![CDATA[Soon we will renew everyone\'s vaccination certificate. As a result, you\'ll get access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/>If you want to, you can also renew your certificate now.]]></string>
   <string name="refresh_eu_items_button">Renew certificate</string>
   <string name="refresh_eu_items_toolbar_title">Renew vaccination certificate</string>
   <string name="dashboard_item_refreshed_eu_vaccinations_text">Your international vaccination certificate has been renewed</string>
-  <string name="dashboard_item_refreshed_eu_vaccinations_button">Read more</string>
   <string name="refreshed_eu_items_title">Renewed vaccination certificate</string>
   <string name="refreshed_eu_items_description"><![CDATA[We have renewed everyone\'s vaccination certificate. From now on, you have access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/><a href=\"https://coronacheck.nl/en/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/\">Read more about your renewed vaccination certificate here</a>.]]></string>
   <string name="config_warning_card_message">Please connect to the internet soon</string>
-  <string name="config_warning_card_button">Read more</string>
   <string name="config_warning_page_title">Please connect to the internet</string>
   <string name="config_warning_page_message"><![CDATA[Every now and then, the CoronaCheck app needs an internet connection to keep working. Without internet, your app will keep working until %1s. Open the app once you have an internet connection. It will automatically work again.<br/><br/>Please connect regularly to prevent any problems.]]></string>
-  <string name="my_overview_info_card_button_read_more">Read more</string>
   <string name="dialog_no_browser_title">Couldn’t find browser</string>
   <string name="dialog_no_browser_message">No internet browser was found on this phone to open %1s. Download a browser to open the link.</string>
   <string name="about_this_app_clear_data_title">Clear all data?</string>
@@ -510,23 +508,23 @@
   <string name="accessibility_flash_on">Turn the flashlight on.</string>
   <string name="recover_domestic_recovery_green_card_button">Restore certificate</string>
   <string name="cannot_create_recovery_proof_title">Positive test result no longer valid</string>
-  <string name="cannot_create_recovery_proof_description"><![CDATA[It has been too long ago since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost</a>.]]></string>
+  <string name="cannot_create_recovery_proof_description"><![CDATA[It has been too long ago since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s]]></string>
   <string name="qr_card_vaccination_title_domestic_with_doses">Vaccination certificate (%1$s doses):</string>
   <string name="add_paper_proof_why_only_international_title">Why only international?</string>
   <string name="add_paper_proof_why_only_international_description">You can use the details in international QR codes to immediately create a Dutch certificate as well. This way you won\'t have to scan them both.</string>
-  <string name="international_certificate_created_description"><![CDATA[You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.<br/><br/><b>Still have to get a new vaccination?</b><br/>Please add a vaccination certificate again after getting your vaccination. You will also receive a Dutch certificate then.<br/><br/><b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
+  <string name="international_certificate_created_description"><![CDATA[Your vaccination(s) unfortunately don\'t entitle you to a Dutch vaccination certificate.<br/><br/><b>Still have to get a new vaccination?</b><br/>Please add a vaccination again after you’ve had yours. You will also receive a Dutch certificate then.<br/><br/><b>Had coronavirus before your first vaccination?</b><br/>Then you\'re normally considered fully vaccinated with one vaccination. Retrieve your positive test result to add this to your vaccination certificate.]]></string>
   <string name="international_certificate_created_title">Only an international certificate was created</string>
   <string name="international_certificate_created_toolbar_title">Certificate created</string>
   <string name="international_certificate_created_retrieve_test_button">Retrieve my test result</string>
   <string name="missing_dutch_certificate_info_card_text">You don\'t have a Dutch vaccination certificate</string>
   <string name="missing_dutch_certificate_title">No Dutch vaccination certificate</string>
-  <string name="missing_dutch_certificate_introduction">You don\'t have a Dutch vaccination certificate. To obtain this, you have to either be fully vaccinated, or have recovered from coronavirus before you received your first vaccination.</string>
+  <string name="missing_dutch_certificate_introduction">Your vaccination(s) unfortunately don\'t entitle you to a Dutch vaccination certificate.</string>
   <string name="missing_dutch_certificate_second_vaccine_explanation"><![CDATA[<br/><b>Had a new vaccination?</b><br/>Please retrieve your vaccination details again. You will receive a Dutch certificate.]]></string>
   <string name="missing_dutch_certificate_retrieve_vaccination_button">Retrieve my vaccinations</string>
-  <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<b>Had coronavirus before your first vaccination?</b><br/>Retrieve your positive test result. You will also receive a Dutch certificate then.]]></string>
+  <string name="missing_dutch_certificate_positive_text_explanation"><![CDATA[<b>Had coronavirus before your first vaccination?</b><br/>Then you\'re normally considered fully vaccinated with one vaccination. Retrieve your positive test result to add this to your vaccination certificate.]]></string>
   <string name="missing_dutch_certificate_retrieve_test_button">Retrieve my test result</string>
-  <string name="missing_dutch_certificate_explanation_more"><![CDATA[<b>Want to know more?</b><br/>Read the <a href=\"https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/\">frequently asked questions</a> for other possible reasons.]]></string>
+  <string name="missing_dutch_certificate_explanation_more"><![CDATA[<br/><b>Want to know more?</b><br/>Find more information on <a href=\"https://www.government.nl/topics/coronavirus-covid-19/covid-certificate/proof-of-vaccination/requirements-and-validity\">this page about the requirements and validity of the vaccination certificate</a>.]]></string>
   <string name="certificate_created_toolbar_title">Certificate created</string>
   <string name="certificate_created_vaccination_recovery_title">Created vaccination and recovery certificates</string>
   <string name="certificate_created_vaccination_recovery_description"><![CDATA[A Dutch vaccination certificate has been created.<br><br>Your positive test result was suitable for creating a recovery certificate as well.]]></string>
@@ -552,7 +550,6 @@
   <string name="holder_my_overview_3g_test_validity_card">Your test certificate is only valid for 3G access within the Netherlands</string>
   <string name="holder_my_overview_3g_test_validity_bottom_sheet_title">Test certificate only valid for 3G access</string>
   <string name="holder_my_overview_3g_test_validity_bottom_sheet_body"><![CDATA[A Dutch test certificate is only valid in places with 3G access. This means that you cannot use your test certificate to get access to places with 2G access.<br><br><b>What is the difference between 3G and 2G?</b><br>The Gs determine which people can be given access: only those who were vaccinated and/or have recovered (2G), or people who tested negative as well (3G).<br><br>•	3G access means you can enter places with a test, vaccination or recovery certificate.<br>•	2G access means you cannot enter places with a test certificate. You\'ll need a vaccination or recovery certificate.<br><br><a href=\"https://www.government.nl/2g-cc\">You can read more about 3G and 2G here</a>.]]></string>
-  <string name="holder_my_overview_test_result_validity_3g">valid until %1$s for 3G access</string>
   <string name="no_digid_page_title">I don\'t have DigiD</string>
   <string name="no_digid_page_description"><![CDATA[Wanneer je in Nederland woont kan je een DigiD aanvragen.<br\><br\>Woon je in Caribisch Nederland? Dan kan je inloggen met MijnCN.]]></string>
   <string name="no_digid_nodigid_button_title">Ik ben in Nederland ingeschreven</string>
@@ -560,7 +557,7 @@
   <string name="no_digid_mijncn_button_title">Ik ben in Caribisch Nederland ingeschreven</string>
   <string name="no_digid_mijncn_button_description">Je wordt doorverwezen naar MijnCN</string>
   <string name="mijncn_error_missing_data_description"><![CDATA[Op dit moment kunnen we geen bewijs maken omdat er gegevens ontbreken.<br/><br/>Neem contact op met je openbaar lichaam en geef de foutcode door. Zij kunnen dan de gegevens controleren.<br/><br/><b>Foutcode:</b><br/>%1s<br/><br/><a href=“#”>Openbaar lichaam Sint Bonaire</a><br/><br/><a href=“#”>Openbaar lichaam Sint Eustatius</a><br/><br/><a href=“#”>Openbaar lichaam Sint Saba</a><br/><br/>]]></string>
-  <string name="qr_explanation_description_domestic_2G"><![CDATA[Your Dutch QR code says you have a valid test certificate, and contains minimal data.<br/><br/>The scanner sees only the first letter of your first and last name, and your date and month of birth. This is to make sure the QR code belongs to you.<br/><br/>Your information*: <b>%1$s</b><br/><br/>* Information can sometimes disappear to protect your privacy. In that case, you will see a dash (_).]]></string>
+  <string name="holder_qr_explanation_description_domestic_1G"><![CDATA[Your Dutch QR code says you have a valid certificate for 1G access, and contains minimal data.<br/><br/>The scanner sees only the first letter of your first and last name, and your date and month of birth. This is to make sure the QR code belongs to you.<br/><br/>Your information*: <b>%1$s</b><br/><br/>* Information can sometimes disappear to protect your privacy. In that case, you will see a dash (_).]]></string>
   <string name="your_negative_test_results_toolbar">Retrieved test result</string>
   <string name="dialog_no_browser_message_digid">No internet browser was found on this phone to open DigiD. Download a browser to open the link.</string>
   <string name="holder_negativetest_ggd_title">Retrieve test result</string>
@@ -654,4 +651,36 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="general_vaccinationcertificate">vaccination certificate</string>
   <string name="general_recoverycertificate">recovery certificate</string>
   <string name="general_testcertificate">test certificate</string>
+  <string name="holder_dashboard_only3GaccessBanner_title">A Dutch certificate currently gives you 3G access. This means a certificate is valid anywhere a coronavirus pass is required.</string>
+  <string name="holder_dashboard_domesticQRCard_3G_title">Certificate for 3G access</string>
+  <string name="holder_dashboard_domesticQRCard_3G_label">3G</string>
+  <string name="holder_dashboard_empty_domestic_3Gand1Gaccess_message"><![CDATA[Visiting a venue in The Netherlands? Check in advance whether you need a certificate for <a href=\"https://coronacheck.nl/en/accesspolicy/3g-1g-access\">3G or 1G access</a>.]]></string>
+  <string name="holder_dashboard_3Gand1GaccessBanner_title">The access rules in the Netherlands have changed. There are now separate certificates for venues with 3G access and 1G access.</string>
+  <string name="holder_dashboard_intro_domestic_3Gand1Gaccess"><![CDATA[Check in advance whether you need a certificate for <a href=\"https://coronacheck.nl/en/accesspolicy/3g-1g-access\">3G or 1G access</a>. Also show your proof of identity at the entrance.]]></string>
+  <string name="holder_dashboard_domesticQRCard_1G_title">Certificate for 1G access</string>
+  <string name="holder_dashboard_domesticQRCard_1G_label">1G</string>
+  <string name="holder_dashboard_empty_domestic_only1Gaccess_message"><![CDATA[In the Netherlands, you only get access with a test certificate anywhere a coronavirus pass is required <a href=\"https://coronacheck.nl/en/accesspolicy/1g-access\">(1G access)</a>.]]></string>
+  <string name="holder_dashboard_only1GaccessBanner_title">You can add a certificate for 1G access when you have tested negative</string>
+  <string name="holder_dashboard_intro_domestic_only1Gaccess"><![CDATA[Show a certificate for <a href=\"https://coronacheck.nl/en/accesspolicy/1g-access\">1G access</a> in the Netherlands if a coronavirus pass is required. Also show your proof of identity.]]></string>
+  <string name="holder_dashboard_domesticQRCard_3G_inactive_label">This certificate is currently not used in the Netherlands</string>
+  <string name="general_newintheapp">New in the app</string>
+  <string name="holder_newintheapp_content_only3G_title">3G access only</string>
+  <string name="holder_newintheapp_content_only3G_body">The access rules in the Netherlands have changed. 3G access applies anywhere a coronavirus pass is required. This means you can enter with a vaccination, recovery, or test certificate.</string>
+  <string name="holder_newintheapp_content_only3G_button_next">Next</string>
+  <string name="holder_newintheapp_content_3Gand1G_title">Certificates for 3G and 1G access</string>
+  <string name="holder_newintheapp_content_3Gand1G_body">The access rules in the Netherlands have changed. You can enter venues with 3G access with a vaccination, recovery, or test certificate. Venues with 1G access you can only enter with a test certificate. The app creates separate certificates for 3G and 1G access.</string>
+  <string name="holder_newintheapp_content_3Gand1G_button_next">Next</string>
+  <string name="holder_newintheapp_content_only1G_title">1G access only</string>
+  <string name="holder_newintheapp_content_only1G_body">The access rules in the Netherlands have changed. 1G access applies anywhere a coronavirus pass is required. This means you can only enter these places with a test certificate. You can still add a vaccination or recovery certificate in the app, but you can only use these certificates abroad.</string>
+  <string name="holder_newintheapp_content_only1G_button_next">Next</string>
+  <string name="holder_dashboard_only3GaccessBanner_link">https://coronacheck.nl/en/toegangsregels/3g-certificate</string>
+  <string name="holder_dashboard_3Gand1GaccessBanner_link">https://coronacheck.nl/en/toegangsregels/3g-1g-certificate</string>
+  <string name="holder_dashboard_only1GaccessBanner_link">https://coronacheck.nl/en/toegangsregels/1g-certificate</string>
+  <string name="general_newpolicy">New policy</string>
+  <string name="holder_dashboard_accessibility_notification">Notification</string>
+  <string name="holder_dashboard_accessibility_notification_close">Close notification</string>
+  <string name="holder_dashboard_accessibility_green_card">Certificate</string>
+  <string name="holder_addVaccine_alsoCollectPositiveTestResults_checkbox">Haal ook mijn positieve testuitslag op</string>
+  <string name="holder_listRemoteEvents_message">Je bent weer uitgelogd bij DigiD. Als de gegevens kloppen kun je een bewijs maken.</string>
+  <string name="holder_listRemoteEvents_paperflow_message">You can create a certificate with these details.</string>
 </resources>

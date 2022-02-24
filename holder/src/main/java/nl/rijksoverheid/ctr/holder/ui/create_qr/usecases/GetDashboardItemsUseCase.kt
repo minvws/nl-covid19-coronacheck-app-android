@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
+import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.HeaderItemTextUtil
 
 interface GetDashboardItemsUseCase {
     suspend fun getItems(
@@ -23,7 +24,11 @@ class GetDashboardItemsUseCaseImpl(
     private val credentialUtil: CredentialUtil,
     private val originUtil: OriginUtil,
     private val dashboardItemUtil: DashboardItemUtil,
-    private val dashboardItemEmptyStateUtil: DashboardItemEmptyStateUtil
+    private val dashboardItemEmptyStateUtil: DashboardItemEmptyStateUtil,
+    private val headerItemTextUtil: HeaderItemTextUtil,
+    private val cardItemUtil: CardItemUtil,
+    private val splitDomesticGreenCardsUseCase: SplitDomesticGreenCardsUseCase,
+    private val sortGreenCardItemsUseCase: SortGreenCardItemsUseCase
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -54,6 +59,7 @@ class GetDashboardItemsUseCaseImpl(
         isLoadingNewCredentials: Boolean,
     ): List<DashboardItem> {
         val dashboardItems = mutableListOf<DashboardItem>()
+
         val domesticGreenCards =
             allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Domestic }
 
@@ -72,7 +78,7 @@ class GetDashboardItemsUseCaseImpl(
             .filter { it.greenCardEntity.type == GreenCardType.Eu }
             .distinctBy { it.greenCardEntity.type }
 
-        val headerText = dashboardItemUtil.getHeaderItemText(
+        val headerText = headerItemTextUtil.getText(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Domestic,
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
@@ -118,15 +124,17 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowTestCertificate3GValidityItem(domesticGreenCards)) {
-            dashboardItems.add(DashboardItem.InfoItem.TestCertificate3GValidity)
+        dashboardItemUtil.showPolicyInfoItem()?.let {
+            dashboardItems.add(DashboardItem.InfoItem.DisclosurePolicyItem(it))
         }
-
+        
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCards = allGreenCards,
                 greenCardType = GreenCardType.Domestic,
-                greenCardsForSelectedType = domesticGreenCards,
+                greenCardsForSelectedType = splitDomesticGreenCardsUseCase.getSplitDomesticGreenCards(
+                    domesticGreenCards = domesticGreenCards
+                ),
                 greenCardsForUnselectedType = internationalGreenCards,
                 databaseSyncerResult = databaseSyncerResult,
                 isLoadingNewCredentials = isLoadingNewCredentials,
@@ -182,7 +190,7 @@ class GetDashboardItemsUseCaseImpl(
             allGreenCards = allGreenCards,
         )
 
-        val headerText = dashboardItemUtil.getHeaderItemText(
+        val headerText = headerItemTextUtil.getText(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Eu,
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
@@ -268,7 +276,7 @@ class GetDashboardItemsUseCaseImpl(
         return dashboardItems
     }
 
-    private suspend fun getGreenCardItems(
+    private fun getGreenCardItems(
         greenCards: List<GreenCard>,
         greenCardType: GreenCardType,
         greenCardsForSelectedType: List<GreenCard>,
@@ -280,13 +288,18 @@ class GetDashboardItemsUseCaseImpl(
 
         // Loop through all green cards that exists in the database and map them to UI models
         val items = greenCardsForSelectedType
-            .map { greenCard ->
+            .mapIndexed { index, greenCard ->
                 if (greenCardUtil.isExpired(greenCard)) {
                     getExpiredBannerItem(
                         greenCard = greenCard
                     )
                 } else {
-                    mapGreenCardsItem(greenCard, isLoadingNewCredentials, databaseSyncerResult)
+                    mapGreenCardsItem(
+                        greenCard = greenCard,
+                        greenCardIndex = index,
+                        isLoadingNewCredentials = isLoadingNewCredentials,
+                        databaseSyncerResult = databaseSyncerResult
+                    )
                 }
             }
             .let { if (combineVaccinations) dashboardItemUtil.combineEuVaccinationItems(it) else it }
@@ -329,22 +342,7 @@ class GetDashboardItemsUseCaseImpl(
             }
         }
 
-        // Always order by origin type
-        items.sortBy {
-            when (it) {
-                is DashboardItem.CardsItem -> {
-                    it.cards.first().originStates.first().origin.type.order
-                }
-                is DashboardItem.InfoItem.OriginInfoItem -> {
-                    0
-                }
-                else -> {
-                    0
-                }
-            }
-        }
-
-        return items
+        return sortGreenCardItemsUseCase.sort(items)
     }
 
     private fun getExpiredBannerItem(
@@ -353,15 +351,15 @@ class GetDashboardItemsUseCaseImpl(
         val origin = greenCard.origins.last()
         return when {
             greenCard.greenCardEntity.type is GreenCardType.Domestic && origin.type is OriginType.Vaccination -> {
-                DashboardItem.InfoItem.DomesticVaccinationExpiredItem(greenCard.greenCardEntity)
+                DashboardItem.InfoItem.DomesticVaccinationExpiredItem(origin)
             }
             greenCard.greenCardEntity.type is GreenCardType.Domestic && origin.type is OriginType.VaccinationAssessment -> {
-                DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem(greenCard.greenCardEntity)
+                DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem(origin)
             }
             else -> {
                 DashboardItem.InfoItem.GreenCardExpiredItem(
-                    greenCardEntity = greenCard.greenCardEntity,
-                    originType = origin.type
+                    greenCardType = greenCard.greenCardEntity.type,
+                    originEntity = origin
                 )
             }
         }
@@ -369,6 +367,7 @@ class GetDashboardItemsUseCaseImpl(
 
     private fun mapGreenCardsItem(
         greenCard: GreenCard,
+        greenCardIndex: Int,
         isLoadingNewCredentials: Boolean,
         databaseSyncerResult: DatabaseSyncerResult
     ): DashboardItem.CardsItem {
@@ -398,7 +397,14 @@ class GetDashboardItemsUseCaseImpl(
             greenCard = greenCard,
             originStates = nonExpiredOriginStates,
             credentialState = credentialState,
-            databaseSyncerResult = databaseSyncerResult
+            databaseSyncerResult = databaseSyncerResult,
+            disclosurePolicy = cardItemUtil.getDisclosurePolicy(
+                greenCardIndex = greenCardIndex,
+                greenCard = greenCard
+            ),
+            greenCardEnabledState = cardItemUtil.getEnabledState(
+                greenCard = greenCard
+            )
         )
 
         return DashboardItem.CardsItem(listOf(greenCardItem))
