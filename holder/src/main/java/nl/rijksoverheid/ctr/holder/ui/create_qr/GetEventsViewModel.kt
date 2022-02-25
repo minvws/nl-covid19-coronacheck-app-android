@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDigidEventsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMijnCnEventsUsecase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
@@ -45,11 +45,13 @@ class GetEventsViewModelImpl(
         originType: RemoteOriginType,
         withIncompleteVaccination: Boolean
     ) {
+        val originTypes =
+            listOf(originType) +
+                    if (withIncompleteVaccination) listOf(RemoteOriginType.Recovery) else emptyList()
         getEvents {
             getDigidEventsUseCase.getEvents(
                 jwt = jwt,
-                originType = originType,
-                withIncompleteVaccination = withIncompleteVaccination
+                originTypes = originTypes,
             )
         }
     }

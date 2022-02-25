@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -191,6 +190,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     getEventsViewModel.getDigidEvents(
                         it.jwt,
                         args.originType,
+                        args.getPositiveTestWithVaccination
                     )
                 }
                 is LoginResult.Failed -> {
@@ -283,13 +283,14 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         navigateSafety(
             GetEventsFragmentDirections.actionYourEvents(
                 type = YourEventsFragmentType.RemoteProtocol3Type(
-                    remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                        .toMap(),
+                    remoteEvents = signedEvents.associate { signedModel ->
+                        signedModel.model to signedModel.rawResponse
+                    },
                     originType = args.originType.toOriginType(),
                     eventProviders = eventProviders,
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,
-                afterIncompleteVaccination = args.afterIncompleteVaccination,
+                afterIncompleteVaccination = args.getPositiveTestWithVaccination,
                 flow = getFlow()
             )
         )

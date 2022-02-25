@@ -19,8 +19,7 @@ sealed class EventsResult {
         val signedModels: List<SignedResponseWithModel<RemoteProtocol3>>,
         val missingEvents: Boolean,
         val eventProviders: List<EventProvider>,
-    ) :
-        EventsResult()
+    ) : EventsResult()
 
     data class HasNoEvents(val missingEvents: Boolean, val errorResults: List<ErrorResult> = emptyList()) : EventsResult()
         

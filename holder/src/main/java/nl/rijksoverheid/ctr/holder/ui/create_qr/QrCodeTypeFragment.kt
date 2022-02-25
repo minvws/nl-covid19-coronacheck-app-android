@@ -57,7 +57,7 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
                 QrCodeTypeFragmentDirections.actionGetEvents(
                     originType = RemoteOriginType.Vaccination,
                     toolbarTitle = resources.getString(R.string.choose_provider_toolbar),
-                    afterIncompleteVaccination = true
+                    getPositiveTestWithVaccination = true
                 )
             )
         }
