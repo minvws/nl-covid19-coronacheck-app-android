@@ -150,6 +150,9 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
         val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>()
         every { featureFlagUseCase.getDisclosurePolicy() } answers { disclosurePolicy }
 
-        return SortGreenCardItemsUseCaseImpl(featureFlagUseCase, greenCardUtil)
+        return SortGreenCardItemsUseCaseImpl(
+            featureFlagUseCase = featureFlagUseCase,
+            greenCardUtil = greenCardUtil
+        )
     }
 }
