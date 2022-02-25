@@ -22,24 +22,24 @@ class SortGreenCardItemsUseCaseImpl(
 ): SortGreenCardItemsUseCase {
 
     override fun sort(items: List<DashboardItem>): List<DashboardItem> {
-        return items.sortedByDescending {
+        return items.sortedBy {
             when (it) {
-                is DashboardItem.HeaderItem -> 200
-                DashboardItem.InfoItem.ClockDeviationItem -> 190
-                is DashboardItem.InfoItem.ConfigFreshnessWarning -> 180
-                DashboardItem.InfoItem.AppUpdate -> 170
-                DashboardItem.InfoItem.VisitorPassIncompleteItem -> 160
-                is DashboardItem.InfoItem.GreenCardExpiredItem -> 150
-                is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> 140
-                is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> 130
-                DashboardItem.InfoItem.BoosterItem -> 120
-                DashboardItem.InfoItem.NewValidityItem -> 110
-                is DashboardItem.InfoItem.DisclosurePolicyItem -> 100
-                DashboardItem.InfoItem.MissingDutchVaccinationItem -> 90
-                is DashboardItem.InfoItem.OriginInfoItem -> 80
-                is DashboardItem.PlaceholderCardItem -> 70
+                is DashboardItem.HeaderItem -> 10
+                DashboardItem.InfoItem.ClockDeviationItem -> 20
+                is DashboardItem.InfoItem.ConfigFreshnessWarning -> 30
+                DashboardItem.InfoItem.AppUpdate -> 40
+                DashboardItem.InfoItem.VisitorPassIncompleteItem -> 50
+                is DashboardItem.InfoItem.GreenCardExpiredItem -> 60
+                is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> 70
+                is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> 80
+                DashboardItem.InfoItem.BoosterItem -> 90
+                DashboardItem.InfoItem.NewValidityItem -> 100
+                is DashboardItem.InfoItem.DisclosurePolicyItem -> 110
+                DashboardItem.InfoItem.MissingDutchVaccinationItem -> 120
+                is DashboardItem.InfoItem.OriginInfoItem -> 130
+                is DashboardItem.PlaceholderCardItem -> 140
                 is DashboardItem.CardsItem -> {
-                    val cardsItemOrder = 60
+                    val cardsItemOrder = 150
                     val greenCard = it.cards.first().greenCard
                     val isDomesticTestGreenCard = greenCardUtil.isDomesticTestGreenCard(
                         greenCard = greenCard
@@ -48,12 +48,12 @@ class SortGreenCardItemsUseCaseImpl(
                     if (isDomesticTestGreenCard && featureFlagUseCase.getDisclosurePolicy() == DisclosurePolicy.OneG) {
                         cardsItemOrder
                     } else {
-                        cardsItemOrder - it.cards.first().originStates.first().origin.type.order
+                        cardsItemOrder + it.cards.first().originStates.first().origin.type.order
                     }
                 }
-                DashboardItem.AddQrButtonItem -> 50
-                DashboardItem.AddQrCardItem -> 40
-                DashboardItem.CoronaMelderItem -> 30
+                DashboardItem.AddQrButtonItem -> 160
+                DashboardItem.AddQrCardItem -> 170
+                DashboardItem.CoronaMelderItem -> 180
             }
         }
     }
