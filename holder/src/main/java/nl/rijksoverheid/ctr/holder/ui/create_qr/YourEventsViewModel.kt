@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCaseImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -33,13 +32,16 @@ abstract class YourEventsViewModel : ViewModel() {
     val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
     val conflictingEventsResult: LiveData<Event<Boolean>> = MutableLiveData()
 
-    abstract fun saveNegativeTest2(flow: Flow, negativeTest2: RemoteTestResult2, rawResponse: ByteArray)
+    abstract fun saveNegativeTest2(
+        flow: Flow,
+        negativeTest2: RemoteTestResult2,
+        rawResponse: ByteArray
+    )
+
     abstract fun saveRemoteProtocol3Events(
         flow: Flow,
-        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
-        originType: OriginType,
-        removePreviousEvents: Boolean,
-        afterIncompleteVaccination: Boolean
+        protocolOrigins: List<ProtocolOrigin>,
+        removePreviousEvents: Boolean
     )
 
     abstract fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>)
@@ -55,16 +57,20 @@ class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val holderDatabase: HolderDatabase,
-    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil,
-    private val scopeUtil: ScopeUtil
+    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil
 ) : YourEventsViewModel() {
 
-    override fun saveNegativeTest2(flow: Flow, negativeTest2: RemoteTestResult2, rawResponse: ByteArray) {
+    override fun saveNegativeTest2(
+        flow: Flow,
+        negativeTest2: RemoteTestResult2,
+        rawResponse: ByteArray
+    ) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 // Save the event in the database
-                when (val result = saveEventsUseCase.saveNegativeTest2(negativeTest2, rawResponse)) {
+                when (val result =
+                    saveEventsUseCase.saveNegativeTest2(negativeTest2, rawResponse)) {
                     is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
                         // Send all events to database and create green cards, origins and credentials
                         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -77,7 +83,8 @@ class YourEventsViewModelImpl(
                         )
                     }
                     is SaveEventsUseCaseImpl.SaveEventResult.Failed -> {
-                        (yourEventsResult as MutableLiveData).value = Event(DatabaseSyncerResult.Failed.Error(result.errorResult))
+                        (yourEventsResult as MutableLiveData).value =
+                            Event(DatabaseSyncerResult.Failed.Error(result.errorResult))
                     }
                 }
             } catch (e: Exception) {
@@ -110,23 +117,16 @@ class YourEventsViewModelImpl(
 
     override fun saveRemoteProtocol3Events(
         flow: Flow,
-        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
-        originType: OriginType,
-        removePreviousEvents: Boolean,
-        afterIncompleteVaccination: Boolean
+        protocolOrigins: List<ProtocolOrigin>,
+        removePreviousEvents: Boolean
     ) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 // Save the events in the database
                 val result = saveEventsUseCase.saveRemoteProtocols3(
-                    remoteProtocols3 = remoteProtocols3,
-                    originType = originType,
+                    protocolOrigins = protocolOrigins,
                     removePreviousEvents = removePreviousEvents,
-                    scope = scopeUtil.getScopeForOriginType(
-                        originType = originType,
-                        withIncompleteVaccination = afterIncompleteVaccination
-                    )
                 )
 
                 when (result) {
@@ -134,7 +134,7 @@ class YourEventsViewModelImpl(
                         // Send all events to database and create green cards, origins and credentials
                         val databaseSyncerResult = holderDatabaseSyncer.sync(
                             flow = flow,
-                            expectedOriginType = getExpectedOriginType(originType)
+                            expectedOriginType = getExpectedOriginType(protocolOrigins.map { it.originType })
                         )
 
                         (yourEventsResult as MutableLiveData).value = Event(
@@ -142,7 +142,8 @@ class YourEventsViewModelImpl(
                         )
                     }
                     is SaveEventsUseCaseImpl.SaveEventResult.Failed -> {
-                        (yourEventsResult as MutableLiveData).value = Event(DatabaseSyncerResult.Failed.Error(result.errorResult))
+                        (yourEventsResult as MutableLiveData).value =
+                            Event(DatabaseSyncerResult.Failed.Error(result.errorResult))
                     }
                 }
             } catch (e: Exception) {
@@ -163,8 +164,9 @@ class YourEventsViewModelImpl(
      * @param[originType] origin type of events fetched
      * @return origin type to be expected from signer or null if it's not expected
      */
-    private suspend fun getExpectedOriginType(originType: OriginType): OriginType? {
+    private suspend fun getExpectedOriginType(originType: List<OriginType>): OriginType? {
+        if (originType.size > 1) return null
         val events = holderDatabase.eventGroupDao().getAll()
-        return if (!yourEventFragmentEndStateUtil.hasVaccinationAndRecoveryEvents(events)) originType else null
+        return if (!yourEventFragmentEndStateUtil.hasVaccinationAndRecoveryEvents(events)) originType.firstOrNull() else null
     }
 }

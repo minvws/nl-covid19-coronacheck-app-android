@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.ProtocolOrigin
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
@@ -98,10 +99,10 @@ class GetDigidEventsUseCaseImpl(
                 .filterIsInstance<EventProviderWithTokenResult.Error>()
 
         return if (eventProvidersWithTokensSuccessResults.isNotEmpty()) {
-            val eventResults = mutableListOf<RemoteEventsResult>()
+            val eventResults = mutableMapOf<RemoteOriginType, List<RemoteEventsResult>>()
             eventProvidersWithTokensSuccessResults.forEach { (originType, eventProviders) ->
                 // We have received providers that claim to have events for us so we get those events for each provider
-                eventProviders.map {
+                val events = eventProviders.map {
                     getRemoteEventsUseCase.getRemoteEvents(
                         eventProvider = it.eventProvider,
                         token = it.token,
@@ -111,21 +112,28 @@ class GetDigidEventsUseCaseImpl(
                             withIncompleteVaccination = originTypes.size > 1
                         )
                     )
-                }.let { eventResults.addAll(it) }
+                }
+                eventResults[originType] = events
             }
 
             // All successful responses
             val eventSuccessResults =
-                eventResults.filterIsInstance<RemoteEventsResult.Success>()
-
+                eventResults.mapValues {
+                    it.value.filterIsInstance<RemoteEventsResult.Success>()
+                }
             // All failed responses
             val eventFailureResults =
-                eventResults.filterIsInstance<RemoteEventsResult.Error>()
+                eventResults.values.flatten().filterIsInstance<RemoteEventsResult.Error>()
 
             if (eventSuccessResults.isNotEmpty()) {
                 // If we have success responses
-                val signedModels = eventSuccessResults.map { it.signedModel }
-                val allEvents = signedModels.map { it.model }.mapNotNull { it.events }.flatten()
+                val signedModels =
+                    eventSuccessResults.mapValues { events -> events.value.map { it.signedModel } }
+                val allEvents = signedModels.mapValues { events ->
+                    events.value.map { it.model }
+                        .mapNotNull { it.events }
+                        .flatten()
+                }.filter { it.value.isNotEmpty() }
                 val hasEvents = allEvents.isNotEmpty()
 
                 if (!hasEvents) {
@@ -144,7 +152,11 @@ class GetDigidEventsUseCaseImpl(
                 } else {
                     // We do have events
                     EventsResult.Success(
-                        signedModels = signedModels,
+                        protocolOrigins = signedModels.mapValues {
+                            it.value.associate { signedModel ->
+                                signedModel.model to signedModel.rawResponse
+                            }
+                        }.map { ProtocolOrigin(it.key.toOriginType(), it.value) },
                         missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty(),
                         eventProviders = remoteEventProviders.map {
                             EventProvider(

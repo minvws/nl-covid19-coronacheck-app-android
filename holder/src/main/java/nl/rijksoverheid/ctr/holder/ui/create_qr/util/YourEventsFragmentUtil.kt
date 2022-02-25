@@ -35,7 +35,7 @@ class YourEventsFragmentUtilImpl: YourEventsFragmentUtil {
                 R.string.rule_engine_no_test_origin_description_scanned_qr_code
             }
             is YourEventsFragmentType.RemoteProtocol3Type -> {
-                return when (type.originType) {
+                return when (type.protocolOrigins.first().originType) {
                     is OriginType.Test -> {
                         R.string.rule_engine_no_test_origin_description_negative_test
                     }
@@ -65,7 +65,7 @@ class YourEventsFragmentUtilImpl: YourEventsFragmentUtil {
             is YourEventsFragmentType.DCC -> R.string.holder_dcc_alert_message
             is YourEventsFragmentType.TestResult2 -> R.string.holder_test_alert_message
             is YourEventsFragmentType.RemoteProtocol3Type -> {
-                when (type.originType) {
+                when (type.protocolOrigins.first().originType) {
                     is OriginType.Test -> R.string.holder_test_alert_message
                     is OriginType.Recovery -> R.string.holder_recovery_alert_message
                     is OriginType.Vaccination -> R.string.holder_vaccination_alert_message

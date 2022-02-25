@@ -57,8 +57,12 @@ class VisitorPassInputTokenFragment: InputTokenFragment() {
                 findNavController().navigate(
                     CommercialTestInputTokenFragmentDirections.actionYourEvents(
                         type = YourEventsFragmentType.RemoteProtocol3Type(
-                            mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse),
-                            originType = getOriginType(result.remoteTestResult),
+                            protocolOrigins = listOf(
+                                ProtocolOrigin(
+                                    getOriginType(result.remoteTestResult),
+                                    mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse)
+                                )
+                            )
                         ),
                         toolbarTitle = getString(getYourEventsToolbarTitle(result.remoteTestResult)),
                         flow = HolderFlow.VaccinationAssessment

@@ -5,10 +5,12 @@ import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.ProtocolOrigin
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventHolderUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import java.time.OffsetDateTime
@@ -21,12 +23,14 @@ import java.time.OffsetDateTime
  *
  */
 interface SaveEventsUseCase {
-    suspend fun saveNegativeTest2(negativeTest2: RemoteTestResult2, rawResponse: ByteArray): SaveEventsUseCaseImpl.SaveEventResult
+    suspend fun saveNegativeTest2(
+        negativeTest2: RemoteTestResult2,
+        rawResponse: ByteArray
+    ): SaveEventsUseCaseImpl.SaveEventResult
+
     suspend fun saveRemoteProtocols3(
-        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
-        originType: OriginType,
+        protocolOrigins: List<ProtocolOrigin>,
         removePreviousEvents: Boolean,
-        scope: String?
     ): SaveEventsUseCaseImpl.SaveEventResult
 
     suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean
@@ -34,7 +38,8 @@ interface SaveEventsUseCase {
 
 class SaveEventsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
-    private val remoteEventHolderUtil: RemoteEventHolderUtil
+    private val remoteEventHolderUtil: RemoteEventHolderUtil,
+    private val scopeUtil: ScopeUtil
 ) : SaveEventsUseCase {
 
     override suspend fun saveNegativeTest2(
@@ -57,49 +62,53 @@ class SaveEventsUseCaseImpl(
 
             return SaveEventResult.Success
         } catch (e: Exception) {
-           return SaveEventResult.Failed(
-               errorResult = AppErrorResult(
-                   step = HolderStep.StoringEvents,
-                   e = e
-               )
-           )
+            return SaveEventResult.Failed(
+                errorResult = AppErrorResult(
+                    step = HolderStep.StoringEvents,
+                    e = e
+                )
+            )
         }
     }
 
     override suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean {
         val storedEventHolders = holderDatabase.eventGroupDao().getAll()
-            .mapNotNull { remoteEventHolderUtil.holder(it.jsonData, it.providerIdentifier) }.distinct()
+            .mapNotNull { remoteEventHolderUtil.holder(it.jsonData, it.providerIdentifier) }
+            .distinct()
         val incomingEventHolders = remoteProtocols3.map { it.key.holder!! }.distinct()
 
         return remoteEventHolderUtil.conflicting(storedEventHolders, incomingEventHolders)
     }
 
     override suspend fun saveRemoteProtocols3(
-        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
-        originType: OriginType,
+        protocolOrigins: List<ProtocolOrigin>,
         removePreviousEvents: Boolean,
-        scope: String?
     ): SaveEventResult {
         try {
-            val entities = remoteProtocols3.map { remoteProtocol3 ->
-                val remoteEvents = remoteProtocol3.key.events ?: listOf()
-                EventGroupEntity(
-                    walletId = 1,
-                    providerIdentifier = remoteProtocol3.key.providerIdentifier,
-                    type = originType,
-                    maxIssuedAt = getMaxIssuedAt(remoteEvents),
-                    jsonData = remoteProtocol3.value,
-                    scope = scope
-                )
-            }
+            protocolOrigins.forEach {
+                val entities = it.remoteProtocols3.map { remoteProtocol3 ->
+                    val remoteEvents = remoteProtocol3.key.events ?: listOf()
+                    EventGroupEntity(
+                        walletId = 1,
+                        providerIdentifier = remoteProtocol3.key.providerIdentifier,
+                        type = it.originType,
+                        maxIssuedAt = getMaxIssuedAt(remoteEvents),
+                        jsonData = remoteProtocol3.value,
+                        scope = scopeUtil.getScopeForOriginType(
+                            originType = it.originType,
+                            withIncompleteVaccination = protocolOrigins.size > 1
+                        )
+                    )
+                }
 
-            // Save entity in database
-            holderDatabase.run {
-                withTransaction {
-                    if (removePreviousEvents) {
-                        eventGroupDao().deleteAll()
+                // Save entity in database
+                holderDatabase.run {
+                    withTransaction {
+                        if (removePreviousEvents) {
+                            eventGroupDao().deleteAll()
+                        }
+                        eventGroupDao().insertAll(entities)
                     }
-                    eventGroupDao().insertAll(entities)
                 }
             }
             return SaveEventResult.Success
@@ -120,7 +129,7 @@ class SaveEventsUseCaseImpl(
     }
 
     sealed class SaveEventResult {
-        object Success: SaveEventResult()
-        data class Failed(val errorResult: ErrorResult): SaveEventResult()
+        object Success : SaveEventResult()
+        data class Failed(val errorResult: ErrorResult) : SaveEventResult()
     }
 }

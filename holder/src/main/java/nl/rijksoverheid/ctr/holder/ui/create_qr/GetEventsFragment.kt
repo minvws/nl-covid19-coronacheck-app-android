@@ -91,14 +91,14 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                             positiveButtonCallback = {},
                             onDismissCallback = {
                                 navigateToYourEvents(
-                                    signedEvents = it.signedModels,
+                                    protocolOrigins = it.protocolOrigins,
                                     eventProviders = it.eventProviders,
                                 )
                             }
                         )
                     } else {
                         navigateToYourEvents(
-                            signedEvents = it.signedModels,
+                            protocolOrigins = it.protocolOrigins,
                             eventProviders = it.eventProviders,
                         )
                     }
@@ -277,17 +277,14 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     }
 
     private fun navigateToYourEvents(
-        signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>,
+        protocolOrigins: List<ProtocolOrigin>,
         eventProviders: List<EventProvider> = emptyList(),
     ) {
         navigateSafety(
             GetEventsFragmentDirections.actionYourEvents(
                 type = YourEventsFragmentType.RemoteProtocol3Type(
-                    remoteEvents = signedEvents.associate { signedModel ->
-                        signedModel.model to signedModel.rawResponse
-                    },
-                    originType = args.originType.toOriginType(),
-                    eventProviders = eventProviders,
+                    protocolOrigins = protocolOrigins,
+                    eventProviders = eventProviders
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,
                 afterIncompleteVaccination = args.getPositiveTestWithVaccination,

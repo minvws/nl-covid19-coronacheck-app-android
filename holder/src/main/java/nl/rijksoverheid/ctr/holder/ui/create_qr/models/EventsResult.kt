@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 
 import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.ProtocolOrigin
 import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -16,7 +17,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 sealed class EventsResult {
     data class Success (
-        val signedModels: List<SignedResponseWithModel<RemoteProtocol3>>,
+        val protocolOrigins: List<ProtocolOrigin>,
         val missingEvents: Boolean,
         val eventProviders: List<EventProvider>,
     ) : EventsResult()
