@@ -48,9 +48,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     override fun getFlow(): Flow {
         return when (args.originType) {
-            RemoteOriginType.Recovery -> {
-                if (args.afterIncompleteVaccination) HolderFlow.Recovery else HolderFlow.PositiveTest
-            }
+            RemoteOriginType.Recovery -> HolderFlow.Recovery
             RemoteOriginType.Test -> HolderFlow.DigidTest
             RemoteOriginType.Vaccination -> HolderFlow.Vaccination
         }
@@ -62,12 +60,6 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         val copy = getCopyForOriginType()
         setBindings(binding, copy)
         setObservers(binding, copy)
-
-        if (args.originType == RemoteOriginType.Recovery && args.afterIncompleteVaccination) {
-            binding.root.visibility = View.GONE
-            binding.fullscreenLoading.visibility = View.VISIBLE
-            loginAgainWithDigiD()
-        }
     }
 
     override fun onDestroyView() {
@@ -86,9 +78,6 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
         getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it
-            if (binding.fullscreenLoading.visibility != View.VISIBLE) {
-                (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
-            }
         })
 
         getEventsViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
@@ -202,7 +191,6 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     getEventsViewModel.getDigidEvents(
                         it.jwt,
                         args.originType,
-                        args.afterIncompleteVaccination
                     )
                 }
                 is LoginResult.Failed -> {
@@ -219,7 +207,6 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 }
                 LoginResult.TokenUnavailable -> {
                     binding.root.visibility = View.VISIBLE
-                    binding.fullscreenLoading.visibility = View.GONE
                 }
                 LoginResult.NoBrowserFound -> {
                     dialogUtil.presentDialog(
@@ -279,12 +266,8 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             }
             is RemoteOriginType.Recovery -> {
                 return GetEventsFragmentCopy(
-                    title = getString(
-                        if (args.afterIncompleteVaccination) R.string.retrieve_test_result_title else R.string.get_recovery_title
-                    ),
-                    description = getString(
-                        if (args.afterIncompleteVaccination) R.string.retrieve_test_result_description else R.string.get_recovery_description
-                    ),
+                    title = getString(R.string.get_recovery_title),
+                    description = getString(R.string.get_recovery_description),
                     toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
                     hasNoEventsTitle = getString(R.string.no_positive_test_result_title),
                     hasNoEventsDescription = getString(R.string.no_positive_test_result_description)

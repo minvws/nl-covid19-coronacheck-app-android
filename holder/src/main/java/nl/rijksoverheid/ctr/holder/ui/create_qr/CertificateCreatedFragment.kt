@@ -38,23 +38,12 @@ class CertificateCreatedFragment :
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentCertificateCreatedBinding.bind(view)
         binding.bottom.setButtonClick { backToOverview() }
-        binding.retrieveTestButton.setOnClickListener {
-            navigateSafety(
-                CertificateCreatedFragmentDirections.actionGetEvents(
-                    originType = RemoteOriginType.Recovery,
-                    afterIncompleteVaccination = true,
-                    toolbarTitle = resources.getString(R.string.retrieve_test_result_toolbar_title)
-                )
-            )
-        }
         with(args) {
             binding.title.text = title
             binding.description.setHtmlText(
                 htmlText = description,
                 htmlLinksEnabled = true,
             )
-            binding.retrieveTestButton.visibility =
-                if (shouldShowRetrieveTestButton) View.VISIBLE else View.GONE
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {

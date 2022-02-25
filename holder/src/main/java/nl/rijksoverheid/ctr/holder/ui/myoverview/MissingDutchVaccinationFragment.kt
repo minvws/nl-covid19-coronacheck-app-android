@@ -21,35 +21,14 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
  */
 class MissingDutchVaccinationFragment :
     Fragment(R.layout.fragment_missing_dutch_vaccination_certificate) {
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-
         val binding = FragmentMissingDutchVaccinationCertificateBinding.inflate(inflater)
-
-        binding.vaccinationButton.setOnClickListener {
-            navigate(RemoteOriginType.Vaccination)
-        }
-
-        binding.testButton.setOnClickListener {
-            navigate(RemoteOriginType.Recovery, afterIncompleteVaccination = true)
-        }
-
         return binding.root
-    }
-
-    private fun navigate(originType: RemoteOriginType, afterIncompleteVaccination: Boolean = false) {
-        navigateSafety(
-            MissingDutchVaccinationFragmentDirections.actionGetEvents(
-                originType = originType,
-                afterIncompleteVaccination = afterIncompleteVaccination,
-                toolbarTitle = resources.getString(
-                    if (afterIncompleteVaccination) R.string.retrieve_test_result_toolbar_title else R.string.choose_provider_toolbar
-                )
-            )
-        )
     }
 }

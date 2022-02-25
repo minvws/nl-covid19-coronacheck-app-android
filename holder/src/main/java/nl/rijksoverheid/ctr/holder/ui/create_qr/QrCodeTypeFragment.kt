@@ -56,7 +56,8 @@ class QrCodeTypeFragment : Fragment(R.layout.fragment_qr_code_type) {
             findNavController().navigate(
                 QrCodeTypeFragmentDirections.actionGetEvents(
                     originType = RemoteOriginType.Vaccination,
-                    toolbarTitle = resources.getString(R.string.choose_provider_toolbar)
+                    toolbarTitle = resources.getString(R.string.choose_provider_toolbar),
+                    afterIncompleteVaccination = true
                 )
             )
         }
