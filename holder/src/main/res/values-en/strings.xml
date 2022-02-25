@@ -3,6 +3,7 @@
   <string name="holder_fetchRemoteEvents_title">Retrieve details</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_title">Only an international certificate was created</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_message"><![CDATA[<p>Your vaccination(s) unfortunately don\'t entitle you to a Dutch vaccination certificate.</p><p><b>Still have to get a new vaccination?</b><br />Please add a vaccination again after you’ve had yours. You will also receive a Dutch certificate then.</p><p><b>Had coronavirus before your first vaccination?</b><br />Then you\'re normally considered fully vaccinated with one vaccination. Retrieve your positive test result to add this to your vaccination certificate.</p>]]></string>
+  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[<p>Your vaccination(s) unfortunately don\'t entitle you to a Dutch vaccination certificate.</p><p><b>Had a new vaccination?</b><br />Please retrieve your vaccination details again. You will receive a Dutch certificate.</p>]]></string>
   <string name="general_readmore">Read more</string>
   <string name="holder_dcc_alert_message">You can try to add a paper certificate again later.</string>
   <string name="holder_recovery_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>

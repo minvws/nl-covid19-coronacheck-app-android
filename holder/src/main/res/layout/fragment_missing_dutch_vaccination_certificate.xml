@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
             app:enableHtmlLinks="true"
-            app:htmlText="@string/missing_dutch_certificate_introduction"
+            app:htmlText="@string/holder_incompletedutchvaccination_paragraph_secondvaccine"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

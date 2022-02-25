@@ -3,6 +3,7 @@
   <string name="holder_fetchRemoteEvents_title">Gegevens ophalen</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_title">Er is alleen een internationaal bewijs gemaakt</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_message"><![CDATA[<p>Met jouw vaccinatie(s) heb je helaas geen recht op een Nederlands vaccinatiebewijs.</p><p><b>Krijg je nog een nieuwe vaccinatie?</b><br />Voeg opnieuw een vaccinatie toe nadat je prik is gezet. Je krijgt dan ook een Nederlands bewijs.</p><p><b>Corona gehad vóór je eerste vaccinatie?</b><br />Dan heb je vaak maar één prik nodig om volledig gevaccineerd te zijn. Haal je positieve testuitslag op om deze aan je vaccinatiebewijs toe te voegen.</p>]]></string>
+  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[<p>Met jouw vaccinatie(s) heb je geen recht op een Nederlands vaccinatiebewijs.</p><p>Voeg een nieuwe vaccinatie of test toe om  een Nederlands bewijs te krijgen.</p><p>Kijk voor meer informatie op de <a href=\\"https://coronacheck.nl/wegwijzer\\">Wegwijzer</a>.</p>]]></string>
   <string name="general_readmore">Lees meer</string>
   <string name="holder_dcc_alert_message">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
   <string name="holder_recovery_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
