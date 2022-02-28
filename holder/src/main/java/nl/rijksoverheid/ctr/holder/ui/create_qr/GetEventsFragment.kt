@@ -77,6 +77,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
         getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it
+            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
         getEventsViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
