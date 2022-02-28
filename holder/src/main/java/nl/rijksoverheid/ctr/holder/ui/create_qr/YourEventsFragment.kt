@@ -203,12 +203,12 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                        title = if (args.afterIncompleteVaccination) {
+                        title = if (args.getPositiveTestWithVaccination) {
                             getString(R.string.certificate_created_vaccination_recovery_title)
                         } else {
                             getString(R.string.certificate_created_recovery_after_vaccination_title)
                         },
-                        description = if (args.afterIncompleteVaccination) {
+                        description = if (args.getPositiveTestWithVaccination) {
                             getString(
                                 R.string.certificate_created_vaccination_recovery_description
                             )
@@ -239,7 +239,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             YourEventFragmentEndState.OnlyRecovery -> {
                 navigateSafety(
-                    if (args.afterIncompleteVaccination) {
+                    if (args.getPositiveTestWithVaccination) {
                         YourEventsFragmentDirections.actionCertificateCreated(
                             toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
                             title = getString(R.string.certificate_created_recovery_title),
@@ -253,7 +253,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             is YourEventFragmentEndState.OnlyVaccination -> {
                 navigateSafety(
-                    if (args.afterIncompleteVaccination) {
+                    if (args.getPositiveTestWithVaccination) {
                         // When coming from a vaccination completion flow, navigate directly to dashboard
                         YourEventsFragmentDirections.actionMyOverview()
                     } else {

@@ -25,13 +25,13 @@ abstract class GetEventsViewModel : ViewModel() {
     abstract fun getDigidEvents(
         jwt: String,
         originType: RemoteOriginType,
-        withIncompleteVaccination: Boolean = false
+        getPositiveTestWithVaccination: Boolean = false
     )
 
     abstract fun getMijnCnEvents(
         jwt: String,
         originType: RemoteOriginType,
-        withIncompleteVaccination: Boolean = false
+        getPositiveTestWithVaccination: Boolean = false
     )
 }
 
@@ -43,11 +43,11 @@ class GetEventsViewModelImpl(
     override fun getDigidEvents(
         jwt: String,
         originType: RemoteOriginType,
-        withIncompleteVaccination: Boolean
+        getPositiveTestWithVaccination: Boolean
     ) {
         val originTypes =
             listOf(originType) +
-                    if (withIncompleteVaccination) listOf(RemoteOriginType.Recovery) else emptyList()
+                    if (getPositiveTestWithVaccination) listOf(RemoteOriginType.Recovery) else emptyList()
         getEvents {
             getDigidEventsUseCase.getEvents(
                 jwt = jwt,
@@ -59,13 +59,13 @@ class GetEventsViewModelImpl(
     override fun getMijnCnEvents(
         jwt: String,
         originType: RemoteOriginType,
-        withIncompleteVaccination: Boolean
+        getPositiveTestWithVaccination: Boolean
     ) {
         getEvents {
             mijnCnEventsUsecase.getEvents(
                 jwt = jwt,
                 originType = originType,
-                withIncompleteVaccination = withIncompleteVaccination
+                withIncompleteVaccination = getPositiveTestWithVaccination
             )
         }
     }

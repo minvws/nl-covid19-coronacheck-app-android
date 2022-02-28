@@ -30,9 +30,6 @@ class CertificateCreatedFragment :
     Fragment(R.layout.fragment_certificate_created) {
 
     private val args: CertificateCreatedFragmentArgs by navArgs()
-    protected val digidViewModel: LoginViewModel by sharedViewModel(
-        qualifier = named(LoginQualifier.DIGID)
-    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,8 +51,6 @@ class CertificateCreatedFragment :
     }
 
     private fun backToOverview() {
-        // Clear the token when the DigiD flow is finished
-        digidViewModel.clearAccessToken()
         findNavControllerSafety()?.popBackStack()
     }
 }

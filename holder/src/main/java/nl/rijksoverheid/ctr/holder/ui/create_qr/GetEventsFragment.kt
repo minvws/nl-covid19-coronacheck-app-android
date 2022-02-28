@@ -72,11 +72,13 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     ) {
         digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it
+            binding.checkbox.isEnabled = !it
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
         getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it
+            binding.checkbox.isEnabled = !it
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
@@ -94,6 +96,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                                 navigateToYourEvents(
                                     protocolOrigins = it.protocolOrigins,
                                     eventProviders = it.eventProviders,
+                                    getPositiveTestWithVaccination = binding.checkbox.isChecked
                                 )
                             }
                         )
@@ -101,6 +104,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         navigateToYourEvents(
                             protocolOrigins = it.protocolOrigins,
                             eventProviders = it.eventProviders,
+                            getPositiveTestWithVaccination = binding.checkbox.isChecked
                         )
                     }
                 }
@@ -146,7 +150,6 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 is EventsResult.Error -> {
                     when {
                         it.accessTokenSessionExpiredError() -> {
-                            onTokenExpired()
                             presentError(
                                 data = ErrorResultFragmentData(
                                     title = getString(R.string.error_access_tokens_session_expired_title),
@@ -191,7 +194,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     getEventsViewModel.getDigidEvents(
                         it.jwt,
                         args.originType,
-                        args.getPositiveTestWithVaccination
+                        binding.checkbox.isChecked
                     )
                 }
                 is LoginResult.Failed -> {
@@ -243,6 +246,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 )
             }
         }
+        binding.checkboxContainer.visibility = View.VISIBLE
     }
 
     private fun getCopyForOriginType(): GetEventsFragmentCopy {
@@ -280,6 +284,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     private fun navigateToYourEvents(
         protocolOrigins: List<ProtocolOrigin>,
         eventProviders: List<EventProvider> = emptyList(),
+        getPositiveTestWithVaccination: Boolean
     ) {
         navigateSafety(
             GetEventsFragmentDirections.actionYourEvents(
@@ -288,7 +293,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     eventProviders = eventProviders
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,
-                afterIncompleteVaccination = args.getPositiveTestWithVaccination,
+                getPositiveTestWithVaccination = getPositiveTestWithVaccination,
                 flow = getFlow()
             )
         )

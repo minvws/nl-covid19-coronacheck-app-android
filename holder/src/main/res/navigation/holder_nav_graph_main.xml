@@ -362,11 +362,6 @@
             app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType" />
 
         <argument
-            android:name="getPositiveTestWithVaccination"
-            android:defaultValue="false"
-            app:argType="boolean" />
-
-        <argument
             android:name="toolbarTitle"
             app:argType="string" />
 
@@ -423,7 +418,7 @@
             app:argType="nl.rijksoverheid.ctr.shared.models.Flow" />
 
         <argument
-            android:name="afterIncompleteVaccination"
+            android:name="getPositiveTestWithVaccination"
             android:defaultValue="false"
             app:argType="boolean" />
 

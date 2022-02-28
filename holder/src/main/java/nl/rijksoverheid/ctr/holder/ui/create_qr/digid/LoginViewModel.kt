@@ -42,9 +42,6 @@ class LoginViewModel(
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val loginResultLiveData = MutableLiveData<Event<LoginResult>>()
 
-    /** stored token to fetch different type of events in the same session */
-    private var jwt: String? = null
-
     fun login(
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
@@ -58,15 +55,6 @@ class LoginViewModel(
             }
             loading.value = Event(false)
         }
-    }
-
-    /**
-     * Login again with a token received with a previous login
-     */
-    fun loginAgain() {
-        val result = jwt?.let { LoginResult.Success(it) } ?: LoginResult.TokenUnavailable
-        loginResultLiveData.postValue(Event(result))
-        jwt = null // login again only once, consecutive logins should request new access token
     }
 
     fun handleActivityResult(activityResult: ActivityResult, authService: AuthorizationService) {
@@ -135,7 +123,6 @@ class LoginViewModel(
         try {
             val jwt =
                 digidAuthenticationRepository.jwt(authService, authResponse)
-            this.jwt = jwt
             loginResultLiveData.postValue(Event(LoginResult.Success(jwt)))
         } catch (e: Exception) {
             postExceptionResult(e)
@@ -161,9 +148,5 @@ class LoginViewModel(
         loginResultLiveData.postValue(
             Event(LoginResult.Failed(Error(DigidNetworkRequest, NullPointerException())))
         )
-    }
-
-    fun clearAccessToken() {
-        jwt = null
     }
 }

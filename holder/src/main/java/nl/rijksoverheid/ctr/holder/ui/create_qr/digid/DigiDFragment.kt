@@ -60,21 +60,6 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
         mijnCnViewModel.login(loginResultMijnCn, authServiceMijnCn)
     }
 
-    /**
-     * Used for logging in when a session has already started with an active access token
-     * to prevent having to do another DigiD login.
-     */
-    fun loginAgainWithDigiD() {
-        digidViewModel.loginAgain()
-    }
-
-    /**
-     * Remove persisted access token on expiration
-     */
-    fun onTokenExpired() {
-        digidViewModel.clearAccessToken()
-    }
-
     protected fun getErrorCodes(errorResults: List<ErrorResult>): String {
         return errorCodeStringFactory.get(
             flow = getFlow(),
