@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import androidx.room.withTransaction
 import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
@@ -85,6 +84,10 @@ class SaveEventsUseCaseImpl(
         removePreviousEvents: Boolean,
     ): SaveEventResult {
         try {
+            if (removePreviousEvents) {
+                holderDatabase.eventGroupDao().deleteAll()
+            }
+
             protocolOrigins.forEach {
                 val entities = it.remoteProtocols3.map { remoteProtocol3 ->
                     val remoteEvents = remoteProtocol3.key.events ?: listOf()
@@ -96,20 +99,13 @@ class SaveEventsUseCaseImpl(
                         jsonData = remoteProtocol3.value,
                         scope = scopeUtil.getScopeForOriginType(
                             originType = it.originType,
-                            withIncompleteVaccination = protocolOrigins.size > 1
+                            getPositiveTestWithVaccination = protocolOrigins.size > 1
                         )
                     )
                 }
 
                 // Save entity in database
-                holderDatabase.run {
-                    withTransaction {
-                        if (removePreviousEvents) {
-                            eventGroupDao().deleteAll()
-                        }
-                        eventGroupDao().insertAll(entities)
-                    }
-                }
+                holderDatabase.eventGroupDao().insertAll(entities)
             }
             return SaveEventResult.Success
         } catch (e: Exception) {

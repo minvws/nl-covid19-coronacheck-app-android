@@ -1,16 +1,20 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import androidx.room.withTransaction
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.ProtocolOrigin
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventHolderUtil
-import org.junit.Before
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtilImpl
+import org.junit.After
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
+import org.robolectric.RobolectricTestRunner
 import java.time.LocalDate
 
 /*
@@ -20,30 +24,25 @@ import java.time.LocalDate
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+@RunWith(RobolectricTestRunner::class)
 class SaveEventsUseCaseImplTest {
 
     private val eventGroupDao: EventGroupDao = mockk(relaxed = true)
     private val holderDatabase: HolderDatabase = mockk {
         every { eventGroupDao() } returns eventGroupDao
     }
+    private val scopeUtil = ScopeUtilImpl()
 
     private val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
 
-    private val saveEventsUseCaseImpl = SaveEventsUseCaseImpl(holderDatabase, remoteEventHolderUtil)
-
-    @Before
-    fun setUp() {
-        MockKAnnotations.init(this)
-
-        mockkStatic(
-            "androidx.room.RoomDatabaseKt"
-        )
-
-        val transactionLambda = slot<suspend () -> Unit>()
-        coEvery { holderDatabase.withTransaction(capture(transactionLambda)) } coAnswers {
-            transactionLambda.captured.invoke()
-        }
+    @After
+    fun tearDown() {
+        stopKoin()
     }
+
+    private val saveEventsUseCaseImpl = SaveEventsUseCaseImpl(holderDatabase, remoteEventHolderUtil,
+        scopeUtil
+    )
 
     @Test
     fun `when saving vaccinations it should be inserted into the database with old one deleted`() {
@@ -53,10 +52,8 @@ class SaveEventsUseCaseImplTest {
 
         runBlocking {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
-                remoteProtocols3,
-                OriginType.Vaccination,
-                true,
-                null
+                listOf(ProtocolOrigin(OriginType.Vaccination, remoteProtocols3)),
+                true
             )
 
             coVerify { eventGroupDao.deleteAll() }
@@ -66,7 +63,8 @@ class SaveEventsUseCaseImplTest {
                         mapEventsToEntity(
                             it.key,
                             it.value,
-                            OriginType.Vaccination
+                            OriginType.Vaccination,
+                            scopeUtil.getScopeForOriginType(OriginType.Vaccination, false)
                         )
                     }
                 )
@@ -82,10 +80,8 @@ class SaveEventsUseCaseImplTest {
 
         runBlocking {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
-                remoteProtocols3,
-                OriginType.Recovery,
+                listOf(ProtocolOrigin(OriginType.Recovery, remoteProtocols3)),
                 true,
-                null
             )
 
             coVerify { eventGroupDao.deleteAll() }
@@ -95,7 +91,8 @@ class SaveEventsUseCaseImplTest {
                         mapEventsToEntity(
                             it.key,
                             it.value,
-                            OriginType.Recovery
+                            OriginType.Recovery,
+                            scopeUtil.getScopeForOriginType(OriginType.Recovery, false)
                         )
                     }
                 )
@@ -106,14 +103,15 @@ class SaveEventsUseCaseImplTest {
     private fun mapEventsToEntity(
         remoteEvents: RemoteProtocol3,
         byteArray: ByteArray,
-        eventType: OriginType
+        eventType: OriginType,
+        scope: String?
     ) = EventGroupEntity(
         walletId = 1,
         providerIdentifier = remoteEvents.providerIdentifier,
         type = eventType,
         maxIssuedAt = remoteEvents.events!!.first().getDate()!!,
         jsonData = byteArray,
-        scope = null
+        scope = scope
     )
 
     private fun createRemoteProtocol3(remoteEvent: RemoteEvent) = RemoteProtocol3(

@@ -68,7 +68,7 @@ class GetMijnCnEventsUsecaseImpl(
             val filter = EventProviderRepository.getFilter(originType)
             val scope = scopeUtil.getScopeForRemoteOriginType(
                 remoteOriginType = originType,
-                withIncompleteVaccination = withIncompleteVaccination
+                getPositiveTestWithVaccination = withIncompleteVaccination
             )
 
             val eventResults = eventProviders.map { eventProvider ->

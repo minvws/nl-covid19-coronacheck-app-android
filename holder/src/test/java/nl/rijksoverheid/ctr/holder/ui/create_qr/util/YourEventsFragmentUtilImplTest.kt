@@ -11,6 +11,7 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.ProtocolOrigin
 import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
@@ -48,7 +49,7 @@ class YourEventsFragmentUtilImplTest: AutoCloseKoinTest() {
         val util = YourEventsFragmentUtilImpl()
 
         val test = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
-        every { test.originType } answers { OriginType.Test }
+        every { test.protocolOrigins } returns listOf(ProtocolOrigin(OriginType.Test, mockk()))
         val copy = util.getNoOriginTypeCopy(test)
 
         assertEquals(R.string.rule_engine_no_test_origin_description_negative_test, copy)
@@ -59,7 +60,7 @@ class YourEventsFragmentUtilImplTest: AutoCloseKoinTest() {
         val util = YourEventsFragmentUtilImpl()
 
         val vaccination = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
-        every { vaccination.originType } answers { OriginType.Vaccination }
+        every { vaccination.protocolOrigins } returns listOf(ProtocolOrigin(OriginType.Vaccination, mockk()))
         val copy = util.getNoOriginTypeCopy(vaccination)
 
         assertEquals(R.string.rule_engine_no_test_origin_description_vaccination, copy)
@@ -70,7 +71,7 @@ class YourEventsFragmentUtilImplTest: AutoCloseKoinTest() {
         val util = YourEventsFragmentUtilImpl()
 
         val recovery = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
-        every { recovery.originType } answers { OriginType.Recovery }
+        every { recovery.protocolOrigins } returns listOf(ProtocolOrigin(OriginType.Recovery, mockk()))
         val copy = util.getNoOriginTypeCopy(recovery)
 
         assertEquals(R.string.rule_engine_no_test_origin_description_positive_test, copy)
@@ -143,7 +144,7 @@ class YourEventsFragmentUtilImplTest: AutoCloseKoinTest() {
         val util = YourEventsFragmentUtilImpl()
 
         val recovery = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
-        every { recovery.originType } answers { OriginType.Recovery }
+        every { recovery.protocolOrigins } returns listOf(ProtocolOrigin(OriginType.Recovery, mockk()))
 
         val copy = util.getCancelDialogDescription(
             type = recovery
@@ -157,7 +158,7 @@ class YourEventsFragmentUtilImplTest: AutoCloseKoinTest() {
         val util = YourEventsFragmentUtilImpl()
 
         val vaccination = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
-        every { vaccination.originType } answers { OriginType.Vaccination }
+        every { vaccination.protocolOrigins } returns listOf(ProtocolOrigin(OriginType.Vaccination, mockk()))
 
         val copy = util.getCancelDialogDescription(
             type = vaccination
@@ -171,7 +172,7 @@ class YourEventsFragmentUtilImplTest: AutoCloseKoinTest() {
         val util = YourEventsFragmentUtilImpl()
 
         val vaccinationAssessment = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
-        every { vaccinationAssessment.originType } answers { OriginType.VaccinationAssessment }
+        every { vaccinationAssessment.protocolOrigins } returns listOf(ProtocolOrigin(OriginType.VaccinationAssessment, mockk()))
 
         val copy = util.getCancelDialogDescription(
             type = vaccinationAssessment

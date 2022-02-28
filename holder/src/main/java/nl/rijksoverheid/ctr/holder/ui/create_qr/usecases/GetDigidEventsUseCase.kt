@@ -77,7 +77,7 @@ class GetDigidEventsUseCaseImpl(
 
             val scope = scopeUtil.getScopeForRemoteOriginType(
                 remoteOriginType = originType,
-                withIncompleteVaccination = originTypes.size > 1
+                getPositiveTestWithVaccination = originTypes.size > 1
             )
 
             // Fetch event providers that have events for us
@@ -98,7 +98,7 @@ class GetDigidEventsUseCaseImpl(
             eventProviderWithTokensResults.values.flatten()
                 .filterIsInstance<EventProviderWithTokenResult.Error>()
 
-        return if (eventProvidersWithTokensSuccessResults.isNotEmpty()) {
+        return if (eventProvidersWithTokensSuccessResults.flatMap { it.value }.isNotEmpty()) {
             val eventResults = mutableMapOf<RemoteOriginType, List<RemoteEventsResult>>()
             eventProvidersWithTokensSuccessResults.forEach { (originType, eventProviders) ->
                 // We have received providers that claim to have events for us so we get those events for each provider
@@ -109,7 +109,7 @@ class GetDigidEventsUseCaseImpl(
                         filter = EventProviderRepository.getFilter(originType),
                         scope = scopeUtil.getScopeForRemoteOriginType(
                             remoteOriginType = originType,
-                            withIncompleteVaccination = originTypes.size > 1
+                            getPositiveTestWithVaccination = originTypes.size > 1
                         )
                     )
                 }
@@ -125,7 +125,7 @@ class GetDigidEventsUseCaseImpl(
             val eventFailureResults =
                 eventResults.values.flatten().filterIsInstance<RemoteEventsResult.Error>()
 
-            if (eventSuccessResults.isNotEmpty()) {
+            if (eventSuccessResults.flatMap { it.value }.isNotEmpty()) {
                 // If we have success responses
                 val signedModels =
                     eventSuccessResults.mapValues { events -> events.value.map { it.signedModel } }
