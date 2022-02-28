@@ -184,8 +184,8 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
 
         assertEquals(5, dashboardItems.domesticItems.size)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
-        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.BoosterItem)
-        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.InfoItem.DomesticVaccinationExpiredItem)
+        assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.DomesticVaccinationExpiredItem)
+        assertTrue(dashboardItems.domesticItems[2] is DashboardItem.InfoItem.BoosterItem)
         assertTrue(dashboardItems.domesticItems[3] is DashboardItem.PlaceholderCardItem)
         assertTrue(dashboardItems.domesticItems[4] is DashboardItem.AddQrButtonItem)
 

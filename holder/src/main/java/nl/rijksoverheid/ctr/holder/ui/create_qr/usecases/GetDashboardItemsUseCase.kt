@@ -52,7 +52,7 @@ class GetDashboardItemsUseCaseImpl(
         )
     }
 
-    private suspend fun getDomesticItems(
+    private fun getDomesticItems(
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
@@ -166,10 +166,10 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.AddQrButtonItem)
         }
 
-        return dashboardItems
+        return sortGreenCardItemsUseCase.sort(dashboardItems)
     }
 
-    private suspend fun getInternationalItems(
+    private fun getInternationalItems(
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
@@ -273,7 +273,7 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.AddQrButtonItem)
         }
 
-        return dashboardItems
+        return sortGreenCardItemsUseCase.sort(dashboardItems)
     }
 
     private fun getGreenCardItems(
@@ -342,7 +342,7 @@ class GetDashboardItemsUseCaseImpl(
             }
         }
 
-        return sortGreenCardItemsUseCase.sort(items)
+        return items
     }
 
     private fun getExpiredBannerItem(
