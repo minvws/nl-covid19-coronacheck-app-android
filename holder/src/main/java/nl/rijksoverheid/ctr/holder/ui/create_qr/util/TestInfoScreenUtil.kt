@@ -60,6 +60,7 @@ class TestInfoScreenUtilImpl(
                 resources.getString(R.string.your_test_result_explanation_description_your_details),
                 "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
             ),
+            "<br/>",
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_type),
                 result.testType,
@@ -125,6 +126,7 @@ class TestInfoScreenUtilImpl(
                 birthDate,
                 isOptional = true
             ),
+            "<br/>",
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_type),
                 testType
@@ -197,6 +199,7 @@ class TestInfoScreenUtilImpl(
                 birthDate,
                 isOptional = true
             ),
+            "<br/>",
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_type),
                 testType

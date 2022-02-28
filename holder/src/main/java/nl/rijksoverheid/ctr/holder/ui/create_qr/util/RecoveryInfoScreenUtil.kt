@@ -58,6 +58,7 @@ class RecoveryInfoScreenUtilImpl(
                 birthDate,
                 isOptional = true
             ),
+            "<br/>",
             createdLine(
                 resources.getString(R.string.recovery_explanation_description_test_date),
                 testDate
