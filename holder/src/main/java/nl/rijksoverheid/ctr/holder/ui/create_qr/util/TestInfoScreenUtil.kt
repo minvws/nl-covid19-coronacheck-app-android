@@ -96,7 +96,15 @@ class TestInfoScreenUtilImpl(
             it.code == event.negativeTest?.type
         }?.name ?: event.negativeTest?.type ?: ""
 
-        val testName = event.negativeTest?.name ?: ""
+        val isRat = event.negativeTest?.type == "LP217198-3"
+
+        val testName = if (isRat) {
+            holderConfig.euTestNames.firstOrNull {
+                it.code == event.negativeTest?.manufacturer
+            }?.name ?: ""
+        } else {
+            event.negativeTest?.name ?: ""
+        }
 
         val testLocation = event.negativeTest?.facility ?: ""
 
