@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
+  <string name="holder_listRemoteEvents_endStateRecoveryOnly_title">Er is alleen een herstelbewijs gemaakt</string>
   <string name="holder_fetchRemoteEvents_title">Gegevens ophalen</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_title">Er is alleen een internationaal bewijs gemaakt</string>
-  <string name="holder_listRemoteEvents_endStateInternationalQROnly_message"><![CDATA[<p>Met jouw vaccinatie(s) heb je helaas geen recht op een Nederlands vaccinatiebewijs.</p><p><b>Krijg je nog een nieuwe vaccinatie?</b><br />Voeg opnieuw een vaccinatie toe nadat je prik is gezet. Je krijgt dan ook een Nederlands bewijs.</p><p><b>Corona gehad vóór je eerste vaccinatie?</b><br />Dan heb je vaak maar één prik nodig om volledig gevaccineerd te zijn. Haal je positieve testuitslag op om deze aan je vaccinatiebewijs toe te voegen.</p>]]></string>
-  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[<p>Met jouw vaccinatie(s) heb je geen recht op een Nederlands vaccinatiebewijs.</p><p>Voeg een nieuwe vaccinatie of test toe om  een Nederlands bewijs te krijgen.</p><p>Kijk voor meer informatie op de <a href=\\"https://coronacheck.nl/wegwijzer\\">Wegwijzer</a>.</p>]]></string>
   <string name="general_readmore">Lees meer</string>
   <string name="holder_dcc_alert_message">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
   <string name="holder_recovery_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="holder_test_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
+  <string name="general_toMyOverview">Naar mijn bewijzen</string>
+  <string name="holder_listRemoteEvents_title">Kloppen de gegevens?</string>
   <string name="holder_vaccination_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je gegevens ophalen.</string>
+  <string name="holder_listRemoteEvents_somethingWrong_title">Klopt er iets niet?</string>
   <string name="holder_eventdetails_vaccinationStatus_complete">ja</string>
   <string name="holder_eventdetails_vaccinationStatus_recovery">ja (eerder corona gehad)</string>
   <string name="holder_eventdetails_vaccinationStatus_firstVaccinationElsewhere">ja (ergens anders gevaccineerd)</string>
@@ -687,10 +690,18 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_addVaccine_alsoCollectPositiveTestResults_checkbox">Haal ook mijn positieve testuitslag op</string>
   <string name="holder_listRemoteEvents_vaccination_message">Als de gegevens kloppen kun je een bewijs maken.</string>
   <string name="holder_listRemoteEvents_paperflow_message">Met deze gegevens kun je een bewijs maken.</string>
-  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title">De volgende bewijzen zijn gemaakt</string>
-  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message"><![CDATA[<b>Alleen een internationaal vaccinatiebewijs</b><br/>Je hebt geen recht op een Nederlands vaccinatiebewijs. Hiervoor moet je volledig gevaccineerd zijn, of hersteld van corona vóór je eerste prik.<br /><br /><b>Herstelbewijs</b><br/>Van je positieve testuitslag kon ook een Nederlands en internationaal herstelbewijs gemaakt worden.]]></string>
+  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
+  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message"><![CDATA[Van je opgehaalde vaccinaties kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Van je positieve testuitslag kon ook een herstelbewijs gemaakt worden.]]></string>
   <string name="holder_listRemoteEvents_recovery_message">Als de gegevens van je test kloppen kun je een herstelbewijs maken.</string>
   <string name="holder_listRemoteEvents_negativeTest_message">Deze testuitslag is opgehaald bij de testlocatie. Als de gegevens kloppen kun je een bewijs maken.</string>
   <string name="holder_listRemoteEvents_vaccinationAssessment_message">Als de gegevens kloppen kun je jouw vaccinatiebeoordeling toevoegen aan de app.</string>
-  <string name="holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body"><![CDATA[<p>Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.</p>]]></string>
+  <string name="holder_listRemoteEvents_endStateCombinedFlowInternationalQROnly_message">Van je opgehaalde gegevens kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a>.</string>
+  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[Met jouw vaccinatie(s) heb je geen recht op een Nederlands vaccinatiebewijs.<br/><br/>Voeg een nieuwe vaccinatie of test toe om een Nederlands bewijs te krijgen.<br/><br/>Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
+  <string name="holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body">Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.</string>
+  <string name="holder_listRemoteEvents_endStateInternationalQROnly_message">Van je opgehaalde gegevens kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a>.</string>
+  <string name="holder_listRemoteEvents_somethingWrong_vaccination_body">Neem contact op met de zorgverlener waar je bent gevaccineerd. Dat kan de GGD, je huisarts of arts van een zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.</string>
+  <string name="holder_listRemoteEvents_listElement_vaccination_title">Vaccinatie %s</string>
+  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_message"><![CDATA[Van je opgehaalde vaccinaties is een vaccinatiebewijs gemaakt.<br/><br/>Van je positieve testuitslag kon ook een herstelbewijs worden gemaakt.]]></string>
+  <string name="holder_listRemoteEvents_endStateRecoveryOnly_message">Van je opgehaalde gegevens kon alleen een herstelbewijs worden gemaakt. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a>.</string>
+  <string name="holder_listRemoteEvents_originMismatch_vaccinationAndPositiveTest_body" formatted="false"><![CDATA[Op dit moment kunnen we geen bewijs maken van je %1$s. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/><b>Foutcode:</b><br/>%1s]]></string>
 </resources>

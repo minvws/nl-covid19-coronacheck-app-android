@@ -80,7 +80,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     negativeTest2 = type.remoteTestResult,
                     rawResponse = type.rawResponse
                 )
-            }
+            }   
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 yourEventsViewModel.checkForConflictingEvents(
                     remoteProtocols3 = getRemoteProtocols(type)
@@ -102,10 +102,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentYourEventsBinding.bind(view)
-
-        presentHeader(
-            binding = binding
-        )
 
         presentEvents(
             binding = binding
@@ -316,33 +312,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 )
             }
         )
-    }
-
-    private fun presentHeader(binding: FragmentYourEventsBinding) {
-        when (val type = args.type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                binding.description.setHtmlText(R.string.your_negative_test_results_description)
-            }
-            is YourEventsFragmentType.RemoteProtocol3Type -> {
-                when (type.protocolOrigins.first().originType) {
-                    is OriginType.Test -> {
-                        binding.description.setHtmlText(R.string.your_negative_test_results_description)
-                    }
-                    is OriginType.Vaccination -> {
-                        binding.description.setHtmlText(R.string.your_retrieved_vaccinations_description)
-                    }
-                    is OriginType.Recovery -> {
-                        binding.description.setHtmlText(R.string.your_positive_test_description)
-                    }
-                    is OriginType.VaccinationAssessment -> {
-                        binding.description.setHtmlText(R.string.holder_event_vaccination_assessment_list_message)
-                    }
-                }
-            }
-            is YourEventsFragmentType.DCC -> {
-                binding.description.setHtmlText(R.string.your_dcc_event_description)
-            }
-        }
     }
 
     private fun presentEvents(binding: FragmentYourEventsBinding) {
