@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -246,7 +247,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 )
             }
         }
-        binding.checkboxContainer.visibility = View.VISIBLE
+        binding.checkboxContainer.isVisible = args.originType == RemoteOriginType.Vaccination
     }
 
     private fun getCopyForOriginType(): GetEventsFragmentCopy {
