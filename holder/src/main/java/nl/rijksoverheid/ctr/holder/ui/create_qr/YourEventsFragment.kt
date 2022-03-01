@@ -14,6 +14,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
@@ -525,7 +526,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         event: RemoteEventNegativeTest
     ) {
         val testDate =
-            event.negativeTest?.sampleDate?.formatDayMonthYearTime(requireContext()) ?: ""
+            event.negativeTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
 
         val infoScreen = infoScreenUtil.getForNegativeTest(
             event = event,

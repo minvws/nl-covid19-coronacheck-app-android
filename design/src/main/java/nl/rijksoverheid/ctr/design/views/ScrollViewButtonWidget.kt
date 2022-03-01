@@ -39,6 +39,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
         WidgetScrollViewButtonBinding.inflate(LayoutInflater.from(context), this)
         binding = WidgetScrollViewButtonBinding.bind(this)
         isFocusable = false
+        importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
 
         context.theme.obtainStyledAttributes(
             attrs,

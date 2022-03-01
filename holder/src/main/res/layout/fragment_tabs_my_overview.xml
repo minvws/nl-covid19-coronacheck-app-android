@@ -11,6 +11,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!-- setting a standard height (which is the default height set in TabLayout.java
+        of material library  in order not to break on font resize for accessibility -->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_marginHorizontal="16dp"
@@ -22,7 +24,8 @@
             app:tabTextColor="@color/secondary_text"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
+            android:layout_height="48dp" />
 
         <View
             android:layout_width="match_parent"
