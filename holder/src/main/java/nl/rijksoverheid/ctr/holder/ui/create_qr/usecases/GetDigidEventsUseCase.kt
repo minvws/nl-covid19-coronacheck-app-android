@@ -127,16 +127,15 @@ class GetDigidEventsUseCaseImpl(
 
             if (eventSuccessResults.flatMap { it.value }.isNotEmpty()) {
                 // If we have success responses
-                val signedModels =
-                    eventSuccessResults.mapValues { events -> events.value.map { it.signedModel } }
-                val allEvents = signedModels.mapValues { events ->
-                    events.value.map { it.model }
-                        .mapNotNull { it.events }
-                        .flatten()
-                }.filter { it.value.isNotEmpty() }
-                val hasEvents = allEvents.isNotEmpty()
+                val signedModels = eventSuccessResults
+                    .mapValues { events ->
+                        events.value
+                            .map { it.signedModel }
+                            .filter { it.model.hasEvents() }
+                    }
+                    .filterValues { it.isNotEmpty() }
 
-                if (!hasEvents) {
+                if (signedModels.isEmpty()) {
                     // But we do not have any events
                     val missingEvents =
                         eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
