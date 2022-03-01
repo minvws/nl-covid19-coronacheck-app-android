@@ -12,6 +12,7 @@ import android.os.Build
 import android.text.TextUtils
 import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
+import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
@@ -92,7 +93,7 @@ class QrInfoScreenUtilImpl(
         val testDate = test.getStringOrNull("sc")?.let {
             try {
                 OffsetDateTime.parse(it, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                    .toLocalDate().formatDayMonthYearNumerical()
+                    .formatDateTime(application)
             } catch (e: Exception) {
                 ""
             }
