@@ -60,6 +60,7 @@ class TestInfoScreenUtilImpl(
                 resources.getString(R.string.your_test_result_explanation_description_your_details),
                 "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
             ),
+            "<br/>",
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_type),
                 result.testType,
@@ -95,7 +96,15 @@ class TestInfoScreenUtilImpl(
             it.code == event.negativeTest?.type
         }?.name ?: event.negativeTest?.type ?: ""
 
-        val testName = event.negativeTest?.name ?: ""
+        val isRat = event.negativeTest?.type == "LP217198-3"
+
+        val testName = if (isRat) {
+            holderConfig.euTestNames.firstOrNull {
+                it.code == event.negativeTest?.manufacturer
+            }?.name ?: ""
+        } else {
+            event.negativeTest?.name ?: ""
+        }
 
         val testLocation = event.negativeTest?.facility ?: ""
 
@@ -125,6 +134,7 @@ class TestInfoScreenUtilImpl(
                 birthDate,
                 isOptional = true
             ),
+            "<br/>",
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_type),
                 testType
@@ -197,6 +207,7 @@ class TestInfoScreenUtilImpl(
                 birthDate,
                 isOptional = true
             ),
+            "<br/>",
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_type),
                 testType
