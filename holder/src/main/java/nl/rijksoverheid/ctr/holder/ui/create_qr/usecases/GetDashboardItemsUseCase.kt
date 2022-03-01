@@ -289,7 +289,7 @@ class GetDashboardItemsUseCaseImpl(
         // Loop through all green cards that exists in the database and map them to UI models
         val items = greenCardsForSelectedType
             .mapIndexed { index, greenCard ->
-                if (greenCardUtil.isExpired(greenCard)) {
+                if (greenCardUtil.isExpired(greenCard) && greenCard.origins.isNotEmpty()) {
                     getExpiredBannerItem(
                         greenCard = greenCard
                     )
