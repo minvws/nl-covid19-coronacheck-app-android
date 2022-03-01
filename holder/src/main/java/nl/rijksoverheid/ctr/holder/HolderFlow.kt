@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.shared.models.Flow
+import org.bouncycastle.asn1.x509.Holder
 
 sealed class HolderFlow(code: Int) : Flow(code), Parcelable {
 
@@ -35,4 +36,7 @@ sealed class HolderFlow(code: Int) : Flow(code), Parcelable {
 
     @Parcelize
     object VaccinationBesIslands: HolderFlow(10)
+
+    @Parcelize
+    object VaccinationAndPositiveTest: HolderFlow(11)
 }

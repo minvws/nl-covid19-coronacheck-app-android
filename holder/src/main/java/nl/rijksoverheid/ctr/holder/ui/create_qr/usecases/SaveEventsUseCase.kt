@@ -1,17 +1,19 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.ProtocolOrigin
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventHolderUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.Flow
 import java.time.OffsetDateTime
 
 /*
@@ -28,8 +30,9 @@ interface SaveEventsUseCase {
     ): SaveEventsUseCaseImpl.SaveEventResult
 
     suspend fun saveRemoteProtocols3(
-        protocolOrigins: List<ProtocolOrigin>,
+        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         removePreviousEvents: Boolean,
+        flow: Flow,
     ): SaveEventsUseCaseImpl.SaveEventResult
 
     suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean
@@ -38,7 +41,8 @@ interface SaveEventsUseCase {
 class SaveEventsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val remoteEventHolderUtil: RemoteEventHolderUtil,
-    private val scopeUtil: ScopeUtil
+    private val scopeUtil: ScopeUtil,
+    private val remoteEventUtil: RemoteEventUtil
 ) : SaveEventsUseCase {
 
     override suspend fun saveNegativeTest2(
@@ -80,34 +84,33 @@ class SaveEventsUseCaseImpl(
     }
 
     override suspend fun saveRemoteProtocols3(
-        protocolOrigins: List<ProtocolOrigin>,
+        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         removePreviousEvents: Boolean,
+        flow: Flow,
     ): SaveEventResult {
         try {
             if (removePreviousEvents) {
                 holderDatabase.eventGroupDao().deleteAll()
             }
 
-            protocolOrigins.forEach {
-                val entities = it.remoteProtocols3.map { remoteProtocol3 ->
-                    val remoteEvents = remoteProtocol3.key.events ?: listOf()
-                    EventGroupEntity(
-                        walletId = 1,
-                        providerIdentifier = remoteProtocol3.key.providerIdentifier,
-                        type = it.originType,
-                        maxIssuedAt = getMaxIssuedAt(remoteEvents),
-                        jsonData = remoteProtocol3.value,
-                        scope = scopeUtil.getScopeForOriginType(
-                            originType = it.originType,
-                            getPositiveTestWithVaccination = protocolOrigins.size > 1
-                        )
+            val entities = remoteProtocols3.map {
+                val remoteEvents = it.key.events ?: listOf()
+                val originType = remoteEventUtil.getOriginType(remoteEvents.first())
+                EventGroupEntity(
+                    walletId = 1,
+                    providerIdentifier = it.key.providerIdentifier,
+                    type = originType,
+                    maxIssuedAt = getMaxIssuedAt(remoteEvents),
+                    jsonData = it.value,
+                    scope = scopeUtil.getScopeForOriginType(
+                        originType = originType,
+                        getPositiveTestWithVaccination = flow == HolderFlow.VaccinationAndPositiveTest
                     )
-                }
-
-                // Save entity in database
-                holderDatabase.eventGroupDao().insertAll(entities)
+                )
             }
-            return SaveEventResult.Success
+
+            // Save entity in database
+            holderDatabase.eventGroupDao().insertAll(entities)
         } catch (e: Exception) {
             return SaveEventResult.Failed(
                 errorResult = AppErrorResult(
@@ -116,6 +119,7 @@ class SaveEventsUseCaseImpl(
                 )
             )
         }
+        return SaveEventResult.Success
     }
 
     private fun getMaxIssuedAt(remoteEvents: List<RemoteEvent>): OffsetDateTime {

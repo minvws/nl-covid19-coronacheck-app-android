@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.ProtocolOrigin
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
@@ -98,7 +97,7 @@ class GetDigidEventsUseCaseImpl(
             eventProviderWithTokensResults.values.flatten()
                 .filterIsInstance<EventProviderWithTokenResult.Error>()
 
-        return if (eventProvidersWithTokensSuccessResults.flatMap { it.value }.isNotEmpty()) {
+        return if (eventProvidersWithTokensSuccessResults.isNotEmpty()) {
             val eventResults = mutableMapOf<RemoteOriginType, List<RemoteEventsResult>>()
             eventProvidersWithTokensSuccessResults.forEach { (originType, eventProviders) ->
                 // We have received providers that claim to have events for us so we get those events for each provider
@@ -151,11 +150,11 @@ class GetDigidEventsUseCaseImpl(
                 } else {
                     // We do have events
                     EventsResult.Success(
-                        protocolOrigins = signedModels.mapValues {
+                        remoteEvents = signedModels.map {
                             it.value.associate { signedModel ->
                                 signedModel.model to signedModel.rawResponse
                             }
-                        }.map { ProtocolOrigin(it.key.toOriginType(), it.value) },
+                        }.fold(mapOf()) { protocol, byteArray -> protocol + byteArray },
                         missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty(),
                         eventProviders = remoteEventProviders.map {
                             EventProvider(

@@ -95,7 +95,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                             positiveButtonCallback = {},
                             onDismissCallback = {
                                 navigateToYourEvents(
-                                    protocolOrigins = it.protocolOrigins,
+                                    remoteProtocols3 = it.remoteEvents,
                                     eventProviders = it.eventProviders,
                                     getPositiveTestWithVaccination = binding.checkbox.isChecked
                                 )
@@ -103,7 +103,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         )
                     } else {
                         navigateToYourEvents(
-                            protocolOrigins = it.protocolOrigins,
+                            remoteProtocols3 = it.remoteEvents,
                             eventProviders = it.eventProviders,
                             getPositiveTestWithVaccination = binding.checkbox.isChecked
                         )
@@ -283,14 +283,14 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     }
 
     private fun navigateToYourEvents(
-        protocolOrigins: List<ProtocolOrigin>,
+        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         eventProviders: List<EventProvider> = emptyList(),
         getPositiveTestWithVaccination: Boolean
     ) {
         navigateSafety(
             GetEventsFragmentDirections.actionYourEvents(
                 type = YourEventsFragmentType.RemoteProtocol3Type(
-                    protocolOrigins = protocolOrigins,
+                    remoteEvents = remoteProtocols3,
                     eventProviders = eventProviders
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,

@@ -24,19 +24,13 @@ import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
-import nl.rijksoverheid.ctr.holder.BaseFragment
-import nl.rijksoverheid.ctr.holder.HolderMainFragment
-import nl.rijksoverheid.ctr.holder.MissingOriginErrorResult
-import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.YourEventsFragmentUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -81,10 +75,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     negativeTest2 = type.remoteTestResult,
                     rawResponse = type.rawResponse
                 )
-            }   
+            }
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 yourEventsViewModel.checkForConflictingEvents(
-                    remoteProtocols3 = getRemoteProtocols(type)
+                    remoteProtocols3 = type.remoteEvents
                 )
             }
             is YourEventsFragmentType.DCC -> {
@@ -167,22 +161,19 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 when (val type = args.type) {
                     is YourEventsFragmentType.RemoteProtocol3Type -> {
                         if (it) {
-                            replaceCertificateDialog(type.protocolOrigins)
+                            replaceCertificateDialog(type.remoteEvents)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                getFlow(), type.protocolOrigins, false
+                                getFlow(), type.remoteEvents, false
                             )
                         }
                     }
                     is YourEventsFragmentType.DCC -> {
-                        val protocolOrigins = listOf(
-                            ProtocolOrigin(type.originType, type.remoteEvents)
-                        )
                         if (it) {
-                            replaceCertificateDialog(protocolOrigins)
+                            replaceCertificateDialog(type.remoteEvents)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                getFlow(), protocolOrigins, false
+                                getFlow(), type.remoteEvents, false
                             )
                         }
                     }
@@ -292,7 +283,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     private fun replaceCertificateDialog(
-        protocolOrigins: List<ProtocolOrigin>
+        remoteEvents: Map<RemoteProtocol3, ByteArray>,
     ) {
         dialogUtil.presentDialog(
             context = requireContext(),
@@ -302,7 +293,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             positiveButtonCallback = {
                 yourEventsViewModel.saveRemoteProtocol3Events(
                     flow = getFlow(),
-                    protocolOrigins = protocolOrigins,
+                    remoteProtocols3 = remoteEvents,
                     removePreviousEvents = true
                 )
             },
@@ -324,7 +315,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 )
             }
             is YourEventsFragmentType.RemoteProtocol3Type -> presentEvents(
-                getRemoteProtocols(type),
+                type.remoteEvents,
                 binding
             )
             is YourEventsFragmentType.DCC -> presentEvents(
@@ -334,11 +325,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             )
         }
     }
-
-    private fun getRemoteProtocols(type: YourEventsFragmentType.RemoteProtocol3Type): Map<RemoteProtocol3, ByteArray> =
-        type.protocolOrigins
-            .map { it.remoteProtocols3 }
-            .fold(mapOf()) { protocol, byteArray -> protocol + byteArray }
 
     private fun presentEvents(
         remoteEvents: Map<RemoteProtocol3, ByteArray>,
@@ -684,22 +670,27 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 val type = args.type
                 infoFragmentUtil.presentAsBottomSheet(
                     childFragmentManager, InfoFragmentData.TitleDescription(
-                        title = getString(R.string.dialog_negative_test_result_something_wrong_title),
+                        title = getString(R.string.holder_listRemoteEvents_somethingWrong_title),
                         descriptionData = DescriptionData(
                             htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type) {
-                                when (type.protocolOrigins.first().originType) {
-                                    is OriginType.Vaccination -> {
-                                        R.string.dialog_vaccination_something_wrong_description
+                                val origins = type.remoteEvents.keys
+                                    .flatMap { it.events ?: emptyList() }
+                                    .map { remoteEventUtil.getOriginType(it) }
+                                when {
+                                    origins.all { it == OriginType.Vaccination } -> {
+                                        R.string.holder_listRemoteEvents_somethingWrong_vaccination_body
                                     }
-                                    is OriginType.VaccinationAssessment -> {
+                                    origins.all { it == OriginType.VaccinationAssessment } -> {
                                         R.string.holder_event_vaccination_assessment_wrong_body
                                     }
-                                    is OriginType.Test -> {
+                                    origins.all { it == OriginType.Recovery } -> {
                                         R.string.dialog_negative_test_result_something_wrong_description
                                     }
-                                    is OriginType.Recovery -> {
-                                        R.string.dialog_negative_test_result_something_wrong_description
+                                    origins.contains(OriginType.Vaccination) &&
+                                            origins.contains(OriginType.Recovery) -> {
+                                        R.string.holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body
                                     }
+                                    else -> R.string.dialog_negative_test_result_something_wrong_description
                                 }
                             } else {
                                 R.string.dialog_negative_test_result_something_wrong_description

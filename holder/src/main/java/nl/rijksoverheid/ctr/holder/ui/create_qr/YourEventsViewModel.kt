@@ -16,6 +16,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SaveEventsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventHolderUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -40,7 +42,7 @@ abstract class YourEventsViewModel : ViewModel() {
 
     abstract fun saveRemoteProtocol3Events(
         flow: Flow,
-        protocolOrigins: List<ProtocolOrigin>,
+        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         removePreviousEvents: Boolean
     )
 
@@ -57,7 +59,8 @@ class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val holderDatabase: HolderDatabase,
-    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil
+    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil,
+    private val remoteEventUtil: RemoteEventUtil
 ) : YourEventsViewModel() {
 
     override fun saveNegativeTest2(
@@ -117,7 +120,7 @@ class YourEventsViewModelImpl(
 
     override fun saveRemoteProtocol3Events(
         flow: Flow,
-        protocolOrigins: List<ProtocolOrigin>,
+        remoteEvents: Map<RemoteProtocol3, ByteArray>,
         removePreviousEvents: Boolean
     ) {
         (loading as MutableLiveData).value = Event(true)
@@ -125,8 +128,9 @@ class YourEventsViewModelImpl(
             try {
                 // Save the events in the database
                 val result = saveEventsUseCase.saveRemoteProtocols3(
-                    protocolOrigins = protocolOrigins,
+                    remoteProtocols3 = remoteEvents,
                     removePreviousEvents = removePreviousEvents,
+                    flow = flow
                 )
 
                 when (result) {
@@ -134,7 +138,10 @@ class YourEventsViewModelImpl(
                         // Send all events to database and create green cards, origins and credentials
                         val databaseSyncerResult = holderDatabaseSyncer.sync(
                             flow = flow,
-                            expectedOriginType = getExpectedOriginType(protocolOrigins.map { it.originType })
+                            expectedOriginType = getExpectedOriginType(
+                                remoteEvents.keys
+                                    .flatMap { it.events ?: emptyList() }
+                                    .map { remoteEventUtil.getOriginType(it) })
                         )
 
                         (yourEventsResult as MutableLiveData).value = Event(

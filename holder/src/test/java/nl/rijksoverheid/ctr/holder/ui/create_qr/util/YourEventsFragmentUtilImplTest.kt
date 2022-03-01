@@ -11,7 +11,6 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.ProtocolOrigin
 import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
