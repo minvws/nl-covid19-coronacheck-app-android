@@ -105,7 +105,7 @@ class QrInfoScreenUtilImpl(
         val testLocation = test.getStringOrNull("tc") ?: ""
 
         val manufacturer =
-            holderConfig.euManufacturers.firstOrNull {
+            holderConfig.euTestManufacturers.firstOrNull {
                 it.code == test.getStringOrNull("ma")
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
