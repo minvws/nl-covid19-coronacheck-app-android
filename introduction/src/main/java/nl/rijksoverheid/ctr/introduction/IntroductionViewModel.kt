@@ -43,6 +43,7 @@ class IntroductionViewModelImpl(
                 it
             )
         }
+        introductionData.savePolicyChange?.invoke()
     }
 
     override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
