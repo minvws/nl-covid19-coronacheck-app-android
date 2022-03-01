@@ -100,6 +100,53 @@ class SaveEventsUseCaseImplTest {
         }
     }
 
+    @Test
+    fun `when saving recovery and vaccination it should both be inserted into the database with old one deleted`() {
+        val remoteProtocol3Recovery = createRemoteProtocol3(createRecovery())
+        val byteArrayRecovery = ByteArray(1)
+        val remoteProtocols3Recovery = mapOf(remoteProtocol3Recovery to byteArrayRecovery)
+
+        val remoteProtocol3Vaccination = createRemoteProtocol3(createRecovery())
+        val byteArray2Vaccination = ByteArray(1)
+        val remoteProtocols3Vaccination = mapOf(remoteProtocol3Vaccination to byteArray2Vaccination)
+
+        runBlocking {
+            saveEventsUseCaseImpl.saveRemoteProtocols3(
+                listOf(
+                    ProtocolOrigin(OriginType.Recovery, remoteProtocols3Recovery),
+                    ProtocolOrigin(OriginType.Vaccination, remoteProtocols3Vaccination)
+                ),
+                true,
+            )
+
+            coVerify { eventGroupDao.deleteAll() }
+            coVerify {
+                eventGroupDao.insertAll(
+                    remoteProtocols3Recovery.map {
+                        mapEventsToEntity(
+                            it.key,
+                            it.value,
+                            OriginType.Recovery,
+                            scopeUtil.getScopeForOriginType(OriginType.Recovery, true)
+                        )
+                    }
+                )
+            }
+            coVerify {
+                eventGroupDao.insertAll(
+                    remoteProtocols3Vaccination.map {
+                        mapEventsToEntity(
+                            it.key,
+                            it.value,
+                            OriginType.Recovery,
+                            scopeUtil.getScopeForOriginType(OriginType.Recovery, true)
+                        )
+                    }
+                )
+            }
+        }
+    }
+
     private fun mapEventsToEntity(
         remoteEvents: RemoteProtocol3,
         byteArray: ByteArray,
