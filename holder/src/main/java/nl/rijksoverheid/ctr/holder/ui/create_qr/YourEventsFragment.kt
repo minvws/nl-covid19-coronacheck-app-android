@@ -229,8 +229,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.no_certificate_created_toolbar_title),
-                        title = getString(R.string.certificate_created_recovery_unsuitable_title),
-                        description = getString(R.string.certificate_created_recovery_unsuitable_description)
+                        title = getString(R.string.holder_listRemoteEvents_endStateInternationalQROnly_title),
+                        description = getString(R.string.holder_listRemoteEvents_endStateInternationalQROnly_message)
                     )
                 )
             }
