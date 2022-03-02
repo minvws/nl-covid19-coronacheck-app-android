@@ -124,7 +124,7 @@ class GetDigidEventsUseCaseImplTest {
             .associate { it.model to it.rawResponse }
 
         assertEquals(
-            EventsResult.Success(listOf(ProtocolOrigin(OriginType.Test, protocols)), false, eventProviders),
+            EventsResult.Success(protocols, false, eventProviders),
             eventsResult
         )
     }
@@ -150,7 +150,7 @@ class GetDigidEventsUseCaseImplTest {
             .associate { it.model to it.rawResponse }
 
         assertEquals(
-            EventsResult.Success(listOf(ProtocolOrigin(OriginType.Test, protocols)), true, eventProviders),
+            EventsResult.Success(protocols, true, eventProviders),
             eventsResult
         )
     }
@@ -245,7 +245,7 @@ class GetDigidEventsUseCaseImplTest {
             .associate { it.model to it.rawResponse }
 
         assertEquals(
-            EventsResult.Success(listOf(ProtocolOrigin(OriginType.Vaccination, protocols1), ProtocolOrigin(OriginType.Recovery, protocols2)), false, eventProviders),
+            EventsResult.Success(protocols1 + protocols2, false, eventProviders),
             result
         )
     }
@@ -304,7 +304,7 @@ class GetDigidEventsUseCaseImplTest {
             .associate { it.model to it.rawResponse }
 
         assertEquals(
-            EventsResult.Success(listOf(ProtocolOrigin(OriginType.Recovery, protocols2)), false, eventProviders),
+            EventsResult.Success(protocols2, false, eventProviders),
             result
         )
     }

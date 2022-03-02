@@ -645,6 +645,10 @@ fun fakeRemoteEventUtil(
     override fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent> {
         return getRemoteEventsFromNonDcc
     }
+
+    override fun getOriginType(remoteEvent: RemoteEvent): OriginType {
+        return OriginType.Vaccination
+    }
 }
 
 val fakeGreenCardEntity = GreenCardEntity(

@@ -105,7 +105,7 @@ class GetMijnCnEventsUseCaseImplTest {
                 .associate { it.model to it.rawResponse }
 
             assertEquals(
-                EventsResult.Success(listOf(ProtocolOrigin(OriginType.Test, protocols)), false, eventProviders),
+                EventsResult.Success(protocols, false, eventProviders),
                 eventsResult
             )
         }
@@ -147,7 +147,7 @@ class GetMijnCnEventsUseCaseImplTest {
                 .associate { it.model to it.rawResponse }
 
             assertEquals(
-                EventsResult.Success(listOf(ProtocolOrigin(OriginType.Test, protocols)), true, eventProviders),
+                EventsResult.Success(protocols, true, eventProviders),
                 eventsResult
             )
         }

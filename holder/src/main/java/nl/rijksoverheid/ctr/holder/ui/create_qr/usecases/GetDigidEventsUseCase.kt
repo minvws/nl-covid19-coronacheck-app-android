@@ -92,7 +92,7 @@ class GetDigidEventsUseCaseImpl(
         val eventProvidersWithTokensSuccessResults =
             eventProviderWithTokensResults.mapValues {
                 it.value.filterIsInstance<EventProviderWithTokenResult.Success>()
-            }
+            }.filterValues { it.isNotEmpty() }
         val eventProvidersWithTokensErrorResults =
             eventProviderWithTokensResults.values.flatten()
                 .filterIsInstance<EventProviderWithTokenResult.Error>()
