@@ -27,10 +27,10 @@ sealed class YourEventFragmentEndState {
     object OnlyRecovery : YourEventFragmentEndState()
 
     /** No domestic certificate after signing vaccination together with recovery events */
-    object NoneWithRecovery : YourEventFragmentEndState()
+    object InternationalWithRecovery : YourEventFragmentEndState()
 
     /** No domestic certificate after signing ONLY vaccination events (no recovery events) */
-    object NoneWithoutRecovery : YourEventFragmentEndState()
+    object InternationalWithoutRecovery : YourEventFragmentEndState()
 
     object AddedNegativeTestInVaccinationAssessmentFlow: YourEventFragmentEndState()
 

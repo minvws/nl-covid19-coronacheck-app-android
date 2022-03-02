@@ -63,7 +63,7 @@ class YourEventFragmentEndStateUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
-        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NoneWithoutRecovery)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), InternationalWithoutRecovery)
     }
 
     @Test
@@ -114,7 +114,7 @@ class YourEventFragmentEndStateUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
-        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NoneWithRecovery)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), InternationalWithRecovery)
     }
 
     @Test
