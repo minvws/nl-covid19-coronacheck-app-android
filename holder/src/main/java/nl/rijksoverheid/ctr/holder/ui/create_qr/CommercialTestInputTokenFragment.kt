@@ -55,12 +55,7 @@ class CommercialTestInputTokenFragment : InputTokenFragment() {
                 findNavController().navigate(
                     CommercialTestInputTokenFragmentDirections.actionYourEvents(
                         type = YourEventsFragmentType.RemoteProtocol3Type(
-                            protocolOrigins = listOf(
-                                ProtocolOrigin(
-                                    getOriginType(result.remoteTestResult),
-                                    mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse)
-                                )
-                            )
+                            remoteEvents = mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse)
                         ),
                         flow = HolderFlow.CommercialTest,
                         toolbarTitle = getString(getYourEventsToolbarTitle(result.remoteTestResult)),

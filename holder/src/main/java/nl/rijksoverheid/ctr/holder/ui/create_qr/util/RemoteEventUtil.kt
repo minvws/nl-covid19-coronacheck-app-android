@@ -2,13 +2,12 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import android.util.Base64
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONException
 import org.json.JSONObject
-import java.time.Clock
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
@@ -21,6 +20,7 @@ interface RemoteEventUtil {
     fun getRemoteRecoveryFromDcc(dcc: JSONObject): RemoteEventRecovery?
     fun getRemoteTestFromDcc(dcc: JSONObject): RemoteEventNegativeTest?
     fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent>
+    fun getOriginType(remoteEvent: RemoteEvent): OriginType
 }
 
 class RemoteEventUtilImpl(
@@ -126,5 +126,16 @@ class RemoteEventUtilImpl(
         dcc.getJSONArray(key).optJSONObject(0)
     } catch (exception: JSONException) {
         null
+    }
+
+    override fun getOriginType(remoteEvent: RemoteEvent): OriginType {
+        return when (remoteEvent) {
+            is RemoteEventVaccination -> OriginType.Vaccination
+            is RemoteEventRecovery -> OriginType.Recovery
+            is RemoteEventNegativeTest -> OriginType.Recovery
+            is RemoteEventPositiveTest -> OriginType.Recovery
+            is RemoteEventVaccinationAssessment -> OriginType.VaccinationAssessment
+            else -> error("remote event not supported as origin type")
+        }
     }
 }

@@ -18,7 +18,10 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.LoginResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -95,7 +98,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                             positiveButtonCallback = {},
                             onDismissCallback = {
                                 navigateToYourEvents(
-                                    protocolOrigins = it.protocolOrigins,
+                                    remoteProtocols3 = it.remoteEvents,
                                     eventProviders = it.eventProviders,
                                     getPositiveTestWithVaccination = binding.checkbox.isChecked
                                 )
@@ -103,7 +106,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         )
                     } else {
                         navigateToYourEvents(
-                            protocolOrigins = it.protocolOrigins,
+                            remoteProtocols3 = it.remoteEvents,
                             eventProviders = it.eventProviders,
                             getPositiveTestWithVaccination = binding.checkbox.isChecked
                         )
@@ -283,19 +286,23 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     }
 
     private fun navigateToYourEvents(
-        protocolOrigins: List<ProtocolOrigin>,
+        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         eventProviders: List<EventProvider> = emptyList(),
         getPositiveTestWithVaccination: Boolean
     ) {
+        val flow = getFlow()
         navigateSafety(
             GetEventsFragmentDirections.actionYourEvents(
                 type = YourEventsFragmentType.RemoteProtocol3Type(
-                    protocolOrigins = protocolOrigins,
+                    remoteEvents = remoteProtocols3,
                     eventProviders = eventProviders
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,
-                getPositiveTestWithVaccination = getPositiveTestWithVaccination,
-                flow = getFlow()
+                flow = if (flow == HolderFlow.Vaccination && getPositiveTestWithVaccination) {
+                    HolderFlow.VaccinationAndPositiveTest
+                } else {
+                    flow
+                }
             )
         )
     }

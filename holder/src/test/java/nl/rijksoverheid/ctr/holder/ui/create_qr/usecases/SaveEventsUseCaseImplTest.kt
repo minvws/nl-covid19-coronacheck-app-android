@@ -1,15 +1,19 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
-import io.mockk.*
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.ProtocolOrigin
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventHolderUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtilImpl
+import nl.rijksoverheid.ctr.shared.models.Flow
 import org.junit.After
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,6 +36,7 @@ class SaveEventsUseCaseImplTest {
         every { eventGroupDao() } returns eventGroupDao
     }
     private val scopeUtil = ScopeUtilImpl()
+    private val remoteEventUtil: RemoteEventUtil = mockk()
 
     private val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
 
@@ -40,8 +45,9 @@ class SaveEventsUseCaseImplTest {
         stopKoin()
     }
 
-    private val saveEventsUseCaseImpl = SaveEventsUseCaseImpl(holderDatabase, remoteEventHolderUtil,
-        scopeUtil
+    private val saveEventsUseCaseImpl = SaveEventsUseCaseImpl(
+        holderDatabase, remoteEventHolderUtil,
+        scopeUtil, remoteEventUtil
     )
 
     @Test
@@ -49,11 +55,13 @@ class SaveEventsUseCaseImplTest {
         val remoteProtocol3 = createRemoteProtocol3(createVaccination())
         val byteArray = ByteArray(1)
         val remoteProtocols3 = mapOf(remoteProtocol3 to byteArray)
+        every { remoteEventUtil.getOriginType(remoteProtocol3.events!!.first()) } returns OriginType.Vaccination
 
         runBlocking {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
-                listOf(ProtocolOrigin(OriginType.Vaccination, remoteProtocols3)),
-                true
+                remoteProtocols3,
+                true,
+                HolderFlow.Vaccination
             )
 
             coVerify { eventGroupDao.deleteAll() }
@@ -64,7 +72,7 @@ class SaveEventsUseCaseImplTest {
                             it.key,
                             it.value,
                             OriginType.Vaccination,
-                            scopeUtil.getScopeForOriginType(OriginType.Vaccination, false)
+                            HolderFlow.Vaccination
                         )
                     }
                 )
@@ -77,11 +85,13 @@ class SaveEventsUseCaseImplTest {
         val remoteProtocol3 = createRemoteProtocol3(createRecovery())
         val byteArray = ByteArray(1)
         val remoteProtocols3 = mapOf(remoteProtocol3 to byteArray)
+        every { remoteEventUtil.getOriginType(remoteProtocol3.events!!.first()) } returns OriginType.Recovery
 
         runBlocking {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
-                listOf(ProtocolOrigin(OriginType.Recovery, remoteProtocols3)),
+                remoteProtocols3,
                 true,
+                HolderFlow.Recovery
             )
 
             coVerify { eventGroupDao.deleteAll() }
@@ -92,7 +102,7 @@ class SaveEventsUseCaseImplTest {
                             it.key,
                             it.value,
                             OriginType.Recovery,
-                            scopeUtil.getScopeForOriginType(OriginType.Recovery, false)
+                            HolderFlow.Recovery
                         )
                     }
                 )
@@ -106,44 +116,39 @@ class SaveEventsUseCaseImplTest {
         val byteArrayRecovery = ByteArray(1)
         val remoteProtocols3Recovery = mapOf(remoteProtocol3Recovery to byteArrayRecovery)
 
-        val remoteProtocol3Vaccination = createRemoteProtocol3(createRecovery())
+        val remoteProtocol3Vaccination = createRemoteProtocol3(createVaccination())
         val byteArray2Vaccination = ByteArray(1)
         val remoteProtocols3Vaccination = mapOf(remoteProtocol3Vaccination to byteArray2Vaccination)
 
+        val remoteProtocols3 = remoteProtocols3Recovery + remoteProtocols3Vaccination
+        val entities =
+            remoteProtocols3Recovery.map {
+                mapEventsToEntity(
+                    it.key,
+                    it.value,
+                    OriginType.Recovery,
+                    HolderFlow.VaccinationAndPositiveTest
+                )
+            } + remoteProtocols3Vaccination.map {
+                mapEventsToEntity(
+                    it.key,
+                    it.value,
+                    OriginType.Vaccination,
+                    HolderFlow.VaccinationAndPositiveTest
+                )
+            }
+        every { remoteEventUtil.getOriginType(remoteProtocols3.keys.first().events!!.first()) } returns OriginType.Recovery
+        every { remoteEventUtil.getOriginType(remoteProtocols3.keys.elementAt(1).events!!.first()) } returns OriginType.Vaccination
+
         runBlocking {
             saveEventsUseCaseImpl.saveRemoteProtocols3(
-                listOf(
-                    ProtocolOrigin(OriginType.Recovery, remoteProtocols3Recovery),
-                    ProtocolOrigin(OriginType.Vaccination, remoteProtocols3Vaccination)
-                ),
+                remoteProtocols3,
                 true,
+                HolderFlow.VaccinationAndPositiveTest
             )
 
             coVerify { eventGroupDao.deleteAll() }
-            coVerify {
-                eventGroupDao.insertAll(
-                    remoteProtocols3Recovery.map {
-                        mapEventsToEntity(
-                            it.key,
-                            it.value,
-                            OriginType.Recovery,
-                            scopeUtil.getScopeForOriginType(OriginType.Recovery, true)
-                        )
-                    }
-                )
-            }
-            coVerify {
-                eventGroupDao.insertAll(
-                    remoteProtocols3Vaccination.map {
-                        mapEventsToEntity(
-                            it.key,
-                            it.value,
-                            OriginType.Recovery,
-                            scopeUtil.getScopeForOriginType(OriginType.Recovery, true)
-                        )
-                    }
-                )
-            }
+            coVerify { eventGroupDao.insertAll(entities) }
         }
     }
 
@@ -151,14 +156,17 @@ class SaveEventsUseCaseImplTest {
         remoteEvents: RemoteProtocol3,
         byteArray: ByteArray,
         eventType: OriginType,
-        scope: String?
+        flow: Flow
     ) = EventGroupEntity(
         walletId = 1,
         providerIdentifier = remoteEvents.providerIdentifier,
         type = eventType,
         maxIssuedAt = remoteEvents.events!!.first().getDate()!!,
         jsonData = byteArray,
-        scope = scope
+        scope = scopeUtil.getScopeForOriginType(
+            eventType,
+            flow == HolderFlow.VaccinationAndPositiveTest
+        )
     )
 
     private fun createRemoteProtocol3(remoteEvent: RemoteEvent) = RemoteProtocol3(

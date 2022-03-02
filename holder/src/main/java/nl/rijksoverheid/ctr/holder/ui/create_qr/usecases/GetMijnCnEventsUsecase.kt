@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.ProtocolOrigin
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteAccessTokens
@@ -113,13 +112,9 @@ class GetMijnCnEventsUsecaseImpl(
                 } else {
                     // We do have events
                     EventsResult.Success(
-                        protocolOrigins = listOf(
-                            ProtocolOrigin(
-                                originType.toOriginType(),
-                                signedModels.associate { signedModel ->
-                                    signedModel.model to signedModel.rawResponse
-                                })
-                        ),
+                        remoteEvents = signedModels.associate { signedModel ->
+                            signedModel.model to signedModel.rawResponse
+                        },
                         missingEvents = eventFailureResults.isNotEmpty(),
                         eventProviders = eventProviders.map {
                             EventProvider(

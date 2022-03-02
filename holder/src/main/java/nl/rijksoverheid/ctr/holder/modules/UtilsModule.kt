@@ -46,7 +46,7 @@ fun utilsModule(versionCode: Int) = module {
         YourEventFragmentEndStateUtilImpl(get())
     }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
-    factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl() }
+    factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
     factory<MyOverviewInfoCardItemUtil> { MyOverviewInfoCardItemUtilImpl() }
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
