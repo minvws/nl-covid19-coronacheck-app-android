@@ -417,11 +417,6 @@
             android:name="flow"
             app:argType="nl.rijksoverheid.ctr.shared.models.Flow" />
 
-        <argument
-            android:name="getPositiveTestWithVaccination"
-            android:defaultValue="false"
-            app:argType="boolean" />
-
         <action
             android:id="@+id/action_show_explanation"
             app:destination="@id/nav_your_event_explanation"
