@@ -24,7 +24,9 @@ interface YourEventsFragmentUtil {
     fun getBirthDate(holder: RemoteProtocol3.Holder?): String
 }
 
-class YourEventsFragmentUtilImpl: YourEventsFragmentUtil {
+class YourEventsFragmentUtilImpl(
+    private val remoteEventUtil: RemoteEventUtil
+): YourEventsFragmentUtil {
 
     override fun getNoOriginTypeCopy(type: YourEventsFragmentType): Int {
         return when (type) {
@@ -35,7 +37,7 @@ class YourEventsFragmentUtilImpl: YourEventsFragmentUtil {
                 R.string.rule_engine_no_test_origin_description_scanned_qr_code
             }
             is YourEventsFragmentType.RemoteProtocol3Type -> {
-                return when (type.originType) {
+                return when (remoteEventUtil.getOriginType(type.remoteEvents.keys.first().events!!.first())) {
                     is OriginType.Test -> {
                         R.string.rule_engine_no_test_origin_description_negative_test
                     }
@@ -65,7 +67,7 @@ class YourEventsFragmentUtilImpl: YourEventsFragmentUtil {
             is YourEventsFragmentType.DCC -> R.string.holder_dcc_alert_message
             is YourEventsFragmentType.TestResult2 -> R.string.holder_test_alert_message
             is YourEventsFragmentType.RemoteProtocol3Type -> {
-                when (type.originType) {
+                when (remoteEventUtil.getOriginType(type.remoteEvents.keys.first().events!!.first())) {
                     is OriginType.Test -> R.string.holder_test_alert_message
                     is OriginType.Recovery -> R.string.holder_recovery_alert_message
                     is OriginType.Vaccination -> R.string.holder_vaccination_alert_message

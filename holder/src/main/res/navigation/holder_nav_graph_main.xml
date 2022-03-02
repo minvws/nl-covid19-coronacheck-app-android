@@ -362,11 +362,6 @@
             app:argType="nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType" />
 
         <argument
-            android:name="afterIncompleteVaccination"
-            android:defaultValue="false"
-            app:argType="boolean" />
-
-        <argument
             android:name="toolbarTitle"
             app:argType="string" />
 
@@ -421,11 +416,6 @@
         <argument
             android:name="flow"
             app:argType="nl.rijksoverheid.ctr.shared.models.Flow" />
-
-        <argument
-            android:name="afterIncompleteVaccination"
-            android:defaultValue="false"
-            app:argType="boolean" />
 
         <action
             android:id="@+id/action_show_explanation"
@@ -678,14 +668,6 @@
         android:id="@+id/missing_dutch_certificate"
         android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.MissingDutchVaccinationFragment"
         tools:layout="@layout/fragment_missing_dutch_vaccination_certificate">
-
-        <action
-            android:id="@+id/action_get_events"
-            app:destination="@id/nav_get_events"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
 

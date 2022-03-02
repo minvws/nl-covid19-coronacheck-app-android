@@ -29,13 +29,10 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -81,7 +78,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 yourEventsViewModel.checkForConflictingEvents(
-                    remoteProtocols3 = type.remoteEvents,
+                    remoteProtocols3 = type.remoteEvents
                 )
             }
             is YourEventsFragmentType.DCC -> {
@@ -100,10 +97,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentYourEventsBinding.bind(view)
-
-        presentHeader(
-            binding = binding
-        )
 
         presentEvents(
             binding = binding
@@ -135,7 +128,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     is DatabaseSyncerResult.Success -> {
                         when {
                             databaseSyncerResult.missingOrigin -> {
-                                val noOriginTypeCopy = getString(yourEventsFragmentUtil.getNoOriginTypeCopy(args.type))
+                                val noOriginTypeCopy =
+                                    getString(yourEventsFragmentUtil.getNoOriginTypeCopy(args.type))
                                 presentError(
                                     errorResult = MissingOriginErrorResult,
                                     customerErrorDescription = getString(
@@ -167,19 +161,19 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 when (val type = args.type) {
                     is YourEventsFragmentType.RemoteProtocol3Type -> {
                         if (it) {
-                            replaceCertificateDialog(type.remoteEvents, type.originType)
+                            replaceCertificateDialog(type.remoteEvents)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                getFlow(), type.remoteEvents, type.originType, false, args.afterIncompleteVaccination
+                                getFlow(), type.remoteEvents, false
                             )
                         }
                     }
                     is YourEventsFragmentType.DCC -> {
                         if (it) {
-                            replaceCertificateDialog(type.remoteEvents, type.originType)
+                            replaceCertificateDialog(type.remoteEvents)
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                getFlow(), type.remoteEvents, type.originType, false, args.afterIncompleteVaccination
+                                getFlow(), type.remoteEvents, false
                             )
                         }
                     }
@@ -197,12 +191,12 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                        title = if (args.afterIncompleteVaccination) {
+                        title = if (isVaccinationWithPositiveTestFlow()) {
                             getString(R.string.certificate_created_vaccination_recovery_title)
                         } else {
                             getString(R.string.certificate_created_recovery_after_vaccination_title)
                         },
-                        description = if (args.afterIncompleteVaccination) {
+                        description = if (isVaccinationWithPositiveTestFlow()) {
                             getString(
                                 R.string.certificate_created_vaccination_recovery_description
                             )
@@ -233,7 +227,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             YourEventFragmentEndState.OnlyRecovery -> {
                 navigateSafety(
-                    if (args.afterIncompleteVaccination) {
+                    if (isVaccinationWithPositiveTestFlow()) {
                         YourEventsFragmentDirections.actionCertificateCreated(
                             toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
                             title = getString(R.string.certificate_created_recovery_title),
@@ -247,7 +241,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             is YourEventFragmentEndState.OnlyVaccination -> {
                 navigateSafety(
-                    if (args.afterIncompleteVaccination) {
+                    if (isVaccinationWithPositiveTestFlow()) {
                         // When coming from a vaccination completion flow, navigate directly to dashboard
                         YourEventsFragmentDirections.actionMyOverview()
                     } else {
@@ -288,9 +282,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         }
     }
 
+    private fun isVaccinationWithPositiveTestFlow() =
+        getFlow() == HolderFlow.VaccinationAndPositiveTest
+
     private fun replaceCertificateDialog(
         remoteEvents: Map<RemoteProtocol3, ByteArray>,
-        originType: OriginType
     ) {
         dialogUtil.presentDialog(
             context = requireContext(),
@@ -301,9 +297,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 yourEventsViewModel.saveRemoteProtocol3Events(
                     flow = getFlow(),
                     remoteProtocols3 = remoteEvents,
-                    originType = originType,
-                    removePreviousEvents = true,
-                    afterIncompleteVaccination = args.afterIncompleteVaccination
+                    removePreviousEvents = true
                 )
             },
             negativeButtonText = R.string.your_events_replace_dialog_negative_button,
@@ -313,33 +307,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 )
             }
         )
-    }
-
-    private fun presentHeader(binding: FragmentYourEventsBinding) {
-        when (val type = args.type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                binding.description.setHtmlText(R.string.your_negative_test_results_description)
-            }
-            is YourEventsFragmentType.RemoteProtocol3Type -> {
-                when (type.originType) {
-                    is OriginType.Test -> {
-                        binding.description.setHtmlText(R.string.your_negative_test_results_description)
-                    }
-                    is OriginType.Vaccination -> {
-                        binding.description.setHtmlText(R.string.your_retrieved_vaccinations_description)
-                    }
-                    is OriginType.Recovery -> {
-                        binding.description.setHtmlText(R.string.your_positive_test_description)
-                    }
-                    is OriginType.VaccinationAssessment -> {
-                        binding.description.setHtmlText(R.string.holder_event_vaccination_assessment_list_message)
-                    }
-                }
-            }
-            is YourEventsFragmentType.DCC -> {
-                binding.description.setHtmlText(R.string.your_dcc_event_description)
-            }
-        }
     }
 
     private fun presentEvents(binding: FragmentYourEventsBinding) {
@@ -375,9 +342,12 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             val holder = protocolGroupedEvent.value.firstOrNull()?.holder
             val providerIdentifiers =
                 protocolGroupedEvent.value.map { it.providerIdentifier }
-                    .map { yourEventsFragmentUtil.getProviderName(
-                        type = args.type,
-                        providerIdentifier = it) }
+                    .map {
+                        yourEventsFragmentUtil.getProviderName(
+                            type = args.type,
+                            providerIdentifier = it
+                        )
+                    }
 
             val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
             val allEventsInformation = protocolGroupedEvent.value.map {
@@ -500,7 +470,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = yourEventWidgetUtil.getVaccinationEventTitle(context, isDccEvent, currentEvent),
+                title = yourEventWidgetUtil.getVaccinationEventTitle(
+                    context,
+                    isDccEvent,
+                    currentEvent
+                ),
                 subtitle = yourEventWidgetUtil.getVaccinationEventSubtitle(
                     context,
                     isDccEvent,
@@ -579,7 +553,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         birthDate: String,
         event: RemoteEventVaccinationAssessment
     ) {
-        val assessmentDate = event.vaccinationAssessment.assessmentDate?.toLocalDate()?.formatDayMonth()
+        val assessmentDate =
+            event.vaccinationAssessment.assessmentDate?.toLocalDate()?.formatDayMonth()
 
         val infoScreen = infoScreenUtil.getForVaccinationAssessment(
             event = event,
@@ -590,10 +565,12 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
                 title = getString(R.string.holder_event_vaccination_assessment_element_title),
-                subtitle = getString(R.string.holder_event_vaccination_assessment_element_subtitle,
+                subtitle = getString(
+                    R.string.holder_event_vaccination_assessment_element_subtitle,
                     assessmentDate,
                     fullName,
-                    birthDate),
+                    birthDate
+                ),
                 infoClickListener = {
                     navigateSafety(
                         YourEventsFragmentDirections.actionShowExplanation(
@@ -696,22 +673,27 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 val type = args.type
                 infoFragmentUtil.presentAsBottomSheet(
                     childFragmentManager, InfoFragmentData.TitleDescription(
-                        title = getString(R.string.dialog_negative_test_result_something_wrong_title),
+                        title = getString(R.string.holder_listRemoteEvents_somethingWrong_title),
                         descriptionData = DescriptionData(
                             htmlText = if (type is YourEventsFragmentType.RemoteProtocol3Type) {
-                                when (type.originType) {
-                                    is OriginType.Vaccination -> {
-                                        R.string.dialog_vaccination_something_wrong_description
+                                val origins = type.remoteEvents.keys
+                                    .flatMap { it.events ?: emptyList() }
+                                    .map { remoteEventUtil.getOriginType(it) }
+                                when {
+                                    origins.all { it == OriginType.Vaccination } -> {
+                                        R.string.holder_listRemoteEvents_somethingWrong_vaccination_body
                                     }
-                                    is OriginType.VaccinationAssessment -> {
+                                    origins.all { it == OriginType.VaccinationAssessment } -> {
                                         R.string.holder_event_vaccination_assessment_wrong_body
                                     }
-                                    is OriginType.Test -> {
+                                    origins.all { it == OriginType.Recovery } -> {
                                         R.string.dialog_negative_test_result_something_wrong_description
                                     }
-                                    is OriginType.Recovery -> {
-                                        R.string.dialog_negative_test_result_something_wrong_description
+                                    origins.contains(OriginType.Vaccination) &&
+                                            origins.contains(OriginType.Recovery) -> {
+                                        R.string.holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body
                                     }
+                                    else -> R.string.dialog_negative_test_result_something_wrong_description
                                 }
                             } else {
                                 R.string.dialog_negative_test_result_something_wrong_description
@@ -732,9 +714,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 if (isAdded) {
                     MaterialAlertDialogBuilder(requireContext())
                         .setTitle(R.string.your_events_block_back_dialog_title)
-                        .setMessage(yourEventsFragmentUtil.getCancelDialogDescription(
-                            type = args.type
-                        ))
+                        .setMessage(
+                            yourEventsFragmentUtil.getCancelDialogDescription(
+                                type = args.type
+                            )
+                        )
                         .setPositiveButton(R.string.your_events_block_back_dialog_positive_button) { _, _ ->
                             navigateSafety(
                                 YourEventsFragmentDirections.actionMyOverview()

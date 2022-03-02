@@ -14,8 +14,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
-import nl.rijksoverheid.ctr.shared.models.ErrorResult
-import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
 
 class VisitorPassInputTokenFragment: InputTokenFragment() {
@@ -57,8 +55,8 @@ class VisitorPassInputTokenFragment: InputTokenFragment() {
                 findNavController().navigate(
                     CommercialTestInputTokenFragmentDirections.actionYourEvents(
                         type = YourEventsFragmentType.RemoteProtocol3Type(
-                            mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse),
-                            originType = getOriginType(result.remoteTestResult),
+                            remoteEvents = mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse)
+
                         ),
                         toolbarTitle = getString(getYourEventsToolbarTitle(result.remoteTestResult)),
                         flow = HolderFlow.VaccinationAssessment

@@ -105,7 +105,6 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     private fun onBoosterItemClicked(myOverviewFragment: MyOverviewFragment) {
         myOverviewFragment.navigateSafety(MyOverviewTabsFragmentDirections.actionGetEvents(
             originType = RemoteOriginType.Vaccination,
-            afterIncompleteVaccination = false,
             toolbarTitle = myOverviewFragment.getString(R.string.choose_provider_toolbar),
         ))
     }

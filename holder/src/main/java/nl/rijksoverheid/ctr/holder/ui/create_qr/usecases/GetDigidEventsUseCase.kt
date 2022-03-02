@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
@@ -29,8 +29,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 interface GetDigidEventsUseCase {
     suspend fun getEvents(
         jwt: String,
-        originType: RemoteOriginType,
-        withIncompleteVaccination: Boolean
+        originTypes: List<RemoteOriginType>
     ): EventsResult
 }
 
@@ -44,8 +43,7 @@ class GetDigidEventsUseCaseImpl(
 
     override suspend fun getEvents(
         jwt: String,
-        originType: RemoteOriginType,
-        withIncompleteVaccination: Boolean
+        originTypes: List<RemoteOriginType>
     ): EventsResult {
         // Fetch event providers
         val eventProvidersResult = configProvidersUseCase.eventProviders()
@@ -61,63 +59,82 @@ class GetDigidEventsUseCaseImpl(
                 }
             }
         }
-
         val eventProviders = eventProvidersResult.eventProviders
-        val targetProviderIds = eventProviders.filter {
-            it.supports(originType)
-        }.map { it.providerIdentifier.lowercase() }
 
-        if (targetProviderIds.isEmpty()) {
-            return EventsResult.Error.noProvidersError(originType)
+        val eventProviderWithTokensResults =
+            mutableMapOf<RemoteOriginType, List<EventProviderWithTokenResult>>()
+        originTypes.forEach { originType ->
+            val targetProviderIds = eventProviders.filter {
+                it.supports(originType)
+            }.map { it.providerIdentifier.lowercase() }
+
+            if (targetProviderIds.isEmpty()) {
+                return EventsResult.Error.noProvidersError(originType)
+            }
+
+            val filter = EventProviderRepository.getFilter(originType)
+
+            val scope = scopeUtil.getScopeForRemoteOriginType(
+                remoteOriginType = originType,
+                getPositiveTestWithVaccination = originTypes.size > 1
+            )
+
+            // Fetch event providers that have events for us
+            eventProviderWithTokensResults[originType] = getEventProvidersWithTokensUseCase.get(
+                eventProviders = eventProviders,
+                tokens = tokens.tokens,
+                filter = filter,
+                scope = scope,
+                targetProviderIds = targetProviderIds
+            )
         }
 
-        val filter = EventProviderRepository.getFilter(originType)
-
-        val scope = scopeUtil.getScopeForRemoteOriginType(
-            remoteOriginType = originType,
-            withIncompleteVaccination = withIncompleteVaccination
-        )
-
-        // Fetch event providers that have events for us
-        val eventProviderWithTokensResults = getEventProvidersWithTokensUseCase.get(
-            eventProviders = eventProviders,
-            tokens = tokens.tokens,
-            filter = filter,
-            scope = scope,
-            targetProviderIds = targetProviderIds
-        )
-
         val eventProvidersWithTokensSuccessResults =
-            eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Success>()
+            eventProviderWithTokensResults.mapValues {
+                it.value.filterIsInstance<EventProviderWithTokenResult.Success>()
+            }.filterValues { it.isNotEmpty() }
         val eventProvidersWithTokensErrorResults =
-            eventProviderWithTokensResults.filterIsInstance<EventProviderWithTokenResult.Error>()
+            eventProviderWithTokensResults.values.flatten()
+                .filterIsInstance<EventProviderWithTokenResult.Error>()
 
         return if (eventProvidersWithTokensSuccessResults.isNotEmpty()) {
-            // We have received providers that claim to have events for us so we get those events for each provider
-            val eventResults = eventProvidersWithTokensSuccessResults.map {
-                getRemoteEventsUseCase.getRemoteEvents(
-                    eventProvider = it.eventProvider,
-                    token = it.token,
-                    filter = filter,
-                    scope = scope
-                )
+            val eventResults = mutableMapOf<RemoteOriginType, List<RemoteEventsResult>>()
+            eventProvidersWithTokensSuccessResults.forEach { (originType, eventProviders) ->
+                // We have received providers that claim to have events for us so we get those events for each provider
+                val events = eventProviders.map {
+                    getRemoteEventsUseCase.getRemoteEvents(
+                        eventProvider = it.eventProvider,
+                        token = it.token,
+                        filter = EventProviderRepository.getFilter(originType),
+                        scope = scopeUtil.getScopeForRemoteOriginType(
+                            remoteOriginType = originType,
+                            getPositiveTestWithVaccination = originTypes.size > 1
+                        )
+                    )
+                }
+                eventResults[originType] = events
             }
 
             // All successful responses
             val eventSuccessResults =
-                eventResults.filterIsInstance<RemoteEventsResult.Success>()
-
+                eventResults.mapValues {
+                    it.value.filterIsInstance<RemoteEventsResult.Success>()
+                }
             // All failed responses
             val eventFailureResults =
-                eventResults.filterIsInstance<RemoteEventsResult.Error>()
+                eventResults.values.flatten().filterIsInstance<RemoteEventsResult.Error>()
 
-            if (eventSuccessResults.isNotEmpty()) {
+            if (eventSuccessResults.flatMap { it.value }.isNotEmpty()) {
                 // If we have success responses
-                val signedModels = eventSuccessResults.map { it.signedModel }
-                val allEvents = signedModels.map { it.model }.mapNotNull { it.events }.flatten()
-                val hasEvents = allEvents.isNotEmpty()
+                val signedModels = eventSuccessResults
+                    .mapValues { events ->
+                        events.value
+                            .map { it.signedModel }
+                            .filter { it.model.hasEvents() }
+                    }
+                    .filterValues { it.isNotEmpty() }
 
-                if (!hasEvents) {
+                if (signedModels.isEmpty()) {
                     // But we do not have any events
                     val missingEvents =
                         eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty()
@@ -133,7 +150,11 @@ class GetDigidEventsUseCaseImpl(
                 } else {
                     // We do have events
                     EventsResult.Success(
-                        signedModels = signedModels,
+                        remoteEvents = signedModels.map {
+                            it.value.associate { signedModel ->
+                                signedModel.model to signedModel.rawResponse
+                            }
+                        }.fold(mapOf()) { protocol, byteArray -> protocol + byteArray },
                         missingEvents = eventProvidersWithTokensErrorResults.isNotEmpty() || eventFailureResults.isNotEmpty(),
                         eventProviders = remoteEventProviders.map {
                             EventProvider(
@@ -156,7 +177,6 @@ class GetDigidEventsUseCaseImpl(
                 EventsResult.Error(eventProvidersWithTokensErrorResults.map { it.errorResult })
             }
         }
-
     }
 }
 

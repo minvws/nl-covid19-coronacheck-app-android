@@ -30,31 +30,17 @@ class CertificateCreatedFragment :
     Fragment(R.layout.fragment_certificate_created) {
 
     private val args: CertificateCreatedFragmentArgs by navArgs()
-    protected val digidViewModel: LoginViewModel by sharedViewModel(
-        qualifier = named(LoginQualifier.DIGID)
-    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentCertificateCreatedBinding.bind(view)
         binding.bottom.setButtonClick { backToOverview() }
-        binding.retrieveTestButton.setOnClickListener {
-            navigateSafety(
-                CertificateCreatedFragmentDirections.actionGetEvents(
-                    originType = RemoteOriginType.Recovery,
-                    afterIncompleteVaccination = true,
-                    toolbarTitle = resources.getString(R.string.retrieve_test_result_toolbar_title)
-                )
-            )
-        }
         with(args) {
             binding.title.text = title
             binding.description.setHtmlText(
                 htmlText = description,
                 htmlLinksEnabled = true,
             )
-            binding.retrieveTestButton.visibility =
-                if (shouldShowRetrieveTestButton) View.VISIBLE else View.GONE
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
@@ -65,8 +51,6 @@ class CertificateCreatedFragment :
     }
 
     private fun backToOverview() {
-        // Clear the token when the DigiD flow is finished
-        digidViewModel.clearAccessToken()
         findNavControllerSafety()?.popBackStack()
     }
 }

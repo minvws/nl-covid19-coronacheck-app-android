@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDigidEventsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetMijnCnEventsUsecase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
@@ -25,13 +25,13 @@ abstract class GetEventsViewModel : ViewModel() {
     abstract fun getDigidEvents(
         jwt: String,
         originType: RemoteOriginType,
-        withIncompleteVaccination: Boolean = false
+        getPositiveTestWithVaccination: Boolean = false
     )
 
     abstract fun getMijnCnEvents(
         jwt: String,
         originType: RemoteOriginType,
-        withIncompleteVaccination: Boolean = false
+        getPositiveTestWithVaccination: Boolean = false
     )
 }
 
@@ -43,13 +43,15 @@ class GetEventsViewModelImpl(
     override fun getDigidEvents(
         jwt: String,
         originType: RemoteOriginType,
-        withIncompleteVaccination: Boolean
+        getPositiveTestWithVaccination: Boolean
     ) {
+        val originTypes =
+            listOf(originType) +
+                    if (getPositiveTestWithVaccination) listOf(RemoteOriginType.Recovery) else emptyList()
         getEvents {
             getDigidEventsUseCase.getEvents(
                 jwt = jwt,
-                originType = originType,
-                withIncompleteVaccination = withIncompleteVaccination
+                originTypes = originTypes,
             )
         }
     }
@@ -57,13 +59,13 @@ class GetEventsViewModelImpl(
     override fun getMijnCnEvents(
         jwt: String,
         originType: RemoteOriginType,
-        withIncompleteVaccination: Boolean
+        getPositiveTestWithVaccination: Boolean
     ) {
         getEvents {
             mijnCnEventsUsecase.getEvents(
                 jwt = jwt,
                 originType = originType,
-                withIncompleteVaccination = withIncompleteVaccination
+                withIncompleteVaccination = getPositiveTestWithVaccination
             )
         }
     }

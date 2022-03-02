@@ -1,13 +1,14 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.HolderStep
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtilImpl
 import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -29,20 +30,18 @@ class GetDigidEventsUseCaseImplTest {
     private val coronaCheckRepository: CoronaCheckRepository =  mockk()
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase =  mockk()
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase =  mockk()
-    private val scopeUtil: ScopeUtil = mockk<ScopeUtil>().apply {
-        every { getScopeForRemoteOriginType(any(), any()) } answers { null }
-    }
+    private val scopeUtil: ScopeUtil = ScopeUtilImpl()
 
     private val eventsError = mockk<NetworkRequestResult.Failed.Error>()
     private val jwt = "jwt"
     private val originType = RemoteOriginType.Test
 
     private val remoteEventProviders = listOf(eventProvider1, eventProvider2)
-    val eventProviders = remoteEventProviders.map { EventProvider(it.providerIdentifier, it.name) }
+    private val eventProviders = remoteEventProviders.map { EventProvider(it.providerIdentifier, it.name) }
 
     private suspend fun getEvents(): EventsResult {
         val getEventsUseCase = GetDigidEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
-        return getEventsUseCase.getEvents(jwt, originType, false)
+        return getEventsUseCase.getEvents(jwt, listOf(originType))
     }
 
     @Test
@@ -105,9 +104,13 @@ class GetDigidEventsUseCaseImplTest {
         val (provider1, provider2) = mockProvidersResult()
         val signedModel1: SignedResponseWithModel<RemoteProtocol3> = mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
             coEvery { model.events } returns listOf(mockk())
+            coEvery { rawResponse } returns ByteArray(1)
+            coEvery { model.hasEvents() } returns true
         }
         val signedModel2: SignedResponseWithModel<RemoteProtocol3> = mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
             coEvery { model.events } returns listOf(mockk())
+            coEvery { rawResponse } returns ByteArray(1)
+            coEvery { model.hasEvents() } returns true
         }
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider1, any(), any(), any()) } returns RemoteEventsResult.Success(signedModel1)
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any(), any()) } returns RemoteEventsResult.Success(signedModel2)
@@ -117,8 +120,11 @@ class GetDigidEventsUseCaseImplTest {
 
         val eventsResult = getEvents()
 
+        val protocols = listOf(signedModel1, signedModel2)
+            .associate { it.model to it.rawResponse }
+
         assertEquals(
-            EventsResult.Success(listOf(signedModel1, signedModel2), false, eventProviders),
+            EventsResult.Success(protocols, false, eventProviders),
             eventsResult
         )
     }
@@ -128,6 +134,8 @@ class GetDigidEventsUseCaseImplTest {
         val (provider1, provider2) = mockProvidersResult()
         val signedModel1: SignedResponseWithModel<RemoteProtocol3> = mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
             coEvery { model.events } returns listOf(mockk())
+            coEvery { rawResponse } returns ByteArray(1)
+            coEvery { model.hasEvents() } returns true
         }
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider1, any(), any(), any()) } returns RemoteEventsResult.Success(signedModel1)
         val httpError = httpError()
@@ -138,8 +146,11 @@ class GetDigidEventsUseCaseImplTest {
 
         val eventsResult = getEvents()
 
+        val protocols = listOf(signedModel1)
+            .associate { it.model to it.rawResponse }
+
         assertEquals(
-            EventsResult.Success(listOf(signedModel1), true, eventProviders),
+            EventsResult.Success(protocols, true, eventProviders),
             eventsResult
         )
     }
@@ -149,6 +160,7 @@ class GetDigidEventsUseCaseImplTest {
         val (provider1, provider2) = mockProvidersResult()
         val signedModel1: SignedResponseWithModel<RemoteProtocol3> = mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
             coEvery { model.events } returns listOf()
+            coEvery { model.hasEvents() } returns false
         }
 
         val httpError = httpError()
@@ -202,6 +214,124 @@ class GetDigidEventsUseCaseImplTest {
         return NetworkRequestResult.Failed.CoronaCheckHttpError(
             HolderStep.UnomiNetworkRequest, httpException
         )
+    }
+
+    @Test
+    fun `given get events for vaccination and recovery origins success result should be given to both origins`() = runBlocking {
+        mockVaccinationWithPositiveTest()
+
+        val signedModel1: SignedResponseWithModel<RemoteProtocol3> = mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
+            coEvery { model.events } returns listOf(mockk())
+            coEvery { rawResponse } returns ByteArray(1)
+            coEvery { model.hasEvents() } returns true
+        }
+        val signedModel2: SignedResponseWithModel<RemoteProtocol3> = mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
+            coEvery { model.events } returns listOf(mockk())
+            coEvery { rawResponse } returns ByteArray(1)
+            coEvery { model.hasEvents() } returns true
+        }
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(eventProvider1, "vaccination", null, any()) } returns RemoteEventsResult.Success(signedModel1)
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(eventProvider2, "positivetest", "firstepisode", any()) } returns RemoteEventsResult.Success(signedModel2)
+
+        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
+            listOf(eventProvider1, eventProvider2))
+
+        val getEventsUseCase = GetDigidEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
+        val result = getEventsUseCase.getEvents(jwt, listOf(RemoteOriginType.Vaccination, RemoteOriginType.Recovery))
+
+        val protocols1 = listOf(signedModel1)
+            .associate { it.model to it.rawResponse }
+        val protocols2 = listOf(signedModel2)
+            .associate { it.model to it.rawResponse }
+
+        assertEquals(
+            EventsResult.Success(protocols1 + protocols2, false, eventProviders),
+            result
+        )
+    }
+
+    @Test
+    fun `given getRemoteEvents call gives no events then getEvents returns HasNoEvents`() = runBlocking {
+        val (provider1, provider2) = mockProvidersResult()
+        val signedModel1: SignedResponseWithModel<RemoteProtocol3> = mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
+            coEvery { model.events } returns listOf(mockk())
+            coEvery { rawResponse } returns ByteArray(1)
+            coEvery { model.hasEvents() } returns false
+        }
+        val signedModel2: SignedResponseWithModel<RemoteProtocol3> = mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
+            coEvery { model.events } returns listOf(mockk())
+            coEvery { rawResponse } returns ByteArray(1)
+            coEvery { model.hasEvents() } returns false
+        }
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(provider1, any(), any(), any()) } returns RemoteEventsResult.Success(signedModel1)
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any(), any()) } returns RemoteEventsResult.Success(signedModel2)
+
+        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
+            listOf(provider1, provider2))
+
+        val eventsResult = getEvents()
+
+        assertEquals(
+            EventsResult.HasNoEvents(false, listOf()),
+            eventsResult
+        )
+    }
+
+    @Test
+    fun `given get events for vaccination and recovery origins has events for 1 origin, give only protocol of origin with events`() = runBlocking {
+        mockVaccinationWithPositiveTest()
+
+        val signedModel1: SignedResponseWithModel<RemoteProtocol3> = mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
+            coEvery { model.events } returns listOf(mockk())
+            coEvery { rawResponse } returns ByteArray(1)
+            coEvery { model.hasEvents() } returns false
+        }
+        val signedModel2: SignedResponseWithModel<RemoteProtocol3> = mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
+            coEvery { model.events } returns listOf(mockk())
+            coEvery { rawResponse } returns ByteArray(1)
+            coEvery { model.hasEvents() } returns true
+        }
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(eventProvider1, "vaccination", null, any()) } returns RemoteEventsResult.Success(signedModel1)
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(eventProvider2, "positivetest", "firstepisode", any()) } returns RemoteEventsResult.Success(signedModel2)
+
+        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
+            listOf(eventProvider1, eventProvider2))
+
+        val getEventsUseCase = GetDigidEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
+        val result = getEventsUseCase.getEvents(jwt, listOf(RemoteOriginType.Vaccination, RemoteOriginType.Recovery))
+
+        val protocols2 = listOf(signedModel2)
+            .associate { it.model to it.rawResponse }
+
+        assertEquals(
+            EventsResult.Success(protocols2, false, eventProviders),
+            result
+        )
+    }
+
+    private fun mockVaccinationWithPositiveTest() {
+        coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
+            remoteEventProviders
+        )
+        val token1 = mockk<RemoteAccessTokens.Token>()
+        val token2 = mockk<RemoteAccessTokens.Token>()
+        val remoteAccessTokens: RemoteAccessTokens = mockk<RemoteAccessTokens>().apply {
+            coEvery { tokens } returns listOf(token1, token2)
+        }
+        val tokensResult = NetworkRequestResult.Success(remoteAccessTokens)
+        coEvery { coronaCheckRepository.accessTokens("jwt") } returns tokensResult
+
+        coEvery {
+            getEventProvidersWithTokensUseCase.get(
+                any(), any(), "vaccination", null, any()
+            )
+        } returns
+                listOf(EventProviderWithTokenResult.Success(eventProvider1, token1))
+        coEvery {
+            getEventProvidersWithTokensUseCase.get(
+                any(), any(), "positivetest", "firstepisode", any()
+            )
+        } returns listOf(EventProviderWithTokenResult.Success(eventProvider2, token2))
     }
 
     private suspend fun mockProvidersResult(): Pair<RemoteConfigProviders.EventProvider, RemoteConfigProviders.EventProvider> {

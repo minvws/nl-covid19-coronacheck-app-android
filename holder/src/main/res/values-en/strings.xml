@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_title">Created vaccination and recovery certificates</string>
+  <string name="holder_listRemoteEvents_endStateRecoveryOnly_title">Only a recovery certificate was created</string>
   <string name="holder_fetchRemoteEvents_title">Retrieve details</string>
+  <string name="holder_listRemoteEvents_endStateInternationalQROnly_title">Only an international certificate was created</string>
   <string name="general_readmore">Read more</string>
   <string name="holder_dcc_alert_message">You can try to add a paper certificate again later.</string>
   <string name="holder_recovery_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="holder_test_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
+  <string name="general_toMyOverview">To my certificates</string>
+  <string name="holder_listRemoteEvents_title">Are the details correct?</string>
   <string name="holder_vaccination_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your details again later.</string>
+  <string name="holder_listRemoteEvents_somethingWrong_title">Is something wrong?</string>
   <string name="holder_eventdetails_vaccinationStatus_complete">yes</string>
   <string name="holder_eventdetails_vaccinationStatus_recovery">yes (I’ve had coronavirus earlier)</string>
   <string name="holder_eventdetails_vaccinationStatus_firstVaccinationElsewhere">yes (I have been vaccinated elsewhere)</string>
@@ -273,7 +279,7 @@
   <string name="qr_card_vaccination_doses">Dose %1$s/%2$s</string>
   <string name="your_test_result_explanation_toolbar_title">Details</string>
   <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details: <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Unique test identifier: <b>%5$s</b>]]></string>
-  <string name="your_test_result_explanation_negative_test_result">Negative (no coronavirus)</string>
+  <string name="your_test_result_explanation_negative_test_result">negative (no coronavirus)</string>
   <string name="your_test_result_explanation_description_header">The following details were retrieved at the test location:</string>
   <string name="your_test_result_explanation_description_your_details">Your details:</string>
   <string name="your_test_result_explanation_description_name">Name:</string>
@@ -588,7 +594,7 @@
   <string name="general_visitorPass">visitor pass</string>
   <string name="holder_event_vaccination_assessment_toolbar_title">Retrieve approval</string>
   <string name="visitorpass_code_description_deeplink">Enter your verification code. You will receive this via text or email.</string>
-  <string name="visitorpass_token_modal_notoken_details"><![CDATA[You will receive an approval code from the desk that reviewed your vaccination, either by email or on paper. Don\'t have an approval code? Please go back to the desk you stopped by.<br/><br/>Didn’t stop by a desk yet to have your vaccination reviewed? For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
+  <string name="visitorpass_token_modal_notoken_details"><![CDATA[You will receive an approval code on paper from the desk that reviewed your vaccination. Don\'t have an approval code? Please go back to the desk you stopped by.<br/><br/>Didn’t stop by a desk yet to have your vaccination reviewed? For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="visitorpass_code_description">Enter your approval code. You received this code from the desk that reviewed your vaccination.</string>
   <string name="visitorpass_code_review_input">Approval code</string>
   <string name="visitorpass_code_review_placeholder">E.g. VAC-YYYYYYYYY1-F2</string>
@@ -599,7 +605,7 @@
   <string name="holder_event_vaccination_assessment_about_date_of_birth">Date of birth:</string>
   <string name="your_vaccination_explanation_name">Name:</string>
   <string name="your_vaccination_explanation_birthday">Date of birth:</string>
-  <string name="holder_event_vaccination_assessment_wrong_body"><![CDATA[Please go back to the desk that reviewed your vaccination. They can help you change your details. For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
+  <string name="holder_event_vaccination_assessment_wrong_body"><![CDATA[Please go back to the desk that reviewed your vaccination. They can re-enter your details. You will also receive a new approval code. For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="holder_event_vaccination_assessment_alert_message">Doing so will stop the addition of your vaccination approval and you will have to retrieve your details again later.</string>
   <string name="visitorpass_token_error_invalid_code">This code is invalid. A valid code looks like this: VAC-YYYYYYYYY1-F2.</string>
   <string name="holder_event_vaccination_assessment_list_message">Are the details correct? If the details are correct, you can add your vaccination approval to the app.</string>
@@ -634,7 +640,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="rule_engine_no_test_origin_description_vaccination_approval">vaccination approval</string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_title">Negative test result added</string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete">Complete certificate</string>
-  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Your negative test result was successfully added. Add your vaccination approval to complete your visitor pass.<br /><br />To this end, you\'ve received an approval code from the desk that reviewed your vaccination. You\'ve received this code either by email or on paper.]]></string>
+  <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_body"><![CDATA[Your negative test result was successfully added. Add your vaccination approval to complete your visitor pass.<br /><br />To this end, you\'ve received an approval code from the desk that reviewed your vaccination. You\'ve received this code on paper.]]></string>
   <string name="holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar">Complete certificate</string>
   <string name="holder_event_vaccination_assessment_about_country">Vaccinated in (country):</string>
   <plurals name="my_overview_test_result_expires_hours">
@@ -681,6 +687,20 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_accessibility_notification_close">Close notification</string>
   <string name="holder_dashboard_accessibility_green_card">Certificate</string>
   <string name="holder_addVaccine_alsoCollectPositiveTestResults_checkbox">Haal ook mijn positieve testuitslag op</string>
-  <string name="holder_listRemoteEvents_message">Je bent weer uitgelogd bij DigiD. Als de gegevens kloppen kun je een bewijs maken.</string>
+  <string name="holder_listRemoteEvents_vaccination_message">If the details are correct you can create a certificate.</string>
   <string name="holder_listRemoteEvents_paperflow_message">You can create a certificate with these details.</string>
+  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title">Created vaccination and recovery certificates</string>
+  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message"><![CDATA[Van je opgehaalde vaccinaties kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Van je positieve testuitslag kon ook een herstelbewijs gemaakt worden.]]></string>
+  <string name="holder_listRemoteEvents_recovery_message">If the details about your test are correct, you can create a recovery certificate.</string>
+  <string name="holder_listRemoteEvents_negativeTest_message">This test result is retrieved from the test location. If the details are correct, you can create a certificate.</string>
+  <string name="holder_listRemoteEvents_vaccinationAssessment_message">If the details are correct, you can add your vaccination approval to the app.</string>
+  <string name="holder_listRemoteEvents_endStateCombinedFlowInternationalQROnly_message">Van je opgehaalde gegevens kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a>.</string>
+  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[Met jouw vaccinatie(s) heb je geen recht op een Nederlands vaccinatiebewijs.<br/><br/>Voeg een nieuwe vaccinatie of test toe om een Nederlands bewijs te krijgen.<br/><br/>Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
+  <string name="holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body">Please contact the care provider who vaccinated or tested you. This can be the GGD, your general practitioner, or a doctor belonging to a healthcare facility. They can help you change these details.</string>
+  <string name="holder_listRemoteEvents_endStateInternationalQROnly_message">Van je opgehaalde gegevens kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a>.</string>
+  <string name="holder_listRemoteEvents_somethingWrong_vaccination_body">Please contact the care provider who vaccinated you. This can be the GGD, your general practitioner, or a doctor belonging to a healthcare facility. They can help you change these details.</string>
+  <string name="holder_listRemoteEvents_listElement_vaccination_title">Vaccination %s</string>
+  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_message"><![CDATA[A Dutch vaccination certificate has been created from your retrieved vaccinations.<br/><br/>Your positive test result was suitable for creating a recovery certificate as well.]]></string>
+  <string name="holder_listRemoteEvents_endStateRecoveryOnly_message">Van je opgehaalde gegevens kon alleen een herstelbewijs worden gemaakt. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a>.</string>
+  <string name="holder_listRemoteEvents_originMismatch_vaccinationAndPositiveTest_body" formatted="false"><![CDATA[At this moment, we can\'t create a certificate from your %1$s. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/><b>Error code:</b><br/>%1s]]></string>
 </resources>
