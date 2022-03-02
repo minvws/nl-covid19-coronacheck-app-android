@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_title">Created vaccination and recovery certificates</string>
+  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_title">Vaccination and recovery certificates created</string>
   <string name="holder_listRemoteEvents_endStateRecoveryOnly_title">Only a recovery certificate was created</string>
   <string name="holder_fetchRemoteEvents_title">Retrieve details</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_title">Only an international certificate was created</string>
@@ -208,14 +208,13 @@
   <string name="qr_code_type_negative_test_description">The test proves I do not have coronavirus</string>
   <string name="qr_code_type_vaccination_title">Vaccination</string>
   <string name="qr_code_type_vaccination_description">I received a (booster) vaccination</string>
-  <string name="get_vaccination_title">Retrieve vaccination details</string>
-  <string name="get_vaccination_description"><![CDATA[Did you receive a (booster) vaccination? Log in using DigiD to retrieve all your vaccination details.]]></string>
+  <string name="get_vaccination_title">Retrieve your vaccination details</string>
+  <string name="get_vaccination_description"><![CDATA[Did you receive a (booster) vaccination? Log in using DigiD to retrieve all your vaccination details.<br/><br/><b>Had coronavirus before your first vaccination?</b><br/>Then you often need a vaccination less to be considered fully vaccinated. Retrieve your positive test result to record it into your vaccination certificate.]]></string>
   <string name="get_vaccination_button">Log in with DigiD</string>
   <string name="get_vaccination_no_digid_button">I don\'t have DigiD</string>
   <string name="your_retrieved_vaccinations_title">Your retrieved vaccinations</string>
   <string name="your_retrieved_vaccinations_description">Are the details correct? If the details about your vaccination are correct, you can create a certificate.</string>
   <string name="your_vaccination_result_toolbar_title">Retrieved vaccinations</string>
-  <string name="your_retrieved_vaccinations_toolbar">Retrieve details of your vaccination</string>
   <string name="retrieved_vaccination_title">Vaccination %1$s</string>
   <string name="retrieved_vaccination_dcc_title">Vaccination certificate dose %1$s/%2$s</string>
   <string name="travel_toggle_europe">I\'m travelling internationally</string>
@@ -254,7 +253,7 @@
   <string name="qr_explanation_description_eu_test_disease">Disease targeted:</string>
   <string name="qr_explanation_description_eu_test_test_type">Type of test:</string>
   <string name="qr_explanation_description_eu_test_test_name">Test name:</string>
-  <string name="qr_explanation_description_eu_test_test_date">Test date*:</string>
+  <string name="qr_explanation_description_eu_test_test_date">Test date:</string>
   <string name="qr_explanation_description_eu_test_test_result">Test result:</string>
   <string name="qr_explanation_description_eu_test_test_centre">Testing centre:</string>
   <string name="qr_explanation_description_eu_test_manufacturer">Test manufacturer:</string>
@@ -322,11 +321,11 @@
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/>It\'s possible you\'ve only had one injection. Add your second vaccination to get a valid Dutch certificate. <a href=\"https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse\">Read all about the possible causes.</a>]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was created.<br/><br/>It\'s possible that your type of test isn\'t accepted abroad. Please get tested again.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
-  <string name="rule_engine_no_origin_title">We can\'t make a certificate</string>
+  <string name="rule_engine_no_origin_title">We can\'t create a certificate</string>
   <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your %1$s. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost.</a>]]></string>
   <string name="back_to_overview">To my certificates</string>
   <string name="no_vaccinations_title">Vaccinations not available</string>
-  <string name="no_vaccinations_description"><![CDATA[There is no available vaccination data. This can have various causes. Read the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a> for more information.<br/><br/>Got vaccinated recently? It can take a few hours until your details are available. Try again later.]]></string>
+  <string name="no_vaccinations_description"><![CDATA[There are no available vaccination details. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/>Got vaccinated recently? It can take a few hours until your details are available.]]></string>
   <string name="no_test_results_title">No test result available</string>
   <string name="no_test_results_description"><![CDATA[There is no available data of your test result. This can have various causes. Read the <a href=\"https://www.coronacheck.nl/en/guidepost\"> Guidepost</a> for more information.<br/><br/>Already got a negative test result from the GGD? It can take a few hours until your details are available. Try again later.]]></string>
   <string name="not_yet_tested_title">Were you not tested yet?</string>
@@ -373,7 +372,7 @@
   <string name="qr_explanation_description_eu_recovery_name">Name:</string>
   <string name="qr_explanation_description_eu_recovery_birth_date">Date of birth*:</string>
   <string name="qr_explanation_description_eu_recovery_disease">Disease recovered from:</string>
-  <string name="qr_explanation_description_eu_recovery_test_date">Test date*:</string>
+  <string name="qr_explanation_description_eu_recovery_test_date">Test date:</string>
   <string name="qr_explanation_description_eu_recovery_country">Member state of test:</string>
   <string name="qr_explanation_description_eu_recovery_producer">Certificate issuer:</string>
   <string name="qr_explanation_description_eu_recovery_valid_from_date">Valid from*:</string>
@@ -381,7 +380,7 @@
   <string name="qr_explanation_description_eu_recovery_unique_code">Unique certificate identifier:</string>
   <string name="qr_explanation_description_eu_recovery_footer">*Date noted in day-month-year.</string>
   <string name="my_overview_green_card_not_valid_title_recovery">About your recovery certificate</string>
-  <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands, because the type of test is not accepted.<br/><br/>You’ve only got an international QR code.]]></string>
+  <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands. You’ve only got an international certificate.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason could be that the type of test is not accepted, or that the test is no longer valid abroad. An international recovery certificate can only be made with a PCR-test that is less than 180 days old. Read more about the possible causes on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost</a>.]]></string>
   <string name="my_overview_green_card_server_error"><![CDATA[The app periodically needs a connection to the server to refresh your QR codes. We failed to reach the server because of an error. <a href=\"#\">Try again</a>]]></string>
   <string name="my_overview_green_card_server_error_after_retry"><![CDATA[Sorry, we weren’t able to refresh your QR code. Open the app again in 10 minutes.<br/><br/>Still not working? Please call the help desk at 0800-1421 (free) and provide the following error code: A 075]]></string>
@@ -532,7 +531,7 @@
   <string name="missing_dutch_certificate_retrieve_test_button">Retrieve my test result</string>
   <string name="missing_dutch_certificate_explanation_more"><![CDATA[<br/><b>Want to know more?</b><br/>Find more information on <a href=\"https://www.government.nl/topics/coronavirus-covid-19/covid-certificate/proof-of-vaccination/requirements-and-validity\">this page about the requirements and validity of the vaccination certificate</a>.]]></string>
   <string name="certificate_created_toolbar_title">Certificate created</string>
-  <string name="certificate_created_vaccination_recovery_title">Created vaccination and recovery certificates</string>
+  <string name="certificate_created_vaccination_recovery_title">Vaccination and recovery certificates created</string>
   <string name="certificate_created_vaccination_recovery_description"><![CDATA[A Dutch vaccination certificate has been created.<br><br>Your positive test result was suitable for creating a recovery certificate as well.]]></string>
   <string name="certificate_created_recovery_title">Created only a recovery certificate</string>
   <string name="certificate_created_recovery_description"><![CDATA[You tested positive after your first vaccination. Your test result is therefore not suitable for creating a Dutch vaccination certificate. However, a recovery certificate has been created.<br><br>Check the <a href=\"https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/\">the frequently asked questions</a> for more information.]]></string>
@@ -543,9 +542,9 @@
   <string name="retrieve_test_result_description">Log in with DigiD. Details about your positive test will be retrieved automatically.</string>
   <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Prevent the spread of coronavirus, use <a href=\"https://coronamelder.nl/app\">CoronaMelder</a> too.]]></string>
   <string name="certificate_created_vaccination_title">Vaccination certificate instead of recovery certificate</string>
-  <string name="certificate_created_vaccination_description"><![CDATA[You were tested positive for coronavirus too long ago. That is why your test result is no longer valid for creating a recovery certificate.<br><br>Because you were tested positive before your first vaccination, one shot means you’re fully vaccinated. Therefore, a full vaccination certificate has been created instead.<br><br>For more information, please check the <a href=\"https://coronacheck.nl/en/guidepost\"> Guidepost</a>.]]></string>
+  <string name="certificate_created_vaccination_description"><![CDATA[You were tested positive for coronavirus too long ago. That is why your test result is no longer valid for creating a recovery certificate.<br><br>Because you tested positive before your first vaccination, your test could be recorded into your vaccination certificate.]]></string>
   <string name="no_certificate_created_toolbar_title">No certificate created</string>
-  <string name="certificate_created_recovery_after_vaccination_description"><![CDATA[A recovery certificate has been created.<br><br>Because you were tested positive before your first vaccination, one shot means you\'re fully vaccinated. Therefore, a full vaccination certificate has been created as well.]]></string>
+  <string name="certificate_created_recovery_after_vaccination_description"><![CDATA[A recovery certificate has been created from your retrieved details.<br><br>Because you tested positive before your first vaccination, your test could also be recorded into your vaccination certificate.]]></string>
   <string name="paper_proof_event_explanation_header">These details are in your paper certificate:</string>
   <string name="paper_proof_event_explanation_footer"><![CDATA[<b>Are your details incorrect?</b><br/>Please contact the healthcare provider who vaccinated or tested you. This can be the GGD, your general practitioner or doctor. They can help you change these details.]]></string>
   <string name="certificate_created_recovery_after_vaccination_title">Recovery and vaccination certificates created</string>
@@ -686,21 +685,27 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_accessibility_notification">Notification</string>
   <string name="holder_dashboard_accessibility_notification_close">Close notification</string>
   <string name="holder_dashboard_accessibility_green_card">Certificate</string>
-  <string name="holder_addVaccine_alsoCollectPositiveTestResults_checkbox">Haal ook mijn positieve testuitslag op</string>
+  <string name="holder_addVaccine_alsoCollectPositiveTestResults_checkbox">Retrieve my positive test result too</string>
   <string name="holder_listRemoteEvents_vaccination_message">If the details are correct you can create a certificate.</string>
   <string name="holder_listRemoteEvents_paperflow_message">You can create a certificate with these details.</string>
-  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title">Created vaccination and recovery certificates</string>
-  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message"><![CDATA[Van je opgehaalde vaccinaties kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Van je positieve testuitslag kon ook een herstelbewijs gemaakt worden.]]></string>
+  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title">Vaccination and recovery certificates created</string>
+  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message"><![CDATA[Only an international vaccination certificate could be created from your retrieved vaccinations. Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/>A recovery certificate has also been created from your positive test result.]]></string>
   <string name="holder_listRemoteEvents_recovery_message">If the details about your test are correct, you can create a recovery certificate.</string>
   <string name="holder_listRemoteEvents_negativeTest_message">This test result is retrieved from the test location. If the details are correct, you can create a certificate.</string>
   <string name="holder_listRemoteEvents_vaccinationAssessment_message">If the details are correct, you can add your vaccination approval to the app.</string>
-  <string name="holder_listRemoteEvents_endStateCombinedFlowInternationalQROnly_message">Van je opgehaalde gegevens kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a>.</string>
-  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[Met jouw vaccinatie(s) heb je geen recht op een Nederlands vaccinatiebewijs.<br/><br/>Voeg een nieuwe vaccinatie of test toe om een Nederlands bewijs te krijgen.<br/><br/>Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
+  <string name="holder_listRemoteEvents_endStateCombinedFlowInternationalQROnly_message">Only an international vaccination certificate could be created from your retrieved details. Find more information on the <a href="https://coronacheck.nl/en/guidepost">Guidepost</a>.</string>
+  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[Your vaccination(s) unfortunately don\'t entitle you to a Dutch vaccination certificate.<br/><br/>Add a new vaccination or test to get a Dutch vaccination certificate.<br/><br/>Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body">Please contact the care provider who vaccinated or tested you. This can be the GGD, your general practitioner, or a doctor belonging to a healthcare facility. They can help you change these details.</string>
-  <string name="holder_listRemoteEvents_endStateInternationalQROnly_message">Van je opgehaalde gegevens kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a>.</string>
+  <string name="holder_listRemoteEvents_endStateInternationalQROnly_message">Only an international vaccination certificate could be created from your retrieved details. Find more information on the <a href="https://coronacheck.nl/en/guidepost">Guidepost</a>.</string>
   <string name="holder_listRemoteEvents_somethingWrong_vaccination_body">Please contact the care provider who vaccinated you. This can be the GGD, your general practitioner, or a doctor belonging to a healthcare facility. They can help you change these details.</string>
   <string name="holder_listRemoteEvents_listElement_vaccination_title">Vaccination %s</string>
   <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_message"><![CDATA[A Dutch vaccination certificate has been created from your retrieved vaccinations.<br/><br/>Your positive test result was suitable for creating a recovery certificate as well.]]></string>
-  <string name="holder_listRemoteEvents_endStateRecoveryOnly_message">Van je opgehaalde gegevens kon alleen een herstelbewijs worden gemaakt. Kijk voor meer informatie op de <a href="https://coronacheck.nl/wegwijzer">Wegwijzer</a>.</string>
+  <string name="holder_listRemoteEvents_endStateRecoveryOnly_message">Only a recovery certificate could be created from your retrieved vaccinations. Find more information on the <a href="https://coronacheck.nl/en/guidepost">Guidepost</a>.</string>
   <string name="holder_listRemoteEvents_originMismatch_vaccinationAndPositiveTest_body" formatted="false"><![CDATA[At this moment, we can\'t create a certificate from your %1$s. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/><b>Error code:</b><br/>%1s]]></string>
+  <string name="holder_onboarding_disclosurePolicyChanged_only3GAccess_title">3G access in the Netherlands</string>
+  <string name="holder_onboarding_disclosurePolicyChanged_only3GAccess_message">Visiting a place in the Netherlands where a coronavirus pass is required? 3G access currently applies everywhere. This means you can enter with a vaccination or recovery certificate, or a negative test.</string>
+  <string name="holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_title">Check the access rules</string>
+  <string name="holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_message">Visiting a place in the Netherlands where a coronavirus pass is required? The app creates seperate certificates for 3G and 1G access. Check beforehand which one you need.</string>
+  <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_title">Only 1G access in the Netherlands</string>
+  <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_message">Visiting a place in the Netherlands where a coronavirus pass is required? Currently, only 1G access is given. This means you can enter with a certificate of a negative test.</string>
 </resources>

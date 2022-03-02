@@ -206,7 +206,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            YourEventFragmentEndState.NoneWithoutRecovery -> {
+            YourEventFragmentEndState.InternationalWithoutRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
@@ -216,12 +216,12 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            YourEventFragmentEndState.NoneWithRecovery -> {
+            YourEventFragmentEndState.InternationalWithRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.no_certificate_created_toolbar_title),
-                        title = getString(R.string.holder_listRemoteEvents_endStateInternationalQROnly_title),
-                        description = getString(R.string.holder_listRemoteEvents_endStateInternationalQROnly_message)
+                        title = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title),
+                        description = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message)
                     )
                 )
             }
@@ -230,8 +230,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     if (isVaccinationWithPositiveTestFlow()) {
                         YourEventsFragmentDirections.actionCertificateCreated(
                             toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                            title = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title),
-                            description = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message)
+                            title = getString(R.string.holder_listRemoteEvents_endStateRecoveryOnly_title),
+                            description = getString(R.string.holder_listRemoteEvents_endStateRecoveryOnly_message)
                         )
                     } else {
                         // When not coming from a vaccination completion flow, navigate directly to dashboard

@@ -47,10 +47,10 @@ class YourEventFragmentEndStateUtilImpl(
         return when {
             hasAddedNegativeTestInVaccinationAssessmentFlow(flow, remoteGreenCards) -> AddedNegativeTestInVaccinationAssessmentFlow
             hasStoredDomesticVaccination(storedGreenCards) -> NotApplicable
-            isNoneWithoutRecovery(events, remoteGreenCards) -> NoneWithoutRecovery
+            isNoneWithoutRecovery(events, remoteGreenCards) -> InternationalWithoutRecovery
             isOnlyVaccination(events, remoteGreenCards) -> OnlyVaccination(recoveryValidityDays)
             isOnlyRecovery(events, remoteGreenCards) -> OnlyRecovery
-            isNoneWithRecovery(events, remoteGreenCards) -> NoneWithRecovery
+            isNoneWithRecovery(events, remoteGreenCards) -> InternationalWithRecovery
             isCombinedVaccinationRecovery(events, remoteGreenCards) -> CombinedVaccinationRecovery(
                 recoveryValidityDays
             )
