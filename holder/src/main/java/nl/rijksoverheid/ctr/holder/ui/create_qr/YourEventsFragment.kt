@@ -230,8 +230,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     if (isVaccinationWithPositiveTestFlow()) {
                         YourEventsFragmentDirections.actionCertificateCreated(
                             toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                            title = getString(R.string.certificate_created_recovery_title),
-                            description = getString(R.string.certificate_created_recovery_description)
+                            title = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title),
+                            description = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message)
                         )
                     } else {
                         // When not coming from a vaccination completion flow, navigate directly to dashboard
