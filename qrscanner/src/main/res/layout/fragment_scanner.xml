@@ -22,6 +22,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_scanner"
         android:focusable="true"
+        android:touchscreenBlocksFocus="false"
         app:navigationContentDescription="@string/back"
         app:navigationIcon="@drawable/ic_back"
         android:fitsSystemWindows="true"
