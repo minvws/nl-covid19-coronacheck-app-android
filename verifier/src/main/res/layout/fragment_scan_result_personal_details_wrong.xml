@@ -41,12 +41,12 @@
             <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:htmlText="@string/scan_result_valid_reason_description_header" />
+                app:htmlText="@string/verifier_scanResultPersonalDetails_header" />
 
             <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:htmlText="@string/scan_result_valid_reason_description_body" />
+                app:htmlText="@string/verifier_scanResultPersonalDetails_body" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
