@@ -116,15 +116,15 @@ class HolderIntroductionStatusUseCaseImplTest {
 
         with(status as IntroductionStatus.OnboardingNotFinished) {
             assertEquals(
-                R.string.holder_newintheapp_content_only1G_title,
+                R.string.holder_onboarding_disclosurePolicyChanged_only1GAccess_title,
                 introductionData.onboardingItems.last().titleResource
             )
             assertEquals(
-                R.string.holder_newintheapp_content_only1G_body,
+                R.string.holder_onboarding_disclosurePolicyChanged_only1GAccess_message,
                 introductionData.onboardingItems.last().description
             )
             assertEquals(
-                R.drawable.illustration_new_disclosure_policy,
+                R.drawable.illustration_onboarding_disclosure_policy,
                 introductionData.onboardingItems.last().imageResource
             )
             assertEquals(2, introductionData.onboardingItems.last().position)
@@ -142,15 +142,15 @@ class HolderIntroductionStatusUseCaseImplTest {
 
         with(status as IntroductionStatus.OnboardingNotFinished) {
             assertEquals(
-                R.string.holder_newintheapp_content_only3G_title,
+                R.string.holder_onboarding_disclosurePolicyChanged_only3GAccess_title,
                 introductionData.onboardingItems.last().titleResource
             )
             assertEquals(
-                R.string.holder_newintheapp_content_only3G_body,
+                R.string.holder_onboarding_disclosurePolicyChanged_only3GAccess_message,
                 introductionData.onboardingItems.last().description
             )
             assertEquals(
-                R.drawable.illustration_new_disclosure_policy,
+                R.drawable.illustration_onboarding_disclosure_policy,
                 introductionData.onboardingItems.last().imageResource
             )
             assertEquals(2, introductionData.onboardingItems.last().position)
@@ -168,15 +168,15 @@ class HolderIntroductionStatusUseCaseImplTest {
 
         with(status as IntroductionStatus.OnboardingNotFinished) {
             assertEquals(
-                R.string.holder_newintheapp_content_3Gand1G_title,
+                R.string.holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_title,
                 introductionData.onboardingItems.last().titleResource
             )
             assertEquals(
-                R.string.holder_newintheapp_content_3Gand1G_body,
+                R.string.holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_message,
                 introductionData.onboardingItems.last().description
             )
             assertEquals(
-                R.drawable.illustration_new_disclosure_policy,
+                R.drawable.illustration_onboarding_disclosure_policy,
                 introductionData.onboardingItems.last().imageResource
             )
             assertEquals(2, introductionData.onboardingItems.last().position)
