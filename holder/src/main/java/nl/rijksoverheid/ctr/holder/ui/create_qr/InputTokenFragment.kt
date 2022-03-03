@@ -124,6 +124,7 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
             when (it) {
                 is TestResult.EmptyToken -> showTokenError(getFragmentData().noUniqueCodeEntered)
                 is TestResult.InvalidToken -> showTokenError(getFragmentData().invalidTokenText)
+                is TestResult.ResultBlocked -> showTokenError(R.string.holder_inputRetrievalCode_error_blocked)
                 is TestResult.UnknownTestProvider -> showTokenError(R.string.commercial_test_error_unknown_test_provider)
                 is TestResult.NegativeTestResult -> showNegativeTestResult(it)
                 is TestResult.NoNegativeTestResult -> {

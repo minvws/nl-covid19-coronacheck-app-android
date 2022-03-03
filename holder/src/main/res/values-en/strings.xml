@@ -708,4 +708,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_message">Visiting a place in the Netherlands where a coronavirus pass is required? The app creates seperate certificates for 3G and 1G access. Check beforehand which one you need.</string>
   <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_title">Only 1G access in the Netherlands</string>
   <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_message">Visiting a place in the Netherlands where a coronavirus pass is required? Currently, only 1G access is given. This means you can enter with a certificate of a negative test.</string>
+  <string name="holder_inputRetrievalCode_error_blocked">tijdelijk geblokkeerd.</string>
 </resources>
