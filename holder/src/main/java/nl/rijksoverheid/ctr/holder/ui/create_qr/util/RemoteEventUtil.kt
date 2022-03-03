@@ -132,8 +132,8 @@ class RemoteEventUtilImpl(
         return when (remoteEvent) {
             is RemoteEventVaccination -> OriginType.Vaccination
             is RemoteEventRecovery -> OriginType.Recovery
-            is RemoteEventNegativeTest -> OriginType.Recovery
             is RemoteEventPositiveTest -> OriginType.Recovery
+            is RemoteEventNegativeTest -> OriginType.Test
             is RemoteEventVaccinationAssessment -> OriginType.VaccinationAssessment
             else -> error("remote event not supported as origin type")
         }
