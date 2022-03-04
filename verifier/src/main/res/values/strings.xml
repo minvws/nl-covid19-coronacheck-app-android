@@ -200,4 +200,6 @@
   <string name="new_policy_subtitle">Nieuwe regels</string>
   <string name="page_indicator_label">Pagina %1$d van %2$d</string>
   <string name="general_loading_description">Bezig met laden, even geduld</string>
+  <string name="verifier_scanResultPersonalDetails_header"><![CDATA[Je mag de bezoeker geen toegang geven als de gegevens op jouw scherm anders zijn dan op het identiteitsbewijs.<br/>]]></string>
+  <string name="verifier_scanResultPersonalDetails_body"><![CDATA[<b>Let op: soms vallen gegevens weg</b><br/>Om de privacy van de bezoeker te beschermen zie je soms niet alle gegevens op jouw scherm. Dan staat er een streepje (-) in het vak. Controleer in dat geval alleen de gegevens die je wel ziet.]]></string>
 </resources>

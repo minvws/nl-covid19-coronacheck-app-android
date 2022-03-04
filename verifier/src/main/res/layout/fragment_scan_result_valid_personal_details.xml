@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <androidx.appcompat.widget.Toolbar
+    <nl.rijksoverheid.ctr.design.views.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,6 +13,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_close"
+        app:navigationContentDescription="@string/menu_close"
+        android:focusable="true"
+        android:touchscreenBlocksFocus="false"
         app:title="@string/scan_result_valid_personal_details_title" />
 
     <ScrollView
