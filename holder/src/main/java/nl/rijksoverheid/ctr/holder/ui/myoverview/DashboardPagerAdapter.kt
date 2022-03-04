@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardPageFragment
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 
 /**
  * viewpager adapter to house green card overviews for domestic and European.

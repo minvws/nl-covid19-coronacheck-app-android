@@ -21,9 +21,8 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCas
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.ShowNewDisclosurePolicyUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import java.time.Clock

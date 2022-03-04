@@ -27,7 +27,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert
