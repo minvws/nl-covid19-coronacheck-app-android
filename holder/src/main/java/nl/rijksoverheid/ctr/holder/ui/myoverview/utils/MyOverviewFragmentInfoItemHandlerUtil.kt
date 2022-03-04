@@ -19,7 +19,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardPageFragment
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -28,7 +28,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 /**
- * Handles [MyOverviewInfoCardItem] actions
+ * Handles [DashboardInfoCardAdapterItem] actions
  */
 interface MyOverviewFragmentInfoItemHandlerUtil {
     fun handleButtonClick(
@@ -38,7 +38,7 @@ interface MyOverviewFragmentInfoItemHandlerUtil {
 
     fun handleDismiss(
         dashboardPageFragment: DashboardPageFragment,
-        infoCardItem: MyOverviewInfoCardItem,
+        infoCardAdapterItem: DashboardInfoCardAdapterItem,
         infoItem: DashboardItem.InfoItem
     )
 }
@@ -323,11 +323,11 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
      */
     override fun handleDismiss(
         dashboardPageFragment: DashboardPageFragment,
-        infoCardItem: MyOverviewInfoCardItem,
+        infoCardAdapterItem: DashboardInfoCardAdapterItem,
         infoItem: DashboardItem.InfoItem
     ) {
         // Remove section from adapter
-        dashboardPageFragment.section.remove(infoCardItem)
+        dashboardPageFragment.section.remove(infoCardAdapterItem)
 
         // Clear preference so it doesn't show again
         when (infoItem) {

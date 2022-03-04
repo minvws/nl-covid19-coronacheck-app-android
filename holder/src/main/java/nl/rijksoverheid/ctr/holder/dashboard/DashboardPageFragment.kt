@@ -15,12 +15,12 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.items.*
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardPageBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CardItemUtil
 import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtil
@@ -109,7 +109,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
                 }
                 is DashboardItem.InfoItem -> addInfoCard(adapterItems, dashboardItem)
                 is DashboardItem.CoronaMelderItem -> adapterItems.add(
-                    MyOverviewCoronaMelderAdapterItem()
+                    DashboardCoronaMelderAdapterItem()
                 )
                 is DashboardItem.AddQrCardItem -> addAddQrCardItem(adapterItems)
             }
@@ -120,7 +120,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
 
     private fun addAddQrCardItem(adapterItems: MutableList<BindableItem<*>>) {
         adapterItems.add(
-            MyOverviewAddQrCardItem(
+            DashboardAddQrCardAdapterItem(
                 onButtonClick = {
                     findNavControllerSafety()?.navigate(DashboardPageFragmentDirections.actionQrType())
                 })
@@ -131,7 +131,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         adapterItems: MutableList<BindableItem<*>>,
         dashboardItem: DashboardItem.InfoItem
     ) {
-        adapterItems.add(MyOverviewInfoCardItem(
+        adapterItems.add(DashboardInfoCardAdapterItem(
             infoItem = dashboardItem,
             onButtonClick = {
                 myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
@@ -151,7 +151,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         dashboardItem: DashboardItem.CardsItem
     ) {
         adapterItems.add(
-            MyOverviewGreenCardAdapterItem(
+            DashboardGreenCardAdapterItem(
                 cards = dashboardItem.cards,
                 onButtonClick = { cardItem, credentials, expiration ->
                     navigateSafety(
@@ -187,7 +187,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         dashboardItem: DashboardItem.PlaceholderCardItem
     ) {
         adapterItems.add(
-            MyOverviewGreenCardPlaceholderItem(
+            DashboardGreenCardPlaceHolderAdapterItem(
                 greenCardType = dashboardItem.greenCardType
             )
         )
@@ -198,7 +198,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         dashboardItem: DashboardItem.HeaderItem
     ) {
         adapterItems.add(
-            MyOverviewHeaderAdapterItem(
+            DashboardHeaderAdapterItem(
                 text = dashboardItem.text,
                 buttonInfo = if (greenCardType == GreenCardType.Eu) {
                     ButtonInfo(

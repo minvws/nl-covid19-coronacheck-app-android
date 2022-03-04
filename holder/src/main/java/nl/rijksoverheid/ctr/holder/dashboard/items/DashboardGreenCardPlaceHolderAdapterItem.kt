@@ -1,11 +1,16 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview.items
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
 
-import android.content.Intent
-import android.net.Uri
+package nl.rijksoverheid.ctr.holder.dashboard.items
+
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardPlaceholderBinding
+import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardGreenCardPlaceholderBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 
 /*
@@ -15,18 +20,18 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewGreenCardPlaceholderItem(private val greenCardType: GreenCardType) :
-    BindableItem<ItemMyOverviewGreenCardPlaceholderBinding>(R.layout.item_my_overview_green_card_placeholder.toLong()) {
+class DashboardGreenCardPlaceHolderAdapterItem(private val greenCardType: GreenCardType) :
+    BindableItem<AdapterItemDashboardGreenCardPlaceholderBinding>(R.layout.adapter_item_dashboard_green_card_placeholder.toLong()) {
 
     override fun getLayout(): Int {
-        return R.layout.item_my_overview_green_card_placeholder
+        return R.layout.adapter_item_dashboard_green_card_placeholder
     }
 
-    override fun initializeViewBinding(view: View): ItemMyOverviewGreenCardPlaceholderBinding {
-        return ItemMyOverviewGreenCardPlaceholderBinding.bind(view)
+    override fun initializeViewBinding(view: View): AdapterItemDashboardGreenCardPlaceholderBinding {
+        return AdapterItemDashboardGreenCardPlaceholderBinding.bind(view)
     }
 
-    override fun bind(viewBinding: ItemMyOverviewGreenCardPlaceholderBinding, position: Int) {
+    override fun bind(viewBinding: AdapterItemDashboardGreenCardPlaceholderBinding, position: Int) {
         val isEu = greenCardType == GreenCardType.Eu
 
         viewBinding.icon.setBackgroundResource(if (isEu) {

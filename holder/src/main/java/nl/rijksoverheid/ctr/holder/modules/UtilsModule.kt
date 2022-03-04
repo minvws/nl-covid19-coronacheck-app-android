@@ -5,10 +5,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEn
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItemUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItemUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -22,11 +22,10 @@ import java.time.Clock
  *
  */
 fun utilsModule(versionCode: Int) = module {
-    factory<MyOverViewGreenCardAdapterUtil> {
-        MyOverViewGreenCardAdapterUtilImpl(
+    factory<DashboardGreenCardAdapterItemUtil> {
+        DashboardGreenCardAdapterItemUtilImpl(
             Clock.systemUTC(),
             androidContext(),
-            get(),
             get(),
             get()
         )
@@ -48,7 +47,7 @@ fun utilsModule(versionCode: Int) = module {
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
-    factory<MyOverviewInfoCardItemUtil> { MyOverviewInfoCardItemUtilImpl() }
+    factory<DashboardInfoCardAdapterItemUtil> { DashboardInfoCardAdapterItemUtilImpl() }
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
     factory<MenuUtil> { MenuUtilImpl(get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }

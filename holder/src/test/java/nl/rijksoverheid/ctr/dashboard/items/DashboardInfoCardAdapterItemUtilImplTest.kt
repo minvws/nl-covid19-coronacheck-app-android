@@ -5,11 +5,12 @@
  * SPDX-License-Identifier: EUPL-1.2
  */
 
-package nl.rijksoverheid.ctr.holder.ui.myoverview.items
+package nl.rijksoverheid.ctr.dashboard.items
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
@@ -22,7 +23,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl-land")
-class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
+class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getOriginInfoText returns correct copy for domestic vaccination`() {
@@ -33,7 +34,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Vaccination
         )
 
-        val util = MyOverviewInfoCardItemUtilImpl()
+        val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
             infoItem = infoItem,
@@ -52,7 +53,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Recovery
         )
 
-        val util = MyOverviewInfoCardItemUtilImpl()
+        val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
             infoItem = infoItem,
@@ -71,7 +72,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Test
         )
 
-        val util = MyOverviewInfoCardItemUtilImpl()
+        val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
             infoItem = infoItem,
@@ -90,7 +91,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Vaccination
         )
 
-        val util = MyOverviewInfoCardItemUtilImpl()
+        val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
             infoItem = infoItem,
@@ -109,7 +110,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Recovery
         )
 
-        val util = MyOverviewInfoCardItemUtilImpl()
+        val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
             infoItem = infoItem,
@@ -128,7 +129,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.Test
         )
 
-        val util = MyOverviewInfoCardItemUtilImpl()
+        val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
             infoItem = infoItem,
@@ -147,7 +148,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
             originType = OriginType.VaccinationAssessment
         )
 
-        val util = MyOverviewInfoCardItemUtilImpl()
+        val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
             infoItem = infoItem,
@@ -159,7 +160,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getExpiredItemText returns correct copy for domestic vaccination`() {
-        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+        val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
             greenCardType = GreenCardType.Domestic,
             originType = OriginType.Vaccination
         )
@@ -169,7 +170,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getExpiredItemText returns correct copy for domestic recovery`() {
-        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+        val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
             greenCardType = GreenCardType.Domestic,
             originType = OriginType.Recovery
         )
@@ -179,7 +180,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getExpiredItemText returns correct copy for domestic test`() {
-        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+        val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
             greenCardType = GreenCardType.Domestic,
             originType = OriginType.Test
         )
@@ -189,7 +190,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getExpiredItemText returns correct copy for eu vaccination`() {
-        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+        val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
             greenCardType = GreenCardType.Eu,
             originType = OriginType.Vaccination
         )
@@ -199,7 +200,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getExpiredItemText returns correct copy for eu recovery`() {
-        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+        val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
             greenCardType = GreenCardType.Eu,
             originType = OriginType.Recovery
         )
@@ -209,7 +210,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getExpiredItemText returns correct copy for eu test`() {
-        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+        val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
             greenCardType = GreenCardType.Eu,
             originType = OriginType.Test
         )
@@ -219,7 +220,7 @@ class MyOverviewInfoCardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getExpiredItemText returns correct copy for vaccination assessment`() {
-        val text = MyOverviewInfoCardItemUtilImpl().getExpiredItemText(
+        val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
             greenCardType = GreenCardType.Domestic,
             originType = OriginType.VaccinationAssessment
         )

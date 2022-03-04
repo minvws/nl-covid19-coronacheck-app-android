@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: EUPL-1.2
  */
 
-package nl.rijksoverheid.ctr.holder.ui.myoverview.items
+package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import android.content.Context
 import androidx.annotation.StringRes
@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 
-interface MyOverviewInfoCardItemUtil {
+interface DashboardInfoCardAdapterItemUtil {
     fun getOriginInfoText(
         infoItem: DashboardItem.InfoItem.OriginInfoItem,
         context: Context
@@ -27,7 +27,7 @@ interface MyOverviewInfoCardItemUtil {
     ): Int
 }
 
-class MyOverviewInfoCardItemUtilImpl : MyOverviewInfoCardItemUtil {
+class DashboardInfoCardAdapterItemUtilImpl : DashboardInfoCardAdapterItemUtil {
     override fun getOriginInfoText(
         infoItem: DashboardItem.InfoItem.OriginInfoItem,
         context: Context

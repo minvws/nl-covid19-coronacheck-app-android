@@ -1,12 +1,11 @@
 /*
- *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
- *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
  *
- *   SPDX-License-Identifier: EUPL-1.2
- *
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
-package nl.rijksoverheid.ctr.holder.ui.myoverview.items
+package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewGreenCardBinding
+import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardGreenCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
@@ -22,7 +21,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -32,17 +30,17 @@ data class AdapterCard(
     val originStates: List<OriginState>,
     val disclosurePolicy: GreenCardDisclosurePolicy)
 
-class MyOverviewGreenCardAdapterItem(
+class DashboardGreenCardAdapterItem(
     private val cards: List<DashboardItem.CardsItem.CardItem>,
     private val onButtonClick: (cardItem: DashboardItem.CardsItem.CardItem, credentials: List<ByteArray>, credentialExpirationTimeSeconds: Long) -> Unit,
     private val onRetryClick: () -> Unit = {}
 ) :
-    BindableItem<ItemMyOverviewGreenCardBinding>(R.layout.item_my_overview_green_card.toLong()),
+    BindableItem<AdapterItemDashboardGreenCardBinding>(R.layout.adapter_item_dashboard_green_card.toLong()),
     KoinComponent {
 
-    private val myOverViewGreenCardAdapterUtil: MyOverViewGreenCardAdapterUtil by inject()
+    private val dashboardGreenCardAdapterItemUtil: DashboardGreenCardAdapterItemUtil by inject()
 
-    override fun bind(viewBinding: ItemMyOverviewGreenCardBinding, position: Int) {
+    override fun bind(viewBinding: AdapterItemDashboardGreenCardBinding, position: Int) {
         applyStyling(viewBinding = viewBinding)
         setContent(viewBinding = viewBinding)
         initButton(
@@ -55,7 +53,7 @@ class MyOverviewGreenCardAdapterItem(
         )
     }
 
-    private fun accessibility(viewBinding: ItemMyOverviewGreenCardBinding, greenCardType: GreenCardType) {
+    private fun accessibility(viewBinding: AdapterItemDashboardGreenCardBinding, greenCardType: GreenCardType) {
         viewBinding.buttonWithProgressWidgetContainer.accessibility(
             viewBinding.title.text.toString()
         )
@@ -70,7 +68,7 @@ class MyOverviewGreenCardAdapterItem(
         ViewCompat.setAccessibilityHeading(viewBinding.title, true)
     }
 
-    private fun initButton(viewBinding: ItemMyOverviewGreenCardBinding, card: DashboardItem.CardsItem.CardItem) {
+    private fun initButton(viewBinding: AdapterItemDashboardGreenCardBinding, card: DashboardItem.CardsItem.CardItem) {
         when (card.greenCardEnabledState) {
             is GreenCardEnabledState.Enabled -> {
                 viewBinding.buttonWithProgressWidgetContainer.visibility = View.VISIBLE
@@ -97,7 +95,7 @@ class MyOverviewGreenCardAdapterItem(
         }
     }
 
-    private fun applyStyling(viewBinding: ItemMyOverviewGreenCardBinding) {
+    private fun applyStyling(viewBinding: AdapterItemDashboardGreenCardBinding) {
         viewBinding.buttonWithProgressWidgetContainer.setButtonText(
             viewBinding.root.context.getString(
                 if (cards.size > 1) R.string.my_overview_results_button else R.string.my_overview_test_result_button
@@ -128,7 +126,7 @@ class MyOverviewGreenCardAdapterItem(
         }
     }
 
-    private fun setContent(viewBinding: ItemMyOverviewGreenCardBinding) {
+    private fun setContent(viewBinding: AdapterItemDashboardGreenCardBinding) {
         // reset layout
         viewBinding.run {
             (proof2.layoutParams as ViewGroup.MarginLayoutParams).height = 0
@@ -137,8 +135,8 @@ class MyOverviewGreenCardAdapterItem(
             errorContainer.visibility = View.GONE
         }
 
-        myOverViewGreenCardAdapterUtil.setContent(
-            ViewBindingWrapperImpl(viewBinding),
+        dashboardGreenCardAdapterItemUtil.setContent(
+            DashboardGreenCardAdapterItemBindingWrapperImpl(viewBinding),
             cards.map { AdapterCard(it.greenCard, it.originStates, it.disclosurePolicy) }
                 .sortedByDescending { it.originStates.first().origin.eventTime },
         )
@@ -153,7 +151,7 @@ class MyOverviewGreenCardAdapterItem(
      *
      * @param[viewBinding] view binding containing binding of parent view group of green cards
      */
-    private fun stackAdditionalCards(viewBinding: ItemMyOverviewGreenCardBinding) {
+    private fun stackAdditionalCards(viewBinding: AdapterItemDashboardGreenCardBinding) {
         viewBinding.apply {
             if (cards.size >= 2) {
                 (proof2.layoutParams as ViewGroup.MarginLayoutParams).height = viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_card_height)
@@ -165,7 +163,7 @@ class MyOverviewGreenCardAdapterItem(
         }
     }
 
-    private fun showError(viewBinding: ItemMyOverviewGreenCardBinding) {
+    private fun showError(viewBinding: AdapterItemDashboardGreenCardBinding) {
         val context = viewBinding.root.context
         if (cards.first().credentialState is DashboardItem.CardsItem.CredentialState.NoCredential) {
             when (cards.first().databaseSyncerResult) {
@@ -203,10 +201,10 @@ class MyOverviewGreenCardAdapterItem(
     }
 
     override fun getLayout(): Int {
-        return R.layout.item_my_overview_green_card
+        return R.layout.adapter_item_dashboard_green_card
     }
 
-    override fun initializeViewBinding(view: View): ItemMyOverviewGreenCardBinding {
-        return ItemMyOverviewGreenCardBinding.bind(view)
+    override fun initializeViewBinding(view: View): AdapterItemDashboardGreenCardBinding {
+        return AdapterItemDashboardGreenCardBinding.bind(view)
     }
 }

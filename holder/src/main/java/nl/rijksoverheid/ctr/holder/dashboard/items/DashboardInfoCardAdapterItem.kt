@@ -1,9 +1,16 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview.items
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
+package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.ItemMyOverviewInfoCardBinding
+import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardInfoCardBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
@@ -18,16 +25,16 @@ import org.koin.core.component.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewInfoCardItem(
+class DashboardInfoCardAdapterItem(
     private val infoItem: DashboardItem.InfoItem,
     private val onButtonClick: (infoItem: DashboardItem.InfoItem) -> Unit,
-    private val onDismiss: (infoCardItem: MyOverviewInfoCardItem, infoItem: DashboardItem.InfoItem) -> Unit = { _, _ -> }
-) : BindableItem<ItemMyOverviewInfoCardBinding>(R.layout.item_my_overview_info_card.toLong()),
+    private val onDismiss: (infoCardAdapterItem: DashboardInfoCardAdapterItem, infoItem: DashboardItem.InfoItem) -> Unit = { _, _ -> }
+) : BindableItem<AdapterItemDashboardInfoCardBinding>(R.layout.adapter_item_dashboard_info_card.toLong()),
     KoinComponent {
 
-    private val util: MyOverviewInfoCardItemUtil by inject()
+    private val utilAdapter: DashboardInfoCardAdapterItemUtil by inject()
 
-    override fun bind(viewBinding: ItemMyOverviewInfoCardBinding, position: Int) {
+    override fun bind(viewBinding: AdapterItemDashboardInfoCardBinding, position: Int) {
         if (infoItem.isDismissible) {
             // dismissible item has a close button with callback
             viewBinding.close.visibility = View.VISIBLE
@@ -54,21 +61,21 @@ class MyOverviewInfoCardItem(
                 viewBinding.text.setText(R.string.my_overview_clock_deviation_description)
             }
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                val expiredItemText = util.getExpiredItemText(
+                val expiredItemText = utilAdapter.getExpiredItemText(
                     greenCardType = infoItem.greenCardType,
                     originType = infoItem.originEntity.type
                 )
                 viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
             }
             is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
-                val expiredItemText = util.getExpiredItemText(
+                val expiredItemText = utilAdapter.getExpiredItemText(
                     greenCardType = Domestic,
                     originType = Vaccination
                 )
                 viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
             }
             is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
-                val expiredItemText = util.getExpiredItemText(
+                val expiredItemText = utilAdapter.getExpiredItemText(
                     greenCardType = Domestic,
                     originType = VaccinationAssessment
                 )
@@ -76,7 +83,7 @@ class MyOverviewInfoCardItem(
             }
             is DashboardItem.InfoItem.OriginInfoItem -> {
                 viewBinding.text.text =
-                    util.getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
+                    utilAdapter.getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
             }
             is DashboardItem.InfoItem.MissingDutchVaccinationItem -> {
                 viewBinding.text.text =
@@ -111,10 +118,10 @@ class MyOverviewInfoCardItem(
     }
 
     override fun getLayout(): Int {
-        return R.layout.item_my_overview_info_card
+        return R.layout.adapter_item_dashboard_info_card
     }
 
-    override fun initializeViewBinding(view: View): ItemMyOverviewInfoCardBinding {
-        return ItemMyOverviewInfoCardBinding.bind(view)
+    override fun initializeViewBinding(view: View): AdapterItemDashboardInfoCardBinding {
+        return AdapterItemDashboardInfoCardBinding.bind(view)
     }
 }
