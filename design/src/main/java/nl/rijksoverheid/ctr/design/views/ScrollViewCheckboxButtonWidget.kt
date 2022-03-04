@@ -1,4 +1,14 @@
-package nl.rijksoverheid.ctr.introduction.ui.privacy_consent
+/*
+ *
+ *  *  Copyright (c) 2022 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *  *
+ *  *   SPDX-License-Identifier: EUPL-1.2
+ *  *
+ *
+ */
+
+package nl.rijksoverheid.ctr.design.views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,8 +18,9 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import androidx.cardview.widget.CardView
-import nl.rijksoverheid.ctr.introduction.R
-import nl.rijksoverheid.ctr.introduction.databinding.WidgetScrollViewCheckboxButtonBinding
+import androidx.core.view.isVisible
+import nl.rijksoverheid.ctr.design.R
+import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewCheckboxButtonBinding
 
 
 /*
@@ -40,7 +51,18 @@ class ScrollViewCheckboxButtonWidget @JvmOverloads constructor(
         ).apply {
             try {
                 attachToScrollViewId =
-                    getResourceId(R.styleable.ScrollViewCheckboxButtonWidget_attachToScrollView, -1)
+                    getResourceId(
+                        R.styleable.ScrollViewCheckboxButtonWidget_attachCheckboxToScrollView,
+                        -1
+                    )
+                getText(R.styleable.ScrollViewCheckboxButtonWidget_checkboxText)?.toString()
+                    ?.let { binding.checkbox.text = it }
+                getText(R.styleable.ScrollViewCheckboxButtonWidget_checkboxErrorText)?.toString()
+                    ?.let { binding.errorText.text = it }
+                getText(R.styleable.ScrollViewCheckboxButtonWidget_checkboxButtonText)?.toString()
+                    ?.let { binding.checkboxButton.text = it }
+                binding.checkboxButton.isVisible =
+                    !getBoolean(R.styleable.ScrollViewCheckboxButtonWidget_buttonHidden, false)
             } finally {
                 recycle()
             }

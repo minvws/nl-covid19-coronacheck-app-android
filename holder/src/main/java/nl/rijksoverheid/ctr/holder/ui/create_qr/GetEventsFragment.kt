@@ -2,8 +2,10 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.NonNull
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewCheckboxButtonBinding
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -60,9 +62,10 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentGetEventsBinding.bind(view)
+        val checkboxButtonBinding = WidgetScrollViewCheckboxButtonBinding.bind(binding.root)
         val copy = getCopyForOriginType()
         setBindings(binding, copy)
-        setObservers(binding, copy)
+        setObservers(binding, copy, checkboxButtonBinding)
     }
 
     override fun onDestroyView() {
@@ -72,17 +75,18 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private fun setObservers(
         binding: FragmentGetEventsBinding,
-        copy: GetEventsFragmentCopy
+        copy: GetEventsFragmentCopy,
+        checkboxButtonBinding: WidgetScrollViewCheckboxButtonBinding
     ) {
         digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it
-            binding.checkbox.isEnabled = !it
+            checkboxButtonBinding.checkbox.isEnabled = !it
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
         getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it
-            binding.checkbox.isEnabled = !it
+            checkboxButtonBinding.checkbox.isEnabled = !it
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
@@ -100,7 +104,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                                 navigateToYourEvents(
                                     remoteProtocols3 = it.remoteEvents,
                                     eventProviders = it.eventProviders,
-                                    getPositiveTestWithVaccination = binding.checkbox.isChecked
+                                    getPositiveTestWithVaccination = checkboxButtonBinding.checkbox.isChecked
                                 )
                             }
                         )
@@ -108,7 +112,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         navigateToYourEvents(
                             remoteProtocols3 = it.remoteEvents,
                             eventProviders = it.eventProviders,
-                            getPositiveTestWithVaccination = binding.checkbox.isChecked
+                            getPositiveTestWithVaccination = checkboxButtonBinding.checkbox.isChecked
                         )
                     }
                 }
@@ -198,7 +202,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     getEventsViewModel.getDigidEvents(
                         it.jwt,
                         args.originType,
-                        binding.checkbox.isChecked
+                        checkboxButtonBinding.checkbox.isChecked
                     )
                 }
                 is LoginResult.Failed -> {

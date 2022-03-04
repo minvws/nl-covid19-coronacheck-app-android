@@ -7,11 +7,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewCheckboxButtonBinding
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentPrivacyConsentBinding
 import nl.rijksoverheid.ctr.introduction.databinding.ItemPrivacyConsentBinding
-import nl.rijksoverheid.ctr.introduction.databinding.WidgetScrollViewCheckboxButtonBinding
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
@@ -60,7 +60,7 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             }
         }
 
-        checkboxButtonBinding.button.setOnClickListener {
+        checkboxButtonBinding.checkboxButton.setOnClickListener {
             if (args.introductionData.hideConsent || checkboxButtonBinding.checkbox.isChecked) {
                 introductionViewModel.saveIntroductionFinished(args.introductionData)
                 requireActivity().findNavControllerSafety(R.id.main_nav_host_fragment)
