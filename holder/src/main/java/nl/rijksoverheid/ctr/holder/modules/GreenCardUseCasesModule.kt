@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder.modules
 
+import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCase
+import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import org.koin.dsl.module

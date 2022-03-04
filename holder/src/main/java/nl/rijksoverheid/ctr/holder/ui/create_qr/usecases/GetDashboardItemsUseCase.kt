@@ -8,7 +8,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.HeaderItemTextUtil
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtil
 
 interface GetDashboardItemsUseCase {
     suspend fun getItems(
@@ -25,7 +25,7 @@ class GetDashboardItemsUseCaseImpl(
     private val originUtil: OriginUtil,
     private val dashboardItemUtil: DashboardItemUtil,
     private val dashboardItemEmptyStateUtil: DashboardItemEmptyStateUtil,
-    private val headerItemTextUtil: HeaderItemTextUtil,
+    private val dashboardHeaderAdapterItemUtil: DashboardHeaderAdapterItemUtil,
     private val cardItemUtil: CardItemUtil,
     private val splitDomesticGreenCardsUseCase: SplitDomesticGreenCardsUseCase,
     private val sortGreenCardItemsUseCase: SortGreenCardItemsUseCase
@@ -78,7 +78,7 @@ class GetDashboardItemsUseCaseImpl(
             .filter { it.greenCardEntity.type == GreenCardType.Eu }
             .distinctBy { it.greenCardEntity.type }
 
-        val headerText = headerItemTextUtil.getText(
+        val headerText = dashboardHeaderAdapterItemUtil.getText(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Domestic,
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
@@ -190,7 +190,7 @@ class GetDashboardItemsUseCaseImpl(
             allGreenCards = allGreenCards,
         )
 
-        val headerText = headerItemTextUtil.getText(
+        val headerText = dashboardHeaderAdapterItemUtil.getText(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Eu,
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,

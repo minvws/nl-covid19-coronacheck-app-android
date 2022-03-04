@@ -1,14 +1,15 @@
 package nl.rijksoverheid.ctr.holder.modules
 
+import nl.rijksoverheid.ctr.holder.dashboard.items.*
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtilImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverViewGreenCardAdapterUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItemUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -22,11 +23,10 @@ import java.time.Clock
  *
  */
 fun utilsModule(versionCode: Int) = module {
-    factory<MyOverViewGreenCardAdapterUtil> {
-        MyOverViewGreenCardAdapterUtilImpl(
+    factory<DashboardGreenCardAdapterItemUtil> {
+        DashboardGreenCardAdapterItemUtilImpl(
             Clock.systemUTC(),
             androidContext(),
-            get(),
             get(),
             get()
         )
@@ -41,17 +41,17 @@ fun utilsModule(versionCode: Int) = module {
     factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
-    factory<MyOverviewFragmentInfoItemHandlerUtil> { MyOverviewFragmentInfoItemHandlerUtilImpl(get(), get(), get()) }
+    factory<DashboardPageInfoItemHandlerUtil> { DashboardPageInfoItemHandlerUtilImpl(get(), get(), get()) }
     factory<YourEventFragmentEndStateUtil> {
         YourEventFragmentEndStateUtilImpl(get())
     }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
-    factory<MyOverviewInfoCardItemUtil> { MyOverviewInfoCardItemUtilImpl() }
+    factory<DashboardInfoCardAdapterItemUtil> { DashboardInfoCardAdapterItemUtilImpl() }
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
     factory<MenuUtil> { MenuUtilImpl(get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
-    factory<HeaderItemTextUtil> { HeaderItemTextUtilImpl(get()) }
+    factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }
     factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
 }
