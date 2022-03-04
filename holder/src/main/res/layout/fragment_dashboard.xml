@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <!-- setting a standard height (which is the default height set in TabLayout.java
-        of material library  in order notr to break on font resize for accessibility -->
+        of material library  in order not to break on font resize for accessibility -->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_marginHorizontal="16dp"

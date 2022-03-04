@@ -37,7 +37,7 @@ import java.time.ZoneOffset
 /**
  * Handles [DashboardInfoCardAdapterItem] actions
  */
-interface DashboardPAgeInfoItemHandlerUtil {
+interface DashboardPageInfoItemHandlerUtil {
     fun handleButtonClick(
         dashboardPageFragment: DashboardPageFragment,
         infoItem: DashboardItem.InfoItem
@@ -50,11 +50,11 @@ interface DashboardPAgeInfoItemHandlerUtil {
     )
 }
 
-class DashboardPAgeInfoItemHandlerUtilImpl(
+class DashboardPageInfoItemHandlerUtilImpl(
     private val infoFragmentUtil: InfoFragmentUtil,
     private val intentUtil: IntentUtil,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase
-) : DashboardPAgeInfoItemHandlerUtil {
+) : DashboardPageInfoItemHandlerUtil {
 
     /**
      * Handles the button click in the info card

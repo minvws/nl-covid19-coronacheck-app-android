@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.dashboard.items.*
-import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPAgeInfoItemHandlerUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPAgeInfoItemHandlerUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtilImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtil
@@ -41,7 +41,7 @@ fun utilsModule(versionCode: Int) = module {
     factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
-    factory<DashboardPAgeInfoItemHandlerUtil> { DashboardPAgeInfoItemHandlerUtilImpl(get(), get(), get()) }
+    factory<DashboardPageInfoItemHandlerUtil> { DashboardPageInfoItemHandlerUtilImpl(get(), get(), get()) }
     factory<YourEventFragmentEndStateUtil> {
         YourEventFragmentEndStateUtilImpl(get())
     }
