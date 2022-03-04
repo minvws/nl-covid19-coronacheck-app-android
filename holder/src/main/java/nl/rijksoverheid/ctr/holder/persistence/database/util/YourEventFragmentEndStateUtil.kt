@@ -49,8 +49,8 @@ class YourEventFragmentEndStateUtilImpl(
             hasStoredDomesticVaccination(storedGreenCards) -> NotApplicable
             isNoneWithoutRecovery(events, remoteGreenCards) -> InternationalWithoutRecovery
             isOnlyVaccination(events, remoteGreenCards) -> OnlyVaccination(recoveryValidityDays)
+            isInternationalWithRecovery(events, remoteGreenCards) -> InternationalWithRecovery
             isOnlyRecovery(events, remoteGreenCards) -> OnlyRecovery
-            isNoneWithRecovery(events, remoteGreenCards) -> InternationalWithRecovery
             isCombinedVaccinationRecovery(events, remoteGreenCards) -> CombinedVaccinationRecovery(
                 recoveryValidityDays
             )
@@ -72,12 +72,13 @@ class YourEventFragmentEndStateUtilImpl(
             }
     }
 
-    private fun isNoneWithRecovery(
+    private fun isInternationalWithRecovery(
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): Boolean {
         return hasVaccinationAndRecoveryEvents(events)
                 && hasOnlyInternationalVaccinationCertificates(remoteGreenCards)
+                && remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Recovery } ?: false
     }
 
     private fun isOnlyRecovery(
