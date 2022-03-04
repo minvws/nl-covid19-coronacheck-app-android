@@ -281,7 +281,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
             showTime = true,
             subtitle = context.getString(
                 R.string.qr_card_validity_valid,
-                origin.expirationTime.toLocalDate().formatDayShortMonthYear()
+                origin.expirationTime.toLocalDate().formatDayMonthYear()
             ),
         )
     }
