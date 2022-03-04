@@ -1,4 +1,11 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
+package nl.rijksoverheid.ctr.holder.dashboard
 
 import android.os.Bundle
 import android.view.View
@@ -8,10 +15,11 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentMyOverviewBinding
+import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardPageBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CardItemUtil
+import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.*
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
@@ -29,7 +37,7 @@ import org.koin.androidx.viewmodel.ViewModelOwner
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
+class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
 
     companion object {
         const val EXTRA_GREEN_CARD_TYPE = "GREEN_CARD_TYPE"
@@ -38,8 +46,8 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         fun getInstance(
             greenCardType: GreenCardType,
             returnUri: String?
-        ): MyOverviewFragment {
-            val fragment = MyOverviewFragment()
+        ): DashboardPageFragment {
+            val fragment = DashboardPageFragment()
             val arguments = Bundle()
             arguments.putParcelable(EXTRA_GREEN_CARD_TYPE, greenCardType)
             arguments.putString(EXTRA_RETURN_URI, returnUri)
@@ -66,7 +74,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentMyOverviewBinding.bind(view)
+        val binding = FragmentDashboardPageBinding.bind(view)
         initRecyclerView(binding)
         observeItem()
     }
@@ -79,7 +87,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         }
     }
 
-    private fun initRecyclerView(binding: FragmentMyOverviewBinding) {
+    private fun initRecyclerView(binding: FragmentDashboardPageBinding) {
         val adapter = GroupAdapter<GroupieViewHolder>().also {
             it.add(section)
         }
@@ -114,7 +122,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
         adapterItems.add(
             MyOverviewAddQrCardItem(
                 onButtonClick = {
-                    findNavControllerSafety()?.navigate(MyOverviewFragmentDirections.actionQrType())
+                    findNavControllerSafety()?.navigate(DashboardPageFragmentDirections.actionQrType())
                 })
         )
     }
@@ -147,7 +155,7 @@ class MyOverviewFragment : Fragment(R.layout.fragment_my_overview) {
                 cards = dashboardItem.cards,
                 onButtonClick = { cardItem, credentials, expiration ->
                     navigateSafety(
-                        MyOverviewFragmentDirections.actionQrCode(
+                        DashboardPageFragmentDirections.actionQrCode(
                             toolbarTitle = when (cardItem.greenCard.greenCardEntity.type) {
                                 is GreenCardType.Domestic -> {
                                     getString(R.string.domestic_qr_code_title)

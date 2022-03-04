@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
+import nl.rijksoverheid.ctr.holder.dashboard.DashboardPageFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -32,12 +32,12 @@ import java.time.ZoneOffset
  */
 interface MyOverviewFragmentInfoItemHandlerUtil {
     fun handleButtonClick(
-        myOverviewFragment: MyOverviewFragment,
+        dashboardPageFragment: DashboardPageFragment,
         infoItem: DashboardItem.InfoItem
     )
 
     fun handleDismiss(
-        myOverviewFragment: MyOverviewFragment,
+        dashboardPageFragment: DashboardPageFragment,
         infoCardItem: MyOverviewInfoCardItem,
         infoItem: DashboardItem.InfoItem
     )
@@ -53,37 +53,37 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
      * Handles the button click in the info card
      */
     override fun handleButtonClick(
-        myOverviewFragment: MyOverviewFragment,
+        dashboardPageFragment: DashboardPageFragment,
         infoItem: DashboardItem.InfoItem
     ) {
         when (infoItem) {
             is DashboardItem.InfoItem.ConfigFreshnessWarning ->
-                onConfigRefreshClicked(myOverviewFragment, infoItem)
+                onConfigRefreshClicked(dashboardPageFragment, infoItem)
             is DashboardItem.InfoItem.ClockDeviationItem ->
-                onClockDeviationClicked(myOverviewFragment)
+                onClockDeviationClicked(dashboardPageFragment)
             is DashboardItem.InfoItem.OriginInfoItem ->
-                onOriginInfoClicked(myOverviewFragment, infoItem)
+                onOriginInfoClicked(dashboardPageFragment, infoItem)
             is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
-                onMissingDutchVaccinationItemClicked(myOverviewFragment)
+                onMissingDutchVaccinationItemClicked(dashboardPageFragment)
             is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
-                onDomesticVaccinationExpiredItemClicked(myOverviewFragment)
+                onDomesticVaccinationExpiredItemClicked(dashboardPageFragment)
             }
             is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
-                onDomesticVaccinationAssessmentExpiredClicked(myOverviewFragment)
+                onDomesticVaccinationAssessmentExpiredClicked(dashboardPageFragment)
             }
-            is DashboardItem.InfoItem.AppUpdate -> openPlayStore(myOverviewFragment)
+            is DashboardItem.InfoItem.AppUpdate -> openPlayStore(dashboardPageFragment)
             is DashboardItem.InfoItem.NewValidityItem -> {
-                onNewValidityInfoClicked(myOverviewFragment.requireContext())
+                onNewValidityInfoClicked(dashboardPageFragment.requireContext())
             }
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
-                onVisitorPassIncompleteClicked(myOverviewFragment)
+                onVisitorPassIncompleteClicked(dashboardPageFragment)
             }
             is DashboardItem.InfoItem.BoosterItem -> {
-                onBoosterItemClicked(myOverviewFragment)
+                onBoosterItemClicked(dashboardPageFragment)
             }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
                 onDisclosurePolicyItemClicked(
-                    myOverviewFragment.requireContext(),
+                    dashboardPageFragment.requireContext(),
                     infoItem.disclosurePolicy
                 )
             }
@@ -102,31 +102,31 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         context.getString(urlResource).launchUrl(context)
     }
 
-    private fun onBoosterItemClicked(myOverviewFragment: MyOverviewFragment) {
-        myOverviewFragment.navigateSafety(DashboardFragmentDirections.actionGetEvents(
+    private fun onBoosterItemClicked(dashboardPageFragment: DashboardPageFragment) {
+        dashboardPageFragment.navigateSafety(DashboardFragmentDirections.actionGetEvents(
             originType = RemoteOriginType.Vaccination,
-            toolbarTitle = myOverviewFragment.getString(R.string.choose_provider_toolbar),
+            toolbarTitle = dashboardPageFragment.getString(R.string.choose_provider_toolbar),
         ))
     }
 
     private fun onDomesticVaccinationExpiredItemClicked(
-        myOverviewFragment: MyOverviewFragment,
+        dashboardPageFragment: DashboardPageFragment,
     ) {
         val navigationDirection = MainNavDirections.actionGetEvents(
-            toolbarTitle = myOverviewFragment.getString(R.string.get_vaccination_title),
+            toolbarTitle = dashboardPageFragment.getString(R.string.get_vaccination_title),
             originType = RemoteOriginType.Vaccination
         )
 
         infoFragmentUtil.presentAsBottomSheet(
-            myOverviewFragment.childFragmentManager,
+            dashboardPageFragment.childFragmentManager,
             InfoFragmentData.TitleDescriptionWithButton(
-                title = myOverviewFragment.getString(R.string.holder_expiredDomesticVaccinationModal_title),
+                title = dashboardPageFragment.getString(R.string.holder_expiredDomesticVaccinationModal_title),
                 descriptionData = DescriptionData(
                     R.string.holder_expiredDomesticVaccinationModal_body,
                     htmlLinksEnabled = true
                 ),
                 secondaryButtonData = ButtonData.NavigationButton(
-                    text = myOverviewFragment.getString(R.string.holder_expiredDomesticVaccinationModal_button_addBoosterVaccination),
+                    text = dashboardPageFragment.getString(R.string.holder_expiredDomesticVaccinationModal_button_addBoosterVaccination),
                     navigationActionId = navigationDirection.actionId,
                     navigationArguments = navigationDirection.arguments
                 )
@@ -135,15 +135,15 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
     private fun onDomesticVaccinationAssessmentExpiredClicked(
-        myOverviewFragment: MyOverviewFragment,
+        dashboardPageFragment: DashboardPageFragment,
     ) {
-        val descriptionText = myOverviewFragment.getString(R.string.holder_dashboard_visitorpassexpired_body,
+        val descriptionText = dashboardPageFragment.getString(R.string.holder_dashboard_visitorpassexpired_body,
             cachedAppConfigUseCase.getCachedAppConfig().vaccinationAssessmentEventValidityDays)
 
         infoFragmentUtil.presentAsBottomSheet(
-            myOverviewFragment.childFragmentManager,
+            dashboardPageFragment.childFragmentManager,
             InfoFragmentData.TitleDescriptionWithButton(
-                title = myOverviewFragment.getString(R.string.holder_dashboard_visitorpassexpired_title),
+                title = dashboardPageFragment.getString(R.string.holder_dashboard_visitorpassexpired_title),
                 descriptionData = DescriptionData(
                     htmlTextString = descriptionText,
                     htmlLinksEnabled = true
@@ -152,29 +152,29 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         )
     }
 
-    private fun openPlayStore(myOverviewFragment: MyOverviewFragment) {
-        intentUtil.openPlayStore(myOverviewFragment.requireContext())
+    private fun openPlayStore(dashboardPageFragment: DashboardPageFragment) {
+        intentUtil.openPlayStore(dashboardPageFragment.requireContext())
     }
 
-    private fun onMissingDutchVaccinationItemClicked(myOverviewFragment: MyOverviewFragment) {
-        myOverviewFragment.navigateSafety(DashboardFragmentDirections.actionMissingDutchCertificate())
+    private fun onMissingDutchVaccinationItemClicked(dashboardPageFragment: DashboardPageFragment) {
+        dashboardPageFragment.navigateSafety(DashboardFragmentDirections.actionMissingDutchCertificate())
     }
 
     private fun onConfigRefreshClicked(
-        myOverviewFragment: MyOverviewFragment,
+        dashboardPageFragment: DashboardPageFragment,
         infoItem: DashboardItem.InfoItem.ConfigFreshnessWarning
     ) {
         infoFragmentUtil.presentAsBottomSheet(
-            myOverviewFragment.childFragmentManager,
+            dashboardPageFragment.childFragmentManager,
             InfoFragmentData.TitleDescription(
-                title = myOverviewFragment.getString(R.string.config_warning_page_title),
+                title = dashboardPageFragment.getString(R.string.config_warning_page_title),
                 descriptionData = DescriptionData(
-                    htmlTextString = myOverviewFragment.getString(
+                    htmlTextString = dashboardPageFragment.getString(
                         R.string.config_warning_page_message,
                         OffsetDateTime.ofInstant(
                             Instant.ofEpochSecond(infoItem.maxValidityDate),
                             ZoneOffset.UTC
-                        ).formatDayMonthTime(myOverviewFragment.requireContext())
+                        ).formatDayMonthTime(dashboardPageFragment.requireContext())
                     ),
                     htmlLinksEnabled = true
                 )
@@ -183,11 +183,11 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
     private fun onClockDeviationClicked(
-        myOverviewFragment: MyOverviewFragment
+        dashboardPageFragment: DashboardPageFragment
     ) {
         infoFragmentUtil.presentAsBottomSheet(
-            myOverviewFragment.childFragmentManager, InfoFragmentData.TitleDescription(
-                title = myOverviewFragment.getString(R.string.clock_deviation_explanation_title),
+            dashboardPageFragment.childFragmentManager, InfoFragmentData.TitleDescription(
+                title = dashboardPageFragment.getString(R.string.clock_deviation_explanation_title),
                 descriptionData = DescriptionData(
                     R.string.clock_deviation_explanation_description,
                     customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)
@@ -197,11 +197,11 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
 
-    private fun onTestCertificate3GValidityClicked(myOverviewFragment: MyOverviewFragment) {
+    private fun onTestCertificate3GValidityClicked(dashboardPageFragment: DashboardPageFragment) {
         infoFragmentUtil.presentAsBottomSheet(
-            myOverviewFragment.childFragmentManager,
+            dashboardPageFragment.childFragmentManager,
             InfoFragmentData.TitleDescription(
-                title = myOverviewFragment.getString(R.string.holder_my_overview_3g_test_validity_bottom_sheet_title),
+                title = dashboardPageFragment.getString(R.string.holder_my_overview_3g_test_validity_bottom_sheet_title),
                 descriptionData = DescriptionData(
                     R.string.holder_my_overview_3g_test_validity_bottom_sheet_body,
                     htmlLinksEnabled = true
@@ -210,20 +210,20 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
         )
     }
 
-    private fun onVisitorPassIncompleteClicked(myOverviewFragment: MyOverviewFragment) {
+    private fun onVisitorPassIncompleteClicked(dashboardPageFragment: DashboardPageFragment) {
         val navigationDirection = InfoFragmentDirections.actionCommercialTestInputToken()
 
         infoFragmentUtil.presentFullScreen(
-            currentFragment = myOverviewFragment,
-            toolbarTitle = myOverviewFragment.getString(R.string.holder_completecertificate_toolbar),
+            currentFragment = dashboardPageFragment,
+            toolbarTitle = dashboardPageFragment.getString(R.string.holder_completecertificate_toolbar),
             data = InfoFragmentData.TitleDescriptionWithButton(
-                title = myOverviewFragment.getString(R.string.holder_completecertificate_title),
+                title = dashboardPageFragment.getString(R.string.holder_completecertificate_title),
                 descriptionData = DescriptionData(
                     htmlText = R.string.holder_completecertificate_body,
                     htmlLinksEnabled = true,
                 ),
                 primaryButtonData = ButtonData.NavigationButton(
-                    text = myOverviewFragment.getString(R.string.holder_completecertificate_button_fetchnegativetest),
+                    text = dashboardPageFragment.getString(R.string.holder_completecertificate_button_fetchnegativetest),
                     navigationActionId = navigationDirection.actionId,
                     navigationArguments = navigationDirection.arguments
                 )
@@ -232,15 +232,15 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
     private fun onOriginInfoClicked(
-        myOverviewFragment: MyOverviewFragment,
+        dashboardPageFragment: DashboardPageFragment,
         item: DashboardItem.InfoItem.OriginInfoItem
     ) {
         when (item.greenCardType) {
             is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
-                item.originType, myOverviewFragment
+                item.originType, dashboardPageFragment
             )
             is GreenCardType.Eu -> presentOriginInfoForEuQr(
-                item.originType, myOverviewFragment
+                item.originType, dashboardPageFragment
             )
         }
     }
@@ -251,32 +251,32 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
 
     private fun presentOriginInfoForEuQr(
         originType: OriginType,
-        myOverviewFragment: MyOverviewFragment
+        dashboardPageFragment: DashboardPageFragment
     ) {
         infoFragmentUtil.presentAsBottomSheet(
-            myOverviewFragment.childFragmentManager,
+            dashboardPageFragment.childFragmentManager,
             data = when (originType) {
                 is OriginType.Test -> {
                     InfoFragmentData.TitleDescription(
-                        title = myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_test),
+                        title = dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_test),
                         descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test),
                     )
                 }
                 is OriginType.Vaccination -> {
                     InfoFragmentData.TitleDescription(
-                        title = myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
+                        title = dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                         descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination),
                     )
                 }
                 is OriginType.Recovery -> {
                     InfoFragmentData.TitleDescription(
-                        title = myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),
+                        title = dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),
                         descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery),
                     )
                 }
                 is OriginType.VaccinationAssessment -> {
                     InfoFragmentData.TitleDescription(
-                        title =  myOverviewFragment.getString(R.string.holder_notvalidinthisregionmodal_visitorpass_international_title),
+                        title =  dashboardPageFragment.getString(R.string.holder_notvalidinthisregionmodal_visitorpass_international_title),
                         descriptionData = DescriptionData(
                             htmlText = R.string.holder_notvalidinthisregionmodal_visitorpass_international_body,
                             htmlLinksEnabled = true),
@@ -288,29 +288,29 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
 
     private fun presentOriginInfoForDomesticQr(
         originType: OriginType,
-        myOverviewFragment: MyOverviewFragment
+        dashboardPageFragment: DashboardPageFragment
     ) {
         val (title, description) = when (originType) {
             OriginType.Test -> Pair(
-                myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_test),
+                dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_test),
                 R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test
             )
             OriginType.Vaccination -> Pair(
-                myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
+                dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
                 R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination
             )
             OriginType.Recovery -> Pair(
-                myOverviewFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),
+                dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),
                 R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery
             )
             OriginType.VaccinationAssessment -> Pair(
                 // Missing domestic visitor pass can never happen
-                myOverviewFragment.getString(R.string.holder_notvalidinthisregionmodal_visitorpass_international_title),
+                dashboardPageFragment.getString(R.string.holder_notvalidinthisregionmodal_visitorpass_international_title),
                 R.string.holder_notvalidinthisregionmodal_visitorpass_international_body
             )
         }
         infoFragmentUtil.presentAsBottomSheet(
-            myOverviewFragment.childFragmentManager,
+            dashboardPageFragment.childFragmentManager,
             InfoFragmentData.TitleDescription(
                 title = title,
                 descriptionData = DescriptionData(description, htmlLinksEnabled = true),
@@ -322,23 +322,23 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
      * Handles the dismiss button click in the info card
      */
     override fun handleDismiss(
-        myOverviewFragment: MyOverviewFragment,
+        dashboardPageFragment: DashboardPageFragment,
         infoCardItem: MyOverviewInfoCardItem,
         infoItem: DashboardItem.InfoItem
     ) {
         // Remove section from adapter
-        myOverviewFragment.section.remove(infoCardItem)
+        dashboardPageFragment.section.remove(infoCardItem)
 
         // Clear preference so it doesn't show again
         when (infoItem) {
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                myOverviewFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
+                dashboardPageFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
             is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
-                myOverviewFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
+                dashboardPageFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
             is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
-                myOverviewFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
+                dashboardPageFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
             is DashboardItem.InfoItem.ClockDeviationItem,
             is DashboardItem.InfoItem.ConfigFreshnessWarning,
@@ -347,13 +347,13 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.MissingDutchVaccinationItem,
             is DashboardItem.InfoItem.VisitorPassIncompleteItem,
             is DashboardItem.InfoItem.NewValidityItem -> {
-                myOverviewFragment.dashboardViewModel.dismissNewValidityInfoCard()
+                dashboardPageFragment.dashboardViewModel.dismissNewValidityInfoCard()
             }
             is DashboardItem.InfoItem.BoosterItem -> {
-                myOverviewFragment.dashboardViewModel.dismissBoosterInfoCard()
+                dashboardPageFragment.dashboardViewModel.dismissBoosterInfoCard()
             }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
-                myOverviewFragment.dashboardViewModel.dismissPolicyInfo(infoItem.disclosurePolicy)
+                dashboardPageFragment.dashboardViewModel.dismissPolicyInfo(infoItem.disclosurePolicy)
             }
         }
     }
