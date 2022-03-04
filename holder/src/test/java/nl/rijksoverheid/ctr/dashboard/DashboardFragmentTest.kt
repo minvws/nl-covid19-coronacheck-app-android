@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.ui.create_qr
+package nl.rijksoverheid.ctr.dashboard
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.cardview.widget.CardView
@@ -6,7 +6,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.fragment.app.testing.withFragment
 import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -27,7 +26,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment
+import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
@@ -40,7 +39,6 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /*
@@ -51,7 +49,7 @@ import kotlin.test.assertTrue
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class MyOverviewFragmentTest : AutoCloseKoinTest() {
+class DashboardFragmentTest : AutoCloseKoinTest() {
 
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
@@ -522,7 +520,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         assertDisplayed(R.id.text, R.string.holder_dashboard_3Gand1GaccessBanner_title)
     }
     
-    private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<MyOverviewTabsFragment> {
+    private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<DashboardFragment> {
         loadKoinModules(
             module(override = true) {
                 viewModel { fakeAppConfigViewModel(appStatus = AppStatus.NoActionRequired) }
@@ -534,7 +532,7 @@ class MyOverviewFragmentTest : AutoCloseKoinTest() {
         return launchFragmentInContainer(
             fragmentArgs, themeResId = R.style.AppTheme
         ) {
-            MyOverviewTabsFragment().also {
+            DashboardFragment().also {
                 it.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
                     if (viewLifecycleOwner != null) {
                         Navigation.setViewNavController(it.requireView(), navController)

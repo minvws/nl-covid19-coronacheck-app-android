@@ -14,13 +14,13 @@
 
     <navigation
         android:id="@+id/nav_graph_overview"
-        app:startDestination="@+id/nav_my_overview_tabs">
+        app:startDestination="@+id/nav_dashboard">
 
         <fragment
-            android:id="@+id/nav_my_overview_tabs"
-            android:name="nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment"
+            android:id="@+id/nav_dashboard"
+            android:name="nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment"
             android:label="@string/my_overview"
-            tools:layout="@layout/fragment_tabs_my_overview">
+            tools:layout="@layout/fragment_dashboard">
 
             <deepLink app:uri=".*/app/open?returnUri={returnUri}" />
 
@@ -450,7 +450,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit"
-            app:popUpTo="@id/nav_my_overview_tabs"
+            app:popUpTo="@id/nav_dashboard"
             app:popUpToInclusive="false" />
 
         <action android:id="@+id/action_info_fragment"
@@ -459,7 +459,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit"
-            app:popUpTo="@id/nav_my_overview_tabs"
+            app:popUpTo="@id/nav_dashboard"
             app:popUpToInclusive="false" />
 
     </fragment>
@@ -649,7 +649,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit"
-            app:popUpTo="@id/nav_my_overview_tabs"
+            app:popUpTo="@id/nav_dashboard"
             app:popUpToInclusive="false" />
 
         <action

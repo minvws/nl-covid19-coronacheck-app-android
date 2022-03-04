@@ -16,12 +16,12 @@ import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragment
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirections
+import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
+import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragmentDirections
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 
 interface MenuUtil {
-    fun showMenu(myOverviewTabsFragment: MyOverviewTabsFragment)
+    fun showMenu(dashboardFragment: DashboardFragment)
 }
 
 class MenuUtilImpl(
@@ -29,10 +29,10 @@ class MenuUtilImpl(
     private val appConfigPersistenceManager: AppConfigPersistenceManager
 ): MenuUtil {
 
-    override fun showMenu(myOverviewTabsFragment: MyOverviewTabsFragment) {
-        myOverviewTabsFragment.findNavControllerSafety()?.navigate(
-            MyOverviewTabsFragmentDirections.actionMenu(
-                menuSections = getMenuSections(myOverviewTabsFragment.requireContext())
+    override fun showMenu(dashboardFragment: DashboardFragment) {
+        dashboardFragment.findNavControllerSafety()?.navigate(
+            DashboardFragmentDirections.actionMenu(
+                menuSections = getMenuSections(dashboardFragment.requireContext())
             )
         )
     }

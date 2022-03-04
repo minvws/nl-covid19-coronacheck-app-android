@@ -12,13 +12,13 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.MainNavDirections
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragmentDirections
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewFragment
-import nl.rijksoverheid.ctr.holder.ui.myoverview.MyOverviewTabsFragmentDirections
 import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewInfoCardItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -103,7 +103,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
     private fun onBoosterItemClicked(myOverviewFragment: MyOverviewFragment) {
-        myOverviewFragment.navigateSafety(MyOverviewTabsFragmentDirections.actionGetEvents(
+        myOverviewFragment.navigateSafety(DashboardFragmentDirections.actionGetEvents(
             originType = RemoteOriginType.Vaccination,
             toolbarTitle = myOverviewFragment.getString(R.string.choose_provider_toolbar),
         ))
@@ -157,7 +157,7 @@ class MyOverviewFragmentInfoItemHandlerUtilImpl(
     }
 
     private fun onMissingDutchVaccinationItemClicked(myOverviewFragment: MyOverviewFragment) {
-        myOverviewFragment.navigateSafety(MyOverviewTabsFragmentDirections.actionMissingDutchCertificate())
+        myOverviewFragment.navigateSafety(DashboardFragmentDirections.actionMissingDutchCertificate())
     }
 
     private fun onConfigRefreshClicked(
