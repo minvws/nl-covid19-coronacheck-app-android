@@ -1,14 +1,15 @@
 package nl.rijksoverheid.ctr.holder.modules
 
+import nl.rijksoverheid.ctr.holder.dashboard.items.*
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPAgeInfoItemHandlerUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPAgeInfoItemHandlerUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtilImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
-import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemUtil
-import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemUtilImpl
-import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItemUtil
-import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -40,7 +41,7 @@ fun utilsModule(versionCode: Int) = module {
     factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
-    factory<MyOverviewFragmentInfoItemHandlerUtil> { MyOverviewFragmentInfoItemHandlerUtilImpl(get(), get(), get()) }
+    factory<DashboardPAgeInfoItemHandlerUtil> { DashboardPAgeInfoItemHandlerUtilImpl(get(), get(), get()) }
     factory<YourEventFragmentEndStateUtil> {
         YourEventFragmentEndStateUtilImpl(get())
     }
@@ -51,6 +52,6 @@ fun utilsModule(versionCode: Int) = module {
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
     factory<MenuUtil> { MenuUtilImpl(get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
-    factory<HeaderItemTextUtil> { HeaderItemTextUtilImpl(get()) }
+    factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }
     factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
 }

@@ -1,4 +1,11 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
+package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import android.content.Context
 import nl.rijksoverheid.ctr.holder.R
@@ -16,7 +23,7 @@ import java.time.temporal.ChronoUnit
  *
  */
 
-interface MyOverviewGreenCardExpiryUtil {
+interface DashboardGreenCardAdapterItemExpiryUtil {
     sealed class ExpireCountDown {
         data class Show(val hoursLeft: Long, val minutesLeft: Long) : ExpireCountDown()
         object Hide : ExpireCountDown()
@@ -38,10 +45,10 @@ interface MyOverviewGreenCardExpiryUtil {
     fun getLastValidOrigin(origins: List<OriginEntity>): OriginEntity?
 }
 
-class MyOverviewGreenCardExpiryUtilImpl(
+class DashboardGreenCardAdapterItemExpiryUtilImpl(
     private val clock: Clock,
     private val context: Context
-) : MyOverviewGreenCardExpiryUtil {
+) : DashboardGreenCardAdapterItemExpiryUtil {
 
     private val minutesInSeconds = 60
     private val hoursInSeconds = 60 * 60
@@ -49,11 +56,11 @@ class MyOverviewGreenCardExpiryUtilImpl(
     override fun getExpireCountdown(
         expireDate: OffsetDateTime,
         type: OriginType
-    ): MyOverviewGreenCardExpiryUtil.ExpireCountDown {
+    ): DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown {
         val hoursBetweenExpiration =
             ChronoUnit.HOURS.between(OffsetDateTime.now(clock), expireDate)
         return if (hoursBetweenExpiration >= getExpiryHoursForType(type)) {
-            MyOverviewGreenCardExpiryUtil.ExpireCountDown.Hide
+            DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Hide
         } else {
             var diff =
                 expireDate.toEpochSecond() - OffsetDateTime.now(clock)
@@ -61,7 +68,7 @@ class MyOverviewGreenCardExpiryUtilImpl(
             val hoursUntilFinish = diff / hoursInSeconds
             diff %= hoursInSeconds
             val minutesUntilFinish = (diff / minutesInSeconds).coerceAtLeast(1)
-            MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show(
+            DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(
                 hoursLeft = hoursUntilFinish,
                 minutesLeft = minutesUntilFinish
             )
@@ -73,7 +80,7 @@ class MyOverviewGreenCardExpiryUtilImpl(
     }
 
     override fun getExpiryText(
-        result: MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show
+        result: DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show
     ): String {
         val hoursLeft = result.hoursLeft.toInt()
         val minutesLeft = result.minutesLeft.toInt()

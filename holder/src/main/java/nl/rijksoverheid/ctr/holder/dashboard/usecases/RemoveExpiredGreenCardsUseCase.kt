@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: EUPL-1.2
  */
 
-package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
+package nl.rijksoverheid.ctr.dashboard.usecases
 
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard

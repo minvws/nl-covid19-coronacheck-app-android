@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModelImpl
+import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModel
+import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModelImpl
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.LoginViewModel

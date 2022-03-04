@@ -24,7 +24,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewGreenCardExpiryUtil
 import nl.rijksoverheid.ctr.shared.ext.capitalize
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import java.time.Clock
@@ -49,7 +48,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
     private val utcClock: Clock,
     private val context: Context,
     private val credentialUtil: CredentialUtil,
-    private val myOverviewGreenCardExpiryUtil: MyOverviewGreenCardExpiryUtil
+    private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil
 ) : DashboardGreenCardAdapterItemUtil {
 
     override fun setContent(
@@ -119,7 +118,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
                             }
                         }
                     // When there is only 1 valid origin set potential expiry countdown
-                    myOverviewGreenCardExpiryUtil.getLastValidOrigin(it.origins)?.let {
+                    dashboardGreenCardAdapterItemExpiryUtil.getLastValidOrigin(it.origins)?.let {
                         setExpiryText(it, dashboardGreenCardAdapterItemBinding)
                     }
                 }
@@ -417,13 +416,13 @@ class DashboardGreenCardAdapterItemUtilImpl(
         origin: OriginEntity,
         dashboardGreenCardAdapterItemBinding: DashboardGreenCardAdapterItemBindingWrapper
     ) {
-        val expireCountDownResult = myOverviewGreenCardExpiryUtil.getExpireCountdown(
+        val expireCountDownResult = dashboardGreenCardAdapterItemExpiryUtil.getExpireCountdown(
             origin.expirationTime, origin.type
         )
-        if (expireCountDownResult is MyOverviewGreenCardExpiryUtil.ExpireCountDown.Show) {
+        if (expireCountDownResult is DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show) {
             dashboardGreenCardAdapterItemBinding.expiresIn.visibility = View.VISIBLE
             dashboardGreenCardAdapterItemBinding.expiresIn.text =
-                myOverviewGreenCardExpiryUtil.getExpiryText(
+                dashboardGreenCardAdapterItemExpiryUtil.getExpiryText(
                     expireCountDownResult
                 )
         } else {

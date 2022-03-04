@@ -10,13 +10,14 @@ package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert
 import org.junit.Test
 
-class HeaderItemTextUtilImplTest {
+class DashboardHeaderAdapterItemUtilImplTest {
 
     @Test
     fun `Correct copy for domestic tab and empty state with policy 1G`() {
@@ -108,11 +109,11 @@ class HeaderItemTextUtilImplTest {
         )
     }
 
-    private fun getUtil(policy: DisclosurePolicy): HeaderItemTextUtilImpl {
+    private fun getUtil(policy: DisclosurePolicy): DashboardHeaderAdapterItemUtilImpl {
         val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>()
         every { featureFlagUseCase.getDisclosurePolicy() } answers { policy }
 
-        return HeaderItemTextUtilImpl(
+        return DashboardHeaderAdapterItemUtilImpl(
             featureFlagUseCase = featureFlagUseCase
         )
     }

@@ -1,4 +1,11 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
+package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import android.content.Context
 import android.content.Intent
@@ -30,7 +37,7 @@ import java.time.ZoneOffset
 /**
  * Handles [DashboardInfoCardAdapterItem] actions
  */
-interface MyOverviewFragmentInfoItemHandlerUtil {
+interface DashboardPAgeInfoItemHandlerUtil {
     fun handleButtonClick(
         dashboardPageFragment: DashboardPageFragment,
         infoItem: DashboardItem.InfoItem
@@ -43,11 +50,11 @@ interface MyOverviewFragmentInfoItemHandlerUtil {
     )
 }
 
-class MyOverviewFragmentInfoItemHandlerUtilImpl(
+class DashboardPAgeInfoItemHandlerUtilImpl(
     private val infoFragmentUtil: InfoFragmentUtil,
     private val intentUtil: IntentUtil,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase
-) : MyOverviewFragmentInfoItemHandlerUtil {
+) : DashboardPAgeInfoItemHandlerUtil {
 
     /**
      * Handles the button click in the info card

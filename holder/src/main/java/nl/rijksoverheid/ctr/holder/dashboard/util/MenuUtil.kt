@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: EUPL-1.2
  */
 
-package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
+package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import android.content.Context
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig

@@ -5,14 +5,14 @@
  * SPDX-License-Identifier: EUPL-1.2
  */
 
-package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
+package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
-interface HeaderItemTextUtil {
+interface DashboardHeaderAdapterItemUtil {
     fun getText(
         greenCardType: GreenCardType,
         emptyState: Boolean,
@@ -20,9 +20,9 @@ interface HeaderItemTextUtil {
         ): Int
 }
 
-class HeaderItemTextUtilImpl(
+class DashboardHeaderAdapterItemUtilImpl(
     private val featureFlagUseCase: HolderFeatureFlagUseCase
-): HeaderItemTextUtil {
+): DashboardHeaderAdapterItemUtil {
 
     /**
      * Get the header item text to display in the domestic tab on the dashboard screen

@@ -22,11 +22,10 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderReposi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
+import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
 import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -236,34 +235,6 @@ fun fakeCoronaCheckRepository(
             couplingCode: String
         ): NetworkRequestResult<RemoteCouplingResponse> {
             return NetworkRequestResult.Success(RemoteCouplingResponse(RemoteCouplingStatus.Accepted))
-        }
-    }
-}
-
-fun fakeTestResultAttributesUseCase(
-    sampleTimeSeconds: Long = 0L,
-    testType: String = "",
-    birthDay: String = "",
-    birthMonth: String = "",
-    firstNameInitial: String = "",
-    lastNameInitial: String = "",
-    isSpecimen: String = "0",
-    isPaperProof: String = "0"
-): TestResultAttributesUseCase {
-    return object : TestResultAttributesUseCase {
-        override fun get(credentials: String): TestResultAttributes {
-            return TestResultAttributes(
-                birthDay = birthDay,
-                birthMonth = birthMonth,
-                firstNameInitial = firstNameInitial,
-                lastNameInitial = lastNameInitial,
-                isSpecimen = isSpecimen,
-                isNLDCC = "1",
-                credentialVersion = "1",
-                isPaperProof = "0",
-                validForHours = "24",
-                validFrom = "1622633766",
-            )
         }
     }
 }

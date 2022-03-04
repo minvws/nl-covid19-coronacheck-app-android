@@ -21,9 +21,8 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardPageBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CardItemUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MyOverviewFragmentInfoItemHandlerUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPAgeInfoItemHandlerUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
@@ -57,7 +56,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
 
     }
 
-    private val myOverviewFragmentInfoItemHandlerUtil: MyOverviewFragmentInfoItemHandlerUtil by inject()
+    private val dashboardPAgeInfoItemHandlerUtil: DashboardPAgeInfoItemHandlerUtil by inject()
     private val cardItemUtil: CardItemUtil by inject()
     val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
         ViewModelOwner.from(
@@ -134,10 +133,10 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         adapterItems.add(DashboardInfoCardAdapterItem(
             infoItem = dashboardItem,
             onButtonClick = {
-                myOverviewFragmentInfoItemHandlerUtil.handleButtonClick(this, it)
+                dashboardPAgeInfoItemHandlerUtil.handleButtonClick(this, it)
             },
             onDismiss = { infoCardItem, infoItem ->
-                myOverviewFragmentInfoItemHandlerUtil.handleDismiss(
+                dashboardPAgeInfoItemHandlerUtil.handleDismiss(
                     this,
                     infoCardItem,
                     infoItem
