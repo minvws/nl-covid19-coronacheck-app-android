@@ -292,7 +292,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     private fun isVaccinationWithPositiveTestFlow() =
-        getFlow() == HolderFlow.VaccinationAndPositiveTest
+        getFlow() == HolderFlow.PositiveTest
 
     private fun replaceCertificateDialog(
         remoteEvents: Map<RemoteProtocol3, ByteArray>,

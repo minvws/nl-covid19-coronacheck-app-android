@@ -303,7 +303,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,
                 flow = if (flow == HolderFlow.Vaccination && getPositiveTestWithVaccination) {
-                    HolderFlow.VaccinationAndPositiveTest
+                    HolderFlow.PositiveTest
                 } else {
                     flow
                 }
