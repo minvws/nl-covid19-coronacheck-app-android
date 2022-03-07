@@ -699,7 +699,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_message">Only an international vaccination certificate could be created from your retrieved details. Find more information on the <a href="https://coronacheck.nl/en/guidepost">Guidepost</a>.</string>
   <string name="holder_listRemoteEvents_somethingWrong_vaccination_body">Please contact the care provider who vaccinated you. This can be the GGD, your general practitioner, or a doctor belonging to a healthcare facility. They can help you change these details.</string>
   <string name="holder_listRemoteEvents_listElement_vaccination_title">Vaccination %s</string>
-  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_message"><![CDATA[A Dutch vaccination certificate has been created from your retrieved vaccinations.<br/><br/>Your positive test result was suitable for creating a recovery certificate as well.]]></string>
+  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_message"><![CDATA[A vaccination certificate has been created from your retrieved vaccinations.<br/><br/>Your positive test result was suitable for creating a recovery certificate as well.]]></string>
   <string name="holder_listRemoteEvents_endStateRecoveryOnly_message">Only a recovery certificate could be created from your retrieved vaccinations. Find more information on the <a href="https://coronacheck.nl/en/guidepost">Guidepost</a>.</string>
   <string name="holder_listRemoteEvents_originMismatch_vaccinationAndPositiveTest_body" formatted="false"><![CDATA[At this moment, we can\'t create a certificate from your %1$s. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/><b>Error code:</b><br/>%1s]]></string>
   <string name="holder_onboarding_disclosurePolicyChanged_only3GAccess_title">3G access in the Netherlands</string>
@@ -709,4 +709,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_title">Only 1G access in the Netherlands</string>
   <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_message">Visiting a place in the Netherlands where a coronavirus pass is required? Currently, only 1G access is given. This means you can enter with a certificate of a negative test.</string>
   <string name="holder_inputRetrievalCode_error_blocked">You’ve tried to enter your code too many times. Please try again in 5 minutes.</string>
+  <string name="dynamic_property_retrievedDetails">retrieved details</string>
 </resources>

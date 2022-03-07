@@ -8,16 +8,18 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.shared.models.Flow
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
 interface YourEventsFragmentUtil {
-    fun getNoOriginTypeCopy(type: YourEventsFragmentType): Int
+    fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int
     fun getProviderName(type: YourEventsFragmentType, providerIdentifier: String): String
     fun getCancelDialogDescription(type: YourEventsFragmentType): Int
     fun getFullName(holder: RemoteProtocol3.Holder?): String
@@ -26,9 +28,9 @@ interface YourEventsFragmentUtil {
 
 class YourEventsFragmentUtilImpl(
     private val remoteEventUtil: RemoteEventUtil
-): YourEventsFragmentUtil {
+) : YourEventsFragmentUtil {
 
-    override fun getNoOriginTypeCopy(type: YourEventsFragmentType): Int {
+    override fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int {
         return when (type) {
             is YourEventsFragmentType.TestResult2 -> {
                 R.string.rule_engine_no_test_origin_description_negative_test
@@ -45,7 +47,11 @@ class YourEventsFragmentUtilImpl(
                         R.string.rule_engine_no_test_origin_description_positive_test
                     }
                     is OriginType.Vaccination -> {
-                        R.string.rule_engine_no_test_origin_description_vaccination
+                        if (flow is HolderFlow.VaccinationAndPositiveTest) {
+                            R.string.dynamic_property_retrievedDetails
+                        } else {
+                            R.string.rule_engine_no_test_origin_description_vaccination
+                        }
                     }
                     is OriginType.VaccinationAssessment -> {
                         R.string.general_vaccinationAssessment
