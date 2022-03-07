@@ -100,6 +100,7 @@ class TestResultUseCase(
                 RemoteProtocol.Status.VERIFICATION_REQUIRED -> return TestResult.VerificationRequired
                 RemoteProtocol.Status.INVALID_TOKEN -> return TestResult.InvalidToken
                 RemoteProtocol.Status.PENDING -> return TestResult.Pending
+                RemoteProtocol.Status.RESULT_BLOCKED -> return TestResult.ResultBlocked
                 RemoteProtocol.Status.COMPLETE -> {
                     if (remoteTestResult is RemoteTestResult2) {
                         if (remoteTestResult.result?.negativeResult == false) {
@@ -142,5 +143,6 @@ sealed class TestResult {
     object UnknownTestProvider : TestResult()
     object EmptyVerificationCode : TestResult()
     object VerificationRequired : TestResult()
+    object ResultBlocked: TestResult()
     data class Error(val errorResult: ErrorResult) : TestResult()
 }
