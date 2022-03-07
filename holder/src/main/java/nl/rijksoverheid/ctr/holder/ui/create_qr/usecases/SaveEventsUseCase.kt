@@ -104,7 +104,7 @@ class SaveEventsUseCaseImpl(
                     jsonData = it.value,
                     scope = scopeUtil.getScopeForOriginType(
                         originType = originType,
-                        getPositiveTestWithVaccination = flow == HolderFlow.PositiveTest
+                        getPositiveTestWithVaccination = flow == HolderFlow.VaccinationAndPositiveTest
                     )
                 )
             }

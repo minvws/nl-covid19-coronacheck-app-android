@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.NonNull
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewCheckboxButtonBinding
@@ -303,7 +302,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,
                 flow = if (flow == HolderFlow.Vaccination && getPositiveTestWithVaccination) {
-                    HolderFlow.PositiveTest
+                    HolderFlow.VaccinationAndPositiveTest
                 } else {
                     flow
                 }
