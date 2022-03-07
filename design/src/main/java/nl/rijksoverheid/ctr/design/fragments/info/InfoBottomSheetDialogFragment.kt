@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.design.databinding.FragmentInfoBottomsheetBinding
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -61,14 +62,20 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
             arguments?.get(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA) as? InfoFragmentData ?: return
         binding.title.text = expandedBottomSheetData.title
         binding.description.apply {
+            // split html text in parts per paragraph for Talkback users only
             expandedBottomSheetData.descriptionData.run {
                 htmlText?.let {
-                    setHtmlText(it, htmlLinksEnabled)
+                    setHtmlText(
+                        htmlText = it,
+                        htmlLinksEnabled = htmlLinksEnabled,
+                        splitHtmlText = Accessibility.screenReader(requireContext()),
+                    )
                 }
                 htmlTextString?.let {
                     setHtmlText(
                         htmlText = it,
-                        htmlLinksEnabled = htmlLinksEnabled
+                        htmlLinksEnabled = htmlLinksEnabled,
+                        splitHtmlText = Accessibility.screenReader(requireContext()),
                     )
                 }
                 customLinkIntent?.let { enableCustomLinks { context.startActivity(it) } }
@@ -104,9 +111,5 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 binding.footer.text = expandedBottomSheetData.footerText
             }
         }
-    }
-
-    companion object {
-        const val dataKey = "infoFragmentData"
     }
 }

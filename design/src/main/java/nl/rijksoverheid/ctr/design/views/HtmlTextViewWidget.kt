@@ -17,10 +17,7 @@ import androidx.core.text.getSpans
 import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import nl.rijksoverheid.ctr.design.R
-import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
-import nl.rijksoverheid.ctr.design.ext.enableHtmlLinks
-import nl.rijksoverheid.ctr.design.ext.getAttrColor
-import nl.rijksoverheid.ctr.design.ext.isHeading
+import nl.rijksoverheid.ctr.design.ext.*
 import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
 
 /**
@@ -114,9 +111,9 @@ class HtmlTextViewWidget @JvmOverloads constructor(
      * Sets the text based on a string resource.
      * Links are disabled by default, but can be enabled.
      */
-    fun setHtmlText(htmlText: Int, htmlLinksEnabled: Boolean = false) {
+    fun setHtmlText(htmlText: Int, htmlLinksEnabled: Boolean = false, splitHtmlText: Boolean = false) {
         val text = context.getString(htmlText)
-        setHtmlText(text, htmlLinksEnabled = htmlLinksEnabled)
+        setHtmlText(text, htmlLinksEnabled = htmlLinksEnabled, splitHtmlText = splitHtmlText)
     }
 
     /**
@@ -133,6 +130,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         headingMarginMultiplier: Float = HEADING_MARGIN_MULTIPLIER,
         listItemMarginMultiplier: Float = LIST_ITEM_MARGIN_MULTIPLIER,
         textSize: Float = -1f,
+        splitHtmlText: Boolean = false,
     ) {
         removeAllViews()
 
@@ -145,8 +143,13 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         val spannable = getSpannableFromHtml(htmlText)
         this.spannable = spannable
 
-        // Step 2: Separate the Spannable on each linebreak
-        val parts = listOf(spannable) // spannable.separated("\n") --> NOTE: disabled for now
+        // Step 2: Separate the Spannable on each paragraph if
+        // property is set, off by default
+        val parts = if (splitHtmlText) {
+            spannable.separated("\n\n")
+        } else {
+            listOf(spannable)
+        }
 
         // Step 3: Add a HtmlTextView for each part of the Spannable
         parts.forEachIndexed { _, part ->
