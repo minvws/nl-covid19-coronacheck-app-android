@@ -279,6 +279,15 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
+            YourEventFragmentEndState.NoRecoveryWithStoredVaccination -> {
+                navigateSafety(
+                    YourEventsFragmentDirections.actionCertificateCreated(
+                        toolbarTitle = getString(R.string.no_certificate_created_toolbar_title),
+                        title = getString(R.string.cannot_create_recovery_proof_title),
+                        description = getString(R.string.cannot_create_recovery_proof_description)
+                    )
+                )
+            }
         }
     }
 

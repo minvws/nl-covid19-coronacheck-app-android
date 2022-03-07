@@ -155,4 +155,31 @@ class YourEventFragmentEndStateUtilImplTest {
 
         assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NotApplicable)
     }
+
+    @Test
+    fun `combination is no positive test with stored vaccination`() {
+        val storedGreenCards = listOf(
+            fakeGreenCard(
+                greenCardType = GreenCardType.Domestic,
+                originType = OriginType.Vaccination
+            )
+        )
+        val events = listOf(
+            fakeEventGroupEntity(type = OriginType.Vaccination),
+            fakeEventGroupEntity(type = OriginType.Recovery)
+        )
+        val remoteGreenCards = fakeRemoteGreenCards(
+            domesticGreencard = fakeDomesticGreenCard(
+                origins = listOf(
+                    fakeOrigin(type = OriginType.Vaccination)
+                )
+            ),
+            euGreencards = listOf(fakeEuGreenCard())
+        )
+
+        assertEquals(
+            util.getResult(HolderFlow.Recovery, storedGreenCards, events, remoteGreenCards),
+            NoRecoveryWithStoredVaccination
+        )
+    }
 }
