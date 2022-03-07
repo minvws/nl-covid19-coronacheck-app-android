@@ -32,6 +32,4 @@
     <item name="app_status_update_recommended_message" type="string" />
     <item name="app_status_update_recommended_action" type="string" />
     <item name="app_status_update_recommended_dismiss_action" type="string" />
-    <item name="ic_info" type="drawable" />
-    <item name="privacy_policy_checkbox_error" type="string" />
 </resources>

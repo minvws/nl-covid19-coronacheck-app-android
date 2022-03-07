@@ -33,7 +33,6 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:paddingHorizontal="16dp"
-                android:text="@string/privacy_policy_checkbox_text"
                 android:textAppearance="?attr/textAppearanceBody1" />
 
         </FrameLayout>
@@ -61,14 +60,13 @@
                 android:paddingHorizontal="8dp"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-                android:text="@string/privacy_policy_checkbox_error"
                 android:textSize="14sp"
                 android:textColor="@color/error" />
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/checkbox_button"
             style="@style/Widget.App.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,7 +75,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="2dp"
             android:gravity="center"
-            android:text="@string/onboarding_finish"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

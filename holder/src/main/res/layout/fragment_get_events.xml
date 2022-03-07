@@ -41,48 +41,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/title"
                 tools:htmlText="@string/get_vaccination_description" />
 
-            <androidx.cardview.widget.CardView
+            <nl.rijksoverheid.ctr.design.views.ScrollViewCheckboxButtonWidget
                 android:id="@+id/checkbox_container"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:focusable="true"
-                android:importantForAccessibility="yes"
-                app:cardBackgroundColor="@color/blue_5_percent"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:layout_constraintEnd_toEndOf="@+id/title"
-                app:layout_constraintStart_toStartOf="@+id/title"
-                app:layout_constraintTop_toBottomOf="@+id/description"
-                tools:showIn="@layout/fragment_get_events">
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="16dp"
-                    android:orientation="horizontal">
-
-                    <CheckBox
-                        android:id="@+id/checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="16dp"
-                        android:minWidth="0dp"
-                        android:minHeight="0dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:duplicateParentState="true"
-                        android:focusable="false"
-                        android:text="@string/holder_addVaccine_alsoCollectPositiveTestResults_checkbox"
-                        android:textAppearance="?attr/textAppearanceBody2" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-            </androidx.cardview.widget.CardView>
+                app:checkboxText="@string/holder_addVaccine_alsoCollectPositiveTestResults_checkbox"
+                app:buttonHidden="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description" />
 
             <Button
                 android:id="@+id/button"

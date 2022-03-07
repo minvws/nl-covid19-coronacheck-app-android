@@ -28,4 +28,11 @@
     <declare-styleable name="ButtonWithProgressWidget">
         <attr name="text" format="string" />
     </declare-styleable>
+    <declare-styleable name="ScrollViewCheckboxButtonWidget">
+        <attr name="checkboxText" format="string" />
+        <attr name="checkboxErrorText" format="string" />
+        <attr name="checkboxButtonText" format="string" />
+        <attr name="buttonHidden" format="boolean" />
+        <attr name="attachCheckboxToScrollView" format="reference" />
+    </declare-styleable>
 </resources>
