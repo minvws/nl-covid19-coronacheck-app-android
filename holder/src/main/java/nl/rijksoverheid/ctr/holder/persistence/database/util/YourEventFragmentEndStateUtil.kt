@@ -47,10 +47,10 @@ class YourEventFragmentEndStateUtilImpl(
         return when {
             hasAddedNegativeTestInVaccinationAssessmentFlow(flow, remoteGreenCards) -> AddedNegativeTestInVaccinationAssessmentFlow
             hasStoredDomesticVaccination(storedGreenCards) && flow !is HolderFlow.Recovery -> NotApplicable
-            isInternationalWithoutRecovery(events, remoteGreenCards) -> InternationalWithoutRecovery
             isNoRecoveryWithStoredVaccination(events, remoteGreenCards, storedGreenCards) -> NoRecoveryWithStoredVaccination
-            isOnlyVaccination(events, remoteGreenCards) -> OnlyVaccination(recoveryValidityDays)
-            isInternationalWithRecovery(events, remoteGreenCards) -> InternationalWithRecovery
+            isOnlyDomesticVaccination(events, remoteGreenCards) -> OnlyDomesticVaccination(recoveryValidityDays)
+            isVaccinationAndRecovery(events, remoteGreenCards) -> VaccinationAndRecovery
+            isOnlyInternationalVaccination(events, remoteGreenCards) -> OnlyInternationalVaccination
             isOnlyRecovery(events, remoteGreenCards) -> OnlyRecovery
             isCombinedVaccinationRecovery(events, remoteGreenCards) -> CombinedVaccinationRecovery(
                 recoveryValidityDays
@@ -73,12 +73,13 @@ class YourEventFragmentEndStateUtilImpl(
             }
     }
 
-    private fun isInternationalWithRecovery(
+    private fun isVaccinationAndRecovery(
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): Boolean {
         return hasVaccinationAndRecoveryEvents(events)
                 && hasOnlyInternationalVaccinationCertificates(remoteGreenCards)
+                && remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Recovery } ?: false
     }
 
     private fun isOnlyRecovery(
@@ -90,7 +91,7 @@ class YourEventFragmentEndStateUtilImpl(
                 remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Recovery } ?: false
     }
 
-    private fun isOnlyVaccination(
+    private fun isOnlyDomesticVaccination(
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): Boolean {
@@ -122,11 +123,11 @@ class YourEventFragmentEndStateUtilImpl(
     override fun hasVaccinationAndRecoveryEvents(events: List<EventGroupEntity>) =
         events.any { it.type == OriginType.Vaccination } && events.any { it.type == OriginType.Recovery }
 
-    private fun isInternationalWithoutRecovery(
+    private fun isOnlyInternationalVaccination(
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): Boolean {
-        return events.all { it.type == OriginType.Vaccination } &&
+        return (events.all { it.type == OriginType.Vaccination } || hasVaccinationAndRecoveryEvents(events)) &&
                 hasOnlyInternationalVaccinationCertificates(remoteGreenCards)
     }
 
