@@ -219,7 +219,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             YourEventFragmentEndState.InternationalWithRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
-                        toolbarTitle = getString(R.string.no_certificate_created_toolbar_title),
+                        toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
                         title = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title),
                         description = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message)
                     )
