@@ -97,20 +97,20 @@ class YourEventFragmentEndStateUtilImplTest {
                     fakeOrigin(type = OriginType.Recovery)
                 )
             ),
-            euGreencards = listOf(fakeEuGreenCard())
+            euGreencards = listOf()
         )
 
         assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), OnlyRecovery)
     }
 
     @Test
-    fun `combination is none with recovery`() {
+    fun `combination is international with recovery`() {
         val events = listOf(
             fakeEventGroupEntity(type = OriginType.Vaccination),
             fakeEventGroupEntity(type = OriginType.Recovery)
         )
         val remoteGreenCards = fakeRemoteGreenCards(
-            domesticGreencard = fakeDomesticGreenCard(origins = emptyList()),
+            domesticGreencard = fakeDomesticGreenCard(origins = listOf(fakeOrigin(type = OriginType.Recovery))),
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
