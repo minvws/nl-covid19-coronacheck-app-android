@@ -709,5 +709,5 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_message">Bezoek je een plek in Nederland waar een coronabewijs nodig is? Check vooraf of je een bewijs voor 3G- of 1G-toegang nodig hebt. De app maakt hier aparte bewijzen voor.</string>
   <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_title">Alleen 1G-toegang in Nederland</string>
   <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_message">Bezoek je een plek in Nederland waar een coronabewijs nodig is? Op dit moment wordt alleen 1G-toegang gegeven. Je kunt dan naar binnen met een bewijs van een negatieve test.</string>
-  <string name="holder_inputRetrievalCode_error_blocked">tijdelijk geblokkeerd.</string>
+  <string name="holder_inputRetrievalCode_error_blocked">Je hebt te vaak geprobeerd je code in te vullen. Probeer het over 5 minuten opnieuw.</string>
 </resources>
