@@ -79,7 +79,6 @@ class YourEventFragmentEndStateUtilImpl(
     ): Boolean {
         return hasVaccinationAndRecoveryEvents(events)
                 && hasOnlyInternationalVaccinationCertificates(remoteGreenCards)
-                && remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Recovery } ?: false
     }
 
     private fun isOnlyRecovery(
