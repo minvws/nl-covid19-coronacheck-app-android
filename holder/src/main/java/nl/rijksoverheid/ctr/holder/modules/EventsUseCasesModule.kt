@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import org.koin.dsl.module
 import java.time.Clock

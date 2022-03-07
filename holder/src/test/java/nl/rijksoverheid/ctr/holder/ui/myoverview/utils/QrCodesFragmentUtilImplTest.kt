@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtilImpl
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

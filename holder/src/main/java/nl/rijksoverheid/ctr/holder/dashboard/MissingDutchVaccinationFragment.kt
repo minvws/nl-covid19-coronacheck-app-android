@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview
+package nl.rijksoverheid.ctr.holder.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater

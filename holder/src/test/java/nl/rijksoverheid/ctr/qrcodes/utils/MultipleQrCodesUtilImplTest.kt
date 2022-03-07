@@ -6,10 +6,11 @@
  *
  */
 
-package nl.rijksoverheid.ctr.holder.ui.create_qr.util
+package nl.rijksoverheid.ctr.qrcodes.utils
 
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtilImpl
 import org.junit.Test
 import kotlin.test.assertEquals
 

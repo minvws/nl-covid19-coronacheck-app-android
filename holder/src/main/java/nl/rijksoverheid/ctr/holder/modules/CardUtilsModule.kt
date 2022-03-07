@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodeUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodeUtilImpl
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtil
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil

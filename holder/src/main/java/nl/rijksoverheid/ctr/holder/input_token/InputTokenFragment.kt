@@ -1,9 +1,15 @@
-package nl.rijksoverheid.ctr.holder.ui.create_qr
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
+package nl.rijksoverheid.ctr.holder.input_token
 
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
-import android.view.accessibility.AccessibilityEvent
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
@@ -17,6 +23,8 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentInputTokenBinding
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.InputTokenFragmentData
+import nl.rijksoverheid.ctr.holder.ui.create_qr.InputTokenViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
@@ -25,7 +33,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResult
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel

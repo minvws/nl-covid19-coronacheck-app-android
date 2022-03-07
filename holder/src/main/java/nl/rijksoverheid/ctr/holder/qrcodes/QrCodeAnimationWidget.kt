@@ -1,12 +1,17 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
+package nl.rijksoverheid.ctr.holder.qrcodes
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.annotation.DrawableRes
 import androidx.annotation.RawRes
-import androidx.core.content.ContextCompat
 import com.airbnb.lottie.LottieAnimationView
 import nl.rijksoverheid.ctr.holder.R
 

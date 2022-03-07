@@ -1,4 +1,11 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
+package nl.rijksoverheid.ctr.holder.qrcodes
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
@@ -27,13 +34,11 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodesFragmentUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

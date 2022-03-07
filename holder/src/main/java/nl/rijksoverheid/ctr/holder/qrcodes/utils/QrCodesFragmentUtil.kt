@@ -5,13 +5,11 @@
  * SPDX-License-Identifier: EUPL-1.2
  */
 
-package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
-import nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodesFragment
-import timber.log.Timber
+package nl.rijksoverheid.ctr.holder.qrcodes.utils
+
+import nl.rijksoverheid.ctr.holder.qrcodes.QrCodesFragment
 import java.time.Clock
 import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 interface QrCodesFragmentUtil {
     /**

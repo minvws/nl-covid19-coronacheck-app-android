@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview.models
+package nl.rijksoverheid.ctr.holder.qrcodes.models
 
 sealed class QrCodesResult {
     data class SingleQrCode(val qrCodeData: QrCodeData) : QrCodesResult()

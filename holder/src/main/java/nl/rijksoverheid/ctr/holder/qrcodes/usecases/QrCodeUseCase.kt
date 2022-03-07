@@ -1,14 +1,20 @@
-package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
+package nl.rijksoverheid.ctr.holder.qrcodes.usecases
 
 import android.graphics.Bitmap
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.QrCodeUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import java.time.Clock
 

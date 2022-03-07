@@ -25,8 +25,9 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
