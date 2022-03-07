@@ -5,7 +5,6 @@ import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
 import java.time.Clock
 import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy

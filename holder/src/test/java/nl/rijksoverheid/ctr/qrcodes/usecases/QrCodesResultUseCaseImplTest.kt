@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
+package nl.rijksoverheid.ctr.qrcodes.usecases
 
 import io.mockk.every
 import io.mockk.mockk
@@ -6,13 +6,12 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodesResult
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCaseImpl
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
 class QrCodesResultUseCaseImplTest {
 

@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.ui.myoverview.utils
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtilImpl
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest

@@ -14,6 +14,7 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.holder.usecase.ShowNewDisclosurePolicyUseCaseImpl
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Test
 import kotlin.test.assertEquals

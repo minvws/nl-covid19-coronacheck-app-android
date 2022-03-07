@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview.models
+package nl.rijksoverheid.ctr.holder.qrcodes.models
 
 import android.graphics.Bitmap
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential

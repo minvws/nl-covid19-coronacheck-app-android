@@ -1,4 +1,11 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
+package nl.rijksoverheid.ctr.holder.qrcodes
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +13,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ViewQrCodeBinding
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeData
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 /*

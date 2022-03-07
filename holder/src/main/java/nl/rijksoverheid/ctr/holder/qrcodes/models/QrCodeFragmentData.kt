@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.ui.myoverview.models
+package nl.rijksoverheid.ctr.holder.qrcodes.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

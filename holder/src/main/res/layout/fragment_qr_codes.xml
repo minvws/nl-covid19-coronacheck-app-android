@@ -109,7 +109,7 @@
         android:layout_weight="1">
 
 
-        <nl.rijksoverheid.ctr.holder.ui.myoverview.QrCodeAnimationWidget
+        <nl.rijksoverheid.ctr.holder.qrcodes.QrCodeAnimationWidget
             android:id="@+id/animation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

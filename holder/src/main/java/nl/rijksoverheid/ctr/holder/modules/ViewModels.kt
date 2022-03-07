@@ -5,6 +5,8 @@ import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModelImpl
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModelImpl
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
+import nl.rijksoverheid.ctr.holder.qrcodes.QrCodesViewModel
+import nl.rijksoverheid.ctr.holder.qrcodes.QrCodesViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.LoginViewModel
 import nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofCodeViewModel
@@ -15,7 +17,6 @@ import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.myoverview.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
