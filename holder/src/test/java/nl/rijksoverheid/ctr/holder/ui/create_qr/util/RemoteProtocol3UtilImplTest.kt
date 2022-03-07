@@ -85,7 +85,7 @@ class RemoteProtocol3UtilImplTest {
         Assert.assertEquals(2, groupedEvents.values.size)
         val firstEvent = groupedEvents.keys.toList()[0]
         val secondEvent = groupedEvents.keys.toList()[1]
-        Assert.assertTrue(firstEvent.getDate()!! < secondEvent.getDate()!!)
+        Assert.assertTrue(firstEvent.getDate()!! > secondEvent.getDate()!!)
         Assert.assertEquals(
             "GGD, RIVM",
             groupedEvents.values.first().map { it.providerIdentifier }.joinToString(", ")
