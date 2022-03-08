@@ -129,7 +129,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         when {
                             databaseSyncerResult.missingOrigin -> {
                                 val noOriginTypeCopy =
-                                    getString(yourEventsFragmentUtil.getNoOriginTypeCopy(args.type))
+                                    getString(yourEventsFragmentUtil.getNoOriginTypeCopy(args.type, getFlow()))
                                 presentError(
                                     errorResult = MissingOriginErrorResult,
                                     customerErrorDescription = getString(
