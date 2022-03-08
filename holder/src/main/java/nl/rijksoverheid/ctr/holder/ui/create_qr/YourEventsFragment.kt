@@ -30,7 +30,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -690,7 +693,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                     .map { remoteEventUtil.getOriginType(it) }
                                 when {
                                     origins.all { it == OriginType.Vaccination } -> {
-                                        R.string.holder_listRemoteEvents_somethingWrong_vaccination_body
+                                        if (getFlow() == HolderFlow.VaccinationAndPositiveTest) {
+                                            R.string.holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body
+                                        } else {
+                                            R.string.holder_listRemoteEvents_somethingWrong_vaccination_body
+                                        }
                                     }
                                     origins.all { it == OriginType.VaccinationAssessment } -> {
                                         R.string.holder_event_vaccination_assessment_wrong_body
