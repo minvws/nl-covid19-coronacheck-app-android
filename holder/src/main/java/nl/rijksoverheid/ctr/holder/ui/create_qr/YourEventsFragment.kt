@@ -129,7 +129,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         when {
                             databaseSyncerResult.missingOrigin -> {
                                 val noOriginTypeCopy =
-                                    getString(yourEventsFragmentUtil.getNoOriginTypeCopy(args.type))
+                                    getString(yourEventsFragmentUtil.getNoOriginTypeCopy(args.type, getFlow()))
                                 presentError(
                                     errorResult = MissingOriginErrorResult,
                                     customerErrorDescription = getString(
@@ -206,7 +206,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            YourEventFragmentEndState.InternationalWithoutRecovery -> {
+            YourEventFragmentEndState.OnlyInternationalVaccination -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
@@ -216,7 +216,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            YourEventFragmentEndState.InternationalWithRecovery -> {
+            YourEventFragmentEndState.VaccinationAndRecovery -> {
                 navigateSafety(
                     YourEventsFragmentDirections.actionCertificateCreated(
                         toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
@@ -239,7 +239,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     }
                 )
             }
-            is YourEventFragmentEndState.OnlyVaccination -> {
+            is YourEventFragmentEndState.OnlyDomesticVaccination -> {
                 navigateSafety(
                     if (isVaccinationWithPositiveTestFlow()) {
                         // When coming from a vaccination completion flow, navigate directly to dashboard

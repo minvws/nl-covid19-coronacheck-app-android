@@ -9,6 +9,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
 import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.holder.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.YourEventsFragmentType
@@ -30,7 +31,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val util = YourEventsFragmentUtilImpl(mockk())
 
         val testResult2 = mockk<YourEventsFragmentType.TestResult2>()
-        val copy = util.getNoOriginTypeCopy(testResult2)
+        val copy = util.getNoOriginTypeCopy(testResult2, HolderFlow.Startup)
 
         assertEquals(R.string.rule_engine_no_test_origin_description_negative_test, copy)
     }
@@ -40,7 +41,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val util = YourEventsFragmentUtilImpl(mockk())
 
         val dcc = mockk<YourEventsFragmentType.DCC>()
-        val copy = util.getNoOriginTypeCopy(dcc)
+        val copy = util.getNoOriginTypeCopy(dcc, HolderFlow.Startup)
 
         assertEquals(R.string.rule_engine_no_test_origin_description_scanned_qr_code, copy)
     }
@@ -54,7 +55,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         every { remoteEventUtil.getOriginType(remoteEvent) } returns OriginType.Test
         val test = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
         every { test.remoteEvents } returns getRemoteProtocol3(remoteEvent)
-        val copy = util.getNoOriginTypeCopy(test)
+        val copy = util.getNoOriginTypeCopy(test, HolderFlow.Startup)
 
         assertEquals(R.string.rule_engine_no_test_origin_description_negative_test, copy)
     }
@@ -68,9 +69,23 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         every { remoteEventUtil.getOriginType(remoteEvent) } returns OriginType.Vaccination
         val vaccination = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
         every { vaccination.remoteEvents } returns getRemoteProtocol3(remoteEvent)
-        val copy = util.getNoOriginTypeCopy(vaccination)
+        val copy = util.getNoOriginTypeCopy(vaccination, HolderFlow.Startup)
 
         assertEquals(R.string.rule_engine_no_test_origin_description_vaccination, copy)
+    }
+
+    @Test
+    fun `getNoOriginTypeCopy returns correct copy for RemoteProtocol3Type with origin vaccination in positive test flow`() {
+        val remoteEventUtil: RemoteEventUtil = mockk()
+        val util = YourEventsFragmentUtilImpl(remoteEventUtil)
+
+        val remoteEvent = RemoteEventNegativeTest(null, null, null, null)
+        every { remoteEventUtil.getOriginType(remoteEvent) } returns OriginType.Vaccination
+        val vaccination = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
+        every { vaccination.remoteEvents } returns getRemoteProtocol3(remoteEvent)
+        val copy = util.getNoOriginTypeCopy(vaccination, HolderFlow.VaccinationAndPositiveTest)
+
+        assertEquals(R.string.dynamic_property_retrievedDetails, copy)
     }
 
     @Test
@@ -82,7 +97,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         every { remoteEventUtil.getOriginType(remoteEvent) } returns OriginType.Recovery
         val type = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
         every { type.remoteEvents } returns getRemoteProtocol3(remoteEvent)
-        val copy = util.getNoOriginTypeCopy(type)
+        val copy = util.getNoOriginTypeCopy(type, HolderFlow.Startup)
 
         assertEquals(R.string.rule_engine_no_test_origin_description_positive_test, copy)
     }
