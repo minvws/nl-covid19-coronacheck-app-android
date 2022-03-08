@@ -125,7 +125,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             }
             binding.addQrButton.setOnClickListener {
                 navigateSafety(
-                    DashboardFragmentDirections.actionQrType()
+                    DashboardFragmentDirections.actionChooseProofType()
                 )
             }
         }

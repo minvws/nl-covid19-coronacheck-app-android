@@ -38,7 +38,7 @@ class MenuUtilImpl(
     }
 
     fun getMenuSections(context: Context): Array<MenuSection> {
-        val actionQrCodeType = MenuFragmentDirections.actionQrCodeType()
+        val actionChooseProofType = MenuFragmentDirections.actionChooseProofType()
         val actionPaperProof = MenuFragmentDirections.actionPaperProof()
         val actionVisitorPass = MenuFragmentDirections.actionVisitorPass()
         val actionAboutThisApp = MenuFragmentDirections.actionAboutThisApp(
@@ -53,8 +53,8 @@ class MenuUtilImpl(
             icon = R.drawable.ic_menu_add,
             title = R.string.holder_menu_listItem_addVaccinationOrTest_title,
             onClick = MenuSection.MenuItem.OnClick.Navigate(
-                navigationActionId = actionQrCodeType.actionId,
-                navigationArguments = actionQrCodeType.arguments
+                navigationActionId = actionChooseProofType.actionId,
+                navigationArguments = actionChooseProofType.arguments
             )
         )
 

@@ -48,7 +48,7 @@ class PaperProofExplanationFragment : Fragment(R.layout.fragment_paper_proof_exp
                     descriptionData = DescriptionData(htmlText = R.string.add_paper_proof_self_printed_description),
                     secondaryButtonData = ButtonData.NavigationButton(
                         text = getString(R.string.add_paper_proof_self_printed_goto_add_proof_button),
-                        navigationActionId = R.id.action_qr_type
+                        navigationActionId = R.id.action_choose_proof_type
                     )
                 )
             )

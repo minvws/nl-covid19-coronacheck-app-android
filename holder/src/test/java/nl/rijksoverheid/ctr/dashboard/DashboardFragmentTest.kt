@@ -391,11 +391,11 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
 
         performActionOnView(ViewMatchers.withId(R.id.addQrButton), ViewActions.click())
 
-        Assert.assertEquals(navController.currentDestination?.id, R.id.nav_qr_code_type)
+        Assert.assertEquals(navController.currentDestination?.id, R.id.nav_choose_proof_type)
     }
 
     @Test
-    fun `Clicking Add qr button should navigate to qr code type`() {
+    fun `Clicking Add qr button should navigate to choose proof type`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -408,7 +408,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
 
         performActionOnView(ViewMatchers.withId(R.id.addQrButton), ViewActions.click())
 
-        Assert.assertEquals(navController.currentDestination?.id, R.id.nav_qr_code_type)
+        Assert.assertEquals(navController.currentDestination?.id, R.id.nav_choose_proof_type)
     }
 
     @Test
@@ -435,7 +435,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `Clicking Add qr card should navigate to qr code type`() {
+    fun `Clicking Add qr card should navigate to choose proof type`() {
         startFragment(
             DashboardTabItem(
                 title = R.string.travel_button_domestic,
@@ -448,7 +448,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
 
         performActionOnView(ViewMatchers.withId(R.id.text), ViewActions.click())
 
-        Assert.assertEquals(navController.currentDestination?.id, R.id.nav_qr_code_type)
+        Assert.assertEquals(navController.currentDestination?.id, R.id.nav_choose_proof_type)
     }
 
     @Test
