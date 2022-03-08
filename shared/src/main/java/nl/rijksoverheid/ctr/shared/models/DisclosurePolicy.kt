@@ -11,12 +11,14 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 sealed class DisclosurePolicy(open val stringValue: String): Parcelable {
+    @Parcelize object ZeroG: DisclosurePolicy("0G")
     @Parcelize object OneG: DisclosurePolicy("1G")
     @Parcelize object ThreeG: DisclosurePolicy("3G")
     @Parcelize object OneAndThreeG : DisclosurePolicy("1G,3G")
 
     companion object {
         fun fromString(value: String): DisclosurePolicy? = when (value) {
+            "0G" -> ZeroG
             "1G" -> OneG
             "3G" -> ThreeG
             "1G,3G" -> OneAndThreeG

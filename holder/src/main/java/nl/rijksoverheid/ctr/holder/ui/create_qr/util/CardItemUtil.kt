@@ -68,6 +68,7 @@ class CardItemUtilImpl(
                             GreenCardDisclosurePolicy.ThreeG
                         }
                     }
+                    DisclosurePolicy.ZeroG -> GreenCardDisclosurePolicy.ThreeG // Not relevant for domestic card
                 }
             }
             is GreenCardType.Eu -> {

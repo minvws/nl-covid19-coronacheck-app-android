@@ -104,6 +104,14 @@
                 tools:ignore="HardcodedText" />
 
             <Button
+                android:id="@+id/zero_g_policyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="0G"
+                tools:ignore="HardcodedText" />
+
+            <Button
                 android:id="@+id/one_g_policyButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

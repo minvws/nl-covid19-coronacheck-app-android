@@ -101,6 +101,7 @@ class HolderIntroductionStatusUseCaseImpl(
     @StringRes
     private fun getPolicyFeatureTitle(newPolicy: DisclosurePolicy): Int {
         return when (newPolicy) {
+            DisclosurePolicy.ZeroG -> R.string.app_name // TODO: implement 0G
             DisclosurePolicy.OneG -> R.string.holder_newintheapp_content_only1G_title
             DisclosurePolicy.ThreeG -> R.string.holder_newintheapp_content_only3G_title
             DisclosurePolicy.OneAndThreeG -> R.string.holder_newintheapp_content_3Gand1G_title
@@ -110,6 +111,7 @@ class HolderIntroductionStatusUseCaseImpl(
     @StringRes
     private fun getPolicyOnboardingTitle(newPolicy: DisclosurePolicy): Int {
         return when (newPolicy) {
+            DisclosurePolicy.ZeroG -> R.string.app_name // TODO: implement 0G
             DisclosurePolicy.OneG -> R.string.holder_onboarding_disclosurePolicyChanged_only1GAccess_title
             DisclosurePolicy.ThreeG -> R.string.holder_onboarding_disclosurePolicyChanged_only3GAccess_title
             DisclosurePolicy.OneAndThreeG -> R.string.holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_title
@@ -119,6 +121,7 @@ class HolderIntroductionStatusUseCaseImpl(
     @StringRes
     private fun getPolicyFeatureBody(newPolicy: DisclosurePolicy): Int {
         return when (newPolicy) {
+            DisclosurePolicy.ZeroG -> R.string.app_name // TODO: implement 0G
             DisclosurePolicy.OneG -> R.string.holder_newintheapp_content_only1G_body
             DisclosurePolicy.ThreeG -> R.string.holder_newintheapp_content_only3G_body
             DisclosurePolicy.OneAndThreeG -> R.string.holder_newintheapp_content_3Gand1G_body
@@ -128,6 +131,7 @@ class HolderIntroductionStatusUseCaseImpl(
     @StringRes
     private fun getPolicyOnboardingBody(newPolicy: DisclosurePolicy): Int {
         return when (newPolicy) {
+            DisclosurePolicy.ZeroG -> R.string.app_name // TODO: implement 0G
             DisclosurePolicy.OneG -> R.string.holder_onboarding_disclosurePolicyChanged_only1GAccess_message
             DisclosurePolicy.ThreeG -> R.string.holder_onboarding_disclosurePolicyChanged_only3GAccess_message
             DisclosurePolicy.OneAndThreeG -> R.string.holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_message

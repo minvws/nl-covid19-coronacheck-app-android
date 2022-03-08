@@ -53,7 +53,7 @@ data class HolderConfig(
     @Json(name = "vaccinationAssessmentEventValidityDays") val vaccinationAssessmentEventValidityDays: Int,
     @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean,
     @Json(name = "verificationPolicies") val verificationPolicies: List<String> = emptyList(),
-    @Json(name = "disclosurePolicy") val disclosurePolicy: DisclosurePolicy
+    @Json(name = "disclosurePolicies") val disclosurePolicy: DisclosurePolicy
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,

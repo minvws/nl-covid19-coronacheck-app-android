@@ -33,6 +33,7 @@ class SplitDomesticGreenCardsUseCaseImpl(
             is DisclosurePolicy.OneG -> splitTestDomesticGreenCard(disclosurePolicy, domesticGreenCards)
             is DisclosurePolicy.OneAndThreeG -> splitTestDomesticGreenCard(disclosurePolicy, domesticGreenCards)
             is DisclosurePolicy.ThreeG -> domesticGreenCards
+            is DisclosurePolicy.ZeroG -> domesticGreenCards // Not relevant for 0G
         }
     }
 
