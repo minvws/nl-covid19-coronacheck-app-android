@@ -11,7 +11,7 @@ package nl.rijksoverheid.ctr.verifier.ui.instructions
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsWithToolbarBinding
 
@@ -24,7 +24,7 @@ class ScanInstructionsWithToolbarFragment :
 
         val binding = FragmentScanInstructionsWithToolbarBinding.bind(view)
         binding.toolbar.setNavigationOnClickListener {
-          findNavController().popBackStack()
+          findNavControllerSafety()?.popBackStack()
         }
     }
 }
