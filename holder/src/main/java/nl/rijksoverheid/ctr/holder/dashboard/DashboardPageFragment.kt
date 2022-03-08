@@ -121,7 +121,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         adapterItems.add(
             DashboardAddQrCardAdapterItem(
                 onButtonClick = {
-                    findNavControllerSafety()?.navigate(DashboardPageFragmentDirections.actionQrType())
+                    findNavControllerSafety()?.navigate(DashboardPageFragmentDirections.actionChooseProofType())
                 })
         )
     }
