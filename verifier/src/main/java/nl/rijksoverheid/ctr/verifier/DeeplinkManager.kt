@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.verifier
 
+import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -20,7 +22,9 @@ interface DeeplinkManager {
  * and we want to go back there after finished scanning
  */
 class DeeplinkManagerImpl(
-    private val introductionPersistenceManager: IntroductionPersistenceManager
+    private val introductionPersistenceManager: IntroductionPersistenceManager,
+    private val buildConfigUseCase: BuildConfigUseCase,
+    private val appStatusUseCase: AppStatusUseCase,
 ) : DeeplinkManager {
     private var returnUri: String? = null
 
@@ -29,9 +33,12 @@ class DeeplinkManagerImpl(
     }
 
     override fun getReturnUri(): String? {
-        // if introduction not finished yet, don't allow the already opened
-        // [ScanQrFragment] to consume it
-        return if (introductionPersistenceManager.getIntroductionFinished()) {
+        // if introduction not finished yet or app is not active,
+        // don't allow the already opened [ScanQrFragment] to consume it
+        return if (
+            introductionPersistenceManager.getIntroductionFinished() &&
+            appStatusUseCase.isAppActive(buildConfigUseCase.getVersionCode())
+        ) {
             returnUri
         } else {
             null
