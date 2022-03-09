@@ -47,11 +47,12 @@ interface DashboardItemUtil {
         greenCards: List<GreenCard>
     ): Boolean
     fun shouldShowOriginInfoItem(
+        disclosurePolicy: DisclosurePolicy,
         greenCards: List<GreenCard>,
         greenCardType: GreenCardType,
         originType: OriginType
     ): Boolean
-    fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean
+    fun shouldShowAddQrCardItem(emptyState: Boolean): Boolean
     fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
                                  tabType: GreenCardType): Boolean
 }
@@ -149,22 +150,28 @@ class DashboardItemUtilImpl(
     }
 
     override fun shouldShowOriginInfoItem(
+        disclosurePolicy: DisclosurePolicy,
         greenCards: List<GreenCard>,
         greenCardType: GreenCardType,
         originInfoTypeOrigin: OriginType
     ): Boolean {
-        val hasVaccinationAssessmentOrigin = greenCardUtil.hasOrigin(
-            greenCards = greenCards,
-            originType = OriginType.VaccinationAssessment
-        )
+        return when (disclosurePolicy) {
+            is DisclosurePolicy.ZeroG -> {
+                false
+            }
+            else -> {
+                val hasVaccinationAssessmentOrigin = greenCardUtil.hasOrigin(
+                    greenCards = greenCards,
+                    originType = OriginType.VaccinationAssessment
+                )
 
-        // We do not show the origin info item for a domestic test if there is a vaccination assessment green card active (this causes some confusion in the UI)
-        return !(hasVaccinationAssessmentOrigin && originInfoTypeOrigin == OriginType.Test && greenCardType == GreenCardType.Domestic)
+                // We do not show the origin info item for a domestic test if there is a vaccination assessment green card active (this causes some confusion in the UI)
+                !(hasVaccinationAssessmentOrigin && originInfoTypeOrigin == OriginType.Test && greenCardType == GreenCardType.Domestic)
+            }
+        }
     }
 
-    override fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean {
-        return allGreenCards.isNotEmpty() && !allGreenCards.all { greenCardUtil.isExpired(it) }
-    }
+    override fun shouldShowAddQrCardItem(emptyState: Boolean) = !emptyState
 
     override fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
                                           tabType: GreenCardType): Boolean {

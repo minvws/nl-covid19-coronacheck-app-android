@@ -402,7 +402,8 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
             greenCardType = GreenCardType.Domestic,
-            originInfoTypeOrigin = OriginType.Test
+            originInfoTypeOrigin = OriginType.Test,
+            disclosurePolicy = DisclosurePolicy.ThreeG
         )
 
         assertFalse(shouldShowOriginInfoItem)
@@ -417,7 +418,8 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(),
             greenCardType = GreenCardType.Domestic,
-            originInfoTypeOrigin = OriginType.Test
+            originInfoTypeOrigin = OriginType.Test,
+            disclosurePolicy = DisclosurePolicy.ThreeG
         )
 
         assertTrue(shouldShowOriginInfoItem)
@@ -432,52 +434,50 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
             greenCardType = GreenCardType.Domestic,
-            originInfoTypeOrigin = OriginType.Vaccination
+            originInfoTypeOrigin = OriginType.Vaccination,
+            disclosurePolicy = DisclosurePolicy.ThreeG
         )
 
         assertTrue(shouldShowOriginInfoItem)
     }
 
     @Test
-    fun `shouldShowAddQrCardItem returns true when there are green cards and at least 1 is not expired`() {
+    fun `shouldShowOriginInfoItem returns false if 0G green card exists and card is for domestic vaccination`() {
+        val util = getUtil(
+            greenCardUtil = greenCardUtil
+        )
+
+        val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
+            greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
+            greenCardType = GreenCardType.Domestic,
+            originInfoTypeOrigin = OriginType.Vaccination,
+            disclosurePolicy = DisclosurePolicy.ZeroG
+        )
+
+        assertFalse(shouldShowOriginInfoItem)
+    }
+
+    @Test
+    fun `shouldShowAddQrCardItem returns true if no empty state`() {
         val util = getUtil(
             greenCardUtil = greenCardUtil
         )
 
         val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
-            listOf(
-                fakeGreenCard(expirationTime = OffsetDateTime.now().plusDays(1)),
-                fakeGreenCard(expirationTime = OffsetDateTime.now().minusDays(1))
-            )
+            emptyState = false
         )
 
         assertTrue(shouldShowAddQrItem)
     }
 
     @Test
-    fun `shouldShowAddQrCardItem returns false when there are no green cards`() {
+    fun `shouldShowAddQrCardItem returns false when empty state`() {
         val util = getUtil(
             greenCardUtil = greenCardUtil
         )
 
         val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
-            listOf()
-        )
-
-        assertFalse(shouldShowAddQrItem)
-    }
-
-    @Test
-    fun `shouldShowAddQrCardItem returns false when green cards are expired`() {
-        val util = getUtil(
-            greenCardUtil = greenCardUtil
-        )
-
-        val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
-            listOf(
-                fakeGreenCard(expirationTime = OffsetDateTime.now().minusDays(1)),
-                fakeGreenCard(expirationTime = OffsetDateTime.now().minusDays(1))
-            )
+            emptyState = true
         )
 
         assertFalse(shouldShowAddQrItem)

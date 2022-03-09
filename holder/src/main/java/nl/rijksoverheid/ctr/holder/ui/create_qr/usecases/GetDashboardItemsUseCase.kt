@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtil
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import org.koin.androidx.viewmodel.scope.emptyState
 
 interface GetDashboardItemsUseCase {
     suspend fun getItems(
@@ -73,7 +74,9 @@ class GetDashboardItemsUseCaseImpl(
         )
         val hasEmptyState = dashboardItemEmptyStateUtil.hasEmptyState(
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
-            allGreenCards = allGreenCards
+            allGreenCards = allGreenCards,
+            greenCardsForTab = domesticGreenCards,
+            disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
         )
 
         // Apply distinctBy here so that for two european green cards we do not get a two banners
@@ -156,7 +159,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowAddQrCardItem(allGreenCards)) {
+        if (dashboardItemUtil.shouldShowAddQrCardItem(hasEmptyState)) {
             dashboardItems.add(DashboardItem.AddQrCardItem)
         }
 
@@ -193,9 +196,12 @@ class GetDashboardItemsUseCaseImpl(
             events = allEventGroupEntities,
             domesticGreenCards = domesticGreenCards
         )
+
         val hasEmptyState = dashboardItemEmptyStateUtil.hasEmptyState(
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
             allGreenCards = allGreenCards,
+            greenCardsForTab = internationalGreenCards,
+            disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
         )
 
         val headerText = dashboardHeaderAdapterItemUtil.getText(
@@ -274,7 +280,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowAddQrCardItem(allGreenCards)) {
+        if (dashboardItemUtil.shouldShowAddQrCardItem(hasEmptyState)) {
             dashboardItems.add(DashboardItem.AddQrCardItem)
         }
 
@@ -338,6 +344,7 @@ class GetDashboardItemsUseCaseImpl(
                     .contains(originForUnselectedType.type)) {
 
                 if (dashboardItemUtil.shouldShowOriginInfoItem(
+                        disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy(),
                         greenCards = greenCards,
                         greenCardType = greenCardType,
                         originType = originForUnselectedType.type
