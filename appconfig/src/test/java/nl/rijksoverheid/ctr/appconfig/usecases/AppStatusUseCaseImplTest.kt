@@ -56,11 +56,15 @@ class AppStatusUseCaseImplTest {
 
     private fun getVerifierConfig(
         recommendedVersion: Int = 1,
-        recommendedInterval: Int = 1
+        recommendedInterval: Int = 1,
+        verifierAppDeactivated: Boolean = false,
+        verifierMinimumVersion: Int = 1000,
     ): String =
         VerifierConfig.default(
             verifierRecommendedVersion = recommendedVersion,
-            upgradeRecommendationIntervalHours = recommendedInterval
+            upgradeRecommendationIntervalHours = recommendedInterval,
+            verifierAppDeactivated = verifierAppDeactivated,
+            verifierMinimumVersion = verifierMinimumVersion,
         ).toJson(moshi).toResponseBody("application/json".toMediaType()).source()
             .readUtf8()
 
@@ -311,7 +315,7 @@ class AppStatusUseCaseImplTest {
             },
             appConfigPersistenceManager = mockk(),
             moshi = moshi,
-            isVerifierApp = false,
+            isVerifierApp = true,
             recommendedUpdatePersistenceManager = mockk()
         )
 
@@ -334,5 +338,33 @@ class AppStatusUseCaseImplTest {
         val appStatusUseCase = appStatusUseCase(false, 1000)
 
         assertTrue(appStatusUseCase.isAppActive(1000))
+    }
+
+    @Test
+    fun `given app is deactivated and needs a forced update, when config refreshes, then shows forced update status`() = runBlocking {
+        val currentVersionCode = 1000
+        val verifierMinimumVersion = 1001
+        val configResult = ConfigResult.Success(
+            getVerifierConfig(verifierAppDeactivated = true, verifierMinimumVersion = verifierMinimumVersion),
+            publicKeys,
+        )
+
+        val appStatus = appStatusUseCase(true, verifierMinimumVersion).get(configResult, currentVersionCode)
+
+        assertTrue(appStatus is AppStatus.UpdateRequired)
+    }
+
+    @Test
+    fun `given app is deactivated and doesn't need a forced update, when config refreshes, then shows app deactivated status`() = runBlocking {
+        val currentVersionCode = 1000
+        val verifierMinimumVersion = 1000
+        val configResult = ConfigResult.Success(
+            getVerifierConfig(verifierAppDeactivated = true, verifierMinimumVersion = verifierMinimumVersion),
+            publicKeys,
+        )
+
+        val appStatus = appStatusUseCase(true, verifierMinimumVersion).get(configResult, currentVersionCode)
+
+        assertTrue(appStatus is AppStatus.Deactivated)
     }
 }
