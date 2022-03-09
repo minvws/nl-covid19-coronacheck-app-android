@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
+import nl.rijksoverheid.ctr.holder.dashboard.dashboardModule
 import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
@@ -55,7 +56,8 @@ open class HolderApplication : SharedApplication() {
         retrofitModule(BuildConfig.BASE_API_URL),
         responsesModule,
         qrScannerModule,
-        disclosurePolicyModule
+        disclosurePolicyModule,
+        dashboardModule
     ).toTypedArray()
 
     override fun onCreate() {
