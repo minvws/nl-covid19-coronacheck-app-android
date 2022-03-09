@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
@@ -84,7 +85,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             override fun handleOnBackPressed() {
                 val currentItem = binding.viewPager.currentItem
                 if (currentItem == 0) {
-                    val canPop = findNavController().popBackStack()
+                    val canPop = findNavControllerSafety()?.popBackStack() ?: false
                     if (!canPop) {
                         requireActivity().finish()
                     }

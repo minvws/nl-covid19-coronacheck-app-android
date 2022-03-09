@@ -17,7 +17,6 @@ import android.transition.TransitionManager
 import android.view.View
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
@@ -33,11 +32,11 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodesBinding
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
@@ -96,7 +95,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         if (savedInstanceState != null &&
             !savedInstanceState.getBoolean(ORIENTATION_CHANGED, false)
         ) {
-            findNavController().popBackStack()
+            findNavControllerSafety()?.popBackStack()
         }
     }
 
