@@ -105,7 +105,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
             DisclosurePolicy.OneG -> R.string.holder_dashboard_only1GaccessBanner_link
             DisclosurePolicy.ThreeG -> R.string.holder_dashboard_only3GaccessBanner_link
             DisclosurePolicy.OneAndThreeG -> R.string.holder_dashboard_3Gand1GaccessBanner_link
-            DisclosurePolicy.ZeroG -> R.string.app_name // TODO: implement 0G
+            DisclosurePolicy.ZeroG -> R.string.holder_dashboard_noDomesticCertificatesBanner_url
         }
         context.getString(urlResource).launchUrl(context)
     }
