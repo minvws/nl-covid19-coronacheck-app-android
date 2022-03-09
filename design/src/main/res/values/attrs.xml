@@ -18,6 +18,7 @@
         <attr name="listItemMarginMultiplier" format="float" />
         <attr name="headingMarginMultiplier" format="float" />
         <attr name="textSize" format="dimension" />
+        <attr name="splitHtmlText" format="boolean" />
     </declare-styleable>
     <declare-styleable name="ScrollViewButtonWidget">
         <attr name="buttonText" format="string" />

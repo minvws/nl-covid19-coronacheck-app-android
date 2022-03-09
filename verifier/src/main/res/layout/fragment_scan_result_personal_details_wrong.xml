@@ -46,6 +46,7 @@
             <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:splitHtmlText="true"
                 app:htmlText="@string/verifier_scanResultPersonalDetails_body" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>

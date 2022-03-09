@@ -98,6 +98,10 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                             LIST_ITEM_MARGIN_MULTIPLIER
                         ),
                         textSize = getDimension(R.styleable.HtmlTextViewWidget_textSize, -1f),
+                        splitHtmlText = getBoolean(
+                            R.styleable.HtmlTextViewWidget_splitHtmlText,
+                            false
+                        ),
                     )
                 }
             } finally {
@@ -111,7 +115,11 @@ class HtmlTextViewWidget @JvmOverloads constructor(
      * Sets the text based on a string resource.
      * Links are disabled by default, but can be enabled.
      */
-    fun setHtmlText(htmlText: Int, htmlLinksEnabled: Boolean = false, splitHtmlText: Boolean = false) {
+    fun setHtmlText(
+        htmlText: Int,
+        htmlLinksEnabled: Boolean = false,
+        splitHtmlText: Boolean = false
+    ) {
         val text = context.getString(htmlText)
         setHtmlText(text, htmlLinksEnabled = htmlLinksEnabled, splitHtmlText = splitHtmlText)
     }
@@ -146,7 +154,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         // Step 2: Separate the Spannable on each paragraph if
         // property is set, off by default
         val parts = if (splitHtmlText) {
-            spannable.separated("\n\n")
+            spannable.separated("\n")
         } else {
             listOf(spannable)
         }
