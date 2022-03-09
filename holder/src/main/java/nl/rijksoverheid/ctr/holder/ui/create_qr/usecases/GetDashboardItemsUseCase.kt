@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -242,6 +243,17 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(
                 DashboardItem.InfoItem.BoosterItem
             )
+        }
+
+        val selectedDisclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
+        if (dashboardItemUtil.shouldShowPolicyInfoItem(
+                disclosurePolicy = selectedDisclosurePolicy,
+                tabType = GreenCardType.Eu
+            )) {
+            dashboardItems.add(DashboardItem.InfoItem.DisclosurePolicyItem(
+                disclosurePolicy = selectedDisclosurePolicy,
+                buttonText = R.string.holder_dashboard_noDomesticCertificatesBanner_0G_action_linkToRijksoverheid
+            ))
         }
 
         dashboardItems.addAll(
