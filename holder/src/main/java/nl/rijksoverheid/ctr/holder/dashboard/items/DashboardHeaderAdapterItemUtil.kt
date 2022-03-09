@@ -61,6 +61,7 @@ class DashboardHeaderAdapterItemUtilImpl(
                             R.string.my_overview_description
                         }
                     }
+                    is DisclosurePolicy.ZeroG -> R.string.app_name // TODO: implement 0G
                 }
             }
             is GreenCardType.Eu -> {
