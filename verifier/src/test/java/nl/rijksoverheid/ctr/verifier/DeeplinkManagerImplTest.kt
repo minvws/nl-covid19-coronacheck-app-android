@@ -34,7 +34,7 @@ class DeeplinkManagerImplTest {
         assertEquals("returnUri", deeplinkManager.getReturnUri())
     }
 
-            @Test
+    @Test
     fun `given introduction not finished, when setting the returnUri, then you cannot get it yet`() {
         start(introductionFinished = false)
 
