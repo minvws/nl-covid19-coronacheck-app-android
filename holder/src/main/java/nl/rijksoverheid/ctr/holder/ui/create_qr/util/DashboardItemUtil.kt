@@ -52,7 +52,8 @@ interface DashboardItemUtil {
         originType: OriginType
     ): Boolean
     fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean
-    fun showPolicyInfoItem(): DisclosurePolicy?
+    fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
+                                 tabType: GreenCardType): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -61,8 +62,7 @@ class DashboardItemUtilImpl(
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
     private val appConfigUseCase: CachedAppConfigUseCase,
     private val buildConfigUseCase: BuildConfigUseCase,
-    private val greenCardUtil: GreenCardUtil,
-    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
+    private val greenCardUtil: GreenCardUtil
 ) : DashboardItemUtil {
 
     override fun shouldShowClockDeviationItem(emptyState: Boolean, allGreenCards: List<GreenCard>) =
@@ -166,12 +166,19 @@ class DashboardItemUtilImpl(
         return allGreenCards.isNotEmpty() && !allGreenCards.all { greenCardUtil.isExpired(it) }
     }
 
-    override fun showPolicyInfoItem(): DisclosurePolicy? {
-        val disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
+    override fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
+                                          tabType: GreenCardType): Boolean {
         return if (persistenceManager.getPolicyBannerDismissed() != disclosurePolicy) {
-            disclosurePolicy
+            when (tabType) {
+                is GreenCardType.Domestic -> {
+                    disclosurePolicy !is DisclosurePolicy.ZeroG
+                }
+                is GreenCardType.Eu -> {
+                    disclosurePolicy is DisclosurePolicy.ZeroG
+                }
+            }
         } else {
-            null
+            false
         }
     }
 }

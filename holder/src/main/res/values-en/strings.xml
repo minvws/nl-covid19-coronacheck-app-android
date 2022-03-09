@@ -322,7 +322,7 @@
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was created.<br/><br/>It\'s possible that your type of test isn\'t accepted abroad. Please get tested again.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
   <string name="rule_engine_no_origin_title">We can\'t create a certificate</string>
-  <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t make a certificate from your %1$s. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost.</a>]]></string>
+  <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t create a certificate from your %1$s. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost.</a>]]></string>
   <string name="back_to_overview">To my certificates</string>
   <string name="no_vaccinations_title">Vaccinations not available</string>
   <string name="no_vaccinations_description"><![CDATA[There are no available vaccination details. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/>Got vaccinated recently? It can take a few hours until your details are available.]]></string>
@@ -710,4 +710,20 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_message">Visiting a place in the Netherlands where a coronavirus pass is required? Currently, only 1G access is given. This means you can enter with a certificate of a negative test.</string>
   <string name="holder_inputRetrievalCode_error_blocked">You’ve tried to enter your code too many times. Please try again in 5 minutes.</string>
   <string name="dynamic_property_retrievedDetails">retrieved details</string>
+  <string name="holder_dashboard_emptyState_international_0G_message">Ga je naar het buitenland? Controleer altijd voor vertrek of je een coronabewijs nodig hebt.</string>
+  <string name="holder_dashboard_international_0G_action_certificateNeeded">Is een bewijs nodig op mijn bestemming?</string>
+  <string name="holder_dashboard_international_0G_url">https://coronacheck.nl/reisadviezen</string>
+  <string name="holder_dashboard_filledState_international_0G_message">Ga je naar een land waar een coronabewijs nodig is? Gebruik dan je internationale bewijs hieronder. Check altijd voor vertrek of je het goede bewijs hebt.</string>
+  <string name="holder_dashboard_noDomesticCertificatesBanner_0G_title">In Nederland wordt het coronatoegangsbewijs niet meer gebruikt. Daarom zijn er alleen nog bewijzen om internationaal te gebruiken.</string>
+  <string name="holder_dashboard_noDomesticCertificatesBanner_0G_action_linkToRijksoverheid">Lees meer op Rijksoverheid.nl</string>
+  <string name="holder_dashboard_noDomesticCertificatesBanner_url">https://www.rijksoverheid.nl/coronabewijs</string>
+  <string name="general_vaccinationcertificate_0G">Internationaal vaccinatiebewijs</string>
+  <string name="general_recoverycertificate_0G">Internationaal herstelbewijs</string>
+  <string name="general_testcertificate_0G">Internationaal testbewijs</string>
+  <string name="holder_newintheapp_content_onlyInternationalCertificates_0G_title">Alleen internationale bewijzen</string>
+  <string name="holder_newintheapp_content_onlyInternationalCertificates_0G_body">In Nederland heb je op dit moment geen coronatoegangsbewijs nodig. Daarom zie je alleen je internationale bewijzen.</string>
+  <string name="holder_onboarding_content_TravelSafe_0G_title">Veilig op reis met je bewijs</string>
+  <string name="holder_onboarding_content_TravelSafe_0G_message">Reis je naar een land waar om een coronabewijs wordt gevraagd? Dan kun je met deze app je bewijs maken.</string>
+  <string name="holder_onboarding_content_onlyInternationalQR_0G_title">Je bewijs heeft een QR-code</string>
+  <string name="holder_onboarding_content_onlyInternationalQR_0G_message">De QR-code op je bewijs kan worden gecheckt bij de ingang van plekken en activiteiten in het buitenland. Of aan de grens.</string>
 </resources>
