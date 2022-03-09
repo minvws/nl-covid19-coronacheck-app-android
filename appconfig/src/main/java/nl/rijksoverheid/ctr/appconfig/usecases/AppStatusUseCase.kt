@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit
  */
 interface AppStatusUseCase {
     suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus
+    fun isAppActive(currentVersionCode: Int): Boolean
 }
 
 class AppStatusUseCaseImpl(
@@ -65,10 +66,12 @@ class AppStatusUseCaseImpl(
             }
         }
 
+    private fun updateRequired(currentVersionCode: Int, appConfig: AppConfig) = currentVersionCode < appConfig.minimumVersion
+
     private fun checkIfActionRequired(currentVersionCode: Int, appConfig: AppConfig): AppStatus {
         return when {
+            updateRequired(currentVersionCode, appConfig) -> AppStatus.UpdateRequired
             appConfig.appDeactivated -> AppStatus.Deactivated(appConfig.informationURL)
-            currentVersionCode < appConfig.minimumVersion -> AppStatus.UpdateRequired
             currentVersionCode < appConfig.recommendedVersion -> getUpdateRecommendedStatus(appConfig)
             else -> AppStatus.NoActionRequired
         }
@@ -102,5 +105,10 @@ class AppStatusUseCaseImpl(
         } else {
             AppStatus.NoActionRequired
         }
+    }
+
+    override fun isAppActive(currentVersionCode: Int): Boolean {
+        val config = cachedAppConfigUseCase.getCachedAppConfig()
+        return !config.appDeactivated && !updateRequired(currentVersionCode, config)
     }
 }
