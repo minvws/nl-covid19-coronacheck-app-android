@@ -52,7 +52,8 @@ interface DashboardItemUtil {
         greenCardType: GreenCardType,
         originType: OriginType
     ): Boolean
-    fun shouldShowAddQrCardItem(emptyState: Boolean): Boolean
+    fun shouldShowAddQrCardItem(hasVisitorPassIncompleteItem: Boolean,
+                                emptyState: Boolean): Boolean
     fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
                                  tabType: GreenCardType): Boolean
 }
@@ -171,7 +172,9 @@ class DashboardItemUtilImpl(
         }
     }
 
-    override fun shouldShowAddQrCardItem(emptyState: Boolean) = !emptyState
+    override fun shouldShowAddQrCardItem(
+        hasVisitorPassIncompleteItem: Boolean,
+        emptyState: Boolean) = !emptyState && !hasVisitorPassIncompleteItem
 
     override fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
                                           tabType: GreenCardType): Boolean {

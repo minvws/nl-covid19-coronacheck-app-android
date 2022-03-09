@@ -159,7 +159,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowAddQrCardItem(hasEmptyState)) {
+        if (dashboardItemUtil.shouldShowAddQrCardItem(hasVisitorPassIncompleteItem, hasEmptyState)) {
             dashboardItems.add(DashboardItem.AddQrCardItem)
         }
 
@@ -280,7 +280,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowAddQrCardItem(hasEmptyState)) {
+        if (dashboardItemUtil.shouldShowAddQrCardItem(hasVisitorPassIncompleteItem, hasEmptyState)) {
             dashboardItems.add(DashboardItem.AddQrCardItem)
         }
 

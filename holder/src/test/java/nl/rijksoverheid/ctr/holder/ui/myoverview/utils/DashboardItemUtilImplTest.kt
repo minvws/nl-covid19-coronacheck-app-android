@@ -464,6 +464,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         )
 
         val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
+            hasVisitorPassIncompleteItem = false,
             emptyState = false
         )
 
@@ -477,6 +478,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         )
 
         val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
+            hasVisitorPassIncompleteItem = false,
             emptyState = true
         )
 
