@@ -350,7 +350,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         val groupedEvents = remoteProtocol3Util.groupEvents(protocols)
 
-        groupedEvents.entries.forEach { protocolGroupedEvent ->
+        groupedEvents.forEach { protocolGroupedEvent ->
             val holder = protocolGroupedEvent.value.firstOrNull()?.holder
             val providerIdentifiers =
                 protocolGroupedEvent.value.map { it.providerIdentifier }
