@@ -35,7 +35,7 @@ class ScanResultInvalidFragment : AutoCloseFragment(R.layout.fragment_scan_resul
 
     override fun aliveForMilliseconds(): Long {
        return if (BuildConfig.FLAVOR == "acc") {
-           TimeUnit.SECONDS.toMillis(10)
+           TimeUnit.SECONDS.toMillis(20)
        } else {
            TimeUnit.MINUTES.toMillis(3)
        }
