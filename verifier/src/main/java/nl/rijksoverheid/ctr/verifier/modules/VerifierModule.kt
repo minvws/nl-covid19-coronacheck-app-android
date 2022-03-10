@@ -131,5 +131,5 @@ fun verifierModule() = module {
         BuildConfigUseCaseImpl()
     }
 
-    single<DeeplinkManager> { DeeplinkManagerImpl(get()) }
+    single<DeeplinkManager> { DeeplinkManagerImpl(get(), get(), get()) }
 }
