@@ -5,6 +5,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.introduction.R
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -20,4 +21,5 @@ data class NewFeatureItem(
     @StringRes val description: Int,
     @ColorRes val subTitleColor: Int? = null,
     @ColorRes val backgroundColor: Int? = null,
+    @StringRes val subtitleResource: Int = R.string.new_in_app_subtitle
 ) : Parcelable

@@ -45,6 +45,7 @@ class NewFeatureItemFragment : Fragment(R.layout.fragment_new_feature_item) {
         val binding = FragmentNewFeatureItemBinding.bind(view)
 
         binding.title.text = getString(item.titleResource)
+        binding.subTitle.text = getString(item.subtitleResource)
         item.subTitleColor?.let {
             binding.subTitle.setTextColor(ContextCompat.getColor(requireContext(), it))
         }
