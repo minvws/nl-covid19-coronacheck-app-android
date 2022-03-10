@@ -221,11 +221,15 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             YourEventFragmentEndState.VaccinationAndRecovery -> {
                 navigateSafety(
-                    YourEventsFragmentDirections.actionCertificateCreated(
-                        toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                        title = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title),
-                        description = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message)
-                    )
+                    if (isVaccinationWithPositiveTestFlow()) {
+                        YourEventsFragmentDirections.actionCertificateCreated(
+                            toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
+                            title = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title),
+                            description = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message)
+                        )
+                    } else {
+                        YourEventsFragmentDirections.actionMyOverview()
+                    }
                 )
             }
             YourEventFragmentEndState.OnlyRecovery -> {
