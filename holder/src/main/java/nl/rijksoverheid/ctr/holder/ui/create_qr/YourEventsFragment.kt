@@ -361,20 +361,20 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         groupedEvents.entries
             .sortedByDescending { it.key.getDate() }
             .forEach { protocolGroupedEvent ->
-            val holder = protocolGroupedEvent.value.firstOrNull()?.holder
-            val providerIdentifiers =
-                protocolGroupedEvent.value.map { it.providerIdentifier }
-                    .map {
-                        yourEventsFragmentUtil.getProviderName(
-                            type = args.type,
-                            providerIdentifier = it
-                        )
-                    }
+                val holder = protocolGroupedEvent.value.firstOrNull()?.holder
+                val providerIdentifiers =
+                    protocolGroupedEvent.value.map { it.providerIdentifier }
+                        .map {
+                            yourEventsFragmentUtil.getProviderName(
+                                type = args.type,
+                                providerIdentifier = it
+                            )
+                        }
 
-            val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
-            val allEventsInformation = protocolGroupedEvent.value.map {
-                RemoteEventInformation(it.providerIdentifier, holder, it.remoteEvent)
-            }
+                val allSameEvents = protocolGroupedEvent.value.map { it.remoteEvent }
+                val allEventsInformation = protocolGroupedEvent.value.map {
+                    RemoteEventInformation(it.providerIdentifier, holder, it.remoteEvent)
+                }
             remoteEventUtil.removeDuplicateEvents(allSameEvents).forEach { remoteEvent ->
                 when (remoteEvent) {
                     is RemoteEventVaccination -> {
