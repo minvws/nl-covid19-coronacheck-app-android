@@ -81,7 +81,7 @@ class AppStatusUseCaseImplTest {
                 ),
                 currentVersionCode = 1
             )
-            Assert.assertEquals(AppStatus.Deactivated("dummy"), appStatus)
+            Assert.assertEquals(AppStatus.Deactivated, appStatus)
         }
 
     @Test
