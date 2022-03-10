@@ -202,4 +202,5 @@
   <string name="general_loading_description">Loading, please wait</string>
   <string name="verifier_scanResultPersonalDetails_header"><![CDATA[You cannot grant the visitor access if the details on your screen are different from those on the identity document.<br/>]]></string>
   <string name="verifier_scanResultPersonalDetails_body"><![CDATA[<b>Please note: sometimes not all details are shown</b><br/>This is done to protect the visitor\'s privacy. You will see a hyphen (-) in the field. In this case, verify only the details you\'re seeing.]]></string>
+  <string name="verifier_deactivation_url">https://coronacheck.nl/scanner/not-in-use</string>
 </resources>

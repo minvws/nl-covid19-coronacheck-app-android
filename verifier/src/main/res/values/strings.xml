@@ -202,4 +202,5 @@
   <string name="general_loading_description">Bezig met laden, even geduld</string>
   <string name="verifier_scanResultPersonalDetails_header"><![CDATA[Je mag de bezoeker geen toegang geven als de gegevens op jouw scherm anders zijn dan op het identiteitsbewijs.<br/>]]></string>
   <string name="verifier_scanResultPersonalDetails_body"><![CDATA[<b>Let op: soms vallen gegevens weg</b><br/>Om de privacy van de bezoeker te beschermen zie je soms niet alle gegevens op jouw scherm. Dan staat er een streepje (-) in het vak. Controleer in dat geval alleen de gegevens die je wel ziet.]]></string>
+  <string name="verifier_deactivation_url">https://coronacheck.nl/scanner/niet-in-gebruik</string>
 </resources>
