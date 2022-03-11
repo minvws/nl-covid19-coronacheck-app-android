@@ -33,8 +33,10 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
@@ -56,6 +58,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val remoteEventUtil: RemoteEventUtil by inject()
     private val yourEventsFragmentUtil: YourEventsFragmentUtil by inject()
     private val yourEventWidgetUtil: YourEventWidgetUtil by inject()
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
@@ -218,11 +221,19 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             YourEventFragmentEndState.VaccinationAndRecovery -> {
                 navigateSafety(
-                    YourEventsFragmentDirections.actionCertificateCreated(
-                        toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                        title = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title),
-                        description = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message)
-                    )
+                    if (isVaccinationWithPositiveTestFlow()) {
+                        YourEventsFragmentDirections.actionCertificateCreated(
+                            toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
+                            title = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title),
+                            description = if (holderFeatureFlagUseCase.getDisclosurePolicy() != DisclosurePolicy.ZeroG) {
+                                getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message)
+                            } else {
+                                getString(R.string.holder_listRemoteEvents_endStateVaccinationsAndRecovery_message)
+                            }
+                        )
+                    } else {
+                        YourEventsFragmentDirections.actionMyOverview()
+                    }
                 )
             }
             YourEventFragmentEndState.OnlyRecovery -> {
@@ -690,7 +701,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                     .map { remoteEventUtil.getOriginType(it) }
                                 when {
                                     origins.all { it == OriginType.Vaccination } -> {
-                                        R.string.holder_listRemoteEvents_somethingWrong_vaccination_body
+                                        if (getFlow() == HolderFlow.VaccinationAndPositiveTest) {
+                                            R.string.holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body
+                                        } else {
+                                            R.string.holder_listRemoteEvents_somethingWrong_vaccination_body
+                                        }
                                     }
                                     origins.all { it == OriginType.VaccinationAssessment } -> {
                                         R.string.holder_event_vaccination_assessment_wrong_body
