@@ -38,7 +38,8 @@ class SplitDomesticGreenCardsUseCaseImpl(
 
     private fun splitTestDomesticGreenCard(
         disclosurePolicy: DisclosurePolicy,
-        domesticGreenCards: List<GreenCard>): List<GreenCard> {
+        domesticGreenCards: List<GreenCard>
+    ): List<GreenCard> {
         domesticGreenCards.firstOrNull { domesticGreenCard ->
             val hasTestOrigin = greenCardUtil.hasOrigin(
                 greenCards = domesticGreenCards,
@@ -48,8 +49,8 @@ class SplitDomesticGreenCardsUseCaseImpl(
             return if (hasTestOrigin) {
                 val splitGreenCards = mutableListOf<GreenCard>()
 
-                if (domesticGreenCard.origins.size == 1) {
-                    // If we only have one test
+                if (domesticGreenCard.origins.all { it.type is OriginType.Test }) {
+                    // If we only have tests
 
                     if (disclosurePolicy == DisclosurePolicy.OneAndThreeG) {
                         // Exception for 1G/3G mode; duplicate the test card (one for 3G and one for 1G)
