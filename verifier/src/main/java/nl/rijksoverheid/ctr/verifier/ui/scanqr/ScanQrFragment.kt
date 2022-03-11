@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy1G
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.DeeplinkManager
 import nl.rijksoverheid.ctr.verifier.R
@@ -60,6 +61,9 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val menuUtil: MenuUtil by inject()
 
     private var scannerStateCountDownTimer: ScannerStateCountDownTimer? = null
+
+    // track a change from locked to unlock to announce it to blind users
+    private var locked = false
 
     private fun onTimerFinish() {
         onStateUpdated(
@@ -251,6 +255,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     }
 
     private fun lockScanner(selectionState: VerificationPolicySelectionState) {
+        locked = true
         binding.image.visibility = GONE
         binding.title.visibility = VISIBLE
         binding.instructionsButton.visibility = GONE
@@ -284,6 +289,12 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         showDeviationViewIfNeeded()
         binding.bottom.unlock()
         binding.lockedAnimation.visibility = GONE
+        if (locked) {
+            locked = false
+            getToolbar()?.run {
+                Accessibility.announce(context, title.toString())
+            }
+        }
     }
 
     private fun updateTitle(timeLeft: String) {
