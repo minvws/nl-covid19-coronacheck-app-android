@@ -710,4 +710,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_message">Visiting a place in the Netherlands where a coronavirus pass is required? Currently, only 1G access is given. This means you can enter with a certificate of a negative test.</string>
   <string name="holder_inputRetrievalCode_error_blocked">You’ve tried to enter your code too many times. Please try again in 5 minutes.</string>
   <string name="dynamic_property_retrievedDetails">retrieved details</string>
+  <string name="holder_deactivation_url">https://coronacheck.nl/app/not-in-use</string>
 </resources>

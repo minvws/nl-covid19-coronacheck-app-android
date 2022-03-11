@@ -17,8 +17,8 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppStatusBinding
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
-import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 
 class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
@@ -55,7 +55,19 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
                     R.string.app_status_deactivated_action,
                     R.drawable.illustration_app_status_deactivated
                 ) {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(appStatus.informationUrl)))
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW, Uri.parse(
+                                getString(
+                                    if (isVerifierApp(requireContext())) {
+                                        R.string.verifier_deactivation_url
+                                    } else {
+                                        R.string.holder_deactivation_url
+                                    }
+                                )
+                            )
+                        )
+                    )
                 }
             }
             is AppStatus.UpdateRequired -> {
