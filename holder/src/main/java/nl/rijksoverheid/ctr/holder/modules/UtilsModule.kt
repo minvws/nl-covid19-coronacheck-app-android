@@ -48,7 +48,7 @@ fun utilsModule(versionCode: Int) = module {
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<DashboardPageInfoItemHandlerUtil> { DashboardPageInfoItemHandlerUtilImpl(get(), get(), get()) }
     factory<YourEventFragmentEndStateUtil> {
-        YourEventFragmentEndStateUtilImpl(get())
+        YourEventFragmentEndStateUtilImpl(get(), get())
     }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }
