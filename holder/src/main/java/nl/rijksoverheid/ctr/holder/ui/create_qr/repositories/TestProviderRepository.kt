@@ -61,7 +61,7 @@ class TestProviderRepositoryImpl(
             },
             interceptHttpError = {
                 val errorBody = it.response()?.errorBody()
-                if (it.code() == 401 && errorBody != null) {
+                if ((it.code() == 401 || it.code() == 403) && errorBody != null) {
                     withContext(Dispatchers.IO) {
                         responseConverter.convert(errorBody)
                     }
