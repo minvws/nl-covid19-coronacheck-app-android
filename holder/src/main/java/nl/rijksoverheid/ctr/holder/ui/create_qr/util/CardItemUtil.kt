@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
@@ -43,12 +43,11 @@ class CardItemUtilImpl(
         ): GreenCardDisclosurePolicy {
             return when (greenCard.greenCardEntity.type) {
             is GreenCardType.Domestic -> {
-                val isGreenCardWithSingleTestOrigin = greenCard.origins.size == 1 && greenCardUtil.hasOrigin(
-                    listOf(greenCard), OriginType.Test)
+                val isGreenCardWithOnlyTestOrigin = greenCard.origins.all { it.type is OriginType.Test }
 
                 when (featureFlagUseCase.getDisclosurePolicy()) {
                     is DisclosurePolicy.OneG -> {
-                        if (isGreenCardWithSingleTestOrigin) {
+                        if (isGreenCardWithOnlyTestOrigin) {
                             GreenCardDisclosurePolicy.OneG
                         } else {
                             GreenCardDisclosurePolicy.ThreeG
@@ -58,7 +57,7 @@ class CardItemUtilImpl(
                         GreenCardDisclosurePolicy.ThreeG
                     }
                     is DisclosurePolicy.OneAndThreeG -> {
-                        if (isGreenCardWithSingleTestOrigin) {
+                        if (isGreenCardWithOnlyTestOrigin) {
                             if (greenCardIndex == 0) {
                                 GreenCardDisclosurePolicy.ThreeG
                             } else {

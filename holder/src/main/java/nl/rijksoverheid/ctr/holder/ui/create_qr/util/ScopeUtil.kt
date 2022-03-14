@@ -13,30 +13,30 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 interface ScopeUtil {
 
     fun getScopeForRemoteOriginType(remoteOriginType: RemoteOriginType,
-                 withIncompleteVaccination: Boolean): String?
+                                    getPositiveTestWithVaccination: Boolean): String?
 
     fun getScopeForOriginType(originType: OriginType,
-                 withIncompleteVaccination: Boolean): String?
+                              getPositiveTestWithVaccination: Boolean): String?
 }
 
 class ScopeUtilImpl: ScopeUtil {
 
     override fun getScopeForRemoteOriginType(
         remoteOriginType: RemoteOriginType,
-        withIncompleteVaccination: Boolean
+        getPositiveTestWithVaccination: Boolean
     ): String? {
         return getScopeForOriginType(
             originType = remoteOriginType.toOriginType(),
-            withIncompleteVaccination = withIncompleteVaccination
+            getPositiveTestWithVaccination = getPositiveTestWithVaccination
         )
     }
 
     override fun getScopeForOriginType(
         originType: OriginType,
-        withIncompleteVaccination: Boolean
+        getPositiveTestWithVaccination: Boolean
     ): String? {
         return if (originType is OriginType.Recovery) {
-            return if (withIncompleteVaccination) {
+            return if (getPositiveTestWithVaccination) {
                 "firstepisode"
             } else {
                 "recovery"

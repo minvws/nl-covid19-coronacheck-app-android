@@ -8,7 +8,6 @@
 
 package nl.rijksoverheid.ctr.holder
 
-import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.Network
@@ -22,6 +21,7 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
@@ -29,10 +29,8 @@ import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
-import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -60,7 +58,8 @@ class HolderMainActivity : AppCompatActivity() {
                 appConfigViewModel.refresh(mobileCoreWrapper, true)
             }
         }
-    private val networkChangeFilter = NetworkRequest.Builder().build() // blank filter for all networks
+    private val networkChangeFilter =
+        NetworkRequest.Builder().build() // blank filter for all networks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -80,9 +79,7 @@ class HolderMainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
-            navController.navigate(
-                R.id.action_introduction, IntroductionFragment.getBundle(it)
-            )
+            navigateToIntroduction(navController, it)
         })
 
         appConfigViewModel.appStatusLiveData.observe(this) {
@@ -120,6 +117,14 @@ class HolderMainActivity : AppCompatActivity() {
         })
     }
 
+    private fun navigateToIntroduction(
+        navController: NavController, introductionStatus: IntroductionStatus
+    ) {
+        navController.navigate(
+            R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
+        )
+    }
+
     private fun handleAppStatus(
         appStatus: AppStatus,
         navController: NavController
@@ -131,6 +136,8 @@ class HolderMainActivity : AppCompatActivity() {
 
         if (appStatus !is AppStatus.NoActionRequired) {
             navController.navigate(R.id.action_app_status, AppStatusFragment.getBundle(appStatus))
+        } else {
+            introductionViewModel.onConfigUpdated()
         }
     }
 

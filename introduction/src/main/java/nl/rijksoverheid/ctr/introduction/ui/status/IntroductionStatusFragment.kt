@@ -2,8 +2,8 @@ package nl.rijksoverheid.ctr.introduction.ui.status
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,30 +34,33 @@ class IntroductionStatusFragment : Fragment() {
         )
 
         when (introductionStatus) {
-            is IntroductionStatus.IntroductionNotFinished -> {
-                findNavController().navigate(
-                    IntroductionStatusFragmentDirections.actionSetup(
+            is IntroductionStatus.SetupNotFinished -> {
+                findNavControllerSafety()?.navigate(
+                    IntroductionStatusFragmentDirections.actionSetup()
+                )
+            }
+            is IntroductionStatus.OnboardingNotFinished -> {
+                findNavControllerSafety()?.navigate(
+                    IntroductionStatusFragmentDirections.actionOnboarding(
                         introductionStatus.introductionData
                     )
                 )
             }
-            is IntroductionStatus.IntroductionFinished.ConsentNeeded -> {
-                findNavController().navigate(
+            is IntroductionStatus.OnboardingFinished.ConsentNeeded -> {
+                findNavControllerSafety()?.navigate(
                     IntroductionStatusFragmentDirections.actionNewTerms(
                         introductionStatus.introductionData
                     )
                 )
             }
-            is IntroductionStatus.IntroductionFinished.NewFeatures -> {
-                findNavController().navigate(
+            is IntroductionStatus.OnboardingFinished.NewFeatures -> {
+                findNavControllerSafety()?.navigate(
                     IntroductionStatusFragmentDirections.actionNavNewFeatures(
                         introductionStatus.introductionData
                     )
                 )
             }
-            is IntroductionStatus.IntroductionFinished.NoActionRequired -> {
-
-            }
+            IntroductionStatus.IntroductionFinished -> { }
         }
     }
 }

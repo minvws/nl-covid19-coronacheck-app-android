@@ -11,6 +11,7 @@ abstract class RemoteProtocol(
         PENDING("pending"),
         INVALID_TOKEN("invalid_token"),
         VERIFICATION_REQUIRED("verification_required"),
+        RESULT_BLOCKED("result_blocked"),
         COMPLETE("complete");
 
         companion object {

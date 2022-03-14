@@ -54,7 +54,7 @@ class YourEventFragmentEndStateUtilImplTest {
     }
 
     @Test
-    fun `combination is none without recovery`() {
+    fun `combination is only international vaccination`() {
         val events = listOf(
             fakeEventGroupEntity(type = OriginType.Vaccination),
         )
@@ -63,11 +63,11 @@ class YourEventFragmentEndStateUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
-        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NoneWithoutRecovery)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), OnlyInternationalVaccination)
     }
 
     @Test
-    fun `combination is only vaccination`() {
+    fun `combination is only domestic vaccination`() {
         every { appConfigUseCase.getCachedAppConfig().recoveryEventValidityDays } returns 365
         val events = listOf(
             fakeEventGroupEntity(type = OriginType.Vaccination),
@@ -82,7 +82,7 @@ class YourEventFragmentEndStateUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard())
         )
 
-        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), OnlyVaccination(365))
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), OnlyDomesticVaccination(365))
     }
 
     @Test
@@ -97,28 +97,28 @@ class YourEventFragmentEndStateUtilImplTest {
                     fakeOrigin(type = OriginType.Recovery)
                 )
             ),
-            euGreencards = listOf(fakeEuGreenCard())
+            euGreencards = listOf()
         )
 
         assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), OnlyRecovery)
     }
 
     @Test
-    fun `combination is none with recovery`() {
+    fun `combination is vaccination and recovery`() {
         val events = listOf(
             fakeEventGroupEntity(type = OriginType.Vaccination),
             fakeEventGroupEntity(type = OriginType.Recovery)
         )
         val remoteGreenCards = fakeRemoteGreenCards(
-            domesticGreencard = fakeDomesticGreenCard(origins = emptyList()),
+            domesticGreencard = fakeDomesticGreenCard(origins = listOf(fakeOrigin(type = OriginType.Recovery))),
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
-        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NoneWithRecovery)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), VaccinationAndRecovery)
     }
 
     @Test
-    fun `combination is vaccination and recovery`() {
+    fun `combination is combined vaccination and recovery`() {
         every { appConfigUseCase.getCachedAppConfig().recoveryEventValidityDays } returns 365
         val events = listOf(
             fakeEventGroupEntity(type = OriginType.Vaccination),
@@ -154,5 +154,32 @@ class YourEventFragmentEndStateUtilImplTest {
         )
 
         assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NotApplicable)
+    }
+
+    @Test
+    fun `combination is no positive test with stored vaccination`() {
+        val storedGreenCards = listOf(
+            fakeGreenCard(
+                greenCardType = GreenCardType.Domestic,
+                originType = OriginType.Vaccination
+            )
+        )
+        val events = listOf(
+            fakeEventGroupEntity(type = OriginType.Vaccination),
+            fakeEventGroupEntity(type = OriginType.Recovery)
+        )
+        val remoteGreenCards = fakeRemoteGreenCards(
+            domesticGreencard = fakeDomesticGreenCard(
+                origins = listOf(
+                    fakeOrigin(type = OriginType.Vaccination)
+                )
+            ),
+            euGreencards = listOf(fakeEuGreenCard())
+        )
+
+        assertEquals(
+            util.getResult(HolderFlow.Recovery, storedGreenCards, events, remoteGreenCards),
+            NoRecoveryWithStoredVaccination
+        )
     }
 }

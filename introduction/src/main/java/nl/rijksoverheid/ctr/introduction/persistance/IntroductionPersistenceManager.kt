@@ -14,9 +14,18 @@ class IntroductionPersistenceManager(
 ) {
 
     companion object {
+        const val SETUP_FINISHED = "SETUP_FINISHED"
         const val INTRODUCTION_FINISHED = "INTRODUCTION_FINISHED"
         const val NEW_TERMS_SEEN = "NEW_TERMS_SEEN_[VERSION]"
         const val NEW_FEATURES_SEEN = "NEW_FEATURES_SEEN_[VERSION]"
+    }
+
+    fun saveSetupFinished() {
+        sharedPreferences.edit().putBoolean(SETUP_FINISHED, true).apply()
+    }
+
+    fun getSetupFinished(): Boolean {
+        return sharedPreferences.getBoolean(SETUP_FINISHED, false)
     }
 
     fun saveIntroductionFinished() {

@@ -72,11 +72,14 @@
 
     </ScrollView>
 
-    <nl.rijksoverheid.ctr.introduction.ui.privacy_consent.ScrollViewCheckboxButtonWidget
+    <nl.rijksoverheid.ctr.design.views.ScrollViewCheckboxButtonWidget
         android:id="@+id/bottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:attachToScrollView="@id/scroll"
+        app:attachCheckboxToScrollView="@id/scroll"
+        app:checkboxText="@string/privacy_policy_checkbox_text"
+        app:checkboxButtonText="@string/onboarding_finish"
+        app:checkboxErrorText="@string/privacy_policy_checkbox_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

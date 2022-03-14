@@ -19,20 +19,23 @@ sealed class YourEventFragmentEndState {
     data class CombinedVaccinationRecovery(val recoveryValidityDays: Int) :
         YourEventFragmentEndState()
 
-    /** A vaccination certificate after signing vaccination together with recovery events */
-    data class OnlyVaccination(val recoveryValidityDays: Int) :
+    /** A domestic vaccination certificate after signing vaccination together with recovery events */
+    data class OnlyDomesticVaccination(val recoveryValidityDays: Int) :
         YourEventFragmentEndState()
 
     /** A recovery certificate after signing vaccination together with recovery events */
     object OnlyRecovery : YourEventFragmentEndState()
 
-    /** No domestic certificate after signing vaccination together with recovery events */
-    object NoneWithRecovery : YourEventFragmentEndState()
+    /** Vaccination and recovery certificate after signing vaccination together with recovery events */
+    object VaccinationAndRecovery : YourEventFragmentEndState()
 
-    /** No domestic certificate after signing ONLY vaccination events (no recovery events) */
-    object NoneWithoutRecovery : YourEventFragmentEndState()
+    /** No recovery certificate after signing vaccination and recovery events with already stored vaccinations  */
+    object NoRecoveryWithStoredVaccination : YourEventFragmentEndState()
 
-    object AddedNegativeTestInVaccinationAssessmentFlow: YourEventFragmentEndState()
+    /** No domestic certificate after signing vaccination events with or without recovery events */
+    object OnlyInternationalVaccination : YourEventFragmentEndState()
+
+    object AddedNegativeTestInVaccinationAssessmentFlow : YourEventFragmentEndState()
 
     object NotApplicable : YourEventFragmentEndState()
 }

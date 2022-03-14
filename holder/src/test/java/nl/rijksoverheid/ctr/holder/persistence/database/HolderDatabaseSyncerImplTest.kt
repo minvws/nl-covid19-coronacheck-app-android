@@ -295,6 +295,38 @@ class HolderDatabaseSyncerImplTest {
         assertTrue(databaseSyncerResult is DatabaseSyncerResult.Failed.Error)
     }
 
+    @Test
+    fun `sync returns Success with missingOrigin if there are no returned origins`() = runBlocking {
+        coEvery { eventGroupDao.getAll() } answers { events }
+
+        val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
+            holderDatabase = holderDatabase,
+            greenCardUtil = fakeGreenCardUtil(),
+            getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
+                result = RemoteGreenCardsResult.Success(
+                    remoteGreenCards = RemoteGreenCards(
+                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
+                            origins = listOf(),
+                            createCredentialMessages = "".toByteArray()
+                        ),
+                        euGreencards = null
+                    )
+                )
+            ),
+            syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            persistenceManager = fakePersistenceManager(),
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+        )
+
+        val databaseSyncerResult = holderDatabaseSyncer.sync(
+            expectedOriginType = null,
+            syncWithRemote = true
+        )
+
+        assertEquals(DatabaseSyncerResult.Success(true), databaseSyncerResult)
+    }
+
     private fun successResult(originType: OriginType): RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
         remoteGreenCards = RemoteGreenCards(
             domesticGreencard = RemoteGreenCards.DomesticGreenCard(

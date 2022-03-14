@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.ui.status.IntroductionStatusFragment
+import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -35,9 +35,8 @@ class IntroductionFragment : Fragment(R.layout.fragment_introduction) {
             childFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navHostFragment.navController.setGraph(
             R.navigation.introduction_nav_graph, IntroductionStatusFragment.getBundle(
-                introductionStatus = arguments?.getParcelable(
-                    EXTRA_INTRODUCTION_STATUS
-                ) ?: error("IntroductionStatus should be set")
+                introductionStatus = arguments?.getParcelable(EXTRA_INTRODUCTION_STATUS)
+                    ?: error("IntroductionStatus should be set")
             )
         )
     }

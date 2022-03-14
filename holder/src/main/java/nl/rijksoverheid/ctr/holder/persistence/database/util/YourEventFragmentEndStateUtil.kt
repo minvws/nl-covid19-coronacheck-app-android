@@ -15,9 +15,9 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
 import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState.*
-import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.shared.models.Flow
 
@@ -46,11 +46,12 @@ class YourEventFragmentEndStateUtilImpl(
         val recoveryValidityDays = appConfigUseCase.getCachedAppConfig().recoveryEventValidityDays
         return when {
             hasAddedNegativeTestInVaccinationAssessmentFlow(flow, remoteGreenCards) -> AddedNegativeTestInVaccinationAssessmentFlow
-            hasStoredDomesticVaccination(storedGreenCards) -> NotApplicable
-            isNoneWithoutRecovery(events, remoteGreenCards) -> NoneWithoutRecovery
-            isOnlyVaccination(events, remoteGreenCards) -> OnlyVaccination(recoveryValidityDays)
+            hasStoredDomesticVaccination(storedGreenCards) && flow !is HolderFlow.Recovery -> NotApplicable
+            isNoRecoveryWithStoredVaccination(events, remoteGreenCards, storedGreenCards) -> NoRecoveryWithStoredVaccination
+            isOnlyDomesticVaccination(events, remoteGreenCards) -> OnlyDomesticVaccination(recoveryValidityDays)
+            isVaccinationAndRecovery(events, remoteGreenCards) -> VaccinationAndRecovery
+            isOnlyInternationalVaccination(events, remoteGreenCards) -> OnlyInternationalVaccination
             isOnlyRecovery(events, remoteGreenCards) -> OnlyRecovery
-            isNoneWithRecovery(events, remoteGreenCards) -> NoneWithRecovery
             isCombinedVaccinationRecovery(events, remoteGreenCards) -> CombinedVaccinationRecovery(
                 recoveryValidityDays
             )
@@ -72,12 +73,13 @@ class YourEventFragmentEndStateUtilImpl(
             }
     }
 
-    private fun isNoneWithRecovery(
+    private fun isVaccinationAndRecovery(
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): Boolean {
         return hasVaccinationAndRecoveryEvents(events)
                 && hasOnlyInternationalVaccinationCertificates(remoteGreenCards)
+                && remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Recovery } ?: false
     }
 
     private fun isOnlyRecovery(
@@ -89,13 +91,24 @@ class YourEventFragmentEndStateUtilImpl(
                 remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Recovery } ?: false
     }
 
-    private fun isOnlyVaccination(
+    private fun isOnlyDomesticVaccination(
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): Boolean {
         return hasVaccinationAndRecoveryEvents(events) &&
                 remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Vaccination } ?: false &&
                 remoteGreenCards.domesticGreencard?.origins?.none { it.type == OriginType.Recovery } ?: true
+    }
+
+
+    private fun isNoRecoveryWithStoredVaccination(
+        events: List<EventGroupEntity>,
+        remoteGreenCards: RemoteGreenCards,
+        storedGreenCards: List<GreenCard>
+    ): Boolean {
+        return hasVaccinationAndRecoveryEvents(events) &&
+                remoteGreenCards.domesticGreencard?.origins?.none { it.type == OriginType.Recovery } ?: true
+                && hasStoredDomesticVaccination(storedGreenCards)
     }
 
     private fun isCombinedVaccinationRecovery(
@@ -110,11 +123,11 @@ class YourEventFragmentEndStateUtilImpl(
     override fun hasVaccinationAndRecoveryEvents(events: List<EventGroupEntity>) =
         events.any { it.type == OriginType.Vaccination } && events.any { it.type == OriginType.Recovery }
 
-    private fun isNoneWithoutRecovery(
+    private fun isOnlyInternationalVaccination(
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): Boolean {
-        return events.all { it.type == OriginType.Vaccination } &&
+        return (events.all { it.type == OriginType.Vaccination } || hasVaccinationAndRecoveryEvents(events)) &&
                 hasOnlyInternationalVaccinationCertificates(remoteGreenCards)
     }
 
@@ -128,7 +141,8 @@ class YourEventFragmentEndStateUtilImpl(
     ): Boolean {
         return if (flow == HolderFlow.VaccinationAssessment) {
             val hasTest = remoteGreenCards.getAllOrigins().any { it is OriginType.Test }
-            val hasVisitorPass = remoteGreenCards.getAllOrigins().any { it is OriginType.VaccinationAssessment }
+            val hasVisitorPass =
+                remoteGreenCards.getAllOrigins().any { it is OriginType.VaccinationAssessment }
             return hasTest && !hasVisitorPass
         } else {
             false

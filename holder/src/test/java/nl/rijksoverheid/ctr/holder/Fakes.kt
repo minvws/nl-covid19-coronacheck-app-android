@@ -22,12 +22,12 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderReposi
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
-import nl.rijksoverheid.ctr.holder.ui.myoverview.DashboardViewModel
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardSync
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.DashboardTabItem
-import nl.rijksoverheid.ctr.holder.ui.myoverview.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.TokenValidatorUtil
+import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModel
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
@@ -102,17 +102,19 @@ fun fakeCachedAppConfigUseCase(
 
 fun fakeIntroductionViewModel(
     introductionStatus: IntroductionStatus? = null,
+    setupRequired: Boolean = true
 ): IntroductionViewModel {
     return object : IntroductionViewModel() {
 
         init {
-            if (introductionStatus != null) {
-                (introductionStatusLiveData as MutableLiveData).postValue(Event(introductionStatus))
+            if (setupRequired) {
+                (introductionStatusLiveData as MutableLiveData)
+                    .postValue(Event(IntroductionStatus.SetupNotFinished))
             }
         }
 
         override fun getIntroductionStatus(): IntroductionStatus {
-            return introductionStatus ?: IntroductionStatus.IntroductionFinished.NoActionRequired
+            return introductionStatus ?: IntroductionStatus.IntroductionFinished
         }
 
         override fun saveIntroductionFinished(introductionData: IntroductionData) {
@@ -123,6 +125,12 @@ fun fakeIntroductionViewModel(
 
         }
 
+        override fun onConfigUpdated() {
+            introductionStatus?.let {
+                (introductionStatusLiveData as MutableLiveData)
+                    .postValue(Event(it))
+            }
+        }
     }
 }
 
@@ -228,34 +236,6 @@ fun fakeCoronaCheckRepository(
             couplingCode: String
         ): NetworkRequestResult<RemoteCouplingResponse> {
             return NetworkRequestResult.Success(RemoteCouplingResponse(RemoteCouplingStatus.Accepted))
-        }
-    }
-}
-
-fun fakeTestResultAttributesUseCase(
-    sampleTimeSeconds: Long = 0L,
-    testType: String = "",
-    birthDay: String = "",
-    birthMonth: String = "",
-    firstNameInitial: String = "",
-    lastNameInitial: String = "",
-    isSpecimen: String = "0",
-    isPaperProof: String = "0"
-): TestResultAttributesUseCase {
-    return object : TestResultAttributesUseCase {
-        override fun get(credentials: String): TestResultAttributes {
-            return TestResultAttributes(
-                birthDay = birthDay,
-                birthMonth = birthMonth,
-                firstNameInitial = firstNameInitial,
-                lastNameInitial = lastNameInitial,
-                isSpecimen = isSpecimen,
-                isNLDCC = "1",
-                credentialVersion = "1",
-                isPaperProof = "0",
-                validForHours = "24",
-                validFrom = "1622633766",
-            )
         }
     }
 }
@@ -636,6 +616,10 @@ fun fakeRemoteEventUtil(
 
     override fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent> {
         return getRemoteEventsFromNonDcc
+    }
+
+    override fun getOriginType(remoteEvent: RemoteEvent): OriginType {
+        return OriginType.Vaccination
     }
 }
 

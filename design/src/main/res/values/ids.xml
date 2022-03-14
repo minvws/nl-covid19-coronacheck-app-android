@@ -31,4 +31,6 @@
     <item name="ok" type="string" />
     <item name="general_menu" type="string" />
     <item name="page_indicator_label" type="string" />
+    <item name="ic_info" type="drawable" />
+    <item name="privacy_policy_checkbox_error" type="string" />
 </resources>

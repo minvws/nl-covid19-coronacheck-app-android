@@ -83,13 +83,14 @@ class HolderDatabaseSyncerImpl(
                                     events = events,
                                     remoteGreenCards = remoteGreenCards
                                 )
-                            
+
                             // If we expect the remote green cards to have a certain origin
                             // We ignore the vaccination assessment origin here because you can
                             // fetch send a vaccination assessment event origin but not get a
                             // green card vaccination assessment origin back
-                            if (expectedOriginType != null && !remoteGreenCards.getAllOrigins()
-                                    .contains(expectedOriginType) && expectedOriginType != OriginType.VaccinationAssessment
+                            if ((expectedOriginType != null && !remoteGreenCards.getAllOrigins()
+                                    .contains(expectedOriginType) && expectedOriginType != OriginType.VaccinationAssessment)
+                                || remoteGreenCards.getAllOrigins().isEmpty()
                             ) {
                                 return@withContext DatabaseSyncerResult.Success(
                                     missingOrigin = true,

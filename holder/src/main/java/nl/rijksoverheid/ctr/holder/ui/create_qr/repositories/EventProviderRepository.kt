@@ -28,9 +28,8 @@ interface EventProviderRepository {
                 is RemoteOriginType.Vaccination -> {
                     "vaccination"
                 }
-                // TODO Change to positivetest only when GGD accepts scope parameter
                 is RemoteOriginType.Recovery -> {
-                    "positivetest,recovery"
+                    "positivetest"
                 }
                 is RemoteOriginType.Test -> {
                     "negativetest"
@@ -73,10 +72,9 @@ class EventProviderRepositoryImpl(
     ): NetworkRequestResult<RemoteUnomi> {
         val params = mutableMapOf<String, String>()
         params["filter"] = filter
-        // TODO Enable when GGD accepts scope parameter
-//        scope?.let {
-//            params["scope"] = scope
-//        }
+        scope?.let {
+            params["scope"] = scope
+        }
 
         return networkRequestResultFactory.createResult(
             step = HolderStep.UnomiNetworkRequest,
@@ -101,10 +99,9 @@ class EventProviderRepositoryImpl(
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
         val params = mutableMapOf<String, String>()
         params["filter"] = filter
-        // TODO Enable when GGD accepts scope parameter
-//        scope?.let {
-//            params["scope"] = scope
-//        }
+        scope?.let {
+            params["scope"] = scope
+        }
 
         return networkRequestResultFactory.createResult(
             step = HolderStep.EventNetworkRequest,

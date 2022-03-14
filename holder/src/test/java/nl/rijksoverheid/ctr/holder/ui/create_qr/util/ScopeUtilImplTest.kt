@@ -19,7 +19,7 @@ class ScopeUtilImplTest {
         val util = ScopeUtilImpl()
         val scope = util.getScopeForRemoteOriginType(
             remoteOriginType = RemoteOriginType.Recovery,
-            withIncompleteVaccination = true
+            getPositiveTestWithVaccination = true
         )
         assertEquals("firstepisode", scope)
     }
@@ -29,7 +29,7 @@ class ScopeUtilImplTest {
         val util = ScopeUtilImpl()
         val scope = util.getScopeForRemoteOriginType(
             remoteOriginType = RemoteOriginType.Recovery,
-            withIncompleteVaccination = false
+            getPositiveTestWithVaccination = false
         )
         assertEquals("recovery", scope)
     }
@@ -39,7 +39,7 @@ class ScopeUtilImplTest {
         val util = ScopeUtilImpl()
         val scope = util.getScopeForRemoteOriginType(
             remoteOriginType = RemoteOriginType.Vaccination,
-            withIncompleteVaccination = false
+            getPositiveTestWithVaccination = false
         )
         assertEquals(null, scope)
     }
@@ -49,7 +49,7 @@ class ScopeUtilImplTest {
         val util = ScopeUtilImpl()
         val scope = util.getScopeForOriginType(
             originType = OriginType.Recovery,
-            withIncompleteVaccination = true
+            getPositiveTestWithVaccination = true
         )
         assertEquals("firstepisode", scope)
     }
@@ -59,7 +59,7 @@ class ScopeUtilImplTest {
         val util = ScopeUtilImpl()
         val scope = util.getScopeForOriginType(
             originType = OriginType.Recovery,
-            withIncompleteVaccination = false
+            getPositiveTestWithVaccination = false
         )
         assertEquals("recovery", scope)
     }
@@ -69,7 +69,7 @@ class ScopeUtilImplTest {
         val util = ScopeUtilImpl()
         val scope = util.getScopeForOriginType(
             originType = OriginType.Vaccination,
-            withIncompleteVaccination = false
+            getPositiveTestWithVaccination = false
         )
         assertEquals(null, scope)
     }

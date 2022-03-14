@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
@@ -9,6 +10,7 @@ import java.time.Clock
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import kotlin.test.assertEquals
 
 class RemoteProtocol3UtilImplTest {
 
@@ -85,7 +87,7 @@ class RemoteProtocol3UtilImplTest {
         Assert.assertEquals(2, groupedEvents.values.size)
         val firstEvent = groupedEvents.keys.toList()[0]
         val secondEvent = groupedEvents.keys.toList()[1]
-        Assert.assertTrue(firstEvent.getDate()!! < secondEvent.getDate()!!)
+        Assert.assertTrue(firstEvent.getDate()!! > secondEvent.getDate()!!)
         Assert.assertEquals(
             "GGD, RIVM",
             groupedEvents.values.first().map { it.providerIdentifier }.joinToString(", ")
@@ -145,6 +147,49 @@ class RemoteProtocol3UtilImplTest {
         Assert.assertEquals(2, combinedEvents.size)
     }
 
+    @Test
+    fun `events should be sorted by descending date regardless of type`() {
+        val vaccination1 = vaccination(
+            doseNumber = "1",
+            totalDoses = "2",
+            clock = Clock.fixed(Instant.parse("2021-06-01T00:00:00.00Z"), ZoneId.of("UTC"))
+        )
+        val vaccination2 = vaccination(
+            doseNumber = "2",
+            totalDoses = "2",
+            clock = Clock.fixed(Instant.parse("2021-06-09T00:00:00.00Z"), ZoneId.of("UTC"))
+        )
+        val event1 = RemoteProtocol3(
+            providerIdentifier = "GGD",
+            protocolVersion = "2",
+            status = RemoteProtocol.Status.COMPLETE,
+            holder = holder(),
+            events = listOf(
+                vaccination1,
+                vaccination2
+            )
+        )
+
+        val recovery = recovery(
+            clock = Clock.fixed(Instant.parse("2021-06-20T00:00:00.00Z"), ZoneId.of("UTC"))
+        )
+        val event2 = RemoteProtocol3(
+            providerIdentifier = "GGD",
+            protocolVersion = "2",
+            status = RemoteProtocol.Status.COMPLETE,
+            holder = holder(),
+            events = listOf(
+                recovery
+            )
+        )
+
+        val groupedEvents = util.groupEvents(listOf(event1, event2))
+
+        assertEquals(recovery, groupedEvents.keys.first())
+        assertEquals(vaccination2, groupedEvents.keys.elementAt(1))
+        assertEquals(vaccination1, groupedEvents.keys.last())
+    }
+
     private fun holder(): RemoteProtocol3.Holder {
         return RemoteProtocol3.Holder(
             infix = null,
@@ -175,6 +220,19 @@ class RemoteProtocol3UtilImplTest {
             completedByPersonalStatement = null,
             country = null,
             completionReason = null,
+        )
+    )
+
+    private fun recovery(
+        clock: Clock
+    ) = RemoteEventRecovery(
+        type = "recovery",
+        unique = "",
+        isSpecimen = true,
+        recovery = RemoteEventRecovery.Recovery(
+            sampleDate = LocalDate.now(clock),
+            validFrom = LocalDate.now(clock),
+            validUntil = LocalDate.now(clock)
         )
     )
 }

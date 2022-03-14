@@ -2,8 +2,9 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.findNavController
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewCheckboxButtonBinding
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -18,7 +19,10 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
 import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.digid.LoginResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -48,9 +52,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     override fun getFlow(): Flow {
         return when (args.originType) {
-            RemoteOriginType.Recovery -> {
-                if (args.afterIncompleteVaccination) HolderFlow.Recovery else HolderFlow.PositiveTest
-            }
+            RemoteOriginType.Recovery -> HolderFlow.Recovery
             RemoteOriginType.Test -> HolderFlow.DigidTest
             RemoteOriginType.Vaccination -> HolderFlow.Vaccination
         }
@@ -59,15 +61,10 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentGetEventsBinding.bind(view)
+        val checkboxButtonBinding = WidgetScrollViewCheckboxButtonBinding.bind(binding.root)
         val copy = getCopyForOriginType()
         setBindings(binding, copy)
-        setObservers(binding, copy)
-
-        if (args.originType == RemoteOriginType.Recovery && args.afterIncompleteVaccination) {
-            binding.root.visibility = View.GONE
-            binding.fullscreenLoading.visibility = View.VISIBLE
-            loginAgainWithDigiD()
-        }
+        setObservers(binding, copy, checkboxButtonBinding)
     }
 
     override fun onDestroyView() {
@@ -77,18 +74,19 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private fun setObservers(
         binding: FragmentGetEventsBinding,
-        copy: GetEventsFragmentCopy
+        copy: GetEventsFragmentCopy,
+        checkboxButtonBinding: WidgetScrollViewCheckboxButtonBinding
     ) {
         digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it
+            checkboxButtonBinding.checkbox.isEnabled = !it
             (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
         getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             binding.button.isEnabled = !it
-            if (binding.fullscreenLoading.visibility != View.VISIBLE) {
-                (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
-            }
+            checkboxButtonBinding.checkbox.isEnabled = !it
+            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
 
         getEventsViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
@@ -103,15 +101,17 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                             positiveButtonCallback = {},
                             onDismissCallback = {
                                 navigateToYourEvents(
-                                    signedEvents = it.signedModels,
+                                    remoteProtocols3 = it.remoteEvents,
                                     eventProviders = it.eventProviders,
+                                    getPositiveTestWithVaccination = checkboxButtonBinding.checkbox.isChecked
                                 )
                             }
                         )
                     } else {
                         navigateToYourEvents(
-                            signedEvents = it.signedModels,
+                            remoteProtocols3 = it.remoteEvents,
                             eventProviders = it.eventProviders,
+                            getPositiveTestWithVaccination = checkboxButtonBinding.checkbox.isChecked
                         )
                     }
                 }
@@ -157,7 +157,6 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 is EventsResult.Error -> {
                     when {
                         it.accessTokenSessionExpiredError() -> {
-                            onTokenExpired()
                             presentError(
                                 data = ErrorResultFragmentData(
                                     title = getString(R.string.error_access_tokens_session_expired_title),
@@ -202,7 +201,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     getEventsViewModel.getDigidEvents(
                         it.jwt,
                         args.originType,
-                        args.afterIncompleteVaccination
+                        checkboxButtonBinding.checkbox.isChecked
                     )
                 }
                 is LoginResult.Failed -> {
@@ -219,7 +218,6 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 }
                 LoginResult.TokenUnavailable -> {
                     binding.root.visibility = View.VISIBLE
-                    binding.fullscreenLoading.visibility = View.GONE
                 }
                 LoginResult.NoBrowserFound -> {
                     dialogUtil.presentDialog(
@@ -255,6 +253,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 )
             }
         }
+        binding.checkboxContainer.isVisible = args.originType == RemoteOriginType.Vaccination
     }
 
     private fun getCopyForOriginType(): GetEventsFragmentCopy {
@@ -279,12 +278,8 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             }
             is RemoteOriginType.Recovery -> {
                 return GetEventsFragmentCopy(
-                    title = getString(
-                        if (args.afterIncompleteVaccination) R.string.retrieve_test_result_title else R.string.get_recovery_title
-                    ),
-                    description = getString(
-                        if (args.afterIncompleteVaccination) R.string.retrieve_test_result_description else R.string.get_recovery_description
-                    ),
+                    title = getString(R.string.get_recovery_title),
+                    description = getString(R.string.get_recovery_description),
                     toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
                     hasNoEventsTitle = getString(R.string.no_positive_test_result_title),
                     hasNoEventsDescription = getString(R.string.no_positive_test_result_description)
@@ -294,20 +289,23 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     }
 
     private fun navigateToYourEvents(
-        signedEvents: List<SignedResponseWithModel<RemoteProtocol3>>,
+        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
         eventProviders: List<EventProvider> = emptyList(),
+        getPositiveTestWithVaccination: Boolean
     ) {
+        val flow = getFlow()
         navigateSafety(
             GetEventsFragmentDirections.actionYourEvents(
                 type = YourEventsFragmentType.RemoteProtocol3Type(
-                    remoteEvents = signedEvents.map { signedModel -> signedModel.model to signedModel.rawResponse }
-                        .toMap(),
-                    originType = args.originType.toOriginType(),
-                    eventProviders = eventProviders,
+                    remoteEvents = remoteProtocols3,
+                    eventProviders = eventProviders
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,
-                afterIncompleteVaccination = args.afterIncompleteVaccination,
-                flow = getFlow()
+                flow = if (flow == HolderFlow.Vaccination && getPositiveTestWithVaccination) {
+                    HolderFlow.VaccinationAndPositiveTest
+                } else {
+                    flow
+                }
             )
         )
     }

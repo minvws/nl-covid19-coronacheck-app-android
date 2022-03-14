@@ -26,7 +26,7 @@ class RemoteProtocol3UtilImpl: RemoteProtocol3Util {
         remoteEvents.sortedBy { it.providerIdentifier }.forEach {
             val provider = it.providerIdentifier
             val holder = it.holder
-            it.events?.sortedBy { date -> date.getDate() }?.forEach { remoteEvent ->
+            it.events?.forEach { remoteEvent ->
                 if (sameEventsGrouped.contains(remoteEvent)) {
                     sameEventsGrouped[remoteEvent]?.add(RemoteEventInformation(provider, holder, remoteEvent))
                 } else {
@@ -35,6 +35,9 @@ class RemoteProtocol3UtilImpl: RemoteProtocol3Util {
             }
         }
 
-        return sameEventsGrouped
+        // Sort events descending by date
+        return sameEventsGrouped.entries
+            .sortedByDescending { it.key.getDate() }
+            .associate { it.key to it.value }
     }
 }

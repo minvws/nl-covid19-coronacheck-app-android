@@ -25,6 +25,8 @@
         app:title="@string/scan_instructions"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/back"
+        android:focusable="true"
+        android:touchscreenBlocksFocus="false"
         app:navigationIcon="@drawable/ic_back" />
 
     <fragment

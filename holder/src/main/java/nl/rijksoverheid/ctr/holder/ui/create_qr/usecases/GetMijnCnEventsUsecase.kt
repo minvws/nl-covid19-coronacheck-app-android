@@ -1,7 +1,10 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventProvider
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.EventsResult
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteAccessTokens
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
@@ -64,7 +67,7 @@ class GetMijnCnEventsUsecaseImpl(
             val filter = EventProviderRepository.getFilter(originType)
             val scope = scopeUtil.getScopeForRemoteOriginType(
                 remoteOriginType = originType,
-                withIncompleteVaccination = withIncompleteVaccination
+                getPositiveTestWithVaccination = withIncompleteVaccination
             )
 
             val eventResults = eventProviders.map { eventProvider ->
@@ -109,7 +112,9 @@ class GetMijnCnEventsUsecaseImpl(
                 } else {
                     // We do have events
                     EventsResult.Success(
-                        signedModels = signedModels,
+                        remoteEvents = signedModels.associate { signedModel ->
+                            signedModel.model to signedModel.rawResponse
+                        },
                         missingEvents = eventFailureResults.isNotEmpty(),
                         eventProviders = eventProviders.map {
                             EventProvider(

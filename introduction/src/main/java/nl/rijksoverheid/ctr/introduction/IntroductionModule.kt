@@ -1,8 +1,6 @@
 package nl.rijksoverheid.ctr.introduction
 
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCase
-import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCaseImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -20,6 +18,5 @@ val introductionModule = module {
             get()
         )
     }
-    factory<IntroductionStatusUseCase> { IntroductionStatusUseCaseImpl(get(), get(), get()) }
     viewModel<IntroductionViewModel> { IntroductionViewModelImpl(get(), get()) }
 }

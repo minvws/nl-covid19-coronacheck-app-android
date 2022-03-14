@@ -16,6 +16,12 @@
             app:popUpToInclusive="true" />
 
         <action
+            android:id="@+id/action_onboarding"
+            app:destination="@id/nav_onboarding"
+            app:popUpTo="@id/nav_introduction"
+            app:popUpToInclusive="true" />
+
+        <action
             android:id="@+id/action_new_terms"
             app:destination="@id/nav_new_terms"
             app:popUpTo="@id/nav_introduction"
@@ -33,10 +39,6 @@
         android:id="@+id/nav_setup"
         android:name="nl.rijksoverheid.ctr.introduction.ui.setup.SetupFragment"
         tools:layout="@layout/fragment_setup">
-
-        <argument
-            android:name="introduction_data"
-            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
 
         <action
             android:id="@+id/action_onboarding"

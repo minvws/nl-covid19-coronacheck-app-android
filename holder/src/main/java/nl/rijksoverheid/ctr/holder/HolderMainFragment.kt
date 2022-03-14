@@ -37,7 +37,7 @@ class HolderMainFragment : Fragment(R.layout.fragment_main) {
 
         val defaultToolbarElevation = resources.getDimension(R.dimen.toolbar_elevation)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.toolbar.elevation = if (destination.id == R.id.nav_my_overview_tabs) {
+            binding.toolbar.elevation = if (destination.id == R.id.nav_dashboard) {
                 0f
             } else {
                 defaultToolbarElevation

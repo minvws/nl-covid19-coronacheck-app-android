@@ -13,8 +13,7 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.utils.MenuUtilImpl
-import org.junit.Assert
+import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtilImpl
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -5,13 +5,13 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
-import nl.rijksoverheid.ctr.holder.ui.myoverview.items.MyOverviewGreenCardAdapterItem
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItem
 
 interface OriginUtil {
     fun getOriginState(origins: List<OriginEntity>): List<OriginState>
 
     /**
-     * If the origin subtitle should be hiden in the [MyOverviewGreenCardAdapterItem]
+     * If the origin subtitle should be hiden in the [DashboardGreenCardAdapterItem]
      */
     fun hideSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean
 

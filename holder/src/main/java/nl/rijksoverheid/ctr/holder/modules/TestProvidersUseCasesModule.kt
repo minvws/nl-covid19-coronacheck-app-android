@@ -3,8 +3,6 @@ package nl.rijksoverheid.ctr.holder.modules
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCaseImpl
 import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResultUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCase
-import nl.rijksoverheid.ctr.holder.ui.myoverview.usecases.TestResultAttributesUseCaseImpl
 import org.koin.dsl.module
 
 /*
@@ -26,9 +24,5 @@ val testProvidersUseCasesModule = module {
             get(),
             get()
         )
-    }
-
-    factory<TestResultAttributesUseCase> {
-        TestResultAttributesUseCaseImpl(get(), get())
     }
 }
