@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import android.view.View.*
+import android.view.accessibility.AccessibilityEvent
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
@@ -292,7 +293,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         if (locked) {
             locked = false
             getToolbar()?.run {
-                Accessibility.announce(context, title.toString())
+                Accessibility.announce(context, "$title, ${binding.bottom.policyText}")
             }
         }
     }
