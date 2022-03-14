@@ -4,7 +4,6 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.HolderStep
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
@@ -212,7 +211,7 @@ class GetDigidEventsUseCaseImplTest {
             )
         )
         return NetworkRequestResult.Failed.CoronaCheckHttpError(
-            HolderStep.UnomiNetworkRequest, httpException
+            HolderStep.UnomiNetworkRequest, httpException, provider
         )
     }
 

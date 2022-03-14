@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.HolderStep
 import nl.rijksoverheid.ctr.holder.fakeEventProviderRepository
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteAccessTokens
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
@@ -117,7 +116,7 @@ class GetEventProvidersWithTokensUseCaseImplTest {
             )
         )
         val httpError = NetworkRequestResult.Failed.CoronaCheckHttpError(
-            HolderStep.UnomiNetworkRequest, httpException
+            HolderStep.UnomiNetworkRequest, httpException, provider
         )
         val eventProviderRepository = fakeEventProviderRepository(
             unomi = {

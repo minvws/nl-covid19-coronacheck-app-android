@@ -5,7 +5,6 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.HolderStep
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
@@ -284,7 +283,7 @@ class GetMijnCnEventsUseCaseImplTest {
             )
         )
         return NetworkRequestResult.Failed.CoronaCheckHttpError(
-            HolderStep.UnomiNetworkRequest, httpException
+            HolderStep.UnomiNetworkRequest, httpException, provider
         )
     }
 
@@ -295,7 +294,10 @@ class GetMijnCnEventsUseCaseImplTest {
             )
         )
         return NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError(
-            HolderStep.EventNetworkRequest, httpException, CoronaCheckErrorResponse("", 777706)
+            HolderStep.EventNetworkRequest,
+            httpException,
+            CoronaCheckErrorResponse("", 777706),
+            provider
         )
     }
 

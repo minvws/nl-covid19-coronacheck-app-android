@@ -38,7 +38,8 @@ class ErrorCodeStringFactoryImplTest {
                     Response.error<String>(
                         400, "".toResponseBody()
                     )
-                )
+                ),
+                provider = provider
             ))
         )
 
@@ -77,7 +78,8 @@ class ErrorCodeStringFactoryImplTest {
                 errorResponse = CoronaCheckErrorResponse(
                     status = "",
                     code = 2
-                )
+                ),
+                provider = provider
             )
         ))
 

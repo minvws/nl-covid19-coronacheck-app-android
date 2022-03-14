@@ -208,11 +208,13 @@ class HolderDatabaseSyncerImplTest {
             holderDatabase = holderDatabase,
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.CoronaCheckHttpError(Step(1), HttpException(
-                    Response.error<String>(
-                        400, "".toResponseBody()
-                    )
-                )))),
+                result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.CoronaCheckHttpError(
+                    Step(1), HttpException(
+                        Response.error<String>(
+                            400, "".toResponseBody()
+                        )
+                    ), provider
+                ))),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(
                 result = SyncRemoteGreenCardsResult.Success
             ),
