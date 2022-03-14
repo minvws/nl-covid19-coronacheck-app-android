@@ -89,9 +89,17 @@ class HolderIntroductionStatusUseCaseImpl(
             imageResource = R.drawable.illustration_new_disclosure_policy,
             titleResource = getPolicyFeatureTitle(newPolicy),
             description = getPolicyFeatureBody(newPolicy),
-            subTitleColor = R.color.primary_blue
+            subTitleColor = R.color.primary_blue,
+            subtitleResource = getNewPolicySubtitle(newPolicy)
         )
     }
+
+    private fun getNewPolicySubtitle(newPolicy: DisclosurePolicy) =
+        if (newPolicy == DisclosurePolicy.OneG || newPolicy == DisclosurePolicy.ThreeG) {
+            R.string.general_newpolicy
+        } else {
+            R.string.new_in_app_subtitle
+        }
 
     @StringRes
     private fun getPolicyFeatureTitle(newPolicy: DisclosurePolicy): Int {

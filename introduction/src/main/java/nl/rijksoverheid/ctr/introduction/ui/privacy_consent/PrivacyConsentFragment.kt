@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewCheckboxButtonBinding
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -35,7 +34,7 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
         val binding = FragmentPrivacyConsentBinding.bind(view)
 
         binding.toolbar.setNavigationOnClickListener {
-            val canPop = findNavController().popBackStack()
+            val canPop = findNavControllerSafety()?.popBackStack() ?: false
             if (!canPop) {
                 requireActivity().finish()
             }

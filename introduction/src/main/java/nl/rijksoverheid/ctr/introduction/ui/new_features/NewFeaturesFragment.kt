@@ -7,13 +7,13 @@ import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentNewFeaturesBinding
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
@@ -67,7 +67,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
                 override fun handleOnBackPressed() {
                     val currentItem = viewPager.currentItem
                     if (currentItem == 0) {
-                        val canPop = findNavController().popBackStack()
+                        val canPop = findNavControllerSafety()?.popBackStack() ?: false
                         if (!canPop) {
                             requireActivity().finish()
                         }

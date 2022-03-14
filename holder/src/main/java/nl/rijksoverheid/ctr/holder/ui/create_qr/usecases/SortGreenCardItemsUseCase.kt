@@ -22,6 +22,9 @@ class SortGreenCardItemsUseCaseImpl(
 ): SortGreenCardItemsUseCase {
 
     override fun sort(items: List<DashboardItem>): List<DashboardItem> {
+        if (items.size < 2) {
+            return items
+        }
         return items.sortedBy {
             when (it) {
                 is DashboardItem.HeaderItem -> 10

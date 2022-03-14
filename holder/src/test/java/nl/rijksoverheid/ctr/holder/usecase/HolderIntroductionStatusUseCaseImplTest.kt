@@ -316,6 +316,10 @@ class HolderIntroductionStatusUseCaseImplTest {
                 R.drawable.illustration_new_disclosure_policy,
                 introductionData.newFeatures.last().imageResource
             )
+            assertEquals(
+                R.string.new_in_app_subtitle,
+                introductionData.newFeatures.last().subtitleResource
+            )
             assertEquals(2, introductionData.newFeatures.size)
         }
     }
@@ -343,6 +347,10 @@ class HolderIntroductionStatusUseCaseImplTest {
                 R.drawable.illustration_new_disclosure_policy,
                 introductionData.newFeatures.last().imageResource
             )
+            assertEquals(
+                R.string.general_newpolicy,
+                introductionData.newFeatures.last().subtitleResource
+            )
             assertEquals(2, introductionData.newFeatures.size)
         }
     }
@@ -369,6 +377,10 @@ class HolderIntroductionStatusUseCaseImplTest {
             assertEquals(
                 R.drawable.illustration_new_disclosure_policy,
                 introductionData.newFeatures.last().imageResource
+            )
+            assertEquals(
+                R.string.general_newpolicy,
+                introductionData.newFeatures.last().subtitleResource
             )
             assertEquals(2, introductionData.newFeatures.size)
         }

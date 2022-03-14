@@ -17,6 +17,8 @@ import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceMa
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Clock
 import java.time.Instant
@@ -54,11 +56,15 @@ class AppStatusUseCaseImplTest {
 
     private fun getVerifierConfig(
         recommendedVersion: Int = 1,
-        recommendedInterval: Int = 1
+        recommendedInterval: Int = 1,
+        verifierAppDeactivated: Boolean = false,
+        verifierMinimumVersion: Int = 1000,
     ): String =
         VerifierConfig.default(
             verifierRecommendedVersion = recommendedVersion,
-            upgradeRecommendationIntervalHours = recommendedInterval
+            upgradeRecommendationIntervalHours = recommendedInterval,
+            verifierAppDeactivated = verifierAppDeactivated,
+            verifierMinimumVersion = verifierMinimumVersion,
         ).toJson(moshi).toResponseBody("application/json".toMediaType()).source()
             .readUtf8()
 
@@ -299,4 +305,66 @@ class AppStatusUseCaseImplTest {
 
             Assert.assertEquals(AppStatus.NoActionRequired, appStatus)
         }
+
+    private fun appStatusUseCase(appDeactivated: Boolean, minimumVersion: Int) =
+        AppStatusUseCaseImpl(
+            clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
+            cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>().apply {
+                every { getCachedAppConfig().appDeactivated } returns appDeactivated
+                every { getCachedAppConfig().minimumVersion } returns minimumVersion
+            },
+            appConfigPersistenceManager = mockk(),
+            moshi = moshi,
+            isVerifierApp = true,
+            recommendedUpdatePersistenceManager = mockk()
+        )
+
+    @Test
+    fun `isAppActive returns false if is app is deactivated from the config`() {
+        val appStatusUseCase = appStatusUseCase(true, 1000)
+
+        assertFalse(appStatusUseCase.isAppActive(1000))
+    }
+
+    @Test
+    fun `isAppActive returns false if app has forced update`() {
+        val appStatusUseCase = appStatusUseCase(false, 1001)
+
+        assertFalse(appStatusUseCase.isAppActive(1000))
+    }
+
+    @Test
+    fun `isAppActive returns true if app is not deactivated and no forced update needed`() {
+        val appStatusUseCase = appStatusUseCase(false, 1000)
+
+        assertTrue(appStatusUseCase.isAppActive(1000))
+    }
+
+    @Test
+    fun `given app is deactivated and needs a forced update, when config refreshes, then shows forced update status`() = runBlocking {
+        val currentVersionCode = 1000
+        val verifierMinimumVersion = 1001
+        val configResult = ConfigResult.Success(
+            getVerifierConfig(verifierAppDeactivated = true, verifierMinimumVersion = verifierMinimumVersion),
+            publicKeys,
+        )
+
+        val appStatus = appStatusUseCase(true, verifierMinimumVersion).get(configResult, currentVersionCode)
+
+        assertTrue(appStatus is AppStatus.UpdateRequired)
+    }
+
+    @Test
+    fun `given app is deactivated and doesn't need a forced update, when config refreshes, then shows app deactivated status`() = runBlocking {
+        val currentVersionCode = 1000
+        val verifierMinimumVersion = 1000
+        val configResult = ConfigResult.Success(
+            getVerifierConfig(verifierAppDeactivated = true, verifierMinimumVersion = verifierMinimumVersion),
+            publicKeys,
+        )
+
+        val appStatus = appStatusUseCase(true, verifierMinimumVersion).get(configResult, currentVersionCode)
+
+        assertTrue(appStatus is AppStatus.Deactivated)
+    }
 }

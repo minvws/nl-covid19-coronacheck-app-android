@@ -30,7 +30,10 @@ import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.InfoScreenUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteEventUtil
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
+import nl.rijksoverheid.ctr.holder.ui.create_qr.util.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
