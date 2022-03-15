@@ -722,8 +722,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="general_recoverycertificate_0G">Internationaal herstelbewijs</string>
   <string name="general_testcertificate_0G">Internationaal testbewijs</string>
   <string name="holder_newintheapp_content_onlyInternationalCertificates_0G_title">Alleen internationale bewijzen</string>
-  <string name="holder_newintheapp_content_onlyInternationalCertificates_0G_body">In Nederland wordt het coronatoegangsbewijs niet meer gebruikt. 
-Nederlandse bewijzen zijn daarom uit de app gehaald. Voor reizen in het buitenland zijn gewoon nog internationale bewijzen te maken en te gebruiken.</string>
+  <string name="holder_newintheapp_content_onlyInternationalCertificates_0G_body">In Nederland wordt het coronatoegangsbewijs niet meer gebruikt. Nederlandse bewijzen zijn daarom uit de app gehaald. Voor reizen in het buitenland zijn gewoon nog internationale bewijzen te maken en te gebruiken.</string>
   <string name="holder_onboarding_content_TravelSafe_0G_title">Veilig op reis met je bewijs</string>
   <string name="holder_onboarding_content_TravelSafe_0G_message">Reis je naar een land waar om een coronabewijs wordt gevraagd? Dan kun je met deze app je bewijs maken.</string>
   <string name="holder_onboarding_content_onlyInternationalQR_0G_title">Je bewijs heeft een QR-code</string>
