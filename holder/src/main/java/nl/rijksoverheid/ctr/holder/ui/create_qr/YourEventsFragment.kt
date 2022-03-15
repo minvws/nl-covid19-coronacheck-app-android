@@ -36,8 +36,10 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.util.RemoteProtocol3Util
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
@@ -59,6 +61,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val remoteEventUtil: RemoteEventUtil by inject()
     private val yourEventsFragmentUtil: YourEventsFragmentUtil by inject()
     private val yourEventWidgetUtil: YourEventWidgetUtil by inject()
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
@@ -225,7 +228,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         YourEventsFragmentDirections.actionCertificateCreated(
                             toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
                             title = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title),
-                            description = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message)
+                            description = if (holderFeatureFlagUseCase.getDisclosurePolicy() != DisclosurePolicy.ZeroG) {
+                                getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message)
+                            } else {
+                                getString(R.string.holder_listRemoteEvents_endStateVaccinationsAndRecovery_message)
+                            }
                         )
                     } else {
                         YourEventsFragmentDirections.actionMyOverview()

@@ -107,6 +107,7 @@ class DashboardInfoCardAdapterItem(
                         DisclosurePolicy.OneG -> R.string.holder_dashboard_only1GaccessBanner_title
                         DisclosurePolicy.ThreeG -> R.string.holder_dashboard_only3GaccessBanner_title
                         DisclosurePolicy.OneAndThreeG -> R.string.holder_dashboard_3Gand1GaccessBanner_title
+                        DisclosurePolicy.ZeroG -> R.string.holder_dashboard_noDomesticCertificatesBanner_0G_title
                     }
                 )
             }

@@ -24,10 +24,10 @@
             app:tabTextColor="@color/secondary_text"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             android:layout_width="match_parent"
-
             android:layout_height="48dp" />
 
         <View
+            android:id="@+id/tabs_separator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginHorizontal="16dp"

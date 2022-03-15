@@ -51,14 +51,7 @@ class HolderIntroductionStatusUseCaseImpl(
         val policy = holderFeatureFlagUseCase.getDisclosurePolicy()
         return OnboardingNotFinished(
             introductionData.copy(
-                onboardingItems = introductionData.onboardingItems + listOf(
-                    OnboardingItem(
-                        imageResource = R.drawable.illustration_onboarding_disclosure_policy,
-                        titleResource = getPolicyOnboardingTitle(policy),
-                        description = getPolicyOnboardingBody(policy),
-                        position = introductionData.onboardingItems.size + 1
-                    )
-                ),
+                onboardingItems = getOnboardingItems(policy),
                 savePolicyChange = { persistenceManager.setPolicyScreenSeen(policy) }
             )
         )
@@ -74,7 +67,9 @@ class HolderIntroductionStatusUseCaseImpl(
         return when {
             newFeaturesAvailable() && newPolicy != null -> OnboardingFinished.NewFeatures(
                 introductionData.copy(
-                    newFeatures = introductionData.newFeatures + listOf(getNewPolicyFeatureItem(newPolicy)),
+                    newFeatures = introductionData.newFeatures + listOf(
+                        getNewPolicyFeatureItem(newPolicy)
+                    ),
                     savePolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 )
             )
@@ -109,6 +104,7 @@ class HolderIntroductionStatusUseCaseImpl(
     @StringRes
     private fun getPolicyFeatureTitle(newPolicy: DisclosurePolicy): Int {
         return when (newPolicy) {
+            DisclosurePolicy.ZeroG -> R.string.holder_newintheapp_content_onlyInternationalCertificates_0G_title
             DisclosurePolicy.OneG -> R.string.holder_newintheapp_content_only1G_title
             DisclosurePolicy.ThreeG -> R.string.holder_newintheapp_content_only3G_title
             DisclosurePolicy.OneAndThreeG -> R.string.holder_newintheapp_content_3Gand1G_title
@@ -118,6 +114,7 @@ class HolderIntroductionStatusUseCaseImpl(
     @StringRes
     private fun getPolicyOnboardingTitle(newPolicy: DisclosurePolicy): Int {
         return when (newPolicy) {
+            DisclosurePolicy.ZeroG -> R.string.holder_onboarding_content_TravelSafe_0G_title
             DisclosurePolicy.OneG -> R.string.holder_onboarding_disclosurePolicyChanged_only1GAccess_title
             DisclosurePolicy.ThreeG -> R.string.holder_onboarding_disclosurePolicyChanged_only3GAccess_title
             DisclosurePolicy.OneAndThreeG -> R.string.holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_title
@@ -127,6 +124,7 @@ class HolderIntroductionStatusUseCaseImpl(
     @StringRes
     private fun getPolicyFeatureBody(newPolicy: DisclosurePolicy): Int {
         return when (newPolicy) {
+            DisclosurePolicy.ZeroG -> R.string.holder_newintheapp_content_onlyInternationalCertificates_0G_body
             DisclosurePolicy.OneG -> R.string.holder_newintheapp_content_only1G_body
             DisclosurePolicy.ThreeG -> R.string.holder_newintheapp_content_only3G_body
             DisclosurePolicy.OneAndThreeG -> R.string.holder_newintheapp_content_3Gand1G_body
@@ -136,6 +134,7 @@ class HolderIntroductionStatusUseCaseImpl(
     @StringRes
     private fun getPolicyOnboardingBody(newPolicy: DisclosurePolicy): Int {
         return when (newPolicy) {
+            DisclosurePolicy.ZeroG -> R.string.holder_onboarding_content_TravelSafe_0G_message
             DisclosurePolicy.OneG -> R.string.holder_onboarding_disclosurePolicyChanged_only1GAccess_message
             DisclosurePolicy.ThreeG -> R.string.holder_onboarding_disclosurePolicyChanged_only3GAccess_message
             DisclosurePolicy.OneAndThreeG -> R.string.holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_message
@@ -154,4 +153,52 @@ class HolderIntroductionStatusUseCaseImpl(
 
     private fun onboardingIsNotFinished() =
         !introductionPersistenceManager.getIntroductionFinished()
+
+    private fun getOnboardingItems(policy: DisclosurePolicy): List<OnboardingItem> {
+        return listOfNotNull(
+            OnboardingItem(
+                R.drawable.illustration_onboarding_1,
+                R.string.onboarding_screen_1_title,
+                R.string.onboarding_screen_1_description
+            ),
+            OnboardingItem(
+                R.drawable.illustration_onboarding_2,
+                R.string.onboarding_screen_2_title,
+                R.string.onboarding_screen_2_description,
+            ),
+            OnboardingItem(
+                R.drawable.illustration_onboarding_3,
+                if (policy == DisclosurePolicy.ZeroG) {
+                    R.string.holder_onboarding_content_onlyInternationalQR_0G_title
+                } else {
+                    R.string.onboarding_screen_4_title
+                },
+                if (policy == DisclosurePolicy.ZeroG) {
+                    R.string.holder_onboarding_content_onlyInternationalQR_0G_message
+                } else {
+                    R.string.onboarding_screen_4_description
+                }
+            ),
+            OnboardingItem(
+                R.drawable.illustration_onboarding_4,
+                if (policy == DisclosurePolicy.ZeroG) {
+                    R.string.holder_onboarding_content_TravelSafe_0G_title
+                } else {
+                    R.string.onboarding_screen_3_title
+                },
+                if (policy == DisclosurePolicy.ZeroG) {
+                    R.string.holder_onboarding_content_TravelSafe_0G_message
+                } else {
+                    R.string.onboarding_screen_3_description
+                }
+            ),
+            if (policy != DisclosurePolicy.ZeroG) {
+                OnboardingItem(
+                    imageResource = R.drawable.illustration_onboarding_disclosure_policy,
+                    titleResource = getPolicyOnboardingTitle(policy),
+                    description = getPolicyOnboardingBody(policy)
+                )
+            } else null
+        )
+    }
 }

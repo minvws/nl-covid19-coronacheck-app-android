@@ -19,6 +19,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState
 import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState.*
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.Flow
 
 interface YourEventFragmentEndStateUtil {
@@ -34,7 +36,8 @@ interface YourEventFragmentEndStateUtil {
 }
 
 class YourEventFragmentEndStateUtilImpl(
-    private val appConfigUseCase: CachedAppConfigUseCase
+    private val appConfigUseCase: CachedAppConfigUseCase,
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
 ) : YourEventFragmentEndStateUtil {
 
     override fun getResult(
@@ -128,7 +131,8 @@ class YourEventFragmentEndStateUtilImpl(
         remoteGreenCards: RemoteGreenCards
     ): Boolean {
         return (events.all { it.type == OriginType.Vaccination } || hasVaccinationAndRecoveryEvents(events)) &&
-                hasOnlyInternationalVaccinationCertificates(remoteGreenCards)
+                hasOnlyInternationalVaccinationCertificates(remoteGreenCards) &&
+                holderFeatureFlagUseCase.getDisclosurePolicy() != DisclosurePolicy.ZeroG
     }
 
     private fun hasOnlyInternationalVaccinationCertificates(remoteGreenCards: RemoteGreenCards) =

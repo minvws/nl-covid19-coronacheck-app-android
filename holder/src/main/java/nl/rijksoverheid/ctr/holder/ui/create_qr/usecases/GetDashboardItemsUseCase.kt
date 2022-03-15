@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.ui.create_qr.usecases
 
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
@@ -9,6 +10,9 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import org.koin.androidx.viewmodel.scope.emptyState
 
 interface GetDashboardItemsUseCase {
     suspend fun getItems(
@@ -28,7 +32,8 @@ class GetDashboardItemsUseCaseImpl(
     private val dashboardHeaderAdapterItemUtil: DashboardHeaderAdapterItemUtil,
     private val cardItemUtil: CardItemUtil,
     private val splitDomesticGreenCardsUseCase: SplitDomesticGreenCardsUseCase,
-    private val sortGreenCardItemsUseCase: SortGreenCardItemsUseCase
+    private val sortGreenCardItemsUseCase: SortGreenCardItemsUseCase,
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -69,7 +74,9 @@ class GetDashboardItemsUseCaseImpl(
         )
         val hasEmptyState = dashboardItemEmptyStateUtil.hasEmptyState(
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
-            allGreenCards = allGreenCards
+            allGreenCards = allGreenCards,
+            greenCardsForTab = domesticGreenCards,
+            disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
         )
 
         // Apply distinctBy here so that for two european green cards we do not get a two banners
@@ -124,8 +131,12 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        dashboardItemUtil.showPolicyInfoItem()?.let {
-            dashboardItems.add(DashboardItem.InfoItem.DisclosurePolicyItem(it))
+        val selectedDisclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
+        if (dashboardItemUtil.shouldShowPolicyInfoItem(
+                disclosurePolicy = selectedDisclosurePolicy,
+                tabType = GreenCardType.Domestic
+        )) {
+            dashboardItems.add(DashboardItem.InfoItem.DisclosurePolicyItem(selectedDisclosurePolicy))
         }
         
         dashboardItems.addAll(
@@ -148,7 +159,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowAddQrCardItem(allGreenCards)) {
+        if (dashboardItemUtil.shouldShowAddQrCardItem(hasVisitorPassIncompleteItem, hasEmptyState)) {
             dashboardItems.add(DashboardItem.AddQrCardItem)
         }
 
@@ -185,9 +196,12 @@ class GetDashboardItemsUseCaseImpl(
             events = allEventGroupEntities,
             domesticGreenCards = domesticGreenCards
         )
+
         val hasEmptyState = dashboardItemEmptyStateUtil.hasEmptyState(
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
             allGreenCards = allGreenCards,
+            greenCardsForTab = internationalGreenCards,
+            disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
         )
 
         val headerText = dashboardHeaderAdapterItemUtil.getText(
@@ -237,6 +251,17 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        val selectedDisclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
+        if (dashboardItemUtil.shouldShowPolicyInfoItem(
+                disclosurePolicy = selectedDisclosurePolicy,
+                tabType = GreenCardType.Eu
+            )) {
+            dashboardItems.add(DashboardItem.InfoItem.DisclosurePolicyItem(
+                disclosurePolicy = selectedDisclosurePolicy,
+                buttonText = R.string.holder_dashboard_noDomesticCertificatesBanner_0G_action_linkToRijksoverheid
+            ))
+        }
+
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCards = allGreenCards,
@@ -255,7 +280,7 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowAddQrCardItem(allGreenCards)) {
+        if (dashboardItemUtil.shouldShowAddQrCardItem(hasVisitorPassIncompleteItem, hasEmptyState)) {
             dashboardItems.add(DashboardItem.AddQrCardItem)
         }
 
@@ -319,6 +344,7 @@ class GetDashboardItemsUseCaseImpl(
                     .contains(originForUnselectedType.type)) {
 
                 if (dashboardItemUtil.shouldShowOriginInfoItem(
+                        disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy(),
                         greenCards = greenCards,
                         greenCardType = greenCardType,
                         originType = originForUnselectedType.type
