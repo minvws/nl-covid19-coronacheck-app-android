@@ -52,6 +52,9 @@ data class RemoteGreenCards(
         val doseNumber: Int?
     )
 
+    fun getEuOrigins(): List<OriginType> =
+        euGreencards?.map { it.origins.map { it.type } }?.flatten() ?: listOf()
+
     fun getAllOrigins(): List<OriginType> {
         val origins = mutableListOf<OriginType>()
         origins.addAll(domesticGreencard?.origins?.map { it.type } ?: listOf())
