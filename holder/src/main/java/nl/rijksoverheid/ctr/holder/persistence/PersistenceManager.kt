@@ -169,7 +169,7 @@ class SharedPreferencesPersistenceManager(
 
     override fun getPolicyScreenSeen(): DisclosurePolicy? {
         val value = sharedPreferences.getString(POLICY_SCREEN_SEEN, "") ?: ""
-        return if (value.isNotEmpty()) DisclosurePolicy.fromString(value) else DisclosurePolicy.ThreeG
+        return if (value.isNotEmpty()) DisclosurePolicy.fromString(value) else null
     }
 
     override fun setPolicyScreenSeen(policy: DisclosurePolicy) {

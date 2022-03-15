@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import androidx.cardview.widget.CardView
+import androidx.core.text.HtmlCompat
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.WidgetScrollViewPolicyButtonBinding
@@ -27,6 +28,10 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
 
     private var attachToScrollViewId: Int = NO_ID
     private var scrollViewGlobalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+
+    var policyText = ""
+        private set
+
 
     init {
         elevation = 0f
@@ -98,7 +103,14 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
                 }
             )
         )
-        binding.policyIndicatorText.setHtmlText(context.getString(R.string.verifier_start_scan_qr_policy_indication, policy.configValue))
+        val htmlPolicyText =
+            context.getString(R.string.verifier_start_scan_qr_policy_indication, policy.configValue)
+        // keep a copy without html tags to announce it for accessibility when needed
+        policyText = HtmlCompat.fromHtml(
+            htmlPolicyText,
+            HtmlCompat.FROM_HTML_MODE_COMPACT
+        ).toString()
+        binding.policyIndicatorText.setHtmlText(htmlPolicyText)
     }
 
     fun lock() {

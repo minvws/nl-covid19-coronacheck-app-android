@@ -126,7 +126,6 @@ class HolderIntroductionStatusUseCaseImplTest {
                 R.drawable.illustration_onboarding_disclosure_policy,
                 introductionData.onboardingItems.last().imageResource
             )
-            assertEquals(2, introductionData.onboardingItems.last().position)
         }
     }
 
@@ -152,7 +151,120 @@ class HolderIntroductionStatusUseCaseImplTest {
                 R.drawable.illustration_onboarding_disclosure_policy,
                 introductionData.onboardingItems.last().imageResource
             )
-            assertEquals(2, introductionData.onboardingItems.last().position)
+        }
+    }
+
+    @Test
+    fun `when feature flag is 0G, the third onboarding item should have 0G text`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
+        every { introductionPersistenceManager.getIntroductionFinished() } returns false
+        every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
+        every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ZeroG
+
+        val status = introductionStatusUseCase.get()
+
+        with(status as IntroductionStatus.OnboardingNotFinished) {
+            assertEquals(
+                R.string.holder_onboarding_content_onlyInternationalQR_0G_title,
+                introductionData.onboardingItems[2].titleResource
+            )
+            assertEquals(
+                R.string.holder_onboarding_content_onlyInternationalQR_0G_message,
+                introductionData.onboardingItems[2].description
+            )
+            assertEquals(
+                R.drawable.illustration_onboarding_3,
+                introductionData.onboardingItems[2].imageResource
+            )
+        }
+    }
+
+    @Test
+    fun `when feature flag is not 0G, the third onboarding item should have generic text`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
+        every { introductionPersistenceManager.getIntroductionFinished() } returns false
+        every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
+        every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
+
+        val status = introductionStatusUseCase.get()
+
+        with(status as IntroductionStatus.OnboardingNotFinished) {
+            assertEquals(
+                R.string.onboarding_screen_4_title,
+                introductionData.onboardingItems[2].titleResource
+            )
+            assertEquals(
+                R.string.onboarding_screen_4_description,
+                introductionData.onboardingItems[2].description
+            )
+            assertEquals(
+                R.drawable.illustration_onboarding_3,
+                introductionData.onboardingItems[2].imageResource
+            )
+        }
+    }
+
+    @Test
+    fun `when feature flag is 0G, the fourth onboarding item should have 0G text`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
+        every { introductionPersistenceManager.getIntroductionFinished() } returns false
+        every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
+        every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ZeroG
+
+        val status = introductionStatusUseCase.get()
+
+        with(status as IntroductionStatus.OnboardingNotFinished) {
+            assertEquals(
+                R.string.holder_onboarding_content_TravelSafe_0G_title,
+                introductionData.onboardingItems[3].titleResource
+            )
+            assertEquals(
+                R.string.holder_onboarding_content_TravelSafe_0G_message,
+                introductionData.onboardingItems[3].description
+            )
+            assertEquals(
+                R.drawable.illustration_onboarding_4,
+                introductionData.onboardingItems[3].imageResource
+            )
+        }
+    }
+
+    @Test
+    fun `when feature flag is not 0G, the fourth onboarding item should have generic text`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
+        every { introductionPersistenceManager.getIntroductionFinished() } returns false
+        every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
+        every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
+
+        val status = introductionStatusUseCase.get()
+
+        with(status as IntroductionStatus.OnboardingNotFinished) {
+            assertEquals(
+                R.string.onboarding_screen_3_title,
+                introductionData.onboardingItems[3].titleResource
+            )
+            assertEquals(
+                R.string.onboarding_screen_3_description,
+                introductionData.onboardingItems[3].description
+            )
+            assertEquals(
+                R.drawable.illustration_onboarding_4,
+                introductionData.onboardingItems[3].imageResource
+            )
+        }
+    }
+
+    @Test
+    fun `when feature flag is 0G, there is not an extra policy onboarding screen added`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
+        every { introductionPersistenceManager.getIntroductionFinished() } returns false
+        every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
+        every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ZeroG
+
+        val status = introductionStatusUseCase.get()
+
+        with(status as IntroductionStatus.OnboardingNotFinished) {
+            assertEquals(4, introductionData.onboardingItems.size)
         }
     }
 
@@ -178,7 +290,6 @@ class HolderIntroductionStatusUseCaseImplTest {
                 R.drawable.illustration_onboarding_disclosure_policy,
                 introductionData.onboardingItems.last().imageResource
             )
-            assertEquals(2, introductionData.onboardingItems.last().position)
         }
     }
 
@@ -269,6 +380,37 @@ class HolderIntroductionStatusUseCaseImplTest {
             )
             assertEquals(
                 R.string.general_newpolicy,
+                introductionData.newFeatures.last().subtitleResource
+            )
+            assertEquals(2, introductionData.newFeatures.size)
+        }
+    }
+
+    @Test
+    fun `when disclosure is 0G, there should be a 0G new feature item added`() {
+        every { introductionPersistenceManager.getSetupFinished() } returns true
+        every { introductionPersistenceManager.getIntroductionFinished() } returns true
+        every { introductionPersistenceManager.getNewFeaturesSeen(2) } returns false
+        every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ZeroG
+        every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
+
+        val status = introductionStatusUseCase.get()
+
+        with(status as IntroductionStatus.OnboardingFinished.NewFeatures) {
+            assertEquals(
+                R.string.holder_newintheapp_content_onlyInternationalCertificates_0G_title,
+                introductionData.newFeatures.last().titleResource
+            )
+            assertEquals(
+                R.string.holder_newintheapp_content_onlyInternationalCertificates_0G_body,
+                introductionData.newFeatures.last().description
+            )
+            assertEquals(
+                R.drawable.illustration_new_disclosure_policy,
+                introductionData.newFeatures.last().imageResource
+            )
+            assertEquals(
+                R.string.new_in_app_subtitle,
                 introductionData.newFeatures.last().subtitleResource
             )
             assertEquals(2, introductionData.newFeatures.size)

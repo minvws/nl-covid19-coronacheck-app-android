@@ -183,32 +183,40 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun setupTabs(binding: FragmentDashboardBinding,
                           items: List<DashboardTabItem>) {
-        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
-            tab.view.setOnLongClickListener {
-                true
-            }
-            tab.text = getString(items[position].title)
-        }.attach()
+        if (items.size == 1) {
+            binding.tabs.visibility = View.GONE
+            binding.tabsSeparator.visibility = View.GONE
+        } else {
+            binding.tabs.visibility = View.VISIBLE
+            binding.tabsSeparator.visibility = View.VISIBLE
 
-        binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                val textView = tab.view.children.find { it is TextView } as? TextView
-                textView?.setTypeface(null, Typeface.BOLD)
-            }
+            TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+                tab.view.setOnLongClickListener {
+                    true
+                }
+                tab.text = getString(items[position].title)
+            }.attach()
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-                val textView = tab.view.children.find { it is TextView } as? TextView
-                textView?.setTypeface(null, Typeface.NORMAL)
-            }
+            binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    val textView = tab.view.children.find { it is TextView } as? TextView
+                    textView?.setTypeface(null, Typeface.BOLD)
+                }
 
-            override fun onTabReselected(tab: TabLayout.Tab) {
-                val textView = tab.view.children.find { it is TextView } as? TextView
-                textView?.setTypeface(null, Typeface.BOLD)
-            }
-        })
+                override fun onTabUnselected(tab: TabLayout.Tab) {
+                    val textView = tab.view.children.find { it is TextView } as? TextView
+                    textView?.setTypeface(null, Typeface.NORMAL)
+                }
 
-        // Call selectTab so that styling get's picked up on launch
-        binding.tabs.selectTab(binding.tabs.getTabAt(0))
+                override fun onTabReselected(tab: TabLayout.Tab) {
+                    val textView = tab.view.children.find { it is TextView } as? TextView
+                    textView?.setTypeface(null, Typeface.BOLD)
+                }
+            })
+
+            // Call selectTab so that styling get's picked up on launch
+            binding.tabs.selectTab(binding.tabs.getTabAt(0))
+        }
     }
 
     override fun onPause() {
