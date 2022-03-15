@@ -205,7 +205,7 @@ class HolderIntroductionStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when feature flag is 0G, the fourth onboarding item should have 0G text`() {
+    fun `when feature flag is 0G, the first onboarding item should have 0G text`() {
         every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
@@ -216,15 +216,15 @@ class HolderIntroductionStatusUseCaseImplTest {
         with(status as IntroductionStatus.OnboardingNotFinished) {
             assertEquals(
                 R.string.holder_onboarding_content_TravelSafe_0G_title,
-                introductionData.onboardingItems[3].titleResource
+                introductionData.onboardingItems[0].titleResource
             )
             assertEquals(
                 R.string.holder_onboarding_content_TravelSafe_0G_message,
-                introductionData.onboardingItems[3].description
+                introductionData.onboardingItems[0].description
             )
             assertEquals(
                 R.drawable.illustration_onboarding_4,
-                introductionData.onboardingItems[3].imageResource
+                introductionData.onboardingItems[0].imageResource
             )
         }
     }
@@ -255,7 +255,7 @@ class HolderIntroductionStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when feature flag is 0G, there is not an extra policy onboarding screen added`() {
+    fun `when feature flag is 0G, there is no policy onboarding and national screen`() {
         every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
@@ -264,7 +264,7 @@ class HolderIntroductionStatusUseCaseImplTest {
         val status = introductionStatusUseCase.get()
 
         with(status as IntroductionStatus.OnboardingNotFinished) {
-            assertEquals(4, introductionData.onboardingItems.size)
+            assertEquals(3, introductionData.onboardingItems.size)
         }
     }
 

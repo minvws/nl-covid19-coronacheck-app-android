@@ -157,9 +157,21 @@ class HolderIntroductionStatusUseCaseImpl(
     private fun getOnboardingItems(policy: DisclosurePolicy): List<OnboardingItem> {
         return listOfNotNull(
             OnboardingItem(
-                R.drawable.illustration_onboarding_1,
-                R.string.onboarding_screen_1_title,
-                R.string.onboarding_screen_1_description
+                if (policy == DisclosurePolicy.ZeroG) {
+                    R.drawable.illustration_onboarding_4
+                } else {
+                    R.drawable.illustration_onboarding_1
+                },
+                if (policy == DisclosurePolicy.ZeroG) {
+                    R.string.holder_onboarding_content_TravelSafe_0G_title
+                } else {
+                    R.string.onboarding_screen_1_title
+                },
+                if (policy == DisclosurePolicy.ZeroG) {
+                    R.string.holder_onboarding_content_TravelSafe_0G_message
+                } else {
+                    R.string.onboarding_screen_1_description
+                }
             ),
             OnboardingItem(
                 R.drawable.illustration_onboarding_2,
@@ -179,19 +191,13 @@ class HolderIntroductionStatusUseCaseImpl(
                     R.string.onboarding_screen_4_description
                 }
             ),
-            OnboardingItem(
-                R.drawable.illustration_onboarding_4,
-                if (policy == DisclosurePolicy.ZeroG) {
-                    R.string.holder_onboarding_content_TravelSafe_0G_title
-                } else {
-                    R.string.onboarding_screen_3_title
-                },
-                if (policy == DisclosurePolicy.ZeroG) {
-                    R.string.holder_onboarding_content_TravelSafe_0G_message
-                } else {
+            if (policy != DisclosurePolicy.ZeroG) {
+                OnboardingItem(
+                    R.drawable.illustration_onboarding_4,
+                    R.string.onboarding_screen_3_title,
                     R.string.onboarding_screen_3_description
-                }
-            ),
+                )
+            } else null,
             if (policy != DisclosurePolicy.ZeroG) {
                 OnboardingItem(
                     imageResource = R.drawable.illustration_onboarding_disclosure_policy,
