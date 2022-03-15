@@ -10,4 +10,6 @@
     <dimen name="design_navigation_separator_vertical_padding">16dp</dimen>
     <dimen name="menu_section_spacing">24dp</dimen>
     <dimen name="menu_list_item_spacing">1dp</dimen>
+    <dimen name="onboarding_item_image_height">216dp</dimen>
+    <dimen name="horizontal_padding">16dp</dimen>
 </resources>
