@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="horizontal_padding">150dp</dimen>
+    <dimen name="horizontal_padding">140dp</dimen>
 </resources>
