@@ -12,6 +12,8 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragment
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -46,7 +48,7 @@ class HolderDatabaseSyncerImpl(
     private val getRemoteGreenCardsUseCase: GetRemoteGreenCardsUseCase,
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
-    private val persistenceManager: PersistenceManager,
+    private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil
 ) : HolderDatabaseSyncer {
 
@@ -88,7 +90,14 @@ class HolderDatabaseSyncerImpl(
                             // We ignore the vaccination assessment origin here because you can
                             // fetch send a vaccination assessment event origin but not get a
                             // green card vaccination assessment origin back
-                            if ((expectedOriginType != null && !remoteGreenCards.getAllOrigins()
+                            val originsToCheck = if (featureFlagUseCase.getDisclosurePolicy() is DisclosurePolicy.ZeroG) {
+                                // If 0G is enabled we only have the international tab enabled
+                                remoteGreenCards.getEuOrigins()
+                            } else {
+                                remoteGreenCards.getAllOrigins()
+                            }
+
+                            if ((expectedOriginType != null && !originsToCheck
                                     .contains(expectedOriginType) && expectedOriginType != OriginType.VaccinationAssessment)
                                 || remoteGreenCards.getAllOrigins().isEmpty()
                             ) {
