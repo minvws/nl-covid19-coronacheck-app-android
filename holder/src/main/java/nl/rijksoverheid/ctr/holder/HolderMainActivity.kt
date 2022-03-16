@@ -83,7 +83,10 @@ class HolderMainActivity : AppCompatActivity() {
         })
 
         appConfigViewModel.appStatusLiveData.observe(this) {
-            handleAppStatus(it, navController)
+            val navController = navController
+            if (navController.currentDestination.toString().contains("nav_main")) {
+                handleAppStatus(it, navController)
+            }
         }
 
         deviceRootedViewModel.deviceRootedLiveData.observe(this, EventObserver {
