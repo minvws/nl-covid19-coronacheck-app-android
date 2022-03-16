@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
+import org.json.JSONObject
 import java.io.File
 import java.security.MessageDigest
 
@@ -30,6 +31,7 @@ class CachedAppConfigUseCaseImpl constructor(
     private val isVerifierApp: Boolean
 ) : CachedAppConfigUseCase {
     private val configFile = File(filesDirPath, "config.json")
+    private val publicKeysFile = File(filesDirPath, "public_keys.json")
 
     private val defaultConfig = if (isVerifierApp) {
         VerifierConfig.default()
@@ -41,6 +43,7 @@ class CachedAppConfigUseCaseImpl constructor(
         return try {
             if (isVerifierApp) {
                 appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject<VerifierConfig>(moshi) is VerifierConfig
+                appConfigStorageManager.getFileAsBufferedSource(publicKeysFile)?.readUtf8()?.toObject<JSONObject>(moshi)?.has("eu_keys") == true
             } else {
                 appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject<HolderConfig>(moshi) is HolderConfig
             }
