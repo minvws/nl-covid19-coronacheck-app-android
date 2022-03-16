@@ -14,6 +14,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.*
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
@@ -23,9 +24,11 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CardItemUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtil
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
 
@@ -69,6 +72,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
             EXTRA_GREEN_CARD_TYPE
         ) ?: error("EXTRA_GREEN_CARD_TYPE should not be null")
     }
+    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -200,10 +204,20 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
             DashboardHeaderAdapterItem(
                 text = dashboardItem.text,
                 buttonInfo = if (greenCardType == GreenCardType.Eu) {
-                    ButtonInfo(
-                        R.string.my_overview_description_eu_button_text,
-                        R.string.my_overview_description_eu_button_link
-                    )
+                    when (featureFlagUseCase.getDisclosurePolicy()) {
+                        is DisclosurePolicy.ZeroG -> {
+                            ButtonInfo(
+                                R.string.holder_dashboard_international_0G_action_certificateNeeded ,
+                                R.string.my_overview_description_eu_button_link
+                            )
+                        }
+                        else -> {
+                            ButtonInfo(
+                                R.string.my_overview_description_eu_button_text,
+                                R.string.my_overview_description_eu_button_link
+                            )
+                        }
+                    }
                 } else {
                     null
                 },

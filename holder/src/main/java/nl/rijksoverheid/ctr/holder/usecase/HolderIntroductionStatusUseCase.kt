@@ -51,9 +51,10 @@ class HolderIntroductionStatusUseCaseImpl(
         val policy = holderFeatureFlagUseCase.getDisclosurePolicy()
         return OnboardingNotFinished(
             introductionData.copy(
-                onboardingItems = getOnboardingItems(policy),
-                savePolicyChange = { persistenceManager.setPolicyScreenSeen(policy) }
-            )
+                onboardingItems = getOnboardingItems(policy)
+            ).apply {
+                setSavePolicyChange { persistenceManager.setPolicyScreenSeen(policy) }
+            }
         )
     }
 
@@ -70,16 +71,16 @@ class HolderIntroductionStatusUseCaseImpl(
                     newFeatures = introductionData.newFeatures + listOf(
                         getNewPolicyFeatureItem(newPolicy)
                     ),
-                    savePolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
-                )
-            )
+                ).apply {
+                    setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
+                })
             !newFeaturesAvailable() && newPolicy != null -> OnboardingFinished.NewFeatures(
                 introductionData.copy(
                     newFeatures = listOf(getNewPolicyFeatureItem(newPolicy)),
                     newFeatureVersion = null,
-                    savePolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
-                )
-            )
+                ).apply {
+                    setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
+                })
             else -> OnboardingFinished.NewFeatures(introductionData)
         }
     }
@@ -157,9 +158,21 @@ class HolderIntroductionStatusUseCaseImpl(
     private fun getOnboardingItems(policy: DisclosurePolicy): List<OnboardingItem> {
         return listOfNotNull(
             OnboardingItem(
-                R.drawable.illustration_onboarding_1,
-                R.string.onboarding_screen_1_title,
-                R.string.onboarding_screen_1_description
+                if (policy == DisclosurePolicy.ZeroG) {
+                    R.drawable.illustration_onboarding_1_0g
+                } else {
+                    R.drawable.illustration_onboarding_1
+                },
+                if (policy == DisclosurePolicy.ZeroG) {
+                    R.string.holder_onboarding_content_TravelSafe_0G_title
+                } else {
+                    R.string.onboarding_screen_1_title
+                },
+                if (policy == DisclosurePolicy.ZeroG) {
+                    R.string.holder_onboarding_content_TravelSafe_0G_message
+                } else {
+                    R.string.onboarding_screen_1_description
+                }
             ),
             OnboardingItem(
                 R.drawable.illustration_onboarding_2,
@@ -179,19 +192,13 @@ class HolderIntroductionStatusUseCaseImpl(
                     R.string.onboarding_screen_4_description
                 }
             ),
-            OnboardingItem(
-                R.drawable.illustration_onboarding_4,
-                if (policy == DisclosurePolicy.ZeroG) {
-                    R.string.holder_onboarding_content_TravelSafe_0G_title
-                } else {
-                    R.string.onboarding_screen_3_title
-                },
-                if (policy == DisclosurePolicy.ZeroG) {
-                    R.string.holder_onboarding_content_TravelSafe_0G_message
-                } else {
+            if (policy != DisclosurePolicy.ZeroG) {
+                OnboardingItem(
+                    R.drawable.illustration_onboarding_4,
+                    R.string.onboarding_screen_3_title,
                     R.string.onboarding_screen_3_description
-                }
-            ),
+                )
+            } else null,
             if (policy != DisclosurePolicy.ZeroG) {
                 OnboardingItem(
                     imageResource = R.drawable.illustration_onboarding_disclosure_policy,
