@@ -4,6 +4,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.holder.persistence.database.dao.GreenCardDao
@@ -13,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragment
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoteGreenCardsResult
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.SyncRemoteGreenCardsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.Step
@@ -59,7 +61,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable}
         )
 
@@ -85,7 +87,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -123,7 +125,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -161,7 +163,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -187,7 +189,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Success
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -217,7 +219,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Success
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -243,7 +245,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Success
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -283,7 +285,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Failed(AppErrorResult(Step(1), IllegalStateException("Some error")))
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -315,7 +317,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
