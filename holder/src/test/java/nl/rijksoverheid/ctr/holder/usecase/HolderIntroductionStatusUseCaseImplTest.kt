@@ -223,7 +223,7 @@ class HolderIntroductionStatusUseCaseImplTest {
                 introductionData.onboardingItems[0].description
             )
             assertEquals(
-                R.drawable.illustration_onboarding_4,
+                R.drawable.illustration_onboarding_1_0g,
                 introductionData.onboardingItems[0].imageResource
             )
         }

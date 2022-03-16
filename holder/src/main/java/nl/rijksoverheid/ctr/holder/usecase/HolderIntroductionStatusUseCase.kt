@@ -159,7 +159,7 @@ class HolderIntroductionStatusUseCaseImpl(
         return listOfNotNull(
             OnboardingItem(
                 if (policy == DisclosurePolicy.ZeroG) {
-                    R.drawable.illustration_onboarding_4
+                    R.drawable.illustration_onboarding_1_0g
                 } else {
                     R.drawable.illustration_onboarding_1
                 },

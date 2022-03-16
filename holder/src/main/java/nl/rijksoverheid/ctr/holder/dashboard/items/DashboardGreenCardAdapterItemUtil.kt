@@ -24,8 +24,12 @@ import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.capitalize
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.time.Clock
 import java.time.Instant
 import java.util.concurrent.TimeUnit
@@ -49,7 +53,9 @@ class DashboardGreenCardAdapterItemUtilImpl(
     private val context: Context,
     private val credentialUtil: CredentialUtil,
     private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil
-) : DashboardGreenCardAdapterItemUtil {
+) : DashboardGreenCardAdapterItemUtil, KoinComponent {
+
+    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
 
     override fun setContent(
         dashboardGreenCardAdapterItemBinding: DashboardGreenCardAdapterItemBindingWrapper,
@@ -64,22 +70,46 @@ class DashboardGreenCardAdapterItemUtilImpl(
                     val origin = originState.origin
                     when (origin.type) {
                         is OriginType.Test -> {
-                            dashboardGreenCardAdapterItemBinding.title.text =
-                                context.getString(R.string.general_testcertificate).capitalize()
+                            when (featureFlagUseCase.getDisclosurePolicy()) {
+                                is DisclosurePolicy.ZeroG -> {
+                                    dashboardGreenCardAdapterItemBinding.title.text =
+                                        context.getString(R.string.general_testcertificate_0G).capitalize()
+                                }
+                                else -> {
+                                    dashboardGreenCardAdapterItemBinding.title.text =
+                                        context.getString(R.string.general_testcertificate).capitalize()
+                                }
+                            }
                             setEuTestOrigin(
                                 dashboardGreenCardAdapterItemBinding, it, originState, origin
                             )
                         }
                         is OriginType.Vaccination -> {
-                            dashboardGreenCardAdapterItemBinding.title.text =
-                                context.getString(R.string.general_vaccinationcertificate).capitalize()
+                            when (featureFlagUseCase.getDisclosurePolicy()) {
+                                is DisclosurePolicy.ZeroG -> {
+                                    dashboardGreenCardAdapterItemBinding.title.text =
+                                        context.getString(R.string.general_vaccinationcertificate_0G).capitalize()
+                                }
+                                else -> {
+                                    dashboardGreenCardAdapterItemBinding.title.text =
+                                        context.getString(R.string.general_vaccinationcertificate).capitalize()
+                                }
+                            }
                             setEuVaccinationOrigin(
                                 dashboardGreenCardAdapterItemBinding, it, origin
                             )
                         }
                         is OriginType.Recovery -> {
-                            dashboardGreenCardAdapterItemBinding.title.text =
-                                context.getString(R.string.general_recoverycertificate).capitalize()
+                            when (featureFlagUseCase.getDisclosurePolicy()) {
+                                is DisclosurePolicy.ZeroG -> {
+                                    dashboardGreenCardAdapterItemBinding.title.text =
+                                        context.getString(R.string.general_recoverycertificate_0G).capitalize()
+                                }
+                                else -> {
+                                    dashboardGreenCardAdapterItemBinding.title.text =
+                                        context.getString(R.string.general_recoverycertificate).capitalize()
+                                }
+                            }
                             setEuRecoveryOrigin(dashboardGreenCardAdapterItemBinding, originState, origin)
                         }
                         is OriginType.VaccinationAssessment -> {
