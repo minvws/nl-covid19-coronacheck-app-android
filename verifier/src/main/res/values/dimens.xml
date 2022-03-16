@@ -2,4 +2,5 @@
 <resources>
     <dimen name="onboarding_item_indicator_spacing">6dp</dimen>
     <dimen name="long_button_title_padding_horizontal">8dp</dimen>
+    <dimen name="invalid_scan_result_top_padding">32dp</dimen>
 </resources>
