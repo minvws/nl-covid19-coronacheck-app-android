@@ -51,9 +51,10 @@ class HolderIntroductionStatusUseCaseImpl(
         val policy = holderFeatureFlagUseCase.getDisclosurePolicy()
         return OnboardingNotFinished(
             introductionData.copy(
-                onboardingItems = getOnboardingItems(policy),
-                savePolicyChange = { persistenceManager.setPolicyScreenSeen(policy) }
-            )
+                onboardingItems = getOnboardingItems(policy)
+            ).apply {
+                setSavePolicyChange { persistenceManager.setPolicyScreenSeen(policy) }
+            }
         )
     }
 
@@ -70,16 +71,16 @@ class HolderIntroductionStatusUseCaseImpl(
                     newFeatures = introductionData.newFeatures + listOf(
                         getNewPolicyFeatureItem(newPolicy)
                     ),
-                    savePolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
-                )
-            )
+                ).apply {
+                    setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
+                })
             !newFeaturesAvailable() && newPolicy != null -> OnboardingFinished.NewFeatures(
                 introductionData.copy(
                     newFeatures = listOf(getNewPolicyFeatureItem(newPolicy)),
                     newFeatureVersion = null,
-                    savePolicyChange = { persistenceManager.setPolicyScreenSeen(newPolicy) }
-                )
-            )
+                ).apply {
+                    setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
+                })
             else -> OnboardingFinished.NewFeatures(introductionData)
         }
     }
