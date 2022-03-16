@@ -1,11 +1,13 @@
 package nl.rijksoverheid.ctr.introduction
 
 import android.os.Parcelable
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models.PrivacyPolicyItem
+import java.io.Serializable
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,6 +23,17 @@ data class IntroductionData(
     val newFeatures: List<NewFeatureItem> = listOf(),
     val newTerms: NewTerms,
     val newFeatureVersion: Int? = null,
-    val hideConsent: Boolean = false,
-    val savePolicyChange: (() -> Unit)? = null
-) : Parcelable
+    val hideConsent: Boolean = false
+) : Parcelable {
+
+    @IgnoredOnParcel
+    var savePolicyChangeSerialized: Serializable? = null
+        private set
+
+    fun setSavePolicyChange(f: () -> Unit) {
+        savePolicyChangeSerialized = f as Serializable
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun savePolicyChange() = (savePolicyChangeSerialized as? () -> Unit)?.invoke()
+}

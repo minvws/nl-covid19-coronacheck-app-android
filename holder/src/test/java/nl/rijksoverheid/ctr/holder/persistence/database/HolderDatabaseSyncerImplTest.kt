@@ -13,7 +13,9 @@ import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragment
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoteGreenCardsResult
 import nl.rijksoverheid.ctr.holder.persistence.database.usecases.SyncRemoteGreenCardsResult
 import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteGreenCards
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.Step
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -59,7 +61,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable}
         )
 
@@ -85,7 +87,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -98,7 +100,7 @@ class HolderDatabaseSyncerImplTest {
     }
 
     @Test
-    fun `sync returns Success with missingOrigin if returned origins do not match expected origin`() = runBlocking {
+    fun `sync returns Success with missingOrigin if not 0G and expected origin is not in domestic and eu green cards`() = runBlocking {
         coEvery { eventGroupDao.getAll() } answers { events }
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
@@ -123,7 +125,49 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { getDisclosurePolicy() } answers { DisclosurePolicy.ThreeG }
+            },
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+        )
+
+        val databaseSyncerResult = holderDatabaseSyncer.sync(
+            expectedOriginType = OriginType.Test,
+            syncWithRemote = true
+        )
+
+        assertEquals(DatabaseSyncerResult.Success(true), databaseSyncerResult)
+    }
+
+    @Test
+    fun `sync returns Success with missingOrigin if 0G and expected origin is not in eu green cards`() = runBlocking {
+        coEvery { eventGroupDao.getAll() } answers { events }
+
+        val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
+            holderDatabase = holderDatabase,
+            greenCardUtil = fakeGreenCardUtil(),
+            getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
+                result = RemoteGreenCardsResult.Success(
+                    remoteGreenCards = RemoteGreenCards(
+                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
+                            origins = listOf(RemoteGreenCards.Origin(
+                                type = OriginType.Test,
+                                eventTime = OffsetDateTime.now(),
+                                expirationTime = OffsetDateTime.now(),
+                                validFrom = OffsetDateTime.now(),
+                                doseNumber = 1,
+                            )),
+                            createCredentialMessages = "".toByteArray()
+                        ),
+                        euGreencards = null
+                    )
+                )
+            ),
+            syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
+            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { getDisclosurePolicy() } answers { DisclosurePolicy.ZeroG }
+            },
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -161,7 +205,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -187,7 +231,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Success
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -219,7 +263,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Success
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -245,7 +289,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Success
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -285,7 +329,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Failed(AppErrorResult(Step(1), IllegalStateException("Some error")))
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 
@@ -317,7 +361,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistenceManager = fakePersistenceManager(),
+            featureFlagUseCase = mockk(relaxed = true),
             yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
         )
 

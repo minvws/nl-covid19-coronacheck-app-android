@@ -17,6 +17,7 @@ import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.datamappers.DashboardTabsItemDataMapper
 import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
@@ -60,7 +61,8 @@ class DashboardViewModelImpl(
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
-    private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase
+    private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
+    private val dashboardTabsItemDataMapper: DashboardTabsItemDataMapper
 ) : DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -168,25 +170,12 @@ class DashboardViewModelImpl(
             allEventGroupEntities = allEventGroupEntities
         )
 
-        val domesticItem = DashboardTabItem(
-            title = R.string.travel_button_domestic,
-            greenCardType = GreenCardType.Domestic,
-            items = items.domesticItems
-        )
-
-        val internationalItem = DashboardTabItem(
-            title = R.string.travel_button_europe,
-            greenCardType = GreenCardType.Eu,
-            items = items.internationalItems
-        )
-
-        val dashboardTabItems = listOf(
-            domesticItem,
-            internationalItem
+        val tabItems = dashboardTabsItemDataMapper.transform(
+            dashboardItems = items
         )
 
         (dashboardTabItemsLiveData as MutableLiveData<List<DashboardTabItem>>).postValue(
-            dashboardTabItems
+            tabItems
         )
     }
 

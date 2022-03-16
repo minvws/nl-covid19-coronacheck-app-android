@@ -137,6 +137,10 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
     private fun bindDebugPolicyButtons(binding: FragmentAboutAppBinding) {
         with(binding) {
             policyButtons.isVisible = true
+            zeroGPolicyButton.setOnClickListener {
+                policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.ZeroG)
+                restartApp()
+            }
             oneGPolicyButton.setOnClickListener {
                 policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneG)
                 restartApp()

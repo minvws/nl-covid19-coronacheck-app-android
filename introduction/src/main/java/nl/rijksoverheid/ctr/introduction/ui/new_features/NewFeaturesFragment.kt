@@ -88,7 +88,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
         args.introductionData.newFeatureVersion?.let {
             introductionViewModel.saveNewFeaturesFinished(it)
         }
-        args.introductionData.savePolicyChange?.invoke()
+        args.introductionData.savePolicyChange()
         when (introductionViewModel.getIntroductionStatus()) {
             is IntroductionStatus.OnboardingFinished.ConsentNeeded -> navigateToTerms()
             else -> navigateToMain()

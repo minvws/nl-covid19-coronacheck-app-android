@@ -43,12 +43,12 @@ fun utilsModule(versionCode: Int) = module {
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
     factory<RemoteEventUtil> { RemoteEventUtilImpl(get()) }
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
-    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get()) }
+    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<DashboardPageInfoItemHandlerUtil> { DashboardPageInfoItemHandlerUtilImpl(get(), get(), get()) }
     factory<YourEventFragmentEndStateUtil> {
-        YourEventFragmentEndStateUtilImpl(get())
+        YourEventFragmentEndStateUtilImpl(get(), get())
     }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }

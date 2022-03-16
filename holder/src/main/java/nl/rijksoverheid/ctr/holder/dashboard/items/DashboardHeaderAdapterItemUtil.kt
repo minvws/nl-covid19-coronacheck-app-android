@@ -61,13 +61,28 @@ class DashboardHeaderAdapterItemUtilImpl(
                             R.string.my_overview_description
                         }
                     }
+                    is DisclosurePolicy.ZeroG -> R.string.app_name // TODO: implement 0G
                 }
             }
             is GreenCardType.Eu -> {
                 return if (emptyState) {
-                    R.string.my_overview_qr_placeholder_description_eu
+                    when (featureFlagUseCase.getDisclosurePolicy()) {
+                        is DisclosurePolicy.ZeroG -> {
+                            R.string.holder_dashboard_emptyState_international_0G_message
+                        }
+                        else -> {
+                            R.string.my_overview_qr_placeholder_description_eu
+                        }
+                    }
                 } else {
-                    R.string.my_overview_description_eu
+                    when (featureFlagUseCase.getDisclosurePolicy()) {
+                        is DisclosurePolicy.ZeroG -> {
+                            R.string.holder_dashboard_filledState_international_0G_message
+                        }
+                        else -> {
+                            R.string.my_overview_description_eu
+                        }
+                    }
                 }
             }
         }

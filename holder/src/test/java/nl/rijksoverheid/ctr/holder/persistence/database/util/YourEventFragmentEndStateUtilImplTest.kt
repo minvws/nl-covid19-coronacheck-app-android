@@ -17,16 +17,21 @@ import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.YourEventFragmentEndState.*
+import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class YourEventFragmentEndStateUtilImplTest {
 
     private val appConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
-    private val util = YourEventFragmentEndStateUtilImpl(appConfigUseCase)
+    private val holderFeatureFlagUseCase = mockk<HolderFeatureFlagUseCase> {
+        every { getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
+    }
+    private val util = YourEventFragmentEndStateUtilImpl(appConfigUseCase, holderFeatureFlagUseCase)
 
     @Test
-    fun `combination is not applicable when there is already a dometic vaccination stored`() {
+    fun `combination is not applicable when there is already a domestic vaccination stored`() {
         val storedGreenCards = listOf(
             fakeGreenCard(
                 greenCardType = GreenCardType.Domestic,
@@ -181,5 +186,20 @@ class YourEventFragmentEndStateUtilImplTest {
             util.getResult(HolderFlow.Recovery, storedGreenCards, events, remoteGreenCards),
             NoRecoveryWithStoredVaccination
         )
+    }
+
+    @Test
+    fun `on 0G the international only end state is not applicable`() {
+        every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
+
+        val events = listOf(
+            fakeEventGroupEntity(type = OriginType.Vaccination),
+        )
+        val remoteGreenCards = fakeRemoteGreenCards(
+            domesticGreencard = fakeDomesticGreenCard(origins = emptyList()),
+            euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
+        )
+
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NotApplicable)
     }
 }

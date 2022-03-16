@@ -11,10 +11,11 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.fakeCardsItem
 import nl.rijksoverheid.ctr.holder.fakeGreenCard
+import nl.rijksoverheid.ctr.holder.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
@@ -27,7 +28,7 @@ import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class CardItemUtilImplTest: AutoCloseKoinTest() {
+class CardItemUtilImplTest : AutoCloseKoinTest() {
 
     private val greenCardUtil: GreenCardUtil by inject()
 
@@ -148,6 +149,49 @@ class CardItemUtilImplTest: AutoCloseKoinTest() {
         )
 
         assertEquals(GreenCardDisclosurePolicy.OneG, greenCardDisclosurePolicy)
+    }
+
+    @Test
+    fun `getDisclosurePolicy returns 1G if disclosure policy is 1G and green card is in domestic tab and green card has all test origins`() {
+        val util = getUtil(
+            disclosurePolicy = DisclosurePolicy.OneG
+        )
+
+        val greenCardMultipleTestOrigins = util.getDisclosurePolicy(
+            greenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Domestic
+            ).copy(
+                origins = listOf(
+                    fakeOriginEntity(type = OriginType.Test),
+                    fakeOriginEntity(type = OriginType.Test),
+                    fakeOriginEntity(type = OriginType.Test)
+                )
+            ),
+            greenCardIndex = 0
+        )
+
+        assertEquals(GreenCardDisclosurePolicy.OneG, greenCardMultipleTestOrigins)
+    }
+
+    @Test
+    fun `getDisclosurePolicy returns 3G if disclosure policy is 1G and green card is in domestic tab and green card has multiple origin types`() {
+        val util = getUtil(
+            disclosurePolicy = DisclosurePolicy.OneG
+        )
+
+        val greenCardMultipleOrigins = util.getDisclosurePolicy(
+            greenCard = fakeGreenCard(
+                greenCardType = GreenCardType.Domestic
+            ).copy(
+                origins = listOf(
+                    fakeOriginEntity(type = OriginType.Vaccination),
+                    fakeOriginEntity(type = OriginType.Recovery)
+                )
+            ),
+            greenCardIndex = 0
+        )
+
+        assertEquals(GreenCardDisclosurePolicy.ThreeG, greenCardMultipleOrigins)
     }
 
     @Test
