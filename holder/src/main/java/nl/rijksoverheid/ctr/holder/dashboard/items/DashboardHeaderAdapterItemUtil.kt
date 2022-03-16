@@ -66,9 +66,23 @@ class DashboardHeaderAdapterItemUtilImpl(
             }
             is GreenCardType.Eu -> {
                 return if (emptyState) {
-                    R.string.my_overview_qr_placeholder_description_eu
+                    when (featureFlagUseCase.getDisclosurePolicy()) {
+                        is DisclosurePolicy.ZeroG -> {
+                            R.string.holder_dashboard_emptyState_international_0G_message
+                        }
+                        else -> {
+                            R.string.my_overview_qr_placeholder_description_eu
+                        }
+                    }
                 } else {
-                    R.string.my_overview_description_eu
+                    when (featureFlagUseCase.getDisclosurePolicy()) {
+                        is DisclosurePolicy.ZeroG -> {
+                            R.string.holder_dashboard_filledState_international_0G_message
+                        }
+                        else -> {
+                            R.string.my_overview_description_eu
+                        }
+                    }
                 }
             }
         }
