@@ -84,7 +84,7 @@ class HolderMainActivity : AppCompatActivity() {
 
         appConfigViewModel.appStatusLiveData.observe(this) {
             val navController = navController
-            if (navController.currentDestination.toString().contains("nav_main")) {
+            if (navController.currentDestination.toString().contains("nav_main") || it !is AppStatus.NoActionRequired) {
                 handleAppStatus(it, navController)
             }
         }
@@ -140,7 +140,7 @@ class HolderMainActivity : AppCompatActivity() {
         if (appStatus !is AppStatus.NoActionRequired) {
             navController.navigate(R.id.action_app_status, AppStatusFragment.getBundle(appStatus))
         } else {
-            introductionViewModel.onConfigUpdated()
+            //introductionViewModel.onConfigUpdated()
         }
     }
 
