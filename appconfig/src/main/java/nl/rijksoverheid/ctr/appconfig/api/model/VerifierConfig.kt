@@ -16,7 +16,7 @@ class VerifierConfig(
     @Json(name = "androidMinimumVersion") val verifierMinimumVersion: Int,
     @Json(name = "androidMinimumVersionMessage") val verifierMinimumVersionMessage: String,
     @Json(name = "playStoreURL") val playStoreURL: String,
-    @Json(name = "appDeactivated1") val verifierAppDeactivated: Boolean = false,
+    @Json(name = "appDeactivated") val verifierAppDeactivated: Boolean,
     @Json(name = "configTTL") val configTTL: Int,
     @Json(name = "configMinimumIntervalSeconds") val configMinimumInterval: Int,
     @Json(name = "maxValidityHours") val maxValidityHours: Int,

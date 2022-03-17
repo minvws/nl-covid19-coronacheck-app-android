@@ -1,17 +1,13 @@
 package nl.rijksoverheid.ctr.verifier.ui.scanner
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.annotation.StringRes
-import mobilecore.VerificationDetails
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
-import nl.rijksoverheid.ctr.shared.models.VerificationResult
-import nl.rijksoverheid.ctr.shared.models.VerificationResultDetails
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionState
 import nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionStateUseCase
@@ -81,22 +77,7 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
         })
 
         scannerViewModel.qrResultLiveData.observe(viewLifecycleOwner, EventObserver {
-            var (qrResultState, externalReturnAppData) = it
-            qrResultState = VerifiedQrResultState.Valid(
-                verifiedQr = VerificationResult(
-                    status = 1L,
-                    error = "",
-                    details = VerificationResultDetails(
-                        birthDay = "01",
-                        birthMonth = "01",
-                        firstNameInitial = "O",
-                        lastNameInitial = "E",
-                        credentialVersion = "3.0",
-                        isSpecimen = "0",
-                        issuerCountryCode = "GR",
-                    )
-                )
-            )
+            val (qrResultState, externalReturnAppData) = it
             when (qrResultState) {
                 is VerifiedQrResultState.Valid -> {
                     navigateSafety(
