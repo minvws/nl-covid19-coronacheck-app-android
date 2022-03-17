@@ -97,7 +97,7 @@ class DashboardHeaderAdapterItemUtilImpl(
 
     private fun getButtonInfo(tabType: GreenCardType, empty: Boolean) =
         if (tabType == GreenCardType.Eu) {
-            if (featureFlagUseCase.getDisclosurePolicy() is DisclosurePolicy.ZeroG && !empty) {
+            if (featureFlagUseCase.getDisclosurePolicy() is DisclosurePolicy.ZeroG && empty) {
                 ButtonInfo(
                     R.string.holder_dashboard_international_0G_action_certificateNeeded,
                     R.string.my_overview_description_eu_button_link

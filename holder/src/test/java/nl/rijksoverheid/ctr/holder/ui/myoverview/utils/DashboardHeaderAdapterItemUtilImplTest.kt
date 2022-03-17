@@ -137,7 +137,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
 
         Assert.assertEquals(
-            R.string.holder_dashboard_international_0G_action_certificateNeeded,
+            R.string.my_overview_description_eu_button_text,
             headerItem.buttonInfo!!.text
         )
         Assert.assertEquals(
@@ -159,7 +159,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
 
         Assert.assertEquals(
-            R.string.my_overview_description_eu_button_text,
+            R.string.holder_dashboard_international_0G_action_certificateNeeded,
             headerItem.buttonInfo!!.text
         )
         Assert.assertEquals(
