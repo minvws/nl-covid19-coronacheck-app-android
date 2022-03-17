@@ -19,13 +19,13 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/horizontal_padding"
             android:layout_height="wrap_content">
 
             <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
                 android:id="@+id/description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="32dp"
                 android:labelFor="@id/unique_code_text"
@@ -65,7 +65,7 @@
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="40dp"
                 android:text="@string/add_paper_proof_explanation_self_printed_button"
-                android:layout_marginStart="8dp"
+                android:paddingHorizontal="0dp"
                 android:gravity="start|center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
