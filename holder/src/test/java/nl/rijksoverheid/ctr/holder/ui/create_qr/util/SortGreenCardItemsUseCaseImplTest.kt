@@ -111,7 +111,7 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
     fun `Items have correct order`() {
         val items = listOf(
             DashboardItem.InfoItem.BoosterItem,
-            DashboardItem.HeaderItem(1),
+            DashboardItem.HeaderItem(1, null),
             DashboardItem.InfoItem.ClockDeviationItem,
             DashboardItem.CoronaMelderItem,
             DashboardItem.InfoItem.OriginInfoItem(GreenCardType.Domestic, OriginType.Test),

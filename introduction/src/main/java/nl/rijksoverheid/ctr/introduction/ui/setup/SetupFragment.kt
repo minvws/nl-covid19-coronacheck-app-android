@@ -34,6 +34,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
+    private val introductionViewModel: IntroductionViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,7 +53,9 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
         appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is AppStatus.UpdateRecommended -> showRecommendedUpdateDialog()
-                is AppStatus.NoActionRequired -> { }
+                is AppStatus.NoActionRequired -> {
+                    introductionViewModel.onConfigUpdated()
+                }
                 else -> navigateToAppStatus(it)
             }
         }

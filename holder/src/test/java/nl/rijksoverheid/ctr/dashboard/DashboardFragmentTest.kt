@@ -68,7 +68,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.HeaderItem(text = R.string.my_overview_description)
+                    DashboardItem.HeaderItem(text = R.string.my_overview_description, null)
                 )
             ))
         )

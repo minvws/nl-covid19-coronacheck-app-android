@@ -26,11 +26,11 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
 
         Assert.assertEquals(R.string.holder_dashboard_empty_domestic_only1Gaccess_message,
-            util.getText(
+            util.getHeaderItem(
                 tabType = GreenCardType.Domestic,
                 emptyState = true,
                 hasVisitorPassIncompleteItem = false
-            )
+            ).text
         )
     }
 
@@ -41,11 +41,11 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
 
         Assert.assertEquals(R.string.my_overview_qr_placeholder_description,
-            util.getText(
+            util.getHeaderItem(
                 tabType = GreenCardType.Domestic,
                 emptyState = true,
                 hasVisitorPassIncompleteItem = false
-            )
+            ).text
         )
     }
 
@@ -56,11 +56,11 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
 
         Assert.assertEquals(R.string.holder_dashboard_empty_domestic_3Gand1Gaccess_message,
-            util.getText(
+            util.getHeaderItem(
                 tabType = GreenCardType.Domestic,
                 emptyState = true,
                 hasVisitorPassIncompleteItem = false
-            )
+            ).text
         )
     }
 
@@ -71,11 +71,11 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
 
         Assert.assertEquals(R.string.holder_dashboard_intro_domestic_only1Gaccess,
-            util.getText(
+            util.getHeaderItem(
                 tabType = GreenCardType.Domestic,
                 emptyState = false,
                 hasVisitorPassIncompleteItem = false
-            )
+            ).text
         )
     }
 
@@ -86,11 +86,11 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
 
         Assert.assertEquals(R.string.my_overview_description,
-            util.getText(
+            util.getHeaderItem(
                 tabType = GreenCardType.Domestic,
                 emptyState = false,
                 hasVisitorPassIncompleteItem = false
-            )
+            ).text
         )
     }
 
@@ -101,11 +101,92 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
 
         Assert.assertEquals(R.string.holder_dashboard_intro_domestic_3Gand1Gaccess,
-            util.getText(
+            util.getHeaderItem(
                 tabType = GreenCardType.Domestic,
                 emptyState = false,
                 hasVisitorPassIncompleteItem = false
-            )
+            ).text
+        )
+    }
+
+    @Test
+    fun `Correct button info for domestic tab`() {
+        val util = getUtil(
+            policy = DisclosurePolicy.OneG
+        )
+
+        Assert.assertEquals(null,
+            util.getHeaderItem(
+                tabType = GreenCardType.Domestic,
+                emptyState = true,
+                hasVisitorPassIncompleteItem = false
+            ).buttonInfo
+        )
+    }
+
+    @Test
+    fun `Correct button info for EU tab with 0G and not empty`() {
+        val util = getUtil(
+            policy = DisclosurePolicy.ZeroG
+        )
+
+        val headerItem = util.getHeaderItem(
+            tabType = GreenCardType.Eu,
+            emptyState = false,
+            hasVisitorPassIncompleteItem = false
+        )
+
+        Assert.assertEquals(
+            R.string.my_overview_description_eu_button_text,
+            headerItem.buttonInfo!!.text
+        )
+        Assert.assertEquals(
+            R.string.my_overview_description_eu_button_link,
+            headerItem.buttonInfo!!.link
+        )
+    }
+
+    @Test
+    fun `Correct button info for EU tab with 0G and empty`() {
+        val util = getUtil(
+            policy = DisclosurePolicy.ZeroG
+        )
+
+        val headerItem = util.getHeaderItem(
+            tabType = GreenCardType.Eu,
+            emptyState = true,
+            hasVisitorPassIncompleteItem = false
+        )
+
+        Assert.assertEquals(
+            R.string.holder_dashboard_international_0G_action_certificateNeeded,
+            headerItem.buttonInfo!!.text
+        )
+        Assert.assertEquals(
+            R.string.my_overview_description_eu_button_link,
+            headerItem.buttonInfo!!.link
+        )
+    }
+
+    @Test
+    fun `Correct button info for EU tab with not 0G`() {
+        val util = getUtil(
+            policy = DisclosurePolicy.OneG
+        )
+
+        val headerItem = util.getHeaderItem(
+            tabType = GreenCardType.Eu,
+            emptyState = false,
+            hasVisitorPassIncompleteItem = false
+        )
+
+        Assert.assertEquals(
+            R.string.my_overview_description_eu_button_text,
+            headerItem.buttonInfo!!.text
+        )
+        Assert.assertEquals(
+            R.string.my_overview_description_eu_button_link,
+            headerItem.buttonInfo!!.link
         )
     }
 
