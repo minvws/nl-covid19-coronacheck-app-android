@@ -39,11 +39,11 @@ class ErrorCodeStringFactoryImplTest {
                         400, "".toResponseBody()
                     )
                 ),
-                provider = provider
+                provider = "GGD"
             ))
         )
 
-        assertEquals(errorCodeString, "A 01 000 400")
+        assertEquals(errorCodeString, "A 01 GGD 400")
     }
 
     @Test
@@ -79,7 +79,7 @@ class ErrorCodeStringFactoryImplTest {
                     status = "",
                     code = 2
                 ),
-                provider = provider
+                provider = null
             )
         ))
 

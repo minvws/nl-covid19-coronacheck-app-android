@@ -211,7 +211,7 @@ class GetDigidEventsUseCaseImplTest {
             )
         )
         return NetworkRequestResult.Failed.CoronaCheckHttpError(
-            HolderStep.UnomiNetworkRequest, httpException, provider
+            HolderStep.UnomiNetworkRequest, httpException, null
         )
     }
 
