@@ -67,7 +67,8 @@
                 android:text="@string/commercial_test_type_no_code_title"
                 app:layout_constraintEnd_toEndOf="@+id/description"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/description"
+                android:layout_marginHorizontal="@dimen/button_horizontal_margin"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/unique_code_input" />
 
 
