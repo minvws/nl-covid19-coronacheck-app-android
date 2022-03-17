@@ -15,6 +15,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/horizontal_padding"
         android:layout_height="wrap_content">
 
         <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
@@ -22,7 +23,6 @@
             style="@style/App.TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             app:htmlText="@string/about_this_app_description"
             app:layout_constraintEnd_toEndOf="parent"
