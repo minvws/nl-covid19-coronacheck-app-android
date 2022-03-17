@@ -2,8 +2,12 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.models
 
 import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.items.ButtonInfo
 import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -11,7 +15,10 @@ import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
 sealed class DashboardItem {
 
-    data class HeaderItem(@StringRes val text: Int) : DashboardItem()
+    data class HeaderItem(
+        @StringRes val text: Int,
+        val buttonInfo: ButtonInfo?
+    ) : DashboardItem()
 
     data class PlaceholderCardItem(val greenCardType: GreenCardType) : DashboardItem()
 
