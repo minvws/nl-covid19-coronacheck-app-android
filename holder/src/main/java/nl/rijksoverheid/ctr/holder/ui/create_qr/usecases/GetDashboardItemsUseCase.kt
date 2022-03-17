@@ -11,8 +11,6 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtil
 import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import org.koin.androidx.viewmodel.scope.emptyState
 
 interface GetDashboardItemsUseCase {
     suspend fun getItems(
@@ -85,13 +83,13 @@ class GetDashboardItemsUseCaseImpl(
             .filter { it.greenCardEntity.type == GreenCardType.Eu }
             .distinctBy { it.greenCardEntity.type }
 
-        val headerText = dashboardHeaderAdapterItemUtil.getText(
+        val headerItem = dashboardHeaderAdapterItemUtil.getHeaderItem(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Domestic,
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
         )
 
-        dashboardItems.add(DashboardItem.HeaderItem(text = headerText))
+        dashboardItems.add(headerItem)
 
         if (dashboardItemUtil.isAppUpdateAvailable()) {
             dashboardItems.add(DashboardItem.InfoItem.AppUpdate)
@@ -204,15 +202,13 @@ class GetDashboardItemsUseCaseImpl(
             disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
         )
 
-        val headerText = dashboardHeaderAdapterItemUtil.getText(
+        val headerItem = dashboardHeaderAdapterItemUtil.getHeaderItem(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Eu,
             hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
         )
 
-        dashboardItems.add(
-            DashboardItem.HeaderItem(text = headerText)
-        )
+        dashboardItems.add(headerItem)
 
         if (dashboardItemUtil.isAppUpdateAvailable()) {
             dashboardItems.add(DashboardItem.InfoItem.AppUpdate)

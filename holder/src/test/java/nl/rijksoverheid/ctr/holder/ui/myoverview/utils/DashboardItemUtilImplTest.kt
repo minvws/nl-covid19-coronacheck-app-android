@@ -120,7 +120,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val card3 = createCardItem(OriginType.Vaccination)
 
         val items = listOf(
-            DashboardItem.HeaderItem(1),
+            DashboardItem.HeaderItem(1, null),
             CardsItem(listOf(createCardItem(OriginType.Test))),
             CardsItem(listOf(card1)),
             CardsItem(listOf(createCardItem(OriginType.Recovery))),
