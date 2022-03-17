@@ -203,24 +203,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         adapterItems.add(
             DashboardHeaderAdapterItem(
                 text = dashboardItem.text,
-                buttonInfo = if (greenCardType == GreenCardType.Eu) {
-                    when (featureFlagUseCase.getDisclosurePolicy()) {
-                        is DisclosurePolicy.ZeroG -> {
-                            ButtonInfo(
-                                R.string.holder_dashboard_international_0G_action_certificateNeeded ,
-                                R.string.my_overview_description_eu_button_link
-                            )
-                        }
-                        else -> {
-                            ButtonInfo(
-                                R.string.my_overview_description_eu_button_text,
-                                R.string.my_overview_description_eu_button_link
-                            )
-                        }
-                    }
-                } else {
-                    null
-                },
+                buttonInfo = dashboardItem.buttonInfo
             )
         )
     }
