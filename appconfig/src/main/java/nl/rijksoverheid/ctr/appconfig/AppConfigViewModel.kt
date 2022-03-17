@@ -45,6 +45,9 @@ class AppConfigViewModelImpl(
 
     override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
         if (!force && !appConfigUseCase.canRefresh(cachedAppConfigUseCase)) {
+            // this is needed to keep track of the app status for a second activity (opened via a deeplink)
+            val appStatus = appStatusUseCase.checkIfActionRequired(versionCode, cachedAppConfigUseCase.getCachedAppConfig())
+            appStatusLiveData.postValue(appStatus)
             return
         }
         viewModelScope.launch {
