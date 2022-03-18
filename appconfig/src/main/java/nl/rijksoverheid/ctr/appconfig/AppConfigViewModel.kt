@@ -44,6 +44,10 @@ class AppConfigViewModelImpl(
     private val mutex = Mutex()
 
     override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
+        // update the app status from the last fetched config
+        val appStatus = appStatusUseCase.checkIfActionRequired(versionCode, cachedAppConfigUseCase.getCachedAppConfig())
+        appStatusLiveData.postValue(appStatus)
+
         if (!force && !appConfigUseCase.canRefresh(cachedAppConfigUseCase)) {
             return
         }
