@@ -22,7 +22,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.ext.ClmobileVerifyException
+import nl.rijksoverheid.ctr.shared.ext.initialisationException
 
 abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()
@@ -74,7 +74,7 @@ class AppConfigViewModelImpl(
                 }
 
                 if (initializationError != null) {
-                    throw ClmobileVerifyException(initializationError)
+                    throw initialisationException(initializationError)
                 }
 
                 appStatusLiveData.postValue(appStatus)
