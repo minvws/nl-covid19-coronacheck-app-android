@@ -26,4 +26,10 @@ sealed class AppStatus : Parcelable {
 
     @Parcelize
     object NoActionRequired : AppStatus(), Parcelable
+
+    @Parcelize
+    data class ConsentNeeded(val newTerms: NewTerms) : AppStatus(), Parcelable
+
+    @Parcelize
+    data class NewFeatures(val items: List<NewFeatureItem>) : AppStatus(), Parcelable
 }

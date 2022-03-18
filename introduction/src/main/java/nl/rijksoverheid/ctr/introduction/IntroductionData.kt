@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.introduction
 import android.os.Parcelable
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
-import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
+import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models.PrivacyPolicyItem

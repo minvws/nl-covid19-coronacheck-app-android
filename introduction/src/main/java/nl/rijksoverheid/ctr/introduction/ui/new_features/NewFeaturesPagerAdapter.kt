@@ -4,8 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
-import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

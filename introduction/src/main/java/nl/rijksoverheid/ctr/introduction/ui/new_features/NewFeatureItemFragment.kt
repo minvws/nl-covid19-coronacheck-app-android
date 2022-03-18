@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentNewFeatureItemBinding
-import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
+import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 
