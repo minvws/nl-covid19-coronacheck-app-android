@@ -28,7 +28,7 @@ class VerifierMainActivityViewModelImplTest {
     @Test
     fun `cleanup calls cleanup usecases`() = runBlocking {
         val scanLogsCleanupUseCase = mockk<ScanLogsCleanupUseCase>()
-        val viewModel = VerifierMainActivityViewModelImpl(scanLogsCleanupUseCase, mockk())
+        val viewModel = VerifierMainActivityViewModelImpl(scanLogsCleanupUseCase, mockk(), mockk())
 
         viewModel.cleanup()
 
@@ -42,7 +42,7 @@ class VerifierMainActivityViewModelImplTest {
             coEvery { updatePolicy() } returns true
         }
         val viewModel = VerifierMainActivityViewModelImpl(
-            scanLogsCleanupUseCase, configVerificationPolicyUseCase
+            scanLogsCleanupUseCase, configVerificationPolicyUseCase, mockk()
         )
 
         viewModel.policyUpdate()
