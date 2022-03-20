@@ -43,12 +43,18 @@ class AppConfigViewModelImpl(
 
     private val mutex = Mutex()
 
+    private fun updateAppStatus(appStatus: AppStatus) {
+        if (appStatusLiveData.value != appStatus) {
+            appStatusLiveData.postValue(appStatus)
+        }
+    }
+
     override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
         // update the app status from the last fetched config
         // only if it is valid (so don't use the default one)
         if (cachedAppConfigUseCase.isCachedAppConfigValid()) {
             val appStatus = appStatusUseCase.checkIfActionRequired(versionCode, cachedAppConfigUseCase.getCachedAppConfig())
-            appStatusLiveData.postValue(appStatus)
+            updateAppStatus(appStatus)
         }
 
         if (!force && !appConfigUseCase.canRefresh(cachedAppConfigUseCase)) {
@@ -84,7 +90,7 @@ class AppConfigViewModelImpl(
                     throw initialisationException(initializationError)
                 }
 
-                appStatusLiveData.postValue(appStatus)
+                updateAppStatus(appStatus)
             }
         }
     }
