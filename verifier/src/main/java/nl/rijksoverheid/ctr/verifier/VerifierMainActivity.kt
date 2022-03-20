@@ -54,16 +54,14 @@ class VerifierMainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (isIntroductionFinished()) {
-            if (isFreshStart) {
-                // Force retrieval of config once on startup for clock deviation checks
-                appConfigViewModel.refresh(mobileCoreWrapper, force = true)
-            } else {
-                // Only get app config on every app foreground when introduction is finished and the app has already started
-                appConfigViewModel.refresh(mobileCoreWrapper)
-            }
-            isFreshStart = false
+        if (isFreshStart) {
+            // Force retrieval of config once on startup for clock deviation checks
+            appConfigViewModel.refresh(mobileCoreWrapper, force = true)
+        } else {
+            // Only get app config on every app foreground when introduction is finished and the app has already started
+            appConfigViewModel.refresh(mobileCoreWrapper)
         }
+        isFreshStart = false
         verifierMainActivityViewModel.cleanup()
     }
 
