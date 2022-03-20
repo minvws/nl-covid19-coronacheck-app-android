@@ -129,15 +129,28 @@ class VerifierMainActivity : AppCompatActivity() {
         appStatus: AppStatus,
         navController: NavController
     ) {
-        if (appStatus is AppStatus.UpdateRecommended) {
-            showRecommendedUpdateDialog()
-            return
+        when (appStatus) {
+            AppStatus.Deactivated -> navigateToAppStatus(appStatus, navController)
+            AppStatus.Error -> navigateToAppStatus(appStatus, navController)
+            AppStatus.NoActionRequired -> {
+                closeAppStatusIfOpen(navController)
+                introductionViewModel.onConfigUpdated()
+            }
+            AppStatus.UpdateRecommended -> {
+                showRecommendedUpdateDialog()
+                return
+            }
+            AppStatus.UpdateRequired -> navigateToAppStatus(appStatus, navController)
         }
+    }
 
-        if (appStatus !is AppStatus.NoActionRequired) {
-            navigateToAppStatus(appStatus, navController)
-        } else {
-            introductionViewModel.onConfigUpdated()
+    private fun closeAppStatusIfOpen(
+        navController: NavController
+    ) {
+        val isAppStatusFragment =
+            navController.currentBackStackEntry?.arguments?.containsKey(AppStatusFragment.EXTRA_APP_STATUS) == true
+        if (isAppStatusFragment) {
+            navController.popBackStack()
         }
     }
 
