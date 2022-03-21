@@ -31,12 +31,10 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dialog?.setOnShowListener {
-            val bottomSheetDialog = it as BottomSheetDialog
-            val sheetInternal: View = bottomSheetDialog.findViewById(R.id.design_bottom_sheet)!!
-            BottomSheetBehavior.from(sheetInternal).state = BottomSheetBehavior.STATE_EXPANDED
-        }
         super.onCreateView(inflater, container, savedInstanceState)
+
+        (dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
+
         return FragmentInfoBottomsheetBinding.inflate(inflater).root
     }
 
