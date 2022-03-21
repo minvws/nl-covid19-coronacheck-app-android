@@ -8,8 +8,7 @@
 package nl.rijksoverheid.ctr.holder.dashboard.models
 
 import androidx.annotation.StringRes
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 
 data class DashboardTabItem(
     @StringRes val title: Int,

@@ -1,12 +1,14 @@
 package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
-import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
-import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtil
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtilImpl
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.*
+import nl.rijksoverheid.ctr.holder.your_events.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.time.Clock

@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCaseImpl
 import org.koin.dsl.module
 
 /*
@@ -13,11 +14,5 @@ import org.koin.dsl.module
 val secretUseCasesModule = module {
     factory<SecretKeyUseCase> {
         SecretKeyUseCaseImpl(get(), get())
-    }
-    factory<CommitmentMessageUseCase> {
-        CommitmentMessageUseCaseImpl(get(), get())
-    }
-    factory<CreateCredentialUseCase> {
-        CreateCredentialUseCaseImpl(get())
     }
 }

@@ -9,8 +9,8 @@ package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import android.content.Context
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
