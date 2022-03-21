@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit
 interface AppStatusUseCase {
     suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus
     fun isAppActive(currentVersionCode: Int): Boolean
+    fun checkIfActionRequired(currentVersionCode: Int, appConfig: AppConfig): AppStatus
 }
 
 class AppStatusUseCaseImpl(
@@ -68,7 +69,7 @@ class AppStatusUseCaseImpl(
 
     private fun updateRequired(currentVersionCode: Int, appConfig: AppConfig) = currentVersionCode < appConfig.minimumVersion
 
-    private fun checkIfActionRequired(currentVersionCode: Int, appConfig: AppConfig): AppStatus {
+    override fun checkIfActionRequired(currentVersionCode: Int, appConfig: AppConfig): AppStatus {
         return when {
             updateRequired(currentVersionCode, appConfig) -> AppStatus.UpdateRequired
             appConfig.appDeactivated -> AppStatus.Deactivated

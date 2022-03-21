@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrFragment
@@ -31,7 +31,7 @@ class MenuUtilImpl(
 ): MenuUtil {
 
     override fun showMenu(scanQrFragment: ScanQrFragment) {
-        scanQrFragment.findNavControllerSafety()?.navigate(
+        scanQrFragment.navigateSafety(
             ScanQrFragmentDirections.actionMenu(
                 menuSections = getMenuSections(scanQrFragment.requireContext())
             )
