@@ -12,7 +12,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
-import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.verifier.DeeplinkManager
 import nl.rijksoverheid.ctr.verifier.DeeplinkManagerImpl

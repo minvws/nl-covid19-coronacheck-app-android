@@ -28,8 +28,8 @@ sealed class AppStatus : Parcelable {
     object NoActionRequired : AppStatus(), Parcelable
 
     @Parcelize
-    data class ConsentNeeded(val newTerms: NewTerms) : AppStatus(), Parcelable
+    data class ConsentNeeded(val appUpdateData: AppUpdateData) : AppStatus(), Parcelable
 
     @Parcelize
-    data class NewFeatures(val items: List<NewFeatureItem>) : AppStatus(), Parcelable
+    data class NewFeatures(val appUpdateData: AppUpdateData) : AppStatus(), Parcelable
 }

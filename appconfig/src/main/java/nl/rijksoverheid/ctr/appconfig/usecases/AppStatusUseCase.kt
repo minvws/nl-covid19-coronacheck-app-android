@@ -35,8 +35,7 @@ class AppStatusUseCaseImpl(
     private val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager,
     private val moshi: Moshi,
     private val isVerifierApp: Boolean,
-) :
-    AppStatusUseCase {
+) : AppStatusUseCase {
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
         withContext(Dispatchers.IO) {

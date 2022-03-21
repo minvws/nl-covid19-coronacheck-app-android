@@ -19,7 +19,6 @@ import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
-import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models.PrivacyPolicyItem
 import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
