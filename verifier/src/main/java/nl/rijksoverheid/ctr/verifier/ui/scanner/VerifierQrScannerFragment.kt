@@ -61,9 +61,9 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
                 )
             },
             rationaleDialog = Copy.RationaleDialog(
-                title = getString(R.string.camera_rationale_dialog_title),
+                title = R.string.camera_rationale_dialog_title,
                 description = getString(R.string.camera_rationale_dialog_description),
-                okayButtonText = getString(R.string.ok)
+                okayButtonText = R.string.ok
             ),
             verificationPolicy = verificationPolicyCopy
         )

@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.ScanLogsCleanupUseCase
 import org.junit.Before
@@ -28,7 +29,7 @@ class VerifierMainActivityViewModelImplTest {
     @Test
     fun `cleanup calls cleanup usecases`() = runBlocking {
         val scanLogsCleanupUseCase = mockk<ScanLogsCleanupUseCase>()
-        val viewModel = VerifierMainActivityViewModelImpl(scanLogsCleanupUseCase, mockk())
+        val viewModel = VerifierMainActivityViewModelImpl(scanLogsCleanupUseCase, mockk(), mockk())
 
         viewModel.cleanup()
 
@@ -41,8 +42,11 @@ class VerifierMainActivityViewModelImplTest {
         val configVerificationPolicyUseCase = mockk<ConfigVerificationPolicyUseCase> {
             coEvery { updatePolicy() } returns true
         }
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>() {
+            coEvery { getCachedAppConfig().appDeactivated } returns false
+        }
         val viewModel = VerifierMainActivityViewModelImpl(
-            scanLogsCleanupUseCase, configVerificationPolicyUseCase
+            scanLogsCleanupUseCase, configVerificationPolicyUseCase, cachedAppConfigUseCase
         )
 
         viewModel.policyUpdate()
