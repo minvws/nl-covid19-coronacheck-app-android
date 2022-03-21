@@ -17,6 +17,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppStatusBinding
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
@@ -35,9 +36,12 @@ class AppStatusFragment : Fragment(R.layout.fragment_app_status) {
 
     private val androidUtil: AndroidUtil by inject()
     private val intentUtil: IntentUtil by inject()
+    private val dialogUtil: DialogUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        dialogUtil.dismiss(context)
 
         val binding = FragmentAppStatusBinding.bind(view)
         val appStatus = arguments?.getParcelable<AppStatus>(EXTRA_APP_STATUS)

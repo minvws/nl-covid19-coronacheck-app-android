@@ -22,7 +22,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.ext.ClmobileVerifyException
+import nl.rijksoverheid.ctr.shared.ext.initialisationException
 
 abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()
@@ -43,7 +43,20 @@ class AppConfigViewModelImpl(
 
     private val mutex = Mutex()
 
+    private fun updateAppStatus(appStatus: AppStatus) {
+        if (appStatusLiveData.value != appStatus) {
+            appStatusLiveData.postValue(appStatus)
+        }
+    }
+
     override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
+        // update the app status from the last fetched config
+        // only if it is valid (so don't use the default one)
+        if (cachedAppConfigUseCase.isCachedAppConfigValid()) {
+            val appStatus = appStatusUseCase.checkIfActionRequired(versionCode, cachedAppConfigUseCase.getCachedAppConfig())
+            updateAppStatus(appStatus)
+        }
+
         if (!force && !appConfigUseCase.canRefresh(cachedAppConfigUseCase)) {
             return
         }
@@ -74,10 +87,10 @@ class AppConfigViewModelImpl(
                 }
 
                 if (initializationError != null) {
-                    throw ClmobileVerifyException(initializationError)
+                    throw initialisationException(initializationError)
                 }
 
-                appStatusLiveData.postValue(appStatus)
+                updateAppStatus(appStatus)
             }
         }
     }

@@ -100,7 +100,7 @@ fun verifierModule() = module {
     factory<MenuUtil> { MenuUtilImpl(get(), get(), get()) }
 
     // ViewModels
-    viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get(), get()) }
+    viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get(), get(), get()) }
     viewModel<ScanQrViewModel> { ScanQrViewModelImpl(get(), get(), get(), get()) }
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get(), get()) }
     viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
