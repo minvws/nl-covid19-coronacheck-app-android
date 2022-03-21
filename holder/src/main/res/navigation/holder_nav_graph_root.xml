@@ -75,6 +75,6 @@
 
     <fragment
         android:id="@+id/nav_paper_proof_qr_scanner"
-        android:name="nl.rijksoverheid.ctr.holder.ui.create_qr.paper_proof.PaperProofQrScannerFragment"/>
+        android:name="nl.rijksoverheid.ctr.holder.paper_proof.PaperProofQrScannerFragment"/>
 
 </navigation>

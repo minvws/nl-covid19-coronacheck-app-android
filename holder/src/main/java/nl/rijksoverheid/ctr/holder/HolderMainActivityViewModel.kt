@@ -3,8 +3,8 @@ package nl.rijksoverheid.ctr.holder
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofResult
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofResult
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 abstract class HolderMainActivityViewModel: ViewModel() {
