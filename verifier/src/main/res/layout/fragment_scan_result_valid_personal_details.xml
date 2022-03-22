@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <nl.rijksoverheid.ctr.design.views.Toolbar
+    <nl.rijksoverheid.ctr.design.widgets.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
+            <nl.rijksoverheid.ctr.verifier.widgets.PersonalDetailItemWidget
                 android:id="@+id/personal_details_lastname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-            <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
+            <nl.rijksoverheid.ctr.verifier.widgets.PersonalDetailItemWidget
                 android:id="@+id/personal_details_firstname"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                 app:layout_constraintStart_toStartOf="@+id/personal_details_lastname"
                 app:layout_constraintTop_toBottomOf="@+id/personal_details_lastname" />
 
-            <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
+            <nl.rijksoverheid.ctr.verifier.widgets.PersonalDetailItemWidget
                 android:id="@+id/personal_details_birthdate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                 app:layout_constraintStart_toStartOf="@+id/personal_details_lastname"
                 app:layout_constraintTop_toBottomOf="@+id/personal_details_firstname" />
 
-            <nl.rijksoverheid.ctr.verifier.ui.views.PersonalDetailItemWidget
+            <nl.rijksoverheid.ctr.verifier.widgets.PersonalDetailItemWidget
                 android:id="@+id/personal_details_birthmonth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
 
     </ScrollView>
 
-    <nl.rijksoverheid.ctr.design.views.ScrollViewButtonWidget
+    <nl.rijksoverheid.ctr.design.widgets.ScrollViewButtonWidget
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

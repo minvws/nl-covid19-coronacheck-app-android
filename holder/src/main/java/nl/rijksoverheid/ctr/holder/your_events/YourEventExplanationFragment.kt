@@ -17,7 +17,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+import nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventExplanationBinding
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreen

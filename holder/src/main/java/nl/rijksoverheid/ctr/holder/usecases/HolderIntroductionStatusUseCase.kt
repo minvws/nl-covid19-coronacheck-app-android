@@ -13,12 +13,12 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
-import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.OnboardingFinished
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus.OnboardingNotFinished
-import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCase
+import nl.rijksoverheid.ctr.introduction.new_features.models.NewFeatureItem
+import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus.OnboardingFinished
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus.OnboardingNotFinished
+import nl.rijksoverheid.ctr.introduction.status.usecases.IntroductionStatusUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 class HolderIntroductionStatusUseCaseImpl(

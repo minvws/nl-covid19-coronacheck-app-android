@@ -119,7 +119,7 @@
                         app:barrierDirection="start"
                         app:constraint_referenced_ids="internationalImageContainer,domesticImageContainer" />
 
-                    <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
+                    <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
                         android:id="@+id/title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -159,7 +159,7 @@
                     tools:text="Verloopt in 5 uur 59 min"
                     tools:visibility="invisible" />
 
-                <nl.rijksoverheid.ctr.design.views.ButtonWithProgressWidget
+                <nl.rijksoverheid.ctr.design.widgets.ButtonWithProgressWidget
                     android:id="@+id/buttonWithProgressWidgetContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
             android:background="@drawable/ic_info"
             android:backgroundTint="@color/error" />
 
-        <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+        <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
             android:id="@+id/error_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

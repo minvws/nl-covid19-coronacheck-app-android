@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.ScanLogsCleanupUseCase
+import nl.rijksoverheid.ctr.verifier.policy.ConfigVerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.scanlog.usecase.ScanLogsCleanupUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
