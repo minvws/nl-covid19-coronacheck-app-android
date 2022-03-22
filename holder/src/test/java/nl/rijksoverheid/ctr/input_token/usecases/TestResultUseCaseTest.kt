@@ -284,7 +284,7 @@ class TestResultUseCaseTest {
             name = "dummy",
             providerIdentifier = identifier,
             resultUrl = "dummy",
-            publicKey = "dummy".toByteArray()
+            cms = "dummy".toByteArray()
         )
     }
 

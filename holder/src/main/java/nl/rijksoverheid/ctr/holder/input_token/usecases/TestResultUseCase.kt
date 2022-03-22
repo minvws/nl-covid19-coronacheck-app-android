@@ -90,7 +90,7 @@ class TestResultUseCase(
                 url = testProvider.resultUrl,
                 token = token.removeWhitespace(),
                 verifierCode = verificationCode?.removeWhitespace() ?: "",
-                signingCertificateBytes = testProvider.publicKey,
+                signingCertificateBytes = testProvider.cms,
                 provider = providerIdentifier
             )
 

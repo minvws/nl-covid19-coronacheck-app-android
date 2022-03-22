@@ -26,7 +26,7 @@ interface TestProviderRepository {
         token: String,
         provider: String,
         verifierCode: String?,
-        signingCertificateBytes: ByteArray
+        signingCertificateBytes: List<ByteArray>
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>>
 }
 
@@ -41,7 +41,7 @@ class TestProviderRepositoryImpl(
         token: String,
         provider: String,
         verifierCode: String?,
-        signingCertificateBytes: ByteArray
+        signingCertificateBytes: List<ByteArray>
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
         return networkRequestResultFactory.createResult(
             step = HolderStep.TestResultNetworkRequest,

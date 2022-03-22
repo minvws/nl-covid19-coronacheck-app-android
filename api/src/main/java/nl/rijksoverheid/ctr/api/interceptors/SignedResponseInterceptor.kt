@@ -15,8 +15,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.api.signing.certificates.*
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
-import nl.rijksoverheid.ctr.signing.SignatureValidationException
-import nl.rijksoverheid.ctr.signing.SignatureValidator
+import nl.rijksoverheid.ctr.api.signing.SignatureValidationException
+import nl.rijksoverheid.ctr.api.signing.SignatureValidator
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Response
@@ -75,7 +75,7 @@ class SignedResponseInterceptor(
                     .addTrustedCertificate(PRIVATE_ROOT_CA)
                     .addTrustedCertificate(EMAX_ROOT_CA)
                     .addTrustedCertificate(BEARINGPOINT_ROOT_CA)
-                    .signingCertificate(expectedSigningCertificate.certificateBytes)
+                    .signingCertificateBytes(expectedSigningCertificate.certificateBytes)
                 builder.build()
             } else {
                 defaultValidator
@@ -149,4 +149,4 @@ internal class SignedResponse(
 /**
  * Holder class for the signing certificate
  */
-class SigningCertificate(val certificateBytes: ByteArray)
+class SigningCertificate(val certificateBytes: List<ByteArray>)
