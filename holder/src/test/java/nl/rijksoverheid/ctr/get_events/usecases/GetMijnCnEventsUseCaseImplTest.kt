@@ -292,7 +292,7 @@ class GetMijnCnEventsUseCaseImplTest {
             )
         )
         return NetworkRequestResult.Failed.CoronaCheckHttpError(
-            HolderStep.UnomiNetworkRequest, httpException
+            HolderStep.UnomiNetworkRequest, httpException, null
         )
     }
 
@@ -303,7 +303,10 @@ class GetMijnCnEventsUseCaseImplTest {
             )
         )
         return NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError(
-            HolderStep.EventNetworkRequest, httpException, CoronaCheckErrorResponse("", 777706)
+            HolderStep.EventNetworkRequest,
+            httpException,
+            CoronaCheckErrorResponse("", 777706),
+            null
         )
     }
 

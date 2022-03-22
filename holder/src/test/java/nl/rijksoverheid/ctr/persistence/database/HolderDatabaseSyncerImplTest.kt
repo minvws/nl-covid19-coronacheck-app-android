@@ -4,7 +4,6 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
@@ -14,6 +13,10 @@ import nl.rijksoverheid.ctr.persistence.database.usecases.RemoteGreenCardsResult
 import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsResult
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.holder.fakeGetRemoteGreenCardUseCase
+import nl.rijksoverheid.ctr.holder.fakeGreenCardUtil
+import nl.rijksoverheid.ctr.holder.fakeRemoveExpiredEventsUseCase
+import nl.rijksoverheid.ctr.holder.fakeSyncRemoteGreenCardUseCase
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -24,7 +27,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
-import java.lang.IllegalStateException
 import java.time.OffsetDateTime
 
 class HolderDatabaseSyncerImplTest {
@@ -255,11 +257,14 @@ class HolderDatabaseSyncerImplTest {
             holderDatabase = holderDatabase,
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.CoronaCheckHttpError(Step(1), HttpException(
-                    Response.error<String>(
-                        400, "".toResponseBody()
+                result = RemoteGreenCardsResult.Error(
+                    NetworkRequestResult.Failed.CoronaCheckHttpError(
+                        Step(1),
+                        HttpException(Response.error<String>(400, "".toResponseBody())),
+                        null,
                     )
-                )))),
+                )
+            ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(
                 result = SyncRemoteGreenCardsResult.Success
             ),

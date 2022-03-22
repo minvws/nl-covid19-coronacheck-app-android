@@ -125,7 +125,7 @@ class GetEventProvidersWithTokensUseCaseImplTest {
             )
         )
         val httpError = NetworkRequestResult.Failed.CoronaCheckHttpError(
-            HolderStep.UnomiNetworkRequest, httpException
+            HolderStep.UnomiNetworkRequest, httpException, null
         )
         val eventProviderRepository = fakeEventProviderRepository(
             unomi = {
