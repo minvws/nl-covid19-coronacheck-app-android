@@ -106,7 +106,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             token = "",
             verifierCode = "",
             provider = "",
-            signingCertificateBytes = certificate.toByteArray()
+            signingCertificateBytes = listOf(certificate.toByteArray())
         )
 
         assertTrue(model is NetworkRequestResult.Success)
@@ -134,7 +134,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             token = "",
             verifierCode = "",
             provider = "",
-            signingCertificateBytes = certificate.toByteArray()
+            signingCertificateBytes = listOf(certificate.toByteArray())
         )
 
         assertTrue(model is NetworkRequestResult.Success)
@@ -160,7 +160,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
                 token = "",
                 verifierCode = "",
                 provider = "",
-                signingCertificateBytes = certificate.toByteArray()
+                signingCertificateBytes = listOf(certificate.toByteArray())
             )
 
             assertTrue(model is NetworkRequestResult.Failed)
@@ -190,7 +190,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
                 token = "",
                 verifierCode = "",
                 provider = "",
-                signingCertificateBytes = certificate.toByteArray()
+                signingCertificateBytes = listOf(certificate.toByteArray())
             )
 
             assertTrue(model is NetworkRequestResult.Failed)
