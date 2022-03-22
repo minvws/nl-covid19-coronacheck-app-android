@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.verifier.scanlog.items
 import android.annotation.SuppressLint
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.design.ext.tintDrawable
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.ItemScanLogListItemBinding
 import nl.rijksoverheid.ctr.verifier.scanlog.items.util.ScanLogListAdapterItemUtil
