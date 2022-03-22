@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     tools:background="@color/secondary_green">
 
-    <nl.rijksoverheid.ctr.design.views.Toolbar
+    <nl.rijksoverheid.ctr.design.widgets.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-    <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
+    <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

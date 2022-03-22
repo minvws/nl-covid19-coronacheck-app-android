@@ -112,7 +112,7 @@
 
     </ScrollView>
 
-    <nl.rijksoverheid.ctr.design.views.ScrollViewButtonWidget
+    <nl.rijksoverheid.ctr.design.widgets.ScrollViewButtonWidget
         android:id="@+id/bottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

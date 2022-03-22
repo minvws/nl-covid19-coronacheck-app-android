@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/nav_scan_qr"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanqr.ScanQrFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragment"
         android:label="@string/scan_qr_title"
         tools:layout="@layout/fragment_scan_qr">
 
@@ -66,7 +66,7 @@
 
     <fragment
         android:id="@+id/nav_policy_selection"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionFragment"
         android:label="{toolbarTitle}"
         tools:layout="@layout/fragment_verification_policy_selection">
 
@@ -91,13 +91,13 @@
         <argument
             android:name="selectionType"
             app:nullable="false"
-            app:argType="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicySelectionType"/>
+            app:argType="nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionType"/>
 
     </fragment>
 
     <fragment
         android:id="@+id/nav_policy_settings"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.VerificationPolicyInfoFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.policy.VerificationPolicyInfoFragment"
         android:label="@string/verifier_menu_risksetting"
         tools:layout="@layout/fragment_verification_policy_info">
 
@@ -137,7 +137,7 @@
 
     <fragment
         android:id="@+id/nav_scan_log"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanlog.ScanLogFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.scanlog.ScanLogFragment"
         android:label="@string/verifier_about_this_app_scan_log"
         tools:layout="@layout/fragment_scan_log"/>
 
@@ -145,7 +145,7 @@
 
     <fragment
         android:id="@+id/nav_scan_instructions"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.instructions.ScanInstructionsFragment"
         android:label="@string/scan_instructions"
         tools:layout="@layout/fragment_scan_instructions">
 
@@ -217,7 +217,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_new_policy_rules"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.policy.NewPolicyRulesFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.policy.NewPolicyRulesFragment"
         android:label="">
 
         <argument

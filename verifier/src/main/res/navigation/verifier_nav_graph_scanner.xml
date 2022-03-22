@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_qr_scanner"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.VerifierQrScannerFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.scanner.VerifierQrScannerFragment"
         tools:layout="@layout/fragment_scanner">
 
         <argument
@@ -44,12 +44,12 @@
 
     <fragment
         android:id="@+id/nav_scan_result_invalid"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultInvalidFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.scanner.ScanResultInvalidFragment"
         tools:layout="@layout/fragment_scan_result_invalid">
 
         <argument
             android:name="invalidData"
-            app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultInvalidData" />
+            app:argType="nl.rijksoverheid.ctr.verifier.scanner.models.ScanResultInvalidData" />
 
         <argument
             android:name="title"
@@ -71,12 +71,12 @@
 
     <fragment
         android:id="@+id/nav_scan_result_valid"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultValidFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.scanner.ScanResultValidFragment"
         tools:layout="@layout/fragment_scan_result_valid">
 
         <argument
             android:name="validData"
-            app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData" />
+            app:argType="nl.rijksoverheid.ctr.verifier.scanner.models.ScanResultValidData" />
 
         <action
             android:id="@+id/action_nav_qr_scanner"
@@ -92,12 +92,12 @@
 
     <fragment
         android:id="@+id/nav_scan_result_personal_details"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultPersonalDetailsFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.scanner.ScanResultPersonalDetailsFragment"
         tools:layout="@layout/fragment_scan_result_valid_personal_details">
 
         <argument
             android:name="validData"
-            app:argType="nl.rijksoverheid.ctr.verifier.ui.scanner.models.ScanResultValidData" />
+            app:argType="nl.rijksoverheid.ctr.verifier.scanner.models.ScanResultValidData" />
 
         <action
             android:id="@+id/action_nav_main"
@@ -128,13 +128,13 @@
 
     <fragment
         android:id="@+id/nav_scan_instructions_with_toolbar"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsWithToolbarFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.instructions.ScanInstructionsWithToolbarFragment"
         android:label="@string/scan_instructions"
         tools:layout="@layout/fragment_scan_instructions" />
 
     <fragment
         android:id="@+id/nav_scan_result_personal_details_wrong"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.scanner.ScanResultPersonalDetailsWrongFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.scanner.ScanResultPersonalDetailsWrongFragment"
         android:label="@string/scan_result_something_wrong">
 
         <argument

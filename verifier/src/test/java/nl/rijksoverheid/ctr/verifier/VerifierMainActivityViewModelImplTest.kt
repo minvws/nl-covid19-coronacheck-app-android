@@ -9,8 +9,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.setMain
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.verifier.ui.policy.ConfigVerificationPolicyUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanlog.usecase.ScanLogsCleanupUseCase
+import nl.rijksoverheid.ctr.verifier.policy.ConfigVerificationPolicyUseCase
+import nl.rijksoverheid.ctr.verifier.scanlog.usecase.ScanLogsCleanupUseCase
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
