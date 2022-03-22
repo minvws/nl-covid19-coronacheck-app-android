@@ -15,9 +15,6 @@ import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithToke
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteAccessTokens
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteUnomi
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteAccessTokens
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteConfigProviders
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteUnomi
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test

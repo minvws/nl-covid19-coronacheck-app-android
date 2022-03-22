@@ -17,10 +17,6 @@ import nl.rijksoverheid.ctr.holder.get_events.usecases.*
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.get_events.models.*
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
-import nl.rijksoverheid.ctr.holder.HolderStep
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.CoronaCheckRepository
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.ScopeUtil
 import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
