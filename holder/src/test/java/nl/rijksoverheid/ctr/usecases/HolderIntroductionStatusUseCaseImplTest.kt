@@ -18,11 +18,11 @@ import nl.rijksoverheid.ctr.holder.usecases.ShowNewDisclosurePolicyUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
-import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
-import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models.PrivacyPolicyItem
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.new_features.models.NewFeatureItem
+import nl.rijksoverheid.ctr.introduction.new_terms.models.NewTerms
+import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Test
 import kotlin.test.assertTrue

@@ -55,7 +55,7 @@
                 app:barrierAllowsGoneWidgets="true"
                 app:constraint_referenced_ids="lockedAnimation, image" />
 
-            <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
+            <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
 
     </ScrollView>
 
-    <nl.rijksoverheid.ctr.verifier.ui.views.ScrollViewPolicyButtonWidget
+    <nl.rijksoverheid.ctr.verifier.widgets.ScrollViewPolicyButtonWidget
         android:id="@+id/bottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

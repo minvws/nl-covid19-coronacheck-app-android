@@ -29,7 +29,7 @@
                 app:barrierDirection="bottom"
                 app:constraint_referenced_ids="title" />
 
-            <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
+            <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+            <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
                 android:id="@+id/description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
 
     </ScrollView>
 
-    <nl.rijksoverheid.ctr.design.views.ScrollViewButtonWidget
+    <nl.rijksoverheid.ctr.design.widgets.ScrollViewButtonWidget
         android:id="@+id/bottom"
         style="@style/Widget.App.Button"
         android:layout_width="0dp"

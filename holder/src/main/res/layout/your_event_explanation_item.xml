@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Title"/>
 
-    <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+    <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

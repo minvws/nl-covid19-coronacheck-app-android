@@ -19,8 +19,8 @@ import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.new_terms.models.NewTerms
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Rule

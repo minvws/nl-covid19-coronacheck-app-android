@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <nl.rijksoverheid.ctr.design.views.Toolbar
+        <nl.rijksoverheid.ctr.design.widgets.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <nl.rijksoverheid.ctr.design.views.ViewPagerIndicator
+                <nl.rijksoverheid.ctr.design.widgets.ViewPagerIndicator
                     android:id="@+id/indicators"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

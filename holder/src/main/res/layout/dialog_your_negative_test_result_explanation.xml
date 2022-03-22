@@ -13,7 +13,7 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="32dp">
 
-        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
+        <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/title" />
 
-        <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+        <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
             android:id="@+id/paragraph1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
 
         </LinearLayout>
 
-        <nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+        <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
             android:id="@+id/paragraph2"
             android:layout_width="0dp"
             android:layout_height="0dp"

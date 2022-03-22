@@ -9,13 +9,13 @@ import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
-import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
-import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
+import nl.rijksoverheid.ctr.verifier.scanner.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.scanner.usecases.TestResultValidUseCase
+import nl.rijksoverheid.ctr.verifier.scanner.usecases.VerifyQrUseCase
 import org.json.JSONObject
 
 /*
