@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.usecase
+package nl.rijksoverheid.ctr.holder.usecases
 
 import androidx.annotation.StringRes
 import com.squareup.moshi.Moshi
@@ -6,20 +6,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
-import nl.rijksoverheid.ctr.appconfig.models.*
+import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
+import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
+import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import java.time.Clock
 import java.time.OffsetDateTime
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,11 +29,6 @@ import java.util.concurrent.TimeUnit
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface AppStatusUseCase {
-    suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus
-    fun isAppActive(currentVersionCode: Int): Boolean
-    fun checkIfActionRequired(currentVersionCode: Int, appConfig: AppConfig): AppStatus
-}
 
 class HolderAppStatusUseCaseImpl(
     private val clock: Clock,
@@ -43,7 +39,7 @@ class HolderAppStatusUseCaseImpl(
     private val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase,
     private val appUpdateData: AppUpdateData,
     private val persistenceManager: PersistenceManager,
-    private val introductionPersistenceManager: IntroductionPersistenceManager,
+    private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
 ) : AppStatusUseCase {
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
@@ -71,14 +67,17 @@ class HolderAppStatusUseCaseImpl(
             }
         }
 
-    private fun updateRequired(currentVersionCode: Int, appConfig: AppConfig) = currentVersionCode < appConfig.minimumVersion
+    private fun updateRequired(currentVersionCode: Int, appConfig: AppConfig) =
+        currentVersionCode < appConfig.minimumVersion
 
     override fun checkIfActionRequired(currentVersionCode: Int, appConfig: AppConfig): AppStatus {
         val newPolicy = showNewDisclosurePolicyUseCase.get()
         return when {
             updateRequired(currentVersionCode, appConfig) -> AppStatus.UpdateRequired
             appConfig.appDeactivated -> AppStatus.Deactivated
-            currentVersionCode < appConfig.recommendedVersion -> getUpdateRecommendedStatus(appConfig)
+            currentVersionCode < appConfig.recommendedVersion -> getUpdateRecommendedStatus(
+                appConfig
+            )
             newFeaturesAvailable() || newPolicy != null -> getNewFeatures(newPolicy)
             newTermsAvailable() -> AppStatus.ConsentNeeded(appUpdateData)
             else -> AppStatus.NoActionRequired
@@ -106,7 +105,7 @@ class HolderAppStatusUseCaseImpl(
         val newFeatureVersion = appUpdateData.newFeatureVersion
         return appUpdateData.newFeatures.isNotEmpty() &&
                 newFeatureVersion != null &&
-                !introductionPersistenceManager.getNewFeaturesSeen(newFeatureVersion)
+                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion)
     }
 
     /**
@@ -137,7 +136,7 @@ class HolderAppStatusUseCaseImpl(
     }
 
     private fun newTermsAvailable() =
-        !introductionPersistenceManager.getNewTermsSeen(appUpdateData.newTerms.version)
+        !appUpdatePersistenceManager.getNewTermsSeen(appUpdateData.newTerms.version)
 
     private fun getNewPolicyFeatureItem(newPolicy: DisclosurePolicy): NewFeatureItem {
         return NewFeatureItem(
@@ -168,6 +167,7 @@ class HolderAppStatusUseCaseImpl(
             DisclosurePolicy.OneAndThreeG -> R.string.holder_newintheapp_content_3Gand1G_body
         }
     }
+
     private fun getNewPolicySubtitle(newPolicy: DisclosurePolicy) =
         if (newPolicy == DisclosurePolicy.OneG || newPolicy == DisclosurePolicy.ThreeG) {
             R.string.general_newpolicy

@@ -11,6 +11,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    id "androidx.navigation.safeargs.kotlin"
 }
 
 android {
@@ -49,6 +50,8 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "androidx.preference:preference-ktx:$preference_version"
     implementation "com.google.android.material:material:${material_version}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${navigation_version}"
+    implementation "androidx.navigation:navigation-ui-ktx:${navigation_version}"
 
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"

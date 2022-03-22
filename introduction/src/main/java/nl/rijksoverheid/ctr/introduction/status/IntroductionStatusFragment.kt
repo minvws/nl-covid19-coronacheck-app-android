@@ -46,20 +46,6 @@ class IntroductionStatusFragment : Fragment() {
                     )
                 )
             }
-            is IntroductionStatus.OnboardingFinished.ConsentNeeded -> {
-                findNavControllerSafety()?.navigate(
-                    IntroductionStatusFragmentDirections.actionNewTerms(
-                        introductionStatus.introductionData
-                    )
-                )
-            }
-            is IntroductionStatus.OnboardingFinished.NewFeatures -> {
-                findNavControllerSafety()?.navigate(
-                    IntroductionStatusFragmentDirections.actionNavNewFeatures(
-                        introductionStatus.introductionData
-                    )
-                )
-            }
             IntroductionStatus.IntroductionFinished -> { }
         }
     }

@@ -13,10 +13,8 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.introduction.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.introduction.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus.OnboardingFinished
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus.OnboardingNotFinished
 import nl.rijksoverheid.ctr.introduction.status.usecases.IntroductionStatusUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -24,18 +22,14 @@ import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 class HolderIntroductionStatusUseCaseImpl(
     private val introductionPersistenceManager: IntroductionPersistenceManager,
     private val introductionData: IntroductionData,
-    private val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase,
     private val persistenceManager: PersistenceManager,
     private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
 ) : IntroductionStatusUseCase {
 
     override fun get(): IntroductionStatus {
-        val newPolicy = showNewDisclosurePolicyUseCase.get()
         return when {
             setupIsNotFinished() -> IntroductionStatus.SetupNotFinished
             onboardingIsNotFinished() -> getOnboardingNotFinished()
-            newFeaturesAvailable() || newPolicy != null -> getNewFeatures(newPolicy)
-            newTermsAvailable() -> OnboardingFinished.ConsentNeeded(introductionData)
             else -> IntroductionStatus.IntroductionFinished
         }
     }
@@ -58,60 +52,6 @@ class HolderIntroductionStatusUseCaseImpl(
         )
     }
 
-    /**
-     * Get the new feature and/or new policy rules as new feature based on policy change
-     *
-     * @param[newPolicy] New policy or null if policy is not changed
-     * @return New features and/or policy change as new features
-     */
-    private fun getNewFeatures(newPolicy: DisclosurePolicy?): OnboardingFinished.NewFeatures {
-        return when {
-            newFeaturesAvailable() && newPolicy != null -> OnboardingFinished.NewFeatures(
-                introductionData.copy(
-                    newFeatures = introductionData.newFeatures + listOf(
-                        getNewPolicyFeatureItem(newPolicy)
-                    ),
-                ).apply {
-                    setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
-                })
-            !newFeaturesAvailable() && newPolicy != null -> OnboardingFinished.NewFeatures(
-                introductionData.copy(
-                    newFeatures = listOf(getNewPolicyFeatureItem(newPolicy)),
-                    newFeatureVersion = null,
-                ).apply {
-                    setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
-                })
-            else -> OnboardingFinished.NewFeatures(introductionData)
-        }
-    }
-
-    private fun getNewPolicyFeatureItem(newPolicy: DisclosurePolicy): NewFeatureItem {
-        return NewFeatureItem(
-            imageResource = R.drawable.illustration_new_disclosure_policy,
-            titleResource = getPolicyFeatureTitle(newPolicy),
-            description = getPolicyFeatureBody(newPolicy),
-            subTitleColor = R.color.primary_blue,
-            subtitleResource = getNewPolicySubtitle(newPolicy)
-        )
-    }
-
-    private fun getNewPolicySubtitle(newPolicy: DisclosurePolicy) =
-        if (newPolicy == DisclosurePolicy.OneG || newPolicy == DisclosurePolicy.ThreeG) {
-            R.string.general_newpolicy
-        } else {
-            R.string.new_in_app_subtitle
-        }
-
-    @StringRes
-    private fun getPolicyFeatureTitle(newPolicy: DisclosurePolicy): Int {
-        return when (newPolicy) {
-            DisclosurePolicy.ZeroG -> R.string.holder_newintheapp_content_onlyInternationalCertificates_0G_title
-            DisclosurePolicy.OneG -> R.string.holder_newintheapp_content_only1G_title
-            DisclosurePolicy.ThreeG -> R.string.holder_newintheapp_content_only3G_title
-            DisclosurePolicy.OneAndThreeG -> R.string.holder_newintheapp_content_3Gand1G_title
-        }
-    }
-
     @StringRes
     private fun getPolicyOnboardingTitle(newPolicy: DisclosurePolicy): Int {
         return when (newPolicy) {
@@ -123,16 +63,6 @@ class HolderIntroductionStatusUseCaseImpl(
     }
 
     @StringRes
-    private fun getPolicyFeatureBody(newPolicy: DisclosurePolicy): Int {
-        return when (newPolicy) {
-            DisclosurePolicy.ZeroG -> R.string.holder_newintheapp_content_onlyInternationalCertificates_0G_body
-            DisclosurePolicy.OneG -> R.string.holder_newintheapp_content_only1G_body
-            DisclosurePolicy.ThreeG -> R.string.holder_newintheapp_content_only3G_body
-            DisclosurePolicy.OneAndThreeG -> R.string.holder_newintheapp_content_3Gand1G_body
-        }
-    }
-
-    @StringRes
     private fun getPolicyOnboardingBody(newPolicy: DisclosurePolicy): Int {
         return when (newPolicy) {
             DisclosurePolicy.ZeroG -> R.string.holder_onboarding_content_TravelSafe_0G_message
@@ -140,16 +70,6 @@ class HolderIntroductionStatusUseCaseImpl(
             DisclosurePolicy.ThreeG -> R.string.holder_onboarding_disclosurePolicyChanged_only3GAccess_message
             DisclosurePolicy.OneAndThreeG -> R.string.holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_message
         }
-    }
-
-    private fun newTermsAvailable() =
-        !introductionPersistenceManager.getNewTermsSeen(introductionData.newTerms.version)
-
-    private fun newFeaturesAvailable(): Boolean {
-        val newFeatureVersion = introductionData.newFeatureVersion
-        return introductionData.newFeatures.isNotEmpty() &&
-                newFeatureVersion != null &&
-                !introductionPersistenceManager.getNewFeaturesSeen(newFeatureVersion)
     }
 
     private fun onboardingIsNotFinished() =

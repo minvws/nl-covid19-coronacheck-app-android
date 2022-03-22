@@ -20,7 +20,6 @@ abstract class IntroductionViewModel : ViewModel() {
     val introductionStatusLiveData: LiveData<Event<IntroductionStatus>> = MutableLiveData()
     abstract fun getIntroductionStatus(): IntroductionStatus
     abstract fun saveIntroductionFinished(introductionData: IntroductionData)
-    abstract fun saveNewFeaturesFinished(newFeaturesVersion: Int)
     abstract fun onConfigUpdated()
 }
 
@@ -37,17 +36,7 @@ class IntroductionViewModelImpl(
 
     override fun saveIntroductionFinished(introductionData: IntroductionData) {
         introductionPersistenceManager.saveIntroductionFinished()
-        introductionPersistenceManager.saveNewTermsSeen(introductionData.newTerms.version)
-        introductionData.newFeatureVersion?.let {
-            introductionPersistenceManager.saveNewFeaturesSeen(
-                it
-            )
-        }
         introductionData.savePolicyChange()
-    }
-
-    override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
-        introductionPersistenceManager.saveNewFeaturesSeen(newFeaturesVersion)
     }
 
     override fun onConfigUpdated() {

@@ -1,10 +1,10 @@
-package nl.rijksoverheid.ctr.introduction.new_features
+package nl.rijksoverheid.ctr.appconfig
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import nl.rijksoverheid.ctr.introduction.new_features.models.NewFeatureItem
+import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

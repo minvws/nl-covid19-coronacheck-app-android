@@ -12,6 +12,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 sealed class AppStatus : Parcelable {
+
     @Parcelize
     object UpdateRequired : AppStatus(), Parcelable
 
@@ -28,8 +29,8 @@ sealed class AppStatus : Parcelable {
     object NoActionRequired : AppStatus(), Parcelable
 
     @Parcelize
-    data class ConsentNeeded(val appUpdateData: AppUpdateData) : AppStatus(), Parcelable
+    data class NewFeatures(val appUpdateData: AppUpdateData) : AppStatus(), Parcelable
 
     @Parcelize
-    data class NewFeatures(val appUpdateData: AppUpdateData) : AppStatus(), Parcelable
+    data class ConsentNeeded(val appUpdateData: AppUpdateData) : AppStatus(), Parcelable
 }

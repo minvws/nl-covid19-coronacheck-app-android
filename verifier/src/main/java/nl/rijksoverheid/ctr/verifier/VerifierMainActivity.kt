@@ -8,7 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
+import nl.rijksoverheid.ctr.appconfig.AppLockedFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
@@ -149,7 +149,7 @@ class VerifierMainActivity : AppCompatActivity() {
         navController: NavController
     ) {
         val isAppStatusFragment =
-            navController.currentBackStackEntry?.arguments?.containsKey(AppStatusFragment.EXTRA_APP_STATUS) == true
+            navController.currentBackStackEntry?.arguments?.containsKey(AppLockedFragment.EXTRA_APP_STATUS) == true
         if (isAppStatusFragment) {
             navController.popBackStack()
         }
@@ -159,11 +159,11 @@ class VerifierMainActivity : AppCompatActivity() {
         appStatus: AppStatus,
         navController: NavController
     ) {
-        val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to appStatus)
+        val bundle = bundleOf(AppLockedFragment.EXTRA_APP_STATUS to appStatus)
         // don't navigate to the same app status fragment, if it is already open
         // otherwise, it can open again on top of the previous one looking like a glitch
         val currentAppStatus =
-            navController.currentBackStackEntry?.arguments?.get(AppStatusFragment.EXTRA_APP_STATUS)
+            navController.currentBackStackEntry?.arguments?.get(AppLockedFragment.EXTRA_APP_STATUS)
         if (appStatus != currentAppStatus) {
             navController.navigate(R.id.action_app_status, bundle)
         }

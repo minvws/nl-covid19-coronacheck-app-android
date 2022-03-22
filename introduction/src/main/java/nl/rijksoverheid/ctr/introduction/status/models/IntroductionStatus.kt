@@ -20,8 +20,6 @@ sealed class IntroductionStatus : Parcelable {
     data class OnboardingNotFinished(val introductionData: IntroductionData) :
         IntroductionStatus(), Parcelable
 
-    sealed class OnboardingFinished : IntroductionStatus()
-
     @Parcelize
     object IntroductionFinished : IntroductionStatus(), Parcelable
 }
