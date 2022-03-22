@@ -22,6 +22,7 @@ interface DialogUtil {
         negativeButtonCallback: (() -> Unit)? = null,
         onDismissCallback: (() -> Unit)? = null
     )
+    fun dismiss(context: Context?)
 }
 
 class DialogUtilImpl : DialogUtil {
@@ -54,5 +55,10 @@ class DialogUtilImpl : DialogUtil {
                 onDismissCallback = onDismissCallback,
             )
         }
+    }
+
+    override fun dismiss(context: Context?) {
+        val fragmentManager = (context as? FragmentActivity)?.supportFragmentManager
+        (fragmentManager?.findFragmentByTag(DialogFragment.TAG) as? DialogFragment)?.dismiss()
     }
 }

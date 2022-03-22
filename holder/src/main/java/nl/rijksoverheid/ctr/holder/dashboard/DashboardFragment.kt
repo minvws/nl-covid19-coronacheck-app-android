@@ -28,9 +28,9 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardBinding
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver

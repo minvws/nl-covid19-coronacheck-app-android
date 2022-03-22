@@ -11,8 +11,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCase
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult

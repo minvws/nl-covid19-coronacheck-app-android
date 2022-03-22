@@ -54,16 +54,14 @@ class VerifierMainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (isIntroductionFinished()) {
-            if (isFreshStart) {
-                // Force retrieval of config once on startup for clock deviation checks
-                appConfigViewModel.refresh(mobileCoreWrapper, force = true)
-            } else {
-                // Only get app config on every app foreground when introduction is finished and the app has already started
-                appConfigViewModel.refresh(mobileCoreWrapper)
-            }
-            isFreshStart = false
+        if (isFreshStart) {
+            // Force retrieval of config once on startup for clock deviation checks
+            appConfigViewModel.refresh(mobileCoreWrapper, force = true)
+        } else {
+            // Only get app config on every app foreground when introduction is finished and the app has already started
+            appConfigViewModel.refresh(mobileCoreWrapper)
         }
+        isFreshStart = false
         verifierMainActivityViewModel.cleanup()
     }
 
@@ -131,15 +129,28 @@ class VerifierMainActivity : AppCompatActivity() {
         appStatus: AppStatus,
         navController: NavController
     ) {
-        if (appStatus is AppStatus.UpdateRecommended) {
-            showRecommendedUpdateDialog()
-            return
+        when (appStatus) {
+            AppStatus.Deactivated -> navigateToAppStatus(appStatus, navController)
+            AppStatus.Error -> navigateToAppStatus(appStatus, navController)
+            AppStatus.NoActionRequired -> {
+                closeAppStatusIfOpen(navController)
+                introductionViewModel.onConfigUpdated()
+            }
+            AppStatus.UpdateRecommended -> {
+                showRecommendedUpdateDialog()
+                return
+            }
+            AppStatus.UpdateRequired -> navigateToAppStatus(appStatus, navController)
         }
+    }
 
-        if (appStatus !is AppStatus.NoActionRequired) {
-            navigateToAppStatus(appStatus, navController)
-        } else {
-            introductionViewModel.onConfigUpdated()
+    private fun closeAppStatusIfOpen(
+        navController: NavController
+    ) {
+        val isAppStatusFragment =
+            navController.currentBackStackEntry?.arguments?.containsKey(AppStatusFragment.EXTRA_APP_STATUS) == true
+        if (isAppStatusFragment) {
+            navController.popBackStack()
         }
     }
 

@@ -19,19 +19,20 @@ import android.util.DisplayMetrics
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorRes
-import androidx.annotation.StringRes
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.view.*
+import androidx.core.view.MenuItemCompat
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.honeywellscanner.HoneywellManager
 import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
 import nl.rijksoverheid.ctr.zebrascanner.ZebraManager
-import nl.rijksoverheid.ctr.honeywellscanner.HoneywellManager
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.error.NoBeanDefFoundException
@@ -63,11 +64,13 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
     private val qrCodeProcessor: QrCodeProcessor by inject()
 
+    private val dialogUtil: DialogUtil by inject()
+
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (isAdded) {
                 if (isCameraPermissionGranted()) {
-                    setUpScanner(forceCamera = true)
+                    setupScanner(forceCamera = true)
                 } else {
                     val rationaleDialog = getCopy().rationaleDialog
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) && rationaleDialog != null) {
@@ -146,11 +149,11 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onStart() {
         super.onStart()
-        setUpScanner()
+        setupScanner()
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
-    protected fun setUpScanner(forceCamera: Boolean = false) {
+    protected fun setupScanner(forceCamera: Boolean = false) {
         if (forceCamera || ((zebraManager == null || !zebraManager.isZebraDevice()) && (honeywellManager == null || !honeywellManager.isHoneywellDevice()))) {
             setupCamera()
         } else {
@@ -402,13 +405,18 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
     private fun showRationaleDialog(rationaleDialog: Copy.RationaleDialog) {
         if (isAdded) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(rationaleDialog.title)
-                .setMessage(rationaleDialog.description)
-                .setPositiveButton(rationaleDialog.okayButtonText) { _, _ ->
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = rationaleDialog.title,
+                message = rationaleDialog.description,
+                onDismissCallback = {
+                    requestPermission()
+                },
+                positiveButtonText = rationaleDialog.okayButtonText,
+                positiveButtonCallback = {
                     requestPermission()
                 }
-                .show()
+            )
         }
     }
 
@@ -420,9 +428,9 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         val verificationPolicy: VerificationPolicy? = null,
     ) {
         data class RationaleDialog(
-            val title: String,
+            val title: Int,
             val description: String,
-            val okayButtonText: String
+            val okayButtonText: Int
         )
 
         data class VerificationPolicy(

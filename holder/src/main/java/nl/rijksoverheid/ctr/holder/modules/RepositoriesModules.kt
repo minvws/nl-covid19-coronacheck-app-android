@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
-import nl.rijksoverheid.ctr.holder.ui.create_qr.repositories.*
+import nl.rijksoverheid.ctr.holder.api.repositories.*
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 

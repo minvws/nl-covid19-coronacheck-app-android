@@ -51,6 +51,17 @@ fun mobilecore.Result.successJsonObject(): JSONObject {
 
 class ClmobileVerifyException(s: String?) : IllegalStateException(s)
 
+fun initialisationException(error: String): MobileCoreException {
+    return when {
+        error.contains("Could not read verifier config file") -> MobileCoreException.MobileCoreException1(error)
+        error.contains("Could not JSON unmarshal verifier config") -> MobileCoreException.MobileCoreException2(error)
+        error.contains("The domestic verification rules were not present") -> MobileCoreException.MobileCoreException3(error)
+        error.contains("The European verification rules were not present") -> MobileCoreException.MobileCoreException4(error)
+        error.contains("Could not load public keys config") -> MobileCoreException.MobileCoreException5(error)
+        else -> MobileCoreException.MobileCoreException6("Unknown error")
+    }
+}
+
 fun mobilecore.Result.verify(): ByteArray {
     if (this.error.isNotEmpty()) {
         throw ClmobileVerifyException(this.error)
