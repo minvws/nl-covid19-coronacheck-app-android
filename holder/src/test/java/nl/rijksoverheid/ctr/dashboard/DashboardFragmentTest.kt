@@ -64,13 +64,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Header should be displayed when dashboard header item is presented`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.HeaderItem(text = R.string.my_overview_description)
+                    DashboardItem.HeaderItem(text = R.string.my_overview_description, null)
                 )
-            )
+            ))
         )
 
         assertCustomAssertionAtPosition(
@@ -86,13 +86,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Placeholder card should be displayed when placeholder item is presented`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.PlaceholderCardItem(GreenCardType.Domestic)
                 )
-            )
+            ))
         )
 
         assertCustomAssertionAtPosition(
@@ -108,13 +108,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Clock deviation card should be displayed with a read more and without close button`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.ClockDeviationItem
                 )
-            )
+            ))
         )
 
         assertCustomAssertionAtPosition(
@@ -132,13 +132,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Non dismissible info card should be displayed when non dismissible item is presented`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.ConfigFreshnessWarning(0L)
                 )
-            )
+            ))
         )
 
         assertCustomAssertionAtPosition(
@@ -155,13 +155,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Info card should be displayed when dismissible item is presented and it can be dismissed`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.NewValidityItem
                 )
-            )
+            ))
         )
 
         // assert card is displayed
@@ -185,7 +185,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `A single card should be displayed when 1 card item is presented`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
@@ -202,7 +202,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                         )
                     )
                 )
-            )
+            ))
         )
 
         assertCustomAssertionAtPosition(
@@ -233,7 +233,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
 
     fun `Multiple cards should be displayed when the cards item has multiple cards`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
@@ -266,7 +266,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                         )
                     )
                 )
-            )
+            ))
         )
 
         assertCustomAssertionAtPosition(
@@ -290,7 +290,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Expired card no read more and can be dismissed`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
@@ -299,7 +299,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                         originEntity = fakeOriginEntity(type = OriginType.Vaccination)
                     )
                 )
-            )
+            ))
         )
 
         // assert display of card
@@ -324,7 +324,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Expired vaccination card has a read more`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
@@ -332,7 +332,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                         originEntity = fakeOriginEntity()
                     )
                 )
-            )
+            ))
         )
 
         // assert display of card
@@ -351,7 +351,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Origin card cannot be dismissed and should have a read more`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
@@ -360,7 +360,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                         OriginType.Vaccination
                     )
                 )
-            )
+            ))
         )
 
         assertCustomAssertionAtPosition(
@@ -378,13 +378,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Add qr button should be visible when its item is presented`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.AddQrButtonItem
                 )
-            )
+            ))
         )
 
         assertDisplayed(R.id.addQrButton)
@@ -397,13 +397,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Clicking Add qr button should navigate to choose proof type`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.AddQrButtonItem
                 )
-            )
+            ))
         )
 
         performActionOnView(ViewMatchers.withId(R.id.addQrButton), ViewActions.click())
@@ -414,13 +414,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Ad qr card should be displayed when add qr card item is presented`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.AddQrCardItem
                 )
-            )
+            ))
         )
 
         assertCustomAssertionAtPosition(
@@ -437,13 +437,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `Clicking Add qr card should navigate to choose proof type`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.AddQrCardItem
                 )
-            )
+            ))
         )
 
         performActionOnView(ViewMatchers.withId(R.id.text), ViewActions.click())
@@ -454,13 +454,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `policy info card can be dismissed and should have a read more`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.ThreeG)
                 )
-            )
+            ))
         )
 
         assertCustomAssertionAtPosition(
@@ -478,13 +478,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `policy info for 3G should be shown on 3G disclosure policy`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.ThreeG)
                 )
-            )
+            ))
         )
 
         assertDisplayed(R.id.text, R.string.holder_dashboard_only3GaccessBanner_title)
@@ -493,13 +493,13 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `policy info for 1G should be shown on 1G disclosure policy`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.OneG)
                 )
-            )
+            ))
         )
 
         assertDisplayed(R.id.text, R.string.holder_dashboard_only1GaccessBanner_title)
@@ -508,23 +508,58 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `policy info for 1G+3G should be shown on 1G+3G disclosure policy`() {
         startFragment(
-            DashboardTabItem(
+            listOf(DashboardTabItem(
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
                     DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.OneAndThreeG)
                 )
-            )
+            ))
         )
 
         assertDisplayed(R.id.text, R.string.holder_dashboard_3Gand1GaccessBanner_title)
     }
+
+    @Test
+    fun `tabs are hidden if there is only one tab to display`() {
+        startFragment(
+            listOf(DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf()
+            ))
+        )
+
+        assertNotDisplayed(R.id.tabs)
+        assertNotDisplayed(R.id.tabs_separator)
+    }
+
+    @Test
+    fun `tabs are visible if there is more than one tab to display`() {
+        startFragment(
+            listOf(
+                DashboardTabItem(
+                title = R.string.travel_button_domestic,
+                greenCardType = GreenCardType.Domestic,
+                items = listOf()
+                ),
+                DashboardTabItem(
+                    title = R.string.travel_button_europe,
+                    greenCardType = GreenCardType.Eu,
+                    items = listOf()
+                )
+            )
+        )
+
+        assertDisplayed(R.id.tabs)
+        assertDisplayed(R.id.tabs_separator)
+    }
     
-    private fun startFragment(tabItem: DashboardTabItem): FragmentScenario<DashboardFragment> {
+    private fun startFragment(tabItems: List<DashboardTabItem>): FragmentScenario<DashboardFragment> {
         loadKoinModules(
             module(override = true) {
                 viewModel { fakeAppConfigViewModel(appStatus = AppStatus.NoActionRequired) }
-                viewModel { fakeDashboardViewModel(listOf(tabItem)) }
+                viewModel { fakeDashboardViewModel(tabItems) }
             })
         val fragmentArgs = bundleOf(
             "returnUri" to "test",

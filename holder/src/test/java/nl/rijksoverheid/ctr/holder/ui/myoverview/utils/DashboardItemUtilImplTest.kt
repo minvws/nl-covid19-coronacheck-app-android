@@ -120,7 +120,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val card3 = createCardItem(OriginType.Vaccination)
 
         val items = listOf(
-            DashboardItem.HeaderItem(1),
+            DashboardItem.HeaderItem(1, null),
             CardsItem(listOf(createCardItem(OriginType.Test))),
             CardsItem(listOf(card1)),
             CardsItem(listOf(createCardItem(OriginType.Recovery))),
@@ -402,7 +402,8 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
             greenCardType = GreenCardType.Domestic,
-            originInfoTypeOrigin = OriginType.Test
+            originInfoTypeOrigin = OriginType.Test,
+            disclosurePolicy = DisclosurePolicy.ThreeG
         )
 
         assertFalse(shouldShowOriginInfoItem)
@@ -417,7 +418,8 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(),
             greenCardType = GreenCardType.Domestic,
-            originInfoTypeOrigin = OriginType.Test
+            originInfoTypeOrigin = OriginType.Test,
+            disclosurePolicy = DisclosurePolicy.ThreeG
         )
 
         assertTrue(shouldShowOriginInfoItem)
@@ -432,83 +434,111 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
             greenCardType = GreenCardType.Domestic,
-            originInfoTypeOrigin = OriginType.Vaccination
+            originInfoTypeOrigin = OriginType.Vaccination,
+            disclosurePolicy = DisclosurePolicy.ThreeG
         )
 
         assertTrue(shouldShowOriginInfoItem)
     }
 
     @Test
-    fun `shouldShowAddQrCardItem returns true when there are green cards and at least 1 is not expired`() {
+    fun `shouldShowOriginInfoItem returns false if 0G green card exists and card is for domestic vaccination`() {
+        val util = getUtil(
+            greenCardUtil = greenCardUtil
+        )
+
+        val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
+            greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
+            greenCardType = GreenCardType.Domestic,
+            originInfoTypeOrigin = OriginType.Vaccination,
+            disclosurePolicy = DisclosurePolicy.ZeroG
+        )
+
+        assertFalse(shouldShowOriginInfoItem)
+    }
+
+    @Test
+    fun `shouldShowAddQrCardItem returns true if no empty state`() {
         val util = getUtil(
             greenCardUtil = greenCardUtil
         )
 
         val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
-            listOf(
-                fakeGreenCard(expirationTime = OffsetDateTime.now().plusDays(1)),
-                fakeGreenCard(expirationTime = OffsetDateTime.now().minusDays(1))
-            )
+            hasVisitorPassIncompleteItem = false,
+            emptyState = false
         )
 
         assertTrue(shouldShowAddQrItem)
     }
 
     @Test
-    fun `shouldShowAddQrCardItem returns false when there are no green cards`() {
+    fun `shouldShowAddQrCardItem returns false when empty state`() {
         val util = getUtil(
             greenCardUtil = greenCardUtil
         )
 
         val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
-            listOf()
+            hasVisitorPassIncompleteItem = false,
+            emptyState = true
         )
 
         assertFalse(shouldShowAddQrItem)
     }
 
     @Test
-    fun `shouldShowAddQrCardItem returns false when green cards are expired`() {
+    fun `showPolicyInfoItem returns true when it's not the same as the one dismissed`() {
         val util = getUtil(
-            greenCardUtil = greenCardUtil
-        )
-
-        val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
-            listOf(
-                fakeGreenCard(expirationTime = OffsetDateTime.now().minusDays(1)),
-                fakeGreenCard(expirationTime = OffsetDateTime.now().minusDays(1))
-            )
-        )
-
-        assertFalse(shouldShowAddQrItem)
-    }
-
-    @Test
-    fun `showPolicyInfoItem returns the config policy when it's not the same as the one dismissed`() {
-        val util = getUtil(
-            holderFeatureFlagUseCase = mockk {
-                every { getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
-            },
             persistenceManager = mockk {
                 every { getPolicyBannerDismissed() } returns DisclosurePolicy.OneG
             }
         )
 
-        assertEquals(DisclosurePolicy.ThreeG, util.showPolicyInfoItem())
+        assertEquals(true, util.shouldShowPolicyInfoItem(
+            disclosurePolicy = DisclosurePolicy.ThreeG,
+            tabType = GreenCardType.Domestic
+        ))
     }
 
     @Test
-    fun `showPolicyInfoItem returns null when the config policy is the same as the one dismissed`() {
+    fun `showPolicyInfoItem returns false when the config policy is the same as the one dismissed`() {
         val util = getUtil(
-            holderFeatureFlagUseCase = mockk {
-                every { getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
-            },
             persistenceManager = mockk {
                 every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
             }
         )
 
-        assertEquals(null, util.showPolicyInfoItem())
+        assertEquals(false, util.shouldShowPolicyInfoItem(
+            disclosurePolicy = DisclosurePolicy.ThreeG,
+            tabType = GreenCardType.Domestic
+        ))
+    }
+
+    @Test
+    fun `showPolicyInfoItem returns false when the config policy is 0G and domestic tab is selected`() {
+        val util = getUtil(
+            persistenceManager = mockk {
+                every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
+            }
+        )
+
+        assertEquals(false, util.shouldShowPolicyInfoItem(
+            disclosurePolicy = DisclosurePolicy.ZeroG,
+            tabType = GreenCardType.Domestic
+        ))
+    }
+
+    @Test
+    fun `showPolicyInfoItem returns true when the config policy is 0G and eu tab is selected`() {
+        val util = getUtil(
+            persistenceManager = mockk {
+                every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
+            }
+        )
+
+        assertEquals(true, util.shouldShowPolicyInfoItem(
+            disclosurePolicy = DisclosurePolicy.ZeroG,
+            tabType = GreenCardType.Eu
+        ))
     }
 
     private fun createCardItem(originType: OriginType) = CardItem(
@@ -564,14 +594,12 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         appConfigUseCase: CachedAppConfigUseCase = mockk(relaxed = true),
         buildConfigUseCase: BuildConfigUseCase = mockk(relaxed = true),
         greenCardUtil: GreenCardUtil = mockk(relaxed = true),
-        holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk(relaxed = true)
     ) = DashboardItemUtilImpl(
         clockDeviationUseCase = clockDeviationUseCase,
         persistenceManager = persistenceManager,
         appConfigFreshnessUseCase = appConfigFreshnessUseCase,
         appConfigUseCase = appConfigUseCase,
         buildConfigUseCase = buildConfigUseCase,
-        greenCardUtil = greenCardUtil,
-        holderFeatureFlagUseCase = holderFeatureFlagUseCase
+        greenCardUtil = greenCardUtil
     )
 }

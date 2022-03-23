@@ -47,12 +47,15 @@ interface DashboardItemUtil {
         greenCards: List<GreenCard>
     ): Boolean
     fun shouldShowOriginInfoItem(
+        disclosurePolicy: DisclosurePolicy,
         greenCards: List<GreenCard>,
         greenCardType: GreenCardType,
         originType: OriginType
     ): Boolean
-    fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean
-    fun showPolicyInfoItem(): DisclosurePolicy?
+    fun shouldShowAddQrCardItem(hasVisitorPassIncompleteItem: Boolean,
+                                emptyState: Boolean): Boolean
+    fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
+                                 tabType: GreenCardType): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -61,8 +64,7 @@ class DashboardItemUtilImpl(
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
     private val appConfigUseCase: CachedAppConfigUseCase,
     private val buildConfigUseCase: BuildConfigUseCase,
-    private val greenCardUtil: GreenCardUtil,
-    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
+    private val greenCardUtil: GreenCardUtil
 ) : DashboardItemUtil {
 
     override fun shouldShowClockDeviationItem(emptyState: Boolean, allGreenCards: List<GreenCard>) =
@@ -149,29 +151,44 @@ class DashboardItemUtilImpl(
     }
 
     override fun shouldShowOriginInfoItem(
+        disclosurePolicy: DisclosurePolicy,
         greenCards: List<GreenCard>,
         greenCardType: GreenCardType,
         originInfoTypeOrigin: OriginType
     ): Boolean {
-        val hasVaccinationAssessmentOrigin = greenCardUtil.hasOrigin(
-            greenCards = greenCards,
-            originType = OriginType.VaccinationAssessment
-        )
+        return when (disclosurePolicy) {
+            is DisclosurePolicy.ZeroG -> {
+                false
+            }
+            else -> {
+                val hasVaccinationAssessmentOrigin = greenCardUtil.hasOrigin(
+                    greenCards = greenCards,
+                    originType = OriginType.VaccinationAssessment
+                )
 
-        // We do not show the origin info item for a domestic test if there is a vaccination assessment green card active (this causes some confusion in the UI)
-        return !(hasVaccinationAssessmentOrigin && originInfoTypeOrigin == OriginType.Test && greenCardType == GreenCardType.Domestic)
+                // We do not show the origin info item for a domestic test if there is a vaccination assessment green card active (this causes some confusion in the UI)
+                !(hasVaccinationAssessmentOrigin && originInfoTypeOrigin == OriginType.Test && greenCardType == GreenCardType.Domestic)
+            }
+        }
     }
 
-    override fun shouldShowAddQrCardItem(allGreenCards: List<GreenCard>): Boolean {
-        return allGreenCards.isNotEmpty() && !allGreenCards.all { greenCardUtil.isExpired(it) }
-    }
+    override fun shouldShowAddQrCardItem(
+        hasVisitorPassIncompleteItem: Boolean,
+        emptyState: Boolean) = !emptyState && !hasVisitorPassIncompleteItem
 
-    override fun showPolicyInfoItem(): DisclosurePolicy? {
-        val disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
+    override fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
+                                          tabType: GreenCardType): Boolean {
         return if (persistenceManager.getPolicyBannerDismissed() != disclosurePolicy) {
-            disclosurePolicy
+            when (tabType) {
+                is GreenCardType.Domestic -> {
+                    disclosurePolicy !is DisclosurePolicy.ZeroG
+                }
+                is GreenCardType.Eu -> {
+                    disclosurePolicy is DisclosurePolicy.ZeroG
+                }
+            }
         } else {
-            null
+            false
         }
     }
 }

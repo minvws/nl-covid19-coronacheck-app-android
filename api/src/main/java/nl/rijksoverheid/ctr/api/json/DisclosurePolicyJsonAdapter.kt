@@ -26,10 +26,11 @@ class DisclosurePolicyJsonAdapter : JsonAdapter<DisclosurePolicy>() {
                 results.contains("3G") && results.contains("1G") && results.size == 2 -> DisclosurePolicy.OneAndThreeG
                 results.contains("1G") && results.size == 1 -> DisclosurePolicy.OneG
                 results.contains("3G") && results.size == 1 -> DisclosurePolicy.ThreeG
-                else -> DisclosurePolicy.ThreeG
+                results.isEmpty() -> DisclosurePolicy.ZeroG
+                else -> DisclosurePolicy.ZeroG
             }
         } catch (e: Exception) {
-            return DisclosurePolicy.ThreeG
+            return DisclosurePolicy.ZeroG
         }
     }
 
