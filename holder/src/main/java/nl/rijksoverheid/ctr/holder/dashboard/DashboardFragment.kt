@@ -94,15 +94,15 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private fun observeItems(adapter: DashboardPagerAdapter) {
         dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner) { dashboardTabItems ->
 
+            adapter.setItems(dashboardTabItems)
+
+            setupTabs(
+                binding = binding,
+                items = dashboardTabItems
+            )
+
             // Add pager items only once
             if (adapter.itemCount == 0) {
-                adapter.setItems(dashboardTabItems)
-
-                setupTabs(
-                    binding = binding,
-                    items = dashboardTabItems
-                )
-
                 // Default select the item that we had selected last
                 binding.viewPager.setCurrentItem(
                     persistenceManager.getSelectedDashboardTab(),
