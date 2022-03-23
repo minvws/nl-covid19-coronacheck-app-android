@@ -19,17 +19,19 @@ import com.squareup.moshi.JsonClass
  */
 @JsonClass(generateAdapter = true)
 data class RemoteConfigProviders(
-    @Json(name = "corona_test_providers") val testProviders: List<TestProvider>,
-    @Json(name = "event_providers") val eventProviders: List<EventProvider>,
-    @Json(name = "event_providers_bes") val eventProvidersBes: List<EventProvider>
+    @Json(name = "tokenProviders") val testProviders: List<TestProvider>,
+    @Json(name = "eventProviders") val eventProviders: List<EventProvider>,
+    @Json(name = "eventProvidersBes") val eventProvidersBes: List<EventProvider>
 ) {
 
     @JsonClass(generateAdapter = true)
     data class TestProvider(
         val name: String,
-        @Json(name = "provider_identifier") val providerIdentifier: String,
-        @Json(name = "result_url") val resultUrl: String,
-        @Json(name = "public_key") val publicKey: ByteArray
+        @Json(name = "identifier") val providerIdentifier: String,
+        @Json(name = "url") val resultUrl: String,
+        @Json(name = "cms") val cms: List<ByteArray>,
+        @Json(name = "tls") val tls: List<ByteArray>,
+        @Json(name = "usage") val usage: List<String>,
     ) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -40,7 +42,7 @@ data class RemoteConfigProviders(
             if (name != other.name) return false
             if (providerIdentifier != other.providerIdentifier) return false
             if (resultUrl != other.resultUrl) return false
-            if (!publicKey.contentEquals(other.publicKey)) return false
+            if (!cms.first().contentEquals(other.cms.first())) return false
 
             return true
         }
@@ -49,18 +51,18 @@ data class RemoteConfigProviders(
             var result = name.hashCode()
             result = 31 * result + providerIdentifier.hashCode()
             result = 31 * result + resultUrl.hashCode()
-            result = 31 * result + publicKey.contentHashCode()
+            result = 31 * result + cms.first().contentHashCode()
             return result
         }
     }
 
     data class EventProvider(
         val name: String,
-        @Json(name = "provider_identifier") val providerIdentifier: String,
-        @Json(name = "unomi_url") val unomiUrl: String,
-        @Json(name = "event_url") val eventUrl: String,
-        val cms: ByteArray,
-        val tls: ByteArray,
+        @Json(name = "identifier") val providerIdentifier: String,
+        @Json(name = "unomiUrl") val unomiUrl: String,
+        @Json(name = "eventUrl") val eventUrl: String,
+        val cms: List<ByteArray>,
+        val tls: List<ByteArray>,
         val usage: List<String>,
     ) {
         fun supports(originType: RemoteOriginType): Boolean {
@@ -85,8 +87,8 @@ data class RemoteConfigProviders(
             if (providerIdentifier != other.providerIdentifier) return false
             if (unomiUrl != other.unomiUrl) return false
             if (eventUrl != other.eventUrl) return false
-            if (!cms.contentEquals(other.cms)) return false
-            if (!tls.contentEquals(other.tls)) return false
+            if (!cms.first().contentEquals(other.cms.first())) return false
+            if (!tls.first().contentEquals(other.tls.first())) return false
 
             return true
         }
@@ -96,8 +98,8 @@ data class RemoteConfigProviders(
             result = 31 * result + providerIdentifier.hashCode()
             result = 31 * result + unomiUrl.hashCode()
             result = 31 * result + eventUrl.hashCode()
-            result = 31 * result + cms.contentHashCode()
-            result = 31 * result + tls.contentHashCode()
+            result = 31 * result + cms.first().contentHashCode()
+            result = 31 * result + tls.first().contentHashCode()
             return result
         }
     }

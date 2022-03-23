@@ -174,7 +174,7 @@ fun fakeTestProviderRepository(
             token: String,
             provider: String,
             verifierCode: String?,
-            signingCertificateBytes: ByteArray
+            signingCertificateBytes: List<ByteArray>
         ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
             remoteTestResultExceptionCallback?.invoke()
             return NetworkRequestResult.Success(model)
@@ -299,7 +299,7 @@ fun fakeEventProviderRepository(
         token: String,
         filter: String,
         scope: String?,
-        signingCertificateBytes: ByteArray,
+        signingCertificateBytes: List<ByteArray>,
         provider: String,
     ): NetworkRequestResult<RemoteUnomi> {
         return unomi.invoke(url)
@@ -308,7 +308,7 @@ fun fakeEventProviderRepository(
     override suspend fun getEvents(
         url: String,
         token: String,
-        signingCertificateBytes: ByteArray,
+        signingCertificateBytes: List<ByteArray>,
         filter: String,
         scope: String?,
         provider: String,

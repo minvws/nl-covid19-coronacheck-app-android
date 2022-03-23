@@ -42,14 +42,14 @@ interface EventProviderRepository {
         token: String,
         filter: String,
         scope: String?,
-        signingCertificateBytes: ByteArray,
+        signingCertificateBytes: List<ByteArray>,
         provider: String,
     ): NetworkRequestResult<RemoteUnomi>
 
     suspend fun getEvents(
         url: String,
         token: String,
-        signingCertificateBytes: ByteArray,
+        signingCertificateBytes: List<ByteArray>,
         filter: String,
         scope: String?,
         provider: String,
@@ -66,7 +66,7 @@ class EventProviderRepositoryImpl(
         token: String,
         filter: String,
         scope: String?,
-        signingCertificateBytes: ByteArray,
+        signingCertificateBytes: List<ByteArray>,
         provider: String,
     ): NetworkRequestResult<RemoteUnomi> {
         val params = mutableMapOf<String, String>()
@@ -91,7 +91,7 @@ class EventProviderRepositoryImpl(
     override suspend fun getEvents(
         url: String,
         token: String,
-        signingCertificateBytes: ByteArray,
+        signingCertificateBytes: List<ByteArray>,
         filter: String,
         scope: String?,
         provider: String,
