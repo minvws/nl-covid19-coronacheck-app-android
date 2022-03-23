@@ -111,7 +111,6 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
     @Test
     fun `Items have correct order`() {
         val items = listOf(
-            DashboardItem.InfoItem.BoosterItem,
             DashboardItem.HeaderItem(1, null),
             DashboardItem.InfoItem.ClockDeviationItem,
             DashboardItem.CoronaMelderItem,
@@ -120,7 +119,6 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
             DashboardItem.InfoItem.ConfigFreshnessWarning(1L),
             DashboardItem.AddQrButtonItem,
             DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.OneG),
-            DashboardItem.InfoItem.NewValidityItem,
             DashboardItem.PlaceholderCardItem(GreenCardType.Domestic),
             DashboardItem.InfoItem.VisitorPassIncompleteItem,
             DashboardItem.InfoItem.GreenCardExpiredItem(GreenCardType.Domestic, fakeOriginEntity()),
@@ -135,14 +133,12 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
         assert(sortedItems[3] is DashboardItem.InfoItem.AppUpdate)
         assert(sortedItems[4] is DashboardItem.InfoItem.VisitorPassIncompleteItem)
         assert(sortedItems[5] is DashboardItem.InfoItem.GreenCardExpiredItem)
-        assert(sortedItems[6] is DashboardItem.InfoItem.BoosterItem)
-        assert(sortedItems[7] is DashboardItem.InfoItem.NewValidityItem)
-        assert(sortedItems[8] is DashboardItem.InfoItem.DisclosurePolicyItem)
-        assert(sortedItems[9] is DashboardItem.InfoItem.OriginInfoItem)
-        assert(sortedItems[10] is DashboardItem.PlaceholderCardItem)
-        assert(sortedItems[11] is DashboardItem.CardsItem)
-        assert(sortedItems[12] is DashboardItem.AddQrButtonItem)
-        assert(sortedItems[13] is DashboardItem.CoronaMelderItem)
+        assert(sortedItems[6] is DashboardItem.InfoItem.DisclosurePolicyItem)
+        assert(sortedItems[7] is DashboardItem.InfoItem.OriginInfoItem)
+        assert(sortedItems[8] is DashboardItem.PlaceholderCardItem)
+        assert(sortedItems[9] is DashboardItem.CardsItem)
+        assert(sortedItems[10] is DashboardItem.AddQrButtonItem)
+        assert(sortedItems[11] is DashboardItem.CoronaMelderItem)
     }
 
     private fun getUtil(

@@ -287,51 +287,6 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `shouldShowNewValidityItem returns true if banner needs to be shown`() {
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        val persistenceManager = mockk<PersistenceManager>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { true }
-        every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { false }
-
-        val util = getUtil(
-            persistenceManager = persistenceManager,
-            appConfigUseCase = cachedAppConfigUseCase
-        )
-
-        assertTrue(util.shouldShowNewValidityItem())
-    }
-
-    @Test
-    fun `shouldShowNewValidityItem returns false if feature not live yet`() {
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        val persistenceManager = mockk<PersistenceManager>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { false }
-        every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { false }
-
-        val util = getUtil(
-            persistenceManager = persistenceManager,
-            appConfigUseCase = cachedAppConfigUseCase
-        )
-
-        assertFalse(util.shouldShowNewValidityItem())
-    }
-
-    @Test
-    fun `shouldShowNewValidityItem returns false if banner does not need to show`() {
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        val persistenceManager = mockk<PersistenceManager>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().showNewValidityInfoCard } answers { true }
-        every { persistenceManager.getHasDismissedNewValidityInfoCard() } answers { true }
-
-        val util = getUtil(
-            persistenceManager = persistenceManager,
-            appConfigUseCase = cachedAppConfigUseCase
-        )
-
-        assertFalse(util.shouldShowNewValidityItem())
-    }
-
-    @Test
     fun `shouldShowVisitorPassIncompleteItem returns true if has vaccination assessment event and no vaccination assessment origin`() {
         val util = getUtil()
 
@@ -353,51 +308,6 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         )
 
         assertFalse(shouldShowVisitorPassIncompleteItem)
-    }
-
-    @Test
-    fun `shouldShowBoosterItem returns true if has vaccination origin and hasn't dismissed yet`() {
-        val util = getUtil(
-            persistenceManager = mockk<PersistenceManager>().apply {
-                every { getHasDismissedBoosterInfoCard() } returns 0L
-            }
-        )
-
-        val shouldShowBoosterItem = util.shouldShowBoosterItem(
-            greenCards = listOf(getGreenCard(originType = OriginType.Vaccination))
-        )
-
-        assertTrue(shouldShowBoosterItem)
-    }
-
-    @Test
-    fun `shouldShowBoosterItem returns false if hasn't vaccination origin and hasn't dismissed yet`() {
-        val util = getUtil(
-            persistenceManager = mockk<PersistenceManager>().apply {
-                every { getHasDismissedBoosterInfoCard() } returns 0L
-            }
-        )
-
-        val shouldShowBoosterItem = util.shouldShowBoosterItem(
-            greenCards = listOf(getGreenCard(originType = OriginType.Test))
-        )
-
-        assertFalse(shouldShowBoosterItem)
-    }
-
-    @Test
-    fun `shouldShowBoosterItem returns false if has vaccination origin and has dismissed already`() {
-        val util = getUtil(
-            persistenceManager = mockk<PersistenceManager>().apply {
-                every { getHasDismissedBoosterInfoCard() } returns 1000L
-            }
-        )
-
-        val shouldShowBoosterItem = util.shouldShowBoosterItem(
-            greenCards = listOf(getGreenCard(originType = OriginType.Vaccination))
-        )
-
-        assertFalse(shouldShowBoosterItem)
     }
 
     @Test

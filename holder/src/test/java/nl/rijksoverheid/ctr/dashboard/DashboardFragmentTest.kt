@@ -159,7 +159,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                 title = R.string.travel_button_domestic,
                 greenCardType = GreenCardType.Domestic,
                 items = listOf(
-                    DashboardItem.InfoItem.NewValidityItem
+                    DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem(fakeOriginEntity())
                 )
             ))
         )

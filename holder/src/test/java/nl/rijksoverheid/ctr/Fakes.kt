@@ -73,14 +73,6 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         }
 
-        override fun dismissNewValidityInfoCard() {
-
-        }
-
-        override fun dismissBoosterInfoCard() {
-
-        }
-
         override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
 
         }
