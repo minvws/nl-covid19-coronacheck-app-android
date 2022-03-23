@@ -130,12 +130,6 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowBoosterItem(domesticGreenCards)) {
-            dashboardItems.add(
-                DashboardItem.InfoItem.BoosterItem
-            )
-        }
-
         val selectedDisclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
         if (dashboardItemUtil.shouldShowPolicyInfoItem(
                 disclosurePolicy = selectedDisclosurePolicy,
@@ -245,12 +239,6 @@ class GetDashboardItemsUseCaseImpl(
                 DashboardItem.InfoItem.ConfigFreshnessWarning(
                     maxValidityDate = dashboardItemUtil.getConfigFreshnessMaxValidity()
                 )
-            )
-        }
-
-        if (dashboardItemUtil.shouldShowBoosterItem(domesticGreenCards)) {
-            dashboardItems.add(
-                DashboardItem.InfoItem.BoosterItem
             )
         }
 

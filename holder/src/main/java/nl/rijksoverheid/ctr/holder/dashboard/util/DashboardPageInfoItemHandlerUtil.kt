@@ -85,9 +85,6 @@ class DashboardPageInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
                 onVisitorPassIncompleteClicked(dashboardPageFragment)
             }
-            is DashboardItem.InfoItem.BoosterItem -> {
-                onBoosterItemClicked(dashboardPageFragment)
-            }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
                 onDisclosurePolicyItemClicked(
                     dashboardPageFragment.requireContext(),
@@ -108,13 +105,6 @@ class DashboardPageInfoItemHandlerUtilImpl(
             DisclosurePolicy.ZeroG -> R.string.holder_dashboard_noDomesticCertificatesBanner_url
         }
         context.getString(urlResource).launchUrl(context)
-    }
-
-    private fun onBoosterItemClicked(dashboardPageFragment: DashboardPageFragment) {
-        dashboardPageFragment.navigateSafety(DashboardFragmentDirections.actionGetEvents(
-            originType = RemoteOriginType.Vaccination,
-            toolbarTitle = dashboardPageFragment.getString(R.string.choose_provider_toolbar),
-        ))
     }
 
     private fun onDomesticVaccinationExpiredItemClicked(
@@ -356,9 +346,6 @@ class DashboardPageInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.VisitorPassIncompleteItem,
             is DashboardItem.InfoItem.NewValidityItem -> {
                 dashboardPageFragment.dashboardViewModel.dismissNewValidityInfoCard()
-            }
-            is DashboardItem.InfoItem.BoosterItem -> {
-                dashboardPageFragment.dashboardViewModel.dismissBoosterInfoCard()
             }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
                 dashboardPageFragment.dashboardViewModel.dismissPolicyInfo(infoItem.disclosurePolicy)

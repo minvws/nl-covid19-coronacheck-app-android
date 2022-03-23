@@ -633,8 +633,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_dashboard_originExpiredBanner_internationalTest_title">Je internationale testbewijs is verlopen</string>
   <string name="holder_expiredDomesticVaccinationModal_title">Verlopen vaccinatiebewijs</string>
   <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Boostervaccinatie toevoegen</string>
-  <string name="holder_dashboard_addBoosterBanner_title">Heb je een boostervaccinatie gehad? Haal opnieuw je gegevens op als je deze aan je bewijs wilt toevoegen</string>
-  <string name="holder_dashboard_addBoosterBanner_button_addBooster">Boostervaccinatie toevoegen</string>
   <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[Om je vaccinatiebewijs te verlengen heb je een boostervaccinatie nodig. Kijk voor meer informatie over boostervaccinaties op <a href=\"https://www.coronavaccinatie.nl/booster-cc\">www.coronavaccinatie.nl/booster</a>.<br/><br/>Heb je een boostervaccinatie gehad? Haal opnieuw je gegevens op om deze aan je bewijs toe te voegen.]]></string>
   <string name="holder_event_missingorigin_error_description"><![CDATA[<br/><br/><b>Foutcode:</b><br/>%1$s]]></string>
   <string name="rule_engine_no_test_origin_description_vaccination_approval">vaccinatiebeoordeling</string>
