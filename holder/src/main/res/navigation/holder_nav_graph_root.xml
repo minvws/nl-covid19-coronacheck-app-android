@@ -39,13 +39,13 @@
 
     <action
         android:id="@+id/action_app_status"
-        app:destination="@id/nav_app_status"
+        app:destination="@id/nav_status"
         app:enterAnim="@anim/fragment_open_enter"
         app:exitAnim="@anim/fragment_open_exit"
         app:popEnterAnim="@anim/fragment_close_enter"
         app:popExitAnim="@anim/fragment_close_exit"
         app:popUpTo="@+id/root_nav"
-        app:popUpToInclusive="true" >
+        app:popUpToInclusive="true">
 
         <argument
             android:name="app_status"
@@ -63,6 +63,10 @@
 
     <fragment
         android:id="@+id/nav_paper_proof_qr_scanner"
-        android:name="nl.rijksoverheid.ctr.holder.paper_proof.PaperProofQrScannerFragment"/>
+        android:name="nl.rijksoverheid.ctr.holder.paper_proof.PaperProofQrScannerFragment" />
+
+    <include app:graph="@navigation/introduction_nav_graph" />
+
+    <include app:graph="@navigation/app_status_nav_graph" />
 
 </navigation>
