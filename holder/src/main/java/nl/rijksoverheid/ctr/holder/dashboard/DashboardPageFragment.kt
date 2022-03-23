@@ -85,7 +85,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
     private fun observeItem() {
         dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner) {
             setItems(
-                myDashboardItems = it.first { items -> items.greenCardType == greenCardType }.items
+                myDashboardItems = it.firstOrNull { items -> items.greenCardType == greenCardType }?.items ?: listOf()
             )
         }
     }
