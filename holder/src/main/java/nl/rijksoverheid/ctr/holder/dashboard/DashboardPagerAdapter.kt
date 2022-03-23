@@ -28,8 +28,9 @@ class DashboardPagerAdapter(
     private val items: List<DashboardTabItem> = mutableListOf()
 
     fun setItems(items: List<DashboardTabItem>) {
-        (this.items as MutableList<DashboardTabItem>).addAll(items)
-        notifyItemRangeInserted(0, items.size)
+        (this.items as MutableList<DashboardTabItem>).clear()
+        this.items.addAll(items)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = items.size
@@ -40,4 +41,10 @@ class DashboardPagerAdapter(
             returnUri = returnToExternalAppUri
         )
     }
+
+    override fun getItemId(position: Int): Long {
+        return items[position].title.toLong()
+    }
+
+    override fun containsItem(itemId: Long): Boolean = items.any { it.title.toLong() == itemId }
 }
