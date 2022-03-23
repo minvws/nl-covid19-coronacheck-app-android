@@ -124,12 +124,6 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowNewValidityItem()) {
-            dashboardItems.add(
-                DashboardItem.InfoItem.NewValidityItem
-            )
-        }
-
         val selectedDisclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
         if (dashboardItemUtil.shouldShowPolicyInfoItem(
                 disclosurePolicy = selectedDisclosurePolicy,

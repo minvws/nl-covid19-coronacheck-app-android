@@ -42,7 +42,6 @@ abstract class DashboardViewModel : ViewModel() {
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
-    abstract fun dismissNewValidityInfoCard()
     abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
 
     companion object {
@@ -148,10 +147,6 @@ class DashboardViewModelImpl(
         viewModelScope.launch {
             holderDatabase.originDao().delete(originEntity)
         }
-    }
-
-    override fun dismissNewValidityInfoCard() {
-        persistenceManager.setHasDismissedNewValidityInfoCard(true)
     }
 
     private suspend fun refreshDashboardTabItems(

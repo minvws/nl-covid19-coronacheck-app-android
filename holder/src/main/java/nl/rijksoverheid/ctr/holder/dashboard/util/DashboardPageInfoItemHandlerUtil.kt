@@ -79,9 +79,6 @@ class DashboardPageInfoItemHandlerUtilImpl(
                 onDomesticVaccinationAssessmentExpiredClicked(dashboardPageFragment)
             }
             is DashboardItem.InfoItem.AppUpdate -> openPlayStore(dashboardPageFragment)
-            is DashboardItem.InfoItem.NewValidityItem -> {
-                onNewValidityInfoClicked(dashboardPageFragment.requireContext())
-            }
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
                 onVisitorPassIncompleteClicked(dashboardPageFragment)
             }
@@ -243,10 +240,6 @@ class DashboardPageInfoItemHandlerUtilImpl(
         }
     }
 
-    private fun onNewValidityInfoClicked(context: Context) {
-        context.getString(R.string.holder_dashboard_newvaliditybanner_url).launchUrl(context)
-    }
-
     private fun presentOriginInfoForEuQr(
         originType: OriginType,
         dashboardPageFragment: DashboardPageFragment
@@ -338,17 +331,11 @@ class DashboardPageInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
                 dashboardPageFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
-            is DashboardItem.InfoItem.ClockDeviationItem,
-            is DashboardItem.InfoItem.ConfigFreshnessWarning,
-            is DashboardItem.InfoItem.OriginInfoItem,
-            is DashboardItem.InfoItem.AppUpdate,
-            is DashboardItem.InfoItem.MissingDutchVaccinationItem,
-            is DashboardItem.InfoItem.VisitorPassIncompleteItem,
-            is DashboardItem.InfoItem.NewValidityItem -> {
-                dashboardPageFragment.dashboardViewModel.dismissNewValidityInfoCard()
-            }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
                 dashboardPageFragment.dashboardViewModel.dismissPolicyInfo(infoItem.disclosurePolicy)
+            }
+            else -> {
+
             }
         }
     }

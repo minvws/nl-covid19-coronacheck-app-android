@@ -573,9 +573,6 @@
   <string name="holder_menu_visitorpass">Bezoekersbewijs toevoegen</string>
   <string name="visitorpass_start_title">Een bezoekersbewijs toevoegen</string>
   <string name="visitorpass_start_action">Volgende</string>
-  <string name="holder_dashboard_newvaliditybanner_title">De geldigheid van coronabewijzen wordt aangepast</string>
-  <string name="holder_dashboard_newvaliditybanner_action">Lees meer op Rijksoverheid.nl</string>
-  <string name="holder_dashboard_newvaliditybanner_url">https://www.rijksoverheid.nl/coronabewijs</string>
   <string name="visitorpass_token_next">Volgende</string>
   <string name="visitorpass_code_review_placeholder_screenreader">Vul hier je beoordelingscode in</string>
   <string name="visitorpass_token_error_empty_token">Graag eerst een beoordelingscode invullen</string>
