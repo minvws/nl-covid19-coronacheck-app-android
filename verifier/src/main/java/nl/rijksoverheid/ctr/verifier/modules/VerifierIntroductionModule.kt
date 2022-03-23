@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.modules
 
-import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem

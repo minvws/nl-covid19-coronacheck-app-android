@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
@@ -40,6 +41,7 @@ class HolderAppStatusUseCaseImpl(
     private val appUpdateData: AppUpdateData,
     private val persistenceManager: PersistenceManager,
     private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
+    private val introductionPersistenceManager: IntroductionPersistenceManager
 ) : AppStatusUseCase {
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
@@ -78,11 +80,17 @@ class HolderAppStatusUseCaseImpl(
             currentVersionCode < appConfig.recommendedVersion -> getUpdateRecommendedStatus(
                 appConfig
             )
-            newFeaturesAvailable() || newPolicy != null -> getNewFeatures(newPolicy)
-            newTermsAvailable() -> AppStatus.ConsentNeeded(appUpdateData)
+            hasNewFeaturesStatus(newPolicy) -> getNewFeatures(newPolicy)
+            hasNewTermsStatus() -> AppStatus.ConsentNeeded(appUpdateData)
             else -> AppStatus.NoActionRequired
         }
     }
+
+    private fun hasNewTermsStatus() =
+        newTermsAvailable() && introductionPersistenceManager.getIntroductionFinished()
+
+    private fun hasNewFeaturesStatus(newPolicy: DisclosurePolicy?) =
+        (newFeaturesAvailable() || newPolicy != null) && introductionPersistenceManager.getIntroductionFinished()
 
     private fun getUpdateRecommendedStatus(appConfig: AppConfig): AppStatus {
         return getHolderRecommendUpdateStatus(appConfig)

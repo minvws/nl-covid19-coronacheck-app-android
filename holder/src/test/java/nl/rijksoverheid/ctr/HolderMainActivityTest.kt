@@ -17,7 +17,7 @@ import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus

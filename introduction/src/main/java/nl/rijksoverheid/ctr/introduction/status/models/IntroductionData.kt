@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction
+package nl.rijksoverheid.ctr.introduction.status.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.IgnoredOnParcel

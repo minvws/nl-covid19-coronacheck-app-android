@@ -11,7 +11,7 @@ package nl.rijksoverheid.ctr.holder.usecases
 import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus

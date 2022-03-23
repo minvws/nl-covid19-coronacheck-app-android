@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.usecases
 
 import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
-import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.status.usecases.IntroductionStatusUseCase

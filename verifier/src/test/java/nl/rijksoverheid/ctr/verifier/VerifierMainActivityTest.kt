@@ -8,7 +8,7 @@ import androidx.test.core.app.ApplicationProvider
 import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
-import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus

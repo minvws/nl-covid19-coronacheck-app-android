@@ -24,7 +24,6 @@ import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
-import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -119,9 +118,7 @@ class HolderMainActivity : AppCompatActivity() {
     private fun navigateToIntroduction(
         navController: NavController, introductionStatus: IntroductionStatus
     ) {
-        navController.navigate(
-            R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
-        )
+        navController.navigate(RootNavDirections.actionIntroduction(introductionStatus))
     }
 
     private fun handleAppStatus(

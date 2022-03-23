@@ -9,6 +9,10 @@
         android:id="@+id/nav_introduction_status"
         android:name="nl.rijksoverheid.ctr.introduction.status.IntroductionStatusFragment">
 
+        <argument
+            android:name="introduction_status"
+            app:argType="nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus" />
+
         <action
             android:id="@+id/action_setup"
             app:destination="@id/nav_setup"
@@ -65,7 +69,7 @@
 
         <argument
             android:name="introduction_data"
-            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
+            app:argType="nl.rijksoverheid.ctr.introduction.status.models.IntroductionData" />
 
     </fragment>
 
@@ -76,7 +80,7 @@
 
         <argument
             android:name="introduction_data"
-            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
+            app:argType="nl.rijksoverheid.ctr.introduction.status.models.IntroductionData" />
 
     </fragment>
 

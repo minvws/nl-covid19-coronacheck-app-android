@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.usecases.HolderIntroductionStatusUseCaseImpl
 import nl.rijksoverheid.ctr.holder.usecases.ShowNewDisclosurePolicyUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.new_features.models.NewFeatureItem
 import nl.rijksoverheid.ctr.introduction.new_terms.models.NewTerms
