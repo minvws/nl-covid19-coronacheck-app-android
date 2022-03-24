@@ -4,14 +4,17 @@ import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -25,13 +28,17 @@ import java.util.concurrent.TimeUnit
  *
  */
 
-class VerifierAppStatusUseCase(
+class VerifierAppStatusUseCaseImpl(
     private val clock: Clock,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
     private val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager,
-    private val moshi: Moshi
-) : AppStatusUseCase {
+    private val moshi: Moshi,
+    private val appUpdateData: AppUpdateData,
+    private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
+    private val introductionPersistenceManager: IntroductionPersistenceManager,
+    private val featureFlagUseCase: FeatureFlagUseCase
+    ) : AppStatusUseCase {
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
         withContext(Dispatchers.IO) {
@@ -64,10 +71,25 @@ class VerifierAppStatusUseCase(
         return when {
             updateRequired(currentVersionCode, appConfig) -> AppStatus.UpdateRequired
             appConfig.appDeactivated -> AppStatus.Deactivated
+            newFeaturesAvailable() -> AppStatus.NewFeatures(appUpdateData)
+            newTermsAvailable() -> AppStatus.ConsentNeeded(appUpdateData)
             currentVersionCode < appConfig.recommendedVersion -> getUpdateRecommendedStatus(appConfig)
             else -> AppStatus.NoActionRequired
         }
     }
+
+    private fun newFeaturesAvailable(): Boolean {
+        val newFeatureVersion = appUpdateData.newFeatureVersion
+        return appUpdateData.newFeatures.isNotEmpty() &&
+                newFeatureVersion != null &&
+                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion) &&
+                featureFlagUseCase.isVerificationPolicySelectionEnabled() &&
+                introductionPersistenceManager.getIntroductionFinished()
+    }
+
+    private fun newTermsAvailable() =
+        !appUpdatePersistenceManager.getNewTermsSeen(appUpdateData.newTerms.version)
+                && introductionPersistenceManager.getIntroductionFinished()
 
     private fun getUpdateRecommendedStatus(appConfig: AppConfig): AppStatus {
         return getVerifierRecommendedUpdateStatus(appConfig)

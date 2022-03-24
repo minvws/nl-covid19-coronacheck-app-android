@@ -70,6 +70,7 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
             androidContext().filesDir.path,
             isVerifierApp(androidContext()),
             versionCode,
+            get(),
             get()
         )
     }

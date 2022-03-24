@@ -83,9 +83,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
     }
 
     private fun finishFlow() {
-        args.appUpdateData.newFeatureVersion?.let {
-            appConfigViewModel.saveNewFeaturesFinished(it)
-        }
+        appConfigViewModel.saveNewFeaturesFinished()
         args.appUpdateData.savePolicyChange()
         when (appConfigViewModel.getAppStatus()) {
             is AppStatus.ConsentNeeded -> navigateToTerms()

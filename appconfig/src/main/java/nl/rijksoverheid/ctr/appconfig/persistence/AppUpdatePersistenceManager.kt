@@ -56,6 +56,6 @@ class AppUpdatePersistenceManagerImpl(private val sharedPreferences: SharedPrefe
                     "[VERSION]",
                     version.toString(),
                 ), true
-            ).apply()
+            ).commit()
     }
 }

@@ -20,6 +20,16 @@
     </fragment>
 
     <action
+        android:id="@+id/action_main"
+        app:destination="@id/nav_main"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@+id/root_nav"
+        app:popUpToInclusive="true" />
+
+    <action
         android:id="@+id/action_introduction"
         app:destination="@id/nav_introduction"
         app:enterAnim="@anim/fragment_open_enter"
@@ -27,39 +37,29 @@
         app:popEnterAnim="@anim/fragment_close_enter"
         app:popExitAnim="@anim/fragment_close_exit"
         app:popUpTo="@+id/root_nav"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true">
 
-    <fragment
-        android:id="@+id/nav_introduction"
-        android:name="nl.rijksoverheid.ctr.introduction.IntroductionFragment"
-        tools:layout="@layout/fragment_introduction">
+        <argument
+            android:name="introduction_status"
+            app:argType="nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus" />
 
-        <action
-            android:id="@+id/action_main"
-            app:destination="@id/nav_main"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
-            app:popUpTo="@+id/root_nav"
-            app:popUpToInclusive="true" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_app_status"
-        android:name="nl.rijksoverheid.ctr.appconfig.AppLockedFragment"
-        tools:layout="@layout/fragment_app_locked" />
+    </action>
 
     <action
         android:id="@+id/action_app_status"
-        app:destination="@id/nav_app_status"
+        app:destination="@id/nav_status"
         app:enterAnim="@anim/fragment_open_enter"
         app:exitAnim="@anim/fragment_open_exit"
         app:popEnterAnim="@anim/fragment_close_enter"
         app:popExitAnim="@anim/fragment_close_exit"
         app:popUpTo="@+id/root_nav"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true">
+
+        <argument
+            android:name="app_status"
+            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppStatus" />
+
+    </action>
 
     <action
         android:id="@+id/action_scanner"
@@ -72,5 +72,7 @@
 
     <include app:graph="@navigation/verifier_nav_graph_scanner" />
     <include app:graph="@navigation/verifier_nav_graph_main" />
+    <include app:graph="@navigation/introduction_nav_graph" />
+    <include app:graph="@navigation/app_status_nav_graph" />
 
 </navigation>

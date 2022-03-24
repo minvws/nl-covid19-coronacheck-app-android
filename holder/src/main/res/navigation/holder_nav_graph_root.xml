@@ -65,7 +65,6 @@
         android:name="nl.rijksoverheid.ctr.holder.paper_proof.PaperProofQrScannerFragment" />
 
     <include app:graph="@navigation/introduction_nav_graph" />
-
     <include app:graph="@navigation/app_status_nav_graph" />
 
 </navigation>

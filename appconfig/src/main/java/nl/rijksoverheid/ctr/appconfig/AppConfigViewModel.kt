@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
@@ -29,9 +30,9 @@ abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()
 
     abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean = false)
-    abstract fun saveNewFeaturesFinished(newFeaturesVersion: Int)
+    abstract fun saveNewFeaturesFinished()
+    abstract fun saveNewTerms()
     abstract fun getAppStatus(): AppStatus
-    abstract fun saveNewTerms(version: Int)
 }
 
 class AppConfigViewModelImpl(
@@ -43,7 +44,8 @@ class AppConfigViewModelImpl(
     private val filesDirPath: String,
     private val isVerifierApp: Boolean,
     private val versionCode: Int,
-    private val appUpdatePersistenceManager: AppUpdatePersistenceManager
+    private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
+    private val appUpdateData: AppUpdateData
 ) : AppConfigViewModel() {
 
     private val mutex = Mutex()
@@ -100,15 +102,15 @@ class AppConfigViewModelImpl(
         }
     }
 
-    override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
-        appUpdatePersistenceManager.saveNewFeaturesSeen(newFeaturesVersion)
+    override fun saveNewFeaturesFinished() {
+        appUpdateData.newFeatureVersion?.let { appUpdatePersistenceManager.saveNewFeaturesSeen(it) }
     }
 
     override fun getAppStatus(): AppStatus {
         return appStatusLiveData.value ?: AppStatus.NoActionRequired
     }
 
-    override fun saveNewTerms(version: Int) {
-        appUpdatePersistenceManager.saveNewTermsSeen(version)
+    override fun saveNewTerms() {
+        appUpdatePersistenceManager.saveNewTermsSeen(appUpdateData.newTerms.version)
     }
 }

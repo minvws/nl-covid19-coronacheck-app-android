@@ -77,11 +77,9 @@ class HolderAppStatusUseCaseImpl(
         return when {
             updateRequired(currentVersionCode, appConfig) -> AppStatus.UpdateRequired
             appConfig.appDeactivated -> AppStatus.Deactivated
-            currentVersionCode < appConfig.recommendedVersion -> getUpdateRecommendedStatus(
-                appConfig
-            )
             hasNewFeaturesStatus(newPolicy) -> getNewFeatures(newPolicy)
             hasNewTermsStatus() -> AppStatus.ConsentNeeded(appUpdateData)
+            currentVersionCode < appConfig.recommendedVersion -> getUpdateRecommendedStatus(appConfig)
             else -> AppStatus.NoActionRequired
         }
     }

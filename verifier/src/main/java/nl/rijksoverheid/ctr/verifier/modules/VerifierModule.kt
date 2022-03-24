@@ -12,7 +12,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
-import nl.rijksoverheid.ctr.introduction.new_terms.models.NewTerms
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.verifier.managers.DeeplinkManager
 import nl.rijksoverheid.ctr.verifier.managers.DeeplinkManagerImpl
@@ -62,10 +61,6 @@ import java.time.Clock
  * Configure app config dependencies
  */
 fun verifierModule() = module {
-
-    factory<NewTerms?> {
-        NewTerms(version = 1, true)
-    }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(

@@ -54,7 +54,7 @@ class NewTermsFragment : Fragment(R.layout.fragment_new_terms) {
         }
 
         binding.positiveButton.setOnClickListener {
-            appConfigViewModel.saveNewTerms(args.appUpdateData.newTerms.version)
+            appConfigViewModel.saveNewTerms()
             requireActivity().findNavController(R.id.main_nav_host_fragment)
                 .navigate(R.id.action_main)
         }
