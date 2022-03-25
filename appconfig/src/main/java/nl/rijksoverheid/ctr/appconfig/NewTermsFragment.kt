@@ -8,7 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentNewTermsBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -20,7 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class NewTermsFragment : Fragment(R.layout.fragment_new_terms) {
 
     private val args: NewTermsFragmentArgs by navArgs()
-    private val appConfigViewModel: AppConfigViewModel by viewModel()
+    private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

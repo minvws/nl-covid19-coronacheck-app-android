@@ -32,7 +32,6 @@ abstract class AppConfigViewModel : ViewModel() {
     abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean = false)
     abstract fun saveNewFeaturesFinished()
     abstract fun saveNewTerms()
-    abstract fun getAppStatus(): AppStatus
 }
 
 class AppConfigViewModelImpl(
@@ -104,13 +103,15 @@ class AppConfigViewModelImpl(
 
     override fun saveNewFeaturesFinished() {
         appUpdateData.newFeatureVersion?.let { appUpdatePersistenceManager.saveNewFeaturesSeen(it) }
-    }
-
-    override fun getAppStatus(): AppStatus {
-        return appStatusLiveData.value ?: AppStatus.NoActionRequired
+        updateAppStatus(
+            appStatusUseCase.checkIfActionRequired(versionCode, cachedAppConfigUseCase.getCachedAppConfig())
+        )
     }
 
     override fun saveNewTerms() {
         appUpdatePersistenceManager.saveNewTermsSeen(appUpdateData.newTerms.version)
+        updateAppStatus(
+            appStatusUseCase.checkIfActionRequired(versionCode, cachedAppConfigUseCase.getCachedAppConfig())
+        )
     }
 }

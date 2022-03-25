@@ -77,21 +77,11 @@ class HolderAppStatusUseCaseImpl(
         return when {
             updateRequired(currentVersionCode, appConfig) -> AppStatus.UpdateRequired
             appConfig.appDeactivated -> AppStatus.Deactivated
-            hasNewFeaturesStatus(newPolicy) -> getNewFeatures(newPolicy)
-            hasNewTermsStatus() -> AppStatus.ConsentNeeded(appUpdateData)
-            currentVersionCode < appConfig.recommendedVersion -> getUpdateRecommendedStatus(appConfig)
+            (newFeaturesAvailable() || newPolicy != null) -> getNewFeatures(newPolicy)
+            newTermsAvailable() -> AppStatus.ConsentNeeded(appUpdateData)
+            currentVersionCode < appConfig.recommendedVersion -> getHolderRecommendUpdateStatus(appConfig)
             else -> AppStatus.NoActionRequired
         }
-    }
-
-    private fun hasNewTermsStatus() =
-        newTermsAvailable() && introductionPersistenceManager.getIntroductionFinished()
-
-    private fun hasNewFeaturesStatus(newPolicy: DisclosurePolicy?) =
-        (newFeaturesAvailable() || newPolicy != null) && introductionPersistenceManager.getIntroductionFinished()
-
-    private fun getUpdateRecommendedStatus(appConfig: AppConfig): AppStatus {
-        return getHolderRecommendUpdateStatus(appConfig)
     }
 
     private fun getHolderRecommendUpdateStatus(appConfig: AppConfig) =
@@ -111,7 +101,8 @@ class HolderAppStatusUseCaseImpl(
         val newFeatureVersion = appUpdateData.newFeatureVersion
         return appUpdateData.newFeatures.isNotEmpty() &&
                 newFeatureVersion != null &&
-                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion)
+                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion) &&
+                introductionPersistenceManager.getIntroductionFinished()
     }
 
     /**
@@ -142,7 +133,8 @@ class HolderAppStatusUseCaseImpl(
     }
 
     private fun newTermsAvailable() =
-        !appUpdatePersistenceManager.getNewTermsSeen(appUpdateData.newTerms.version)
+        !appUpdatePersistenceManager.getNewTermsSeen(appUpdateData.newTerms.version) &&
+                introductionPersistenceManager.getIntroductionFinished()
 
     private fun getNewPolicyFeatureItem(newPolicy: DisclosurePolicy): NewFeatureItem {
         return NewFeatureItem(

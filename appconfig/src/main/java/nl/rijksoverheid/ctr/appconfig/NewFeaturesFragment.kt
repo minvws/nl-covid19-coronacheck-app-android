@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -27,7 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
 
     private val args: NewFeaturesFragmentArgs by navArgs()
-    private val appConfigViewModel: AppConfigViewModel by viewModel()
+    private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,12 +83,10 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
     }
 
     private fun finishFlow() {
-        appConfigViewModel.saveNewFeaturesFinished()
         args.appUpdateData.savePolicyChange()
-        when (appConfigViewModel.getAppStatus()) {
-            is AppStatus.ConsentNeeded -> navigateToTerms()
-            else -> navigateToMain()
-        }
+        appConfigViewModel.saveNewFeaturesFinished()
+
+        navigateToMain()
     }
 
     private fun navigateToTerms() {
