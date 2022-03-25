@@ -62,7 +62,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_introduction
+                R.id.nav_setup
             )
         }
     }
@@ -76,7 +76,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_app_status
+                R.id.nav_new_terms
             )
         }
     }
@@ -90,7 +90,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_app_status
+                R.id.nav_new_features
             )
         }
     }
@@ -119,7 +119,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_app_status
+                R.id.nav_app_locked
             )
         }
     }
