@@ -2,9 +2,7 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.api.signing.certificates.*
 import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.api.HolderApiClient
-import nl.rijksoverheid.ctr.holder.api.MijnCnApiClient
-import nl.rijksoverheid.ctr.holder.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.holder.api.*
 import okhttp3.OkHttpClient
 import okhttp3.tls.HandshakeCertificates
 import okhttp3.tls.decodeCertificatePem
@@ -19,7 +17,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-fun retrofitModule(baseUrl: String) = module {
+fun retrofitModule(baseUrl: String, cdnUrl: String) = module {
     single {
         val okHttpClient = get<OkHttpClient>(OkHttpClient::class)
             .newBuilder()
@@ -49,7 +47,7 @@ fun retrofitModule(baseUrl: String) = module {
     }
 
     single {
-        get<Retrofit>(Retrofit::class).create(HolderApiClient::class.java)
+        get<Retrofit>(Retrofit::class).newBuilder().baseUrl(cdnUrl).build().create(RemoteConfigApiClient::class.java)
     }
 
     single {

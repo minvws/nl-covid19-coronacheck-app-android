@@ -53,7 +53,8 @@ data class HolderConfig(
     @Json(name = "vaccinationAssessmentEventValidityDays") val vaccinationAssessmentEventValidityDays: Int,
     @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean,
     @Json(name = "verificationPolicies") val verificationPolicies: List<String> = emptyList(),
-    @Json(name = "disclosurePolicies") val disclosurePolicy: DisclosurePolicy
+    @Json(name = "disclosurePolicies") val disclosurePolicy: DisclosurePolicy,
+    @Json(name = "backendTLSCertificates") val backendTLSCertificates: List<String>,
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -150,7 +151,8 @@ data class HolderConfig(
             vaccinationAssessmentEventValidityDays = vaccinationAssessmentEventValidityDays,
             mijnCnEnabled = mijnCnEnabled,
             verificationPolicies = policiesEnabled,
-            disclosurePolicy = disclosurePolicy
+            disclosurePolicy = disclosurePolicy,
+            backendTLSCertificates = emptyList(),
         )
     }
 }
