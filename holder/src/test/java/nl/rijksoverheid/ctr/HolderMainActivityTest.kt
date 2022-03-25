@@ -15,12 +15,11 @@ import androidx.room.Room
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
+import nl.rijksoverheid.ctr.appconfig.models.NewTerms
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.new_terms.models.NewTerms
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -69,53 +68,29 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `If consent needed navigate to introduction`() {
-        val introductionViewModel = fakeIntroductionViewModel(
-            introductionStatus = IntroductionStatus.OnboardingFinished.ConsentNeeded(
-                IntroductionData(
-                    onboardingItems = listOf(),
-                    privacyPolicyItems = listOf(),
-                    newFeatures = listOf(),
-                    newTerms = NewTerms(1, false)
-                )
-            ),
-            setupRequired = false
+    fun `If consent needed navigate to app status`() {
+        val scenario = launchHolderMainActivity(
+            fakeIntroductionViewModel(),
+            appStatus = AppStatus.ConsentNeeded(AppUpdateData(listOf(), NewTerms(1,true)))
         )
-        launchHolderMainActivity(
-            introductionViewModel
-        )
-
         scenario.onActivity {
-            introductionViewModel.onConfigUpdated()
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_introduction
+                R.id.nav_app_status
             )
         }
     }
 
     @Test
-    fun `If new features navigate to introduction`() {
-        val introductionViewModel = fakeIntroductionViewModel(
-            introductionStatus = IntroductionStatus.OnboardingFinished.NewFeatures(
-                IntroductionData(
-                    onboardingItems = listOf(),
-                    privacyPolicyItems = listOf(),
-                    newFeatures = listOf(),
-                    newTerms = NewTerms(1, false)
-                )
-            ),
-            setupRequired = false
+    fun `If new features navigate to app status`() {
+        val scenario = launchHolderMainActivity(
+            fakeIntroductionViewModel(),
+            appStatus = AppStatus.NewFeatures(AppUpdateData(listOf(), NewTerms(1,true)))
         )
-        launchHolderMainActivity(
-            introductionViewModel
-        )
-
         scenario.onActivity {
-            introductionViewModel.onConfigUpdated()
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_introduction
+                R.id.nav_app_status
             )
         }
     }

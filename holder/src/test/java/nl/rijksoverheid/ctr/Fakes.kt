@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ServerTime
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
@@ -43,6 +44,7 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
 import org.json.JSONObject
+import java.security.MessageDigest
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -59,6 +61,14 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
         override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
             appStatusLiveData.value = appStatus
+        }
+
+        override fun saveNewFeaturesFinished() {
+
+        }
+
+        override fun saveNewTerms() {
+
         }
     }
 
@@ -126,10 +136,6 @@ fun fakeIntroductionViewModel(
         }
 
         override fun saveIntroductionFinished(introductionData: IntroductionData) {
-
-        }
-
-        override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
 
         }
 
@@ -662,6 +668,42 @@ fun fakeCardsItem(
         )
     )
 }
+
+fun fakeAppConfigPersistenceManager(
+    lastFetchedSeconds: Long = 0L
+) = object : AppConfigPersistenceManager {
+
+    override fun getAppConfigLastFetchedSeconds(): Long {
+        return lastFetchedSeconds
+    }
+
+    override fun saveAppConfigLastFetchedSeconds(seconds: Long) {
+
+    }
+
+}
+
+fun fakeAppConfig(
+    minimumVersion: Int = 1,
+    appDeactivated: Boolean = false,
+    informationURL: String = "",
+    configTtlSeconds: Int = 0,
+    maxValidityHours: Int = 0
+) = HolderConfig.default(
+    holderMinimumVersion = minimumVersion,
+    holderAppDeactivated = appDeactivated,
+    holderInformationURL = informationURL,
+    configTTL = configTtlSeconds,
+    maxValidityHours = maxValidityHours,
+    euLaunchDate = "",
+    credentialRenewalDays = 0,
+    domesticCredentialValidity = 0,
+    testEventValidityHours = 0,
+    recoveryEventValidityDays = 0,
+    temporarilyDisabled = false,
+    requireUpdateBefore = 0,
+    ggdEnabled = true
+)
 
 
 
