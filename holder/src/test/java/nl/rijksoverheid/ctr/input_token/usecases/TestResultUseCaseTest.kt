@@ -209,7 +209,8 @@ class TestResultUseCaseTest {
                         token: String,
                         provider: String,
                         verifierCode: String?,
-                        signingCertificateBytes: List<ByteArray>
+                        signingCertificateBytes: List<ByteArray>,
+                        tlsCertificateBytes: List<ByteArray>,
                     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
                         throw IOException()
                     }
