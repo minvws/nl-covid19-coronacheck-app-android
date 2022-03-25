@@ -77,12 +77,17 @@ class HolderAppStatusUseCaseImpl(
         return when {
             updateRequired(currentVersionCode, appConfig) -> AppStatus.UpdateRequired
             appConfig.appDeactivated -> AppStatus.Deactivated
-            (newFeaturesAvailable() || newPolicy != null) -> getNewFeatures(newPolicy)
+            shouldShowNewFeatures(newPolicy) -> getNewFeatures(newPolicy)
             newTermsAvailable() -> AppStatus.ConsentNeeded(appUpdateData)
-            currentVersionCode < appConfig.recommendedVersion -> getHolderRecommendUpdateStatus(appConfig)
+            currentVersionCode < appConfig.recommendedVersion -> getHolderRecommendUpdateStatus(
+                appConfig
+            )
             else -> AppStatus.NoActionRequired
         }
     }
+
+    private fun shouldShowNewFeatures(newPolicy: DisclosurePolicy?) =
+        (newFeaturesAvailable() || newPolicy != null) && introductionPersistenceManager.getIntroductionFinished()
 
     private fun getHolderRecommendUpdateStatus(appConfig: AppConfig) =
         if (appConfig.recommendedVersion > recommendedUpdatePersistenceManager.getHolderVersionUpdateShown()) {
@@ -101,8 +106,7 @@ class HolderAppStatusUseCaseImpl(
         val newFeatureVersion = appUpdateData.newFeatureVersion
         return appUpdateData.newFeatures.isNotEmpty() &&
                 newFeatureVersion != null &&
-                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion) &&
-                introductionPersistenceManager.getIntroductionFinished()
+                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion)
     }
 
     /**
@@ -123,8 +127,7 @@ class HolderAppStatusUseCaseImpl(
                 })
             !newFeaturesAvailable() && newPolicy != null -> AppStatus.NewFeatures(
                 appUpdateData.copy(
-                    newFeatures = listOf(getNewPolicyFeatureItem(newPolicy)),
-                    newFeatureVersion = null,
+                    newFeatures = listOf(getNewPolicyFeatureItem(newPolicy))
                 ).apply {
                     setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 })
