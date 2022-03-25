@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.api
 
+import android.util.Base64
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import okhttp3.OkHttpClient
@@ -34,6 +35,7 @@ class TestProviderApiClientUtilImpl(
                     val handshakeCertificates = HandshakeCertificates.Builder()
                         .apply {
                             certificateBytes.forEach {
+                                val base64Decoded = Base64.decode(it, Base64.DEFAULT)
                                 val certificateFactory = CertificateFactory.getInstance("X.509")
                                 val x509Certificate = certificateFactory.generateCertificate(
                                     ByteArrayInputStream(it)
