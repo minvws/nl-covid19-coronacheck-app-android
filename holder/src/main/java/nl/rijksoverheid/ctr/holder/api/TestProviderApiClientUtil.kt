@@ -1,9 +1,11 @@
 package nl.rijksoverheid.ctr.holder.api
 
+import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.tls.HandshakeCertificates
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.ByteArrayInputStream
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
@@ -15,15 +17,16 @@ import java.security.cert.X509Certificate
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface HolderApiClientUtil {
-    fun client(certificateBytes: List<ByteArray>): HolderApiClient
+interface TestProviderApiClientUtil {
+    fun client(certificateBytes: List<ByteArray>): TestProviderApiClient
 }
 
-class HolderApiClientUtilImpl(
+class TestProviderApiClientUtilImpl(
+    private val moshi: Moshi,
     private val okHttpClient: OkHttpClient,
     private val retrofit: Retrofit,
-) : HolderApiClientUtil {
-    override fun client(certificateBytes: List<ByteArray>): HolderApiClient {
+) : TestProviderApiClientUtil {
+    override fun client(certificateBytes: List<ByteArray>): TestProviderApiClient {
         val okHttpClient = okHttpClient
             .newBuilder()
             .apply {
@@ -48,6 +51,7 @@ class HolderApiClientUtilImpl(
             }.build()
 
         return retrofit.newBuilder().client(okHttpClient)
-            .build().create(HolderApiClient::class.java)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build().create(TestProviderApiClient::class.java)
     }
 }

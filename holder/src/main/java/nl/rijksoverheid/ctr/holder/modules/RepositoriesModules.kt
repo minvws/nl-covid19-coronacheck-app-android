@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.api.HolderApiClientUtil
 import nl.rijksoverheid.ctr.holder.api.HolderApiClientUtilImpl
+import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtil
+import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtilImpl
 import nl.rijksoverheid.ctr.holder.api.repositories.*
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
 import org.koin.core.qualifier.named
@@ -38,6 +40,13 @@ val repositoriesModule = module {
             get(),
             get(),
             get(named("SignedResponseWithModel")),
+        )
+    }
+    factory<TestProviderApiClientUtil> {
+        TestProviderApiClientUtilImpl(
+            get(),
+            get(),
+            get(),
         )
     }
     factory<EventProviderRepository> {

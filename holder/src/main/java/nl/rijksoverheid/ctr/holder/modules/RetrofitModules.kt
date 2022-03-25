@@ -19,34 +19,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  */
 fun retrofitModule(baseUrl: String, cdnUrl: String) = module {
     single {
-        val okHttpClient = get<OkHttpClient>(OkHttpClient::class)
-            .newBuilder()
-            .apply {
-                if (BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS) {
-                    val handshakeCertificates = HandshakeCertificates.Builder()
-                        .addTrustedCertificate(ROOT_CA_G3.decodeCertificatePem())
-                        .addTrustedCertificate(EV_ROOT_CA.decodeCertificatePem())
-                        .addTrustedCertificate(PRIVATE_ROOT_CA.decodeCertificatePem())
-                        .addTrustedCertificate(DIGICERT_BTC_ROOT_CA.decodeCertificatePem())
-                        .build()
-
-                    sslSocketFactory(
-                        handshakeCertificates.sslSocketFactory(),
-                        handshakeCertificates.trustManager
-                    )
-                }
-            }.build()
-
-        Retrofit.Builder()
-            .client(okHttpClient)
-            // required, although not used for TestProviders
-            .baseUrl(baseUrl)
-            .addConverterFactory(MoshiConverterFactory.create(get()))
-            .build()
-            .create(TestProviderApiClient::class.java)
-    }
-
-    single {
         get<Retrofit>(Retrofit::class).newBuilder().baseUrl(cdnUrl).build().create(RemoteConfigApiClient::class.java)
     }
 
