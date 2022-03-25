@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.tls.HandshakeCertificates
 import okhttp3.tls.decodeCertificatePem
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -64,7 +65,8 @@ fun apiModule(
             .addInterceptor(
                 SignedResponseInterceptor(
                     signatureCertificateCnMatch = signatureCertificateCnMatch,
-                    testProviderApiChecks = testProviderApiChecks
+                    testProviderApiChecks = testProviderApiChecks,
+                    androidContext().packageName.contains(".acc"),
                 )
             ).build()
     }
