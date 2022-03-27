@@ -38,7 +38,7 @@ class TestProviderApiClientUtilImpl(
                                 val base64Decoded = Base64.decode(it, Base64.DEFAULT)
                                 val certificateFactory = CertificateFactory.getInstance("X.509")
                                 val x509Certificate = certificateFactory.generateCertificate(
-                                    ByteArrayInputStream(it)
+                                    ByteArrayInputStream(base64Decoded)
                                 ) as X509Certificate
                                 addTrustedCertificate(x509Certificate)
                             }
