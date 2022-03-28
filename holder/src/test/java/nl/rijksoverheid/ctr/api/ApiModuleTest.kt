@@ -23,7 +23,7 @@ class ApiModuleTest: AutoCloseKoinTest() {
             signatureCertificateCnMatch = "",
             coronaCheckApiChecks = true,
             testProviderApiChecks = true,
-            certificatePins = arrayOf("sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0="),
+            certificatePins = arrayOf("sha256/L9V8t4JfWfEan29aaqxEzpnfBnXhjLIWTX9eu7D4="),
         ))
         val okHttpClient: OkHttpClient by inject()
         val acceptedIssuers = okHttpClient.x509TrustManager!!.acceptedIssuers

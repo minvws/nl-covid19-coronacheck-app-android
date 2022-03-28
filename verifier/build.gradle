@@ -38,7 +38,7 @@ android {
         buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v8/\""
         buildConfigField "String[]", "CERTIFICATE_PINS",
                 "{" +
-                        "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
+                        "\"sha256/L9V8t4JfWfEan29aaqxEzpnfBnXhjLIWTX9eu7D4=\"" +
                         "}"
         buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v8/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
@@ -74,7 +74,7 @@ android {
             buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v8/\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
-                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
+                            "\"sha256/L9V8t4JfWfEan29aaqxEzpnfBnXhjLIWTX9eu7D4=\"" +
                             "}"
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
@@ -90,7 +90,7 @@ android {
             buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v8/\""
             buildConfigField "String[]", "CERTIFICATE_PINS",
                     "{" +
-                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
+                            "\"sha256/L9V8t4JfWfEan29aaqxEzpnfBnXhjLIWTX9eu7D4=\"" +
                             "}"
             manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
             matchingFallbacks = ['zxing']
