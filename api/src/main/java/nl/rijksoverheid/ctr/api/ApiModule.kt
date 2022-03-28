@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.api.interceptors.CacheOverrideInterceptor
 import nl.rijksoverheid.ctr.api.interceptors.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.api.json.*
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
+import nl.rijksoverheid.ctr.shared.models.Environment
 import okhttp3.CertificatePinner
 import okhttp3.ConnectionSpec
 import okhttp3.HttpUrl
@@ -66,7 +67,7 @@ fun apiModule(
                 SignedResponseInterceptor(
                     signatureCertificateCnMatch = signatureCertificateCnMatch,
                     testProviderApiChecks = testProviderApiChecks,
-                    androidContext().packageName.contains(".acc"),
+                    Environment.get(androidContext()) == Environment.Acc,
                 )
             ).build()
     }
