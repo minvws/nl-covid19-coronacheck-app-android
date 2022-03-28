@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.appconfig
+package nl.rijksoverheid.ctr.appconfig.app_update
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

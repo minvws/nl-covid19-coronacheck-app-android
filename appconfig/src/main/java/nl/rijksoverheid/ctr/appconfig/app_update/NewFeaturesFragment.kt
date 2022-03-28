@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.appconfig
+package nl.rijksoverheid.ctr.appconfig.app_update
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
+import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.R
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentNewFeaturesBinding
-import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -90,7 +91,8 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
     }
 
     private fun navigateToTerms() {
-        navigateSafety(R.id.nav_new_features,
+        navigateSafety(
+            R.id.nav_new_features,
             NewFeaturesFragmentDirections.actionNewTerms(args.appUpdateData)
         )
     }

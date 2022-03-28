@@ -1,15 +1,10 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
-import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
-import nl.rijksoverheid.ctr.appconfig.models.NewTerms
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.usecases.HolderAppStatusUseCaseImpl
-import nl.rijksoverheid.ctr.holder.usecases.HolderIntroductionStatusUseCaseImpl
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
-import nl.rijksoverheid.ctr.introduction.status.usecases.IntroductionStatusUseCase
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import org.koin.dsl.module
 
 /*
@@ -34,30 +29,6 @@ val holderIntroductionModule = module {
                 )
             ),
             hideConsent = true
-        )
-    }
-    factory {
-        AppUpdateData(
-            newFeatures = listOf(
-                NewFeatureItem(
-                    R.drawable.tabs,
-                    R.string.new_in_app_tabs_title,
-                    R.string.new_in_app_tabs_description,
-                    R.color.primary_blue,
-                    R.color.light_blue,
-                )
-            ),
-            newTerms = NewTerms(
-                version = 2,
-                needsConsent = false
-            ),
-            newFeatureVersion = 2,
-            hideConsent = true
-        )
-    }
-    factory<IntroductionStatusUseCase> {
-        HolderIntroductionStatusUseCaseImpl(
-            get(), get(), get(), get()
         )
     }
     factory<AppStatusUseCase> {
