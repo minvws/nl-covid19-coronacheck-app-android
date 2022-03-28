@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
@@ -42,7 +43,9 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     private fun setObservers() {
         appStatusViewModel.appStatusLiveData.observe(viewLifecycleOwner) {
-            introductionViewModel.onConfigUpdated()
+            if (it is AppStatus.NoActionRequired || it is AppStatus.UpdateRecommended) {
+                introductionViewModel.onConfigUpdated()
+            }
         }
         introductionViewModel.introductionStatusLiveData.observe(viewLifecycleOwner, EventObserver {
             if (it is IntroductionStatus.OnboardingNotFinished) {

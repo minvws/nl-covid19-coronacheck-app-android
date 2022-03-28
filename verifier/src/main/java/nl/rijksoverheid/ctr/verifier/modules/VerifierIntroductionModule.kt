@@ -46,28 +46,5 @@ val verifierIntroductionModule = module {
             )
         )
     }
-    factory {
-        AppUpdateData(
-            newTerms = NewTerms(
-                version = 1,
-                needsConsent = true
-            ),
-            newFeatures = listOf(
-                NewFeatureItem(
-                    R.drawable.common_full_open_on_phone,
-                    R.string.new_in_app_risksetting_title,
-                    R.string.new_in_app_risksetting_subtitle,
-                    R.color.primary_blue,
-                    R.color.light_blue,
-                )
-            ),
-            newFeatureVersion = 1,
-        )
-    }
     factory<IntroductionStatusUseCase> { VerifierIntroductionStatusUseCaseImpl(get(), get()) }
-    factory<AppStatusUseCase> {
-        VerifierAppStatusUseCaseImpl(
-            get(), get(), get(), get(), get(), get(), get(), get(), get()
-        )
-    }
 }

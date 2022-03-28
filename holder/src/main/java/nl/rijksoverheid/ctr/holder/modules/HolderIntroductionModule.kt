@@ -1,10 +1,10 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.usecases.HolderAppStatusUseCaseImpl
+import nl.rijksoverheid.ctr.holder.usecases.HolderIntroductionStatusUseCaseImpl
 import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
+import nl.rijksoverheid.ctr.introduction.status.usecases.IntroductionStatusUseCase
 import org.koin.dsl.module
 
 /*
@@ -31,9 +31,9 @@ val holderIntroductionModule = module {
             hideConsent = true
         )
     }
-    factory<AppStatusUseCase> {
-        HolderAppStatusUseCaseImpl(
-            get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
+    factory<IntroductionStatusUseCase> {
+        HolderIntroductionStatusUseCaseImpl(
+            get(), get(), get(), get()
         )
     }
 }
