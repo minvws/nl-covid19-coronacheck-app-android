@@ -680,7 +680,6 @@ fun fakeAppConfigPersistenceManager(
     override fun saveAppConfigLastFetchedSeconds(seconds: Long) {
 
     }
-
 }
 
 fun fakeAppConfig(

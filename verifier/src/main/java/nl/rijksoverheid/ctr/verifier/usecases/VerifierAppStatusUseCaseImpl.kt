@@ -73,7 +73,7 @@ class VerifierAppStatusUseCaseImpl(
             appConfig.appDeactivated -> AppStatus.Deactivated
             newFeaturesAvailable() -> AppStatus.NewFeatures(appUpdateData)
             newTermsAvailable() -> AppStatus.ConsentNeeded(appUpdateData)
-            currentVersionCode < appConfig.recommendedVersion -> getUpdateRecommendedStatus(appConfig)
+            currentVersionCode < appConfig.recommendedVersion -> getVerifierRecommendedUpdateStatus(appConfig)
             else -> AppStatus.NoActionRequired
         }
     }
@@ -90,10 +90,6 @@ class VerifierAppStatusUseCaseImpl(
     private fun newTermsAvailable() =
         !appUpdatePersistenceManager.getNewTermsSeen(appUpdateData.newTerms.version)
                 && introductionPersistenceManager.getIntroductionFinished()
-
-    private fun getUpdateRecommendedStatus(appConfig: AppConfig): AppStatus {
-        return getVerifierRecommendedUpdateStatus(appConfig)
-    }
 
     private fun getVerifierRecommendedUpdateStatus(appConfig: AppConfig): AppStatus {
         val localTime = TimeUnit.MILLISECONDS.toSeconds(clock.instant().toEpochMilli())

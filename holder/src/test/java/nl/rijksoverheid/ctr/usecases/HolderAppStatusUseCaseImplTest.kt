@@ -325,7 +325,7 @@ class HolderAppStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when intro is finished and new features are available, the status is new features`() = runBlocking {
+    fun `when new features are available, the status is new features`() = runBlocking {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
@@ -355,7 +355,7 @@ class HolderAppStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when intro is finished and new terms are available, the status is consent needed`() = runBlocking {
+    fun `when new terms are available, the status is consent needed`() = runBlocking {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
