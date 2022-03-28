@@ -35,14 +35,12 @@ class SortGreenCardItemsUseCaseImpl(
                 is DashboardItem.InfoItem.GreenCardExpiredItem -> 60
                 is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> 70
                 is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> 80
-                DashboardItem.InfoItem.BoosterItem -> 90
-                DashboardItem.InfoItem.NewValidityItem -> 100
-                is DashboardItem.InfoItem.DisclosurePolicyItem -> 110
-                DashboardItem.InfoItem.MissingDutchVaccinationItem -> 120
-                is DashboardItem.InfoItem.OriginInfoItem -> 130
-                is DashboardItem.PlaceholderCardItem -> 140
+                is DashboardItem.InfoItem.DisclosurePolicyItem -> 90
+                DashboardItem.InfoItem.MissingDutchVaccinationItem -> 100
+                is DashboardItem.InfoItem.OriginInfoItem -> 110
+                is DashboardItem.PlaceholderCardItem -> 120
                 is DashboardItem.CardsItem -> {
-                    val cardsItemOrder = 150
+                    val cardsItemOrder = 130
                     val greenCard = it.cards.first().greenCard
                     val isDomesticTestGreenCard = greenCardUtil.isDomesticTestGreenCard(
                         greenCard = greenCard
@@ -54,9 +52,9 @@ class SortGreenCardItemsUseCaseImpl(
                         cardsItemOrder + it.cards.first().originStates.first().origin.type.order
                     }
                 }
-                DashboardItem.AddQrButtonItem -> 160
-                DashboardItem.AddQrCardItem -> 170
-                DashboardItem.CoronaMelderItem -> 180
+                DashboardItem.AddQrButtonItem -> 140
+                DashboardItem.AddQrCardItem -> 150
+                DashboardItem.CoronaMelderItem -> 160
             }
         }
     }

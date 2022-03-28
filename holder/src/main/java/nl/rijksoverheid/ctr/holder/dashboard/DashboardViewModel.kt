@@ -42,8 +42,6 @@ abstract class DashboardViewModel : ViewModel() {
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
-    abstract fun dismissNewValidityInfoCard()
-    abstract fun dismissBoosterInfoCard()
     abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
 
     companion object {
@@ -151,10 +149,6 @@ class DashboardViewModelImpl(
         }
     }
 
-    override fun dismissNewValidityInfoCard() {
-        persistenceManager.setHasDismissedNewValidityInfoCard(true)
-    }
-
     private suspend fun refreshDashboardTabItems(
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
@@ -175,13 +169,6 @@ class DashboardViewModelImpl(
         (dashboardTabItemsLiveData as MutableLiveData<List<DashboardTabItem>>).postValue(
             tabItems
         )
-    }
-
-    override fun dismissBoosterInfoCard() {
-        val nowEpochSeconds = Instant.now(clock).epochSecond
-        persistenceManager.setHasDismissedBoosterInfoCard(nowEpochSeconds)
-        // remove it from both the domestic and the international tab
-        refresh(DashboardSync.DisableSync)
     }
 
     override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {

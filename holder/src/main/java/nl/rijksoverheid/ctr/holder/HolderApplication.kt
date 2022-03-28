@@ -11,7 +11,6 @@ import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.*
 import nl.rijksoverheid.ctr.persistence.database.migration.TestResultsMigrationManager
-import nl.rijksoverheid.ctr.holder.usecases.CheckNewValidityInfoCardUseCase
 import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
@@ -38,7 +37,6 @@ open class HolderApplication : SharedApplication() {
     private val testResultsMigrationManager: TestResultsMigrationManager by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
-    private val checkNewValidityInfoCardUseCase: CheckNewValidityInfoCardUseCase by inject()
 
     private val holderModules = listOf(
         storageModule,
@@ -98,9 +96,6 @@ open class HolderApplication : SharedApplication() {
             }
 
             testResultsMigrationManager.removeOldCredential()
-
-            // check if we need to show the new validity info card use case
-            checkNewValidityInfoCardUseCase.check()
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {

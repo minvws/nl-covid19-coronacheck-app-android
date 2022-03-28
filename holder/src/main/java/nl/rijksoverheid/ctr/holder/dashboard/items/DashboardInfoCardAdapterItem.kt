@@ -92,14 +92,8 @@ class DashboardInfoCardAdapterItem(
             is DashboardItem.InfoItem.AppUpdate -> {
                 viewBinding.text.setText(R.string.recommended_update_card_description)
             }
-            is DashboardItem.InfoItem.NewValidityItem -> {
-                viewBinding.text.setText(R.string.holder_dashboard_newvaliditybanner_title)
-            }
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
                 viewBinding.text.setText(R.string.holder_dashboard_visitorpassincompletebanner_title)
-            }
-            is DashboardItem.InfoItem.BoosterItem -> {
-                viewBinding.text.setText(R.string.holder_dashboard_addBoosterBanner_title)
             }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
                 viewBinding.text.setText(

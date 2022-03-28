@@ -68,22 +68,10 @@ sealed class DashboardItem {
             buttonText = R.string.recommended_update_card_action
         )
 
-        object NewValidityItem : InfoItem(
-            isDismissible = true,
-            hasButton = true,
-            buttonText = R.string.holder_dashboard_newvaliditybanner_action
-        )
-
         object VisitorPassIncompleteItem : InfoItem(
             isDismissible = false,
             hasButton = true,
             buttonText = R.string.holder_dashboard_visitorpassincompletebanner_button_makecomplete
-        )
-
-        object BoosterItem: InfoItem(
-            isDismissible = true,
-            hasButton = true,
-            buttonText = R.string.holder_dashboard_addBoosterBanner_button_addBooster
         )
 
         data class DisclosurePolicyItem(
