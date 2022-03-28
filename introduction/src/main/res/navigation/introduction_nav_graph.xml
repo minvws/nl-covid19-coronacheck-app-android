@@ -42,16 +42,6 @@
             app:popUpTo="@id/nav_introduction"
             app:popUpToInclusive="true" />
 
-        <action
-            android:id="@+id/action_app_status"
-            app:destination="@id/nav_app_status"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
-            app:popUpTo="@id/nav_introduction"
-            app:popUpToInclusive="true" />
-
     </fragment>
 
     <fragment
@@ -83,5 +73,23 @@
             app:argType="nl.rijksoverheid.ctr.introduction.status.models.IntroductionData" />
 
     </fragment>
+
+    <action
+        android:id="@+id/action_app_status"
+        app:destination="@id/nav_status"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@+id/root_nav"
+        app:popUpToInclusive="true">
+
+        <argument
+            android:name="app_status"
+            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppStatus" />
+
+    </action>
+
+    <include app:graph="@navigation/app_status_nav_graph" />
 
 </navigation>
