@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.tls.HandshakeCertificates
 import retrofit2.Retrofit
+import timber.log.Timber
 import java.io.ByteArrayInputStream
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
@@ -30,16 +31,19 @@ class HolderApiClientUtilImpl(
     private val retrofit: Retrofit,
 ) : HolderApiClientUtil {
 
-    private fun transparentTrustManager(trustManager: X509TrustManager)  = certificateTransparencyTrustManager(trustManager) {
-        println("transparentTrustManager")
-        setLogger(object: CTLogger {
-            override fun log(host: String, result: VerificationResult) {
-                println("log $host $result")
+    private fun transparentTrustManager(trustManager: X509TrustManager) =
+        certificateTransparencyTrustManager(trustManager) {
+            if (BuildConfig.DEBUG) {
+                setLogger(object : CTLogger {
+                    override fun log(host: String, result: VerificationResult) {
+                        Timber.tag("certificate transparency")
+                            .d("host: $host, verification result: $result")
+                    }
+                })
             }
-        })
 
-        setLogListService(LogListDataSourceFactory.createLogListService())
-    }
+            setLogListService(LogListDataSourceFactory.createLogListService())
+        }
 
     override fun client(certificateBytes: List<ByteArray>): HolderApiClient {
         val okHttpClient = okHttpClient
@@ -59,7 +63,6 @@ class HolderApiClientUtilImpl(
                         }
                         .build()
 
-                    println("hello1")
                     sslSocketFactory(
                         handshakeCertificates.sslSocketFactory(),
                         transparentTrustManager(handshakeCertificates.trustManager)
@@ -67,7 +70,6 @@ class HolderApiClientUtilImpl(
                 }
             }.build()
 
-        println("hello2")
         return retrofit.newBuilder().client(okHttpClient)
             .build().create(HolderApiClient::class.java)
     }

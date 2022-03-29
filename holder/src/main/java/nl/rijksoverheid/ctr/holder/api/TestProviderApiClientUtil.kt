@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.api
 
-import android.util.Base64
 import com.appmattus.certificatetransparency.CTLogger
 import com.appmattus.certificatetransparency.VerificationResult
 import com.appmattus.certificatetransparency.certificateTransparencyTrustManager
@@ -11,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.tls.HandshakeCertificates
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import timber.log.Timber
 import java.io.ByteArrayInputStream
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
@@ -24,7 +24,10 @@ import javax.net.ssl.X509TrustManager
  *
  */
 interface TestProviderApiClientUtil {
-    fun client(tlsCertificateBytes: List<ByteArray>, cmsCertificateBytes: List<ByteArray>): TestProviderApiClient
+    fun client(
+        tlsCertificateBytes: List<ByteArray>,
+        cmsCertificateBytes: List<ByteArray>
+    ): TestProviderApiClient
 }
 
 class TestProviderApiClientUtilImpl(
@@ -33,17 +36,24 @@ class TestProviderApiClientUtilImpl(
     private val retrofit: Retrofit,
 ) : TestProviderApiClientUtil {
 
-    private fun transparentTrustManager(trustManager: X509TrustManager)  = certificateTransparencyTrustManager(trustManager) {
-        setLogger(object: CTLogger {
-            override fun log(host: String, result: VerificationResult) {
-                println("log $host $result")
+    private fun transparentTrustManager(trustManager: X509TrustManager) =
+        certificateTransparencyTrustManager(trustManager) {
+            if (BuildConfig.DEBUG) {
+                setLogger(object : CTLogger {
+                    override fun log(host: String, result: VerificationResult) {
+                        Timber.tag("certificate transparency")
+                            .d("host: $host, verification result: $result")
+                    }
+                })
             }
-        })
 
-        setLogListService(LogListDataSourceFactory.createLogListService())
-    }
+            setLogListService(LogListDataSourceFactory.createLogListService())
+        }
 
-    override fun client(tlsCertificateBytes: List<ByteArray>, cmsCertificateBytes: List<ByteArray>): TestProviderApiClient {
+    override fun client(
+        tlsCertificateBytes: List<ByteArray>,
+        cmsCertificateBytes: List<ByteArray>
+    ): TestProviderApiClient {
         val okHttpClient = okHttpClient
             .newBuilder()
             .apply {
