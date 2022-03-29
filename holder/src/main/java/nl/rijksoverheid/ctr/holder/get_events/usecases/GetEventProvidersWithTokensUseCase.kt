@@ -85,6 +85,7 @@ class GetEventProvidersWithTokensUseCaseImpl(
                 scope = scope,
                 signingCertificateBytes = eventProvider.cms,
                 provider = eventProvider.providerIdentifier,
+                tlsCertificateBytes = eventProvider.tls,
             )
 
             when (unomiResult) {

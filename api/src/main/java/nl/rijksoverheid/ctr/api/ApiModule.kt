@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.api.interceptors.CacheOverrideInterceptor
 import nl.rijksoverheid.ctr.api.interceptors.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.api.json.*
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
+import nl.rijksoverheid.ctr.shared.models.Environment
 import okhttp3.CertificatePinner
 import okhttp3.ConnectionSpec
 import okhttp3.HttpUrl
@@ -12,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.tls.HandshakeCertificates
 import okhttp3.tls.decodeCertificatePem
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -64,7 +66,8 @@ fun apiModule(
             .addInterceptor(
                 SignedResponseInterceptor(
                     signatureCertificateCnMatch = signatureCertificateCnMatch,
-                    testProviderApiChecks = testProviderApiChecks
+                    testProviderApiChecks = testProviderApiChecks,
+                    Environment.get(androidContext()) == Environment.Acc,
                 )
             ).build()
     }

@@ -29,10 +29,6 @@ interface HolderApiClient {
         @Body data: GetCredentialsPostData
     ): RemoteGreenCards
 
-    @GET("holder/config_providers")
-    @SignedRequest
-    suspend fun getConfigCtp(): RemoteConfigProviders
-
     @POST("holder/access_tokens")
     suspend fun getAccessTokens(@Header("Authorization") authorization: String): RemoteAccessTokens
 

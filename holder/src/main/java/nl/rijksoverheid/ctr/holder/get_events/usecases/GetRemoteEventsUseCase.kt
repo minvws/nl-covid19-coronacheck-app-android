@@ -45,6 +45,7 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
                 scope = scope,
                 signingCertificateBytes = eventProvider.cms,
                 provider = eventProvider.providerIdentifier,
+                tlsCertificateBytes = eventProvider.tls,
             )) {
 
             is NetworkRequestResult.Success<SignedResponseWithModel<RemoteProtocol3>> ->

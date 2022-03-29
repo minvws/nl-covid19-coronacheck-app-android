@@ -91,7 +91,8 @@ class TestResultUseCase(
                 token = token.removeWhitespace(),
                 verifierCode = verificationCode?.removeWhitespace() ?: "",
                 signingCertificateBytes = testProvider.cms,
-                provider = providerIdentifier
+                provider = providerIdentifier,
+                tlsCertificateBytes = testProvider.tls,
             )
 
             val signedResponseWithTestResult = when (signedResponseWithTestResultRequestResult) {

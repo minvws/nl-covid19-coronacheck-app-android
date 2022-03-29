@@ -166,7 +166,8 @@ fun fakeTestProviderRepository(
             token: String,
             provider: String,
             verifierCode: String?,
-            signingCertificateBytes: List<ByteArray>
+            signingCertificateBytes: List<ByteArray>,
+            tlsCertificateBytes: List<ByteArray>,
         ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
             remoteTestResultExceptionCallback?.invoke()
             return NetworkRequestResult.Success(model)
@@ -293,6 +294,7 @@ fun fakeEventProviderRepository(
         scope: String?,
         signingCertificateBytes: List<ByteArray>,
         provider: String,
+        tlsCertificateBytes: List<ByteArray>,
     ): NetworkRequestResult<RemoteUnomi> {
         return unomi.invoke(url)
     }
@@ -304,6 +306,7 @@ fun fakeEventProviderRepository(
         filter: String,
         scope: String?,
         provider: String,
+        tlsCertificateBytes: List<ByteArray>,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
         return events.invoke(url)
     }

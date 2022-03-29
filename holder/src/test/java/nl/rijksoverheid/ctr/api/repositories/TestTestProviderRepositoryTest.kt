@@ -106,7 +106,8 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             token = "",
             verifierCode = "",
             provider = "",
-            signingCertificateBytes = listOf(certificate.toByteArray())
+            signingCertificateBytes = listOf(certificate.toByteArray()),
+            tlsCertificateBytes = listOf(certificate.toByteArray()),
         )
 
         assertTrue(model is NetworkRequestResult.Success)
@@ -134,7 +135,8 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             token = "",
             verifierCode = "",
             provider = "",
-            signingCertificateBytes = listOf(certificate.toByteArray())
+            signingCertificateBytes = listOf(certificate.toByteArray()),
+            tlsCertificateBytes = listOf(certificate.toByteArray()),
         )
 
         assertTrue(model is NetworkRequestResult.Success)
@@ -160,7 +162,8 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
                 token = "",
                 verifierCode = "",
                 provider = "",
-                signingCertificateBytes = listOf(certificate.toByteArray())
+                signingCertificateBytes = listOf(certificate.toByteArray()),
+                tlsCertificateBytes = listOf(certificate.toByteArray()),
             )
 
             assertTrue(model is NetworkRequestResult.Failed)
@@ -190,7 +193,8 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
                 token = "",
                 verifierCode = "",
                 provider = "",
-                signingCertificateBytes = listOf(certificate.toByteArray())
+                signingCertificateBytes = listOf(certificate.toByteArray()),
+                tlsCertificateBytes = listOf(certificate.toByteArray()),
             )
 
             assertTrue(model is NetworkRequestResult.Failed)

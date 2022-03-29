@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClient
+import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.api.post.GetTestResultPostData
@@ -26,28 +27,35 @@ interface TestProviderRepository {
         token: String,
         provider: String,
         verifierCode: String?,
-        signingCertificateBytes: List<ByteArray>
+        signingCertificateBytes: List<ByteArray>,
+        tlsCertificateBytes: List<ByteArray>,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>>
 }
 
 class TestProviderRepositoryImpl(
-    private val testProviderApiClient: TestProviderApiClient,
+    private val testProviderApiClientUtil: TestProviderApiClientUtil,
     private val networkRequestResultFactory: NetworkRequestResultFactory,
     private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteProtocol>>,
 ) : TestProviderRepository {
+
+    private fun getTestProviderApiClient(certificateBytes: List<ByteArray>): TestProviderApiClient {
+        return testProviderApiClientUtil.client(certificateBytes)
+    }
+
     @Suppress("BlockingMethodInNonBlockingContext")
     override suspend fun remoteTestResult(
         url: String,
         token: String,
         provider: String,
         verifierCode: String?,
-        signingCertificateBytes: List<ByteArray>
+        signingCertificateBytes: List<ByteArray>,
+        tlsCertificateBytes: List<ByteArray>,
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
         return networkRequestResultFactory.createResult(
             step = HolderStep.TestResultNetworkRequest,
             provider = provider,
             networkCall = {
-                testProviderApiClient.getTestResult(
+                getTestProviderApiClient(tlsCertificateBytes).getTestResult(
                     url = url,
                     authorization = "Bearer $token",
                     data = verifierCode?.let {

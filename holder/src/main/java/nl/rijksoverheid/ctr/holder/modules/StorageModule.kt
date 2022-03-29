@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.persistence.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncerImpl
+import nl.rijksoverheid.ctr.shared.models.Environment
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -20,7 +21,7 @@ val storageModule = module {
         HolderDatabase.createInstance(
             androidContext(),
             get(),
-            androidContext().packageName == "nl.rijksoverheid.ctr.holder"
+            Environment.get(androidContext()) is Environment.Prod
         )
     }
 

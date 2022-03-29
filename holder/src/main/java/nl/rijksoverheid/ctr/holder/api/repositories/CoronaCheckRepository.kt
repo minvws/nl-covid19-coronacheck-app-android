@@ -2,16 +2,19 @@ package nl.rijksoverheid.ctr.holder.api.repositories
 
 import android.util.Base64
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
-import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.api.HolderApiClient
+import nl.rijksoverheid.ctr.holder.api.HolderApiClientUtil
+import nl.rijksoverheid.ctr.holder.api.RemoteConfigApiClient
 import nl.rijksoverheid.ctr.holder.api.post.GetCouplingData
 import nl.rijksoverheid.ctr.holder.api.post.GetCredentialsPostData
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteAccessTokens
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
+import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingResponse
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.your_events.models.RemotePrepareIssue
+import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -35,19 +38,27 @@ interface CoronaCheckRepository {
 }
 
 open class CoronaCheckRepositoryImpl(
-    private val api: HolderApiClient,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val holderApiClientUtil: HolderApiClientUtil,
+    private val remoteConfigApiClient: RemoteConfigApiClient,
     private val networkRequestResultFactory: NetworkRequestResultFactory
 ) : CoronaCheckRepository {
 
+    private fun getHolderApiClient(): HolderApiClient {
+        val backendTlsCertificates = cachedAppConfigUseCase.getCachedAppConfig().backendTLSCertificates
+        val certificateBytes = backendTlsCertificates.map { it.toByteArray() }
+        return holderApiClientUtil.client(certificateBytes)
+    }
+
     override suspend fun configProviders(): NetworkRequestResult<RemoteConfigProviders> {
         return networkRequestResultFactory.createResult(HolderStep.ConfigProvidersNetworkRequest) {
-            api.getConfigCtp()
+            remoteConfigApiClient.getConfigCtp()
         }
     }
 
     override suspend fun accessTokens(jwt: String): NetworkRequestResult<RemoteAccessTokens> {
         return networkRequestResultFactory.createResult(HolderStep.AccessTokensNetworkRequest) {
-            api.getAccessTokens(authorization = "Bearer $jwt")
+            getHolderApiClient().getAccessTokens(authorization = "Bearer $jwt")
         }
     }
 
@@ -57,7 +68,7 @@ open class CoronaCheckRepositoryImpl(
         issueCommitmentMessage: String
     ): NetworkRequestResult<RemoteGreenCards> {
         return networkRequestResultFactory.createResult(HolderStep.GetCredentialsNetworkRequest) {
-            api.getCredentials(
+            getHolderApiClient().getCredentials(
                 data = GetCredentialsPostData(
                     stoken = stoken,
                     events = events,
@@ -72,14 +83,14 @@ open class CoronaCheckRepositoryImpl(
 
     override suspend fun getPrepareIssue(): NetworkRequestResult<RemotePrepareIssue> {
         return networkRequestResultFactory.createResult(HolderStep.PrepareIssueNetworkRequest) {
-            api.getPrepareIssue()
+            getHolderApiClient().getPrepareIssue()
         }
     }
 
     override suspend fun getCoupling(credential: String,
                                      couplingCode: String): NetworkRequestResult<RemoteCouplingResponse> {
         return networkRequestResultFactory.createResult(HolderStep.CouplingNetworkRequest) {
-            api.getCoupling(
+            getHolderApiClient().getCoupling(
                 data = GetCouplingData(
                     credential = credential,
                     couplingCode = couplingCode

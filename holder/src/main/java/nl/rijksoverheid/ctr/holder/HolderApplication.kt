@@ -51,7 +51,7 @@ open class HolderApplication : SharedApplication() {
         qrsModule,
         appModule,
         errorsModule(BuildConfig.FLAVOR),
-        retrofitModule(BuildConfig.BASE_API_URL),
+        retrofitModule(BuildConfig.BASE_API_URL, BuildConfig.CDN_API_URL),
         responsesModule,
         qrScannerModule,
         disclosurePolicyModule,
