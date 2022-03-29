@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.holder.api
 
 import android.util.Base64
+import com.appmattus.certificatetransparency.certificateTransparencyTrustManager
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.tls.HandshakeCertificates
@@ -8,6 +9,7 @@ import retrofit2.Retrofit
 import java.io.ByteArrayInputStream
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
+import javax.net.ssl.X509TrustManager
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,6 +26,11 @@ class HolderApiClientUtilImpl(
     private val okHttpClient: OkHttpClient,
     private val retrofit: Retrofit,
 ) : HolderApiClientUtil {
+
+    private fun transparentClient(trustManager: X509TrustManager)  = certificateTransparencyTrustManager(trustManager) {
+        setLogListService()
+    }
+
     override fun client(certificateBytes: List<ByteArray>): HolderApiClient {
         val okHttpClient = okHttpClient
             .newBuilder()
