@@ -77,7 +77,7 @@ class ApiClientUtilTests : AutoCloseKoinTest() {
         )
 
         TestProviderApiClientUtilImpl(Moshi.Builder().build(), okHttpClient, retrofit).client(
-            certificateBytes
+            certificateBytes, certificateBytes
         )
 
         val trustManager = trustManagerSlot.captured
