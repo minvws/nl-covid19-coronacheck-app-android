@@ -1,7 +1,10 @@
 package nl.rijksoverheid.ctr.holder.api
 
 import android.util.Base64
+import com.appmattus.certificatetransparency.CTLogger
+import com.appmattus.certificatetransparency.VerificationResult
 import com.appmattus.certificatetransparency.certificateTransparencyTrustManager
+import com.appmattus.certificatetransparency.loglist.LogListDataSourceFactory
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.tls.HandshakeCertificates
@@ -27,8 +30,15 @@ class HolderApiClientUtilImpl(
     private val retrofit: Retrofit,
 ) : HolderApiClientUtil {
 
-    private fun transparentClient(trustManager: X509TrustManager)  = certificateTransparencyTrustManager(trustManager) {
-        setLogListService()
+    private fun transparentTrustManager(trustManager: X509TrustManager)  = certificateTransparencyTrustManager(trustManager) {
+        println("transparentTrustManager")
+        setLogger(object: CTLogger {
+            override fun log(host: String, result: VerificationResult) {
+                println("log $host $result")
+            }
+        })
+
+        setLogListService(LogListDataSourceFactory.createLogListService())
     }
 
     override fun client(certificateBytes: List<ByteArray>): HolderApiClient {
@@ -49,13 +59,15 @@ class HolderApiClientUtilImpl(
                         }
                         .build()
 
+                    println("hello1")
                     sslSocketFactory(
                         handshakeCertificates.sslSocketFactory(),
-                        handshakeCertificates.trustManager
+                        transparentTrustManager(handshakeCertificates.trustManager)
                     )
                 }
             }.build()
 
+        println("hello2")
         return retrofit.newBuilder().client(okHttpClient)
             .build().create(HolderApiClient::class.java)
     }

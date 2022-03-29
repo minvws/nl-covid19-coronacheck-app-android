@@ -64,8 +64,8 @@ class EventProviderRepositoryImpl(
     private val networkRequestResultFactory: NetworkRequestResultFactory,
 ) : EventProviderRepository {
 
-    private fun getTestProviderApiClient(certificateBytes: List<ByteArray>): TestProviderApiClient {
-        return testProviderApiClientUtil.client(certificateBytes)
+    private fun getTestProviderApiClient(certificateBytes: List<ByteArray>, cmsCertificateBytes: List<ByteArray>): TestProviderApiClient {
+        return testProviderApiClientUtil.client(certificateBytes, cmsCertificateBytes)
     }
 
     override suspend fun getUnomi(
@@ -87,7 +87,7 @@ class EventProviderRepositoryImpl(
             step = HolderStep.UnomiNetworkRequest,
             provider = provider,
         ) {
-            getTestProviderApiClient(tlsCertificateBytes).getUnomi(
+            getTestProviderApiClient(tlsCertificateBytes, signingCertificateBytes).getUnomi(
                 url = url,
                 authorization = "Bearer $token",
                 params = params,
@@ -115,7 +115,7 @@ class EventProviderRepositoryImpl(
             step = HolderStep.EventNetworkRequest,
             provider = provider,
         ) {
-            getTestProviderApiClient(tlsCertificateBytes).getEvents(
+            getTestProviderApiClient(tlsCertificateBytes, signingCertificateBytes).getEvents(
                 url = url,
                 authorization = "Bearer $token",
                 params = params,
