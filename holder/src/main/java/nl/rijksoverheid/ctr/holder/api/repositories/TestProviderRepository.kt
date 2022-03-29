@@ -38,8 +38,8 @@ class TestProviderRepositoryImpl(
     private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteProtocol>>,
 ) : TestProviderRepository {
 
-    private fun getTestProviderApiClient(certificateBytes: List<ByteArray>): TestProviderApiClient {
-        return testProviderApiClientUtil.client(certificateBytes)
+    private fun getTestProviderApiClient(tlsCertificateBytes: List<ByteArray>, cmsCertificateBytes: List<ByteArray>): TestProviderApiClient {
+        return testProviderApiClientUtil.client(tlsCertificateBytes, cmsCertificateBytes)
     }
 
     @Suppress("BlockingMethodInNonBlockingContext")
@@ -55,7 +55,7 @@ class TestProviderRepositoryImpl(
             step = HolderStep.TestResultNetworkRequest,
             provider = provider,
             networkCall = {
-                getTestProviderApiClient(tlsCertificateBytes).getTestResult(
+                getTestProviderApiClient(tlsCertificateBytes, signingCertificateBytes).getTestResult(
                     url = url,
                     authorization = "Bearer $token",
                     data = verifierCode?.let {

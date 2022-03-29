@@ -1,13 +1,19 @@
 package nl.rijksoverheid.ctr.holder.api
 
 import android.util.Base64
+import com.appmattus.certificatetransparency.CTLogger
+import com.appmattus.certificatetransparency.VerificationResult
+import com.appmattus.certificatetransparency.certificateTransparencyTrustManager
+import com.appmattus.certificatetransparency.loglist.LogListDataSourceFactory
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.tls.HandshakeCertificates
 import retrofit2.Retrofit
+import timber.log.Timber
 import java.io.ByteArrayInputStream
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
+import javax.net.ssl.X509TrustManager
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,6 +30,21 @@ class HolderApiClientUtilImpl(
     private val okHttpClient: OkHttpClient,
     private val retrofit: Retrofit,
 ) : HolderApiClientUtil {
+
+    private fun transparentTrustManager(trustManager: X509TrustManager) =
+        certificateTransparencyTrustManager(trustManager) {
+            if (BuildConfig.DEBUG) {
+                setLogger(object : CTLogger {
+                    override fun log(host: String, result: VerificationResult) {
+                        Timber.tag("certificate transparency")
+                            .d("host: $host, verification result: $result")
+                    }
+                })
+            }
+
+            setLogListService(LogListDataSourceFactory.createLogListService())
+        }
+
     override fun client(certificateBytes: List<ByteArray>): HolderApiClient {
         val okHttpClient = okHttpClient
             .newBuilder()
@@ -44,7 +65,7 @@ class HolderApiClientUtilImpl(
 
                     sslSocketFactory(
                         handshakeCertificates.sslSocketFactory(),
-                        handshakeCertificates.trustManager
+                        transparentTrustManager(handshakeCertificates.trustManager)
                     )
                 }
             }.build()

@@ -41,7 +41,6 @@ open class VerifierApplication : SharedApplication() {
                     BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH,
                     BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS,
                     BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS,
-                    BuildConfig.CERTIFICATE_PINS,
                 ),
                 verifierModule(),
                 verifierIntroductionModule,

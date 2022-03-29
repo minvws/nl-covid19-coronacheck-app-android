@@ -29,10 +29,11 @@ class EventProviderRepositoryImplTest {
     private val cmsCertificatesBytes = listOf(EMAX_ROOT_CA.toByteArray())
     private val tlsCertificateBytes = listOf(BEARINGPOINT_ROOT_CA.toByteArray())
     private val tlsCertificateSlot = slot<List<ByteArray>>()
+    private val cmsCertificateSlot = slot<List<ByteArray>>()
 
     @Before
     fun setup() {
-        coEvery { testProviderApiClientUtil.client(capture(tlsCertificateSlot)) } returns testProviderApiClient
+        coEvery { testProviderApiClientUtil.client(capture(tlsCertificateSlot), capture(cmsCertificateSlot)) } returns testProviderApiClient
     }
 
     private fun <R : Any> mockRequestResult() {
@@ -65,6 +66,7 @@ class EventProviderRepositoryImplTest {
         )
 
         assertEquals(tlsCertificateBytes.first(), tlsCertificateSlot.captured.first())
+        assertEquals(cmsCertificatesBytes.first(), cmsCertificateSlot.captured.first())
         coVerify(exactly = 1) {
             testProviderApiClient.getUnomi(
                 "url",
@@ -96,6 +98,7 @@ class EventProviderRepositoryImplTest {
         )
 
         assertEquals(tlsCertificateBytes.first(), tlsCertificateSlot.captured.first())
+        assertEquals(cmsCertificatesBytes.first(), cmsCertificateSlot.captured.first())
         coVerify(exactly = 1) {
             testProviderApiClient.getEvents(
                 "url",
