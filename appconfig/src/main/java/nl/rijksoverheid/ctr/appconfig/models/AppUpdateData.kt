@@ -1,12 +1,8 @@
-package nl.rijksoverheid.ctr.introduction
+package nl.rijksoverheid.ctr.appconfig.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
-import nl.rijksoverheid.ctr.introduction.new_features.models.NewFeatureItem
-import nl.rijksoverheid.ctr.introduction.new_terms.models.NewTerms
-import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 import java.io.Serializable
 
 /*
@@ -17,9 +13,7 @@ import java.io.Serializable
  *
  */
 @Parcelize
-data class IntroductionData(
-    val onboardingItems: List<OnboardingItem> = listOf(),
-    val privacyPolicyItems: List<PrivacyPolicyItem> = listOf(),
+data class AppUpdateData(
     val newFeatures: List<NewFeatureItem> = listOf(),
     val newTerms: NewTerms,
     val newFeatureVersion: Int? = null,

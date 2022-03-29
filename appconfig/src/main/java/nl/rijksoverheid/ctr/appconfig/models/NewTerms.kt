@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.new_terms.models
+package nl.rijksoverheid.ctr.appconfig.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

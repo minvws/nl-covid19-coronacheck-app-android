@@ -4,15 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
-import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -111,9 +108,7 @@ class VerifierMainActivity : AppCompatActivity() {
         navController: NavController,
         introductionStatus: IntroductionStatus
     ) {
-        navController.navigate(
-            R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
-        )
+        navController.navigate(RootNavDirections.actionIntroduction(introductionStatus))
     }
 
     private fun restartApp() {
@@ -130,18 +125,15 @@ class VerifierMainActivity : AppCompatActivity() {
         appStatus: AppStatus,
         navController: NavController
     ) {
-        when (appStatus) {
-            AppStatus.Deactivated -> navigateToAppStatus(appStatus, navController)
-            AppStatus.Error -> navigateToAppStatus(appStatus, navController)
-            AppStatus.NoActionRequired -> {
-                closeAppStatusIfOpen(navController)
-                introductionViewModel.onConfigUpdated()
-            }
-            AppStatus.UpdateRecommended -> {
-                showRecommendedUpdateDialog()
-                return
-            }
-            AppStatus.UpdateRequired -> navigateToAppStatus(appStatus, navController)
+        if (appStatus is AppStatus.UpdateRecommended) {
+            showRecommendedUpdateDialog()
+            return
+        }
+
+        if (appStatus !is AppStatus.NoActionRequired) {
+            navController.navigate(RootNavDirections.actionAppStatus(appStatus))
+        } else {
+            closeAppStatusIfOpen(navController)
         }
     }
 
@@ -149,23 +141,9 @@ class VerifierMainActivity : AppCompatActivity() {
         navController: NavController
     ) {
         val isAppStatusFragment =
-            navController.currentBackStackEntry?.arguments?.containsKey(AppStatusFragment.EXTRA_APP_STATUS) == true
+            navController.currentBackStackEntry?.destination?.id == R.id.nav_app_locked
         if (isAppStatusFragment) {
             navController.popBackStack()
-        }
-    }
-
-    private fun navigateToAppStatus(
-        appStatus: AppStatus,
-        navController: NavController
-    ) {
-        val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to appStatus)
-        // don't navigate to the same app status fragment, if it is already open
-        // otherwise, it can open again on top of the previous one looking like a glitch
-        val currentAppStatus =
-            navController.currentBackStackEntry?.arguments?.get(AppStatusFragment.EXTRA_APP_STATUS)
-        if (appStatus != currentAppStatus) {
-            navController.navigate(R.id.action_app_status, bundle)
         }
     }
 

@@ -53,7 +53,9 @@ class AppConfigViewModelTest {
         cachedAppConfigUseCase = cachedAppConfigUseCase,
         filesDirPath = filesDirPath,
         isVerifierApp = isVerifier,
-        versionCode = 0
+        versionCode = 0,
+        appUpdateData = mockk(),
+        appUpdatePersistenceManager = mockk()
     )
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
 

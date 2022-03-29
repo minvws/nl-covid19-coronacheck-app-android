@@ -3,11 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_introduction"
-    app:startDestination="@+id/nav_status">
+    app:startDestination="@+id/nav_introduction_status">
 
     <fragment
-        android:id="@+id/nav_status"
+        android:id="@+id/nav_introduction_status"
         android:name="nl.rijksoverheid.ctr.introduction.status.IntroductionStatusFragment">
+
+        <argument
+            android:name="introduction_status"
+            app:argType="nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus" />
 
         <action
             android:id="@+id/action_setup"
@@ -21,18 +25,6 @@
             app:popUpTo="@id/nav_introduction"
             app:popUpToInclusive="true" />
 
-        <action
-            android:id="@+id/action_new_terms"
-            app:destination="@id/nav_new_terms"
-            app:popUpTo="@id/nav_introduction"
-            app:popUpToInclusive="true" />
-
-        <action
-            android:id="@+id/action_nav_new_features"
-            app:destination="@id/nav_new_features"
-            app:popUpTo="@id/nav_introduction"
-            app:popUpToInclusive="true" />
-
     </fragment>
 
     <fragment
@@ -43,16 +35,6 @@
         <action
             android:id="@+id/action_onboarding"
             app:destination="@id/nav_onboarding"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
-            app:popUpTo="@id/nav_introduction"
-            app:popUpToInclusive="true" />
-
-        <action
-            android:id="@+id/action_app_status"
-            app:destination="@id/nav_app_status"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
@@ -77,7 +59,7 @@
 
         <argument
             android:name="introduction_data"
-            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
+            app:argType="nl.rijksoverheid.ctr.introduction.status.models.IntroductionData" />
 
     </fragment>
 
@@ -88,45 +70,26 @@
 
         <argument
             android:name="introduction_data"
-            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
+            app:argType="nl.rijksoverheid.ctr.introduction.status.models.IntroductionData" />
 
     </fragment>
 
-    <fragment
-        android:id="@+id/nav_app_status"
-        android:name="nl.rijksoverheid.ctr.appconfig.AppStatusFragment"
-        tools:layout="@layout/fragment_app_status" />
-
-    <fragment
-        android:id="@+id/nav_new_terms"
-        android:name="nl.rijksoverheid.ctr.introduction.new_terms.NewTermsFragment"
-        tools:layout="@layout/fragment_app_status">
+    <action
+        android:id="@+id/action_app_status"
+        app:destination="@id/nav_status"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_open_exit"
+        app:popEnterAnim="@anim/fragment_close_enter"
+        app:popExitAnim="@anim/fragment_close_exit"
+        app:popUpTo="@+id/root_nav"
+        app:popUpToInclusive="true">
 
         <argument
-            android:name="introduction_data"
-            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
+            android:name="app_status"
+            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppStatus" />
 
-    </fragment>
+    </action>
 
-    <fragment
-        android:id="@+id/nav_new_features"
-        android:name="nl.rijksoverheid.ctr.introduction.new_features.NewFeaturesFragment"
-        android:label="NewFeaturesFragment">
-
-        <argument
-            android:name="introduction_data"
-            app:argType="nl.rijksoverheid.ctr.introduction.IntroductionData" />
-
-        <action
-            android:id="@+id/action_new_terms"
-            app:destination="@id/nav_new_terms"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit">
-
-        </action>
-
-    </fragment>
+    <include app:graph="@navigation/app_status_nav_graph" />
 
 </navigation>

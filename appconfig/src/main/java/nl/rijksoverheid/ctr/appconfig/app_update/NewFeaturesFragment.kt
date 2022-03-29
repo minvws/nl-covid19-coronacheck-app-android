@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.new_features
+package nl.rijksoverheid.ctr.appconfig.app_update
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,15 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
-import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.R
-import nl.rijksoverheid.ctr.introduction.databinding.FragmentNewFeaturesBinding
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.R
+import nl.rijksoverheid.ctr.appconfig.databinding.FragmentNewFeaturesBinding
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -29,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
 
     private val args: NewFeaturesFragmentArgs by navArgs()
-    private val introductionViewModel: IntroductionViewModel by viewModel()
+    private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,10 +38,10 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
         val adapter = NewFeaturesPagerAdapter(
             childFragmentManager,
             lifecycle,
-            args.introductionData.newFeatures
+            args.appUpdateData.newFeatures
         )
 
-        if (args.introductionData.newFeatures.isNotEmpty()) {
+        if (args.appUpdateData.newFeatures.isNotEmpty()) {
             binding.indicators.initIndicator(adapter.itemCount)
             initViewPager(binding, adapter)
         }
@@ -85,19 +84,16 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
     }
 
     private fun finishFlow() {
-        args.introductionData.newFeatureVersion?.let {
-            introductionViewModel.saveNewFeaturesFinished(it)
-        }
-        args.introductionData.savePolicyChange()
-        when (introductionViewModel.getIntroductionStatus()) {
-            is IntroductionStatus.OnboardingFinished.ConsentNeeded -> navigateToTerms()
-            else -> navigateToMain()
-        }
+        args.appUpdateData.savePolicyChange()
+        appConfigViewModel.saveNewFeaturesFinished()
+
+        navigateToMain()
     }
 
     private fun navigateToTerms() {
-        navigateSafety(R.id.nav_new_features,
-            NewFeaturesFragmentDirections.actionNewTerms(args.introductionData)
+        navigateSafety(
+            R.id.nav_new_features,
+            NewFeaturesFragmentDirections.actionNewTerms(args.appUpdateData)
         )
     }
 
@@ -110,7 +106,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
         binding: FragmentNewFeaturesBinding,
         adapter: NewFeaturesPagerAdapter
     ) {
-        binding.viewPager.offscreenPageLimit = args.introductionData.newFeatures.size
+        binding.viewPager.offscreenPageLimit = args.appUpdateData.newFeatures.size
         binding.viewPager.adapter = adapter
         val hideToolbar = adapter.itemCount == 1
         if (hideToolbar) {

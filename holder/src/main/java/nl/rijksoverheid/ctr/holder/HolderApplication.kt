@@ -66,6 +66,7 @@ open class HolderApplication : SharedApplication() {
             modules(
                 *holderModules,
                 holderIntroductionModule,
+                holderAppStatusModule,
                 apiModule(
                     BuildConfig.BASE_API_URL.toHttpUrl(),
                     BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH,

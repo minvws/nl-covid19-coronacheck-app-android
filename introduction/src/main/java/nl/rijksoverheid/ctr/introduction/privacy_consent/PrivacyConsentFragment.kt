@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewCheckboxButtonBinding
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.R
@@ -27,6 +28,7 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
     private val args: PrivacyConsentFragmentArgs by navArgs()
     private val introductionViewModel: IntroductionViewModel by viewModel()
+    private val appConfigViewModel: AppConfigViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,7 +63,10 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
         checkboxButtonBinding.checkboxButton.setOnClickListener {
             if (args.introductionData.hideConsent || checkboxButtonBinding.checkbox.isChecked) {
+                appConfigViewModel.saveNewFeaturesFinished()
+                appConfigViewModel.saveNewTerms()
                 introductionViewModel.saveIntroductionFinished(args.introductionData)
+
                 requireActivity().findNavControllerSafety(R.id.main_nav_host_fragment)
                     ?.navigate(R.id.action_main)
             } else {

@@ -15,8 +15,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
+import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
@@ -28,6 +30,8 @@ abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()
 
     abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean = false)
+    abstract fun saveNewFeaturesFinished()
+    abstract fun saveNewTerms()
 }
 
 class AppConfigViewModelImpl(
@@ -38,7 +42,9 @@ class AppConfigViewModelImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val filesDirPath: String,
     private val isVerifierApp: Boolean,
-    private val versionCode: Int
+    private val versionCode: Int,
+    private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
+    private val appUpdateData: AppUpdateData
 ) : AppConfigViewModel() {
 
     private val mutex = Mutex()
@@ -93,5 +99,19 @@ class AppConfigViewModelImpl(
                 updateAppStatus(appStatus)
             }
         }
+    }
+
+    override fun saveNewFeaturesFinished() {
+        appUpdateData.newFeatureVersion?.let { appUpdatePersistenceManager.saveNewFeaturesSeen(it) }
+        updateAppStatus(
+            appStatusUseCase.checkIfActionRequired(versionCode, cachedAppConfigUseCase.getCachedAppConfig())
+        )
+    }
+
+    override fun saveNewTerms() {
+        appUpdatePersistenceManager.saveNewTermsSeen(appUpdateData.newTerms.version)
+        updateAppStatus(
+            appStatusUseCase.checkIfActionRequired(versionCode, cachedAppConfigUseCase.getCachedAppConfig())
+        )
     }
 }

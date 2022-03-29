@@ -31,17 +31,8 @@ import retrofit2.Retrofit
 fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
     factory<ConfigRepository> { ConfigRepositoryImpl(get()) }
     factory<AppConfigUseCase> { AppConfigUseCaseImpl(get(), get(), get(), get()) }
-    factory<AppStatusUseCase> {
-        AppStatusUseCaseImpl(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            isVerifierApp(androidContext()),
-        )
-    }
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
+    factory<AppUpdatePersistenceManager> { AppUpdatePersistenceManagerImpl(get()) }
     factory<AppConfigStorageManager> { AppConfigStorageManagerImpl(androidContext().filesDir.path) }
     factory<CachedAppConfigUseCase> {
         CachedAppConfigUseCaseImpl(
@@ -78,7 +69,9 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
             get(),
             androidContext().filesDir.path,
             isVerifierApp(androidContext()),
-            versionCode
+            versionCode,
+            get(),
+            get()
         )
     }
 

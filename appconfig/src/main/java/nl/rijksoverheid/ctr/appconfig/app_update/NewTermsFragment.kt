@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.new_terms
+package nl.rijksoverheid.ctr.appconfig.app_update
 
 import android.os.Bundle
 import android.view.View
@@ -7,10 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.R
-import nl.rijksoverheid.ctr.introduction.databinding.FragmentNewTermsBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.R
+import nl.rijksoverheid.ctr.appconfig.databinding.FragmentNewTermsBinding
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class NewTermsFragment : Fragment(R.layout.fragment_new_terms) {
 
     private val args: NewTermsFragmentArgs by navArgs()
-    private val introductionViewModel: IntroductionViewModel by viewModel()
+    private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +39,7 @@ class NewTermsFragment : Fragment(R.layout.fragment_new_terms) {
             }
         }
 
-        if (args.introductionData.newTerms?.needsConsent == true) {
+        if (args.appUpdateData.newTerms.needsConsent) {
             binding.positiveButton.visibility = View.VISIBLE
             binding.positiveButton.text =
                 getString(R.string.new_terms_consent_needed_positive_button)
@@ -56,7 +56,7 @@ class NewTermsFragment : Fragment(R.layout.fragment_new_terms) {
         }
 
         binding.positiveButton.setOnClickListener {
-            introductionViewModel.saveIntroductionFinished(args.introductionData)
+            appConfigViewModel.saveNewTerms()
             requireActivity().findNavController(R.id.main_nav_host_fragment)
                 .navigate(R.id.action_main)
         }

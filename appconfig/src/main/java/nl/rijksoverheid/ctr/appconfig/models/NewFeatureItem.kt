@@ -1,11 +1,11 @@
-package nl.rijksoverheid.ctr.introduction.new_features.models
+package nl.rijksoverheid.ctr.appconfig.models
 
 import android.os.Parcelable
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
-import nl.rijksoverheid.ctr.introduction.R
+import nl.rijksoverheid.ctr.appconfig.R
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

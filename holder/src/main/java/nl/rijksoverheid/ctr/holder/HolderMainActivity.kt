@@ -18,14 +18,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
-import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -83,10 +81,7 @@ class HolderMainActivity : AppCompatActivity() {
         })
 
         appConfigViewModel.appStatusLiveData.observe(this) {
-            val navController = navController
-            if (navController.currentDestination.toString().contains("nav_main") || it !is AppStatus.NoActionRequired) {
-                handleAppStatus(it, navController)
-            }
+            handleAppStatus(it, navController)
         }
 
         deviceRootedViewModel.deviceRootedLiveData.observe(this, EventObserver {
@@ -123,9 +118,7 @@ class HolderMainActivity : AppCompatActivity() {
     private fun navigateToIntroduction(
         navController: NavController, introductionStatus: IntroductionStatus
     ) {
-        navController.navigate(
-            R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
-        )
+        navController.navigate(RootNavDirections.actionIntroduction(introductionStatus))
     }
 
     private fun handleAppStatus(
@@ -138,9 +131,7 @@ class HolderMainActivity : AppCompatActivity() {
         }
 
         if (appStatus !is AppStatus.NoActionRequired) {
-            navController.navigate(R.id.action_app_status, AppStatusFragment.getBundle(appStatus))
-        } else {
-            //introductionViewModel.onConfigUpdated()
+            navController.navigate(RootNavDirections.actionAppStatus(appStatus))
         }
     }
 
