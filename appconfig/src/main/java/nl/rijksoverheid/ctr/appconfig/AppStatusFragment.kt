@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -23,16 +23,16 @@ class AppStatusFragment : Fragment() {
         when (val status = args.appStatus) {
             is AppStatus.UpdateRequired,
             is AppStatus.Deactivated,
-            is AppStatus.Error -> findNavControllerSafety()?.navigate(
+            is AppStatus.Error -> navigateSafety(
                 AppStatusFragmentDirections.actionAppLocked(status)
             )
             is AppStatus.NewFeatures -> {
-                findNavControllerSafety()?.navigate(
+                navigateSafety(
                     AppStatusFragmentDirections.actionNavNewFeatures(status.appUpdateData)
                 )
             }
             is AppStatus.ConsentNeeded -> {
-                findNavControllerSafety()?.navigate(
+                navigateSafety(
                     AppStatusFragmentDirections.actionNewTerms(status.appUpdateData)
                 )
             }
