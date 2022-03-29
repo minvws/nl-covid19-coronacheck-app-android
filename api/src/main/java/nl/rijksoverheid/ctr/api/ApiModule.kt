@@ -1,12 +1,15 @@
 package nl.rijksoverheid.ctr.api
 
+import com.appmattus.certificatetransparency.CTLogger
+import com.appmattus.certificatetransparency.VerificationResult
+import com.appmattus.certificatetransparency.certificateTransparencyTrustManager
+import com.appmattus.certificatetransparency.loglist.LogListDataSourceFactory
 import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.api.interceptors.CacheOverrideInterceptor
 import nl.rijksoverheid.ctr.api.interceptors.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.api.json.*
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.shared.models.Environment
-import okhttp3.CertificatePinner
 import okhttp3.ConnectionSpec
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
@@ -19,6 +22,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.X509TrustManager
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -32,7 +36,6 @@ fun apiModule(
     signatureCertificateCnMatch: String,
     coronaCheckApiChecks: Boolean,
     testProviderApiChecks: Boolean,
-    certificatePins: Array<String>,
 ) = module(override = true) {
     single {
         OkHttpClient.Builder()
@@ -40,10 +43,6 @@ fun apiModule(
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .followRedirects(false)
-            .certificatePinner(
-                CertificatePinner.Builder()
-                    .add(baseUrl.host, *certificatePins).build()
-            )
             .apply {
                 if (BuildConfig.DEBUG) {
                     addInterceptor(HttpLoggingInterceptor {
@@ -56,7 +55,7 @@ fun apiModule(
                         .build()
                     sslSocketFactory(
                         handshakeCertificates.sslSocketFactory(),
-                        handshakeCertificates.trustManager
+                        transparentTrustManager(handshakeCertificates.trustManager),
                     )
                 }
                 if (!BuildConfig.DEBUG) {
@@ -89,3 +88,18 @@ fun apiModule(
             .add(DisclosurePolicyJsonAdapter())
     }
 }
+
+private fun transparentTrustManager(trustManager: X509TrustManager) =
+    certificateTransparencyTrustManager(trustManager) {
+        if (BuildConfig.DEBUG) {
+            setLogger(object : CTLogger {
+                override fun log(host: String, result: VerificationResult) {
+                    Timber.tag("certificate transparency")
+                        .d("host: $host, verification result: $result")
+                }
+            })
+        }
+
+        setLogListService(LogListDataSourceFactory.createLogListService())
+    }
+

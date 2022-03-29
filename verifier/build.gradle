@@ -36,10 +36,6 @@ android {
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v8/\""
-        buildConfigField "String[]", "CERTIFICATE_PINS",
-                "{" +
-                        "\"sha256/L9V8t4JfWfEan29aaqxEzpnfBnXhjLIWTX9eu7D4=\"" +
-                        "}"
         buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v8/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
         ndk {
@@ -72,10 +68,6 @@ android {
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
             buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v8/\""
             buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v8/\""
-            buildConfigField "String[]", "CERTIFICATE_PINS",
-                    "{" +
-                            "\"sha256/L9V8t4JfWfEan29aaqxEzpnfBnXhjLIWTX9eu7D4=\"" +
-                            "}"
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
             manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
@@ -88,10 +80,6 @@ android {
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
             buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v8/\""
             buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v8/\""
-            buildConfigField "String[]", "CERTIFICATE_PINS",
-                    "{" +
-                            "\"sha256/L9V8t4JfWfEan29aaqxEzpnfBnXhjLIWTX9eu7D4=\"" +
-                            "}"
             manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
             matchingFallbacks = ['zxing']
         }
