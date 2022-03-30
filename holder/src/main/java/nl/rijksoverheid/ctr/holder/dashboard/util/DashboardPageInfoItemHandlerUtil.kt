@@ -262,7 +262,10 @@ class DashboardPageInfoItemHandlerUtilImpl(
                 is OriginType.Recovery -> {
                     InfoFragmentData.TitleDescription(
                         title = dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery),
+                        descriptionData = DescriptionData(
+                            htmlText = R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery,
+                            htmlLinksEnabled = true,
+                        ),
                     )
                 }
                 is OriginType.VaccinationAssessment -> {
