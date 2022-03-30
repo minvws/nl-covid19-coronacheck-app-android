@@ -108,6 +108,10 @@ fun fakeCachedAppConfigUseCase(
     override fun getCachedAppConfig(): HolderConfig {
         return appConfig
     }
+
+    override fun getCachedAppConfigOrNull(): HolderConfig? {
+        return appConfig
+    }
 }
 
 fun fakeIntroductionViewModel(
