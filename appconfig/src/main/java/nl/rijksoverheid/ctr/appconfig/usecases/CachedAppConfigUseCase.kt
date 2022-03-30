@@ -77,6 +77,6 @@ class CachedAppConfigUseCaseImpl constructor(
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
         // Return first 7 characters of hash
-        return digest.fold("", { str, it -> str + "%02x".format(it) }).subSequence(0,7).toString()
+        return digest.fold("") { str, it -> str + "%02x".format(it) }.subSequence(0,7).toString()
     }
 }

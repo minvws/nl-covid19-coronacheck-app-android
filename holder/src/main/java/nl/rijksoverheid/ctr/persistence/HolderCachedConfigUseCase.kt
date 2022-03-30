@@ -9,6 +9,7 @@ import java.io.File
 
 interface CachedAppConfigUseCase {
     fun getCachedAppConfig(): HolderConfig
+    fun getCachedAppConfigOrNull(): HolderConfig?
 }
 
 /*
@@ -28,25 +29,29 @@ class CachedAppConfigUseCaseImpl constructor(
 
     private val configFile = File(filesDirPath, "config.json")
     private val defaultConfig = HolderConfig.default()
-
+    
     override fun getCachedAppConfig(): HolderConfig {
+        return getCachedAppConfigOrNull() ?: defaultConfig
+    }
+
+    override fun getCachedAppConfigOrNull(): HolderConfig? {
         if (!configFile.exists()) {
-            return defaultConfig
+            return null
         }
 
         return try {
             val config = appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
                 ?.toObject(moshi)
-                ?: defaultConfig
+                as? HolderConfig
             val debugPolicy = debugDisclosurePolicyPersistenceManager.getDebugDisclosurePolicy()
 
             if (isDebugApp && debugPolicy != null) {
-                config.copy(disclosurePolicy = debugPolicy)
+                config?.copy(disclosurePolicy = debugPolicy)
             } else {
                 config
             }
         } catch (exc: Exception) {
-            defaultConfig
+            null
         }
     }
 }
