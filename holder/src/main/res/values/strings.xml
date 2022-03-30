@@ -345,7 +345,7 @@
   <string name="missing_events_description">Door drukte of een storing bij een van de partijen kunnen er gegevens missen. Probeer het eventueel later nog een keer.</string>
   <string name="dialog_vaccination_something_wrong_description"><![CDATA[Neem contact op met de zorgverlener waar je bent gevaccineerd. Dat kan de GGD, je huisarts of arts van een zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.]]></string>
   <string name="dialog_title_no_internet">Maak verbinding met het internet</string>
-  <string name="dialog_update_credentials_no_internet">\"De QR-code heeft af en toe internet nodig. Zonder internetverbinding kan je jouw QR-code nog 3 dagen gebruiken. Ook daarna kun je de QR-code weer gebruiken wanneer je internet hebt. \"</string>
+  <string name="dialog_update_credentials_no_internet">"De QR-code heeft af en toe internet nodig. Zonder internetverbinding kan je jouw QR-code nog 3 dagen gebruiken. Ook daarna kun je de QR-code weer gebruiken wanneer je internet hebt. "</string>
   <string name="dialog_credentials_expired_no_internet">Om toegang tot je QR-codes te houden heb je internet nodig. Maak nu verbinding.</string>
   <string name="commercial_test_unique_code_hint_screenreader">Vul hier je ophaalcode in</string>
   <string name="new_in_app_subtitle">Nieuw in de app</string>
@@ -463,7 +463,7 @@
   <string name="app_status_update_recommended_dismiss_action">Doe ik later</string>
   <string name="app_status_update_recommended_action">Nu updaten</string>
   <string name="error_something_went_wrong_title">Sorry, er gaat iets mis</string>
-  <string name="error_something_went_wrong_http_error_description"><![CDATA[We zijn bezig om dit probleem op te lossen. Wil je het later nog eens proberen?<br/><br/><b>Foutcode:</b><br/>%1s]]></string>
+  <string name="error_something_went_wrong_http_error_description"><![CDATA[We zijn bezig met een oplossing. Wil je het later nog eens proberen?<br/><br/><b>Foutcode:</b><br/>%1s]]></string>
   <string name="error_something_went_wrong_making_proof_description"><![CDATA[Er gaat iets mis bij het maken van je bewijs. Wil je het later nog eens proberen?<br/><br/><b>Foutcode:</b><br/>%1s]]></string>
   <string name="error_something_went_wrong_outage_button">Bekijk de actuele storingen</string>
   <string name="error_something_went_wrong_outage_button_url">https://status.coronacheck.nl/</string>
@@ -629,7 +629,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_dashboard_originExpiredBanner_internationalRecovery_title">Je internationale herstelbewijs is verlopen</string>
   <string name="holder_dashboard_originExpiredBanner_internationalTest_title">Je internationale testbewijs is verlopen</string>
   <string name="holder_expiredDomesticVaccinationModal_title">Verlopen vaccinatiebewijs</string>
-  <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Boostervaccinatie toevoegen</string>
   <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[Om je vaccinatiebewijs te verlengen heb je een boostervaccinatie nodig. Kijk voor meer informatie over boostervaccinaties op <a href=\"https://www.coronavaccinatie.nl/booster-cc\">www.coronavaccinatie.nl/booster</a>.<br/><br/>Heb je een boostervaccinatie gehad? Haal opnieuw je gegevens op om deze aan je bewijs toe te voegen.]]></string>
   <string name="holder_event_missingorigin_error_description"><![CDATA[<br/><br/><b>Foutcode:</b><br/>%1$s]]></string>
   <string name="rule_engine_no_test_origin_description_vaccination_approval">vaccinatiebeoordeling</string>
@@ -708,7 +707,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="dynamic_property_retrievedDetails">opgehaalde gegevens</string>
   <string name="holder_dashboard_emptyState_international_0G_message">Ga je naar het buitenland? Controleer altijd voor vertrek of je een coronabewijs nodig hebt.</string>
   <string name="holder_dashboard_international_0G_action_certificateNeeded">Is een bewijs nodig op mijn bestemming?</string>
-  <string name="holder_dashboard_international_0G_url">https://coronacheck.nl/reisadviezen</string>
   <string name="holder_dashboard_filledState_international_0G_message">Ga je naar een land waar een coronabewijs nodig is? Controleer altijd voor vertrek of je het goede bewijs hebt.</string>
   <string name="holder_dashboard_noDomesticCertificatesBanner_0G_title">In Nederland wordt het coronabewijs niet meer gebruikt. Daarom staan er alleen nog internationale bewijzen in de app.</string>
   <string name="holder_dashboard_noDomesticCertificatesBanner_0G_action_linkToRijksoverheid">Lees meer</string>
@@ -723,4 +721,5 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_onboarding_content_onlyInternationalQR_0G_title">Je bewijs heeft een QR-code</string>
   <string name="holder_onboarding_content_onlyInternationalQR_0G_message">De QR-code op je bewijs kan worden gecheckt bij de ingang van plekken en activiteiten in het buitenland. Of aan de grens.</string>
   <string name="holder_deactivation_url">https://coronacheck.nl/app/niet-in-gebruik</string>
+  <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Boostervaccinatie toevoegen</string>
 </resources>

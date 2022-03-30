@@ -345,7 +345,7 @@
   <string name="missing_events_description">Due to increased traffic or an outage at one of the parties, some details may be missing. Please try again later.</string>
   <string name="dialog_vaccination_something_wrong_description"><![CDATA[Please contact the care provider who vaccinated you. This can be the GGD, your general practitioner, or a doctor belonging to a healthcare facility. They can help you change these details.]]></string>
   <string name="dialog_title_no_internet">Connect to the internet</string>
-  <string name="dialog_update_credentials_no_internet">\"The QR code sometimes needs an internet connection. Without an internet connection, your QR code can be used for 3 more days. When you’re connected, you’ll be able to use the QR code again for a longer period of time.\"</string>
+  <string name="dialog_update_credentials_no_internet">"The QR code sometimes needs an internet connection. Without an internet connection, your QR code can be used for 3 more days. When you’re connected, you’ll be able to use the QR code again for a longer period of time."</string>
   <string name="dialog_credentials_expired_no_internet">You need an internet connection to regain access to your QR code.</string>
   <string name="commercial_test_unique_code_hint_screenreader">Enter your retrieval code here</string>
   <string name="new_in_app_subtitle">New in the app</string>
@@ -463,7 +463,7 @@
   <string name="app_status_update_recommended_dismiss_action">I\'ll do it later</string>
   <string name="app_status_update_recommended_action">Update now</string>
   <string name="error_something_went_wrong_title">Sorry, something went wrong</string>
-  <string name="error_something_went_wrong_http_error_description"><![CDATA[We are working hard to solve this problem. Could you please try again later?<br/><br/><b>Error code:</b><br/>%1s]]></string>
+  <string name="error_something_went_wrong_http_error_description"><![CDATA[We are working on a resolution. Could you please try again later?<br/><br/><b>Error code:</b><br/>%1s]]></string>
   <string name="error_something_went_wrong_making_proof_description"><![CDATA[Something is going wrong while creating your certificate. Could you please try again later?<br/><br/><b>Error code:</b><br/>%1s]]></string>
   <string name="error_something_went_wrong_outage_button">View the latest outages</string>
   <string name="error_something_went_wrong_outage_button_url">https://status.coronacheck.nl/en</string>
@@ -471,7 +471,7 @@
   <string name="error_too_busy_description"><![CDATA[Please try again later.<br/><br/><b>Error code:</b><br/>%1s]]></string>
   <string name="error_get_events_http_error_description"><![CDATA[Something is going wrong while creating your certificate. Could you please try again later?<br/><br/><b>Error code:</b><br/>%1s]]></string>
   <string name="error_get_events_missing_events_dialog_title_vaccines">Are these all your vaccinations?</string>
-  <string name="error_get_events_missing_events_dialog_title_testresults">\"Are these all your test certificates? \"</string>
+  <string name="error_get_events_missing_events_dialog_title_testresults">"Are these all your test certificates? "</string>
   <string name="error_get_events_missing_events_dialog_title_recoveries">Are these all your recovery certificates?</string>
   <string name="error_get_events_missing_events_dialog_description">Due to increased traffic or an outage, some of your details may be missing. Are you missing a vaccination? Please come back later and retrieve your details again.</string>
   <string name="error_get_events_no_events_title">Sorry, it was not successful</string>
@@ -628,7 +628,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_originExpiredBanner_internationalRecovery_title">Your international recovery certificate has expired</string>
   <string name="holder_dashboard_originExpiredBanner_internationalTest_title">Your international test certificate has expired</string>
   <string name="holder_expiredDomesticVaccinationModal_title">Expired vaccination certificate</string>
-  <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Add booster vaccination</string>
   <string name="holder_expiredDomesticVaccinationModal_body"><![CDATA[To renew your vaccination certificate, you need a booster vaccination. For more information about booster vaccinations, please visit <a href=\"https://www.government.nl/boosterjab-cc\">www.government.nl/boosterjab</a>.<br/><br/>Did you receive a booster vaccination? Then please retrieve your details again to add it to your certificate.]]></string>
   <string name="holder_event_missingorigin_error_description"><![CDATA[<br/><br/><b>Error code:</b><br/>%1$s]]></string>
   <string name="rule_engine_no_test_origin_description_vaccination_approval">vaccination approval</string>
@@ -707,7 +706,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="dynamic_property_retrievedDetails">retrieved details</string>
   <string name="holder_dashboard_emptyState_international_0G_message">Travelling abroad? Always check before departure whether you need a coronavirus pass.</string>
   <string name="holder_dashboard_international_0G_action_certificateNeeded">Is a certificate needed where I\'m heading?</string>
-  <string name="holder_dashboard_international_0G_url">https://coronacheck.nl/traveladvices</string>
   <string name="holder_dashboard_filledState_international_0G_message">Travelling to a country where a coronavirus pass is required? Always check before departure if you have the right certificate.</string>
   <string name="holder_dashboard_noDomesticCertificatesBanner_0G_title">The coronavirus pass is no longer used in the Netherlands. That is why there are only international certificates in the app.</string>
   <string name="holder_dashboard_noDomesticCertificatesBanner_0G_action_linkToRijksoverheid">Read more</string>
@@ -722,4 +720,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_onboarding_content_onlyInternationalQR_0G_title">Your certificate contains a QR code</string>
   <string name="holder_onboarding_content_onlyInternationalQR_0G_message">The QR code on your certificate can be checked at the entrance to places and activities abroad. Or at the border.</string>
   <string name="holder_deactivation_url">https://coronacheck.nl/app/not-in-use</string>
+  <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Add booster vaccination</string>
 </resources>
