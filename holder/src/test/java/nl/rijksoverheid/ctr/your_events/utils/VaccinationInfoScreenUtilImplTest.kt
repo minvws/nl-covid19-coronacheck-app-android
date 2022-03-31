@@ -42,6 +42,10 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
         val resources = context.resources
 
         val cachedAppConfigUseCase: CachedAppConfigUseCase = object : CachedAppConfigUseCase {
+            override fun getCachedAppConfigOrNull(): HolderConfig? {
+                return null
+            }
+
             override fun getCachedAppConfig() = HolderConfig.default().copy(
                 hpkCodes = listOf(
                     AppConfig.HpkCode(
@@ -118,6 +122,10 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
 
         val lastVaccinationDoseUtil = LastVaccinationDoseUtilImpl(resources)
         val cachedAppConfigUseCase: CachedAppConfigUseCase = object : CachedAppConfigUseCase {
+            override fun getCachedAppConfigOrNull(): HolderConfig? {
+                return null
+            }
+
             override fun getCachedAppConfig() = HolderConfig.default().copy(
                 hpkCodes = listOf(
                     AppConfig.HpkCode(

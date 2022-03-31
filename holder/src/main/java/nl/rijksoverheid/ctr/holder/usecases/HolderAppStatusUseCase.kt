@@ -54,8 +54,8 @@ class HolderAppStatusUseCaseImpl(
                     )
                 }
                 is ConfigResult.Error -> {
-                    val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfig()
-                    if (appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds
+                    val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfigOrNull()
+                    if (cachedAppConfig != null && appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds
                         >= OffsetDateTime.now(clock).toEpochSecond()
                     ) {
                         checkIfActionRequired(

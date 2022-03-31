@@ -29,8 +29,6 @@ val appModule = module {
     factory<CachedAppConfigUseCase> {
         CachedAppConfigUseCaseImpl(
             get(),
-            androidContext().filesDir.path,
-            get(),
             isDebugApp(androidContext()),
             get()
         )

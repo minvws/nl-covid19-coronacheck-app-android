@@ -8,6 +8,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.*
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
 import nl.rijksoverheid.ctr.holder.R
@@ -21,7 +22,6 @@ import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceMana
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Test
 import java.time.Clock
@@ -81,7 +81,7 @@ class HolderAppStatusUseCaseImplTest {
                 ),
                 currentVersionCode = 1
             )
-            Assert.assertEquals(AppStatus.Deactivated, appStatus)
+            assertEquals(AppStatus.Deactivated, appStatus)
         }
 
     @Test
@@ -107,7 +107,7 @@ class HolderAppStatusUseCaseImplTest {
                 ),
                 currentVersionCode = 1
             )
-            Assert.assertEquals(AppStatus.UpdateRequired, appStatus)
+            assertEquals(AppStatus.UpdateRequired, appStatus)
         }
 
     @Test
@@ -133,7 +133,7 @@ class HolderAppStatusUseCaseImplTest {
                 ),
                 currentVersionCode = 1
             )
-            Assert.assertEquals(AppStatus.NoActionRequired, appStatus)
+            assertEquals(AppStatus.NoActionRequired, appStatus)
         }
 
     @Test
@@ -166,7 +166,7 @@ class HolderAppStatusUseCaseImplTest {
                 config = ConfigResult.Error,
                 currentVersionCode = 1
             )
-            Assert.assertEquals(AppStatus.Error, appStatus)
+            assertEquals(AppStatus.Error, appStatus)
         }
 
     @Test
@@ -199,7 +199,7 @@ class HolderAppStatusUseCaseImplTest {
                 config = ConfigResult.Error,
                 currentVersionCode = 1026
             )
-            Assert.assertEquals(AppStatus.NoActionRequired, appStatus)
+            assertEquals(AppStatus.NoActionRequired, appStatus)
         }
 
     @Test
@@ -285,15 +285,27 @@ class HolderAppStatusUseCaseImplTest {
         appUpdateData: AppUpdateData = getAppUpdateData(),
         appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk(),
         introductionPersistenceManager: IntroductionPersistenceManager = mockk(),
-        showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
+        showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk(),
+        cachedAppConfig: HolderConfig? = mockk(),
+        configLastFetchedSeconds: Long = 0,
+        configTtlSeconds: Int = 0,
+        clock: Clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
     ) =
         HolderAppStatusUseCaseImpl(
-            clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
+            clock = clock,
             cachedAppConfigUseCase = mockk {
-                every { getCachedAppConfig().appDeactivated } returns appDeactivated
-                every { getCachedAppConfig().minimumVersion } returns minimumVersion
+                every { getCachedAppConfigOrNull() } returns cachedAppConfig
+                if (cachedAppConfig != null) {
+                    every { getCachedAppConfig() } returns cachedAppConfig
+                    every { cachedAppConfig.appDeactivated } returns appDeactivated
+                    every { cachedAppConfig.minimumVersion } returns minimumVersion
+                    every { cachedAppConfig.configTtlSeconds } returns configTtlSeconds
+                    every { cachedAppConfig.recommendedVersion } returns 1000
+                }
             },
-            appConfigPersistenceManager = mockk(),
+            appConfigPersistenceManager = mockk<AppConfigPersistenceManager>().apply {
+                every { getAppConfigLastFetchedSeconds() } returns configLastFetchedSeconds
+            },
             moshi = moshi,
             recommendedUpdatePersistenceManager = mockk(relaxed = true),
             appUpdateData = appUpdateData,
@@ -638,6 +650,59 @@ class HolderAppStatusUseCaseImplTest {
             assertEquals(1, appUpdateData.newFeatures.size)
             assertEquals(2, appUpdateData.newFeatureVersion)
         }
+    }
+
+    @Test
+    fun `given config result error and a corrupted cached config, AppStatus is Error`() = runBlocking {
+        val appStatusUseCase = appStatusUseCase(false, 1000, cachedAppConfig = null)
+
+        val appStatus = appStatusUseCase.get(
+            config = ConfigResult.Error,
+            currentVersionCode = 1000
+        )
+
+        assertEquals(AppStatus.Error, appStatus)
+    }
+
+    @Test
+    fun `given a valid cached config fetched recently, when config result is error, then no action is required`() = runBlocking {
+        val appStatusUseCase = appStatusUseCase(
+            appDeactivated = false,
+            minimumVersion = 1000,
+            configLastFetchedSeconds = 10000,
+            configTtlSeconds = 1000,
+            showNewDisclosurePolicyUseCase = mockk {
+                every { get() } returns null
+            },
+            appUpdatePersistenceManager = mockk {
+                every { getNewFeaturesSeen(any()) } returns true
+                every { getNewTermsSeen(any()) } returns true
+            },
+        )
+
+        val appStatus = appStatusUseCase.get(
+            config = ConfigResult.Error,
+            currentVersionCode = 1000
+        )
+
+        assertEquals(AppStatus.NoActionRequired, appStatus)
+    }
+
+    @Test
+    fun `given a valid cached config fetched long time ago, when config result is error, then AppStatus is error`() = runBlocking {
+        val appStatusUseCase = appStatusUseCase(
+            appDeactivated = false,
+            minimumVersion = 1000,
+            configLastFetchedSeconds = 1000,
+            configTtlSeconds = 1000,
+        )
+
+        val appStatus = appStatusUseCase.get(
+            config = ConfigResult.Error,
+            currentVersionCode = 1000
+        )
+
+        assertEquals(AppStatus.Error, appStatus)
     }
 
     private fun getAppUpdateData() = AppUpdateData(

@@ -1,14 +1,12 @@
 package nl.rijksoverheid.ctr.persistence
 
-import com.squareup.moshi.Moshi
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
-import nl.rijksoverheid.ctr.shared.ext.toObject
-import java.io.File
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase as BaseCachedAppConfigUseCase
 
 interface CachedAppConfigUseCase {
     fun getCachedAppConfig(): HolderConfig
+    fun getCachedAppConfigOrNull(): HolderConfig?
 }
 
 /*
@@ -19,34 +17,26 @@ interface CachedAppConfigUseCase {
  *
  */
 class CachedAppConfigUseCaseImpl constructor(
-    private val appConfigStorageManager: AppConfigStorageManager,
-    private val filesDirPath: String,
-    private val moshi: Moshi,
+    private val baseCachedAppConfigUseCase: BaseCachedAppConfigUseCase,
     private val isDebugApp: Boolean,
     private val debugDisclosurePolicyPersistenceManager: DebugDisclosurePolicyPersistenceManager
 ) : CachedAppConfigUseCase {
 
-    private val configFile = File(filesDirPath, "config.json")
     private val defaultConfig = HolderConfig.default()
 
     override fun getCachedAppConfig(): HolderConfig {
-        if (!configFile.exists()) {
-            return defaultConfig
-        }
+        return getCachedAppConfigOrNull() ?: defaultConfig
+    }
 
-        return try {
-            val config = appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
-                ?.toObject(moshi)
-                ?: defaultConfig
-            val debugPolicy = debugDisclosurePolicyPersistenceManager.getDebugDisclosurePolicy()
+    override fun getCachedAppConfigOrNull(): HolderConfig? {
+        val config = baseCachedAppConfigUseCase.getCachedAppConfigOrNull() as? HolderConfig
 
-            if (isDebugApp && debugPolicy != null) {
-                config.copy(disclosurePolicy = debugPolicy)
-            } else {
-                config
-            }
-        } catch (exc: Exception) {
-            defaultConfig
+        val debugPolicy = debugDisclosurePolicyPersistenceManager.getDebugDisclosurePolicy()
+
+        return if (isDebugApp && debugPolicy != null) {
+            config?.copy(disclosurePolicy = debugPolicy)
+        } else {
+            config
         }
     }
 }
