@@ -131,6 +131,10 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
+    override fun getCachedAppConfigOrNull(): AppConfig? {
+        return appConfig
+    }
+
     override fun getCachedAppConfigHash(): String {
         return ""
     }

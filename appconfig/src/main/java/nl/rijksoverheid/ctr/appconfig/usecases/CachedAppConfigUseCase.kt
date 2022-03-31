@@ -21,6 +21,7 @@ import java.security.MessageDigest
 interface CachedAppConfigUseCase {
     fun isCachedAppConfigValid(): Boolean
     fun getCachedAppConfig(): AppConfig
+    fun getCachedAppConfigOrNull(): AppConfig?
     fun getCachedAppConfigHash() : String
 }
 
@@ -53,6 +54,14 @@ class CachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getCachedAppConfig(): AppConfig {
+        return getCachedAppConfigOrNull() ?: defaultConfig
+    }
+
+    override fun getCachedAppConfigOrNull(): AppConfig? {
+        if (!configFile.exists()) {
+            return null
+        }
+
         return try {
             val config = if (isVerifierApp) {
                 appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
@@ -61,9 +70,9 @@ class CachedAppConfigUseCaseImpl constructor(
                 appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
                     ?.toObject(moshi) as? HolderConfig
             }
-            return config ?: defaultConfig
+            return config
         } catch (exc: Exception) {
-            defaultConfig
+            null
         }
     }
 
