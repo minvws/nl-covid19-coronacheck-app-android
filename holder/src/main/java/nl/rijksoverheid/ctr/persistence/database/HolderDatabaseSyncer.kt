@@ -96,10 +96,16 @@ class HolderDatabaseSyncerImpl(
                                 remoteGreenCards.getAllOrigins()
                             }
 
-                            if ((expectedOriginType != null && !originsToCheck
-                                    .contains(expectedOriginType) && expectedOriginType != OriginType.VaccinationAssessment)
-                                || remoteGreenCards.getAllOrigins().isEmpty()
-                            ) {
+                            // We expect a certain origin but that is not present on the server
+                            val doesNotContainExpectedOrigin = expectedOriginType != null && !originsToCheck.contains(expectedOriginType)
+
+                            // If the expected origin is vaccination assessment
+                            val expectedOriginIsVaccinationAssessment = expectedOriginType != OriginType.VaccinationAssessment
+
+                            // If there are no origins returned
+                            val hasNoOrigins = originsToCheck.isEmpty()
+
+                            if ((doesNotContainExpectedOrigin || hasNoOrigins) && expectedOriginIsVaccinationAssessment) {
                                 return@withContext DatabaseSyncerResult.Success(
                                     missingOrigin = true,
                                     combinedVaccinationRecovery
