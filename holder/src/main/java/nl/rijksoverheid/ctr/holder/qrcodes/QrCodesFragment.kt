@@ -29,7 +29,7 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodesBinding
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
@@ -66,7 +66,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private val infoScreenUtil: QrInfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase by inject()
     private val qrCodesFragmentUtil: QrCodesFragmentUtil by inject()
     private lateinit var qrCodePagerAdapter: QrCodePagerAdapter
 

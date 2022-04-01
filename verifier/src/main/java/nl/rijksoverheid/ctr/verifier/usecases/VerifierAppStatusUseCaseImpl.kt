@@ -13,7 +13,6 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import java.time.Clock
@@ -37,7 +36,7 @@ class VerifierAppStatusUseCaseImpl(
     private val appUpdateData: AppUpdateData,
     private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
     private val introductionPersistenceManager: IntroductionPersistenceManager,
-    private val featureFlagUseCase: FeatureFlagUseCase
+    private val featureFlagUseCase: VerifierFeatureFlagUseCase
     ) : AppStatusUseCase {
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =

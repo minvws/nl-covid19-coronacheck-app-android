@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.verifier.usecases
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus

@@ -23,7 +23,7 @@ import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
 import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
@@ -48,7 +48,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
 

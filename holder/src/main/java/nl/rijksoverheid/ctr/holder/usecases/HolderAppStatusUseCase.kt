@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceMa
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -33,7 +33,7 @@ import java.time.OffsetDateTime
 
 class HolderAppStatusUseCaseImpl(
     private val clock: Clock,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
     private val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager,
     private val moshi: Moshi,

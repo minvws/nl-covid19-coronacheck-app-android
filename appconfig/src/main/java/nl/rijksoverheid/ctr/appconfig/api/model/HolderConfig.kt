@@ -66,9 +66,7 @@ data class HolderConfig(
     upgradeRecommendationIntervalHours,
     holderDeeplinkDomains,
     holderClockDeviationThresholdSeconds,
-    holderConfigAlmostOutOfDateWarningSeconds,
-    holderEnableVerificationPolicyVersion,
-    verificationPolicies,
+    holderConfigAlmostOutOfDateWarningSeconds
 ) {
 
     companion object {

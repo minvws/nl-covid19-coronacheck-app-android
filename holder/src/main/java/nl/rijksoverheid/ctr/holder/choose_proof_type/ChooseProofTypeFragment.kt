@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProofTypeBinding
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import org.koin.android.ext.android.inject
@@ -27,7 +27,7 @@ import org.koin.android.ext.android.inject
  */
 class ChooseProofTypeFragment : Fragment(R.layout.fragment_choose_proof_type) {
 
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

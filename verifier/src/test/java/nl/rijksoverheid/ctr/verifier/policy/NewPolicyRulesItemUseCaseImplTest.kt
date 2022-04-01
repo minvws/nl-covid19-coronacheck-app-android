@@ -12,14 +12,14 @@ package nl.rijksoverheid.ctr.verifier.policy
 
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 import org.junit.Assert.*
 import org.junit.Test
 
 class NewPolicyRulesItemUseCaseImplTest {
 
-    private val featureFlagUseCase: FeatureFlagUseCase = mockk()
+    private val featureFlagUseCase: VerifierFeatureFlagUseCase = mockk()
     private val newPolicyRulesItemUseCase = NewPolicyRulesItemUseCaseImpl(featureFlagUseCase)
 
     @Test

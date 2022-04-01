@@ -4,7 +4,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase as BaseCachedAppConfigUseCase
 
-interface CachedAppConfigUseCase {
+interface HolderCachedAppConfigUseCase {
     fun getCachedAppConfig(): HolderConfig
     fun getCachedAppConfigOrNull(): HolderConfig?
 }
@@ -16,11 +16,11 @@ interface CachedAppConfigUseCase {
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CachedAppConfigUseCaseImpl constructor(
+class HolderCachedAppConfigUseCaseImpl constructor(
     private val baseCachedAppConfigUseCase: BaseCachedAppConfigUseCase,
     private val isDebugApp: Boolean,
     private val debugDisclosurePolicyPersistenceManager: DebugDisclosurePolicyPersistenceManager
-) : CachedAppConfigUseCase {
+) : HolderCachedAppConfigUseCase {
 
     private val defaultConfig = HolderConfig.default()
 

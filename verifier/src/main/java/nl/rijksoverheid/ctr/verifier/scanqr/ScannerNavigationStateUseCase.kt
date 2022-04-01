@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.verifier.scanqr
 
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.usecases.ScannerStateUseCase
+import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,7 +19,7 @@ interface ScannerNavigationStateUseCase {
 class ScannerNavigationStateUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val scannerStateUseCase: ScannerStateUseCase,
-    private val featureFlagUseCase: FeatureFlagUseCase
+    private val featureFlagUseCase: VerifierFeatureFlagUseCase
 ) : ScannerNavigationStateUseCase {
     override fun get(): ScannerNavigationState {
         return if (!persistenceManager.getScanInstructionsSeen()) {

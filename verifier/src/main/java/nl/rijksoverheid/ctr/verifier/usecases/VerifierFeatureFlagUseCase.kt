@@ -6,21 +6,21 @@
  *
  */
 
-package nl.rijksoverheid.ctr.appconfig.usecases
+package nl.rijksoverheid.ctr.verifier.usecases
 
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.*
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 
-interface FeatureFlagUseCase {
+interface VerifierFeatureFlagUseCase {
     fun isVerificationPolicySelectionEnabled(): Boolean
 }
 
-class FeatureFlagUseCaseImpl(
-    private val appConfigUseCase: CachedAppConfigUseCase,
-): FeatureFlagUseCase {
+class VerifierFeatureFlagUseCaseImpl(
+    private val appConfigUseCase: VerifierCachedAppConfigUseCase,
+): VerifierFeatureFlagUseCase {
 
     override fun isVerificationPolicySelectionEnabled(): Boolean {
-        val verificationPoliciesEnabled = appConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+        val verificationPoliciesEnabled = appConfigUseCase.getCachedAppConfig().verificationPolicies
             .filter { VerificationPolicy.fromConfigValue(it) != null }
         return verificationPoliciesEnabled.size > 1
     }

@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingResponse
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.your_events.models.RemotePrepareIssue
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /*
@@ -38,7 +38,7 @@ interface CoronaCheckRepository {
 }
 
 open class CoronaCheckRepositoryImpl(
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
     private val holderApiClientUtil: HolderApiClientUtil,
     private val remoteConfigApiClient: RemoteConfigApiClient,
     private val networkRequestResultFactory: NetworkRequestResultFactory

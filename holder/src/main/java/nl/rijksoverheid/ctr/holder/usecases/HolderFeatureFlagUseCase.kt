@@ -7,7 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.usecases
 
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface HolderFeatureFlagUseCase {
@@ -15,7 +15,7 @@ interface HolderFeatureFlagUseCase {
 }
 
 class HolderFeatureFlagUseCaseImpl(
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ): HolderFeatureFlagUseCase {
 
     override fun getDisclosurePolicy(): DisclosurePolicy {
