@@ -55,27 +55,27 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
         verify { verifierMainActivityViewModel.cleanup() }
     }
 
-    @Test
-    fun `If introduction not finished navigate to introduction`() {
-        val scenario = launchVerifierMainActivity(
-            fakeIntroductionViewModel(
-                introductionStatus = IntroductionStatus.OnboardingNotFinished(
-                    introductionData = IntroductionData(
-                        onboardingItems = listOf(),
-                        privacyPolicyItems = listOf()
-                    )
-                ),
-            ),
-            verifierMainActivityViewModel = mockk(relaxed = true)
-        )
-
-        scenario.onActivity {
-            assertEquals(
-                it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_onboarding
-            )
-        }
-    }
+//    @Test
+//    fun `If introduction not finished navigate to introduction`() {
+//        val scenario = launchVerifierMainActivity(
+//            fakeIntroductionViewModel(
+//                introductionStatus = IntroductionStatus.OnboardingNotFinished(
+//                    introductionData = IntroductionData(
+//                        onboardingItems = listOf(),
+//                        privacyPolicyItems = listOf()
+//                    )
+//                ),
+//            ),
+//            verifierMainActivityViewModel = mockk(relaxed = true)
+//        )
+//
+//        scenario.onActivity {
+//            assertEquals(
+//                it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
+//                R.id.nav_onboarding
+//            )
+//        }
+//    }
 
     @Test
     fun `If introduction finished navigate to main`() {
