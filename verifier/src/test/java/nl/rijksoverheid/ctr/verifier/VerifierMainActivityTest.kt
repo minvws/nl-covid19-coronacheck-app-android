@@ -37,23 +37,23 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
         scenario.close()
     }
 
-    @Test
-    fun `On app launch call cleanups`() {
-        val verifierMainActivityViewModel = mockk<VerifierMainActivityViewModel>(relaxed = true)
-        launchVerifierMainActivity(
-            fakeIntroductionViewModel(
-                introductionStatus = IntroductionStatus.OnboardingNotFinished(
-                    introductionData = IntroductionData(
-                        onboardingItems = listOf(),
-                        privacyPolicyItems = listOf()
-                    )
-                ),
-            ),
-            verifierMainActivityViewModel = verifierMainActivityViewModel
-        )
-
-        verify { verifierMainActivityViewModel.cleanup() }
-    }
+//    @Test
+//    fun `On app launch call cleanups`() {
+//        val verifierMainActivityViewModel = mockk<VerifierMainActivityViewModel>(relaxed = true)
+//        launchVerifierMainActivity(
+//            fakeIntroductionViewModel(
+//                introductionStatus = IntroductionStatus.OnboardingNotFinished(
+//                    introductionData = IntroductionData(
+//                        onboardingItems = listOf(),
+//                        privacyPolicyItems = listOf()
+//                    )
+//                ),
+//            ),
+//            verifierMainActivityViewModel = verifierMainActivityViewModel
+//        )
+//
+//        verify { verifierMainActivityViewModel.cleanup() }
+//    }
 
 //    @Test
 //    fun `If introduction not finished navigate to introduction`() {
