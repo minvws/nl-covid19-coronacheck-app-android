@@ -21,16 +21,10 @@ class IntroductionStatusFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         when (val status = args.introductionStatus) {
-            is IntroductionStatus.SetupNotFinished -> {
-                findNavControllerSafety()?.navigate(
-                    IntroductionStatusFragmentDirections.actionSetup()
-                )
-            }
+            is IntroductionStatus.SetupNotFinished,
             is IntroductionStatus.OnboardingNotFinished -> {
                 findNavControllerSafety()?.navigate(
-                    IntroductionStatusFragmentDirections.actionOnboarding(
-                        status.introductionData
-                    )
+                    IntroductionStatusFragmentDirections.actionSetup()
                 )
             }
             IntroductionStatus.IntroductionFinished -> { }
