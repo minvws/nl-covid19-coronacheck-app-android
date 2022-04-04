@@ -161,8 +161,12 @@ class MenuUtilImpl(
                         text = context.getString(R.string.about_this_app_colofon),
                         url = context.getString(R.string.about_this_app_colofon_url),
                     ),
+                    AboutThisAppData.Destination(
+                        text = context.getString(R.string.holder_menu_storedEvents),
+                        destinationId = R.id.nav_about_this_app
+                    ),
                     AboutThisAppData.ClearAppData(
-                        text = context.getString(R.string.about_this_clear_data)
+                        text = context.getString(R.string.holder_menu_resetApp)
                     )
                 )
             )

@@ -721,4 +721,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_onboarding_content_onlyInternationalQR_0G_message">The QR code on your certificate can be checked at the entrance to places and activities abroad. Or at the border.</string>
   <string name="holder_deactivation_url">https://coronacheck.nl/app/not-in-use</string>
   <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Add booster vaccination</string>
+  <string name="holder_showqr_eu_about_vaccination_dosage_message">&lt;a href=\\"https://coronacheck.nl/nl/faq-in-app\\"&gt;Lees meer over mijn dosis&lt;/a&gt;</string>
+  <string name="holder_menu_storedEvents">Opgeslagen gegevens</string>
+  <string name="holder_menu_resetApp">App opnieuw instellen</string>
 </resources>
