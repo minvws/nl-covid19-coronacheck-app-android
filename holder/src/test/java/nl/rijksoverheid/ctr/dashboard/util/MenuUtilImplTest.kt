@@ -10,10 +10,10 @@ package nl.rijksoverheid.ctr.dashboard.util
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtilImpl
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,19 +21,21 @@ import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class MenuUtilImplTest: AutoCloseKoinTest() {
+class MenuUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `When visitor pass enabled return correct menu sections`() {
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
         val appConfigPersistenceManager = mockk<AppConfigPersistenceManager>(relaxed = true)
+        val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true)
 
         val util = MenuUtilImpl(
             cachedAppConfigUseCase = cachedAppConfigUseCase,
-            appConfigPersistenceManager = appConfigPersistenceManager
+            appConfigPersistenceManager = appConfigPersistenceManager,
+            featureFlagUseCase = featureFlagUseCase
         )
 
-        every { cachedAppConfigUseCase.getCachedAppConfig() } answers { HolderConfig.default(visitorPassEnabled = true) }
+        every { featureFlagUseCase.getVisitorPassEnabled() } returns true
 
         val menuSections = util.getMenuSections(
             context = ApplicationProvider.getApplicationContext()
@@ -48,13 +50,15 @@ class MenuUtilImplTest: AutoCloseKoinTest() {
     fun `When visitor pass disabled return correct menu sections`() {
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
         val appConfigPersistenceManager = mockk<AppConfigPersistenceManager>(relaxed = true)
+        val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true)
 
         val util = MenuUtilImpl(
             cachedAppConfigUseCase = cachedAppConfigUseCase,
-            appConfigPersistenceManager = appConfigPersistenceManager
+            appConfigPersistenceManager = appConfigPersistenceManager,
+            featureFlagUseCase = featureFlagUseCase
         )
 
-        every { cachedAppConfigUseCase.getCachedAppConfig() } answers { HolderConfig.default(visitorPassEnabled = false) }
+        every { featureFlagUseCase.getVisitorPassEnabled() } returns false
 
         val menuSections = util.getMenuSections(
             context = ApplicationProvider.getApplicationContext()
