@@ -9,6 +9,7 @@
   <string name="holder_recovery_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="holder_test_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="general_toMyOverview">To my certificates</string>
+  <string name="general_vaccination">vaccination</string>
   <string name="holder_listRemoteEvents_title">Are the details correct?</string>
   <string name="holder_vaccination_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your details again later.</string>
   <string name="holder_listRemoteEvents_somethingWrong_title">Is something wrong?</string>
@@ -731,7 +732,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_storedEvents_button_removeEvents">Wis deze gegevens</string>
   <string name="holder_storedEvents_list_noEvents">Geen gegevens opgeslagen</string>
   <string name="holder_storedEvents_listHeader_fetchedFromProvider">Opgehaald bij %s</string>
-  <string name="holder_storedEvents_listHeader_paperFlow">Ingescande bewijzen</string>
+  <string name="holder_storedEvents_listHeader_paperFlow">Ingescand bewijs</string>
   <string name="general_negativeTest">Negatieve testuitslag</string>
   <string name="general_positiveTest">Positieve testuitslag</string>
   <string name="holder_storedEvent_alert_removeEvents_title">Deze gegevens verwijderen?</string>

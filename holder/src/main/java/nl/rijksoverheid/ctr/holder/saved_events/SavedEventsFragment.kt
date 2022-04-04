@@ -13,11 +13,12 @@ import androidx.fragment.app.Fragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
+import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardPageBinding
 import nl.rijksoverheid.ctr.holder.databinding.FragmentSavedEventsBinding
+import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsHeaderAdapterItem
+import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsSectionAdapterItem
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
 
@@ -42,10 +43,17 @@ class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
     private fun getSavedEvents() {
         savedEventsViewModel.getSavedEvents()
 
-        savedEventsViewModel.savedEventsLiveData.observe(viewLifecycleOwner) {
-            section.add(
-                SavedEventsHeaderAdapterItem()
-            )
+        savedEventsViewModel.savedEventsLiveData.observe(viewLifecycleOwner) { savedEvents ->
+            val items = mutableListOf<BindableItem<*>>()
+            items.add(SavedEventsHeaderAdapterItem())
+            savedEvents.forEach {
+                items.add(
+                    SavedEventsSectionAdapterItem(
+                        savedEvents = it
+                    )
+                )
+            }
+            section.addAll(items)
         }
     }
 }

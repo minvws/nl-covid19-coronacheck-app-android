@@ -9,6 +9,7 @@
   <string name="holder_recovery_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="holder_test_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="general_toMyOverview">Naar mijn bewijzen</string>
+  <string name="general_vaccination">vaccinatie</string>
   <string name="holder_listRemoteEvents_title">Kloppen de gegevens?</string>
   <string name="holder_vaccination_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je gegevens ophalen.</string>
   <string name="holder_listRemoteEvents_somethingWrong_title">Klopt er iets niet?</string>
@@ -732,7 +733,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_storedEvents_button_removeEvents">Wis deze gegevens</string>
   <string name="holder_storedEvents_list_noEvents">Geen gegevens opgeslagen</string>
   <string name="holder_storedEvents_listHeader_fetchedFromProvider">Opgehaald bij %s</string>
-  <string name="holder_storedEvents_listHeader_paperFlow">Ingescande bewijzen</string>
+  <string name="holder_storedEvents_listHeader_paperFlow">Ingescand bewijs</string>
   <string name="general_negativeTest">Negatieve testuitslag</string>
   <string name="general_positiveTest">Positieve testuitslag</string>
   <string name="holder_storedEvent_alert_removeEvents_title">Deze gegevens verwijderen?</string>

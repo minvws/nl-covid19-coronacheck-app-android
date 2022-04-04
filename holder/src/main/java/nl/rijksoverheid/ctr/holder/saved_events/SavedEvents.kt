@@ -14,7 +14,6 @@ data class SavedEvents(
     val provider: String,
     val events: List<SavedEvent>
 ) {
-
     data class SavedEvent(
         val type: OriginType,
         val date: OffsetDateTime
