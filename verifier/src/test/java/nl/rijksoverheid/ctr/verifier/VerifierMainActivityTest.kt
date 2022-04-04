@@ -11,8 +11,6 @@ import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
 import nl.rijksoverheid.ctr.appconfig.models.NewTerms
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -41,14 +39,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     fun `On app launch call cleanups`() {
         val verifierMainActivityViewModel = mockk<VerifierMainActivityViewModel>(relaxed = true)
         launchVerifierMainActivity(
-            fakeIntroductionViewModel(
-                introductionStatus = IntroductionStatus.OnboardingNotFinished(
-                    introductionData = IntroductionData(
-                        onboardingItems = listOf(),
-                        privacyPolicyItems = listOf()
-                    )
-                ),
-            ),
+            fakeIntroductionViewModel(),
             verifierMainActivityViewModel = verifierMainActivityViewModel
         )
 
@@ -58,21 +49,14 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If introduction not finished navigate to introduction`() {
         val scenario = launchVerifierMainActivity(
-            fakeIntroductionViewModel(
-                introductionStatus = IntroductionStatus.OnboardingNotFinished(
-                    introductionData = IntroductionData(
-                        onboardingItems = listOf(),
-                        privacyPolicyItems = listOf()
-                    )
-                ),
-            ),
+            fakeIntroductionViewModel(introductionRequired = true),
             verifierMainActivityViewModel = mockk(relaxed = true)
         )
 
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_onboarding
+                R.id.nav_setup
             )
         }
     }
@@ -80,7 +64,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If introduction finished navigate to main`() {
         val scenario = launchVerifierMainActivity(
-            fakeIntroductionViewModel(setupRequired = false),
+            fakeIntroductionViewModel(introductionRequired = false),
             verifierMainActivityViewModel = mockk(relaxed = true)
         )
 
@@ -95,7 +79,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If consent needed navigate to new terms`() {
         val scenario = launchVerifierMainActivity(
-            fakeIntroductionViewModel(setupRequired = false),
+            fakeIntroductionViewModel(introductionRequired = false),
             verifierMainActivityViewModel = mockk(relaxed = true),
             appStatus = AppStatus.ConsentNeeded(AppUpdateData(listOf(), NewTerms(1, true)))
         )
@@ -111,7 +95,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If new features navigate to introduction`() {
         val scenario = launchVerifierMainActivity(
-            fakeIntroductionViewModel(setupRequired = false),
+            fakeIntroductionViewModel(introductionRequired = false),
             verifierMainActivityViewModel = mockk(relaxed = true),
             appStatus = AppStatus.NewFeatures(AppUpdateData(listOf(), NewTerms(1, true)))
         )
@@ -157,6 +141,9 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
                 }
                 viewModel {
                     verifierMainActivityViewModel
+                }
+                viewModel {
+                    fakeSetupViewModel()
                 }
                 factory {
                     fakeCachedAppConfigUseCase()

@@ -39,10 +39,6 @@
         app:popUpTo="@+id/root_nav"
         app:popUpToInclusive="true">
 
-        <argument
-            android:name="introduction_status"
-            app:argType="nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus" />
-
     </action>
 
     <action

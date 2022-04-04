@@ -3,29 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_introduction"
-    app:startDestination="@+id/nav_introduction_status">
-
-    <fragment
-        android:id="@+id/nav_introduction_status"
-        android:name="nl.rijksoverheid.ctr.introduction.status.IntroductionStatusFragment">
-
-        <argument
-            android:name="introduction_status"
-            app:argType="nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus" />
-
-        <action
-            android:id="@+id/action_setup"
-            app:destination="@id/nav_setup"
-            app:popUpTo="@id/nav_introduction"
-            app:popUpToInclusive="true" />
-
-        <action
-            android:id="@+id/action_onboarding"
-            app:destination="@id/nav_onboarding"
-            app:popUpTo="@id/nav_introduction"
-            app:popUpToInclusive="true" />
-
-    </fragment>
+    app:startDestination="@+id/nav_setup">
 
     <fragment
         android:id="@+id/nav_setup"

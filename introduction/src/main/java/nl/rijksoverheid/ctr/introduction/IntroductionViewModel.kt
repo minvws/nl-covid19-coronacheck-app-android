@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.introduction.status.usecases.IntroductionStatusUseCase
-import nl.rijksoverheid.ctr.shared.livedata.Event
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,10 +16,9 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
  */
 
 abstract class IntroductionViewModel : ViewModel() {
-    val introductionStatusLiveData: LiveData<Event<IntroductionStatus>> = MutableLiveData()
-    abstract fun getIntroductionStatus(): IntroductionStatus
+    val introductionRequiredLiveData: LiveData<Unit> = MutableLiveData()
+    abstract fun getIntroductionRequired(): Boolean
     abstract fun saveIntroductionFinished(introductionData: IntroductionData)
-    abstract fun onConfigUpdated()
 }
 
 class IntroductionViewModelImpl(
@@ -30,26 +27,15 @@ class IntroductionViewModelImpl(
 ) : IntroductionViewModel() {
 
     init {
-        postIntroductionStatus()
+        if (introductionStatusUseCase.getIntroductionRequired()) {
+            (introductionRequiredLiveData as MutableLiveData).postValue(Unit)
+        }
     }
 
-    override fun getIntroductionStatus() = introductionStatusUseCase.get()
+    override fun getIntroductionRequired() = introductionStatusUseCase.getIntroductionRequired()
 
     override fun saveIntroductionFinished(introductionData: IntroductionData) {
         introductionPersistenceManager.saveIntroductionFinished()
         introductionData.savePolicyChange()
-    }
-
-    override fun onConfigUpdated() {
-        introductionPersistenceManager.saveSetupFinished()
-        postIntroductionStatus()
-    }
-
-    private fun postIntroductionStatus() {
-        introductionStatusUseCase.get()
-            .takeIf { it !is IntroductionStatus.IntroductionFinished }
-            ?.let {
-                (introductionStatusLiveData as MutableLiveData).postValue(Event(it))
-            }
     }
 }
