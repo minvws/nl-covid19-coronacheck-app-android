@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.introduction.status.usecases
 
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -10,5 +10,6 @@ import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
  *
  */
 interface IntroductionStatusUseCase {
-    fun get(): IntroductionStatus
+    fun getIntroductionRequired(): Boolean
+    fun getData(): IntroductionData
 }

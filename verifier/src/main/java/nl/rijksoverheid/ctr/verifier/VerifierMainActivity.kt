@@ -11,7 +11,6 @@ import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
@@ -68,9 +67,9 @@ class VerifierMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
-            navigateToIntroduction(navController, it)
-        })
+        introductionViewModel.introductionRequiredLiveData.observe(this) {
+            navigateToIntroduction(navController)
+        }
 
         appConfigViewModel.appStatusLiveData.observe(this) {
             verifierMainActivityViewModel.policyUpdate()
@@ -105,10 +104,9 @@ class VerifierMainActivity : AppCompatActivity() {
     }
 
     private fun navigateToIntroduction(
-        navController: NavController,
-        introductionStatus: IntroductionStatus
+        navController: NavController
     ) {
-        navController.navigate(RootNavDirections.actionIntroduction(introductionStatus))
+        navController.navigate(RootNavDirections.actionIntroduction())
     }
 
     private fun restartApp() {
@@ -118,8 +116,7 @@ class VerifierMainActivity : AppCompatActivity() {
         Runtime.getRuntime().exit(0)
     }
 
-    private fun isIntroductionFinished() =
-        introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished
+    private fun isIntroductionFinished() = !introductionViewModel.getIntroductionRequired()
 
     private fun handleAppStatus(
         appStatus: AppStatus,

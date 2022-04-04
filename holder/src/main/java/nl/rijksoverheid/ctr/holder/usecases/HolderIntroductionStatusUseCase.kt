@@ -14,8 +14,6 @@ import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus.OnboardingNotFinished
 import nl.rijksoverheid.ctr.introduction.status.usecases.IntroductionStatusUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
@@ -26,30 +24,28 @@ class HolderIntroductionStatusUseCaseImpl(
     private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
 ) : IntroductionStatusUseCase {
 
-    override fun get(): IntroductionStatus {
-        return when {
-            setupIsNotFinished() -> IntroductionStatus.SetupNotFinished
-            onboardingIsNotFinished() -> getOnboardingNotFinished()
-            else -> IntroductionStatus.IntroductionFinished
-        }
+    override fun getIntroductionRequired(): Boolean {
+        return setupIsNotFinished() || onboardingIsNotFinished()
     }
 
     private fun setupIsNotFinished() = !introductionPersistenceManager.getSetupFinished()
+
+    private fun onboardingIsNotFinished() =
+        !introductionPersistenceManager.getIntroductionFinished()
 
     /**
      * Add the current disclosure policy info as onboarding item
      *
      * @return Onboarding not finished state with disclosure policy onboarding item added
      */
-    private fun getOnboardingNotFinished(): OnboardingNotFinished {
+    override fun getData(): IntroductionData {
         val policy = holderFeatureFlagUseCase.getDisclosurePolicy()
-        return OnboardingNotFinished(
-            introductionData.copy(
+        return introductionData.copy(
                 onboardingItems = getOnboardingItems(policy)
             ).apply {
                 setSavePolicyChange { persistenceManager.setPolicyScreenSeen(policy) }
             }
-        )
+
     }
 
     @StringRes
@@ -71,9 +67,6 @@ class HolderIntroductionStatusUseCaseImpl(
             DisclosurePolicy.OneAndThreeG -> R.string.holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_message
         }
     }
-
-    private fun onboardingIsNotFinished() =
-        !introductionPersistenceManager.getIntroductionFinished()
 
     private fun getOnboardingItems(policy: DisclosurePolicy): List<OnboardingItem> {
         return listOfNotNull(
