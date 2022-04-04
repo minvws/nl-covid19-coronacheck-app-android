@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetEventsFromPaperProofQrUseCase
 import nl.rijksoverheid.ctr.holder.your_events.utils.EventGroupEntityUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
@@ -21,7 +22,8 @@ import java.time.OffsetDateTime
 class SavedEventsViewModel(
     private val holderDatabase: HolderDatabase,
     private val remoteEventUtil: RemoteEventUtil,
-    private val eventGroupEntityUtil: EventGroupEntityUtil
+    private val eventGroupEntityUtil: EventGroupEntityUtil,
+    private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase
 ): ViewModel() {
 
     val savedEventsLiveData: LiveData<List<SavedEvents>> = MutableLiveData()
@@ -35,10 +37,8 @@ class SavedEventsViewModel(
                     providerIdentifier = eventGroup.providerIdentifier
                 )
                 val remoteEvents = if (isDccEvent) {
-                    val remoteEvent = remoteEventUtil.getRemoteEventFromDcc(
-                        JSONObject()
-                    )
-                    listOf(remoteEvent)
+                    val credential = JSONObject(eventGroup.jsonData.decodeToString()).getString("credential")
+                    getEventsFromPaperProofQrUseCase.get(credential).events ?: listOf()
                 } else {
                     remoteEventUtil.getRemoteEventsFromNonDcc(
                         eventGroupEntity = eventGroup
