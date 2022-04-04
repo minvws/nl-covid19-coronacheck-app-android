@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,7 +27,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
 
     private val appStatusViewModel: AppConfigViewModel by sharedViewModel()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
-    private val introductionViewModel: IntroductionViewModel by sharedViewModel()
+    private val introductionViewModel: IntroductionViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

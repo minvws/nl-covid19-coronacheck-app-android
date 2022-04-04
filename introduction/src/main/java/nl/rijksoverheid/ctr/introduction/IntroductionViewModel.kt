@@ -22,6 +22,7 @@ abstract class IntroductionViewModel : ViewModel() {
     abstract fun getIntroductionStatus(): IntroductionStatus
     abstract fun saveIntroductionFinished(introductionData: IntroductionData)
     abstract fun onConfigUpdated()
+    abstract fun init()
 }
 
 class IntroductionViewModelImpl(
@@ -29,7 +30,8 @@ class IntroductionViewModelImpl(
     private val introductionStatusUseCase: IntroductionStatusUseCase
 ) : IntroductionViewModel() {
 
-    init {
+
+    override fun init() {
         postIntroductionStatus()
     }
 

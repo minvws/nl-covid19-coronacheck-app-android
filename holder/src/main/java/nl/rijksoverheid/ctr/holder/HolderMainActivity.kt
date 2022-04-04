@@ -113,6 +113,8 @@ class HolderMainActivity : AppCompatActivity() {
                 )
             }
         })
+
+        introductionViewModel.init()
     }
 
     private fun navigateToIntroduction(
