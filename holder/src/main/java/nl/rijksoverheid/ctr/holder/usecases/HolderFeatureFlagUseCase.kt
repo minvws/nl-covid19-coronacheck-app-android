@@ -12,13 +12,28 @@ import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface HolderFeatureFlagUseCase {
     fun getDisclosurePolicy(): DisclosurePolicy
+    fun getGgdEnabled(): Boolean
+    fun getMijnCnEnabled(): Boolean
+    fun getVisitorPassEnabled(): Boolean
 }
 
 class HolderFeatureFlagUseCaseImpl(
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
-): HolderFeatureFlagUseCase {
+) : HolderFeatureFlagUseCase {
 
     override fun getDisclosurePolicy(): DisclosurePolicy {
         return cachedAppConfigUseCase.getCachedAppConfig().disclosurePolicy
+    }
+
+    override fun getGgdEnabled(): Boolean {
+        return cachedAppConfigUseCase.getCachedAppConfig().ggdEnabled
+    }
+
+    override fun getMijnCnEnabled(): Boolean {
+        return cachedAppConfigUseCase.getCachedAppConfig().mijnCnEnabled
+    }
+
+    override fun getVisitorPassEnabled(): Boolean {
+        return cachedAppConfigUseCase.getCachedAppConfig().visitorPassEnabled
     }
 }

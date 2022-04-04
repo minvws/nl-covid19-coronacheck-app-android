@@ -29,6 +29,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
 import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -48,7 +49,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
-    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase by inject()
+    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
 
@@ -248,7 +249,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             onButtonClickWithRetryAction()
         }
         binding.noDigidButton.setOnClickListener {
-            if (cachedAppConfigUseCase.getCachedAppConfig().mijnCnEnabled &&
+            if (featureFlagUseCase.getMijnCnEnabled() &&
                 args.originType == RemoteOriginType.Vaccination
             ) {
                 navigateSafety(GetEventsFragmentDirections.actionMijnCn())
