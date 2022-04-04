@@ -72,6 +72,13 @@ fun fakeIntroductionViewModel(
                     .postValue(Event(it))
             }
         }
+
+        override fun init() {
+            if (setupRequired) {
+                (introductionStatusLiveData as MutableLiveData)
+                    .postValue(Event(IntroductionStatus.SetupNotFinished))
+            }
+        }
     }
 }
 

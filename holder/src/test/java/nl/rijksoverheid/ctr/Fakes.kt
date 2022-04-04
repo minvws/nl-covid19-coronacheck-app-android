@@ -120,7 +120,7 @@ fun fakeIntroductionViewModel(
 ): IntroductionViewModel {
     return object : IntroductionViewModel() {
 
-        init {
+        override fun init() {
             if (setupRequired) {
                 (introductionStatusLiveData as MutableLiveData)
                     .postValue(Event(IntroductionStatus.SetupNotFinished))
