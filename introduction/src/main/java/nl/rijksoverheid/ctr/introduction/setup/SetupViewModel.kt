@@ -21,16 +21,10 @@ abstract class SetupViewModel : ViewModel() {
 }
 
 class SetupViewModelImpl(
-    private val introductionPersistenceManager: IntroductionPersistenceManager,
     private val introductionStatusUseCase: IntroductionStatusUseCase
 ) : SetupViewModel() {
 
     override fun onConfigUpdated() {
-        introductionPersistenceManager.saveSetupFinished()
-        postIntroductionStatus()
-    }
-
-    private fun postIntroductionStatus() {
         (introductionDataLiveData as MutableLiveData).postValue(introductionStatusUseCase.getData())
     }
 }

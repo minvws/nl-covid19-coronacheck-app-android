@@ -24,13 +24,7 @@ class HolderIntroductionStatusUseCaseImpl(
     private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
 ) : IntroductionStatusUseCase {
 
-    override fun getIntroductionRequired(): Boolean {
-        return setupIsNotFinished() || onboardingIsNotFinished()
-    }
-
-    private fun setupIsNotFinished() = !introductionPersistenceManager.getSetupFinished()
-
-    private fun onboardingIsNotFinished() =
+    override fun getIntroductionRequired() =
         !introductionPersistenceManager.getIntroductionFinished()
 
     /**
@@ -45,7 +39,6 @@ class HolderIntroductionStatusUseCaseImpl(
             ).apply {
                 setSavePolicyChange { persistenceManager.setPolicyScreenSeen(policy) }
             }
-
     }
 
     @StringRes

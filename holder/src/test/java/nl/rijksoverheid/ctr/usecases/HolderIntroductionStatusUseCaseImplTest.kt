@@ -33,16 +33,9 @@ class HolderIntroductionStatusUseCaseImplTest {
         introductionPersistenceManager, introductionData, persistenceManager, holderFeatureFlagUseCase
     )
 
-    @Test
-    fun `when setup isn't finished, introduction is required`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns false
-
-        assertTrue(introductionStatusUseCase.getIntroductionRequired())
-    }
 
     @Test
     fun `when introduction isn't finished, introduction is required`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
 
@@ -51,7 +44,6 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when intro is finished, introduction is not required`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
 
@@ -60,7 +52,6 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when feature flag is 1G, there should be a 1G onboarding item`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
 
@@ -84,7 +75,6 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when feature flag is 3G, there should be a 3G onboarding item`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
 
@@ -108,7 +98,6 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when feature flag is 0G, the third onboarding item should have 0G text`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
 
@@ -132,7 +121,6 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when feature flag is not 0G, the third onboarding item should have generic text`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
 
@@ -156,7 +144,6 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when feature flag is 0G, the first onboarding item should have 0G text`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
 
@@ -180,7 +167,6 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when feature flag is not 0G, the fourth onboarding item should have generic text`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
 
@@ -204,7 +190,6 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when feature flag is 0G, there is no policy onboarding and national screen`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
 
@@ -217,7 +202,6 @@ class HolderIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when feature flag is 1G+3G, there should be a 1G+3G onboarding item`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneAndThreeG
 

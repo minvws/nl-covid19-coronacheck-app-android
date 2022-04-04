@@ -21,5 +21,5 @@ val introductionModule = module {
         )
     }
     viewModel<IntroductionViewModel> { IntroductionViewModelImpl(get(), get()) }
-    viewModel<SetupViewModel> { SetupViewModelImpl(get(), get()) }
+    viewModel<SetupViewModel> { SetupViewModelImpl(get()) }
 }

@@ -25,15 +25,7 @@ class VerifierIntroductionStatusUseCaseImplTest {
     )
 
     @Test
-    fun `when setup isn't finished, introduction is required`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns false
-
-        assertTrue(introductionStatusUseCase.getIntroductionRequired())
-    }
-
-    @Test
     fun `when introduction isn't finished, introduction is required`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
 
         assertTrue(introductionStatusUseCase.getIntroductionRequired())
@@ -41,7 +33,6 @@ class VerifierIntroductionStatusUseCaseImplTest {
 
     @Test
     fun `when intro is finished, introduction is not required`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
 
         assertFalse(introductionStatusUseCase.getIntroductionRequired())

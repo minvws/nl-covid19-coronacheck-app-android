@@ -452,7 +452,6 @@ class HolderAppStatusUseCaseImplTest {
             introductionPersistenceManager, showNewDisclosurePolicyUseCase
         )
         
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneG
@@ -497,7 +496,6 @@ class HolderAppStatusUseCaseImplTest {
             introductionPersistenceManager, showNewDisclosurePolicyUseCase
         )
         
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
@@ -543,7 +541,6 @@ class HolderAppStatusUseCaseImplTest {
             introductionPersistenceManager, showNewDisclosurePolicyUseCase
         )
         
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ZeroG
@@ -589,7 +586,6 @@ class HolderAppStatusUseCaseImplTest {
             introductionPersistenceManager, showNewDisclosurePolicyUseCase
         )
         
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns true
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
@@ -632,7 +628,6 @@ class HolderAppStatusUseCaseImplTest {
             introductionPersistenceManager, showNewDisclosurePolicyUseCase
         )
         
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns null

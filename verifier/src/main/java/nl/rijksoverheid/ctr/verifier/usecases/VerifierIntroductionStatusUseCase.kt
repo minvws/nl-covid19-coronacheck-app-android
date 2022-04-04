@@ -10,13 +10,7 @@ class VerifierIntroductionStatusUseCaseImpl(
     private val introductionData: IntroductionData
 ) : IntroductionStatusUseCase {
 
-    override fun getIntroductionRequired(): Boolean {
-        return setupIsNotFinished() || onboardingIsNotFinished()
-    }
-
-    private fun setupIsNotFinished() = !introductionPersistenceManager.getSetupFinished()
-
-    private fun onboardingIsNotFinished() =
+    override fun getIntroductionRequired() =
         !introductionPersistenceManager.getIntroductionFinished()
 
     override fun getData(): IntroductionData {
