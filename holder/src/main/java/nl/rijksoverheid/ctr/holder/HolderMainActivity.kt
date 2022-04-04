@@ -131,6 +131,18 @@ class HolderMainActivity : AppCompatActivity() {
 
         if (appStatus !is AppStatus.NoActionRequired) {
             navController.navigate(RootNavDirections.actionAppStatus(appStatus))
+        } else {
+            closeAppStatusIfOpen(navController)
+        }
+    }
+
+    private fun closeAppStatusIfOpen(
+        navController: NavController
+    ) {
+        val isAppStatusFragment =
+            navController.currentBackStackEntry?.destination?.id == R.id.nav_app_locked
+        if (isAppStatusFragment) {
+            navController.popBackStack()
         }
     }
 
