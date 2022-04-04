@@ -725,4 +725,17 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_showqr_eu_about_vaccination_dosage_message">&lt;a href=\\"https://coronacheck.nl/nl/faq-in-app\\"&gt;Lees meer over mijn dosis&lt;/a&gt;</string>
   <string name="holder_menu_storedEvents">Opgeslagen gegevens</string>
   <string name="holder_menu_resetApp">App opnieuw instellen</string>
+  <string name="holder_storedEvents_title">Mijn opgeslagen gegevens</string>
+  <string name="holder_storedEvents_message">De gegevens hieronder staan opgeslagen op je telefoon en gebruikt CoronaCheck om je coronabewijs te maken.</string>
+  <string name="holder_storedEvents_button_handleData">Hoe gaat CoronaCheck met gegevens om?</string>
+  <string name="holder_storedEvents_url">https://coronacheck.nl</string>
+  <string name="holder_storedEvents_button_removeEvents">Wis deze gegevens</string>
+  <string name="holder_storedEvents_list_noEvents">Geen gegevens opgeslagen</string>
+  <string name="holder_storedEvents_listHeader_fetchedFromProvider">Opgehaald bij %s</string>
+  <string name="holder_storedEvents_listHeader_paperFlow">Ingescande bewijzen</string>
+  <string name="general_negativeTest">Negatieve testuitslag</string>
+  <string name="general_positiveTest">Positieve testuitslag</string>
+  <string name="holder_storedEvent_alert_removeEvents_title">Deze gegevens verwijderen?</string>
+  <string name="holder_storedEvent_alert_removeEvents_message">Bij het wissen van deze gegevens worden er mogelijk bewijzen met QR-codes uit de app verwijderd</string>
+  <string name="general_delete">Verwijderen</string>
 </resources>

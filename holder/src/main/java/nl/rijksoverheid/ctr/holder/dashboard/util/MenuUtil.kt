@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
+import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragmentDirections
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
@@ -163,7 +164,7 @@ class MenuUtilImpl(
                     ),
                     AboutThisAppData.Destination(
                         text = context.getString(R.string.holder_menu_storedEvents),
-                        destinationId = R.id.nav_about_this_app
+                        destinationId = AboutThisAppFragmentDirections.actionSavedEvents().actionId
                     ),
                     AboutThisAppData.ClearAppData(
                         text = context.getString(R.string.holder_menu_resetApp)
