@@ -39,12 +39,10 @@ import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
 import org.json.JSONObject
-import java.security.MessageDigest
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -115,31 +113,31 @@ fun fakeCachedAppConfigUseCase(
 }
 
 fun fakeIntroductionViewModel(
-    introductionStatus: IntroductionStatus? = null,
-    setupRequired: Boolean = true
+    introductionRequired: Boolean = true
 ): IntroductionViewModel {
     return object : IntroductionViewModel() {
 
         init {
-            if (setupRequired) {
-                (introductionStatusLiveData as MutableLiveData)
-                    .postValue(Event(IntroductionStatus.SetupNotFinished))
+            if (introductionRequired) {
+                (introductionRequiredLiveData as MutableLiveData)
+                    .postValue(Unit)
             }
         }
 
-        override fun getIntroductionStatus(): IntroductionStatus {
-            return introductionStatus ?: IntroductionStatus.IntroductionFinished
+        override fun getIntroductionRequired(): Boolean {
+            return true
         }
 
         override fun saveIntroductionFinished(introductionData: IntroductionData) {
 
         }
+    }
+}
 
+fun fakeSetupViewModel(): SetupViewModel {
+    return object : SetupViewModel() {
         override fun onConfigUpdated() {
-            introductionStatus?.let {
-                (introductionStatusLiveData as MutableLiveData)
-                    .postValue(Event(it))
-            }
+
         }
     }
 }

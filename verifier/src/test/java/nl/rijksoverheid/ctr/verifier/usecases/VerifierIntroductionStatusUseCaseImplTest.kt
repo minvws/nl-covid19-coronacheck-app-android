@@ -2,12 +2,11 @@ package nl.rijksoverheid.ctr.verifier.usecases
 
 import io.mockk.every
 import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import org.junit.Test
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -26,23 +25,16 @@ class VerifierIntroductionStatusUseCaseImplTest {
     )
 
     @Test
-    fun `when setup isn't finished, the status is setup not finished`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns false
+    fun `when introduction isn't finished, introduction is required`() {
+        every { introductionPersistenceManager.getIntroductionFinished() } returns false
 
-        assertEquals(
-            introductionStatusUseCase.get(),
-            IntroductionStatus.SetupNotFinished
-        )
+        assertTrue(introductionStatusUseCase.getIntroductionRequired())
     }
 
     @Test
-    fun `when introduction isn't finished, the status is introduction not finished`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
-        every { introductionPersistenceManager.getIntroductionFinished() } returns false
+    fun `when intro is finished, introduction is not required`() {
+        every { introductionPersistenceManager.getIntroductionFinished() } returns true
 
-        assertEquals(
-            introductionStatusUseCase.get(),
-            IntroductionStatus.OnboardingNotFinished(introductionData)
-        )
+        assertFalse(introductionStatusUseCase.getIntroductionRequired())
     }
 }

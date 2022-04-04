@@ -55,7 +55,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     fun `If onboarding not finished navigate to introduction`() {
         launchHolderMainActivity(
             fakeIntroductionViewModel(
-                setupRequired = true
+                introductionRequired = true
             )
         )
 
@@ -99,7 +99,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     fun `If introduction finished navigate to main`() {
         val scenario = launchHolderMainActivity(
             fakeIntroductionViewModel(
-                setupRequired = false
+                introductionRequired = false
             )
         )
         scenario.onActivity {
@@ -141,6 +141,9 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                 }
                 viewModel {
                     fakeDashboardViewModel()
+                }
+                viewModel {
+                    fakeSetupViewModel()
                 }
                 factory {
                     fakeSecretKeyUseCase()

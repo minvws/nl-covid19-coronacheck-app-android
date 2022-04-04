@@ -10,7 +10,6 @@ package nl.rijksoverheid.ctr.usecases
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.Assert.assertEquals
-import junit.framework.TestCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.usecases.HolderIntroductionStatusUseCaseImpl
@@ -19,9 +18,9 @@ import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Test
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class HolderIntroductionStatusUseCaseImplTest {
@@ -34,216 +33,192 @@ class HolderIntroductionStatusUseCaseImplTest {
         introductionPersistenceManager, introductionData, persistenceManager, holderFeatureFlagUseCase
     )
 
-    @Test
-    fun `when setup isn't finished, the status is setup not finished`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns false
-
-        TestCase.assertEquals(
-            introductionStatusUseCase.get(),
-            IntroductionStatus.SetupNotFinished
-        )
-    }
 
     @Test
-    fun `when introduction isn't finished, the status is introduction not finished with `() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
+    fun `when introduction isn't finished, introduction is required`() {
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
 
-        assertTrue(
-            introductionStatusUseCase.get() is IntroductionStatus.OnboardingNotFinished
-        )
+        assertTrue(introductionStatusUseCase.getIntroductionRequired())
     }
 
     @Test
-    fun `when intro is finished and there are no new features or terms, the status is no action required`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
+    fun `when intro is finished, introduction is not required`() {
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
 
-        assertEquals(
-            introductionStatusUseCase.get(),
-            IntroductionStatus.IntroductionFinished
-        )
+        assertFalse(introductionStatusUseCase.getIntroductionRequired())
     }
 
     @Test
     fun `when feature flag is 1G, there should be a 1G onboarding item`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
 
-        val status = introductionStatusUseCase.get()
+        val data = introductionStatusUseCase.getData()
 
-        with(status as IntroductionStatus.OnboardingNotFinished) {
+        with(data) {
             assertEquals(
                 R.string.holder_onboarding_disclosurePolicyChanged_only1GAccess_title,
-                introductionData.onboardingItems.last().titleResource
+                onboardingItems.last().titleResource
             )
             assertEquals(
                 R.string.holder_onboarding_disclosurePolicyChanged_only1GAccess_message,
-                introductionData.onboardingItems.last().description
+                onboardingItems.last().description
             )
             assertEquals(
                 R.drawable.illustration_onboarding_disclosure_policy,
-                introductionData.onboardingItems.last().imageResource
+                onboardingItems.last().imageResource
             )
         }
     }
 
     @Test
     fun `when feature flag is 3G, there should be a 3G onboarding item`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
 
-        val status = introductionStatusUseCase.get()
+        val data = introductionStatusUseCase.getData()
 
-        with(status as IntroductionStatus.OnboardingNotFinished) {
+        with(data) {
             assertEquals(
                 R.string.holder_onboarding_disclosurePolicyChanged_only3GAccess_title,
-                introductionData.onboardingItems.last().titleResource
+                onboardingItems.last().titleResource
             )
             assertEquals(
                 R.string.holder_onboarding_disclosurePolicyChanged_only3GAccess_message,
-                introductionData.onboardingItems.last().description
+                onboardingItems.last().description
             )
             assertEquals(
                 R.drawable.illustration_onboarding_disclosure_policy,
-                introductionData.onboardingItems.last().imageResource
+                onboardingItems.last().imageResource
             )
         }
     }
 
     @Test
     fun `when feature flag is 0G, the third onboarding item should have 0G text`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
 
-        val status = introductionStatusUseCase.get()
+        val data = introductionStatusUseCase.getData()
 
-        with(status as IntroductionStatus.OnboardingNotFinished) {
+        with(data) {
             assertEquals(
                 R.string.holder_onboarding_content_onlyInternationalQR_0G_title,
-                introductionData.onboardingItems[2].titleResource
+                onboardingItems[2].titleResource
             )
             assertEquals(
                 R.string.holder_onboarding_content_onlyInternationalQR_0G_message,
-                introductionData.onboardingItems[2].description
+                onboardingItems[2].description
             )
             assertEquals(
                 R.drawable.illustration_onboarding_3,
-                introductionData.onboardingItems[2].imageResource
+                onboardingItems[2].imageResource
             )
         }
     }
 
     @Test
     fun `when feature flag is not 0G, the third onboarding item should have generic text`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
 
-        val status = introductionStatusUseCase.get()
+        val data = introductionStatusUseCase.getData()
 
-        with(status as IntroductionStatus.OnboardingNotFinished) {
+        with(data) {
             assertEquals(
                 R.string.onboarding_screen_4_title,
-                introductionData.onboardingItems[2].titleResource
+                onboardingItems[2].titleResource
             )
             assertEquals(
                 R.string.onboarding_screen_4_description,
-                introductionData.onboardingItems[2].description
+                onboardingItems[2].description
             )
             assertEquals(
                 R.drawable.illustration_onboarding_3,
-                introductionData.onboardingItems[2].imageResource
+                onboardingItems[2].imageResource
             )
         }
     }
 
     @Test
     fun `when feature flag is 0G, the first onboarding item should have 0G text`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
 
-        val status = introductionStatusUseCase.get()
+        val data = introductionStatusUseCase.getData()
 
-        with(status as IntroductionStatus.OnboardingNotFinished) {
+        with(data) {
             assertEquals(
                 R.string.holder_onboarding_content_TravelSafe_0G_title,
-                introductionData.onboardingItems[0].titleResource
+                onboardingItems[0].titleResource
             )
             assertEquals(
                 R.string.holder_onboarding_content_TravelSafe_0G_message,
-                introductionData.onboardingItems[0].description
+                onboardingItems[0].description
             )
             assertEquals(
                 R.drawable.illustration_onboarding_1_0g,
-                introductionData.onboardingItems[0].imageResource
+                onboardingItems[0].imageResource
             )
         }
     }
 
     @Test
     fun `when feature flag is not 0G, the fourth onboarding item should have generic text`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
 
-        val status = introductionStatusUseCase.get()
+        val data = introductionStatusUseCase.getData()
 
-        with(status as IntroductionStatus.OnboardingNotFinished) {
+        with(data) {
             assertEquals(
                 R.string.onboarding_screen_3_title,
-                introductionData.onboardingItems[3].titleResource
+                onboardingItems[3].titleResource
             )
             assertEquals(
                 R.string.onboarding_screen_3_description,
-                introductionData.onboardingItems[3].description
+                onboardingItems[3].description
             )
             assertEquals(
                 R.drawable.illustration_onboarding_4,
-                introductionData.onboardingItems[3].imageResource
+                onboardingItems[3].imageResource
             )
         }
     }
 
     @Test
     fun `when feature flag is 0G, there is no policy onboarding and national screen`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
 
-        val status = introductionStatusUseCase.get()
+        val data = introductionStatusUseCase.getData()
 
-        with(status as IntroductionStatus.OnboardingNotFinished) {
-            assertEquals(3, introductionData.onboardingItems.size)
+        with(data) {
+            assertEquals(3, onboardingItems.size)
         }
     }
 
     @Test
     fun `when feature flag is 1G+3G, there should be a 1G+3G onboarding item`() {
-        every { introductionPersistenceManager.getSetupFinished() } returns true
         every { introductionPersistenceManager.getIntroductionFinished() } returns false
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneAndThreeG
 
-        val status = introductionStatusUseCase.get()
+        val data = introductionStatusUseCase.getData()
 
-        with(status as IntroductionStatus.OnboardingNotFinished) {
+        with(data) {
             assertEquals(
                 R.string.holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_title,
-                introductionData.onboardingItems.last().titleResource
+                onboardingItems.last().titleResource
             )
             assertEquals(
                 R.string.holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_message,
-                introductionData.onboardingItems.last().description
+                onboardingItems.last().description
             )
             assertEquals(
                 R.drawable.illustration_onboarding_disclosure_policy,
-                introductionData.onboardingItems.last().imageResource
+                onboardingItems.last().imageResource
             )
         }
     }

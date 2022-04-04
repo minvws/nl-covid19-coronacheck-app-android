@@ -4,16 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.verifier.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.scanner.usecases.TestResultValidUseCase
@@ -46,31 +44,31 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     }
 
 fun fakeIntroductionViewModel(
-    introductionStatus: IntroductionStatus? = null,
-    setupRequired: Boolean = true
+    introductionRequired: Boolean = true
 ): IntroductionViewModel {
     return object : IntroductionViewModel() {
 
         init {
-            if (setupRequired) {
-                (introductionStatusLiveData as MutableLiveData)
-                    .postValue(Event(IntroductionStatus.SetupNotFinished))
+            if (introductionRequired) {
+                (introductionRequiredLiveData as MutableLiveData)
+                    .postValue(Unit)
             }
         }
 
-        override fun getIntroductionStatus(): IntroductionStatus {
-            return introductionStatus ?: IntroductionStatus.IntroductionFinished
+        override fun getIntroductionRequired(): Boolean {
+            return true
         }
 
         override fun saveIntroductionFinished(introductionData: IntroductionData) {
 
         }
+    }
+}
 
+fun fakeSetupViewModel(): SetupViewModel {
+    return object : SetupViewModel() {
         override fun onConfigUpdated() {
-            introductionStatus?.let {
-                (introductionStatusLiveData as MutableLiveData)
-                    .postValue(Event(it))
-            }
+
         }
     }
 }

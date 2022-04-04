@@ -25,7 +25,6 @@ import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
@@ -76,9 +75,9 @@ class HolderMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
-            navigateToIntroduction(navController, it)
-        })
+        introductionViewModel.introductionRequiredLiveData.observe(this) {
+            navigateToIntroduction(navController)
+        }
 
         appConfigViewModel.appStatusLiveData.observe(this) {
             handleAppStatus(it, navController)
@@ -116,9 +115,9 @@ class HolderMainActivity : AppCompatActivity() {
     }
 
     private fun navigateToIntroduction(
-        navController: NavController, introductionStatus: IntroductionStatus
+        navController: NavController
     ) {
-        navController.navigate(RootNavDirections.actionIntroduction(introductionStatus))
+        navController.navigate(RootNavDirections.actionIntroduction())
     }
 
     private fun handleAppStatus(
@@ -132,6 +131,18 @@ class HolderMainActivity : AppCompatActivity() {
 
         if (appStatus !is AppStatus.NoActionRequired) {
             navController.navigate(RootNavDirections.actionAppStatus(appStatus))
+        } else {
+            closeAppStatusIfOpen(navController)
+        }
+    }
+
+    private fun closeAppStatusIfOpen(
+        navController: NavController
+    ) {
+        val isAppStatusFragment =
+            navController.currentBackStackEntry?.destination?.id == R.id.nav_app_locked
+        if (isAppStatusFragment) {
+            navController.popBackStack()
         }
     }
 
@@ -149,7 +160,7 @@ class HolderMainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         // Only get app config on every app foreground when introduction is finished
-        if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
+        if (!introductionViewModel.getIntroductionRequired()) {
             appConfigViewModel.refresh(mobileCoreWrapper, isFreshStart)
             isFreshStart = false
         }
