@@ -67,9 +67,9 @@ class VerifierMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        introductionViewModel.introductionRequiredLiveData.observe(this) {
+        introductionViewModel.introductionRequiredLiveData.observe(this, EventObserver {
             navigateToIntroduction(navController)
-        }
+        })
 
         appConfigViewModel.appStatusLiveData.observe(this) {
             verifierMainActivityViewModel.policyUpdate()
