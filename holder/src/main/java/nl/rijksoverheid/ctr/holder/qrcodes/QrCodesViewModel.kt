@@ -17,11 +17,14 @@ import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCase
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeAnimation
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
+import java.time.Clock
 
 abstract class QrCodesViewModel : ViewModel() {
     val qrCodeDataListLiveData = MutableLiveData<QrCodesResult>()
     val returnAppLivedata = MutableLiveData<ExternalReturnAppData>()
+    val animationLiveData = MutableLiveData<QrCodeAnimation>()
     abstract fun generateQrCodes(
         greenCardType: GreenCardType,
         originType: OriginType,
@@ -35,7 +38,8 @@ abstract class QrCodesViewModel : ViewModel() {
 
 class QrCodesViewModelImpl(
     private val qrCodesResultUseCase: QrCodesResultUseCase,
-    private val returnToExternalAppUseCase: ReturnToExternalAppUseCase
+    private val returnToExternalAppUseCase: ReturnToExternalAppUseCase,
+    private val clock: Clock,
 ) : QrCodesViewModel() {
 
     override fun generateQrCodes(
@@ -56,6 +60,9 @@ class QrCodesViewModelImpl(
                     qrCodeWidth = size,
                     qrCodeHeight = size
                 )
+            )
+            animationLiveData.postValue(
+                QrCodeAnimation.getCurrent(clock, greenCardType)
             )
         }
     }

@@ -29,8 +29,8 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodesBinding
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeAnimation
 import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
@@ -108,11 +108,11 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         _binding = FragmentQrCodesBinding.bind(view)
 
         setupViewPager()
-        applyStyling()
         dispatchTouchEventDoseInfo()
 
         qrCodeViewModel.qrCodeDataListLiveData.observe(viewLifecycleOwner, ::bindQrCodeDataList)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
+        qrCodeViewModel.animationLiveData.observe(viewLifecycleOwner, ::applyAnimation)
         clockDeviationUseCase.serverTimeSyncedLiveData.observe(viewLifecycleOwner) { onServerTimeSynced() }
 
         args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it, args.data.type) }
@@ -141,15 +141,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         binding.viewPager.adapter = qrCodePagerAdapter
     }
 
-    private fun applyStyling() {
-        when (args.data.type) {
-            is GreenCardType.Domestic -> {
-                binding.animation.setWidget(R.raw.summer_domestic)
-            }
-            is GreenCardType.Eu -> {
-                binding.animation.setWidget(R.raw.summer_international)
-            }
-        }
+    private fun applyAnimation(qrCodeAnimation: QrCodeAnimation) {
+        binding.animation.setWidget(qrCodeAnimation.animationResource)
     }
 
     private fun returnToApp(externalReturnAppData: ExternalReturnAppData) {
