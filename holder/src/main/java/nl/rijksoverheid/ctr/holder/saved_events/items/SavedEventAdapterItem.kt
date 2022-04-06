@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemSavedEventBinding
 import nl.rijksoverheid.ctr.holder.saved_events.SavedEvents
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.shared.ext.capitalize
 
 class SavedEventAdapterItem(
     private val savedEvent: SavedEvents.SavedEvent
@@ -21,13 +22,13 @@ class SavedEventAdapterItem(
 
     override fun bind(viewBinding: AdapterItemSavedEventBinding, position: Int) {
         val context = viewBinding.root.context
-        val titleId = when (savedEvent.type) {
-            OriginType.Recovery -> R.string.general_positiveTest
-            OriginType.Test -> R.string.general_negativeTest
-            OriginType.Vaccination -> R.string.general_vaccination
-            OriginType.VaccinationAssessment -> R.string.general_vaccinationAssessment
+        val title = when (savedEvent.type) {
+            OriginType.Recovery -> context.getString(R.string.general_positiveTest).capitalize()
+            OriginType.Test -> context.getString(R.string.general_negativeTest).capitalize()
+            OriginType.Vaccination -> context.getString(R.string.general_vaccination).capitalize()
+            OriginType.VaccinationAssessment -> context.getString(R.string.general_vaccinationAssessment).capitalize()
         }
-        viewBinding.title.setText(titleId)
+        viewBinding.title.text = title
         viewBinding.subtitle.text = savedEvent.date.formatDateTime(context)
     }
 
