@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentSavedEventsBinding
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsHeaderAdapterItem
+import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsNoSavedEventsItem
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsSectionAdapterItem
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -52,17 +53,22 @@ class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
         savedEventsViewModel.savedEventsLiveData.observe(viewLifecycleOwner, EventObserver { savedEvents ->
             val items = mutableListOf<BindableItem<*>>()
             items.add(SavedEventsHeaderAdapterItem())
-            savedEvents.forEach {
-                items.add(
-                    SavedEventsSectionAdapterItem(
-                        savedEvents = it,
-                        onClickClearData = { eventGroupEntity ->
-                            presentClearDataDialog {
-                                savedEventsViewModel.removeSavedEvents(eventGroupEntity)
+
+            if (savedEvents.isEmpty()) {
+                items.add(SavedEventsNoSavedEventsItem())
+            } else {
+                savedEvents.forEach {
+                    items.add(
+                        SavedEventsSectionAdapterItem(
+                            savedEvents = it,
+                            onClickClearData = { eventGroupEntity ->
+                                presentClearDataDialog {
+                                    savedEventsViewModel.removeSavedEvents(eventGroupEntity)
+                                }
                             }
-                        }
+                        )
                     )
-                )
+                }
             }
             section.addAll(items)
         })

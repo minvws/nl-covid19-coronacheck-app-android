@@ -44,6 +44,7 @@ class SavedEventsSectionAdapterItem(
         }
         viewBinding.recyclerView.adapter = adapter
         viewBinding.recyclerView.itemAnimator = null
+        
         val items = events.map {
             SavedEventAdapterItem(it)
         }
