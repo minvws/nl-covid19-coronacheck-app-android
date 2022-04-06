@@ -28,9 +28,9 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardBinding
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -94,15 +94,18 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private fun observeItems(adapter: DashboardPagerAdapter) {
         dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner) { dashboardTabItems ->
 
-            // Add pager items only once
-            if (adapter.itemCount == 0) {
-                adapter.setItems(dashboardTabItems)
+            val init = adapter.itemCount == 0
 
-                setupTabs(
-                    binding = binding,
-                    items = dashboardTabItems
-                )
+            adapter.setItems(dashboardTabItems)
 
+            setupTabs(
+                binding = binding,
+                items = dashboardTabItems,
+                init = init
+            )
+
+            // Setup adapter only once
+            if (init) {
                 // Default select the item that we had selected last
                 binding.viewPager.setCurrentItem(
                     persistenceManager.getSelectedDashboardTab(),
@@ -182,7 +185,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun setupTabs(binding: FragmentDashboardBinding,
-                          items: List<DashboardTabItem>) {
+                          items: List<DashboardTabItem>,
+                          init: Boolean) {
         if (items.size == 1) {
             binding.tabs.visibility = View.GONE
             binding.tabsSeparator.visibility = View.GONE
@@ -190,32 +194,34 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             binding.tabs.visibility = View.VISIBLE
             binding.tabsSeparator.visibility = View.VISIBLE
 
-            TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
-                tab.view.setOnLongClickListener {
-                    true
-                }
-                tab.text = getString(items[position].title)
-            }.attach()
+            if (init) {
+                TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+                    tab.view.setOnLongClickListener {
+                        true
+                    }
+                    tab.text = getString(items[position].title)
+                }.attach()
 
-            binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    val textView = tab.view.children.find { it is TextView } as? TextView
-                    textView?.setTypeface(null, Typeface.BOLD)
-                }
+                binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                    override fun onTabSelected(tab: TabLayout.Tab) {
+                        val textView = tab.view.children.find { it is TextView } as? TextView
+                        textView?.setTypeface(null, Typeface.BOLD)
+                    }
 
-                override fun onTabUnselected(tab: TabLayout.Tab) {
-                    val textView = tab.view.children.find { it is TextView } as? TextView
-                    textView?.setTypeface(null, Typeface.NORMAL)
-                }
+                    override fun onTabUnselected(tab: TabLayout.Tab) {
+                        val textView = tab.view.children.find { it is TextView } as? TextView
+                        textView?.setTypeface(null, Typeface.NORMAL)
+                    }
 
-                override fun onTabReselected(tab: TabLayout.Tab) {
-                    val textView = tab.view.children.find { it is TextView } as? TextView
-                    textView?.setTypeface(null, Typeface.BOLD)
-                }
-            })
+                    override fun onTabReselected(tab: TabLayout.Tab) {
+                        val textView = tab.view.children.find { it is TextView } as? TextView
+                        textView?.setTypeface(null, Typeface.BOLD)
+                    }
+                })
 
-            // Call selectTab so that styling get's picked up on launch
-            binding.tabs.selectTab(binding.tabs.getTabAt(0))
+                // Call selectTab so that styling get's picked up on launch
+                binding.tabs.selectTab(binding.tabs.getTabAt(0))
+            }
         }
     }
 

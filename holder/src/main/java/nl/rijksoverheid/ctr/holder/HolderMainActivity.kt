@@ -18,16 +18,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
-import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
@@ -78,15 +75,12 @@ class HolderMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
-            navigateToIntroduction(navController, it)
+        introductionViewModel.introductionRequiredLiveData.observe(this, EventObserver {
+            navigateToIntroduction(navController)
         })
 
         appConfigViewModel.appStatusLiveData.observe(this) {
-            val navController = navController
-            if (navController.currentDestination.toString().contains("nav_main") || it !is AppStatus.NoActionRequired) {
-                handleAppStatus(it, navController)
-            }
+            handleAppStatus(it, navController)
         }
 
         deviceRootedViewModel.deviceRootedLiveData.observe(this, EventObserver {
@@ -121,11 +115,9 @@ class HolderMainActivity : AppCompatActivity() {
     }
 
     private fun navigateToIntroduction(
-        navController: NavController, introductionStatus: IntroductionStatus
+        navController: NavController
     ) {
-        navController.navigate(
-            R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
-        )
+        navController.navigate(RootNavDirections.actionIntroduction())
     }
 
     private fun handleAppStatus(
@@ -138,9 +130,19 @@ class HolderMainActivity : AppCompatActivity() {
         }
 
         if (appStatus !is AppStatus.NoActionRequired) {
-            navController.navigate(R.id.action_app_status, AppStatusFragment.getBundle(appStatus))
+            navController.navigate(RootNavDirections.actionAppStatus(appStatus))
         } else {
-            //introductionViewModel.onConfigUpdated()
+            closeAppStatusIfOpen(navController)
+        }
+    }
+
+    private fun closeAppStatusIfOpen(
+        navController: NavController
+    ) {
+        val isAppStatusFragment =
+            navController.currentBackStackEntry?.destination?.id == R.id.nav_app_locked
+        if (isAppStatusFragment) {
+            navController.popBackStack()
         }
     }
 
@@ -158,7 +160,7 @@ class HolderMainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         // Only get app config on every app foreground when introduction is finished
-        if (introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished) {
+        if (!introductionViewModel.getIntroductionRequired()) {
             appConfigViewModel.refresh(mobileCoreWrapper, isFreshStart)
             isFreshStart = false
         }

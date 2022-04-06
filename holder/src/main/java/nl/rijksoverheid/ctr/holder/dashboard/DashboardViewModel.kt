@@ -16,21 +16,19 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.datamappers.DashboardTabsItemDataMapper
-import nl.rijksoverheid.ctr.holder.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabaseSyncer
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import java.time.Clock
@@ -44,8 +42,6 @@ abstract class DashboardViewModel : ViewModel() {
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
-    abstract fun dismissNewValidityInfoCard()
-    abstract fun dismissBoosterInfoCard()
     abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
 
     companion object {
@@ -153,10 +149,6 @@ class DashboardViewModelImpl(
         }
     }
 
-    override fun dismissNewValidityInfoCard() {
-        persistenceManager.setHasDismissedNewValidityInfoCard(true)
-    }
-
     private suspend fun refreshDashboardTabItems(
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
@@ -177,13 +169,6 @@ class DashboardViewModelImpl(
         (dashboardTabItemsLiveData as MutableLiveData<List<DashboardTabItem>>).postValue(
             tabItems
         )
-    }
-
-    override fun dismissBoosterInfoCard() {
-        val nowEpochSeconds = Instant.now(clock).epochSecond
-        persistenceManager.setHasDismissedBoosterInfoCard(nowEpochSeconds)
-        // remove it from both the domestic and the international tab
-        refresh(DashboardSync.DisableSync)
     }
 
     override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {

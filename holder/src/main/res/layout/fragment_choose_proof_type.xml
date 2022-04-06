@@ -11,7 +11,7 @@
         android:clipToPadding="false"
         android:paddingBottom="32dp">
 
-        <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
+        <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

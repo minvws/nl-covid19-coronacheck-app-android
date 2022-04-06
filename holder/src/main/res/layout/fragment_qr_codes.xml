@@ -78,7 +78,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <nl.rijksoverheid.ctr.design.views.ViewPagerIndicator
+        <nl.rijksoverheid.ctr.design.widgets.ViewPagerIndicator
             android:id="@+id/qrVaccinationIndicators"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

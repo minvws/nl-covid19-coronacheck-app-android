@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.introduction
 
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
+import nl.rijksoverheid.ctr.introduction.setup.SetupViewModelImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -19,4 +21,5 @@ val introductionModule = module {
         )
     }
     viewModel<IntroductionViewModel> { IntroductionViewModelImpl(get(), get()) }
+    viewModel<SetupViewModel> { SetupViewModelImpl(get()) }
 }

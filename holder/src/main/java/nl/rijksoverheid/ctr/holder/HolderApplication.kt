@@ -8,11 +8,10 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.dashboard.dashboardModule
 import nl.rijksoverheid.ctr.holder.modules.*
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
-import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewValidityInfoCardUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.persistence.database.migration.TestResultsMigrationManager
+import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -38,7 +37,6 @@ open class HolderApplication : SharedApplication() {
     private val testResultsMigrationManager: TestResultsMigrationManager by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
-    private val checkNewValidityInfoCardUseCase: CheckNewValidityInfoCardUseCase by inject()
 
     private val holderModules = listOf(
         storageModule,
@@ -53,7 +51,7 @@ open class HolderApplication : SharedApplication() {
         qrsModule,
         appModule,
         errorsModule(BuildConfig.FLAVOR),
-        retrofitModule(BuildConfig.BASE_API_URL),
+        retrofitModule(BuildConfig.BASE_API_URL, BuildConfig.CDN_API_URL),
         responsesModule,
         qrScannerModule,
         disclosurePolicyModule,
@@ -68,12 +66,12 @@ open class HolderApplication : SharedApplication() {
             modules(
                 *holderModules,
                 holderIntroductionModule,
+                holderAppStatusModule,
                 apiModule(
                     BuildConfig.BASE_API_URL.toHttpUrl(),
                     BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH,
                     BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS,
                     BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS,
-                    BuildConfig.CERTIFICATE_PINS,
                 ),
                 sharedModule,
                 appConfigModule(BuildConfig.CDN_API_URL,"holder", BuildConfig.VERSION_CODE),
@@ -98,9 +96,6 @@ open class HolderApplication : SharedApplication() {
             }
 
             testResultsMigrationManager.removeOldCredential()
-
-            // check if we need to show the new validity info card use case
-            checkNewValidityInfoCardUseCase.check()
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {

@@ -51,6 +51,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
     implementation "org.bouncycastle:bcprov-jdk15to18:$bouncycastle_version"
     api "org.bouncycastle:bcpkix-jdk15to18:$bouncycastle_version"
+    api "com.appmattus.certificatetransparency:certificatetransparency-android:$certificatetransparency_version"
 
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"

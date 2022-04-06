@@ -11,9 +11,9 @@ import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardInfoCardBinding
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType.*
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType.*
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType.*
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -92,14 +92,8 @@ class DashboardInfoCardAdapterItem(
             is DashboardItem.InfoItem.AppUpdate -> {
                 viewBinding.text.setText(R.string.recommended_update_card_description)
             }
-            is DashboardItem.InfoItem.NewValidityItem -> {
-                viewBinding.text.setText(R.string.holder_dashboard_newvaliditybanner_title)
-            }
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
                 viewBinding.text.setText(R.string.holder_dashboard_visitorpassincompletebanner_title)
-            }
-            is DashboardItem.InfoItem.BoosterItem -> {
-                viewBinding.text.setText(R.string.holder_dashboard_addBoosterBanner_title)
             }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
                 viewBinding.text.setText(

@@ -14,7 +14,7 @@
     android:theme="@style/AppTheme"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <nl.rijksoverheid.ctr.design.views.Toolbar
+    <nl.rijksoverheid.ctr.design.widgets.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/scan_instructions_fragment"
-        android:name="nl.rijksoverheid.ctr.verifier.ui.instructions.ScanInstructionsFragment"
+        android:name="nl.rijksoverheid.ctr.verifier.instructions.ScanInstructionsFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

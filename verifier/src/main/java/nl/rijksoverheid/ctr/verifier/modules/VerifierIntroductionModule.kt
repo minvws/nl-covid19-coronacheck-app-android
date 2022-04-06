@@ -1,13 +1,11 @@
 package nl.rijksoverheid.ctr.verifier.modules
 
-import nl.rijksoverheid.ctr.introduction.IntroductionData
-import nl.rijksoverheid.ctr.introduction.ui.new_features.models.NewFeatureItem
-import nl.rijksoverheid.ctr.introduction.ui.new_terms.models.NewTerms
-import nl.rijksoverheid.ctr.introduction.ui.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.introduction.ui.privacy_consent.models.PrivacyPolicyItem
-import nl.rijksoverheid.ctr.introduction.ui.status.usecases.IntroductionStatusUseCase
+import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
+import nl.rijksoverheid.ctr.introduction.status.usecases.IntroductionStatusUseCase
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.usecase.VerifierIntroductionStatusUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.usecases.VerifierIntroductionStatusUseCaseImpl
 import org.koin.dsl.module
 
 /*
@@ -40,22 +38,8 @@ val verifierIntroductionModule = module {
                     R.drawable.shield,
                     R.string.privacy_policy_3
                 )
-            ),
-            newTerms = NewTerms(
-                version = 1,
-                needsConsent = true
-            ),
-            newFeatures = listOf(
-                NewFeatureItem(
-                    R.drawable.common_full_open_on_phone,
-                    R.string.new_in_app_risksetting_title,
-                    R.string.new_in_app_risksetting_subtitle,
-                    R.color.primary_blue,
-                    R.color.light_blue,
-                )
-            ),
-            newFeatureVersion = 1,
+            )
         )
     }
-    factory<IntroductionStatusUseCase> { VerifierIntroductionStatusUseCaseImpl(get(), get(), get()) }
+    factory<IntroductionStatusUseCase> { VerifierIntroductionStatusUseCaseImpl(get(), get()) }
 }

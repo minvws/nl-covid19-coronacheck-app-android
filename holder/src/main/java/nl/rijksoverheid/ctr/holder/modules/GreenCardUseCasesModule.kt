@@ -2,8 +2,8 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCaseImpl
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.*
+import nl.rijksoverheid.ctr.persistence.database.usecases.*
 import org.koin.dsl.module
 
 /*
@@ -14,9 +14,6 @@ import org.koin.dsl.module
  *
  */
 val greenCardUseCasesModule = module {
-    factory<CheckNewValidityInfoCardUseCase> {
-        CheckNewValidityInfoCardUseCaseImpl(get(), get(), get())
-    }
     factory<GetRemoteGreenCardsUseCase> {
         GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }

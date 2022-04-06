@@ -8,14 +8,13 @@
 package nl.rijksoverheid.ctr.dashboard.datamappers
 
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.dashboard.datamappers.DashboardTabsItemDataMapperImpl
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItems
+import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Test

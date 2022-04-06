@@ -20,11 +20,11 @@ import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.MainNavDirections
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragmentDirections
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteOriginType
+import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardPageFragment
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItem
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
@@ -79,14 +79,8 @@ class DashboardPageInfoItemHandlerUtilImpl(
                 onDomesticVaccinationAssessmentExpiredClicked(dashboardPageFragment)
             }
             is DashboardItem.InfoItem.AppUpdate -> openPlayStore(dashboardPageFragment)
-            is DashboardItem.InfoItem.NewValidityItem -> {
-                onNewValidityInfoClicked(dashboardPageFragment.requireContext())
-            }
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
                 onVisitorPassIncompleteClicked(dashboardPageFragment)
-            }
-            is DashboardItem.InfoItem.BoosterItem -> {
-                onBoosterItemClicked(dashboardPageFragment)
             }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
                 onDisclosurePolicyItemClicked(
@@ -108,13 +102,6 @@ class DashboardPageInfoItemHandlerUtilImpl(
             DisclosurePolicy.ZeroG -> R.string.holder_dashboard_noDomesticCertificatesBanner_url
         }
         context.getString(urlResource).launchUrl(context)
-    }
-
-    private fun onBoosterItemClicked(dashboardPageFragment: DashboardPageFragment) {
-        dashboardPageFragment.navigateSafety(DashboardFragmentDirections.actionGetEvents(
-            originType = RemoteOriginType.Vaccination,
-            toolbarTitle = dashboardPageFragment.getString(R.string.choose_provider_toolbar),
-        ))
     }
 
     private fun onDomesticVaccinationExpiredItemClicked(
@@ -253,10 +240,6 @@ class DashboardPageInfoItemHandlerUtilImpl(
         }
     }
 
-    private fun onNewValidityInfoClicked(context: Context) {
-        context.getString(R.string.holder_dashboard_newvaliditybanner_url).launchUrl(context)
-    }
-
     private fun presentOriginInfoForEuQr(
         originType: OriginType,
         dashboardPageFragment: DashboardPageFragment
@@ -279,7 +262,10 @@ class DashboardPageInfoItemHandlerUtilImpl(
                 is OriginType.Recovery -> {
                     InfoFragmentData.TitleDescription(
                         title = dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),
-                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery),
+                        descriptionData = DescriptionData(
+                            htmlText = R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery,
+                            htmlLinksEnabled = true,
+                        ),
                     )
                 }
                 is OriginType.VaccinationAssessment -> {
@@ -348,20 +334,11 @@ class DashboardPageInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
                 dashboardPageFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
-            is DashboardItem.InfoItem.ClockDeviationItem,
-            is DashboardItem.InfoItem.ConfigFreshnessWarning,
-            is DashboardItem.InfoItem.OriginInfoItem,
-            is DashboardItem.InfoItem.AppUpdate,
-            is DashboardItem.InfoItem.MissingDutchVaccinationItem,
-            is DashboardItem.InfoItem.VisitorPassIncompleteItem,
-            is DashboardItem.InfoItem.NewValidityItem -> {
-                dashboardPageFragment.dashboardViewModel.dismissNewValidityInfoCard()
-            }
-            is DashboardItem.InfoItem.BoosterItem -> {
-                dashboardPageFragment.dashboardViewModel.dismissBoosterInfoCard()
-            }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
                 dashboardPageFragment.dashboardViewModel.dismissPolicyInfo(infoItem.disclosurePolicy)
+            }
+            else -> {
+
             }
         }
     }

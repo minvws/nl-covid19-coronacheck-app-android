@@ -39,6 +39,10 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
+    override fun getCachedAppConfigOrNull(): AppConfig? {
+        return appConfig
+    }
+
     override fun getCachedAppConfigHash(): String {
         val bytes = getCachedAppConfig().toString().toByteArray()
         val md = MessageDigest.getInstance("SHA-256")

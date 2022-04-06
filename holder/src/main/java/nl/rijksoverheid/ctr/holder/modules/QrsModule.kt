@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCaseImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
 import org.koin.dsl.module
 
 /*
@@ -14,8 +13,4 @@ import org.koin.dsl.module
  */
 val qrsModule = module {
     factory<QrCodesResultUseCase> { QrCodesResultUseCaseImpl(get(), get(), get(), get(), get(), get()) }
-
-    factory {
-        TokenQrUseCase(get())
-    }
 }

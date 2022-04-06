@@ -6,7 +6,7 @@
   ~   SPDX-License-Identifier: EUPL-1.2
   ~
   -->
-<nl.rijksoverheid.ctr.design.views.HtmlTextViewWidget
+<nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/text"

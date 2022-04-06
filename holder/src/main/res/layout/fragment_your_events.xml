@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
+            <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
 
     </ScrollView>
 
-    <nl.rijksoverheid.ctr.design.views.ScrollViewButtonWidget
+    <nl.rijksoverheid.ctr.design.widgets.ScrollViewButtonWidget
         android:id="@+id/bottom"
         style="@style/Widget.App.Button"
         android:layout_width="0dp"

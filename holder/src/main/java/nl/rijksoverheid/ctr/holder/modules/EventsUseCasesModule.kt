@@ -1,10 +1,13 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.get_events.usecases.*
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.*
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCaseImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCase
+import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCaseImpl
 import org.koin.dsl.module
 import java.time.Clock
 
