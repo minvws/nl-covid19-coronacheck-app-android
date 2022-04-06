@@ -116,6 +116,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         clockDeviationUseCase.serverTimeSyncedLiveData.observe(viewLifecycleOwner) { onServerTimeSynced() }
 
         args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it, args.data.type) }
+        qrCodeViewModel.getAnimation(args.data.type)
     }
 
     /**
@@ -142,6 +143,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     }
 
     private fun applyAnimation(qrCodeAnimation: QrCodeAnimation) {
+        println("applyAnimation")
         binding.animation.setWidget(qrCodeAnimation.animationResource)
     }
 

@@ -34,6 +34,7 @@ abstract class QrCodesViewModel : ViewModel() {
     )
 
     abstract fun onReturnUriGiven(uri: String, type: GreenCardType)
+    abstract fun getAnimation(greenCardType: GreenCardType)
 }
 
 class QrCodesViewModelImpl(
@@ -61,9 +62,6 @@ class QrCodesViewModelImpl(
                     qrCodeHeight = size
                 )
             )
-            animationLiveData.postValue(
-                animationUseCase.get(greenCardType)
-            )
         }
     }
 
@@ -74,5 +72,11 @@ class QrCodesViewModelImpl(
                 returnAppLivedata.postValue(it)
             }
         }
+    }
+
+    override fun getAnimation(greenCardType: GreenCardType) {
+        animationLiveData.postValue(
+            animationUseCase.get(greenCardType)
+        )
     }
 }
