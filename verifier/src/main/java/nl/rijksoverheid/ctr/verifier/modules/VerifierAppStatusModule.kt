@@ -4,13 +4,8 @@ import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
 import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
 import nl.rijksoverheid.ctr.appconfig.models.NewTerms
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
-import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
-import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
-import nl.rijksoverheid.ctr.introduction.status.usecases.IntroductionStatusUseCase
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.usecases.VerifierAppStatusUseCaseImpl
-import nl.rijksoverheid.ctr.verifier.usecases.VerifierIntroductionStatusUseCaseImpl
 import org.koin.dsl.module
 
 /*

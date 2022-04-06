@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.verifier.policy
 
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,7 +17,7 @@ interface VerificationPolicySelectionStateUseCase {
 
 class VerificationPolicySelectionStateUseCaseImpl(
     private val persistenceManager: PersistenceManager,
-    private val featureFlagUseCase: FeatureFlagUseCase
+    private val featureFlagUseCase: VerifierFeatureFlagUseCase
 ) : VerificationPolicySelectionStateUseCase {
 
     /**

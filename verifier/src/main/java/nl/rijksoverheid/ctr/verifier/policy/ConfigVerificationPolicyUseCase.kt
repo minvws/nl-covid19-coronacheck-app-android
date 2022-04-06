@@ -33,7 +33,7 @@ class ConfigVerificationPolicyUseCaseImpl(
         var policyUpdated = false
 
         val verificationPoliciesEnabled =
-            cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled
+            cachedAppConfigUseCase.getCachedAppConfig().verificationPolicies
                 .filter { VerificationPolicy.fromConfigValue(it) != null }
 
         // Reset policy settings on policy change

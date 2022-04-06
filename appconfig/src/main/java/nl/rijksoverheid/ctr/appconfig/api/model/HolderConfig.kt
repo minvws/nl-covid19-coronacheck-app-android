@@ -52,7 +52,6 @@ data class HolderConfig(
     @Json(name = "visitorPassEnabled") val visitorPassEnabled: Boolean,
     @Json(name = "vaccinationAssessmentEventValidityDays") val vaccinationAssessmentEventValidityDays: Int,
     @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean,
-    @Json(name = "verificationPolicies") val verificationPolicies: List<String> = emptyList(),
     @Json(name = "disclosurePolicies") val disclosurePolicy: DisclosurePolicy,
     @Json(name = "backendTLSCertificates") val backendTLSCertificates: List<String>,
 ) : AppConfig(
@@ -66,9 +65,7 @@ data class HolderConfig(
     upgradeRecommendationIntervalHours,
     holderDeeplinkDomains,
     holderClockDeviationThresholdSeconds,
-    holderConfigAlmostOutOfDateWarningSeconds,
-    holderEnableVerificationPolicyVersion,
-    verificationPolicies,
+    holderConfigAlmostOutOfDateWarningSeconds
 ) {
 
     companion object {
@@ -109,7 +106,6 @@ data class HolderConfig(
             visitorPassEnabled: Boolean = false,
             vaccinationAssessmentEventValidityDays: Int = 14,
             mijnCnEnabled: Boolean = false,
-            policiesEnabled: List<String> = emptyList(),
             disclosurePolicy: DisclosurePolicy = DisclosurePolicy.ThreeG
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
@@ -150,7 +146,6 @@ data class HolderConfig(
             visitorPassEnabled = visitorPassEnabled,
             vaccinationAssessmentEventValidityDays = vaccinationAssessmentEventValidityDays,
             mijnCnEnabled = mijnCnEnabled,
-            verificationPolicies = policiesEnabled,
             disclosurePolicy = disclosurePolicy,
             backendTLSCertificates = emptyList(),
         )

@@ -4,7 +4,7 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtilImpl
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.json.JSONObject
@@ -141,7 +141,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `Vaccination should be hidden if it's older than relevancy days and of lower dose than maximum`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(1609498800), ZoneId.of("UTC")) // 2021-01-01
-        val appConfigUseCase: CachedAppConfigUseCase = mockk {
+        val appConfigUseCase: HolderCachedAppConfigUseCase = mockk {
             every { getCachedAppConfig() } returns HolderConfig.default(internationalQRRelevancyDays = 28)
         }
         val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase, mockk(relaxed = true))
@@ -160,7 +160,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `Hidden vaccination should not be hidden when there is a completed vaccination which is not relevant yet and the upcoming dose is 1 above the hidden one`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(1609498800), ZoneId.of("UTC")) // 2021-01-01
-        val appConfigUseCase: CachedAppConfigUseCase = mockk {
+        val appConfigUseCase: HolderCachedAppConfigUseCase = mockk {
             every { getCachedAppConfig() } returns HolderConfig.default(internationalQRRelevancyDays = 28)
         }
         val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase, mockk(relaxed = true))

@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.*
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
@@ -103,7 +103,7 @@ fun fakeTokenValidatorUtil(
 
 fun fakeCachedAppConfigUseCase(
     appConfig: HolderConfig = HolderConfig.default(),
-): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
+): HolderCachedAppConfigUseCase = object : HolderCachedAppConfigUseCase {
     override fun getCachedAppConfig(): HolderConfig {
         return appConfig
     }

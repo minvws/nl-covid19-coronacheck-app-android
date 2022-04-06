@@ -20,7 +20,7 @@ import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.MainNavDirections
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragmentDirections
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
@@ -53,7 +53,7 @@ interface DashboardPageInfoItemHandlerUtil {
 class DashboardPageInfoItemHandlerUtilImpl(
     private val infoFragmentUtil: InfoFragmentUtil,
     private val intentUtil: IntentUtil,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : DashboardPageInfoItemHandlerUtil {
 
     /**
