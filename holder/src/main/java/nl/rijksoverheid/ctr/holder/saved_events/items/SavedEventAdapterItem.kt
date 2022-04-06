@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.saved_events.items
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemSavedEventBinding
 import nl.rijksoverheid.ctr.holder.saved_events.SavedEvents
@@ -29,7 +30,7 @@ class SavedEventAdapterItem(
             OriginType.VaccinationAssessment -> context.getString(R.string.general_vaccinationAssessment).capitalize()
         }
         viewBinding.title.text = title
-        viewBinding.subtitle.text = savedEvent.date.formatDateTime(context)
+        viewBinding.subtitle.text = savedEvent.date.toLocalDate().formatDayMonthYear()
     }
 
     override fun getLayout(): Int {
