@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentSavedEventsBinding
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsHeaderAdapterItem
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsSectionAdapterItem
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -69,7 +70,9 @@ class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
 
     private fun listenToRemoveSavedEvents() {
         savedEventsViewModel.removedSavedEventsLiveData.observe(viewLifecycleOwner) {
-
+            navigateSafety(
+                SavedEventsFragmentDirections.actionSavedEventsSyncGreenCards()
+            )
         }
     }
 
