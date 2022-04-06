@@ -40,9 +40,14 @@ class AppConfigFreshnessUseCaseImpl(
     override fun shouldShowConfigFreshnessWarning(): Boolean {
         // return true if config is older than 10 days && less than 28 days, or when the configTTL has expired
         val lastFetched = getAppConfigLastFetchedSeconds()
-        return lastFetched > 0 && lastFetched < OffsetDateTime.now(clock)
-            .minusSeconds(cachedAppConfigUseCase.getCachedAppConfig().configAlmostOutOfDateWarningSeconds.toLong())
-            .toEpochSecond()
+        val now = OffsetDateTime.now(clock)
+        val config = cachedAppConfigUseCase.getCachedAppConfig()
+        val configNotExpiredYet =
+            lastFetched > now.minusSeconds(config.configTtlSeconds.toLong()).toEpochSecond()
+        val configAlmostExpired = lastFetched <= now.minusSeconds(config.configTtlSeconds.toLong())
+            .plusSeconds(config.configAlmostOutOfDateWarningSeconds.toLong()).toEpochSecond()
+        return lastFetched > 0 && configNotExpiredYet && configAlmostExpired
+
     }
 
 }
