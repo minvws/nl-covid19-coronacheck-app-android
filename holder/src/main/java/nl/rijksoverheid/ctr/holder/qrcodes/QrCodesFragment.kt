@@ -143,7 +143,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     }
 
     private fun applyAnimation(qrCodeAnimation: QrCodeAnimation) {
-        println("applyAnimation")
         binding.animation.setWidget(qrCodeAnimation.animationResource)
     }
 
