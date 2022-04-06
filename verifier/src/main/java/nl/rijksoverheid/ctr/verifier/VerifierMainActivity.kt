@@ -1,9 +1,13 @@
 package nl.rijksoverheid.ctr.verifier
 
+import android.animation.ObjectAnimator
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.doOnEnd
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
@@ -47,6 +51,23 @@ class VerifierMainActivity : AppCompatActivity() {
         setProductionFlags()
 
         observeStatuses()
+
+        disableSplashscreenExitAnimation()
+    }
+
+    private fun disableSplashscreenExitAnimation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            splashScreen.setOnExitAnimationListener { splashScreenView ->
+                val anim = ObjectAnimator.ofFloat(
+                    splashScreenView,
+                    View.ALPHA,
+                    0.99f,
+                )
+                anim.duration = 100
+                anim.doOnEnd { splashScreenView.remove() }
+                anim.start()
+            }
+        }
     }
 
     override fun onStart() {

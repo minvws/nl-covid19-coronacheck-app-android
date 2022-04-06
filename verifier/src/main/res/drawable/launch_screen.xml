@@ -14,16 +14,9 @@
     <item android:drawable="?attr/colorSurface" />
 
     <item
-        android:width="298dp"
-        android:height="122dp"
-        android:drawable="@drawable/illustration_launch_screen"
+        android:width="160dp"
+        android:height="160dp"
+        android:drawable="@drawable/ic_illustration_launch_screen"
         android:gravity="center" />
-
-    <item
-        android:left="110dp"
-        android:width="153dp"
-        android:height="90dp"
-        android:drawable="@drawable/illustration_splash_banner"
-        android:gravity="center_horizontal|top" />
 
 </layer-list>

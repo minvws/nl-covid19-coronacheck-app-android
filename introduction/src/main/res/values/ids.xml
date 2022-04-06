@@ -33,4 +33,5 @@
     <item name="app_status_update_recommended_action" type="string" />
     <item name="app_status_update_recommended_dismiss_action" type="string" />
     <item name="new_in_app_subtitle" type="string" />
+    <item name="ic_illustration_launch_screen" type="drawable" />
 </resources>
