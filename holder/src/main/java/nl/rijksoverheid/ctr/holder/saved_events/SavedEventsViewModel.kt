@@ -35,32 +35,34 @@ class SavedEventsViewModel(
         viewModelScope.launch {
             val eventGroups = holderDatabase.eventGroupDao().getAll().asReversed()
 
-            val savedEvents = eventGroups.map { eventGroup ->
+            val savedEvents = eventGroups.map { eventGroupEntity ->
                 val isDccEvent = remoteEventUtil.isDccEvent(
-                    providerIdentifier = eventGroup.providerIdentifier
+                    providerIdentifier = eventGroupEntity.providerIdentifier
                 )
-                val remoteEvents = if (isDccEvent) {
-                    val credential = JSONObject(eventGroup.jsonData.decodeToString()).getString("credential")
-                    getEventsFromPaperProofQrUseCase.get(credential).events ?: listOf()
+                val remoteProtocol = if (isDccEvent) {
+                    val credential = JSONObject(eventGroupEntity.jsonData.decodeToString()).getString("credential")
+                    getEventsFromPaperProofQrUseCase.get(credential)
                 } else {
-                    remoteEventUtil.getRemoteEventsFromNonDcc(
-                        eventGroupEntity = eventGroup
+                    remoteEventUtil.getRemoteProtocol3FromNonDcc(
+                        eventGroupEntity = eventGroupEntity
                     )
                 }
 
-                SavedEvents(
-                    eventGroupEntity = eventGroup,
-                    provider = eventGroupEntityUtil.getProviderName(
-                        providerIdentifier = eventGroup.providerIdentifier
-                    ),
-                    events = remoteEvents.map { remoteEvent ->
-                        SavedEvents.SavedEvent(
-                            type = remoteEventUtil.getOriginType(remoteEvent),
-                            date = remoteEvent.getDate() ?: OffsetDateTime.now()
-                        )
-                    }
-                )
-            }
+                if (remoteProtocol == null) {
+                    null
+                } else {
+                    SavedEvents(
+                        eventGroupEntity = eventGroupEntity,
+                        remoteProtocol3 = remoteProtocol,
+                        providerIdentifier = eventGroupEntity.providerIdentifier,
+                        providerName = eventGroupEntityUtil.getProviderName(
+                            providerIdentifier = eventGroupEntity.providerIdentifier
+                        ),
+                        isDccEvent = isDccEvent
+                    )
+                }
+
+            }.filterNotNull()
 
             (savedEventsLiveData as MutableLiveData).postValue(Event(savedEvents))
         }

@@ -14,29 +14,31 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemSavedEventsSectionBinding
-import nl.rijksoverheid.ctr.holder.databinding.FragmentSavedEventsBinding
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.saved_events.SavedEvents
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 
 class SavedEventsSectionAdapterItem(
     private val savedEvents: SavedEvents,
+    private val onClickEvent: (isDccEvent: Boolean, providerIdentifier: String, holder: RemoteProtocol3.Holder?, remoteEvent: RemoteEvent) -> Unit,
     private val onClickClearData: (eventGroupEntity: EventGroupEntity) -> Unit
 ): BindableItem<AdapterItemSavedEventsSectionBinding>() {
 
     override fun bind(viewBinding: AdapterItemSavedEventsSectionBinding, position: Int) {
         setReceivedAt(
             viewBinding = viewBinding,
-            provider = savedEvents.provider
+            providerName = savedEvents.providerName
         )
         initRecyclerView(
             viewBinding = viewBinding,
-            events = savedEvents.events
+            remoteProtocol = savedEvents.remoteProtocol3
         )
     }
 
     private fun initRecyclerView(
         viewBinding: AdapterItemSavedEventsSectionBinding,
-        events: List<SavedEvents.SavedEvent>) {
+        remoteProtocol: RemoteProtocol3) {
 
         val section = Section()
         val adapter = GroupAdapter<GroupieViewHolder>().also {
@@ -44,11 +46,20 @@ class SavedEventsSectionAdapterItem(
         }
         viewBinding.recyclerView.adapter = adapter
         viewBinding.recyclerView.itemAnimator = null
-        
-        val items = events.map {
-            SavedEventAdapterItem(it)
+
+        remoteProtocol.events?.let {
+            val items = it.map { remoteEvent ->
+                SavedEventAdapterItem(
+                    isDccEvent = savedEvents.isDccEvent,
+                    providerIdentifier = savedEvents.providerIdentifier,
+                    holder = remoteProtocol.holder,
+                    remoteEvent = remoteEvent,
+                    onClick = onClickEvent
+                )
+            }
+            section.addAll(items)
         }
-        section.addAll(items)
+
         section.add(
             SavedEventsClearDataAdapterItem(
                 eventGroupEntity = savedEvents.eventGroupEntity,
@@ -59,14 +70,14 @@ class SavedEventsSectionAdapterItem(
 
     private fun setReceivedAt(
         viewBinding: AdapterItemSavedEventsSectionBinding,
-        provider: String) {
+        providerName: String) {
 
         val context = viewBinding.root.context
 
-        viewBinding.retrievedAt.text = if (savedEvents.provider == "DCC") {
+        viewBinding.retrievedAt.text = if (savedEvents.providerName == "DCC") {
             context.getString(R.string.holder_storedEvents_listHeader_paperFlow)
         } else {
-            context.getString(R.string.holder_storedEvents_listHeader_fetchedFromProvider, provider)
+            context.getString(R.string.holder_storedEvents_listHeader_fetchedFromProvider, providerName)
         }
     }
 
