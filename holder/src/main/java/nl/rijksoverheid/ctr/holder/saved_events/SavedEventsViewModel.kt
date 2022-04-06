@@ -30,7 +30,7 @@ class SavedEventsViewModel(
 
     fun getSavedEvents() {
         viewModelScope.launch {
-            val eventGroups = holderDatabase.eventGroupDao().getAll()
+            val eventGroups = holderDatabase.eventGroupDao().getAll().asReversed()
 
             val savedEvents = eventGroups.map { eventGroup ->
                 val isDccEvent = remoteEventUtil.isDccEvent(
