@@ -17,14 +17,9 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentSavedEventsBinding
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsHeaderAdapterItem
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsNoSavedEventsItem
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsSectionAdapterItem
-import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
-import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -35,8 +30,6 @@ class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
     private val section = Section()
     private val savedEventsViewModel: SavedEventsViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
-    private val infoScreenUtil: InfoScreenUtil by inject()
-    private val yourEventsFragmentUtil: YourEventsFragmentUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,6 +42,7 @@ class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
     }
 
     private fun initRecyclerView(binding: FragmentSavedEventsBinding) {
+        section.clear()
         val adapter = GroupAdapter<GroupieViewHolder>().also {
             it.add(section)
         }
@@ -68,8 +62,13 @@ class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
                     items.add(
                         SavedEventsSectionAdapterItem(
                             savedEvents = it,
-                            onClickEvent = { isDccEvent, providerIdentifier, holder, remoteEvent ->
-                                showEventDetail(isDccEvent, providerIdentifier, holder, remoteEvent)
+                            onClickEvent = { infoScreen ->
+                                navigateSafety(
+                                    SavedEventsFragmentDirections.actionYourEventExplanation(
+                                        toolbarTitle = getString(R.string.your_test_result_explanation_toolbar_title),
+                                        data = arrayOf(infoScreen)
+                                    )
+                                )
                             },
                             onClickClearData = { eventGroupEntity ->
                                 presentClearDataDialog {
@@ -102,38 +101,6 @@ class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
             positiveButtonCallback = {
                 onClear.invoke()
             }
-        )
-    }
-
-    private fun showEventDetail(isDccEvent: Boolean, providerIdentifier: String, holder: RemoteProtocol3.Holder?, remoteEvent: RemoteEvent) {
-        val fullName = yourEventsFragmentUtil.getFullName(holder)
-        val birthDate = yourEventsFragmentUtil.getBirthDate(holder)
-
-        when (remoteEvent) {
-            is RemoteEventVaccination -> showEventDetailForVaccination(isDccEvent, providerIdentifier, remoteEvent, fullName, birthDate)
-        }
-    }
-
-    private fun showEventDetailForVaccination(
-        isDccEvent: Boolean,
-        providerIdentifier: String,
-        event: RemoteEventVaccination,
-        fullName: String,
-        birthDate: String
-    ) {
-        val infoScreen = infoScreenUtil.getForVaccination(
-            event = event,
-            fullName = fullName,
-            birthDate = birthDate,
-            providerIdentifier = providerIdentifier,
-            isPaperProof = isDccEvent
-        )
-
-        navigateSafety(
-            SavedEventsFragmentDirections.actionYourEventExplanation(
-                toolbarTitle = getString(R.string.your_test_result_explanation_toolbar_title),
-                data = arrayOf(infoScreen)
-            )
         )
     }
 }

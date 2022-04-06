@@ -7,13 +7,17 @@
 
 package nl.rijksoverheid.ctr.holder.saved_events
 
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
+import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreen
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 
 data class SavedEvents(
-    val isDccEvent: Boolean,
-    val providerIdentifier: String,
     val providerName: String,
     val eventGroupEntity: EventGroupEntity,
-    val remoteProtocol3: RemoteProtocol3,
-)
+    val events: List<SavedEvent>
+) {
+    data class SavedEvent(
+        val remoteEvent: RemoteEvent,
+        val infoScreen: InfoScreen
+    )
+}

@@ -14,14 +14,13 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemSavedEventsSectionBinding
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.saved_events.SavedEvents
+import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreen
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 
 class SavedEventsSectionAdapterItem(
     private val savedEvents: SavedEvents,
-    private val onClickEvent: (isDccEvent: Boolean, providerIdentifier: String, holder: RemoteProtocol3.Holder?, remoteEvent: RemoteEvent) -> Unit,
+    private val onClickEvent: (infoScreen: InfoScreen) -> Unit,
     private val onClickClearData: (eventGroupEntity: EventGroupEntity) -> Unit
 ): BindableItem<AdapterItemSavedEventsSectionBinding>() {
 
@@ -32,13 +31,13 @@ class SavedEventsSectionAdapterItem(
         )
         initRecyclerView(
             viewBinding = viewBinding,
-            remoteProtocol = savedEvents.remoteProtocol3
+            savedEvents = savedEvents
         )
     }
 
     private fun initRecyclerView(
         viewBinding: AdapterItemSavedEventsSectionBinding,
-        remoteProtocol: RemoteProtocol3) {
+        savedEvents: SavedEvents) {
 
         val section = Section()
         val adapter = GroupAdapter<GroupieViewHolder>().also {
@@ -47,18 +46,13 @@ class SavedEventsSectionAdapterItem(
         viewBinding.recyclerView.adapter = adapter
         viewBinding.recyclerView.itemAnimator = null
 
-        remoteProtocol.events?.let {
-            val items = it.map { remoteEvent ->
-                SavedEventAdapterItem(
-                    isDccEvent = savedEvents.isDccEvent,
-                    providerIdentifier = savedEvents.providerIdentifier,
-                    holder = remoteProtocol.holder,
-                    remoteEvent = remoteEvent,
-                    onClick = onClickEvent
-                )
-            }
-            section.addAll(items)
+        val items = savedEvents.events.map {
+            SavedEventAdapterItem(
+                savedEvent = it,
+                onClick = onClickEvent
+            )
         }
+        section.addAll(items)
 
         section.add(
             SavedEventsClearDataAdapterItem(
