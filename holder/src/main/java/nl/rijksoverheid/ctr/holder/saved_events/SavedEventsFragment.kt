@@ -14,22 +14,29 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentSavedEventsBinding
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsHeaderAdapterItem
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsSectionAdapterItem
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
 
     private val section = Section()
     private val savedEventsViewModel: SavedEventsViewModel by viewModel()
+    private val dialogUtil: DialogUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentSavedEventsBinding.bind(view)
         initRecyclerView(binding)
-        getSavedEvents()
+
+        listenToSavedEvents()
+        listenToRemoveSavedEvents()
+        savedEventsViewModel.getSavedEvents()
     }
 
     private fun initRecyclerView(binding: FragmentSavedEventsBinding) {
@@ -40,20 +47,42 @@ class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
         binding.recyclerView.itemAnimator = null
     }
 
-    private fun getSavedEvents() {
-        savedEventsViewModel.getSavedEvents()
-
-        savedEventsViewModel.savedEventsLiveData.observe(viewLifecycleOwner) { savedEvents ->
+    private fun listenToSavedEvents() {
+        savedEventsViewModel.savedEventsLiveData.observe(viewLifecycleOwner, EventObserver { savedEvents ->
             val items = mutableListOf<BindableItem<*>>()
             items.add(SavedEventsHeaderAdapterItem())
             savedEvents.forEach {
                 items.add(
                     SavedEventsSectionAdapterItem(
-                        savedEvents = it
+                        savedEvents = it,
+                        onClickClearData = { eventGroupEntity ->
+                            presentClearDataDialog {
+                                savedEventsViewModel.removeSavedEvents(eventGroupEntity)
+                            }
+                        }
                     )
                 )
             }
             section.addAll(items)
+        })
+    }
+
+    private fun listenToRemoveSavedEvents() {
+        savedEventsViewModel.removedSavedEventsLiveData.observe(viewLifecycleOwner) {
+
         }
+    }
+
+    private fun presentClearDataDialog(onClear: () -> Unit) {
+        dialogUtil.presentDialog(
+            context = requireContext(),
+            title = R.string.holder_storedEvent_alert_removeEvents_title,
+            message = getString(R.string.holder_storedEvent_alert_removeEvents_message),
+            positiveButtonText = R.string.general_delete,
+            negativeButtonText = R.string.general_cancel,
+            positiveButtonCallback = {
+                onClear.invoke()
+            }
+        )
     }
 }

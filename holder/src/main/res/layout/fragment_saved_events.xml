@@ -16,4 +16,5 @@
     android:importantForAccessibility="auto"
     android:scrollbars="vertical"
     android:background="@color/blue_5_percent"
+    android:paddingBottom="40dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

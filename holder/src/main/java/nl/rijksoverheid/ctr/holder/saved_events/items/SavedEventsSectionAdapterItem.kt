@@ -16,9 +16,11 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemSavedEventsSectionBinding
 import nl.rijksoverheid.ctr.holder.databinding.FragmentSavedEventsBinding
 import nl.rijksoverheid.ctr.holder.saved_events.SavedEvents
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 
 class SavedEventsSectionAdapterItem(
-    private val savedEvents: SavedEvents
+    private val savedEvents: SavedEvents,
+    private val onClickClearData: (eventGroupEntity: EventGroupEntity) -> Unit
 ): BindableItem<AdapterItemSavedEventsSectionBinding>() {
 
     override fun bind(viewBinding: AdapterItemSavedEventsSectionBinding, position: Int) {
@@ -46,6 +48,12 @@ class SavedEventsSectionAdapterItem(
             SavedEventAdapterItem(it)
         }
         section.addAll(items)
+        section.add(
+            SavedEventsClearDataAdapterItem(
+                eventGroupEntity = savedEvents.eventGroupEntity,
+                onClick = onClickClearData
+            )
+        )
     }
 
     private fun setReceivedAt(

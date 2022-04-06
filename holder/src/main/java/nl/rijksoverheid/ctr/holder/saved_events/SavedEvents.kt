@@ -7,10 +7,12 @@
 
 package nl.rijksoverheid.ctr.holder.saved_events
 
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import java.time.OffsetDateTime
 
 data class SavedEvents(
+    val eventGroupEntity: EventGroupEntity,
     val provider: String,
     val events: List<SavedEvent>
 ) {

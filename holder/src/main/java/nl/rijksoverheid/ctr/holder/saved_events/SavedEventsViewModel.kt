@@ -16,6 +16,8 @@ import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetEventsFromPaperProofQ
 import nl.rijksoverheid.ctr.holder.your_events.utils.EventGroupEntityUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import org.json.JSONObject
 import java.time.OffsetDateTime
 
@@ -26,7 +28,8 @@ class SavedEventsViewModel(
     private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase
 ): ViewModel() {
 
-    val savedEventsLiveData: LiveData<List<SavedEvents>> = MutableLiveData()
+    val savedEventsLiveData: LiveData<Event<List<SavedEvents>>> = MutableLiveData()
+    val removedSavedEventsLiveData: LiveData<Unit> = MutableLiveData()
 
     fun getSavedEvents() {
         viewModelScope.launch {
@@ -46,6 +49,7 @@ class SavedEventsViewModel(
                 }
 
                 SavedEvents(
+                    eventGroupEntity = eventGroup,
                     provider = eventGroupEntityUtil.getProviderName(
                         providerIdentifier = eventGroup.providerIdentifier
                     ),
@@ -58,7 +62,14 @@ class SavedEventsViewModel(
                 )
             }
 
-            (savedEventsLiveData as MutableLiveData).postValue(savedEvents)
+            (savedEventsLiveData as MutableLiveData).postValue(Event(savedEvents))
+        }
+    }
+
+    fun removeSavedEvents(eventGroupEntity: EventGroupEntity) {
+        viewModelScope.launch {
+            holderDatabase.eventGroupDao().delete(eventGroupEntity)
+            (removedSavedEventsLiveData as MutableLiveData).postValue(Unit)
         }
     }
 }

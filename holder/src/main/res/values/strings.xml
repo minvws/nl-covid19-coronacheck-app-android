@@ -8,8 +8,9 @@
   <string name="holder_dcc_alert_message">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
   <string name="holder_recovery_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="holder_test_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
+  <string name="general_cancel">Annuleer</string>
   <string name="general_toMyOverview">Naar mijn bewijzen</string>
-  <string name="general_vaccination">vaccinatie</string>
+  <string name="general_vaccination">Vaccinatie</string>
   <string name="holder_listRemoteEvents_title">Kloppen de gegevens?</string>
   <string name="holder_vaccination_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je gegevens ophalen.</string>
   <string name="holder_listRemoteEvents_somethingWrong_title">Klopt er iets niet?</string>
@@ -200,7 +201,7 @@
   <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
   <string name="about_this_app_colofon">Colofon</string>
   <string name="about_this_app_colofon_url">https://coronacheck.nl/nl/colofon-in-app.html</string>
-  <string name="about_this_clear_data">Wis gegevens</string>
+  <string name="about_this_clear_data">Reset app</string>
   <string name="create_qr_explanation_menu_title">QR-code maken</string>
   <string name="create_qr_explanation_menu_title_alternative">Voeg een QR-code toe</string>
   <string name="qr_code_type_title">Wat wil je toevoegen?</string>
@@ -507,9 +508,9 @@
   <string name="dialog_no_browser_title">Geen browser gevonden</string>
   <string name="dialog_no_browser_message">Er is op deze telefoon geen internetbrowser gevonden waarmee %1s geopend kan worden. Download een browser om de link te kunnen openen.</string>
   <string name="about_this_app_clear_data_title">Alle gegevens wissen?</string>
-  <string name="about_this_app_clear_data_description">Bij het wissen worden alle gegevens en bewijzen uit de app verwijderd en wordt de app afgesloten. Je kunt de app daarna gewoon weer opstarten.</string>
+  <string name="about_this_app_clear_data_description">Bij het resetten worden alle gegevens en bewijzen uit de app verwijderd en wordt de app afgesloten. Je kunt de app daarna gewoon weer opstarten.</string>
   <string name="about_this_app_clear_data_cancel">Annuleer</string>
-  <string name="about_this_app_clear_data_confirm">Wis gegevens</string>
+  <string name="about_this_app_clear_data_confirm">Reset app</string>
   <string name="accessibility_flash_off">Zet de zaklamp uit.</string>
   <string name="accessibility_flash_on">Zet de zaklamp aan.</string>
   <string name="recover_domestic_recovery_green_card_button">Bewijs terugzetten</string>
@@ -723,20 +724,21 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_onboarding_content_onlyInternationalQR_0G_message">De QR-code op je bewijs kan worden gecheckt bij de ingang van plekken en activiteiten in het buitenland. Of aan de grens.</string>
   <string name="holder_deactivation_url">https://coronacheck.nl/app/niet-in-gebruik</string>
   <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Boostervaccinatie toevoegen</string>
-  <string name="holder_showqr_eu_about_vaccination_dosage_message">&lt;a href=\\"https://coronacheck.nl/nl/faq-in-app\\"&gt;Lees meer over mijn dosis&lt;/a&gt;</string>
+  <string name="holder_showqr_eu_about_vaccination_dosage_message">&lt;a href=\\"https://coronacheck.nl/nl/faq-in-app\\"&gt;Lees meer over de dosis&lt;/a&gt;</string>
   <string name="holder_menu_storedEvents">Opgeslagen gegevens</string>
-  <string name="holder_menu_resetApp">App opnieuw instellen</string>
+  <string name="holder_menu_resetApp">App resetten</string>
   <string name="holder_storedEvents_title">Mijn opgeslagen gegevens</string>
-  <string name="holder_storedEvents_message">De gegevens hieronder staan opgeslagen op je telefoon en gebruikt CoronaCheck om je coronabewijs te maken.</string>
+  <string name="holder_storedEvents_message">De gegevens hieronder staan opgeslagen op je telefoon en worden gebruikt door CoronaCheck om je coronabewijs te maken.</string>
   <string name="holder_storedEvents_button_handleData">Hoe gaat CoronaCheck met gegevens om?</string>
-  <string name="holder_storedEvents_url">https://coronacheck.nl</string>
-  <string name="holder_storedEvents_button_removeEvents">Wis deze gegevens</string>
+  <string name="holder_storedEvents_url">https://coronacheck.nl/nl/privacy</string>
+  <string name="holder_storedEvents_button_removeEvents">Deze gegevens wissen</string>
   <string name="holder_storedEvents_list_noEvents">Geen gegevens opgeslagen</string>
   <string name="holder_storedEvents_listHeader_fetchedFromProvider">Opgehaald bij %s</string>
   <string name="holder_storedEvents_listHeader_paperFlow">Ingescand bewijs</string>
   <string name="general_negativeTest">Negatieve testuitslag</string>
   <string name="general_positiveTest">Positieve testuitslag</string>
-  <string name="holder_storedEvent_alert_removeEvents_title">Deze gegevens verwijderen?</string>
-  <string name="holder_storedEvent_alert_removeEvents_message">Bij het wissen van deze gegevens worden er mogelijk bewijzen met QR-codes uit de app verwijderd</string>
-  <string name="general_delete">Verwijderen</string>
+  <string name="holder_storedEvent_alert_removeEvents_title">Deze gegevens wissen?</string>
+  <string name="holder_storedEvent_alert_removeEvents_message">Bij het wissen van deze gegevens worden er mogelijk bewijzen met QR-codes uit de app verwijderd.</string>
+  <string name="general_delete">Wis gegevens</string>
+  <string name="holder_storedEvents_eraseEvents_title">Gegevens wissen</string>
 </resources>
