@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.qrcodes.models
+package nl.rijksoverheid.ctr.holder.qrcodes.usecases
 
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
@@ -8,7 +8,6 @@ import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
 import java.util.*
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -30,13 +29,14 @@ class QrCodeAnimationTests {
         for (i in 1..274) {
             calendar.add(Calendar.DAY_OF_YEAR, 1)
             val clock = Clock.fixed(calendar.toInstant(), ZoneId.of("UTC"))
+            val animationUseCase = AnimationUseCaseImpl(clock)
             assertEquals(
                 R.raw.summer_domestic,
-                QrCodeAnimation.getCurrent(clock, GreenCardType.Domestic).animationResource
+                animationUseCase.get(GreenCardType.Domestic).animationResource
             )
             assertEquals(
                 R.raw.summer_international,
-                QrCodeAnimation.getCurrent(clock, GreenCardType.Eu).animationResource
+                animationUseCase.get(GreenCardType.Eu).animationResource
             )
         }
     }
@@ -52,13 +52,14 @@ class QrCodeAnimationTests {
         for (i in 1..89) {
             calendar.add(Calendar.DAY_OF_YEAR, 1)
             val clock = Clock.fixed(calendar.toInstant(), ZoneId.of("UTC"))
+            val animationUseCase = AnimationUseCaseImpl(clock)
             assertEquals(
                 R.raw.winter_domestic,
-                QrCodeAnimation.getCurrent(clock, GreenCardType.Domestic).animationResource
+                animationUseCase.get(GreenCardType.Domestic).animationResource
             )
             assertEquals(
                 R.raw.winter_international,
-                QrCodeAnimation.getCurrent(clock, GreenCardType.Eu).animationResource
+                animationUseCase.get(GreenCardType.Eu).animationResource
             )
         }
     }

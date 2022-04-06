@@ -11,15 +11,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCase
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
-import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeAnimation
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
-import java.time.Clock
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.AnimationUseCase
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 
 abstract class QrCodesViewModel : ViewModel() {
     val qrCodeDataListLiveData = MutableLiveData<QrCodesResult>()
@@ -39,7 +39,7 @@ abstract class QrCodesViewModel : ViewModel() {
 class QrCodesViewModelImpl(
     private val qrCodesResultUseCase: QrCodesResultUseCase,
     private val returnToExternalAppUseCase: ReturnToExternalAppUseCase,
-    private val clock: Clock,
+    private val animationUseCase: AnimationUseCase,
 ) : QrCodesViewModel() {
 
     override fun generateQrCodes(
@@ -62,7 +62,7 @@ class QrCodesViewModelImpl(
                 )
             )
             animationLiveData.postValue(
-                QrCodeAnimation.getCurrent(clock, greenCardType)
+                animationUseCase.get(greenCardType)
             )
         }
     }
