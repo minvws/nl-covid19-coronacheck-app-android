@@ -16,7 +16,7 @@ import java.util.*
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodeAnimationTests {
+class QrCodeAnimationUseCaseTests {
 
     @Test
     fun `test summer`() {
