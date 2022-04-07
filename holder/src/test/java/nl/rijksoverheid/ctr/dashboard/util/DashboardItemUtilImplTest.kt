@@ -12,7 +12,7 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.*
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
@@ -240,7 +240,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `App update is available when the recommended version is higher than current version`() {
-        val appConfigUseCase: CachedAppConfigUseCase = mockk()
+        val appConfigUseCase: HolderCachedAppConfigUseCase = mockk()
         every { appConfigUseCase.getCachedAppConfig().recommendedVersion } answers { 2 }
 
         val buildConfigUseCase: BuildConfigUseCase = mockk()
@@ -256,7 +256,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `App update is not available when the recommended version is current version`() {
-        val appConfigUseCase: CachedAppConfigUseCase = mockk()
+        val appConfigUseCase: HolderCachedAppConfigUseCase = mockk()
         every { appConfigUseCase.getCachedAppConfig().recommendedVersion } answers { 1 }
 
         val buildConfigUseCase: BuildConfigUseCase = mockk()
@@ -272,7 +272,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `App update is not available when the recommended version lower is current version`() {
-        val appConfigUseCase: CachedAppConfigUseCase = mockk()
+        val appConfigUseCase: HolderCachedAppConfigUseCase = mockk()
         every { appConfigUseCase.getCachedAppConfig().recommendedVersion } answers { 1 }
 
         val buildConfigUseCase: BuildConfigUseCase = mockk()
@@ -508,7 +508,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         clockDeviationUseCase: ClockDeviationUseCase = mockk(relaxed = true),
         persistenceManager: PersistenceManager = mockk(relaxed = true),
         appConfigFreshnessUseCase: AppConfigFreshnessUseCase = mockk(relaxed = true),
-        appConfigUseCase: CachedAppConfigUseCase = mockk(relaxed = true),
+        appConfigUseCase: HolderCachedAppConfigUseCase = mockk(relaxed = true),
         buildConfigUseCase: BuildConfigUseCase = mockk(relaxed = true),
         greenCardUtil: GreenCardUtil = mockk(relaxed = true),
     ) = DashboardItemUtilImpl(

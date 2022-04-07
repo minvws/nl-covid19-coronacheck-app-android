@@ -7,7 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import java.time.Clock
@@ -22,7 +22,7 @@ interface GreenCardRefreshUtil {
 
 class GreenCardRefreshUtilImpl(
     private val holderDatabase: HolderDatabase,
-    cachedAppConfigUseCase: CachedAppConfigUseCase,
+    cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
     private val greenCardUtil: GreenCardUtil,
     private val clock: Clock,
     private val credentialUtil: CredentialUtil,

@@ -12,7 +12,7 @@ import android.text.TextUtils
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
@@ -40,7 +40,7 @@ class VaccinationInfoScreenUtilImpl(
     private val lastVaccinationDoseUtil: LastVaccinationDoseUtil,
     private val resources: Resources,
     private val countryUtil: CountryUtil,
-    cachedAppConfigUseCase: CachedAppConfigUseCase
+    cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : VaccinationInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()

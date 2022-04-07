@@ -12,8 +12,8 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.verifier.scanqr.util.MenuUtilImpl
+import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,7 +27,7 @@ class MenuUtilImplTest: AutoCloseKoinTest() {
     fun `When verification policy selection is enabled return correct menu items`() {
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
         val appConfigPersistenceManager = mockk<AppConfigPersistenceManager>(relaxed = true)
-        val featureFlagUseCase = mockk<FeatureFlagUseCase>()
+        val featureFlagUseCase = mockk<VerifierFeatureFlagUseCase>()
 
         val util = MenuUtilImpl(
             cachedAppConfigUseCase = cachedAppConfigUseCase,
@@ -49,7 +49,7 @@ class MenuUtilImplTest: AutoCloseKoinTest() {
     fun `When verification policy selection is disabled return correct menu items`() {
         val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
         val appConfigPersistenceManager = mockk<AppConfigPersistenceManager>(relaxed = true)
-        val featureFlagUseCase = mockk<FeatureFlagUseCase>()
+        val featureFlagUseCase = mockk<VerifierFeatureFlagUseCase>()
 
         val util = MenuUtilImpl(
             cachedAppConfigUseCase = cachedAppConfigUseCase,

@@ -13,7 +13,7 @@ import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtilImpl
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
@@ -47,7 +47,7 @@ class GreenCardRefreshUtilImplTest {
     private val appConfig = mockk<HolderConfig>(relaxed = true).apply {
         coEvery { credentialRenewalDays } returns 5
     }
-    private val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true).apply {
+    private val cachedAppConfigUseCase = mockk<HolderCachedAppConfigUseCase>(relaxed = true).apply {
         coEvery { getCachedAppConfig() } returns appConfig
     }
 

@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragmentDirections
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 
 interface MenuUtil {
@@ -26,7 +27,8 @@ interface MenuUtil {
 
 class MenuUtilImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
-    private val appConfigPersistenceManager: AppConfigPersistenceManager
+    private val appConfigPersistenceManager: AppConfigPersistenceManager,
+    private val featureFlagUseCase: HolderFeatureFlagUseCase
 ): MenuUtil {
 
     override fun showMenu(dashboardFragment: DashboardFragment) {
@@ -45,7 +47,7 @@ class MenuUtilImpl(
             data = getAboutThisAppData(context)
         )
 
-        val isVisitorPassEnabled = (cachedAppConfigUseCase.getCachedAppConfig() as HolderConfig).visitorPassEnabled
+        val isVisitorPassEnabled = featureFlagUseCase.getVisitorPassEnabled()
 
         val menuSections = mutableListOf<MenuSection>()
 

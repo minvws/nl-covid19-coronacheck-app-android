@@ -8,7 +8,7 @@
 package nl.rijksoverheid.ctr.holder.input_token.usecases
 
 import nl.rijksoverheid.ctr.holder.models.HolderStep
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
@@ -33,7 +33,7 @@ class TestResultUseCase(
     private val configProviderUseCase: ConfigProvidersUseCase,
     private val testProviderRepository: TestProviderRepository,
     private val tokenValidatorUtil: TokenValidatorUtil,
-    private val configUseCase: CachedAppConfigUseCase
+    private val configUseCase: HolderCachedAppConfigUseCase
 ) {
 
     suspend fun testResult(uniqueCode: String, verificationCode: String? = null): TestResult {

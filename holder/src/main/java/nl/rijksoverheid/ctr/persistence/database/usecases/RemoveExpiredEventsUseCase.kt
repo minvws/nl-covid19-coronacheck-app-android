@@ -1,6 +1,6 @@
 package nl.rijksoverheid.ctr.persistence.database.usecases
 
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
@@ -14,7 +14,7 @@ interface RemoveExpiredEventsUseCase {
 
 class RemoveExpiredEventsUseCaseImpl(
     private val clock: Clock,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
     private val holderDatabase: HolderDatabase
 ): RemoveExpiredEventsUseCase {
 

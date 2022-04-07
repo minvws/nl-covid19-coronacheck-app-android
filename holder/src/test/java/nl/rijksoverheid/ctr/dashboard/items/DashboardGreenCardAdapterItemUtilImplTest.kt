@@ -14,7 +14,6 @@ import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.HolderApplication
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.AdapterCard
@@ -58,7 +57,6 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
     private val credentialUtil = mockk<CredentialUtil>(relaxed = true)
     private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil = mockk(relaxed = true)
     private val greenCardUtil: GreenCardUtil = mockk(relaxed = true)
-    private val featureFlagUseCase: FeatureFlagUseCase = mockk(relaxed = true)
 
     private val viewBinding = object : DashboardGreenCardAdapterItemBindingWrapper {
 

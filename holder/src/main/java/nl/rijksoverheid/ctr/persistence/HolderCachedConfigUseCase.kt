@@ -2,9 +2,9 @@ package nl.rijksoverheid.ctr.persistence
 
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase as BaseCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 
-interface CachedAppConfigUseCase {
+interface HolderCachedAppConfigUseCase {
     fun getCachedAppConfig(): HolderConfig
     fun getCachedAppConfigOrNull(): HolderConfig?
 }
@@ -16,11 +16,11 @@ interface CachedAppConfigUseCase {
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class CachedAppConfigUseCaseImpl constructor(
-    private val baseCachedAppConfigUseCase: BaseCachedAppConfigUseCase,
+class HolderCachedAppConfigUseCaseImpl constructor(
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val isDebugApp: Boolean,
     private val debugDisclosurePolicyPersistenceManager: DebugDisclosurePolicyPersistenceManager
-) : CachedAppConfigUseCase {
+) : HolderCachedAppConfigUseCase {
 
     private val defaultConfig = HolderConfig.default()
 
@@ -29,7 +29,7 @@ class CachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getCachedAppConfigOrNull(): HolderConfig? {
-        val config = baseCachedAppConfigUseCase.getCachedAppConfigOrNull() as? HolderConfig
+        val config = cachedAppConfigUseCase.getCachedAppConfigOrNull() as? HolderConfig
 
         val debugPolicy = debugDisclosurePolicyPersistenceManager.getDebugDisclosurePolicy()
 

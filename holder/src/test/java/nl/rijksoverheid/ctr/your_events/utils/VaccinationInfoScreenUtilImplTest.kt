@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
@@ -41,7 +41,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val resources = context.resources
 
-        val cachedAppConfigUseCase: CachedAppConfigUseCase = object : CachedAppConfigUseCase {
+        val cachedAppConfigUseCase: HolderCachedAppConfigUseCase = object : HolderCachedAppConfigUseCase {
             override fun getCachedAppConfigOrNull(): HolderConfig? {
                 return null
             }
@@ -121,7 +121,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
         val resources = context.resources
 
         val lastVaccinationDoseUtil = LastVaccinationDoseUtilImpl(resources)
-        val cachedAppConfigUseCase: CachedAppConfigUseCase = object : CachedAppConfigUseCase {
+        val cachedAppConfigUseCase: HolderCachedAppConfigUseCase = object : HolderCachedAppConfigUseCase {
             override fun getCachedAppConfigOrNull(): HolderConfig? {
                 return null
             }

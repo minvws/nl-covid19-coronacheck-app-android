@@ -7,7 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
@@ -34,8 +34,8 @@ interface CredentialUtil {
 class CredentialUtilImpl(
     private val clock: Clock,
     private val mobileCoreWrapper: MobileCoreWrapper,
-    private val appConfigUseCase: CachedAppConfigUseCase,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val appConfigUseCase: HolderCachedAppConfigUseCase,
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : CredentialUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
