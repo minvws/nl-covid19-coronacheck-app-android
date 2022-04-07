@@ -13,13 +13,13 @@ import java.util.*
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface AnimationUseCase {
+interface QrCodeAnimationUseCase {
     fun get(greenCardType: GreenCardType): QrCodeAnimation
 }
 
-class AnimationUseCaseImpl(
+class QrCodeAnimationUseCaseImpl(
     private val clock: Clock
-) : AnimationUseCase {
+) : QrCodeAnimationUseCase {
 
     override fun get(greenCardType: GreenCardType): QrCodeAnimation {
         val now = Calendar.getInstance().apply {

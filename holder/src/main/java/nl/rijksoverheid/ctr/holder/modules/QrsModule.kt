@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.holder.qrcodes.usecases.AnimationUseCase
-import nl.rijksoverheid.ctr.holder.qrcodes.usecases.AnimationUseCaseImpl
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeAnimationUseCase
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeAnimationUseCaseImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCaseImpl
 import org.koin.dsl.module
@@ -24,5 +24,5 @@ val qrsModule = module {
             get()
         )
     }
-    factory<AnimationUseCase> { AnimationUseCaseImpl(get()) }
+    factory<QrCodeAnimationUseCase> { QrCodeAnimationUseCaseImpl(get()) }
 }

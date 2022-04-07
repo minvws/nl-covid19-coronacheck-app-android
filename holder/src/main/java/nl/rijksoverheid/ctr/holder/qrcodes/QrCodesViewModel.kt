@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeAnimation
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
-import nl.rijksoverheid.ctr.holder.qrcodes.usecases.AnimationUseCase
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeAnimationUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
@@ -40,7 +40,7 @@ abstract class QrCodesViewModel : ViewModel() {
 class QrCodesViewModelImpl(
     private val qrCodesResultUseCase: QrCodesResultUseCase,
     private val returnToExternalAppUseCase: ReturnToExternalAppUseCase,
-    private val animationUseCase: AnimationUseCase,
+    private val qrCodeAnimationUseCase: QrCodeAnimationUseCase,
 ) : QrCodesViewModel() {
 
     override fun generateQrCodes(
@@ -76,7 +76,7 @@ class QrCodesViewModelImpl(
 
     override fun getAnimation(greenCardType: GreenCardType) {
         animationLiveData.postValue(
-            animationUseCase.get(greenCardType)
+            qrCodeAnimationUseCase.get(greenCardType)
         )
     }
 }
