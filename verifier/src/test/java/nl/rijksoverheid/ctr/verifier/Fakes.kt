@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
 import nl.rijksoverheid.ctr.verifier.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.scanner.usecases.TestResultValidUseCase
@@ -51,7 +52,7 @@ fun fakeIntroductionViewModel(
         init {
             if (introductionRequired) {
                 (introductionRequiredLiveData as MutableLiveData)
-                    .postValue(Unit)
+                    .postValue(Event(Unit))
             }
         }
 

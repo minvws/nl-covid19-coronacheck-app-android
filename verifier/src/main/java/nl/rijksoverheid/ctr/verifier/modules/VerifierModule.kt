@@ -50,9 +50,7 @@ import nl.rijksoverheid.ctr.verifier.scanqr.util.MenuUtil
 import nl.rijksoverheid.ctr.verifier.scanqr.util.MenuUtilImpl
 import nl.rijksoverheid.ctr.verifier.scanqr.util.ScannerStateCountdownUtil
 import nl.rijksoverheid.ctr.verifier.scanqr.util.ScannerStateCountdownUtilImpl
-import nl.rijksoverheid.ctr.verifier.usecases.BuildConfigUseCaseImpl
-import nl.rijksoverheid.ctr.verifier.usecases.ScannerStateUseCase
-import nl.rijksoverheid.ctr.verifier.usecases.ScannerStateUseCaseImpl
+import nl.rijksoverheid.ctr.verifier.usecases.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import java.time.Clock
@@ -86,6 +84,7 @@ fun verifierModule() = module {
     factory<ScanLogsCleanupUseCase> { ScanLogsCleanupUseCaseImpl(Clock.systemUTC(), get(), get()) }
     factory<LogScanUseCase> { LogScanUseCaseImpl(Clock.systemUTC(), get(), get()) }
     factory<ScannerUsedRecentlyUseCase> { ScannerUsedRecentlyUseCaseImpl(get(), get(), get()) }
+    factory<VerifierFeatureFlagUseCase> { VerifierFeatureFlagUseCaseImpl(get()) }
 
     // Utils
     factory<ScannerUtil> { ScannerUtilImpl() }

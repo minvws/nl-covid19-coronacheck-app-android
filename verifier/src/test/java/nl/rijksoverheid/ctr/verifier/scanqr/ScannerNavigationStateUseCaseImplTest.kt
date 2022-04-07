@@ -12,11 +12,11 @@ package nl.rijksoverheid.ctr.verifier.scanqr
 
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionState
 import nl.rijksoverheid.ctr.verifier.usecases.ScannerStateUseCase
+import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -24,7 +24,7 @@ class ScannerNavigationStateUseCaseImplTest {
 
     private val persistenceManager: PersistenceManager = mockk()
     private val scannerStateUseCase: ScannerStateUseCase = mockk()
-    private val featureFlagUseCase: FeatureFlagUseCase = mockk()
+    private val featureFlagUseCase: VerifierFeatureFlagUseCase = mockk()
 
     private val useCase = ScannerNavigationStateUseCaseImpl(
         persistenceManager, scannerStateUseCase, featureFlagUseCase

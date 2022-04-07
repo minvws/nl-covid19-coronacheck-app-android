@@ -7,22 +7,24 @@
  */
 
 
-package nl.rijksoverheid.ctr.appconfig.usecases
+package nl.rijksoverheid.ctr.verifier.usecases
 
 import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class FeatureFlagUseCaseImplTest {
+class VerifierFeatureFlagUseCaseImplTest {
 
     @Test
     fun `isVerificationPolicySelectionEnabled returns false if verificationPoliciesEnabled is empty`() {
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled } answers { emptyList() }
+        val cachedAppConfigUseCase = mockk<VerifierCachedAppConfigUseCase>()
+        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPolicies } answers { emptyList() }
 
-        val usecase = FeatureFlagUseCaseImpl(
+        val usecase = VerifierFeatureFlagUseCaseImpl(
             cachedAppConfigUseCase
         )
 
@@ -31,10 +33,10 @@ class FeatureFlagUseCaseImplTest {
 
     @Test
     fun `isVerificationPolicySelectionEnabled returns false if verificationPoliciesEnabled has one element`() {
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled } answers { listOf("3G") }
+        val cachedAppConfigUseCase = mockk<VerifierCachedAppConfigUseCase>()
+        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPolicies } answers { listOf("3G") }
 
-        val usecase = FeatureFlagUseCaseImpl(
+        val usecase = VerifierFeatureFlagUseCaseImpl(
             cachedAppConfigUseCase
         )
 
@@ -43,10 +45,10 @@ class FeatureFlagUseCaseImplTest {
 
     @Test
     fun `isVerificationPolicySelectionEnabled returns true if verificationPoliciesEnabled has two elements`() {
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled } answers { listOf("1G", "3G") }
+        val cachedAppConfigUseCase = mockk<VerifierCachedAppConfigUseCase>()
+        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPolicies } answers { listOf("1G", "3G") }
 
-        val usecase = FeatureFlagUseCaseImpl(
+        val usecase = VerifierFeatureFlagUseCaseImpl(
             cachedAppConfigUseCase
         )
 
@@ -55,10 +57,10 @@ class FeatureFlagUseCaseImplTest {
 
     @Test
     fun `isVerificationPolicySelectionEnabled returns false if verificationPoliciesEnabled has unsupported elements`() {
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
-        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPoliciesEnabled } answers { listOf("2G", "3G") }
+        val cachedAppConfigUseCase = mockk<VerifierCachedAppConfigUseCase>()
+        every { cachedAppConfigUseCase.getCachedAppConfig().verificationPolicies } answers { listOf("2G", "3G") }
 
-        val usecase = FeatureFlagUseCaseImpl(
+        val usecase = VerifierFeatureFlagUseCaseImpl(
             cachedAppConfigUseCase
         )
 

@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.verifier.usecases
 
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
@@ -24,7 +23,7 @@ class ScannerStateUseCaseImpl(
     private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase,
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
     private val persistenceManager: PersistenceManager,
-    private val featureFlagUseCase: FeatureFlagUseCase,
+    private val featureFlagUseCase: VerifierFeatureFlagUseCase,
 ) : ScannerStateUseCase {
 
     override fun get(): ScannerState {

@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
@@ -21,7 +21,7 @@ interface DashboardTabsItemDataMapper {
 }
 
 class DashboardTabsItemDataMapperImpl(
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ): DashboardTabsItemDataMapper {
 
     override suspend fun transform(dashboardItems: DashboardItems): List<DashboardTabItem> {

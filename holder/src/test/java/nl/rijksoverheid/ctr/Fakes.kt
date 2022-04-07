@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.*
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
@@ -41,6 +41,7 @@ import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
 import org.json.JSONObject
 import java.time.LocalDate
@@ -102,7 +103,7 @@ fun fakeTokenValidatorUtil(
 
 fun fakeCachedAppConfigUseCase(
     appConfig: HolderConfig = HolderConfig.default(),
-): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
+): HolderCachedAppConfigUseCase = object : HolderCachedAppConfigUseCase {
     override fun getCachedAppConfig(): HolderConfig {
         return appConfig
     }
@@ -120,7 +121,7 @@ fun fakeIntroductionViewModel(
         init {
             if (introductionRequired) {
                 (introductionRequiredLiveData as MutableLiveData)
-                    .postValue(Unit)
+                    .postValue(Event(Unit))
             }
         }
 

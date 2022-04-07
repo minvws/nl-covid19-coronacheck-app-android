@@ -10,7 +10,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr.util
 import android.content.res.Resources
 import android.text.TextUtils
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteTestResult2
@@ -43,7 +43,7 @@ interface TestInfoScreenUtil {
 
 class TestInfoScreenUtilImpl(
     private val resources: Resources,
-    cachedAppConfigUseCase: CachedAppConfigUseCase
+    cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : TestInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()

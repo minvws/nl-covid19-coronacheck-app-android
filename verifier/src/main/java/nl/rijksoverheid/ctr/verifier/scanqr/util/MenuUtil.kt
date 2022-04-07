@@ -10,7 +10,6 @@ package nl.rijksoverheid.ctr.verifier.scanqr.util
 import android.content.Context
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
@@ -19,6 +18,7 @@ import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragment
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragmentDirections
+import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 
 interface MenuUtil {
     fun showMenu(scanQrFragment: ScanQrFragment)
@@ -27,7 +27,7 @@ interface MenuUtil {
 class MenuUtilImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
-    private val featureFlagUseCase: FeatureFlagUseCase
+    private val featureFlagUseCase: VerifierFeatureFlagUseCase
 ): MenuUtil {
 
     override fun showMenu(scanQrFragment: ScanQrFragment) {

@@ -7,8 +7,8 @@ import nl.rijksoverheid.ctr.persistence.database.migration.TestResultsMigrationM
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCase
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCaseImpl
 import nl.rijksoverheid.ctr.design.BuildConfig
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCaseImpl
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCaseImpl
 import nl.rijksoverheid.ctr.holder.usecases.BuildConfigUseCaseImpl
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCaseImpl
@@ -26,8 +26,8 @@ import org.koin.dsl.module
 val appModule = module {
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
     factory<DeviceSecureUseCase> { DeviceSecureUseCaseImpl(androidContext()) }
-    factory<CachedAppConfigUseCase> {
-        CachedAppConfigUseCaseImpl(
+    factory<HolderCachedAppConfigUseCase> {
+        HolderCachedAppConfigUseCaseImpl(
             get(),
             isDebugApp(androidContext()),
             get()

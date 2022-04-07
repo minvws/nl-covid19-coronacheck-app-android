@@ -42,9 +42,7 @@ class VerifierConfig(
     upgradeRecommendationIntervalHours,
     verifierDeeplinkDomains,
     verifierClockDeviationThresholdSeconds,
-    verifierConfigAlmostOutOfDateWarningSeconds,
-    verifierEnableVerificationPolicyVersion,
-    verificationPolicies,
+    verifierConfigAlmostOutOfDateWarningSeconds
 ) {
     companion object {
         fun default(

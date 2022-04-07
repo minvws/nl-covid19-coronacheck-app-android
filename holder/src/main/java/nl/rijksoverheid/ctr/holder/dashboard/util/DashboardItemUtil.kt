@@ -9,7 +9,7 @@ package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
@@ -64,7 +64,7 @@ class DashboardItemUtilImpl(
     private val clockDeviationUseCase: ClockDeviationUseCase,
     private val persistenceManager: PersistenceManager,
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
-    private val appConfigUseCase: CachedAppConfigUseCase,
+    private val appConfigUseCase: HolderCachedAppConfigUseCase,
     private val buildConfigUseCase: BuildConfigUseCase,
     private val greenCardUtil: GreenCardUtil
 ) : DashboardItemUtil {
