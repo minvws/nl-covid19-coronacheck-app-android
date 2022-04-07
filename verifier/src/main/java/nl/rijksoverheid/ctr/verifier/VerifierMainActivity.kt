@@ -57,6 +57,11 @@ class VerifierMainActivity : AppCompatActivity() {
 
     private fun disableSplashscreenExitAnimation() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            /**
+             * by default the splashscreen fades out the icon and
+             * we don't want that in order to transit nicely
+             * to [nl.rijksoverheid.ctr.introduction.setup.SetupFragment]
+             */
             splashScreen.setOnExitAnimationListener { splashScreenView ->
                 val anim = ObjectAnimator.ofFloat(
                     splashScreenView,

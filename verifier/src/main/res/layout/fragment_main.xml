@@ -8,6 +8,7 @@
 
     <nl.rijksoverheid.ctr.design.widgets.Toolbar
         android:id="@+id/toolbar"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:touchscreenBlocksFocus="false"
