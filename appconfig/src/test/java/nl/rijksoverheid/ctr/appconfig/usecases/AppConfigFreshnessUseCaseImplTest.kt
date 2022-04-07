@@ -17,46 +17,93 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.time.Clock
-import java.time.Duration
+import java.time.Instant
+import java.time.ZoneId
+import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
 class AppConfigFreshnessUseCaseImplTest {
-    private val defaultClock = Clock.systemUTC()
 
     @Test
-    fun `shouldShowConfigWarning returns false if config is not stale yet`() {
-        val appConfigFreshnessUseCase = AppConfigFreshnessUseCaseImpl(
-            fakeAppConfigPersistenceManager(lastFetchedSeconds = defaultClock.millis() / 1000),
-            defaultClock,
-            fakeCachedAppConfigUseCase(appConfig = fakeAppConfig(configTtlSeconds = 2419200))
-        )
-        assertFalse(appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning())
-    }
-
-    @Test
-    fun `shouldShowConfigWarning returns true if config older than specified config value`() {
-        // Config has default value of 300 seconds at time of writing
+    fun `config almost expired`() {
+        val clock = Clock.fixed(Instant.parse("2022-04-25T09:00:00.00Z"), ZoneId.of("UTC"))
         val appConfigFreshnessUseCase = AppConfigFreshnessUseCaseImpl(
             fakeAppConfigPersistenceManager(
-                lastFetchedSeconds = Clock.offset(
-                    defaultClock,
-                    Duration.ofSeconds(-301)
-                ).millis() / 1000
-            ), defaultClock, fakeCachedAppConfigUseCase(appConfig = fakeAppConfig(configTtlSeconds = 2419200))
+                lastFetchedSeconds = TimeUnit.SECONDS.convert(
+                    clock.millis(),
+                    TimeUnit.MILLISECONDS
+                ) - 8
+            ),
+            clock,
+            fakeCachedAppConfigUseCase(
+                appConfig = fakeAppConfig(
+                    configTtlSeconds = 10,
+                    holderConfigAlmostOutOfDateWarningSeconds = 5
+                )
+            )
         )
         assertTrue(appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning())
     }
 
     @Test
-    fun `shouldShowConfigWarning returns false if config just younger than specified config value`() {
-        // Config has default value of 300 seconds at time of writing
+    fun `config not expiring`() {
+        val clock = Clock.fixed(Instant.parse("2022-04-25T09:00:00.00Z"), ZoneId.of("UTC"))
         val appConfigFreshnessUseCase = AppConfigFreshnessUseCaseImpl(
             fakeAppConfigPersistenceManager(
-                lastFetchedSeconds = Clock.offset(
-                    defaultClock,
-                    Duration.ofSeconds(-299)
-                ).millis() / 1000
-            ), defaultClock, fakeCachedAppConfigUseCase(appConfig = fakeAppConfig(configTtlSeconds = 2419200))
+                lastFetchedSeconds = TimeUnit.SECONDS.convert(
+                    clock.millis(),
+                    TimeUnit.MILLISECONDS
+                ) - 4
+            ),
+            clock,
+            fakeCachedAppConfigUseCase(
+                appConfig = fakeAppConfig(
+                    configTtlSeconds = 10,
+                    holderConfigAlmostOutOfDateWarningSeconds = 5
+                )
+            )
+        )
+        assertFalse(appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning())
+    }
+
+    @Test
+    fun `config starts expiring`() {
+        val clock = Clock.fixed(Instant.parse("2022-04-25T09:00:00.00Z"), ZoneId.of("UTC"))
+        val appConfigFreshnessUseCase = AppConfigFreshnessUseCaseImpl(
+            fakeAppConfigPersistenceManager(
+                lastFetchedSeconds = TimeUnit.SECONDS.convert(
+                    clock.millis(),
+                    TimeUnit.MILLISECONDS
+                ) - 5
+            ),
+            clock,
+            fakeCachedAppConfigUseCase(
+                appConfig = fakeAppConfig(
+                    configTtlSeconds = 10,
+                    holderConfigAlmostOutOfDateWarningSeconds = 5
+                )
+            )
+        )
+        assertTrue(appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning())
+    }
+
+    @Test
+    fun `config expired`() {
+        val clock = Clock.fixed(Instant.parse("2022-04-25T09:00:00.00Z"), ZoneId.of("UTC"))
+        val appConfigFreshnessUseCase = AppConfigFreshnessUseCaseImpl(
+            fakeAppConfigPersistenceManager(
+                lastFetchedSeconds = TimeUnit.SECONDS.convert(
+                    clock.millis(),
+                    TimeUnit.MILLISECONDS
+                ) - 12
+            ),
+            clock,
+            fakeCachedAppConfigUseCase(
+                appConfig = fakeAppConfig(
+                    configTtlSeconds = 10,
+                    holderConfigAlmostOutOfDateWarningSeconds = 5
+                )
+            )
         )
         assertFalse(appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning())
     }
