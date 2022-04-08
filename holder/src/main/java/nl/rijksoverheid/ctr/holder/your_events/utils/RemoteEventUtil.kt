@@ -26,7 +26,7 @@ interface RemoteEventUtil {
     fun getRemoteVaccinationFromDcc(dcc: JSONObject): RemoteEventVaccination?
     fun getRemoteRecoveryFromDcc(dcc: JSONObject): RemoteEventRecovery?
     fun getRemoteTestFromDcc(dcc: JSONObject): RemoteEventNegativeTest?
-    fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent>
+    fun getRemoteProtocol3FromNonDcc(eventGroupEntity: EventGroupEntity): RemoteProtocol3?
     fun getOriginType(remoteEvent: RemoteEvent): OriginType
 }
 
@@ -122,11 +122,11 @@ class RemoteEventUtilImpl(
         }
     }
 
-    override fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent> {
+    override fun getRemoteProtocol3FromNonDcc(eventGroupEntity: EventGroupEntity): RemoteProtocol3? {
         val payload = moshi.adapter(SignedResponse::class.java)
             .fromJson(String(eventGroupEntity.jsonData))?.payload
         val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
-        return moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)?.events ?: listOf()
+        return moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)
     }
 
     private fun getEventByType(dcc: JSONObject, key: String) = try {

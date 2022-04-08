@@ -35,12 +35,18 @@ class DialogFragment: DialogFragment() {
             .setMessage(viewModel.message)
             .setPositiveButton(
                 viewModel.positiveButtonText
-            ) { _, _ -> viewModel.positiveButtonCallback.invoke() }
+            ) { _, _ ->
+                dismiss()
+                viewModel.positiveButtonCallback.invoke()
+            }
 
         if (viewModel.negativeButtonText != null) {
             builder.setNegativeButton(
                 viewModel.negativeButtonText
-            ) { _, _ -> viewModel.negativeButtonCallback?.invoke() }
+            ) { _, _ ->
+                dismiss()
+                viewModel.negativeButtonCallback?.invoke()
+            }
         }
 
         return builder.create()

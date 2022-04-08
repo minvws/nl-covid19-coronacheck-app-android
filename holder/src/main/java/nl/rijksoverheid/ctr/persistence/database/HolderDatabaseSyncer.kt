@@ -68,8 +68,14 @@ class HolderDatabaseSyncerImpl(
                     events = events
                 )
 
-                // Sync with remote
-                if (syncWithRemote && events.isNotEmpty()) {
+                if (syncWithRemote) {
+                    if (events.isEmpty()) {
+                        // Remote does not handle empty events, so we decide that empty events == no green cards
+                        holderDatabase.greenCardDao().deleteAll()
+                        return@withContext DatabaseSyncerResult.Success()
+                    }
+
+                    // Sync with remote
                     val remoteGreenCardsResult = getRemoteGreenCardsUseCase.get(
                         events = events
                     )

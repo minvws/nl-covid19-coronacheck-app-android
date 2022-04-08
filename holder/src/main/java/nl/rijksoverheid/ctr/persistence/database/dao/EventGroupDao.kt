@@ -19,7 +19,7 @@ interface EventGroupDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(entity: List<EventGroupEntity>)
-
+    
     @Delete
     suspend fun delete(entity: EventGroupEntity)
 
