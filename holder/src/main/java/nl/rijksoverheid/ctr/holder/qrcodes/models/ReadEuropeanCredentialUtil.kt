@@ -50,7 +50,7 @@ class ReadEuropeanCredentialUtilImpl(private val application: Application) :
     override fun doseExceedsTotalDoses(readEuropeanCredential: JSONObject): Boolean {
         val dose = getDose(readEuropeanCredential)?.toInt() ?: 0
         val ofTotalDoses = getOfTotalDoses(readEuropeanCredential)?.toInt() ?: 0
-        return  dose > ofTotalDoses
+        return dose > ofTotalDoses
     }
 
     private fun getVaccination(readEuropeanCredential: JSONObject): JSONObject? {
