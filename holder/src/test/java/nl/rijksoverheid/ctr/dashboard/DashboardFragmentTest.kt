@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.dashboard
 
+import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -10,6 +11,9 @@ import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.matcher.ViewMatchers
@@ -30,6 +34,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
+import org.hamcrest.Matcher
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -573,6 +578,24 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                         Navigation.setViewNavController(it.requireView(), navController)
                     }
                 }
+            }
+        }.also {
+            Espresso.onView(ViewMatchers.isRoot()).perform(waitFor(200))
+        }
+    }
+
+    companion object {
+        private fun waitFor(delay: Long) = object: ViewAction {
+            override fun getConstraints(): Matcher<View> {
+                return ViewMatchers.isRoot()
+            }
+
+            override fun getDescription(): String {
+                return "Wait for $delay milliseconds"
+            }
+
+            override fun perform(uiController: UiController?, view: View?) {
+                uiController?.loopMainThreadForAtLeast(delay)
             }
         }
     }
