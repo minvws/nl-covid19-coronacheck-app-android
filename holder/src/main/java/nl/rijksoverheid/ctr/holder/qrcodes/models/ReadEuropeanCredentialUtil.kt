@@ -16,6 +16,7 @@ interface ReadEuropeanCredentialUtil {
     fun getDose(readEuropeanCredential: JSONObject): String?
     fun getOfTotalDoses(readEuropeanCredential: JSONObject): String?
     fun getDoseRangeStringForVaccination(readEuropeanCredential: JSONObject): String
+    fun doseExceedsTotalDoses(readEuropeanCredential: JSONObject): Boolean
 }
 
 class ReadEuropeanCredentialUtilImpl(private val application: Application) :
@@ -44,6 +45,12 @@ class ReadEuropeanCredentialUtilImpl(private val application: Application) :
             } else ""
 
         return doses
+    }
+
+    override fun doseExceedsTotalDoses(readEuropeanCredential: JSONObject): Boolean {
+        val dose = getDose(readEuropeanCredential)?.toInt() ?: 0
+        val ofTotalDoses = getOfTotalDoses(readEuropeanCredential)?.toInt() ?: 0
+        return  dose > ofTotalDoses
     }
 
     private fun getVaccination(readEuropeanCredential: JSONObject): JSONObject? {
