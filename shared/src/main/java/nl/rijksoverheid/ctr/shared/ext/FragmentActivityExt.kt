@@ -1,5 +1,9 @@
 package nl.rijksoverheid.ctr.shared.ext
 
+import android.animation.ObjectAnimator
+import android.os.Build
+import android.view.View
+import androidx.core.animation.doOnEnd
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -16,5 +20,25 @@ fun FragmentActivity.findNavControllerSafety(currentId: Int): NavController? {
         findNavController(currentId)
     } catch (e: Exception) {
         null
+    }
+}
+
+fun FragmentActivity.disableSplashscreenExitAnimation() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        /**
+         * by default the splashscreen fades out the icon and
+         * we don't want that in order to transit nicely
+         * to [nl.rijksoverheid.ctr.introduction.setup.SetupFragment]
+         */
+        splashScreen.setOnExitAnimationListener { splashScreenView ->
+            val anim = ObjectAnimator.ofFloat(
+                splashScreenView,
+                View.ALPHA,
+                0.99f,
+            )
+            anim.duration = 100
+            anim.doOnEnd { splashScreenView.remove() }
+            anim.start()
+        }
     }
 }

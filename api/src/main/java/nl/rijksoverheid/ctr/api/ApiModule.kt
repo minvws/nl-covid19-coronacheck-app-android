@@ -45,9 +45,9 @@ fun apiModule(
             .followRedirects(false)
             .apply {
                 if (BuildConfig.DEBUG) {
-                    addInterceptor(HttpLoggingInterceptor {
-                        Timber.tag("OkHttp").d(it)
-                    }.setLevel(HttpLoggingInterceptor.Level.BODY))
+//                    addInterceptor(HttpLoggingInterceptor {
+//                        Timber.tag("OkHttp").d(it)
+//                    }.setLevel(HttpLoggingInterceptor.Level.BODY))
                 }
                 if (coronaCheckApiChecks) {
                     val handshakeCertificates = HandshakeCertificates.Builder()

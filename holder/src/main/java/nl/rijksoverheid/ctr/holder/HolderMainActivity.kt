@@ -26,6 +26,7 @@ import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.ext.disableSplashscreenExitAnimation
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
@@ -112,6 +113,8 @@ class HolderMainActivity : AppCompatActivity() {
                 )
             }
         })
+
+        disableSplashscreenExitAnimation()
     }
 
     private fun navigateToIntroduction(

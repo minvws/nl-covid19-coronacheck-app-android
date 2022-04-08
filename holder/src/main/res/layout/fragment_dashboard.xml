@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="?colorSurface"
+    android:visibility="invisible"
+    android:id="@+id/dashboard_fragment_layout"
     android:layout_height="match_parent">
 
     <LinearLayout

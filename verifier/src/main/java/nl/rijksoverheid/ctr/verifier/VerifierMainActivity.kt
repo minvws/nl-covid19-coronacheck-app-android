@@ -1,13 +1,9 @@
 package nl.rijksoverheid.ctr.verifier
 
-import android.animation.ObjectAnimator
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.animation.doOnEnd
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
@@ -16,6 +12,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.ext.disableSplashscreenExitAnimation
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.verifier.managers.DeeplinkManager
@@ -53,26 +50,6 @@ class VerifierMainActivity : AppCompatActivity() {
         observeStatuses()
 
         disableSplashscreenExitAnimation()
-    }
-
-    private fun disableSplashscreenExitAnimation() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            /**
-             * by default the splashscreen fades out the icon and
-             * we don't want that in order to transit nicely
-             * to [nl.rijksoverheid.ctr.introduction.setup.SetupFragment]
-             */
-            splashScreen.setOnExitAnimationListener { splashScreenView ->
-                val anim = ObjectAnimator.ofFloat(
-                    splashScreenView,
-                    View.ALPHA,
-                    0.99f,
-                )
-                anim.duration = 100
-                anim.doOnEnd { splashScreenView.remove() }
-                anim.start()
-            }
-        }
     }
 
     override fun onStart() {
