@@ -23,6 +23,7 @@
         android:id="@+id/action_main"
         app:destination="@id/nav_main"
         app:exitAnim="@anim/fragment_open_exit"
+        app:enterAnim="@anim/fragment_open_enter"
         app:popEnterAnim="@anim/fragment_close_enter"
         app:popExitAnim="@anim/fragment_close_exit"
         app:popUpTo="@+id/root_nav"

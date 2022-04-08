@@ -2,7 +2,6 @@
 <resources>
 
     <style name="AppTheme.Launcher" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/launch_screen</item>
         <item name="android:windowSplashScreenAnimatedIcon">
             @drawable/ic_illustration_launch_screen
         </item>
