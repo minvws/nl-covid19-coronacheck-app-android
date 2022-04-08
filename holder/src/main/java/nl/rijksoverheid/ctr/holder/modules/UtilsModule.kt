@@ -62,4 +62,5 @@ fun utilsModule(versionCode: Int) = module {
     factory<ScopeUtil> { ScopeUtilImpl() }
     factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }
     factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
+    factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
 }

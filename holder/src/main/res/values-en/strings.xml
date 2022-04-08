@@ -8,7 +8,9 @@
   <string name="holder_dcc_alert_message">You can try to add a paper certificate again later.</string>
   <string name="holder_recovery_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="holder_test_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
+  <string name="general_cancel">Cancel</string>
   <string name="general_toMyOverview">To my certificates</string>
+  <string name="general_vaccination">Vaccination</string>
   <string name="holder_listRemoteEvents_title">Are the details correct?</string>
   <string name="holder_vaccination_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your details again later.</string>
   <string name="holder_listRemoteEvents_somethingWrong_title">Is something wrong?</string>
@@ -199,7 +201,7 @@
   <string name="url_accessibility">https://coronacheck.nl/en/accessibility-in-app</string>
   <string name="about_this_app_colofon">Colophon</string>
   <string name="about_this_app_colofon_url">https://coronacheck.nl/en/colofon-in-app.html</string>
-  <string name="about_this_clear_data">Clear data</string>
+  <string name="about_this_clear_data">Reset app</string>
   <string name="create_qr_explanation_menu_title">Make QR code</string>
   <string name="create_qr_explanation_menu_title_alternative">Add a QR code</string>
   <string name="qr_code_type_title">What would you like to add?</string>
@@ -506,9 +508,9 @@
   <string name="dialog_no_browser_title">Couldn’t find browser</string>
   <string name="dialog_no_browser_message">No internet browser was found on this phone to open %1s. Download a browser to open the link.</string>
   <string name="about_this_app_clear_data_title">Clear all data?</string>
-  <string name="about_this_app_clear_data_description">Clearing will delete all data and certificates from the app and will close the app. You can simply restart it afterwards.</string>
+  <string name="about_this_app_clear_data_description">Resetting will delete all data and certificates from the app and will close the app. You can simply restart it afterwards.</string>
   <string name="about_this_app_clear_data_cancel">Cancel</string>
-  <string name="about_this_app_clear_data_confirm">Clear data</string>
+  <string name="about_this_app_clear_data_confirm">Reset app</string>
   <string name="accessibility_flash_off">Turn the flashlight off.</string>
   <string name="accessibility_flash_on">Turn the flashlight on.</string>
   <string name="recover_domestic_recovery_green_card_button">Restore certificate</string>
@@ -721,4 +723,21 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_onboarding_content_onlyInternationalQR_0G_message">The QR code on your certificate can be checked at the entrance to places and activities abroad. Or at the border.</string>
   <string name="holder_deactivation_url">https://coronacheck.nl/app/not-in-use</string>
   <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Add booster vaccination</string>
+  <string name="holder_showqr_eu_about_vaccination_dosage_message">&lt;a href=\\"https://coronacheck.nl/nl/faq-in-app\\"&gt;Lees meer over de dosis&lt;/a&gt;</string>
+  <string name="holder_menu_storedEvents">Stored data</string>
+  <string name="holder_menu_resetApp">Reset the app</string>
+  <string name="holder_storedEvents_title">My stored data</string>
+  <string name="holder_storedEvents_message">The data below is stored on your phone and is used by CoronaCheck to create your coronavirus pass.</string>
+  <string name="holder_storedEvents_button_handleData">how does Coronacheck handle my data?</string>
+  <string name="holder_storedEvents_url">https://coronacheck.nl/en/privacy</string>
+  <string name="holder_storedEvents_button_removeEvents">Clear this data</string>
+  <string name="holder_storedEvents_list_noEvents">No stored data</string>
+  <string name="holder_storedEvents_listHeader_fetchedFromProvider">Retrieved at %s</string>
+  <string name="holder_storedEvents_listHeader_paperFlow">Scanned certificate</string>
+  <string name="general_negativeTest">Negative test result</string>
+  <string name="general_positiveTest">Positive test result</string>
+  <string name="holder_storedEvent_alert_removeEvents_title">Clear this data?</string>
+  <string name="holder_storedEvent_alert_removeEvents_message">Clearing this data will possibly remove certificates with QR codes from the app.</string>
+  <string name="general_delete">Clear data</string>
+  <string name="holder_storedEvents_eraseEvents_title">Clearing data</string>
 </resources>
