@@ -10,7 +10,7 @@
   <string name="holder_test_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="general_cancel">Cancel</string>
   <string name="general_toMyOverview">To my certificates</string>
-  <string name="general_vaccination">Vaccination</string>
+  <string name="general_vaccination">vaccination</string>
   <string name="holder_listRemoteEvents_title">Are the details correct?</string>
   <string name="holder_vaccination_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your details again later.</string>
   <string name="holder_listRemoteEvents_somethingWrong_title">Is something wrong?</string>
@@ -46,7 +46,7 @@
   <string name="dialog_error_message">Because of a technical error.</string>
   <string name="dialog_error_message_with_error_code">Because of a technical error (%1$s).</string>
   <string name="digid_login_cancelled_title">Login was cancelled</string>
-  <string name="digid_login_cancelled_description">Want to retrieve your details? Login again with DigiD.</string>
+  <string name="digid_login_cancelled_description">Want to retrieve your details? Log in again with DigiD.</string>
   <string name="ok">OK</string>
   <string name="settings">Settings</string>
   <string name="about_this_app">About this app</string>
@@ -665,8 +665,8 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_intro_domestic_only1Gaccess"><![CDATA[Show a certificate for <a href=\"https://coronacheck.nl/en/accesspolicy/1g-access\">1G access</a> in the Netherlands if a coronavirus pass is required. Also show your proof of identity.]]></string>
   <string name="holder_dashboard_domesticQRCard_3G_inactive_label">This certificate is currently not used in the Netherlands</string>
   <string name="general_newintheapp">New in the app</string>
-  <string name="holder_newintheapp_content_only3G_title">3G access only</string>
-  <string name="holder_newintheapp_content_only3G_body">The access rules in the Netherlands have changed. 3G access applies anywhere a coronavirus pass is required. This means you can enter with a vaccination, recovery, or test certificate.</string>
+  <string name="holder_newintheapp_content_only3G_title">3G access in the Netherlands</string>
+  <string name="holder_newintheapp_content_only3G_body">Right now 3G access applies to all places where a coronavirus pass is required. This means you can enter anywhere with a proof of vaccination, recovery, or a negative test.</string>
   <string name="holder_newintheapp_content_only3G_button_next">Next</string>
   <string name="holder_newintheapp_content_3Gand1G_title">Certificates for 3G and 1G access</string>
   <string name="holder_newintheapp_content_3Gand1G_body">The access rules in the Netherlands have changed. You can enter venues with 3G access with a vaccination, recovery, or test certificate. Venues with 1G access you can only enter with a test certificate. The app creates separate certificates for 3G and 1G access.</string>
@@ -723,7 +723,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_onboarding_content_onlyInternationalQR_0G_message">The QR code on your certificate can be checked at the entrance to places and activities abroad. Or at the border.</string>
   <string name="holder_deactivation_url">https://coronacheck.nl/app/not-in-use</string>
   <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Add booster vaccination</string>
-  <string name="holder_showqr_eu_about_vaccination_dosage_message">&lt;a href=\\"https://coronacheck.nl/nl/faq-in-app\\"&gt;Lees meer over de dosis&lt;/a&gt;</string>
+  <string name="holder_showqr_eu_about_vaccination_dosage_message"><![CDATA[<a href=\"https://coronacheck.nl/en/dose\">Read more about the dose</a>]]></string>
   <string name="holder_menu_storedEvents">Stored data</string>
   <string name="holder_menu_resetApp">Reset the app</string>
   <string name="holder_storedEvents_title">My stored data</string>
@@ -740,4 +740,15 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_storedEvent_alert_removeEvents_message">Clearing this data will possibly remove certificates with QR codes from the app.</string>
   <string name="general_delete">Clear data</string>
   <string name="holder_storedEvents_eraseEvents_title">Clearing data</string>
+  <string name="holder_newintheapp_content_dutchAndInternationalCertificates_title">Dutch and international certificates</string>
+  <string name="holder_newintheapp_content_dutchAndInternationalCertificates_body">You’ll find certificates for in the Netherlands and abroad in the app. Use your Dutch certificate for access to places and activities in the Netherlands. Are you planning to cross the border or are you abroad? Then use your international certificate.</string>
+  <string name="holder_newintheapp_content_dutchAndInternationalCertificates_button_toMyCertificates">To my certificates</string>
+  <string name="holder_wasUserTestedAtGGD_title">Were you tested before or on %@?</string>
+  <string name="holder_wasUserTestedAtGGD_body">If you were tested before or on %@, you can retrieve the test result via DigiD. Were you tested after this date? Use the retrieval code you got from the test location.</string>
+  <string name="holder_wasUserTestedAtGGD_yes_buttonTitle">Yes, tested before or on %@</string>
+  <string name="holder_wasUserTestedAtGGD_yes_buttonSubtitle">Log in with DigiD</string>
+  <string name="holder_wasUserTestedAtGGD_no_buttonTitle">No, tested after</string>
+  <string name="holder_wasUserTestedAtGGD_no_buttonSubtitle">Enter retrieval code</string>
+  <string name="holder_whereUserTested_title">Where were you tested?</string>
+  <string name="holder_whereUserTested_body">Indicate where you were tested to create a certificate from your positive or negative test result.</string>
 </resources>
