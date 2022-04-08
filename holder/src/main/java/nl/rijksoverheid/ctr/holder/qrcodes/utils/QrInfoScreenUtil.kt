@@ -205,7 +205,7 @@ class QrInfoScreenUtilImpl(
 
         val doses =
             readEuropeanCredentialUtil.getDoseRangeStringForVaccination(readEuropeanCredential)
-        val overDoseLink = if (true) {
+        val overDoseLink = if (readEuropeanCredentialUtil.doseExceedsTotalDoses(readEuropeanCredential)) {
             application.getString(R.string.holder_showqr_eu_about_vaccination_dosage_message)
         } else ""
 
