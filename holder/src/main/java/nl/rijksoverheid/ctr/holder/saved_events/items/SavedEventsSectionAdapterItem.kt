@@ -16,13 +16,18 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemSavedEventsSectionBinding
 import nl.rijksoverheid.ctr.holder.saved_events.SavedEvents
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreen
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class SavedEventsSectionAdapterItem(
     private val savedEvents: SavedEvents,
     private val onClickEvent: (infoScreen: InfoScreen) -> Unit,
     private val onClickClearData: (eventGroupEntity: EventGroupEntity) -> Unit
-): BindableItem<AdapterItemSavedEventsSectionBinding>() {
+): BindableItem<AdapterItemSavedEventsSectionBinding>(), KoinComponent {
+
+    private val remoteEventUtil: RemoteEventUtil by inject()
 
     override fun bind(viewBinding: AdapterItemSavedEventsSectionBinding, position: Int) {
         setReceivedAt(
@@ -68,7 +73,7 @@ class SavedEventsSectionAdapterItem(
 
         val context = viewBinding.root.context
 
-        viewBinding.retrievedAt.text = if (savedEvents.providerName == "DCC") {
+        viewBinding.retrievedAt.text = if (remoteEventUtil.isDccEvent(providerName)) {
             context.getString(R.string.holder_storedEvents_listHeader_paperFlow)
         } else {
             context.getString(R.string.holder_storedEvents_listHeader_fetchedFromProvider, providerName)
