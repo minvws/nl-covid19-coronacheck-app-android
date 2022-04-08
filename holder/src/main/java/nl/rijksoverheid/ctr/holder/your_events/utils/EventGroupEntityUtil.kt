@@ -7,14 +7,14 @@
 
 package nl.rijksoverheid.ctr.holder.your_events.utils
 
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 
 interface EventGroupEntityUtil {
     fun getProviderName(providerIdentifier: String): String
 }
 
 class EventGroupEntityUtilImpl(
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ): EventGroupEntityUtil {
 
     override fun getProviderName(providerIdentifier: String): String {
