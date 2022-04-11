@@ -74,14 +74,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         observeItems(adapter)
         observeSyncErrors()
         observeAppConfig()
-
-        // this fragment is the start destination of the root graph
-        // we hide it by default in order not to briefly displayed
-        // before the setup/introduction fragments
-        binding.root.postDelayed(200) {
-            getToolbar()?.visibility = View.VISIBLE
-            _binding?.dashboardFragmentLayout?.visibility = View.VISIBLE
-        }
     }
 
     private fun setupViewPager(adapter: DashboardPagerAdapter) {
