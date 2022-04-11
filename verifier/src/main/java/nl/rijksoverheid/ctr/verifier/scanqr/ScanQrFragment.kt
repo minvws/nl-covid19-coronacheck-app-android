@@ -116,14 +116,6 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         if (deeplinkManager.getReturnUri() != null) {
             scanQrViewModel.nextScreen()
         }
-
-        // this fragment is the start destination of the root graph
-        // we hide it by default in order not to briefly displayed
-        // before the setup/introduction fragments
-        binding.root.postDelayed(200) {
-            getToolbar()?.visibility = VISIBLE
-            _binding?.scanQrFragmentLayout?.visibility = VISIBLE
-        }
     }
 
     private fun setupClockDeviation() {
