@@ -119,8 +119,8 @@ class HolderAppStatusUseCaseImpl(
         return when {
             newFeaturesAvailable() && newPolicy != null -> AppStatus.NewFeatures(
                 appUpdateData.copy(
-                    newFeatures = appUpdateData.newFeatures + listOf(
-                        getNewPolicyFeatureItem(newPolicy)
+                    newFeatures = appUpdateData.newFeatures + listOfNotNull(
+                        getNewPolicyFeatureItem(newPolicy), getCtbActiveItem(newPolicy)
                     ),
                 ).apply {
                     setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
@@ -133,6 +133,18 @@ class HolderAppStatusUseCaseImpl(
                 })
             else -> AppStatus.NewFeatures(appUpdateData)
         }
+    }
+
+    private fun getCtbActiveItem(newPolicy: DisclosurePolicy): NewFeatureItem? {
+        return if (persistenceManager.getPolicyScreenSeen() == DisclosurePolicy.ZeroG && newPolicy == DisclosurePolicy.ThreeG) {
+            NewFeatureItem(
+                imageResource = R.drawable.illustration_new_disclosure_policy,
+                titleResource = R.string.holder_newintheapp_content_dutchAndInternationalCertificates_title,
+                description = R.string.holder_newintheapp_content_dutchAndInternationalCertificates_body,
+                subTitleColor = R.color.primary_blue,
+                subtitleResource = R.string.new_in_app_subtitle
+            )
+        } else null
     }
 
     private fun newTermsAvailable() =
