@@ -407,6 +407,10 @@ fun fakeReadEuropeanCredentialUtil(dosis: String = "") = object : ReadEuropeanCr
     override fun getDoseRangeStringForVaccination(readEuropeanCredential: JSONObject): String {
         return ""
     }
+
+    override fun doseExceedsTotalDoses(readEuropeanCredential: JSONObject): Boolean {
+        return false
+    }
 }
 
 fun fakeQrCodeUsecase() = object : QrCodeUseCase {

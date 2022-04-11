@@ -12,9 +12,9 @@ import android.text.TextUtils
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
@@ -26,7 +26,11 @@ import java.time.format.DateTimeParseException
 import java.util.*
 
 interface QrInfoScreenUtil {
-    fun getForDomesticQr(personalDetails: PersonalDetails, disclosurePolicy: GreenCardDisclosurePolicy): QrInfoScreen
+    fun getForDomesticQr(
+        personalDetails: PersonalDetails,
+        disclosurePolicy: GreenCardDisclosurePolicy
+    ): QrInfoScreen
+
     fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): QrInfoScreen
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen
     fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): QrInfoScreen
@@ -41,7 +45,10 @@ class QrInfoScreenUtilImpl(
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
-    override fun getForDomesticQr(personalDetails: PersonalDetails, disclosurePolicy: GreenCardDisclosurePolicy): QrInfoScreen {
+    override fun getForDomesticQr(
+        personalDetails: PersonalDetails,
+        disclosurePolicy: GreenCardDisclosurePolicy
+    ): QrInfoScreen {
         val title = application.getString(R.string.qr_explanation_title_domestic)
 
         val description = application.getString(
@@ -107,7 +114,8 @@ class QrInfoScreenUtilImpl(
                 it.code == test.getStringOrNull("ma")
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
-        val testCountry = countryUtil.getCountryForQrInfoScreen(test.getStringOrNull("co"), getCurrentLocale())
+        val testCountry =
+            countryUtil.getCountryForQrInfoScreen(test.getStringOrNull("co"), getCurrentLocale())
 
         val issuerValue = test.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -195,7 +203,11 @@ class QrInfoScreenUtilImpl(
                 it.code == vaccination.getStringOrNull("ma")
             }?.name ?: vaccination.getStringOrNull("ma") ?: ""
 
-        val doses = readEuropeanCredentialUtil.getDoseRangeStringForVaccination(readEuropeanCredential)
+        val doses =
+            readEuropeanCredentialUtil.getDoseRangeStringForVaccination(readEuropeanCredential)
+        val overDoseLink = if (readEuropeanCredentialUtil.doseExceedsTotalDoses(readEuropeanCredential)) {
+            application.getString(R.string.holder_showqr_eu_about_vaccination_dosage_message)
+        } else ""
 
         val vaccinationDate = vaccination.getStringOrNull("dt")?.let { vaccinationDate ->
             try {
@@ -207,7 +219,8 @@ class QrInfoScreenUtilImpl(
         } ?: ""
 
         val countryCode = vaccination.getStringOrNull("co")
-        val vaccinationCountry = countryUtil.getCountryForQrInfoScreen(countryCode, getCurrentLocale())
+        val vaccinationCountry =
+            countryUtil.getCountryForQrInfoScreen(countryCode, getCurrentLocale())
 
         val issuerValue = vaccination.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -238,7 +251,7 @@ class QrInfoScreenUtilImpl(
                 application.getString(R.string.qr_explanation_description_eu_vaccination_producer),
                 createQrAnswer(manufacturer),
                 application.getString(R.string.qr_explanation_description_eu_vaccination_doses),
-                createQrAnswer(doses),
+                createQrAnswer(doses, overDoseLink),
                 application.getString(R.string.qr_explanation_description_eu_vaccination_vaccination_date),
                 createQrAnswer(vaccinationDate),
                 application.getString(R.string.qr_explanation_description_eu_vaccination_vaccinated_in),
@@ -330,8 +343,8 @@ class QrInfoScreenUtilImpl(
         )
     }
 
-    private fun createQrAnswer(answer: String): String =
-        "<br/><b>$answer</b><br/><br/>"
+    private fun createQrAnswer(answer: String, answerDescription: String = ""): String =
+        "<br/><b>$answer</b><br/>${if (answerDescription.isEmpty()) "<br/>" else "$answerDescription<br/><br/>"}"
 
     companion object {
         private const val issuerVWS = "Ministry of Health Welfare and Sport"
