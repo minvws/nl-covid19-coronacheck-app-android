@@ -1,17 +1,11 @@
 package nl.rijksoverheid.ctr.verifier.scanqr
 
-import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import com.adevinta.android.barista.assertion.BaristaImageViewAssertions.assertHasDrawable
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
@@ -27,7 +21,6 @@ import nl.rijksoverheid.ctr.verifier.policy.ConfigVerificationPolicyUseCase
 import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionState
 import nl.rijksoverheid.ctr.verifier.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.usecases.ScannerStateUseCase
-import org.hamcrest.Matcher
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -257,23 +250,6 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
                         Navigation.setViewNavController(it.requireView(), navController)
                     }
                 }
-            }
-        }
-        onView(isRoot()).perform(waitFor(200))
-    }
-
-    companion object {
-        private fun waitFor(delay: Long) = object: ViewAction {
-            override fun getConstraints(): Matcher<View> {
-                return isRoot()
-            }
-
-            override fun getDescription(): String {
-                return "Wait for $delay milliseconds"
-            }
-
-            override fun perform(uiController: UiController?, view: View?) {
-                uiController?.loopMainThreadForAtLeast(delay)
             }
         }
     }
