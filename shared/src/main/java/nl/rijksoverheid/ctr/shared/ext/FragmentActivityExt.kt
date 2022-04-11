@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.shared.ext
 import android.animation.ObjectAnimator
 import android.os.Build
 import android.view.View
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.core.animation.doOnEnd
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
@@ -37,7 +38,11 @@ fun FragmentActivity.disableSplashscreenExitAnimation() {
                 0.99f,
             )
             anim.duration = 100
-            anim.doOnEnd { splashScreenView.remove() }
+            anim.doOnEnd {
+                splashScreenView.remove()
+                // the new splashscreen resets the system bar color (in SplashScreenView#restoreSystemUIColors, so have to set it again
+                window.insetsController?.setSystemBarsAppearance(APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS)
+            }
             anim.start()
         }
     }
