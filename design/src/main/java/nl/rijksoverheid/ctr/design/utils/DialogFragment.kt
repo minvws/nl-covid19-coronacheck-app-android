@@ -21,10 +21,9 @@ class DialogFragment: DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState != null) {
-            // prevent DialogFragment recreation after process death
-            // or orientation change in Android 7,8
-            // since the button callbacks cannot be stored in state
+        if (!viewModel.isInitialised()) {
+            // dismiss after process death since view model is lost
+            // and we have no data for the dialog builder
             dismiss()
         }
     }
