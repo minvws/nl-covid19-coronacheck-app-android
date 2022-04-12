@@ -119,15 +119,13 @@ class HolderAppStatusUseCaseImpl(
         return when {
             newFeaturesAvailable() && newPolicy != null -> AppStatus.NewFeatures(
                 appUpdateData.copy(
-                    newFeatures = appUpdateData.newFeatures + listOfNotNull(
-                        getNewPolicyFeatureItem(newPolicy), getCtbActiveItem(newPolicy)
-                    ),
+                    newFeatures = appUpdateData.newFeatures + getPolicyChangeItems(newPolicy),
                 ).apply {
                     setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 })
             !newFeaturesAvailable() && newPolicy != null -> AppStatus.NewFeatures(
                 appUpdateData.copy(
-                    newFeatures = listOf(getNewPolicyFeatureItem(newPolicy))
+                    newFeatures = getPolicyChangeItems(newPolicy)
                 ).apply {
                     setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 })
@@ -135,10 +133,13 @@ class HolderAppStatusUseCaseImpl(
         }
     }
 
+    private fun getPolicyChangeItems(newPolicy: DisclosurePolicy) =
+        listOfNotNull(getNewPolicyFeatureItem(newPolicy), getCtbActiveItem(newPolicy))
+
     private fun getCtbActiveItem(newPolicy: DisclosurePolicy): NewFeatureItem? {
-        return if (persistenceManager.getPolicyScreenSeen() == DisclosurePolicy.ZeroG && newPolicy == DisclosurePolicy.ThreeG) {
+        return if (persistenceManager.getPolicyScreenSeen() == DisclosurePolicy.ZeroG && newPolicy != DisclosurePolicy.ZeroG) {
             NewFeatureItem(
-                imageResource = R.drawable.illustration_new_disclosure_policy,
+                imageResource = R.drawable.illustration_new_dutch_and_international_certificate,
                 titleResource = R.string.holder_newintheapp_content_dutchAndInternationalCertificates_title,
                 description = R.string.holder_newintheapp_content_dutchAndInternationalCertificates_body,
                 subTitleColor = R.color.primary_blue,
