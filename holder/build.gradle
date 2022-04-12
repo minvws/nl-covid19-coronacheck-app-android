@@ -4,13 +4,14 @@ plugins {
     id "kotlin-kapt"
     id 'kotlin-parcelize'
     id "androidx.navigation.safeargs.kotlin"
+    id "com.starter.easylauncher"
 }
 
 def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
-version = "4.0.2"
+version = "4.1"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
@@ -182,4 +183,27 @@ dependencies {
 
     // Needed in order for room to work with Apple Sillicon M1
     kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
+}
+
+easylauncher {
+    buildTypes {
+        debug {
+            filters = customRibbon(
+                    label: "Debug",
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+    }
+    variants {
+        accRelease {
+            filters = customRibbon(
+                    label: appVersionCode,
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+    }
 }
