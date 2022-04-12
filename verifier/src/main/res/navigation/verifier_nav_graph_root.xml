@@ -22,8 +22,8 @@
     <action
         android:id="@+id/action_main"
         app:destination="@id/nav_main"
-        app:enterAnim="@anim/fragment_open_enter"
         app:exitAnim="@anim/fragment_open_exit"
+        app:enterAnim="@anim/fragment_open_enter"
         app:popEnterAnim="@anim/fragment_close_enter"
         app:popExitAnim="@anim/fragment_close_exit"
         app:popUpTo="@+id/root_nav"
@@ -32,7 +32,7 @@
     <action
         android:id="@+id/action_introduction"
         app:destination="@id/nav_introduction"
-        app:enterAnim="@anim/fragment_open_enter"
+        app:enterAnim="@anim/no_animation"
         app:exitAnim="@anim/fragment_open_exit"
         app:popEnterAnim="@anim/fragment_close_enter"
         app:popExitAnim="@anim/fragment_close_exit"

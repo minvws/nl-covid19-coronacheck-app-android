@@ -253,5 +253,4 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
             }
         }
     }
-
 }
