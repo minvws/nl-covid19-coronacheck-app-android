@@ -110,7 +110,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
         binding.viewPager.adapter = adapter
         val hideToolbar = adapter.itemCount == 1
         if (hideToolbar) {
-            binding.toolbar.visibility = View.GONE
+            binding.toolbar.visibility = View.INVISIBLE
         }
         binding.viewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
