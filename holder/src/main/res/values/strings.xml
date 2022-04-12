@@ -196,7 +196,7 @@
   <string name="dialog_rooted_device_title">Er zijn beveiligingsrisico’s gevonden</string>
   <string name="dialog_rooted_device_message">Let op: je apparaat is geroot. Je gegevens zijn mogelijk niet veilig.</string>
   <string name="dialog_rooted_device_positive_button">Oke</string>
-  <string name="about_this_app_read_more">Lees meer:</string>
+  <string name="about_this_app_read_more">Meer:</string>
   <string name="about_this_app_accessibility">Toegankelijkheid</string>
   <string name="url_accessibility">https://coronacheck.nl/nl/accessibility-in-app</string>
   <string name="about_this_app_colofon">Colofon</string>
