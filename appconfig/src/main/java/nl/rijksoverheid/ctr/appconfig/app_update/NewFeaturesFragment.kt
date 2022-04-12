@@ -59,7 +59,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
             }
             button.setOnClickListener {
                 val currentItem = viewPager.currentItem
-                if (currentItem == adapter.itemCount - 1) finishFlow() else showNextPage(currentItem)
+                if (currentItem == adapter.itemCount - 1) finishFlow() else showNextPage(currentItem, binding)
             }
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
                 OnBackPressedCallback(true) {
@@ -78,8 +78,13 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
         }
     }
 
-    private fun FragmentNewFeaturesBinding.showNextPage(currentItem: Int) {
-        viewPager.currentItem = currentItem + 1
+    private fun FragmentNewFeaturesBinding.showNextPage(
+        currentItem: Int,
+        binding: FragmentNewFeaturesBinding
+    ) {
+        val nextIndex = currentItem + 1
+        viewPager.currentItem = nextIndex
+        setButtonText(binding, nextIndex)
         toolbar.getNavigationIconView()?.setAccessibilityFocus()
     }
 
@@ -128,6 +133,8 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
                     adapter.itemCount.toString()
                 )
 
+                setButtonText(binding, position)
+
                 // Apply bottom elevation if the view inside the viewpager is scrollable
                 val scrollView =
                     childFragmentManager.fragments[position]?.view?.findViewById<ScrollView>(R.id.scroll)
@@ -140,5 +147,9 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
                 }
             }
         })
+    }
+
+    private fun setButtonText(binding: FragmentNewFeaturesBinding, position: Int) {
+        binding.button.text = getString(args.appUpdateData.newFeatures[position].buttonResource)
     }
 }
