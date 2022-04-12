@@ -22,15 +22,7 @@ import org.koin.dsl.module
 val holderAppStatusModule = module {
     factory {
         AppUpdateData(
-            newFeatures = listOf(
-                NewFeatureItem(
-                    R.drawable.tabs,
-                    R.string.new_in_app_tabs_title,
-                    R.string.new_in_app_tabs_description,
-                    R.color.primary_blue,
-                    R.color.light_blue,
-                )
-            ),
+            newFeatures = listOf(),
             newTerms = NewTerms(
                 version = 2,
                 needsConsent = false
