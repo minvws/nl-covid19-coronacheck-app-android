@@ -18,6 +18,7 @@ abstract class DialogFragmentViewModel: ViewModel() {
     abstract var negativeButtonText: String?
     abstract var negativeButtonCallback: (() -> Unit)?
     abstract var onDismissCallback: (() -> Unit)?
+    abstract fun isInitialised(): Boolean
 
     abstract fun show(
         title: String,
@@ -65,5 +66,9 @@ class DialogFragmentViewModelImpl: DialogFragmentViewModel() {
         this.negativeButtonText = negativeButtonText
         this.negativeButtonCallback = negativeButtonCallback
         this.onDismissCallback = onDismissCallback
+    }
+
+    override fun isInitialised(): Boolean {
+        return this::title.isInitialized
     }
 }
