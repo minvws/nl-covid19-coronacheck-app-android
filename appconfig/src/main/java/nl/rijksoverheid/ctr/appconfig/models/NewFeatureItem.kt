@@ -21,5 +21,6 @@ data class NewFeatureItem(
     @StringRes val description: Int,
     @ColorRes val subTitleColor: Int? = null,
     @ColorRes val backgroundColor: Int? = null,
-    @StringRes val subtitleResource: Int = R.string.new_in_app_subtitle
+    @StringRes val subtitleResource: Int = R.string.new_in_app_subtitle,
+    @StringRes val buttonResource: Int = R.string.onboarding_next
 ) : Parcelable
