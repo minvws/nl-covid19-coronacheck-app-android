@@ -124,7 +124,7 @@ class GetSavedEventsUseCaseImpl(
                     } else {
                         null
                     }
-                } ?: listOf()
+                }?.asReversed() ?: listOf()
             )
         }
     }
