@@ -41,11 +41,9 @@ class AppConfigFreshnessUseCaseImpl(
         val lastFetched = getAppConfigLastFetchedSeconds()
         val now = OffsetDateTime.now(clock)
         val config = cachedAppConfigUseCase.getCachedAppConfig()
-        val configNotExpiredYet =
-            lastFetched > now.minusSeconds(config.configTtlSeconds.toLong()).toEpochSecond()
         val configAlmostExpired = lastFetched <= now.minusSeconds(config.configTtlSeconds.toLong())
             .plusSeconds(config.configAlmostOutOfDateWarningSeconds.toLong()).toEpochSecond()
-        return lastFetched > 0 && configNotExpiredYet && configAlmostExpired
+        return lastFetched > 0 && configAlmostExpired
 
     }
 
