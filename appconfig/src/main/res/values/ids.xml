@@ -26,5 +26,4 @@
     <item name="new_terms_no_consent_dialog_button" type="string" />
     <item name="back" type="string" />
     <item name="onboarding_next" type="string" />
-    <item name="fragment_onboarding_item" type="layout" />
 </resources>
