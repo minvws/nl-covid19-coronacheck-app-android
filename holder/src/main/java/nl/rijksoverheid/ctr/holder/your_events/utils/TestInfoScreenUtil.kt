@@ -166,7 +166,7 @@ class TestInfoScreenUtilImpl(
                 resources.getString(R.string.your_test_result_explanation_description_unique_identifier),
                 unique
             ),
-            if (addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
+            if (isPaperProof && addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
         ) as String)
 
         return InfoScreen(

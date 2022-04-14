@@ -76,7 +76,7 @@ class RecoveryInfoScreenUtilImpl(
                 resources.getString(R.string.recovery_explanation_description_unique_test_identifier),
                 event.unique
             ),
-            if (addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
+            if (isPaperProof && addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
         ) as String)
 
         return InfoScreen(

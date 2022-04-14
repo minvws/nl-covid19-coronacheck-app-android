@@ -121,7 +121,7 @@ class VaccinationInfoScreenUtilImpl(
                 createdLine(vaccinationDate, vaccinationDateAnswer, isOptional = true),
                 createdLine(vaccinationCountry, fullCountryName, isOptional = true),
                 createdLine(uniqueCode, uniqueCodeAnswer),
-                if (addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
+                if (isPaperProof && addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
             ) as String)
         )
     }
