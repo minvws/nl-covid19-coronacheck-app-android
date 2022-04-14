@@ -29,12 +29,9 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
 
     private val androidUtil: AndroidUtil by inject()
     private val intentUtil: IntentUtil by inject()
-    private val dialogUtil: DialogUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        dialogUtil.dismiss(context)
 
         val binding = FragmentAppLockedBinding.bind(view)
 
