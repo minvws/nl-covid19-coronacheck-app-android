@@ -24,7 +24,8 @@ interface InfoScreenUtil {
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean
+        isPaperProof: Boolean,
+        addExplanation: Boolean = true,
     ): InfoScreen
 
     fun getForVaccination(
@@ -32,7 +33,8 @@ interface InfoScreenUtil {
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
-        isPaperProof: Boolean
+        isPaperProof: Boolean,
+        addExplanation: Boolean = true,
     ): InfoScreen
 
     fun getForPositiveTest(
@@ -47,7 +49,8 @@ interface InfoScreenUtil {
         testDate: String,
         fullName: String,
         birthDate: String,
-        isPaperProof: Boolean
+        isPaperProof: Boolean,
+        addExplanation: Boolean = true,
     ): InfoScreen
 
     fun getForVaccinationAssessment(
@@ -75,8 +78,9 @@ class InfoScreenUtilImpl(
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean
-    ) = testInfoScreenUtil.getForNegativeTest(event, fullName, testDate, birthDate, isPaperProof)
+        isPaperProof: Boolean,
+        addExplanation: Boolean,
+    ) = testInfoScreenUtil.getForNegativeTest(event, fullName, testDate, birthDate, isPaperProof, addExplanation)
 
 
     override fun getForVaccination(
@@ -84,8 +88,9 @@ class InfoScreenUtilImpl(
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
-        isPaperProof: Boolean
-    ) = vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate, providerIdentifier, isPaperProof)
+        isPaperProof: Boolean,
+        addExplanation: Boolean,
+    ) = vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate, providerIdentifier, isPaperProof, addExplanation)
 
     override fun getForPositiveTest(
         event: RemoteEventPositiveTest,
@@ -99,8 +104,9 @@ class InfoScreenUtilImpl(
         testDate: String,
         fullName: String,
         birthDate: String,
-        isPaperProof: Boolean
-    ) = recoveryInfoScreenUtil.getForRecovery(event, testDate, fullName, birthDate, isPaperProof)
+        isPaperProof: Boolean,
+        addExplanation: Boolean,
+    ) = recoveryInfoScreenUtil.getForRecovery(event, testDate, fullName, birthDate, isPaperProof, addExplanation)
 
     override fun getForVaccinationAssessment(
         event: RemoteEventVaccinationAssessment,

@@ -19,7 +19,8 @@ interface RecoveryInfoScreenUtil {
         testDate: String,
         fullName: String,
         birthDate: String,
-        isPaperProof: Boolean
+        isPaperProof: Boolean,
+        addExplanation: Boolean = true,
     ): InfoScreen
 }
 
@@ -32,7 +33,8 @@ class RecoveryInfoScreenUtilImpl(
         testDate: String,
         fullName: String,
         birthDate: String,
-        isPaperProof: Boolean
+        isPaperProof: Boolean,
+        addExplanation: Boolean,
     ): InfoScreen {
 
         val validFromDate = event.recovery?.validFrom?.formatDayMonthYear() ?: ""
@@ -74,7 +76,7 @@ class RecoveryInfoScreenUtilImpl(
                 resources.getString(R.string.recovery_explanation_description_unique_test_identifier),
                 event.unique
             ),
-            if (isPaperProof) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
+            if (addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
         ) as String)
 
         return InfoScreen(

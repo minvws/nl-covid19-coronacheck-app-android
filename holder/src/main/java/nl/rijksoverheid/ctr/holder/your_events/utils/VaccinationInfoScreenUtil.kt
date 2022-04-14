@@ -32,7 +32,8 @@ interface VaccinationInfoScreenUtil {
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
-        isPaperProof: Boolean
+        isPaperProof: Boolean,
+        addExplanation: Boolean = true,
     ): InfoScreen
 }
 
@@ -50,7 +51,8 @@ class VaccinationInfoScreenUtilImpl(
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
-        isPaperProof: Boolean
+        isPaperProof: Boolean,
+        addExplanation: Boolean,
     ): InfoScreen {
         val title = if (isPaperProof) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
 
@@ -119,7 +121,7 @@ class VaccinationInfoScreenUtilImpl(
                 createdLine(vaccinationDate, vaccinationDateAnswer, isOptional = true),
                 createdLine(vaccinationCountry, fullCountryName, isOptional = true),
                 createdLine(uniqueCode, uniqueCodeAnswer),
-                if (isPaperProof) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
+                if (addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
             ) as String)
         )
     }
