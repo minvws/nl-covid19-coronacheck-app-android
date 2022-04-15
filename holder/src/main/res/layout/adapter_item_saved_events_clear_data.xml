@@ -18,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceButton"
-        android:textStyle="bold"
         android:textColor="@color/error"
         android:focusable="false"
         android:paddingVertical="24dp"
