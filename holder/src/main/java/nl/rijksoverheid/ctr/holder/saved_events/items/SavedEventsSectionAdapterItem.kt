@@ -23,7 +23,7 @@ import org.koin.core.component.inject
 
 class SavedEventsSectionAdapterItem(
     private val savedEvents: SavedEvents,
-    private val onClickEvent: (infoScreen: InfoScreen) -> Unit,
+    private val onClickEvent: (toolbarTitle: String, infoScreen: InfoScreen) -> Unit,
     private val onClickClearData: (eventGroupEntity: EventGroupEntity) -> Unit
 ): BindableItem<AdapterItemSavedEventsSectionBinding>(), KoinComponent {
 

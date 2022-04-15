@@ -62,10 +62,10 @@ class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
                     items.add(
                         SavedEventsSectionAdapterItem(
                             savedEvents = it,
-                            onClickEvent = { infoScreen ->
+                            onClickEvent = { toolbarTitle, infoScreen ->
                                 navigateSafety(
                                     SavedEventsFragmentDirections.actionYourEventExplanation(
-                                        toolbarTitle = getString(R.string.your_test_result_explanation_toolbar_title),
+                                        toolbarTitle = toolbarTitle,
                                         data = arrayOf(infoScreen)
                                     )
                                 )

@@ -19,7 +19,7 @@ import nl.rijksoverheid.ctr.shared.ext.capitalize
 
 class SavedEventAdapterItem(
     private val savedEvent: SavedEvents.SavedEvent,
-    private val onClick: (infoScreen: InfoScreen) -> Unit
+    private val onClick: (toolbarTitle: String, infoScreen: InfoScreen) -> Unit
 ): BindableItem<AdapterItemSavedEventBinding>() {
 
     override fun bind(viewBinding: AdapterItemSavedEventBinding, position: Int) {
@@ -35,7 +35,7 @@ class SavedEventAdapterItem(
         viewBinding.title.text = title
         viewBinding.subtitle.text = savedEvent.remoteEvent.getDate()?.toLocalDate()?.formatDayMonthYear()
         viewBinding.root.setOnClickListener {
-            onClick.invoke(savedEvent.infoScreen)
+            onClick.invoke(title, savedEvent.infoScreen)
         }
     }
 
