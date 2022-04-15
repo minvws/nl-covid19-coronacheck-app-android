@@ -30,7 +30,8 @@ interface TestInfoScreenUtil {
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean
+        isPaperProof: Boolean,
+        addExplanation: Boolean = true,
     ): InfoScreen
 
     fun getForPositiveTest(
@@ -91,7 +92,8 @@ class TestInfoScreenUtilImpl(
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean
+        isPaperProof: Boolean,
+        addExplanation: Boolean,
     ): InfoScreen {
         val testType = holderConfig.euTestTypes.firstOrNull {
             it.code == event.negativeTest?.type
@@ -164,7 +166,7 @@ class TestInfoScreenUtilImpl(
                 resources.getString(R.string.your_test_result_explanation_description_unique_identifier),
                 unique
             ),
-            if (isPaperProof) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
+            if (isPaperProof && addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
         ) as String)
 
         return InfoScreen(

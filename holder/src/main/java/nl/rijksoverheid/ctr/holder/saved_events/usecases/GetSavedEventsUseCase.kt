@@ -70,7 +70,8 @@ class GetSavedEventsUseCaseImpl(
                                 fullName = fullName,
                                 birthDate = birthDate,
                                 providerIdentifier = eventGroupEntity.providerIdentifier,
-                                isPaperProof = isDccEvent
+                                isPaperProof = isDccEvent,
+                                addExplanation = false,
                             )
                         }
                         is RemoteEventRecovery -> {
@@ -80,7 +81,8 @@ class GetSavedEventsUseCaseImpl(
                                     ?: "",
                                 fullName = fullName,
                                 birthDate = birthDate,
-                                isPaperProof = isDccEvent
+                                isPaperProof = isDccEvent,
+                                addExplanation = false,
                             )
                         }
                         is RemoteEventPositiveTest -> {
@@ -101,7 +103,8 @@ class GetSavedEventsUseCaseImpl(
                                     application
                                 ) ?: "",
                                 birthDate = birthDate,
-                                isPaperProof = isDccEvent
+                                isPaperProof = isDccEvent,
+                                addExplanation = false,
                             )
                         }
                         is RemoteEventVaccinationAssessment -> {
