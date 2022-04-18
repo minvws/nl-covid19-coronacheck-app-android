@@ -44,15 +44,15 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
         // create new table for event group with scope not null
         database.execSQL("CREATE TABLE IF NOT EXISTS event_group_temp (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, wallet_id INTEGER NOT NULL, provider_identifier TEXT NOT NULL, type TEXT NOT NULL, scope TEXT NOT NULL, maxIssuedAt INTEGER NOT NULL, jsonData BLOB NOT NULL, FOREIGN KEY(wallet_id) REFERENCES wallet(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
 
-        // update existing null scope values to empty strings
+        // update existing null scope values to empty strings. Remove unique constraint first to allow update of duplicate scopes
+        database.execSQL("DROP INDEX IF EXISTS index_event_group_provider_identifier_type_scope")
         database.execSQL("UPDATE event_group SET scope = '' WHERE scope IS NULL")
 
-        // copy data from old event group table to new one
-        database.execSQL("INSERT INTO event_group_temp (id, wallet_id, provider_identifier, type, scope, maxIssuedAt, jsonData) SELECT id, wallet_id, provider_identifier, type, scope, maxIssuedAt, jsonData FROM event_group")
+        // copy data from old event group table to new one, ignore duplicate entries
+        database.execSQL("INSERT INTO event_group_temp (id, wallet_id, provider_identifier, type, scope, maxIssuedAt, jsonData) SELECT DISTINCT id, wallet_id, provider_identifier, type, scope, maxIssuedAt, jsonData FROM event_group")
 
         // delete old event group table and index
         database.execSQL("DROP TABLE IF EXISTS event_group")
-        database.execSQL("DROP INDEX IF EXISTS index_event_group_provider_identifier_type_scope")
         database.execSQL("DROP INDEX IF EXISTS index_event_group_wallet_id")
 
         // rename new table and set index
