@@ -72,6 +72,7 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
         // delete old event group table and index
         database.execSQL("DROP TABLE IF EXISTS event_group")
         database.execSQL("DROP INDEX IF EXISTS index_event_group_wallet_id")
+        database.execSQL("DROP INDEX IF EXISTS index_event_group_provider_identifier_type_scope")
 
         // rename new table and set index
         database.execSQL("ALTER TABLE event_group_temp RENAME TO event_group")
