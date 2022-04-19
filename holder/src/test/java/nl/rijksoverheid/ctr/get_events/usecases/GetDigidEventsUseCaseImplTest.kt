@@ -81,7 +81,7 @@ class GetDigidEventsUseCaseImplTest {
         coEvery { coronaCheckRepository.accessTokens("jwt") } returns tokensResult
         val httpError = httpError()
         val eventProviderWithTokenResult = EventProviderWithTokenResult.Error(httpError)
-        coEvery { getEventProvidersWithTokensUseCase.get(any(), any(), any(), null, any()) } returns listOf(eventProviderWithTokenResult, eventProviderWithTokenResult)
+        coEvery { getEventProvidersWithTokensUseCase.get(any(), any(), any(), "", any()) } returns listOf(eventProviderWithTokenResult, eventProviderWithTokenResult)
 
         val eventsResult = getEvents()
 
@@ -97,7 +97,7 @@ class GetDigidEventsUseCaseImplTest {
         val remoteAccessTokens = RemoteAccessTokens(listOf())
         val tokensResult = NetworkRequestResult.Success(remoteAccessTokens)
         coEvery { coronaCheckRepository.accessTokens("jwt") } returns tokensResult
-        coEvery { getEventProvidersWithTokensUseCase.get(any(), any(), any(), null, any()) } returns listOf()
+        coEvery { getEventProvidersWithTokensUseCase.get(any(), any(), any(), "", any()) } returns listOf()
 
         val eventsResult = getEvents()
 
@@ -122,6 +122,7 @@ class GetDigidEventsUseCaseImplTest {
         }
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider1, any(), any(), any()) } returns RemoteEventsResult.Success(signedModel1)
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any(), any()) } returns RemoteEventsResult.Success(signedModel2)
+
 
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
             listOf(provider1, provider2))
@@ -238,7 +239,7 @@ class GetDigidEventsUseCaseImplTest {
             coEvery { rawResponse } returns ByteArray(1)
             coEvery { model.hasEvents() } returns true
         }
-        coEvery { getRemoteEventsUseCase.getRemoteEvents(eventProvider1, "vaccination", null, any()) } returns RemoteEventsResult.Success(signedModel1)
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(eventProvider1, "vaccination", "", any()) } returns RemoteEventsResult.Success(signedModel1)
         coEvery { getRemoteEventsUseCase.getRemoteEvents(eventProvider2, "positivetest", "firstepisode", any()) } returns RemoteEventsResult.Success(signedModel2)
 
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
@@ -299,7 +300,7 @@ class GetDigidEventsUseCaseImplTest {
             coEvery { rawResponse } returns ByteArray(1)
             coEvery { model.hasEvents() } returns true
         }
-        coEvery { getRemoteEventsUseCase.getRemoteEvents(eventProvider1, "vaccination", null, any()) } returns RemoteEventsResult.Success(signedModel1)
+        coEvery { getRemoteEventsUseCase.getRemoteEvents(eventProvider1, "vaccination", "", any()) } returns RemoteEventsResult.Success(signedModel1)
         coEvery { getRemoteEventsUseCase.getRemoteEvents(eventProvider2, "positivetest", "firstepisode", any()) } returns RemoteEventsResult.Success(signedModel2)
 
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
@@ -331,7 +332,7 @@ class GetDigidEventsUseCaseImplTest {
 
         coEvery {
             getEventProvidersWithTokensUseCase.get(
-                any(), any(), "vaccination", null, any()
+                any(), any(), "vaccination", "", any()
             )
         } returns
                 listOf(EventProviderWithTokenResult.Success(eventProvider1, token1))
@@ -352,7 +353,7 @@ class GetDigidEventsUseCaseImplTest {
         val tokensResult = NetworkRequestResult.Success(remoteAccessTokens)
         coEvery { coronaCheckRepository.accessTokens("jwt") } returns tokensResult
 
-        coEvery { getEventProvidersWithTokensUseCase.get(any(), any(), any(), null, any()) } returns listOf(
+        coEvery { getEventProvidersWithTokensUseCase.get(any(), any(), any(), "", any()) } returns listOf(
             EventProviderWithTokenResult.Success(eventProvider1, token1), EventProviderWithTokenResult.Success(
                 eventProvider2, token2))
 

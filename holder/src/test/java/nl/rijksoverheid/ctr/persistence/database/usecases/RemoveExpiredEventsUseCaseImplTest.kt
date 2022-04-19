@@ -56,7 +56,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Vaccination,
             maxIssuedAt = firstJanuaryDate.minusDays(10),
-            scope = null,
+            scope = "",
             jsonData = "".toByteArray()
         )
 
@@ -71,7 +71,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Vaccination,
             maxIssuedAt = firstJanuaryDate.minusDays(9),
-            scope = null,
+            scope = "",
             jsonData = "".toByteArray()
         )
 
@@ -86,7 +86,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Test,
             maxIssuedAt = firstJanuaryDate.minusDays(20),
-            scope = null,
+            scope = "",
             jsonData = "".toByteArray()
         )
 
@@ -101,7 +101,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Test,
             maxIssuedAt = firstJanuaryDate.minusDays(19),
-            scope = null,
+            scope = "",
             jsonData = "".toByteArray()
         )
 
@@ -116,7 +116,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Recovery,
             maxIssuedAt = firstJanuaryDate.minusDays(30),
-            scope = null,
+            scope = "",
             jsonData = "".toByteArray()
         )
 
@@ -131,7 +131,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.Recovery,
             maxIssuedAt = firstJanuaryDate.minusDays(29),
-            scope = null,
+            scope = "",
             jsonData = "".toByteArray()
         )
 
@@ -146,7 +146,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.VaccinationAssessment,
             maxIssuedAt = firstJanuaryDate.minusDays(40),
-            scope = null,
+            scope = "",
             jsonData = "".toByteArray()
         )
 
@@ -161,7 +161,7 @@ class RemoveExpiredEventsUseCaseImplTest {
             providerIdentifier = "",
             type = OriginType.VaccinationAssessment,
             maxIssuedAt = firstJanuaryDate.minusDays(39),
-            scope = null,
+            scope = "",
             jsonData = "".toByteArray()
         )
 

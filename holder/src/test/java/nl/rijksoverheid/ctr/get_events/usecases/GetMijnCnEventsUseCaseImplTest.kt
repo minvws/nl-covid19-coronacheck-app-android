@@ -44,7 +44,7 @@ class GetMijnCnEventsUseCaseImplTest {
     private val jwt = "jwt"
     private val originType = RemoteOriginType.Test
     private val scopeUtil: ScopeUtil = mockk<ScopeUtil>().apply {
-        every { getScopeForRemoteOriginType(any(), any()) } answers { null }
+        every { getScopeForRemoteOriginType(any(), any()) } answers { "" }
     }
 
     private val remoteEventProviders = listOf(eventProvider1, eventProvider2)

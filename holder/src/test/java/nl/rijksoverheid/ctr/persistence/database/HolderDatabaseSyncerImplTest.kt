@@ -44,7 +44,7 @@ class HolderDatabaseSyncerImplTest {
             providerIdentifier = "1",
             type = OriginType.Test,
             maxIssuedAt = OffsetDateTime.now(),
-            scope = null,
+            scope = "",
             jsonData = "".toByteArray()
         )
     )
