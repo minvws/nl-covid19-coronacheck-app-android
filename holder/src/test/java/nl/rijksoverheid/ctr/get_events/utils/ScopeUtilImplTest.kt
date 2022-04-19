@@ -36,13 +36,13 @@ class ScopeUtilImplTest {
     }
 
     @Test
-    fun `getScopeForRemoteOriginType returns null when vaccination`() {
+    fun `getScopeForRemoteOriginType returns empty when vaccination`() {
         val util = ScopeUtilImpl()
         val scope = util.getScopeForRemoteOriginType(
             remoteOriginType = RemoteOriginType.Vaccination,
             getPositiveTestWithVaccination = false
         )
-        assertEquals(null, scope)
+        assertEquals("", scope)
     }
 
     @Test
@@ -66,12 +66,12 @@ class ScopeUtilImplTest {
     }
 
     @Test
-    fun `getScopeForOriginType returns null when vaccination`() {
+    fun `getScopeForOriginType returns empty when vaccination`() {
         val util = ScopeUtilImpl()
         val scope = util.getScopeForOriginType(
             originType = OriginType.Vaccination,
             getPositiveTestWithVaccination = false
         )
-        assertEquals(null, scope)
+        assertEquals("", scope)
     }
 }

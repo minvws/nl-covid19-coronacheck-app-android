@@ -25,7 +25,7 @@ data class EventGroupEntity(
     @ColumnInfo(name = "wallet_id", index = true) val walletId: Int,
     @ColumnInfo(name = "provider_identifier") val providerIdentifier: String,
     val type: OriginType,
-    val scope: String?,
+    val scope: String,
     val maxIssuedAt: OffsetDateTime,
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB) val jsonData: ByteArray
 ) {
@@ -51,7 +51,7 @@ data class EventGroupEntity(
         result = 31 * result + walletId
         result = 31 * result + providerIdentifier.hashCode()
         result = 31 * result + type.hashCode()
-        result = 31 * result + (scope?.hashCode() ?: 0)
+        result = 31 * result + (scope.hashCode())
         result = 31 * result + maxIssuedAt.hashCode()
         result = 31 * result + jsonData.contentHashCode()
         return result

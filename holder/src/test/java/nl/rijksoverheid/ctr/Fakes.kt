@@ -550,7 +550,7 @@ fun fakeEventGroupEntity(
     walletId: Int = 1,
     providerIdentifier: String = "",
     type: OriginType = OriginType.Vaccination,
-    scope: String? = null,
+    scope: String = "",
     maxIssuedAt: OffsetDateTime = OffsetDateTime.of(
         2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
     ),

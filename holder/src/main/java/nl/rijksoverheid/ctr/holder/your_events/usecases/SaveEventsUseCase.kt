@@ -64,7 +64,7 @@ class SaveEventsUseCaseImpl(
                 type = OriginType.Test,
                 maxIssuedAt = negativeTest2.result?.sampleDate!!,
                 jsonData = rawResponse,
-                scope = null
+                scope = ""
             )
 
             // Save entity in database

@@ -13,10 +13,10 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 interface ScopeUtil {
 
     fun getScopeForRemoteOriginType(remoteOriginType: RemoteOriginType,
-                                    getPositiveTestWithVaccination: Boolean): String?
+                                    getPositiveTestWithVaccination: Boolean): String
 
     fun getScopeForOriginType(originType: OriginType,
-                              getPositiveTestWithVaccination: Boolean): String?
+                              getPositiveTestWithVaccination: Boolean): String
 }
 
 class ScopeUtilImpl: ScopeUtil {
@@ -24,7 +24,7 @@ class ScopeUtilImpl: ScopeUtil {
     override fun getScopeForRemoteOriginType(
         remoteOriginType: RemoteOriginType,
         getPositiveTestWithVaccination: Boolean
-    ): String? {
+    ): String {
         return getScopeForOriginType(
             originType = remoteOriginType.toOriginType(),
             getPositiveTestWithVaccination = getPositiveTestWithVaccination
@@ -34,7 +34,7 @@ class ScopeUtilImpl: ScopeUtil {
     override fun getScopeForOriginType(
         originType: OriginType,
         getPositiveTestWithVaccination: Boolean
-    ): String? {
+    ): String {
         return if (originType is OriginType.Recovery) {
             return if (getPositiveTestWithVaccination) {
                 "firstepisode"
@@ -42,7 +42,7 @@ class ScopeUtilImpl: ScopeUtil {
                 "recovery"
             }
         } else {
-            null
+            ""
         }
     }
 }
