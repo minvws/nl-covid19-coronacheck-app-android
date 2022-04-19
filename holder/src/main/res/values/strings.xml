@@ -169,7 +169,7 @@
   <string name="create_qr_code_button">Naar mijn QR</string>
   <string name="back">Terug</string>
   <string name="page_indicator_label">Pagina %1$d van %2$d</string>
-  <string name="accessibility_label_your_qr">Hier wordt een afbeelding getoond van jouw QR-code.</string>
+  <string name="accessibility_label_your_qr">jouw QR-code</string>
   <string name="accessibility_testresult_icon_description">Informatie over je negatieve testuitslag</string>
   <string name="menu_close">Sluiten</string>
   <string name="dialog_no_internet_connection_title">Sorry, er gaat iets mis</string>
@@ -427,7 +427,7 @@
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Ongeldige QR-code</string>
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">Deze QR-code is niet geldig. Scan de QR-code op je internationale bewijs.</string>
   <string name="add_paper_proof_expired_paper_proof_title">Dit papieren bewijs is verlopen</string>
-  <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[Dit papieren bewijs is niet meer geldig. Dit kan verschillende oorzaken hebben:<ul><li>Je vaccinatie of herstel is nog geldig, maar het papieren bewijs niet. Vraag een nieuw papieren coronabewijs aan bij de zorgverlener waar je bent gevaccineerd of getest.</li><li>Je vaccinatie of herstel is verlopen.</li></ul>]]></string>
+  <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[Dit papieren bewijs is niet meer geldig. Dit kan verschillende oorzaken hebben:<ul><li>Je vaccinatie of herstel is nog geldig, maar het papieren bewijs niet. Vraag dan opnieuw je papieren bewijs aan.</li><li>Je vaccinatie of herstel is verlopen.</li></ul>]]></string>
   <string name="add_paper_proof_limit_reached_paper_proof_title">Te vaak geprobeerd</string>
   <string name="add_paper_proof_limit_reached_paper_proof_description"><![CDATA[Voor de veiligheid kun je deze QR-code tijdelijk niet meer in de app zetten.<br/><br/>Je kunt het over 24 uur weer proberen.]]></string>
   <string name="add_paper_proof_invalid_combination_title">Geen geldige combinatie</string>
