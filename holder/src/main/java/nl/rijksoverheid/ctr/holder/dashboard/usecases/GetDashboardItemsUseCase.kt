@@ -156,16 +156,6 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.AddQrCardItem)
         }
 
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(
-                domesticGreenCards,
-                databaseSyncerResult
-            )
-        ) {
-            dashboardItems.add(
-                DashboardItem.CoronaMelderItem
-            )
-        }
-
         if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
             dashboardItems.add(DashboardItem.AddQrButtonItem)
         }
@@ -268,16 +258,6 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.shouldShowAddQrCardItem(hasVisitorPassIncompleteItem, hasEmptyState)) {
             dashboardItems.add(DashboardItem.AddQrCardItem)
-        }
-
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(
-                internationalGreenCards,
-                databaseSyncerResult
-            )
-        ) {
-            dashboardItems.add(
-                DashboardItem.CoronaMelderItem
-            )
         }
 
         if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {

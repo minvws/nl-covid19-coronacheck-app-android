@@ -109,9 +109,6 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
                     // Handled by MyOverviewTabsFragment
                 }
                 is DashboardItem.InfoItem -> addInfoCard(adapterItems, dashboardItem)
-                is DashboardItem.CoronaMelderItem -> adapterItems.add(
-                    DashboardCoronaMelderAdapterItem()
-                )
                 is DashboardItem.AddQrCardItem -> addAddQrCardItem(adapterItems)
             }
         }
