@@ -62,7 +62,7 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
                     "WHERE event_group.provider_identifier = e2.provider_identifier " +
                     "AND event_group.type = e2.type " +
                     "AND scope IS NULL " +
-                    "AND event_group.rowid > e2.rowid)"
+                    "AND event_group.rowid < e2.rowid)"
         )
         database.execSQL("UPDATE event_group SET scope = '' WHERE scope IS NULL")
 
