@@ -113,7 +113,6 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
         val items = listOf(
             DashboardItem.HeaderItem(1, null),
             DashboardItem.InfoItem.ClockDeviationItem,
-            DashboardItem.CoronaMelderItem,
             DashboardItem.InfoItem.OriginInfoItem(GreenCardType.Domestic, OriginType.Test),
             DashboardItem.InfoItem.AppUpdate,
             DashboardItem.InfoItem.ConfigFreshnessWarning(1L),
@@ -138,7 +137,6 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
         assert(sortedItems[8] is DashboardItem.PlaceholderCardItem)
         assert(sortedItems[9] is DashboardItem.CardsItem)
         assert(sortedItems[10] is DashboardItem.AddQrButtonItem)
-        assert(sortedItems[11] is DashboardItem.CoronaMelderItem)
     }
 
     private fun getUtil(
