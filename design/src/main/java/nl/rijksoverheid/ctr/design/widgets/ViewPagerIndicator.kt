@@ -4,18 +4,26 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.accessibility.AccessibilityEvent
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.forEachIndexed
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.ViewPagerIndicatorBubbleBinding
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 class ViewPagerIndicator @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
+    private var selectedIndex = 0
+
     init {
         orientation = HORIZONTAL
+        // allow the indicator only for Talkback users
+        if (Accessibility.screenReader(context)) {
+            isFocusable = true
+        }
     }
 
     fun initIndicator(amount: Int) {
@@ -27,11 +35,21 @@ class ViewPagerIndicator @JvmOverloads constructor(
     }
 
     @SuppressLint("StringFormatInvalid")
+    override fun onPopulateAccessibilityEvent(event: AccessibilityEvent) {
+        super.onPopulateAccessibilityEvent(event)
+        if (Accessibility.screenReader(context)) {
+            Accessibility.announce(
+                context,
+                context.getString(R.string.page_indicator_label, selectedIndex + 1, childCount)
+            )
+        }
+    }
+
     fun updateSelected(selectedIndex: Int) {
         forEachIndexed { index, view ->
             (view as ViewPagerIndicatorBubble).toggleSelected(index == selectedIndex)
         }
-        contentDescription = context.getString(R.string.page_indicator_label, selectedIndex + 1, childCount)
+        this.selectedIndex = selectedIndex
     }
 
     private class ViewPagerIndicatorBubble @JvmOverloads constructor(
