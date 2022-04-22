@@ -100,7 +100,12 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
 
         // not visible pages can also gain focus, so we have to take care of that for hardware keyboard users
-        binding.image.isFocusable = isCurrentlyDisplayed
+        binding.image.isFocusable = isCurrentlyDisplayed && !showOverlay
+        binding.image.importantForAccessibility = if (isCurrentlyDisplayed && !showOverlay) {
+            View.IMPORTANT_FOR_ACCESSIBILITY_YES
+        } else {
+            View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        }
         binding.overlay.isFocusable = isCurrentlyDisplayed && showOverlay
     }
 }
