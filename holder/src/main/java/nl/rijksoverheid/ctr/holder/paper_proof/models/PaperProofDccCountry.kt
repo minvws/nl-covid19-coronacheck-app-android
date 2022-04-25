@@ -7,7 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.paper_proof.models
 
-sealed class PaperProofDccType {
-    object Dutch: PaperProofDccType()
-    object Foreign: PaperProofDccType()
+sealed class PaperProofDccCountry {
+    object Dutch: PaperProofDccCountry()
+    object Foreign: PaperProofDccCountry()
 }

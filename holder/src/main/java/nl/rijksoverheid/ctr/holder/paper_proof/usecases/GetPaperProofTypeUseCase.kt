@@ -9,7 +9,7 @@ package nl.rijksoverheid.ctr.holder.paper_proof.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofDccType
+import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofDccCountry
 import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofType
 
 interface GetPaperProofTypeUseCase {
@@ -21,10 +21,10 @@ class GetPaperProofTypeUseCaseImpl: GetPaperProofTypeUseCase {
         return withContext(Dispatchers.IO) {
             val isDcc = true
             if (isDcc) {
-                val isForeign = true
+                val isForeign = false
                 PaperProofType.DCC(
                     qrContent = qrContent,
-                    type = if (isForeign) PaperProofDccType.Foreign else PaperProofDccType.Dutch
+                    country = if (isForeign) PaperProofDccCountry.Foreign else PaperProofDccCountry.Dutch
                 )
             } else {
                 val isCtb = false

@@ -5,6 +5,8 @@ import android.os.Handler
 import android.view.View
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofDccCountry
+import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofType
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -41,16 +43,30 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
             binding.progress.visibility = if (it) View.VISIBLE else View.GONE
         })
 
-        paperProofScannerViewModel.paperProofTypeLiveData.observe(viewLifecycleOwner, EventObserver {
+        paperProofScannerViewModel.paperProofTypeLiveData.observe(viewLifecycleOwner, EventObserver { paperProofType ->
             findNavControllerSafety()?.popBackStack()
-            holderMainActivityViewModel.navigate(
-                navDirections = PaperProofStartScanningFragmentDirections.actionPaperProofCode(it.qrContent),
-                delayMillis = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
-            )
-        })
 
-        Handler().postDelayed({
-            onQrScanned("")
-        }, 2000)
+            when (paperProofType) {
+                is PaperProofType.DCC -> {
+                    when (paperProofType.country) {
+                        is PaperProofDccCountry.Dutch -> {
+                            holderMainActivityViewModel.navigate(
+                                navDirections = PaperProofStartScanningFragmentDirections.actionPaperProofCode(paperProofType.qrContent),
+                                delayMillis = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+                            )
+                        }
+                        is PaperProofDccCountry.Foreign -> {
+                            // Goto events immediately
+                        }
+                    }
+                }
+                is PaperProofType.CTB -> {
+                    // Goto "Scan je internationale QR-code scherm"
+                }
+                is PaperProofType.Unknown -> {
+                    // Goto "QR-code wordt niet herkend" scherm
+                }
+            }
+        })
     }
 }
