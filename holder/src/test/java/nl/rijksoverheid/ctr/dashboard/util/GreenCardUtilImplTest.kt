@@ -237,7 +237,7 @@ class GreenCardUtilImplTest {
 
     @Test
     fun `hasNoActiveCredentials returns true when there are no active credentials for this green card`() {
-        every { credentialUtil.getActiveCredential(any()) } answers { null }
+        every { credentialUtil.getActiveCredential(any(), any()) } answers { null }
 
         val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
         val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
@@ -257,7 +257,7 @@ class GreenCardUtilImplTest {
 
     @Test
     fun `hasNoActiveCredentials returns false when there are active credentials for this green card`() {
-        every { credentialUtil.getActiveCredential(any()) } answers {
+        every { credentialUtil.getActiveCredential(any(), any()) } answers {
             CredentialEntity(
                 id = 1,
                 greenCardId = 1L,
