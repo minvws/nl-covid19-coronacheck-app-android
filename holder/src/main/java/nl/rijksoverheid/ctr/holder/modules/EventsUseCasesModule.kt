@@ -26,7 +26,7 @@ val eventsUseCasesModule = module {
     }
 
     factory<ValidatePaperProofDomesticUseCase> {
-        ValidatePaperProofDomesticUseCaseImpl(get(), get())
+        ValidatePaperProofDomesticUseCaseImpl(get(), get(), get())
     }
 
     factory<GetEventProvidersWithTokensUseCase> {

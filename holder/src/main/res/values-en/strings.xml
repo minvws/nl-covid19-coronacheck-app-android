@@ -427,7 +427,7 @@
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Invalid QR code</string>
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">This QR code isn\'t valid. Scan the QR code on your international certificate.</string>
   <string name="add_paper_proof_expired_paper_proof_title">This paper certificate has expired</string>
-  <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[This paper certificate is no longer valid. This may have various causes:<ul><li>Your vaccination or recovery certificate is still valid, but the paper certificate isn’t. In that case, please request a new paper certificate.</li><li>Your vaccination or recovery has expired.</li></ul>]]></string>
+  <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[This paper certificate is no longer valid. This may have various causes:<ul><li>Your vaccination or recovery is still valid, but the paper certificate isn’t. In that case, please request a new paper certificate.</li><li>Your vaccination or recovery has expired.</li></ul>]]></string>
   <string name="add_paper_proof_limit_reached_paper_proof_title">Too many attempts</string>
   <string name="add_paper_proof_limit_reached_paper_proof_description"><![CDATA[For safety reasons, you won\'t be able to add this QR code to the app temporarily.<br/><br/>You can try again after 24 hours.]]></string>
   <string name="add_paper_proof_invalid_combination_title">No valid combination</string>
@@ -759,4 +759,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_paperproof_startscanning_body"><![CDATA[Je kunt een bestaand bewijs toevoegen aan de CoronaCheck app door ze in te scannen. Bijvoorbeeld bewijzen die je van je zorgverlener hebt gekregen. Of bewijzen die zijn uitgegeven buiten Nederland.<br /><br />Scan de <b>internationale QR-code</b> van jouw bewijs. Deze herken je aan een Europese vlag op het bewijs.]]></string>
   <string name="holder_menu_paperproof_subTitle">Inscannen met je camera</string>
   <string name="holder_paperproof_startscanning_toolbar_title">Papieren bewijs</string>
+  <string name="holder_dccDetails_subtitle_foreign">Deze gegevens staan in je bewijs:</string>
 </resources>

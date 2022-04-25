@@ -7,8 +7,13 @@
 
 package nl.rijksoverheid.ctr.holder.paper_proof.models
 
-sealed class PaperProofType(open val qrContent: String) {
-    data class DCC(val country: PaperProofDccCountry, override val qrContent: String): PaperProofType(qrContent)
-    data class CTB(override val qrContent: String) : PaperProofType(qrContent)
-    data class Unknown(override val qrContent: String): PaperProofType(qrContent)
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+
+sealed class PaperProofType() {
+    sealed class DCC(): PaperProofType() {
+        data class Foreign(val events: Map<RemoteProtocol3, ByteArray>) : DCC()
+        data class Dutch(val qrContent: String) : DCC()
+    }
+    object CTB: PaperProofType()
+    object Unknown: PaperProofType()
 }

@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingStatus
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofDomesticResult
+import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import org.json.JSONObject
 
@@ -21,7 +22,8 @@ interface ValidatePaperProofDomesticUseCase {
 
 class ValidatePaperProofDomesticUseCaseImpl(
     private val coronaCheckRepository: CoronaCheckRepository,
-    private val getEventsFromPaperProofQr: GetEventsFromPaperProofQrUseCase
+    private val getEventsFromPaperProofQr: GetEventsFromPaperProofQrUseCase,
+    private val paperProofUtil: PaperProofUtil
 ) : ValidatePaperProofDomesticUseCase {
 
     override suspend fun validate(
@@ -62,17 +64,7 @@ class ValidatePaperProofDomesticUseCaseImpl(
         couplingCode: String
     ) = PaperProofDomesticResult.Valid(
         mapOf(
-            getEventsFromPaperProofQr.get(qrContent) to getSignerCredential(qrContent, couplingCode)
+            getEventsFromPaperProofQr.get(qrContent) to paperProofUtil.getSignerCredential(qrContent, couplingCode)
         )
     )
-
-    private fun getSignerCredential(
-        qrCode: String,
-        couplingCode: String
-    ): ByteArray = JSONObject(
-        mapOf(
-            "credential" to qrCode,
-            "couplingCode" to couplingCode
-        )
-    ).toString().toByteArray()
 }

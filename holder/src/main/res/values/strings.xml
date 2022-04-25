@@ -760,4 +760,5 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_paperproof_startscanning_body"><![CDATA[Je kunt een bestaand bewijs toevoegen aan de CoronaCheck app door ze in te scannen. Bijvoorbeeld bewijzen die je van je zorgverlener hebt gekregen. Of bewijzen die zijn uitgegeven buiten Nederland.<br /><br />Scan de <b>internationale QR-code</b> van jouw bewijs. Deze herken je aan een Europese vlag op het bewijs.]]></string>
   <string name="holder_menu_paperproof_subTitle">Inscannen met je camera</string>
   <string name="holder_paperproof_startscanning_toolbar_title">Papieren bewijs</string>
+  <string name="holder_dccDetails_subtitle_foreign">Deze gegevens staan in je bewijs:</string>
 </resources>

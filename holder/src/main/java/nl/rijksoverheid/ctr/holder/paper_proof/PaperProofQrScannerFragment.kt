@@ -1,12 +1,13 @@
 package nl.rijksoverheid.ctr.holder.paper_proof
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofDccCountry
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofType
+import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -47,18 +48,23 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
             findNavControllerSafety()?.popBackStack()
 
             when (paperProofType) {
-                is PaperProofType.DCC -> {
-                    when (paperProofType.country) {
-                        is PaperProofDccCountry.Dutch -> {
-                            holderMainActivityViewModel.navigate(
-                                navDirections = PaperProofStartScanningFragmentDirections.actionPaperProofCode(paperProofType.qrContent),
-                                delayMillis = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
-                            )
-                        }
-                        is PaperProofDccCountry.Foreign -> {
-                            // Goto events immediately
-                        }
-                    }
+                is PaperProofType.DCC.Dutch -> {
+                    holderMainActivityViewModel.navigate(
+                        navDirections = PaperProofStartScanningFragmentDirections.actionPaperProofCode(paperProofType.qrContent),
+                        delayMillis = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+                    )
+                }
+                is PaperProofType.DCC.Foreign -> {
+                    holderMainActivityViewModel.navigate(
+                        navDirections = PaperProofStartScanningFragmentDirections.actionYourEvents(
+                            toolbarTitle = getString(R.string.your_dcc_event_toolbar_title),
+                            type = YourEventsFragmentType.DCC(
+                                remoteEvents = paperProofType.events,
+                                originType = OriginType.fromTypeString(paperProofType.events.keys.first().events!!.first().type!!)
+                            ),
+                            flow = HolderFlow.HkviScan
+                        )
+                    )
                 }
                 is PaperProofType.CTB -> {
                     // Goto "Scan je internationale QR-code scherm"
