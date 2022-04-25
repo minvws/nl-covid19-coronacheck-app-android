@@ -542,6 +542,7 @@
   <string name="retrieve_test_result_toolbar_title">Retrieve test result</string>
   <string name="retrieve_test_result_title">Retrieve details about your positive test</string>
   <string name="retrieve_test_result_description">Log in with DigiD. Details about your positive test will be retrieved automatically.</string>
+  <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Prevent the spread of coronavirus, use <a href=\"https://coronamelder.nl/app\">CoronaMelder</a> too.]]></string>
   <string name="certificate_created_vaccination_title">Vaccination certificate instead of recovery certificate</string>
   <string name="certificate_created_vaccination_description"><![CDATA[You were tested positive for coronavirus too long ago. That is why your test result is no longer valid for creating a recovery certificate.<br><br>Because you tested positive before your first vaccination, your test could be recorded into your vaccination certificate.]]></string>
   <string name="no_certificate_created_toolbar_title">No certificate created</string>

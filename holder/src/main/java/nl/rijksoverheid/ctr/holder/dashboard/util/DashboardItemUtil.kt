@@ -40,6 +40,10 @@ interface DashboardItemUtil {
         domesticGreenCards: List<GreenCard>,
         euGreenCards: List<GreenCard>,
     ): Boolean
+    fun shouldShowCoronaMelderItem(
+        greenCards: List<GreenCard>,
+        databaseSyncerResult: DatabaseSyncerResult
+    ): Boolean
     fun shouldShowVisitorPassIncompleteItem(
         events: List<EventGroupEntity>,
         domesticGreenCards: List<GreenCard>
@@ -118,6 +122,13 @@ class DashboardItemUtilImpl(
         // second vaccination result or a positive test result
         return domesticGreenCards.none { it.origins.any { it.type == OriginType.Vaccination } }
                 && euGreenCards.any { it.origins.any { it.type == OriginType.Vaccination } }
+    }
+
+    override fun shouldShowCoronaMelderItem(
+        greenCards: List<GreenCard>,
+        databaseSyncerResult: DatabaseSyncerResult
+    ): Boolean {
+        return greenCards.isNotEmpty() && !greenCards.all { greenCardUtil.isExpired(it) } && databaseSyncerResult is DatabaseSyncerResult.Success
     }
 
     override fun shouldShowVisitorPassIncompleteItem(

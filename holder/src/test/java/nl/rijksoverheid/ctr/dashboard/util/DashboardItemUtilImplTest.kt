@@ -181,6 +181,64 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
+    fun `shouldShowCoronaMelderItem returns false if no green cards`() {
+        val util = getUtil()
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(),
+            databaseSyncerResult = DatabaseSyncerResult.Success()
+        )
+
+        assertFalse(shouldShowCoronaMelderItem)
+    }
+
+    @Test
+    fun `shouldShowCoronaMelderItem returns true if green cards`() {
+        val util = getUtil()
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(fakeGreenCard()),
+            databaseSyncerResult = DatabaseSyncerResult.Success()
+        )
+
+        assertTrue(shouldShowCoronaMelderItem)
+    }
+
+    @Test
+    fun `shouldShowCoronaMelderItem returns false if green cards but expired`() {
+        val greenCardUtil: GreenCardUtil = mockk()
+        every { greenCardUtil.isExpired(any()) } answers { true }
+
+        val util = getUtil(
+            greenCardUtil = greenCardUtil
+        )
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(fakeGreenCard()),
+            databaseSyncerResult = DatabaseSyncerResult.Success()
+        )
+
+        assertFalse(shouldShowCoronaMelderItem)
+    }
+
+    @Test
+    fun `shouldShowCoronaMelderItem returns false if green cards but with error DatabaseSyncerResult`() {
+        val util = getUtil()
+
+        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
+            greenCards = listOf(fakeGreenCard()),
+            databaseSyncerResult = DatabaseSyncerResult.Failed.Error(
+                AppErrorResult(
+                    HolderStep.TestResultNetworkRequest,
+                    IllegalStateException()
+                )
+            )
+        )
+
+        assertFalse(shouldShowCoronaMelderItem)
+    }
+
+    @Test
     fun `App update is available when the recommended version is higher than current version`() {
         val appConfigUseCase: HolderCachedAppConfigUseCase = mockk()
         every { appConfigUseCase.getCachedAppConfig().recommendedVersion } answers { 2 }
