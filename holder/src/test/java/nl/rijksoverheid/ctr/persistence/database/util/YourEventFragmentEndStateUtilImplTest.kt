@@ -185,7 +185,7 @@ class YourEventFragmentEndStateUtilImplTest {
 
         assertEquals(
             util.getResult(HolderFlow.Recovery, storedGreenCards, events, remoteGreenCards),
-            NoRecoveryWithStoredVaccination
+            NotApplicable
         )
     }
 

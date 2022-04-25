@@ -49,7 +49,7 @@ class YourEventFragmentEndStateUtilImpl(
         val recoveryValidityDays = appConfigUseCase.getCachedAppConfig().recoveryEventValidityDays
         return when {
             hasAddedNegativeTestInVaccinationAssessmentFlow(flow, remoteGreenCards) -> AddedNegativeTestInVaccinationAssessmentFlow
-            hasStoredDomesticVaccination(storedGreenCards) && flow !is HolderFlow.Recovery -> NotApplicable
+            hasStoredDomesticVaccination(storedGreenCards) -> NotApplicable
             isNoRecoveryWithStoredVaccination(events, remoteGreenCards, storedGreenCards) -> NoRecoveryWithStoredVaccination
             isOnlyDomesticVaccination(events, remoteGreenCards) -> OnlyDomesticVaccination(recoveryValidityDays)
             isVaccinationAndRecovery(events, remoteGreenCards) -> VaccinationAndRecovery
