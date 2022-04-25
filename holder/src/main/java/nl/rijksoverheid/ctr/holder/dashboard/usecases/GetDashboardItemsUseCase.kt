@@ -365,6 +365,7 @@ class GetDashboardItemsUseCaseImpl(
     ): DashboardItem.CardsItem {
         // Check if we have a credential
         val activeCredential = credentialUtil.getActiveCredential(
+            greenCardType = greenCard.greenCardEntity.type,
             entities = greenCard.credentialEntities
         )
 

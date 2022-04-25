@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtilImpl
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.json.JSONObject
 import org.junit.Assert.*
@@ -37,7 +38,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
 
     @Test
-    fun `getActiveCredential returns active credential with highest expiration time`() {
+    fun `domestic getActiveCredential returns active credential with highest expiration time`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
         val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
 
@@ -60,6 +61,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         )
 
         val activeCredential = credentialUtil.getActiveCredential(
+            greenCardType = GreenCardType.Domestic,
             entities = listOf(credential1, credential2)
         )
 
@@ -67,7 +69,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getActiveCredential returns no active credential if not in window`() {
+    fun `domestic getActiveCredential returns no active credential if not in window`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
         val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
 
@@ -90,10 +92,33 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         )
 
         val activeCredential = credentialUtil.getActiveCredential(
+            greenCardType = GreenCardType.Domestic,
             entities = listOf(credential1, credential2)
         )
 
         assertNull(null, activeCredential)
+    }
+
+    @Test
+    fun `international getActiveCredential ignores validFrom`() {
+        val clock = Clock.fixed(Instant.parse("2022-01-02T09:00:00.00Z"), ZoneId.of("UTC"))
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
+
+        val credential = CredentialEntity(
+            id = 0,
+            greenCardId = 0,
+            data = "".toByteArray(),
+            credentialVersion = 1,
+            validFrom = OffsetDateTime.ofInstant(Instant.parse("2022-01-01T09:00:00.00Z"), ZoneOffset.UTC),
+            expirationTime = OffsetDateTime.ofInstant(Instant.parse("2022-01-03T09:00:00.00Z"), ZoneOffset.UTC)
+        )
+
+        val activeCredential = credentialUtil.getActiveCredential(
+            greenCardType = GreenCardType.Eu,
+            entities = listOf(credential)
+        )
+
+        assertEquals(credential, activeCredential)
     }
 
     @Test
