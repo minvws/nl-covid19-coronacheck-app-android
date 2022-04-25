@@ -89,7 +89,7 @@ class GreenCardUtilImpl(
     }
 
     override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
-        return credentialUtil.getActiveCredential(greenCard.credentialEntities) == null
+        return credentialUtil.getActiveCredential(greenCard.greenCardEntity.type, greenCard.credentialEntities) == null
     }
 
     override fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean {
