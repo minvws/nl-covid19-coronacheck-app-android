@@ -1,10 +1,10 @@
 package nl.rijksoverheid.ctr.holder.paper_proof
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofResult
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -13,19 +13,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PaperProofQrScannerFragment : QrCodeScannerFragment() {
 
-    companion object {
-        const val EXTRA_COUPLING_CODE = "EXTRA_COUPLING_CODE"
-    }
-
     private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
     private val paperProofScannerViewModel: PaperProofQrScannerViewModel by viewModel()
 
     override fun onQrScanned(content: String) {
-        val couplingCode =
-            arguments?.getString(EXTRA_COUPLING_CODE) ?: error("Coupling code cannot be null")
-        paperProofScannerViewModel.validatePaperProof(
-            qrContent = content,
-            couplingCode = couplingCode
+        paperProofScannerViewModel.getType(
+            qrContent = content
         )
     }
 
@@ -48,17 +41,16 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
             binding.progress.visibility = if (it) View.VISIBLE else View.GONE
         })
 
-        paperProofScannerViewModel.validatePaperProofResultLiveData.observe(viewLifecycleOwner, EventObserver {
-            when (it) {
-                is ValidatePaperProofResult.Valid -> {
-                    holderMainActivityViewModel.sendEvents(it.events)
-                    findNavControllerSafety()?.popBackStack()
-                }
-                is ValidatePaperProofResult.Invalid -> {
-                    holderMainActivityViewModel.sendValidatePaperProofInvalid(it)
-                    findNavControllerSafety()?.popBackStack()
-                }
-            }
+        paperProofScannerViewModel.paperProofTypeLiveData.observe(viewLifecycleOwner, EventObserver {
+            findNavControllerSafety()?.popBackStack()
+            holderMainActivityViewModel.navigate(
+                navDirections = PaperProofStartScanningFragmentDirections.actionPaperProofCode(it.qrContent),
+                delayMillis = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+            )
         })
+
+        Handler().postDelayed({
+            onQrScanned("")
+        }, 2000)
     }
 }

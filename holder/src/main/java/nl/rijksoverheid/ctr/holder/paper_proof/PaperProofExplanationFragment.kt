@@ -59,7 +59,7 @@ class PaperProofExplanationFragment : Fragment(R.layout.fragment_paper_proof_exp
                 val cameraManager =
                     requireActivity().getSystemService(Context.CAMERA_SERVICE) as CameraManager
                 if (cameraManager.cameraIdList.isNotEmpty()) {
-                    navigateSafety(PaperProofExplanationFragmentDirections.actionPaperProofCode())
+                    //navigateSafety(PaperProofExplanationFragmentDirections.actionPaperProofCode())
                 } else {
                     showNoCameraError()
                 }

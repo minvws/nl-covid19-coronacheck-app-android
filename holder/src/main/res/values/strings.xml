@@ -542,6 +542,7 @@
   <string name="retrieve_test_result_toolbar_title">Testuitslag ophalen</string>
   <string name="retrieve_test_result_title">Gegevens van je positieve test ophalen</string>
   <string name="retrieve_test_result_description">Log in met DigiD. De gegevens van je positieve test worden dan automatisch opgehaald.</string>
+  <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Voorkom verspreiding van het coronavirus, gebruik ook <a href=\"https://coronamelder.nl/app\">CoronaMelder</a>.]]></string>
   <string name="certificate_created_vaccination_title">Geen herstelbewijs, wel een vaccinatiebewijs</string>
   <string name="certificate_created_vaccination_description"><![CDATA[Het is te lang geleden dat je positief getest bent op corona. Daardoor is je testuitslag niet meer geldig om een herstelbewijs van te maken.<br><br>Omdat je positief getest bent vóór je eerste vaccinatie kon je test wel meegeteld worden in je vaccinatiebewijs.]]></string>
   <string name="no_certificate_created_toolbar_title">Geen bewijs gemaakt</string>
@@ -751,4 +752,12 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_wasUserTestedAtGGD_no_buttonSubtitle">Vul je ophaalcode in</string>
   <string name="holder_whereUserTested_title">Waar ben je getest?</string>
   <string name="holder_whereUserTested_body">Geef aan waar je bent getest om een bewijs te maken van je positieve of negatieve testuitslag.</string>
+  <string name="holder_paperproof_whichProofsCanBeUsed_title">Welke bewijzen kan ik inscannen?</string>
+  <string name="holder_paperproof_whichProofsCanBeUsed_body"><![CDATA[Ben je getest of gevaccineerd in Nederland? Dan kan jouw zorgverlener  een bewijs voor je uit te printen. Dit bewijs kun je op zichzelf gebruiken of inscannen in de CoronaCheck app.<br /><br />Ben je in het buitenland getest of gevaccineerd? Dan heb je in het buitenland een Europees digitaal coronacertificaat(Foreign DCC) gekregen. Of je maakt gebruik van een andere Europese Corona App.<br />De QR-code op dat bewijs kun je inscannen in de CoronaCheck app.]]></string>
+  <string name="holder_paperproof_startscanning_button_whichProofs">Welke bewijzen kan ik inscannen?</string>
+  <string name="holder_paperproof_startscanning_button_startScanning">Start scannen</string>
+  <string name="holder_paperproof_startscanning_title">Een bewijs inscannen met je camera</string>
+  <string name="holder_paperproof_startscanning_body"><![CDATA[Je kunt een bestaand bewijs toevoegen aan de CoronaCheck app door ze in te scannen. Bijvoorbeeld bewijzen die je van je zorgverlener hebt gekregen. Of bewijzen die zijn uitgegeven buiten Nederland.<br /><br />Scan de <b>internationale QR-code</b> van jouw bewijs. Deze herken je aan een Europese vlag op het bewijs.]]></string>
+  <string name="holder_menu_paperproof_subTitle">Inscannen met je camera</string>
+  <string name="holder_paperproof_startscanning_toolbar_title">Papieren bewijs</string>
 </resources>

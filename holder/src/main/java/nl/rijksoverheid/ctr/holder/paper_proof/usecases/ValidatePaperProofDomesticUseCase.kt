@@ -10,29 +10,24 @@ package nl.rijksoverheid.ctr.holder.paper_proof.usecases
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingStatus
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofDomesticResult
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
-import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import org.json.JSONObject
 
-interface ValidatePaperProofUseCase {
-    suspend fun validate(qrContent: String, couplingCode: String): ValidatePaperProofResult
+interface ValidatePaperProofDomesticUseCase {
+    suspend fun validate(qrContent: String, couplingCode: String): PaperProofDomesticResult
 }
 
-class ValidatePaperProofUseCaseImpl(
+class ValidatePaperProofDomesticUseCaseImpl(
     private val coronaCheckRepository: CoronaCheckRepository,
     private val getEventsFromPaperProofQr: GetEventsFromPaperProofQrUseCase
-) : ValidatePaperProofUseCase {
+) : ValidatePaperProofDomesticUseCase {
 
     override suspend fun validate(
         qrContent: String,
         couplingCode: String
-    ): ValidatePaperProofResult {
-        if (qrContent.startsWith("NL")) {
-            return ValidatePaperProofResult.Invalid.DutchQr
-        }
-
+    ): PaperProofDomesticResult {
         return try {
             val networkRequestResult = coronaCheckRepository.getCoupling(
                 credential = qrContent,
@@ -43,17 +38,17 @@ class ValidatePaperProofUseCaseImpl(
                 is NetworkRequestResult.Success -> {
                     when (networkRequestResult.response.status) {
                         RemoteCouplingStatus.Accepted -> validateSuccess(qrContent, couplingCode)
-                        RemoteCouplingStatus.Rejected -> ValidatePaperProofResult.Invalid.RejectedQr
-                        RemoteCouplingStatus.Blocked -> ValidatePaperProofResult.Invalid.BlockedQr
-                        RemoteCouplingStatus.Expired -> ValidatePaperProofResult.Invalid.ExpiredQr
+                        RemoteCouplingStatus.Rejected -> PaperProofDomesticResult.Invalid.RejectedQr
+                        RemoteCouplingStatus.Blocked -> PaperProofDomesticResult.Invalid.BlockedQr
+                        RemoteCouplingStatus.Expired -> PaperProofDomesticResult.Invalid.ExpiredQr
                     }
                 }
                 is NetworkRequestResult.Failed -> {
-                    ValidatePaperProofResult.Invalid.Error(networkRequestResult)
+                    PaperProofDomesticResult.Invalid.Error(networkRequestResult)
                 }
             }
         } catch (e: Exception) {
-            ValidatePaperProofResult.Invalid.Error(
+            PaperProofDomesticResult.Invalid.Error(
                 AppErrorResult(
                     step = HolderStep.CouplingNetworkRequest,
                     e = e
@@ -65,7 +60,7 @@ class ValidatePaperProofUseCaseImpl(
     private fun validateSuccess(
         qrContent: String,
         couplingCode: String
-    ) = ValidatePaperProofResult.Valid(
+    ) = PaperProofDomesticResult.Valid(
         mapOf(
             getEventsFromPaperProofQr.get(qrContent) to getSignerCredential(qrContent, couplingCode)
         )
@@ -80,16 +75,4 @@ class ValidatePaperProofUseCaseImpl(
             "couplingCode" to couplingCode
         )
     ).toString().toByteArray()
-}
-
-sealed class ValidatePaperProofResult {
-    data class Valid(val events: Map<RemoteProtocol3, ByteArray>) : ValidatePaperProofResult()
-    sealed class Invalid : ValidatePaperProofResult() {
-        object DutchQr : Invalid()
-        object InvalidQr: Invalid()
-        object ExpiredQr : Invalid()
-        object RejectedQr : Invalid()
-        object BlockedQr : Invalid()
-        data class Error(val errorResult: ErrorResult) : Invalid()
-    }
 }
