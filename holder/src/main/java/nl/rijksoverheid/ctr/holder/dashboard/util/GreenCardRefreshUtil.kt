@@ -66,7 +66,7 @@ class GreenCardRefreshUtilImpl(
         return allGreenCards.filter {
             it.greenCardEntity.type == selectedType
         }.all {
-            credentialUtil.getActiveCredential(it.credentialEntities) == null
+            credentialUtil.getActiveCredential(it.greenCardEntity.type, it.credentialEntities) == null
         }
     }
 

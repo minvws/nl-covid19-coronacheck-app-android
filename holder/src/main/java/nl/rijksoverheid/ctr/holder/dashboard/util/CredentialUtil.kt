@@ -9,6 +9,7 @@ package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONArray
@@ -19,7 +20,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 interface CredentialUtil {
-    fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity?
+    fun getActiveCredential(greenCardType: GreenCardType, entities: List<CredentialEntity>): CredentialEntity?
     fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean
     fun getTestTypeForEuropeanCredentials(entities: List<CredentialEntity>): String
     fun getVaccinationDosesForEuropeanCredentials(
@@ -40,17 +41,28 @@ class CredentialUtilImpl(
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
-    override fun getActiveCredential(entities: List<CredentialEntity>): CredentialEntity? {
+    override fun getActiveCredential(greenCardType: GreenCardType, entities: List<CredentialEntity>): CredentialEntity? {
 
         // All credentials that fall into the expiration window
         val credentialsInWindow = entities.filter {
-            it.validFrom.isBefore(
-                OffsetDateTime.now(clock)
-            ) && it.expirationTime.isAfter(
-                OffsetDateTime.now(
-                    clock
-                )
-            )
+            when (greenCardType) {
+                is GreenCardType.Domestic -> {
+                    it.validFrom.isBefore(
+                        OffsetDateTime.now(clock)
+                    ) && it.expirationTime.isAfter(
+                        OffsetDateTime.now(
+                            clock
+                        )
+                    )
+                }
+                is GreenCardType.Eu -> {
+                    it.expirationTime.isAfter(
+                        OffsetDateTime.now(
+                            clock
+                        )
+                    )
+                }
+            }
         }
 
         // Return the credential with the longest expiration time if it exists
