@@ -26,9 +26,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem.Card
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
-import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.*
@@ -178,64 +176,6 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         )
 
         assertFalse(shouldShowMissingDutchVaccinationItem)
-    }
-
-    @Test
-    fun `shouldShowCoronaMelderItem returns false if no green cards`() {
-        val util = getUtil()
-
-        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
-            greenCards = listOf(),
-            databaseSyncerResult = DatabaseSyncerResult.Success()
-        )
-
-        assertFalse(shouldShowCoronaMelderItem)
-    }
-
-    @Test
-    fun `shouldShowCoronaMelderItem returns true if green cards`() {
-        val util = getUtil()
-
-        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
-            greenCards = listOf(fakeGreenCard()),
-            databaseSyncerResult = DatabaseSyncerResult.Success()
-        )
-
-        assertTrue(shouldShowCoronaMelderItem)
-    }
-
-    @Test
-    fun `shouldShowCoronaMelderItem returns false if green cards but expired`() {
-        val greenCardUtil: GreenCardUtil = mockk()
-        every { greenCardUtil.isExpired(any()) } answers { true }
-
-        val util = getUtil(
-            greenCardUtil = greenCardUtil
-        )
-
-        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
-            greenCards = listOf(fakeGreenCard()),
-            databaseSyncerResult = DatabaseSyncerResult.Success()
-        )
-
-        assertFalse(shouldShowCoronaMelderItem)
-    }
-
-    @Test
-    fun `shouldShowCoronaMelderItem returns false if green cards but with error DatabaseSyncerResult`() {
-        val util = getUtil()
-
-        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
-            greenCards = listOf(fakeGreenCard()),
-            databaseSyncerResult = DatabaseSyncerResult.Failed.Error(
-                AppErrorResult(
-                    HolderStep.TestResultNetworkRequest,
-                    IllegalStateException()
-                )
-            )
-        )
-
-        assertFalse(shouldShowCoronaMelderItem)
     }
 
     @Test

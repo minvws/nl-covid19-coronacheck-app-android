@@ -38,7 +38,8 @@ class GetDashboardItemsUseCaseImpl(
     private val cardItemUtil: CardItemUtil,
     private val splitDomesticGreenCardsUseCase: SplitDomesticGreenCardsUseCase,
     private val sortGreenCardItemsUseCase: SortGreenCardItemsUseCase,
-    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase,
+    private val coronaMelderUseCase: CoronaMelderUseCase,
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -156,7 +157,7 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.AddQrCardItem)
         }
 
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(
+        if (coronaMelderUseCase.shouldShowCoronaMelderItem(
                 domesticGreenCards,
                 databaseSyncerResult
             )
@@ -270,7 +271,7 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.AddQrCardItem)
         }
 
-        if (dashboardItemUtil.shouldShowCoronaMelderItem(
+        if (coronaMelderUseCase.shouldShowCoronaMelderItem(
                 internationalGreenCards,
                 databaseSyncerResult
             )
