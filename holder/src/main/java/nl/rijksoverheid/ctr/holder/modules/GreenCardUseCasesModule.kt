@@ -41,6 +41,6 @@ val greenCardUseCasesModule = module {
         RemoveExpiredGreenCardsUseCaseImpl(get())
     }
     factory<GetPaperProofTypeUseCase> {
-        GetPaperProofTypeUseCaseImpl(get(), get())
+        GetPaperProofTypeUseCaseImpl(get(), get(), get())
     }
 }

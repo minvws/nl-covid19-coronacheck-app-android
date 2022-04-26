@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofType
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
-import org.json.JSONObject
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 
 interface GetPaperProofTypeUseCase {
     suspend fun get(qrContent: String): PaperProofType
@@ -19,13 +19,13 @@ interface GetPaperProofTypeUseCase {
 
 class GetPaperProofTypeUseCaseImpl(
     private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase,
-    private val paperProofUtil: PaperProofUtil
+    private val paperProofUtil: PaperProofUtil,
+    private val mobileCoreWrapper: MobileCoreWrapper
 ): GetPaperProofTypeUseCase {
     override suspend fun get(qrContent: String): PaperProofType {
         return withContext(Dispatchers.IO) {
-            val isDcc = true
-            if (isDcc) {
-                val isForeign = true
+            if (mobileCoreWrapper.isDcc(qrContent.toByteArray())) {
+                val isForeign = mobileCoreWrapper.isForeignDcc(qrContent.toByteArray())
                 val event = getEventsFromPaperProofQrUseCase.get(qrContent)
 
                 if (isForeign) {
@@ -38,7 +38,7 @@ class GetPaperProofTypeUseCaseImpl(
                     )
                 }
             } else {
-                val isCtb = false
+                val isCtb = mobileCoreWrapper.isCtb(qrContent.toByteArray())
                 if (isCtb) {
                     PaperProofType.CTB
                 } else {
