@@ -116,6 +116,11 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 super.onPageSelected(position)
                 binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
                 binding.logo.isFocusable = (position == 0)
+                binding.logo.importantForAccessibility = if (position == 0) {
+                    View.IMPORTANT_FOR_ACCESSIBILITY_YES
+                } else {
+                    View.IMPORTANT_FOR_ACCESSIBILITY_NO
+                }
                 binding.indicators.updateSelected(position)
 
                 binding.indicators.contentDescription = getString(

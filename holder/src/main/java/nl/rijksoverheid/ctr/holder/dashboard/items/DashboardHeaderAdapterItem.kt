@@ -31,7 +31,7 @@ class DashboardHeaderAdapterItem(@StringRes private val text: Int, private val b
     private val intentUtil: IntentUtil by inject()
 
     override fun bind(viewBinding: AdapterItemDashboardHeaderBinding, position: Int) {
-        viewBinding.text.setHtmlText(text, htmlLinksEnabled = true)
+        viewBinding.text.setHtmlText(text)
         viewBinding.button.run {
             if (buttonInfo != null) {
                 visibility = View.VISIBLE

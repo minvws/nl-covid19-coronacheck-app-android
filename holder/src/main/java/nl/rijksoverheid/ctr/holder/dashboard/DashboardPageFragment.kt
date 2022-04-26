@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.CardItemUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageAccessibilityUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtil
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
@@ -65,7 +64,6 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
             EXTRA_GREEN_CARD_TYPE
         ) ?: error("EXTRA_GREEN_CARD_TYPE should not be null")
     }
-    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
