@@ -17,6 +17,10 @@
   <string name="holder_eventdetails_vaccinationStatus_complete">yes</string>
   <string name="holder_eventdetails_vaccinationStatus_recovery">yes (I’ve had coronavirus earlier)</string>
   <string name="holder_eventdetails_vaccinationStatus_firstVaccinationElsewhere">yes (I have been vaccinated elsewhere)</string>
+  <string name="holder_scanner_error_title_unknown">QR-code wordt niet herkend</string>
+  <string name="holder_scanner_error_message_unknown">De QR-code die je probeert te scannen wordt niet herkend als die van een coronabewijs. Controleer of je de goede QR-code voor de camera houdt.</string>
+  <string name="holder_scanner_error_title_ctb">Scan your international QR code</string>
+  <string name="holder_scanner_error_message_ctb">Scan de QR-code op het internationale bewijs dat je van je zorgverlener of de overheid hebt gekregen. Hierin staan de gegevens die nodig zijn om je bewijs in de app te zetten. Je herkent dit bewijs aan de Europese vlag.</string>
   <string name="app_name_test">CoronaCheck (Test)</string>
   <string name="app_name_acc">CoronaCheck (Acc)</string>
   <string name="app_name">CoronaCheck</string>
@@ -758,6 +762,8 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_paperproof_startscanning_title">Een bewijs inscannen met je camera</string>
   <string name="holder_paperproof_startscanning_body"><![CDATA[Je kunt een bestaand bewijs toevoegen aan de CoronaCheck app door ze in te scannen. Bijvoorbeeld bewijzen die je van je zorgverlener hebt gekregen. Of bewijzen die zijn uitgegeven buiten Nederland.<br /><br />Scan de <b>internationale QR-code</b> van jouw bewijs. Deze herken je aan een Europese vlag op het bewijs.]]></string>
   <string name="holder_menu_paperproof_subTitle">Inscannen met je camera</string>
+  <string name="holder_scanner_error_action">Opnieuw scannen</string>
   <string name="holder_paperproof_startscanning_toolbar_title">Papieren bewijs</string>
-  <string name="holder_dccDetails_subtitle_foreign">Deze gegevens staan in je bewijs:</string>
+  <string name="holder_newintheapp_foreignproofs_title">Buitenlandse bewijzen toevoegen</string>
+  <string name="holder_newintheapp_foreignproofs_body">Heb je een coronabewijs met QR-code van een test of vaccinatie uit het buitenland? Dan kun je jouw bewijs nu toevoegen aan CoronaCheck. Kies in het menu voor “coronabewijs inscannen”.</string>
 </resources>
