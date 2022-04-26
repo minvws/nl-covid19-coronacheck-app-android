@@ -32,7 +32,7 @@ class CountryUtilImpl: CountryUtil {
             countriesMap[it] = fullCountryName
         }
 
-        return countriesMap[countryCode] ?: ""
+        return countriesMap[countryCode] ?: countryCode
     }
 
     override fun getCountryForQrInfoScreen(countryCode: String?, currentLocale: Locale?): String = if (countryCode != null) {
