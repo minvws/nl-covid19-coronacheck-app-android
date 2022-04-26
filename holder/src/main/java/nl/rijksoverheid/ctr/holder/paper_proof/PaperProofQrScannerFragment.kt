@@ -48,7 +48,7 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         paperProofScannerViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
             binding.progress.visibility = if (it) View.VISIBLE else View.GONE
         })

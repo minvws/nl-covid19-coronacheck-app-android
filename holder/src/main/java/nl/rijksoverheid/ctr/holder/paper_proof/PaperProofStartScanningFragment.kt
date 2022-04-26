@@ -7,12 +7,16 @@
 
 package nl.rijksoverheid.ctr.holder.paper_proof
 
+import android.content.Context
+import android.hardware.camera2.CameraAccessException
+import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navArgument
+import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
@@ -22,6 +26,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofStartScanningBi
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -61,7 +66,31 @@ class PaperProofStartScanningFragment: Fragment(R.layout.fragment_paper_proof_st
     }
 
     private fun openScanner() {
-        Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
-            .navigate(R.id.action_paper_proof_qr_scanner)
+        try {
+            val cameraManager =
+                requireActivity().getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            if (cameraManager.cameraIdList.isNotEmpty()) {
+                Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
+                    .navigate(R.id.action_paper_proof_qr_scanner)
+            } else {
+                showNoCameraError()
+            }
+        } catch (exception: CameraAccessException) {
+            showNoCameraError()
+        }
+    }
+
+    private fun showNoCameraError() {
+        findNavControllerSafety()?.navigate(
+            R.id.action_error_result,
+            ErrorResultFragment.getBundle(
+                ErrorResultFragmentData(
+                    title = getString(R.string.add_paper_proof_no_camera_error_header),
+                    description = getString(R.string.add_paper_proof_no_camera_error_description),
+                    buttonTitle = getString(R.string.back_to_overview),
+                    buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                )
+            )
+        )
     }
 }
