@@ -256,22 +256,6 @@
         </fragment>
 
         <fragment
-            android:id="@+id/nav_paper_proof_explanation"
-            android:name="nl.rijksoverheid.ctr.holder.paper_proof.PaperProofExplanationFragment"
-            android:label="@string/add_paper_proof"
-            tools:layout="@layout/fragment_paper_proof_explanation_fragment">
-
-            <action
-                android:id="@+id/action_paper_proof_code"
-                app:destination="@id/nav_paper_proof_code"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right" />
-
-        </fragment>
-
-        <fragment
             android:id="@+id/nav_paper_proof_code"
             android:name="nl.rijksoverheid.ctr.holder.paper_proof.PaperProofDomesticInputCodeFragment"
             android:label="@string/add_paper_proof_title"

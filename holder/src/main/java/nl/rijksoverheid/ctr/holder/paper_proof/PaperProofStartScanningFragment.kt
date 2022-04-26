@@ -15,7 +15,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navArgument
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -24,7 +23,6 @@ import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofStartScanningBinding
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import org.koin.android.ext.android.inject
