@@ -23,7 +23,7 @@ class CoronaMelderUseCaseImplTest {
         every { cachedAppConfigUseCase.getCachedAppConfig().shouldShowCoronaMelderRecommendation } returns true
         every { greenCardUtil.isExpired(any()) } returns false
 
-        val coronaMelderUseCase = CoronaMelderUseCaseImpl(cachedAppConfigUseCase, greenCardUtil)
+        val coronaMelderUseCase = ShowCoronaMelderItemUseCaseImpl(cachedAppConfigUseCase, greenCardUtil)
 
         assertTrue(coronaMelderUseCase.shouldShowCoronaMelderItem(listOf(greenCard), DatabaseSyncerResult.Success()))
     }
@@ -33,7 +33,7 @@ class CoronaMelderUseCaseImplTest {
         every { cachedAppConfigUseCase.getCachedAppConfig().shouldShowCoronaMelderRecommendation } returns true
         every { greenCardUtil.isExpired(any()) } returns false
 
-        val coronaMelderUseCase = CoronaMelderUseCaseImpl(cachedAppConfigUseCase, greenCardUtil)
+        val coronaMelderUseCase = ShowCoronaMelderItemUseCaseImpl(cachedAppConfigUseCase, greenCardUtil)
 
         assertFalse(coronaMelderUseCase.shouldShowCoronaMelderItem(emptyList(), DatabaseSyncerResult.Success()))
     }
@@ -43,7 +43,7 @@ class CoronaMelderUseCaseImplTest {
         every { cachedAppConfigUseCase.getCachedAppConfig().shouldShowCoronaMelderRecommendation } returns true
         every { greenCardUtil.isExpired(any()) } returns true
 
-        val coronaMelderUseCase = CoronaMelderUseCaseImpl(cachedAppConfigUseCase, greenCardUtil)
+        val coronaMelderUseCase = ShowCoronaMelderItemUseCaseImpl(cachedAppConfigUseCase, greenCardUtil)
 
         assertFalse(coronaMelderUseCase.shouldShowCoronaMelderItem(emptyList(), DatabaseSyncerResult.Success()))
     }
@@ -53,7 +53,7 @@ class CoronaMelderUseCaseImplTest {
         every { cachedAppConfigUseCase.getCachedAppConfig().shouldShowCoronaMelderRecommendation } returns true
         every { greenCardUtil.isExpired(any()) } returns false
 
-        val coronaMelderUseCase = CoronaMelderUseCaseImpl(cachedAppConfigUseCase, greenCardUtil)
+        val coronaMelderUseCase = ShowCoronaMelderItemUseCaseImpl(cachedAppConfigUseCase, greenCardUtil)
 
         assertFalse(coronaMelderUseCase.shouldShowCoronaMelderItem(emptyList(), DatabaseSyncerResult.Failed.Error(
             AppErrorResult(

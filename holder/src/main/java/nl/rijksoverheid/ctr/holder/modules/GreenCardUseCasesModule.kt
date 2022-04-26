@@ -38,7 +38,7 @@ val greenCardUseCasesModule = module {
     factory<RemoveExpiredGreenCardsUseCase> {
         RemoveExpiredGreenCardsUseCaseImpl(get())
     }
-    factory<CoronaMelderUseCase> {
-        CoronaMelderUseCaseImpl(get(), get())
+    factory<ShowCoronaMelderItemUseCase> {
+        ShowCoronaMelderItemUseCaseImpl(get(), get())
     }
 }

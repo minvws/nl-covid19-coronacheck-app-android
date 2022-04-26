@@ -11,17 +11,17 @@ import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
  *
  * SPDX-License-Identifier: EUPL-1.2
  */
-interface CoronaMelderUseCase {
+interface ShowCoronaMelderItemUseCase {
     fun shouldShowCoronaMelderItem(
         greenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult
     ): Boolean
 }
 
-class CoronaMelderUseCaseImpl(
+class ShowCoronaMelderItemUseCaseImpl(
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
     private val greenCardUtil: GreenCardUtil,
-) : CoronaMelderUseCase {
+) : ShowCoronaMelderItemUseCase {
     override fun shouldShowCoronaMelderItem(
         greenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult
