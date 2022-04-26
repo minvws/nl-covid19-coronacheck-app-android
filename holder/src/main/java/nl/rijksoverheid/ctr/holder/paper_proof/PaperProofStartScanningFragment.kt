@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
+import androidx.navigation.navArgument
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
@@ -25,6 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PaperProofStartScanningFragment: Fragment(R.layout.fragment_paper_proof_start_scanning) {
 
+    private val args: PaperProofStartScanningFragmentArgs by navArgs()
     private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
 
@@ -35,6 +38,10 @@ class PaperProofStartScanningFragment: Fragment(R.layout.fragment_paper_proof_st
         holderMainActivityViewModel.navigateLiveData.observe(viewLifecycleOwner, EventObserver {
             findNavControllerSafety()?.navigate(it)
         })
+
+        if (args.openScanner) {
+            openScanner()
+        }
 
         binding.button.setOnClickListener {
             infoFragmentUtil.presentAsBottomSheet(
@@ -49,8 +56,12 @@ class PaperProofStartScanningFragment: Fragment(R.layout.fragment_paper_proof_st
         }
 
         binding.bottom.setButtonClick {
-            Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
-                .navigate(R.id.action_paper_proof_qr_scanner)
+            openScanner()
         }
+    }
+
+    private fun openScanner() {
+        Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
+            .navigate(R.id.action_paper_proof_qr_scanner)
     }
 }

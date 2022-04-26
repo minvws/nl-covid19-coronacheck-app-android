@@ -1,16 +1,25 @@
 package nl.rijksoverheid.ctr.holder.paper_proof
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
+import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
+import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.get_events.GetEventsFragmentDirections
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofType
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
+import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -39,7 +48,7 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        
         paperProofScannerViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
             binding.progress.visibility = if (it) View.VISIBLE else View.GONE
         })
@@ -67,10 +76,42 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                     )
                 }
                 is PaperProofType.CTB -> {
-                    // Goto "Scan je internationale QR-code scherm"
+                    val navDirection = InfoFragmentDirections.actionPaperProofStartScanning(true)
+                    holderMainActivityViewModel.navigate(
+                        navDirections = PaperProofStartScanningFragmentDirections.actionInfoFragment(
+                            toolbarTitle = getString(R.string.add_paper_proof_qr_scanner_title),
+                            data = InfoFragmentData.TitleDescriptionWithButton(
+                                title = getString(R.string.holder_scanner_error_title_ctb),
+                                descriptionData = DescriptionData(
+                                    htmlText = R.string.holder_scanner_error_message_ctb
+                                ),
+                                primaryButtonData = ButtonData.NavigationButton(
+                                    text = getString(R.string.holder_scanner_error_action),
+                                    navigationActionId = navDirection.actionId,
+                                    navigationArguments = navDirection.arguments
+                                )
+                            )
+                        )
+                    )
                 }
                 is PaperProofType.Unknown -> {
-                    // Goto "QR-code wordt niet herkend" scherm
+                    val navDirection = InfoFragmentDirections.actionPaperProofStartScanning(true)
+                    holderMainActivityViewModel.navigate(
+                        navDirections = PaperProofStartScanningFragmentDirections.actionInfoFragment(
+                            toolbarTitle = getString(R.string.add_paper_proof_qr_scanner_title),
+                            data = InfoFragmentData.TitleDescriptionWithButton(
+                                title = getString(R.string.holder_scanner_error_title_unknown),
+                                descriptionData = DescriptionData(
+                                    htmlText = R.string.holder_scanner_error_message_unknown
+                                ),
+                                primaryButtonData = ButtonData.NavigationButton(
+                                    text = getString(R.string.holder_scanner_error_action),
+                                    navigationActionId = navDirection.actionId,
+                                    navigationArguments = navDirection.arguments
+                                )
+                            )
+                        )
+                    )
                 }
             }
         })
