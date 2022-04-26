@@ -1,25 +1,20 @@
 package nl.rijksoverheid.ctr.holder.paper_proof
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
-import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.get_events.GetEventsFragmentDirections
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofType
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
-import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
