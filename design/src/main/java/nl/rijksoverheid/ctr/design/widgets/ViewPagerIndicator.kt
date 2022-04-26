@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.accessibility.AccessibilityEvent
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.forEachIndexed
@@ -35,20 +34,11 @@ class ViewPagerIndicator @JvmOverloads constructor(
     }
 
     @SuppressLint("StringFormatInvalid")
-    override fun onPopulateAccessibilityEvent(event: AccessibilityEvent) {
-        super.onPopulateAccessibilityEvent(event)
-        if (Accessibility.screenReader(context)) {
-            Accessibility.announce(
-                context,
-                context.getString(R.string.page_indicator_label, selectedIndex + 1, childCount)
-            )
-        }
-    }
-
     fun updateSelected(selectedIndex: Int) {
         forEachIndexed { index, view ->
             (view as ViewPagerIndicatorBubble).toggleSelected(index == selectedIndex)
         }
+        contentDescription = context.getString(R.string.page_indicator_label, selectedIndex + 1, childCount)
         this.selectedIndex = selectedIndex
     }
 

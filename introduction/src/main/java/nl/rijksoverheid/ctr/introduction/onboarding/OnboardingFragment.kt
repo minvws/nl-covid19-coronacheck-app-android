@@ -123,12 +123,6 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                 }
                 binding.indicators.updateSelected(position)
 
-                binding.indicators.contentDescription = getString(
-                    R.string.onboarding_page_indicator_label,
-                    (position + 1).toString(),
-                    adapter.itemCount.toString()
-                )
-
                 // Apply bottom elevation if the view inside the viewpager is scrollable
                 val scrollView =
                     childFragmentManager.fragments[position]?.view?.findViewById<ScrollView>(R.id.scroll)
