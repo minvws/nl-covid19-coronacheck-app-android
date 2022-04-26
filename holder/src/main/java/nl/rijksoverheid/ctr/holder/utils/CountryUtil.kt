@@ -26,7 +26,9 @@ class CountryUtilImpl: CountryUtil {
         val countriesMap: MutableMap<String, String> = mutableMapOf()
         Locale.getISOCountries().forEach {
             val locale = Locale(deviceLanguage, it)
+            val countryIso3Code = locale.isO3Country
             val fullCountryName = locale.displayCountry
+            countriesMap[countryIso3Code] = fullCountryName
             countriesMap[it] = fullCountryName
         }
 
