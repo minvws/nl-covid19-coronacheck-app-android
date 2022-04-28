@@ -54,6 +54,7 @@ data class HolderConfig(
     @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean,
     @Json(name = "disclosurePolicies") val disclosurePolicy: DisclosurePolicy,
     @Json(name = "backendTLSCertificates") val backendTLSCertificates: List<String>,
+    @Json(name = "shouldShowCoronaMelderRecommendation") val shouldShowCoronaMelderRecommendation: Boolean?,
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -148,6 +149,7 @@ data class HolderConfig(
             mijnCnEnabled = mijnCnEnabled,
             disclosurePolicy = disclosurePolicy,
             backendTLSCertificates = emptyList(),
+            shouldShowCoronaMelderRecommendation = false,
         )
     }
 }

@@ -28,7 +28,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
+            <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

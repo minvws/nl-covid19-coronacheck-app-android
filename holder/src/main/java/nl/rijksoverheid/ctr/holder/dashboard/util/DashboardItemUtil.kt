@@ -9,14 +9,13 @@ package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
@@ -62,7 +61,7 @@ class DashboardItemUtilImpl(
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
     private val appConfigUseCase: HolderCachedAppConfigUseCase,
     private val buildConfigUseCase: BuildConfigUseCase,
-    private val greenCardUtil: GreenCardUtil
+    private val greenCardUtil: GreenCardUtil,
 ) : DashboardItemUtil {
 
     override fun shouldShowClockDeviationItem(emptyState: Boolean, allGreenCards: List<GreenCard>) =

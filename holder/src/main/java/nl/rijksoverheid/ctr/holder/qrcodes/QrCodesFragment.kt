@@ -292,8 +292,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                         onPageSelectedPostAction(position, europeanVaccinations)
                     }
 
-                    // reset qr overlay state on page change
-                    qrCodePagerAdapter.isOverlayStateReset = true
+                    qrCodePagerAdapter.onPositionChanged(position)
                 }
             })
 
