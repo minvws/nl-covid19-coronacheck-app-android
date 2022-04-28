@@ -38,6 +38,9 @@ interface MobileCoreWrapper {
     // returns error message, if initializing failed
     fun initializeVerifier(configFilesPath: String): String?
     fun verify(credential: ByteArray, policy: VerificationPolicy): VerificationResult
+    fun isDcc(credential: ByteArray): Boolean
+    fun isForeignDcc(credential: ByteArray): Boolean
+    fun isCtb(credential: ByteArray): Boolean
 }
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
@@ -144,5 +147,17 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
             ),
             error = result.error
         )
+    }
+
+    override fun isDcc(credential: ByteArray): Boolean {
+        return false
+    }
+
+    override fun isForeignDcc(credential: ByteArray): Boolean {
+        return false
+    }
+
+    override fun isCtb(credential: ByteArray): Boolean {
+        return false
     }
 }

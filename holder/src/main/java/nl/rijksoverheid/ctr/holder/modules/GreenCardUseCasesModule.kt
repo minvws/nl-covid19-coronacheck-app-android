@@ -3,6 +3,8 @@ package nl.rijksoverheid.ctr.holder.modules
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.*
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetPaperProofTypeUseCase
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetPaperProofTypeUseCaseImpl
 import nl.rijksoverheid.ctr.persistence.database.usecases.*
 import org.koin.dsl.module
 
@@ -37,6 +39,9 @@ val greenCardUseCasesModule = module {
     }
     factory<RemoveExpiredGreenCardsUseCase> {
         RemoveExpiredGreenCardsUseCaseImpl(get())
+    }
+    factory<GetPaperProofTypeUseCase> {
+        GetPaperProofTypeUseCaseImpl(get(), get(), get())
     }
     factory<ShowCoronaMelderItemUseCase> {
         ShowCoronaMelderItemUseCaseImpl(get(), get())

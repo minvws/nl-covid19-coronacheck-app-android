@@ -21,8 +21,12 @@ import java.time.Clock
  *
  */
 val eventsUseCasesModule = module {
-    factory<PaperProofCodeUseCase> {
-        PaperProofCodeUseCaseImpl()
+    factory<ValidatePaperProofDomesticInputCodeUseCase> {
+        ValidatePaperProofDomesticInputCodeUseCaseImpl()
+    }
+
+    factory<ValidatePaperProofDomesticUseCase> {
+        ValidatePaperProofDomesticUseCaseImpl(get(), get(), get())
     }
 
     factory<GetEventProvidersWithTokensUseCase> {
@@ -42,9 +46,6 @@ val eventsUseCasesModule = module {
     factory<GetDigidEventsUseCase> { GetDigidEventsUseCaseImpl(get(), get(), get(), get(), get()) }
     factory<GetMijnCnEventsUsecase> { GetMijnCnEventsUsecaseImpl(get(), get(), get()) }
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get(), get(), get()) }
-    factory<ValidatePaperProofUseCase> {
-        ValidatePaperProofUseCaseImpl(get(), get())
-    }
 
     factory<GetEventsFromPaperProofQrUseCase> {
         GetEventsFromPaperProofQrUseCaseImpl(get(), get())

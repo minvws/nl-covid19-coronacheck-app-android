@@ -17,6 +17,10 @@
   <string name="holder_eventdetails_vaccinationStatus_complete">yes</string>
   <string name="holder_eventdetails_vaccinationStatus_recovery">yes (I’ve had coronavirus earlier)</string>
   <string name="holder_eventdetails_vaccinationStatus_firstVaccinationElsewhere">yes (I have been vaccinated elsewhere)</string>
+  <string name="holder_scanner_error_title_unknown">QR-code wordt niet herkend</string>
+  <string name="holder_scanner_error_message_unknown">De QR-code die je probeert te scannen wordt niet herkend als die van een coronabewijs. Controleer of je de goede QR-code voor de camera houdt.</string>
+  <string name="holder_scanner_error_title_ctb">Scan your international QR code</string>
+  <string name="holder_scanner_error_message_ctb">Scan de QR-code op het internationale bewijs dat je van je zorgverlener of de overheid hebt gekregen. Hierin staan de gegevens die nodig zijn om je bewijs in de app te zetten. Je herkent dit bewijs aan de Europese vlag.</string>
   <string name="app_name_test">CoronaCheck (Test)</string>
   <string name="app_name_acc">CoronaCheck (Acc)</string>
   <string name="app_name">CoronaCheck</string>
@@ -427,7 +431,7 @@
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Invalid QR code</string>
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">This QR code isn\'t valid. Scan the QR code on your international certificate.</string>
   <string name="add_paper_proof_expired_paper_proof_title">This paper certificate has expired</string>
-  <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[This paper certificate is no longer valid. This may have various causes:<ul><li>Your vaccination or recovery certificate is still valid, but the paper certificate isn’t. In that case, please request a new paper certificate.</li><li>Your vaccination or recovery has expired.</li></ul>]]></string>
+  <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[This paper certificate is no longer valid. This may have various causes:<ul><li>Your vaccination or recovery is still valid, but the paper certificate isn’t. In that case, please request a new paper certificate.</li><li>Your vaccination or recovery has expired.</li></ul>]]></string>
   <string name="add_paper_proof_limit_reached_paper_proof_title">Too many attempts</string>
   <string name="add_paper_proof_limit_reached_paper_proof_description"><![CDATA[For safety reasons, you won\'t be able to add this QR code to the app temporarily.<br/><br/>You can try again after 24 hours.]]></string>
   <string name="add_paper_proof_invalid_combination_title">No valid combination</string>
@@ -751,4 +755,15 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_wasUserTestedAtGGD_no_buttonSubtitle">Enter retrieval code</string>
   <string name="holder_whereUserTested_title">Where were you tested?</string>
   <string name="holder_whereUserTested_body">Indicate where you were tested to create a certificate from your positive or negative test result.</string>
+  <string name="holder_paperproof_whichProofsCanBeUsed_title">Welke bewijzen kan ik inscannen?</string>
+  <string name="holder_paperproof_whichProofsCanBeUsed_body"><![CDATA[Ben je getest of gevaccineerd in Nederland? Dan kan jouw zorgverlener  een bewijs voor je uit te printen. Dit bewijs kun je op zichzelf gebruiken of inscannen in de CoronaCheck app.<br /><br />Ben je in het buitenland getest of gevaccineerd? Dan heb je in het buitenland een Europees digitaal coronacertificaat(Foreign DCC) gekregen. Of je maakt gebruik van een andere Europese Corona App.<br />De QR-code op dat bewijs kun je inscannen in de CoronaCheck app.]]></string>
+  <string name="holder_paperproof_startscanning_button_whichProofs">Welke bewijzen kan ik inscannen?</string>
+  <string name="holder_paperproof_startscanning_button_startScanning">Start scannen</string>
+  <string name="holder_paperproof_startscanning_title">Een bewijs inscannen met je camera</string>
+  <string name="holder_paperproof_startscanning_body"><![CDATA[Je kunt een bestaand bewijs toevoegen aan de CoronaCheck app door ze in te scannen. Bijvoorbeeld bewijzen die je van je zorgverlener hebt gekregen. Of bewijzen die zijn uitgegeven buiten Nederland.<br /><br />Scan de <b>internationale QR-code</b> van jouw bewijs. Deze herken je aan een Europese vlag op het bewijs.]]></string>
+  <string name="holder_menu_paperproof_subTitle">Inscannen met je camera</string>
+  <string name="holder_scanner_error_action">Opnieuw scannen</string>
+  <string name="holder_paperproof_startscanning_toolbar_title">Papieren bewijs</string>
+  <string name="holder_newintheapp_foreignproofs_title">Buitenlandse bewijzen toevoegen</string>
+  <string name="holder_newintheapp_foreignproofs_body">Heb je een coronabewijs met QR-code van een test of vaccinatie uit het buitenland? Dan kun je jouw bewijs nu toevoegen aan CoronaCheck. Kies in het menu voor “coronabewijs inscannen”.</string>
 </resources>
