@@ -30,7 +30,7 @@ class GetPaperProofTypeUseCaseImpl(
 
                 if (isForeign) {
                     PaperProofType.DCC.Foreign(
-                        events = mapOf(event to paperProofUtil.getSignerCredential(qrContent))
+                        events = mapOf(event to paperProofUtil.getSignerCredential(qrContent = qrContent))
                     )
                 } else {
                     PaperProofType.DCC.Dutch(

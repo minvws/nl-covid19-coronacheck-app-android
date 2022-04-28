@@ -121,7 +121,10 @@ class ValidatePaperProofDomesticUseCaseImplTest {
         }
 
         // Mock our paper proof signature
-        coEvery { paperProofUtil.getSignerCredential(any(), any()) } answers {
+        coEvery { paperProofUtil.getSignerCredential(
+            qrContent = any(),
+            couplingCode = any())
+        } answers {
             "".toByteArray()
         }
 

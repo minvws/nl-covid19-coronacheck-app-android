@@ -64,7 +64,10 @@ class ValidatePaperProofDomesticUseCaseImpl(
         couplingCode: String
     ) = PaperProofDomesticResult.Valid(
         mapOf(
-            getEventsFromPaperProofQr.get(qrContent) to paperProofUtil.getSignerCredential(qrContent, couplingCode)
+            getEventsFromPaperProofQr.get(qrContent) to paperProofUtil.getSignerCredential(
+                qrContent = qrContent,
+                couplingCode = couplingCode
+            )
         )
     )
 }

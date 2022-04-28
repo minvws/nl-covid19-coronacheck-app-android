@@ -19,10 +19,10 @@ interface PaperProofUtil {
 class PaperProofUtilImpl: PaperProofUtil {
 
     override fun getSignerCredential(
-        qrCode: String,
+        qrContent: String,
         couplingCode: String?
     ): ByteArray = JSONObject(
-        mutableMapOf("credential" to qrCode)
+        mutableMapOf("credential" to qrContent)
             .also { map ->
                 couplingCode?.let { couplingCode ->
                     map["couplingCode"] = couplingCode

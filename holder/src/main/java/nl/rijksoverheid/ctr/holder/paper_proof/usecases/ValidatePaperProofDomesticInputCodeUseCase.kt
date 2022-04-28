@@ -9,20 +9,19 @@ package nl.rijksoverheid.ctr.holder.paper_proof.usecases
 
 import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofDomesticCodeResult
 
-interface ValidatePaperProofDomesticCodeUseCase {
+interface ValidatePaperProofDomesticInputCodeUseCase {
     companion object {
         const val CODE_POINTS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
-        const val CHARS_COUNT = 6
     }
 
     fun validate(code: String): PaperProofDomesticCodeResult
 }
 
-class ValidatePaperProofDomesticCodeUseCaseImpl: ValidatePaperProofDomesticCodeUseCase {
+class ValidatePaperProofDomesticInputCodeUseCaseImpl: ValidatePaperProofDomesticInputCodeUseCase {
 
     override fun validate(code: String): PaperProofDomesticCodeResult {
         code.toCharArray().forEach {
-            if (!ValidatePaperProofDomesticCodeUseCase.CODE_POINTS.contains(it)) {
+            if (!ValidatePaperProofDomesticInputCodeUseCase.CODE_POINTS.contains(it)) {
                 return PaperProofDomesticCodeResult.Invalid
             }
         }

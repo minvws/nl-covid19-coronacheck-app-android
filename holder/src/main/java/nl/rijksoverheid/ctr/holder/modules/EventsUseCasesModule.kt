@@ -21,8 +21,8 @@ import java.time.Clock
  *
  */
 val eventsUseCasesModule = module {
-    factory<ValidatePaperProofDomesticCodeUseCase> {
-        ValidatePaperProofDomesticCodeUseCaseImpl()
+    factory<ValidatePaperProofDomesticInputCodeUseCase> {
+        ValidatePaperProofDomesticInputCodeUseCaseImpl()
     }
 
     factory<ValidatePaperProofDomesticUseCase> {
