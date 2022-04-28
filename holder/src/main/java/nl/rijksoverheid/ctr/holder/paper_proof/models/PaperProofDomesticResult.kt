@@ -11,7 +11,29 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 
 sealed class PaperProofDomesticResult {
-    data class Valid(val events: Map<RemoteProtocol3, ByteArray>) : PaperProofDomesticResult()
+    data class Valid(
+        val remoteEvent: RemoteProtocol3,
+        val eventGroupJsonData: ByteArray
+    ) : PaperProofDomesticResult() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as Valid
+
+            if (remoteEvent != other.remoteEvent) return false
+            if (!eventGroupJsonData.contentEquals(other.eventGroupJsonData)) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = remoteEvent.hashCode()
+            result = 31 * result + eventGroupJsonData.contentHashCode()
+            return result
+        }
+    }
+
     sealed class Invalid : PaperProofDomesticResult() {
         object ExpiredQr : Invalid()
         object RejectedQr : Invalid()

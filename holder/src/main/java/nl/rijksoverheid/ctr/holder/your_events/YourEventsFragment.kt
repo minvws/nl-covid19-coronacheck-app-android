@@ -90,7 +90,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             is YourEventsFragmentType.DCC -> {
                 yourEventsViewModel.checkForConflictingEvents(
-                    remoteProtocols3 = type.remoteEvents,
+                    remoteProtocols3 = type.getRemoteEvents(),
                 )
             }
         }
@@ -177,10 +177,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     }
                     is YourEventsFragmentType.DCC -> {
                         if (it) {
-                            replaceCertificateDialog(type.remoteEvents)
+                            replaceCertificateDialog(type.getRemoteEvents())
                         } else {
                             yourEventsViewModel.saveRemoteProtocol3Events(
-                                getFlow(), type.remoteEvents, false
+                                getFlow(), type.getRemoteEvents(), false
                             )
                         }
                     }
@@ -346,7 +346,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 binding
             )
             is YourEventsFragmentType.DCC -> presentEvents(
-                type.remoteEvents,
+                type.getRemoteEvents(),
                 binding,
                 isDccEvent = true
             )

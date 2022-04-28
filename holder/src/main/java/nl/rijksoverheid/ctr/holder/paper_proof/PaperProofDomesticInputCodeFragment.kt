@@ -93,8 +93,9 @@ class PaperProofDomesticInputCodeFragment : BaseFragment(R.layout.fragment_paper
                     findNavControllerSafety()?.navigate(PaperProofDomesticInputCodeFragmentDirections.actionYourEvents(
                         toolbarTitle = getString(R.string.your_dcc_event_toolbar_title),
                         type = YourEventsFragmentType.DCC(
-                            remoteEvents = it.events,
-                            originType = OriginType.fromTypeString(it.events.keys.first().events!!.first().type!!)
+                            remoteEvent = it.remoteEvent,
+                            eventGroupJsonData = it.eventGroupJsonData,
+                            originType = OriginType.fromTypeString(it.remoteEvent.events!!.first().type!!)
                         ),
                         flow = HolderFlow.HkviScan
                     ))

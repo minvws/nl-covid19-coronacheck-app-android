@@ -10,7 +10,7 @@ package nl.rijksoverheid.ctr.holder.paper_proof.utils
 import org.json.JSONObject
 
 interface PaperProofUtil {
-    fun getSignerCredential(
+    fun getEventGroupJsonData(
         qrContent: String,
         couplingCode: String? = null
     ): ByteArray
@@ -18,7 +18,7 @@ interface PaperProofUtil {
 
 class PaperProofUtilImpl: PaperProofUtil {
 
-    override fun getSignerCredential(
+    override fun getEventGroupJsonData(
         qrContent: String,
         couplingCode: String?
     ): ByteArray = JSONObject(
