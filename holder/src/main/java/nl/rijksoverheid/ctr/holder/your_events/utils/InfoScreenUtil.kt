@@ -33,7 +33,7 @@ interface InfoScreenUtil {
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean = true,
     ): InfoScreen
 
@@ -88,9 +88,9 @@ class InfoScreenUtilImpl(
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean,
-    ) = vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate, providerIdentifier, isPaperProof, addExplanation)
+    ) = vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate, providerIdentifier, europeanCredential, addExplanation)
 
     override fun getForPositiveTest(
         event: RemoteEventPositiveTest,

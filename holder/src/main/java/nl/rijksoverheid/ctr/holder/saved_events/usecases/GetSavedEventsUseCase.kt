@@ -63,6 +63,10 @@ class GetSavedEventsUseCaseImpl(
                 ),
                 eventGroupEntity = eventGroupEntity,
                 events = remoteProtocol?.events?.mapNotNull { remoteEvent ->
+                    val europeanCredential = if (isDccEvent) {
+                        JSONObject(eventGroupEntity.jsonData.decodeToString()).getString("credential").toByteArray()
+                    } else null
+
                     val infoScreen = when (remoteEvent) {
                         is RemoteEventVaccination -> {
                             infoScreenUtil.getForVaccination(
@@ -70,7 +74,7 @@ class GetSavedEventsUseCaseImpl(
                                 fullName = fullName,
                                 birthDate = birthDate,
                                 providerIdentifier = eventGroupEntity.providerIdentifier,
-                                isPaperProof = isDccEvent,
+                                europeanCredential = europeanCredential,
                                 addExplanation = false,
                             )
                         }

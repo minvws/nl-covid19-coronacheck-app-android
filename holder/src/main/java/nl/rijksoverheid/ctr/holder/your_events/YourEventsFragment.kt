@@ -43,6 +43,7 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
+import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Instant
@@ -483,13 +484,17 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         allEventsInformation: List<RemoteEventInformation>,
         isDccEvent: Boolean,
     ) {
-
+        val type = args.type
         val infoScreen = infoScreenUtil.getForVaccination(
             event = currentEvent,
             fullName = fullName,
             birthDate = birthDate,
             providerIdentifier = allEventsInformation.first().providerIdentifier,
-            isPaperProof = args.type is YourEventsFragmentType.DCC
+            europeanCredential = if (type is YourEventsFragmentType.DCC) {
+                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+            } else {
+                null
+            }
         )
 
         val eventWidget = YourEventWidget(requireContext()).apply {
@@ -521,7 +526,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                         type = args.type,
                                         providerIdentifier = it.providerIdentifier
                                     ),
-                                    isPaperProof = args.type is YourEventsFragmentType.DCC
+                                    europeanCredential = if (type is YourEventsFragmentType.DCC) {
+                                        JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+                                    } else {
+                                        null
+                                    },
                                 )
                             }.toTypedArray()
                         )
