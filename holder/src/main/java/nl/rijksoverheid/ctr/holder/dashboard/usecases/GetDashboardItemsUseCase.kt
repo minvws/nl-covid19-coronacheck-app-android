@@ -38,7 +38,8 @@ class GetDashboardItemsUseCaseImpl(
     private val cardItemUtil: CardItemUtil,
     private val splitDomesticGreenCardsUseCase: SplitDomesticGreenCardsUseCase,
     private val sortGreenCardItemsUseCase: SortGreenCardItemsUseCase,
-    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase,
+    private val showCoronaMelderItemUseCase: ShowCoronaMelderItemUseCase,
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -156,6 +157,16 @@ class GetDashboardItemsUseCaseImpl(
             dashboardItems.add(DashboardItem.AddQrCardItem)
         }
 
+        if (showCoronaMelderItemUseCase.shouldShowCoronaMelderItem(
+                domesticGreenCards,
+                databaseSyncerResult
+            )
+        ) {
+            dashboardItems.add(
+                DashboardItem.CoronaMelderItem
+            )
+        }
+
         if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
             dashboardItems.add(DashboardItem.AddQrButtonItem)
         }
@@ -258,6 +269,16 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.shouldShowAddQrCardItem(hasVisitorPassIncompleteItem, hasEmptyState)) {
             dashboardItems.add(DashboardItem.AddQrCardItem)
+        }
+
+        if (showCoronaMelderItemUseCase.shouldShowCoronaMelderItem(
+                internationalGreenCards,
+                databaseSyncerResult
+            )
+        ) {
+            dashboardItems.add(
+                DashboardItem.CoronaMelderItem
+            )
         }
 
         if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {

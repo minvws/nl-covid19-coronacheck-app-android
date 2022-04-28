@@ -83,6 +83,8 @@ sealed class DashboardItem {
             )
     }
 
+    object CoronaMelderItem : DashboardItem()
+
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {
 
         sealed class CredentialState {
