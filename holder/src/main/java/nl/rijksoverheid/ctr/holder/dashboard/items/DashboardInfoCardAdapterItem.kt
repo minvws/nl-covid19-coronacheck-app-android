@@ -8,8 +8,6 @@
 package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import android.view.View
-import android.view.accessibility.AccessibilityEvent
-import android.view.accessibility.AccessibilityNodeInfo
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardInfoCardBinding
@@ -28,19 +26,13 @@ import org.koin.core.component.inject
  *
  */
 class DashboardInfoCardAdapterItem(
-    val infoItem: DashboardItem.InfoItem,
+    private val infoItem: DashboardItem.InfoItem,
     private val onButtonClick: (infoItem: DashboardItem.InfoItem) -> Unit,
     private val onDismiss: (infoCardAdapterItem: DashboardInfoCardAdapterItem, infoItem: DashboardItem.InfoItem) -> Unit = { _, _ -> }
 ) : BindableItem<AdapterItemDashboardInfoCardBinding>(R.layout.adapter_item_dashboard_info_card.toLong()),
     KoinComponent {
 
     private val utilAdapter: DashboardInfoCardAdapterItemUtil by inject()
-
-    private var focusForAccessibility = false
-
-    fun focusForAccessibility() {
-        focusForAccessibility = true
-    }
 
     override fun bind(viewBinding: AdapterItemDashboardInfoCardBinding, position: Int) {
         if (infoItem.isDismissible) {
@@ -117,16 +109,6 @@ class DashboardInfoCardAdapterItem(
 
         viewBinding.button.setOnClickListener {
             onButtonClick.invoke(infoItem)
-        }
-
-        // announce info item if it's new
-        // has to be delayed otherwise Talkback has no access to it
-        if (focusForAccessibility) {
-            focusForAccessibility = false
-            viewBinding.text.postDelayed({
-                viewBinding.dashboardItemInfoRoot.performAccessibilityAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS, null)
-                viewBinding.dashboardItemInfoRoot.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED)
-            }, 100)
         }
     }
 
