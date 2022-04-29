@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:theme="@style/ThemeOverlay.AppTheme.Splash">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/splash_placeholder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_illustration_launch_screen"
+        app:srcCompat="@drawable/ic_illustration_launch_screen"
         android:scaleX="1.2"
         android:scaleY="1.2"
         app:layout_constraintBottom_toBottomOf="parent"
