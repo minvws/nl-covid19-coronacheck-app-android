@@ -110,7 +110,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
     fun europeanVaccination() {
         val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(Clock.systemUTC(), context, credentialUtil, dashboardGreenCardAdapterItemExpiryUtil)
 
-        every { credentialUtil.getVaccinationDosesCountryLineForEuropeanCredentials(any(), any()) } returns "dosis 2 van 2"
+        every { credentialUtil.getVaccinationDosesCountryLineForEuropeanCredentials(any(), any(), any()) } returns "dosis 2 van 2"
         val greenCard = greenCard(GreenCardType.Eu, listOf(OriginType.Vaccination))
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(
             OriginState.Valid(greenCard.origins.first())), GreenCardDisclosurePolicy.ThreeG)))
@@ -123,7 +123,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
     fun europeanVaccinationFuture() {
         val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(Clock.systemUTC(), context, credentialUtil, dashboardGreenCardAdapterItemExpiryUtil)
 
-        every { credentialUtil.getVaccinationDosesCountryLineForEuropeanCredentials(any(), any()) } returns "dosis 2 van 2"
+        every { credentialUtil.getVaccinationDosesCountryLineForEuropeanCredentials(any(), any(), any()) } returns "dosis 2 van 2"
         val greenCard = greenCard(GreenCardType.Eu, listOf(OriginType.Vaccination))
         myOverViewGreenCardAdapterUtil.setContent(viewBinding, listOf(AdapterCard(greenCard, listOf(
             OriginState.Valid(greenCard.origins.first())), GreenCardDisclosurePolicy.ThreeG)))
@@ -300,7 +300,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(Clock.systemUTC(), context, credentialUtil, dashboardGreenCardAdapterItemExpiryUtil)
 
         every {
-            credentialUtil.getVaccinationDosesCountryLineForEuropeanCredentials(any(), any())
+            credentialUtil.getVaccinationDosesCountryLineForEuropeanCredentials(any(), any(), any())
         } returns "dosis 2 van 2"
         val greenCard = greenCard(GreenCardType.Eu, listOf(OriginType.Vaccination))
         myOverViewGreenCardAdapterUtil.setContent(
@@ -396,7 +396,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(Clock.systemUTC(), context, credentialUtil, dashboardGreenCardAdapterItemExpiryUtil)
 
         every {
-            credentialUtil.getVaccinationDosesCountryLineForEuropeanCredentials(any(), any())
+            credentialUtil.getVaccinationDosesCountryLineForEuropeanCredentials(any(), any(), any())
         } returns "dosis 2 van 2"
         val greenCard = greenCard(GreenCardType.Eu, listOf(OriginType.Vaccination))
         myOverViewGreenCardAdapterUtil.setContent(

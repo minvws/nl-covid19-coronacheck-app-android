@@ -4,6 +4,7 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtilImpl
+import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
@@ -37,10 +38,12 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
 
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
 
+    private val countryUtil: CountryUtil = mockk(relaxed = true)
+
     @Test
     fun `domestic getActiveCredential returns active credential with highest expiration time`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), countryUtil, mockk(relaxed = true))
 
         val credential1 = CredentialEntity(
             id = 0,
@@ -71,7 +74,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `domestic getActiveCredential returns no active credential if not in window`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), countryUtil, mockk(relaxed = true))
 
         val credential1 = CredentialEntity(
             id = 0,
@@ -102,7 +105,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `international getActiveCredential ignores validFrom`() {
         val clock = Clock.fixed(Instant.parse("2022-01-02T09:00:00.00Z"), ZoneId.of("UTC"))
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), countryUtil, mockk(relaxed = true))
 
         val credential = CredentialEntity(
             id = 0,
@@ -131,7 +134,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
             )
         )
 
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), countryUtil, mockk(relaxed = true))
         assertTrue(credentialUtil.isExpiring(5L, credentialEntity))
     }
 
@@ -145,7 +148,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
             )
         )
 
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), countryUtil, mockk(relaxed = true))
         assertFalse(credentialUtil.isExpiring(5L, credentialEntity))
     }
 
@@ -159,7 +162,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
             )
         )
 
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
+        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), countryUtil, mockk(relaxed = true))
         assertTrue(credentialUtil.isExpiring(5L, credentialEntity))
     }
 
@@ -169,7 +172,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         val appConfigUseCase: HolderCachedAppConfigUseCase = mockk {
             every { getCachedAppConfig() } returns HolderConfig.default(internationalQRRelevancyDays = 28)
         }
-        val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase, mockk(relaxed = true))
+        val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase, countryUtil, mockk(relaxed = true))
 
         val hidden = listOf(getVaccinationJson("2020-12-01", dose = "1", ofTotalDoses = "2"))
         val notHiddenBecauseOfDate =
@@ -188,7 +191,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         val appConfigUseCase: HolderCachedAppConfigUseCase = mockk {
             every { getCachedAppConfig() } returns HolderConfig.default(internationalQRRelevancyDays = 28)
         }
-        val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase, mockk(relaxed = true))
+        val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase, countryUtil, mockk(relaxed = true))
 
         val notHidden = listOf(
             getVaccinationJson("2020-12-01", dose = "1", ofTotalDoses = "2"),
