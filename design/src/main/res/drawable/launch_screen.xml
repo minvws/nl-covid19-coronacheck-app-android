@@ -16,7 +16,7 @@
     <item
         android:width="290dp"
         android:height="290dp"
-        android:drawable="@drawable/ic_illustration_launch_screen"
+        android:drawable="@drawable/ic_illustration_launch_screen_window_background"
         android:gravity="center" />
 
 </layer-list>
