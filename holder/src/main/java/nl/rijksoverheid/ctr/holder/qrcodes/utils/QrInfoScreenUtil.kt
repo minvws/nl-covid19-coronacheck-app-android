@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
+import nl.rijksoverheid.ctr.shared.ext.locale
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import org.json.JSONObject
@@ -115,7 +116,7 @@ class QrInfoScreenUtilImpl(
             }?.name ?: test.getStringOrNull("ma") ?: ""
 
         val testCountry =
-            countryUtil.getCountryForQrInfoScreen(test.getStringOrNull("co"), getCurrentLocale())
+            countryUtil.getCountryForQrInfoScreen(test.getStringOrNull("co"), application.applicationContext.locale())
 
         val issuerValue = test.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -158,12 +159,6 @@ class QrInfoScreenUtilImpl(
             ) as String),
             footer = application.getString(R.string.qr_explanation_description_eu_test_footer)
         )
-    }
-
-    private fun getCurrentLocale(): Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        application.resources.configuration.locales[0]
-    } else {
-        application.resources.configuration.locale
     }
 
     override fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen {
@@ -220,7 +215,7 @@ class QrInfoScreenUtilImpl(
 
         val countryCode = vaccination.getStringOrNull("co")
         val vaccinationCountry =
-            countryUtil.getCountryForQrInfoScreen(countryCode, getCurrentLocale())
+            countryUtil.getCountryForQrInfoScreen(countryCode, application.applicationContext.locale())
 
         val issuerValue = vaccination.getStringOrNull("is")
         val issuer = if (issuerValue == issuerVWS) {
@@ -293,7 +288,7 @@ class QrInfoScreenUtilImpl(
             }
         } ?: ""
 
-        val country = countryUtil.getCountryForQrInfoScreen(recovery.getStringOrNull("co"), getCurrentLocale())
+        val country = countryUtil.getCountryForQrInfoScreen(recovery.getStringOrNull("co"), application.applicationContext.locale())
 
         val producer = recovery.getStringOrNull("is")
 

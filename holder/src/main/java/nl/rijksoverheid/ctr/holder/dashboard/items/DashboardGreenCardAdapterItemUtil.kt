@@ -25,6 +25,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.capitalize
+import nl.rijksoverheid.ctr.shared.ext.locale
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
@@ -320,15 +321,21 @@ class DashboardGreenCardAdapterItemUtilImpl(
         greenCard: GreenCard,
         origin: OriginEntity
     ) {
-        val getCurrentDosesString: (String, String) -> String =
-            { currentDose: String, sumDoses: String ->
-                context.getString(
+        val getCurrentDosesString: (String, String, String) -> String =
+            { currentDose: String, sumDoses: String, country: String ->
+                val dosisString = context.getString(
                     R.string.qr_card_vaccination_doses,
                     currentDose, sumDoses
                 )
+                if (country.isNotEmpty()) {
+                    "$dosisString$country"
+                } else {
+                    dosisString
+                }
             }
-        val doses = credentialUtil.getVaccinationDosesForEuropeanCredentials(
+        val doses = credentialUtil.getVaccinationDosesCountryLineForEuropeanCredentials(
             greenCard.credentialEntities,
+            context.locale().language,
             getCurrentDosesString
         )
         setOriginTitle(
