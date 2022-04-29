@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="launch_screen_width">182dp</dimen>
+    <dimen name="launch_screen_height">122dp</dimen>
+</resources>
