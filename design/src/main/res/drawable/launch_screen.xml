@@ -14,9 +14,9 @@
     <item android:drawable="?attr/colorSurface" />
 
     <item
-        android:width="290dp"
-        android:height="290dp"
-        android:drawable="@drawable/ic_illustration_launch_screen"
+        android:width="@dimen/launch_screen_width"
+        android:height="@dimen/launch_screen_height"
+        android:drawable="@drawable/ic_illustration_launch_screen_window_background"
         android:gravity="center" />
 
 </layer-list>
