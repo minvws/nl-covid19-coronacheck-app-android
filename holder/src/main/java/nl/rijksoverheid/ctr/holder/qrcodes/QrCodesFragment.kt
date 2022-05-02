@@ -334,7 +334,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                 binding.doseInfo.text = getString(R.string.holder_showQR_label_expiredVaccination)
                 binding.doseInfo.visibility = View.VISIBLE
             }
-            vaccination.isDosenumberSmallerThanTotalDose -> {
+            vaccination.isDoseNumberSmallerThanTotalDose -> {
                 binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
                 binding.doseInfo.visibility = View.VISIBLE
             }
