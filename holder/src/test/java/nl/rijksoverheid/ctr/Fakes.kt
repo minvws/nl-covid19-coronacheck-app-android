@@ -371,6 +371,10 @@ fun fakeGreenCardUtil(
     override fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean {
         return true
     }
+
+    override fun isForeignDcc(greenCard: GreenCard): Boolean {
+        return false
+    }
 }
 
 fun fakeGetRemoteGreenCardUseCase(

@@ -31,7 +31,7 @@ val cardUtilsModule = module {
         VaccinationInfoScreenUtilImpl(get(), androidContext().resources, get(), get())
     }
     factory<LastVaccinationDoseUtil> { LastVaccinationDoseUtilImpl(androidContext().resources) }
-    factory<GreenCardUtil> { GreenCardUtilImpl(get(), Clock.systemUTC(), get()) }
+    factory<GreenCardUtil> { GreenCardUtilImpl(get(), Clock.systemUTC(), get(), get()) }
     factory<GreenCardRefreshUtil> {
         GreenCardRefreshUtilImpl(get(), get(), get(), get(), get(), get())
     }
