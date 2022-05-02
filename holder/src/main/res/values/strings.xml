@@ -767,4 +767,5 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_paperproof_startscanning_toolbar_title">Papieren bewijs</string>
   <string name="holder_newintheapp_foreignproofs_title">Buitenlandse bewijzen toevoegen</string>
   <string name="holder_newintheapp_foreignproofs_body">Heb je een coronabewijs met QR-code van een test of vaccinatie uit het buitenland? Dan kun je jouw bewijs nu toevoegen aan CoronaCheck. Kies in het menu voor “coronabewijs inscannen”.</string>
+  <string name="holder_showQR_label_expiredVaccination">This vaccination has expired</string>
 </resources>

@@ -30,6 +30,8 @@ interface CredentialUtil {
     fun vaccinationShouldBeHidden(
         readEuropeanCredentials: List<JSONObject>, indexOfVaccination: Int
     ): Boolean
+
+    fun europeanVaccinationHasExpired(credentialExpirationTimeSeconds: Long): Boolean
 }
 
 class CredentialUtilImpl(
@@ -117,6 +119,10 @@ class CredentialUtilImpl(
                     && dose < totalDoses
                     && !hasCompletedButNotRelevantVaccination(vaccinations, dose)
         } ?: false
+    }
+
+    override fun europeanVaccinationHasExpired(credentialExpirationTimeSeconds: Long): Boolean {
+        return credentialExpirationTimeSeconds < OffsetDateTime.now(clock).toEpochSecond()
     }
 
     private fun hasCompletedButNotRelevantVaccination(

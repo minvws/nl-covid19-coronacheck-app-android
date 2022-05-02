@@ -43,8 +43,10 @@ class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
         }
     }
 
-    private fun isQrCodeHidden(data: QrCodeData) =
-        (data as? QrCodeData.European.Vaccination)?.isHidden == true
+    private fun isQrCodeHidden(data: QrCodeData): Boolean {
+        val vaccinationData = data as? QrCodeData.European.Vaccination
+        return vaccinationData?.isDosenumberSmallerThanTotalDose == true || vaccinationData?.isExpired == true
+    }
 
     fun onPositionChanged(position: Int) {
         currentPosition = position

@@ -329,11 +329,18 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     private fun showDoseInfo(vaccination: QrCodeData.European.Vaccination) {
         TransitionManager.beginDelayedTransition(binding.bottomScroll)
-        if (vaccination.isHidden) {
-            binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
-            binding.doseInfo.visibility = View.VISIBLE
-        } else {
-            binding.doseInfo.visibility = View.GONE
+        when {
+            vaccination.isExpired -> {
+                binding.doseInfo.text = getString(R.string.holder_showQR_label_expiredVaccination)
+                binding.doseInfo.visibility = View.VISIBLE
+            }
+            vaccination.isDosenumberSmallerThanTotalDose -> {
+                binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
+                binding.doseInfo.visibility = View.VISIBLE
+            }
+            else -> {
+                binding.doseInfo.visibility = View.GONE
+            }
         }
     }
 
@@ -345,11 +352,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private fun generateQrCodes() {
         checkShouldAutomaticallyClose()
         qrCodeViewModel.generateQrCodes(
-            greenCardType = args.data.type,
-            originType = args.data.originType,
+            qrCodeFragmentData = args.data,
             size = resources.displayMetrics.widthPixels,
-            credentials = args.data.credentials,
-            shouldDisclose = args.data.shouldDisclose
         )
         val refreshMillis =
             if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.SECONDS.toMillis(

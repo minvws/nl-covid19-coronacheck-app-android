@@ -19,18 +19,14 @@ import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeAnimationUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 
 abstract class QrCodesViewModel : ViewModel() {
     val qrCodeDataListLiveData = MutableLiveData<QrCodesResult>()
     val returnAppLivedata = MutableLiveData<ExternalReturnAppData>()
     val animationLiveData = MutableLiveData<QrCodeAnimation>()
     abstract fun generateQrCodes(
-        greenCardType: GreenCardType,
-        originType: OriginType,
+        qrCodeFragmentData: QrCodeFragmentData,
         size: Int,
-        credentials: List<ByteArray>,
-        shouldDisclose: QrCodeFragmentData.ShouldDisclose
     )
 
     abstract fun onReturnUriGiven(uri: String, type: GreenCardType)
@@ -44,20 +40,14 @@ class QrCodesViewModelImpl(
 ) : QrCodesViewModel() {
 
     override fun generateQrCodes(
-        greenCardType: GreenCardType,
-        originType: OriginType,
+        qrCodeFragmentData: QrCodeFragmentData,
         size: Int,
-        credentials: List<ByteArray>,
-        shouldDisclose: QrCodeFragmentData.ShouldDisclose
     ) {
 
         viewModelScope.launch {
             qrCodeDataListLiveData.postValue(
                 qrCodesResultUseCase.getQrCodesResult(
-                    greenCardType = greenCardType,
-                    originType = originType,
-                    credentials = credentials,
-                    shouldDisclose = shouldDisclose,
+                    qrCodeFragmentData = qrCodeFragmentData,
                     qrCodeWidth = size,
                     qrCodeHeight = size
                 )

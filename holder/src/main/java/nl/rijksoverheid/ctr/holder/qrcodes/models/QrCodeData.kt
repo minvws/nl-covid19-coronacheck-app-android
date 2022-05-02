@@ -21,7 +21,8 @@ sealed class QrCodeData(
         data class Vaccination(
             val dose: String,
             val ofTotalDoses: String,
-            val isHidden: Boolean,
+            val isDosenumberSmallerThanTotalDose: Boolean,
+            val isExpired: Boolean,
             override val bitmap: Bitmap,
             override val readEuropeanCredential: JSONObject
         ): European(bitmap, readEuropeanCredential)
