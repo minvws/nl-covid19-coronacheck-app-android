@@ -121,7 +121,7 @@ class ValidatePaperProofDomesticUseCaseImplTest {
         }
 
         // Mock our paper proof signature
-        coEvery { paperProofUtil.getSignerCredential(
+        coEvery { paperProofUtil.getEventGroupJsonData(
             qrContent = any(),
             couplingCode = any())
         } answers {

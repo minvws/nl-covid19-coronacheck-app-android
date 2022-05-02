@@ -154,7 +154,7 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
     }
 
     override fun isForeignDcc(credential: ByteArray): Boolean {
-        return true
+        return false
     }
 
     override fun isCtb(credential: ByteArray): Boolean {

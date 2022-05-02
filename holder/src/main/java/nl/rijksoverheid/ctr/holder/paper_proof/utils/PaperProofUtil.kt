@@ -7,6 +7,8 @@
 
 package nl.rijksoverheid.ctr.holder.paper_proof.utils
 
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCase
+import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONObject
 
 interface PaperProofUtil {
@@ -14,9 +16,15 @@ interface PaperProofUtil {
         qrContent: String,
         couplingCode: String? = null
     ): ByteArray
+
+    fun getIssuer(
+        europeanCredential: ByteArray
+    ): String
 }
 
-class PaperProofUtilImpl: PaperProofUtil {
+class PaperProofUtilImpl(
+    private val getDccFromEuropeanCredentialUseCase: GetDccFromEuropeanCredentialUseCase
+): PaperProofUtil {
 
     override fun getEventGroupJsonData(
         qrContent: String,
@@ -31,4 +39,9 @@ class PaperProofUtilImpl: PaperProofUtil {
             .toMap())
         .toString()
         .toByteArray()
+
+    override fun getIssuer(europeanCredential: ByteArray): String {
+        val dcc = getDccFromEuropeanCredentialUseCase.get(europeanCredential)
+        return dcc.optJSONArray("v")?.optJSONObject(0)?.getStringOrNull("is") ?: ""
+    }
 }

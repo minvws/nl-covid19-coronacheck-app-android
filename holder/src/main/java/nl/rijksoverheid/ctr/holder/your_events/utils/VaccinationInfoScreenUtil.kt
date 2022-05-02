@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCase
+import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
@@ -44,7 +45,7 @@ class VaccinationInfoScreenUtilImpl(
     private val lastVaccinationDoseUtil: LastVaccinationDoseUtil,
     private val resources: Resources,
     private val countryUtil: CountryUtil,
-    private val getDccFromEuropeanCredentialUseCase: GetDccFromEuropeanCredentialUseCase,
+    private val paperProofUtil: PaperProofUtil,
     private val mobileCoreWrapper: MobileCoreWrapper,
     cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : VaccinationInfoScreenUtil {
@@ -126,9 +127,8 @@ class VaccinationInfoScreenUtilImpl(
                 createdLine(vaccinationDate, vaccinationDateAnswer, isOptional = true),
                 createdLine(vaccinationCountry, fullCountryName, isOptional = true),
                 if (europeanCredential != null) {
-                    val dcc = getDccFromEuropeanCredentialUseCase.get(europeanCredential)
                     val issuer = resources.getString(R.string.holder_dcc_issuer)
-                    val issuerAnswer = dcc.optJSONArray("v")?.optJSONObject(0)?.getStringOrNull("is") ?: ""
+                    val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
                     createdLine(issuer, issuerAnswer, isOptional = true)
                 } else {
                     ""

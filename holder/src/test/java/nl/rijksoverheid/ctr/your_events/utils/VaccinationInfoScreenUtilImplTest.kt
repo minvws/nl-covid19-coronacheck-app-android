@@ -2,14 +2,20 @@ package nl.rijksoverheid.ctr.your_events.utils
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import io.mockk.every
+import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCase
+import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.VaccinationInfoScreenUtilImpl
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -96,6 +102,8 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
             lastVaccinationDoseUtil,
             resources,
             countryUtil,
+            mockk(),
+            mockk(),
             cachedAppConfigUseCase
         )
 
@@ -104,7 +112,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
             fullName = "Surname",
             birthDate = "01-08-1982",
             providerIdentifier = "GGD",
-            isPaperProof = false
+            europeanCredential = null
         )
 
         assertEquals("Details", infoScreen.title)
@@ -116,9 +124,15 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `get correct vaccination screen info for paper proof`() {
+    fun `get correct vaccination screen info for foreign paper proof`() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val resources = context.resources
+
+        val mobileCoreWrapper: MobileCoreWrapper = mockk()
+        every { mobileCoreWrapper.isForeignDcc(any()) } answers { true }
+
+        val paperProofUtil: PaperProofUtil = mockk()
+        every { paperProofUtil.getIssuer(any()) } answers { "Bart" }
 
         val lastVaccinationDoseUtil = LastVaccinationDoseUtilImpl(resources)
         val cachedAppConfigUseCase: HolderCachedAppConfigUseCase = object : HolderCachedAppConfigUseCase {
@@ -176,6 +190,8 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
             lastVaccinationDoseUtil,
             resources,
             countryUtil,
+            paperProofUtil,
+            mobileCoreWrapper,
             cachedAppConfigUseCase
         )
 
@@ -184,12 +200,12 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
             fullName = "Surname",
             birthDate = "01-08-1982",
             providerIdentifier = "GGD",
-            isPaperProof = true
+            europeanCredential = "".toByteArray()
         )
 
         assertEquals("Details", infoScreen.title)
         assertEquals(
-            "Deze gegevens staan in je papieren bewijs:<br/><br/>Naam: <b>Surname</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Ziekteverwekker: <b>COVID-19</b><br/>Vaccin: <b>Pfizer (Comirnaty)</b><br/>Type vaccin: <b>type</b><br/>Producent: <b>Biontech Manufacturing GmbH</b><br/>Dosis: <b>1 / 2</b><br/>Vaccinatiedatum: <b>1 augustus 2021</b><br/>Gevaccineerd in: <b>Nederland</b><br/>Uniek vaccinatienummer: <b>unique</b><br/><br/><b>Kloppen er gegevens niet?</b><br/>Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een andere zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.",
+            "Deze gegevens staan in je papieren bewijs:<br/><br/>Naam: <b>Surname</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Ziekteverwekker: <b>COVID-19</b><br/>Vaccin: <b>Pfizer (Comirnaty)</b><br/>Type vaccin: <b>type</b><br/>Producent: <b>Biontech Manufacturing GmbH</b><br/>Dosis: <b>1 / 2</b><br/>Vaccinatiedatum: <b>1 augustus 2021</b><br/>Gevaccineerd in: <b>Nederland</b><br/>Afgever certificaat: <b>Bart</b><br/>Uniek vaccinatienummer: <b>unique</b><br/><br /><b>Kloppen er gegevens niet?</b><br />Neem contact op met de zorgverlener waar je bent getest of gevaccineerd. Vraag of zij je kunnen helpen je gegevens aan te passen.",
             infoScreen.description
         )
     }
