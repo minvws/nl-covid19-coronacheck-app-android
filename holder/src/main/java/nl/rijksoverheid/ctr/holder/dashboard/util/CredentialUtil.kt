@@ -43,9 +43,9 @@ class CredentialUtilImpl(
 
     override fun getActiveCredential(greenCardType: GreenCardType, entities: List<CredentialEntity>): CredentialEntity? {
 
-        // All credentials that fall into the expiration window
         val credentialsInWindow = entities.filter {
             when (greenCardType) {
+                // All credentials that fall into the expiration window for ctb
                 is GreenCardType.Domestic -> {
                     it.validFrom.isBefore(
                         OffsetDateTime.now(clock)
@@ -55,8 +55,8 @@ class CredentialUtilImpl(
                         )
                     )
                 }
+                // accept expired credentials for dcc
                 is GreenCardType.Eu -> {
-                    // accept expired credentials for dcc
                     true
                 }
             }
