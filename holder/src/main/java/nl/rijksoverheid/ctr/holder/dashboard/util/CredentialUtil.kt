@@ -56,11 +56,8 @@ class CredentialUtilImpl(
                     )
                 }
                 is GreenCardType.Eu -> {
-                    it.expirationTime.isAfter(
-                        OffsetDateTime.now(
-                            clock
-                        )
-                    )
+                    // accept expired credentials for dcc
+                    true
                 }
             }
         }
