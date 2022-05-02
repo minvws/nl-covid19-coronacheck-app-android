@@ -24,7 +24,7 @@ interface InfoScreenUtil {
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean = true,
     ): InfoScreen
 
@@ -49,7 +49,7 @@ interface InfoScreenUtil {
         testDate: String,
         fullName: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean = true,
     ): InfoScreen
 
@@ -78,9 +78,9 @@ class InfoScreenUtilImpl(
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean,
-    ) = testInfoScreenUtil.getForNegativeTest(event, fullName, testDate, birthDate, isPaperProof, addExplanation)
+    ) = testInfoScreenUtil.getForNegativeTest(event, fullName, testDate, birthDate, europeanCredential, addExplanation)
 
 
     override fun getForVaccination(
@@ -104,9 +104,9 @@ class InfoScreenUtilImpl(
         testDate: String,
         fullName: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean,
-    ) = recoveryInfoScreenUtil.getForRecovery(event, testDate, fullName, birthDate, isPaperProof, addExplanation)
+    ) = recoveryInfoScreenUtil.getForRecovery(event, testDate, fullName, birthDate, europeanCredential, addExplanation)
 
     override fun getForVaccinationAssessment(
         event: RemoteEventVaccinationAssessment,

@@ -547,6 +547,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         birthDate: String,
         event: RemoteEventNegativeTest
     ) {
+        val type = args.type
+
         val testDate =
             event.negativeTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
 
@@ -555,7 +557,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             fullName = fullName,
             testDate = testDate,
             birthDate = birthDate,
-            isPaperProof = args.type is YourEventsFragmentType.DCC
+            europeanCredential = if (type is YourEventsFragmentType.DCC) {
+                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+            } else {
+                null
+            }
         )
 
         val eventWidget = YourEventWidget(requireContext()).apply {
@@ -661,6 +667,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         birthDate: String,
         event: RemoteEventRecovery
     ) {
+        val type = args.type
         val testDate = event.recovery?.sampleDate?.formatDayMonthYear() ?: ""
 
         val infoScreen = infoScreenUtil.getForRecovery(
@@ -668,7 +675,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             fullName = fullName,
             testDate = testDate,
             birthDate = birthDate,
-            isPaperProof = args.type is YourEventsFragmentType.DCC
+            europeanCredential = if (type is YourEventsFragmentType.DCC) {
+                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+            } else {
+                null
+            }
         )
 
         val eventWidget = YourEventWidget(requireContext()).apply {

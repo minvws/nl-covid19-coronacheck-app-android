@@ -14,7 +14,10 @@ import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteTestResult2
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCase
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreen
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 
 interface TestInfoScreenUtil {
@@ -30,7 +33,7 @@ interface TestInfoScreenUtil {
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean = true,
     ): InfoScreen
 
@@ -44,6 +47,8 @@ interface TestInfoScreenUtil {
 
 class TestInfoScreenUtilImpl(
     private val resources: Resources,
+    private val mobileCoreWrapper: MobileCoreWrapper,
+    private val getDccFromEuropeanCredentialUseCase: GetDccFromEuropeanCredentialUseCase,
     cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : TestInfoScreenUtil {
 
@@ -92,7 +97,7 @@ class TestInfoScreenUtilImpl(
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean,
     ): InfoScreen {
         val testType = holderConfig.euTestTypes.firstOrNull {
@@ -118,8 +123,8 @@ class TestInfoScreenUtilImpl(
 
         val unique = event.unique ?: ""
 
-        val title = if (isPaperProof) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
-        val header = if (isPaperProof) {
+        val title = if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
+        val header = if (europeanCredential != null) {
             resources.getString(R.string.paper_proof_event_explanation_header)
         } else {
             resources.getString(R.string.your_test_result_explanation_description_header)
@@ -162,11 +167,27 @@ class TestInfoScreenUtilImpl(
                 resources.getString(R.string.your_test_result_explanation_description_test_manufacturer),
                 testManufacturer
             ),
+            if (europeanCredential != null) {
+                val dcc = getDccFromEuropeanCredentialUseCase.get(europeanCredential)
+                val issuer = resources.getString(R.string.holder_dcc_issuer)
+                val issuerAnswer = dcc.optJSONArray("v")?.optJSONObject(0)?.getStringOrNull("is") ?: ""
+                createdLine(issuer, issuerAnswer, isOptional = true)
+            } else {
+                ""
+            },
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_unique_identifier),
                 unique
             ),
-            if (isPaperProof && addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
+            if (europeanCredential != null && addExplanation) {
+                if (mobileCoreWrapper.isForeignDcc(europeanCredential)) {
+                    resources.getString(R.string.holder_listRemoteEvents_somethingWrong_foreignDCC_body)
+                } else {
+                    resources.getString(R.string.paper_proof_event_explanation_footer)
+                }
+            } else {
+                ""
+            },
         ) as String)
 
         return InfoScreen(

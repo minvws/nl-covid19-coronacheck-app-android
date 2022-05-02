@@ -11,6 +11,9 @@ import android.text.TextUtils
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCase
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 
 interface RecoveryInfoScreenUtil {
 
@@ -19,13 +22,15 @@ interface RecoveryInfoScreenUtil {
         testDate: String,
         fullName: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean = true,
     ): InfoScreen
 }
 
 class RecoveryInfoScreenUtilImpl(
-    val resources: Resources
+    val resources: Resources,
+    private val mobileCoreWrapper: MobileCoreWrapper,
+    private val getDccFromEuropeanCredentialUseCase: GetDccFromEuropeanCredentialUseCase
 ): RecoveryInfoScreenUtil {
 
     override fun getForRecovery(
@@ -33,15 +38,15 @@ class RecoveryInfoScreenUtilImpl(
         testDate: String,
         fullName: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean,
     ): InfoScreen {
 
         val validFromDate = event.recovery?.validFrom?.formatDayMonthYear() ?: ""
         val validUntilDate = event.recovery?.validUntil?.formatDayMonthYear() ?: ""
 
-        val title = if (isPaperProof) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
-        val header = if (isPaperProof) {
+        val title = if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
+        val header = if (europeanCredential != null) {
             resources.getString(R.string.paper_proof_event_explanation_header)
         } else {
             resources.getString(R.string.recovery_explanation_description_header)
@@ -72,11 +77,27 @@ class RecoveryInfoScreenUtilImpl(
                 resources.getString(R.string.recovery_explanation_description_valid_until),
                 validUntilDate
             ),
+            if (europeanCredential != null) {
+                val dcc = getDccFromEuropeanCredentialUseCase.get(europeanCredential)
+                val issuer = resources.getString(R.string.holder_dcc_issuer)
+                val issuerAnswer = dcc.optJSONArray("v")?.optJSONObject(0)?.getStringOrNull("is") ?: ""
+                createdLine(issuer, issuerAnswer, isOptional = true)
+            } else {
+                ""
+            },
             createdLine(
                 resources.getString(R.string.recovery_explanation_description_unique_test_identifier),
                 event.unique
             ),
-            if (isPaperProof && addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
+            if (europeanCredential != null && addExplanation) {
+                if (mobileCoreWrapper.isForeignDcc(europeanCredential)) {
+                    resources.getString(R.string.holder_listRemoteEvents_somethingWrong_foreignDCC_body)
+                } else {
+                    resources.getString(R.string.paper_proof_event_explanation_footer)
+                }
+            } else {
+                ""
+            },
         ) as String)
 
         return InfoScreen(

@@ -85,7 +85,7 @@ class GetSavedEventsUseCaseImpl(
                                     ?: "",
                                 fullName = fullName,
                                 birthDate = birthDate,
-                                isPaperProof = isDccEvent,
+                                europeanCredential = europeanCredential,
                                 addExplanation = false,
                             )
                         }
@@ -107,7 +107,7 @@ class GetSavedEventsUseCaseImpl(
                                     application
                                 ) ?: "",
                                 birthDate = birthDate,
-                                isPaperProof = isDccEvent,
+                                europeanCredential = europeanCredential,
                                 addExplanation = false,
                             )
                         }
