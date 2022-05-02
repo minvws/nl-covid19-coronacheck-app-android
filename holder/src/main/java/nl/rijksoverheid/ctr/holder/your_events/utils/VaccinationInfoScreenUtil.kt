@@ -15,11 +15,8 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCase
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import java.util.*
 
 /*
@@ -46,7 +43,6 @@ class VaccinationInfoScreenUtilImpl(
     private val resources: Resources,
     private val countryUtil: CountryUtil,
     private val paperProofUtil: PaperProofUtil,
-    private val mobileCoreWrapper: MobileCoreWrapper,
     cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : VaccinationInfoScreenUtil {
 
@@ -127,19 +123,14 @@ class VaccinationInfoScreenUtilImpl(
                 createdLine(vaccinationDate, vaccinationDateAnswer, isOptional = true),
                 createdLine(vaccinationCountry, fullCountryName, isOptional = true),
                 if (europeanCredential != null) {
-                    val issuer = resources.getString(R.string.holder_dcc_issuer)
                     val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
-                    createdLine(issuer, issuerAnswer, isOptional = true)
+                    createdLine(resources.getString(R.string.holder_dcc_issuer), issuerAnswer, isOptional = true)
                 } else {
                     ""
                 },
                 createdLine(uniqueCode, uniqueCodeAnswer),
                 if (europeanCredential != null && addExplanation) {
-                    if (mobileCoreWrapper.isForeignDcc(europeanCredential)) {
-                        resources.getString(R.string.holder_listRemoteEvents_somethingWrong_foreignDCC_body)
-                    } else {
-                        resources.getString(R.string.paper_proof_event_explanation_footer)
-                    }
+                    paperProofUtil.getInfoScreenFooterText(europeanCredential)
                 } else {
                     ""
                 },

@@ -71,8 +71,7 @@ class GreenCardRefreshUtilImpl(
     }
 
     override suspend fun credentialsExpireInDays(): Long {
-        val configCredentialRenewalDays =
-            holderConfig.credentialRenewalDays.toLong()
+        val configCredentialRenewalDays = holderConfig.credentialRenewalDays.toLong()
 
         val firstExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll()
             .filterNot {

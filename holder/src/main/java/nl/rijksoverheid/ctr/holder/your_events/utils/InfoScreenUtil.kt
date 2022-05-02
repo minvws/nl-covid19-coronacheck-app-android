@@ -9,7 +9,6 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.get_events.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.TestInfoScreenUtil
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 
 interface InfoScreenUtil {

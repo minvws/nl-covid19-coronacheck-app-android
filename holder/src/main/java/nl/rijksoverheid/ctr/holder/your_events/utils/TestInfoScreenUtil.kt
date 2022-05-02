@@ -5,7 +5,7 @@
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-package nl.rijksoverheid.ctr.holder.ui.create_qr.util
+package nl.rijksoverheid.ctr.holder.your_events.utils
 
 import android.content.res.Resources
 import android.text.TextUtils
@@ -14,10 +14,7 @@ import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteTestResult2
-import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCase
-import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreen
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
+import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 
 interface TestInfoScreenUtil {
@@ -47,8 +44,7 @@ interface TestInfoScreenUtil {
 
 class TestInfoScreenUtilImpl(
     private val resources: Resources,
-    private val mobileCoreWrapper: MobileCoreWrapper,
-    private val getDccFromEuropeanCredentialUseCase: GetDccFromEuropeanCredentialUseCase,
+    private val paperProofUtil: PaperProofUtil,
     cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : TestInfoScreenUtil {
 
@@ -168,10 +164,8 @@ class TestInfoScreenUtilImpl(
                 testManufacturer
             ),
             if (europeanCredential != null) {
-                val dcc = getDccFromEuropeanCredentialUseCase.get(europeanCredential)
-                val issuer = resources.getString(R.string.holder_dcc_issuer)
-                val issuerAnswer = dcc.optJSONArray("v")?.optJSONObject(0)?.getStringOrNull("is") ?: ""
-                createdLine(issuer, issuerAnswer, isOptional = true)
+                val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
+                createdLine(resources.getString(R.string.holder_dcc_issuer), issuerAnswer, isOptional = true)
             } else {
                 ""
             },
@@ -180,11 +174,7 @@ class TestInfoScreenUtilImpl(
                 unique
             ),
             if (europeanCredential != null && addExplanation) {
-                if (mobileCoreWrapper.isForeignDcc(europeanCredential)) {
-                    resources.getString(R.string.holder_listRemoteEvents_somethingWrong_foreignDCC_body)
-                } else {
-                    resources.getString(R.string.paper_proof_event_explanation_footer)
-                }
+                paperProofUtil.getInfoScreenFooterText(europeanCredential)
             } else {
                 ""
             },

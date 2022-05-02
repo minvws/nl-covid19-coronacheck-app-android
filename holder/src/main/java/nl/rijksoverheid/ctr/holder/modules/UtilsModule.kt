@@ -65,5 +65,5 @@ fun utilsModule(versionCode: Int) = module {
     factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }
     factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
-    factory<PaperProofUtil> { PaperProofUtilImpl(get()) }
+    factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
 }
