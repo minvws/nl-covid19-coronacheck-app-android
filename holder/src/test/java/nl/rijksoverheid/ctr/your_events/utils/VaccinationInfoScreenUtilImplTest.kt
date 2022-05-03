@@ -200,7 +200,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals("Details", infoScreen.title)
         assertEquals(
-            "Deze gegevens staan in je papieren bewijs:<br/><br/>Naam: <b>Surname</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Ziekteverwekker: <b>COVID-19</b><br/>Vaccin: <b>Pfizer (Comirnaty)</b><br/>Type vaccin: <b>type</b><br/>Producent: <b>Biontech Manufacturing GmbH</b><br/>Dosis: <b>1 / 2</b><br/>Vaccinatiedatum: <b>1 augustus 2021</b><br/>Gevaccineerd in: <b>Nederland</b><br/>Afgever certificaat: <b>Bart</b><br/>Uniek vaccinatienummer: <b>unique</b><br/>Footer Text",
+            "Deze gegevens staan in je bewijs:<br/><br/>Naam: <b>Surname</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Ziekteverwekker: <b>COVID-19</b><br/>Vaccin: <b>Pfizer (Comirnaty)</b><br/>Type vaccin: <b>type</b><br/>Producent: <b>Biontech Manufacturing GmbH</b><br/>Dosis: <b>1 / 2</b><br/>Vaccinatiedatum: <b>1 augustus 2021</b><br/>Gevaccineerd in: <b>Nederland</b><br/>Afgever certificaat: <b>Bart</b><br/>Uniek vaccinatienummer: <b>unique</b><br/>Footer Text",
             infoScreen.description
         )
     }

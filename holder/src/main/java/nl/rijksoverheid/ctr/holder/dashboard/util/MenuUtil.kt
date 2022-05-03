@@ -63,7 +63,8 @@ class MenuUtilImpl(
 
         val addPaperProofMenuItem = MenuSection.MenuItem(
             icon = R.drawable.ic_menu_paper,
-            title = R.string.add_paper_proof,
+            title = R.string.holder_menu_paperproof_title,
+            subtitle = R.string.holder_menu_paperproof_subTitle,
             onClick = MenuSection.MenuItem.OnClick.Navigate(
                 navigationActionId = actionPaperProof.actionId,
                 navigationArguments = actionPaperProof.arguments

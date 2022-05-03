@@ -21,9 +21,14 @@ class MenuItemAdapterItem(
 
     override fun bind(viewBinding: ItemMenuBinding, position: Int) {
         val context = viewBinding.root.context
+        viewBinding.subtitle.visibility = View.GONE
 
         viewBinding.icon.setImageResource(menuItem.icon)
         viewBinding.title.setText(menuItem.title)
+        menuItem.subtitle?.let {
+            viewBinding.subtitle.visibility = View.VISIBLE
+            viewBinding.subtitle.setText(it)
+        }
         viewBinding.root.setOnClickListener {
             onClick.invoke(menuItem.onClick)
         }
