@@ -155,7 +155,7 @@ class QrCodesResultUseCaseImpl(
                 ofTotalDoses = totalDoses,
                 bitmap = qrCodeBitmap,
                 readEuropeanCredential = readEuropeanCredential,
-                isExpired = credentialUtil.europeanVaccinationHasExpired(credentialExpirationTimeSeconds),
+                isExpired = credentialUtil.europeanCredentialHasExpired(credentialExpirationTimeSeconds),
                 isDoseNumberSmallerThanTotalDose = credentialUtil.vaccinationShouldBeHidden(readEuropeanCredentials, index)
             )
         }

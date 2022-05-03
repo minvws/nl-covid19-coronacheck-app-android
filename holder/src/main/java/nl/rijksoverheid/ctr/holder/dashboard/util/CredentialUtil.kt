@@ -31,7 +31,7 @@ interface CredentialUtil {
         readEuropeanCredentials: List<JSONObject>, indexOfVaccination: Int
     ): Boolean
 
-    fun europeanVaccinationHasExpired(credentialExpirationTimeSeconds: Long): Boolean
+    fun europeanCredentialHasExpired(credentialExpirationTimeSeconds: Long): Boolean
 }
 
 class CredentialUtilImpl(
@@ -121,7 +121,7 @@ class CredentialUtilImpl(
         } ?: false
     }
 
-    override fun europeanVaccinationHasExpired(credentialExpirationTimeSeconds: Long): Boolean {
+    override fun europeanCredentialHasExpired(credentialExpirationTimeSeconds: Long): Boolean {
         return credentialExpirationTimeSeconds < OffsetDateTime.now(clock).toEpochSecond()
     }
 
