@@ -21,6 +21,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import java.time.OffsetDateTime
 
@@ -91,6 +92,8 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `expired dcc qr code is hidden and shows expired subtitle`() {
+        println("debug test")
+        println(RuntimeEnvironment.getQualifiers())
         launch(expiredQrCode = true)
 
         swipeViewPagerBack()
