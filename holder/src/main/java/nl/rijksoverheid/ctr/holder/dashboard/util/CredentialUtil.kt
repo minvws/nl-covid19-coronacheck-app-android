@@ -105,7 +105,7 @@ class CredentialUtilImpl(
             val vaccinationData = (((data["dcc"] as JSONObject)["v"] as JSONArray)[0]) as JSONObject
             val dn = vaccinationData["dn"] as Int
             val sd = vaccinationData["sd"] as Int
-            val countryCode = "US"//vaccinationData["co"] as String
+            val countryCode = data["issuer"] as String
             val countryString = if (countryCode != "NL") {
                 " (${countryUtil.getCountryForInfoScreen(deviceLanguage, countryCode)})"
             } else {
