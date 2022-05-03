@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.qrcodes
 
-import android.graphics.Bitmap
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.ViewModelStore
@@ -8,14 +7,11 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
-import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotExist
 import com.adevinta.android.barista.interaction.BaristaViewPagerInteractions.swipeViewPagerBack
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeMobileCoreWrapper
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import org.junit.Test
@@ -49,10 +45,12 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
     private fun qrCodeFragmentData(
         expiredQrCode: Boolean
     ): QrCodeFragmentData {
+        val qrCodeContent =
+            "HC1:NCFOXN%TSMAHN-HKTGX94G-ICWEXWP769W1O3XH74M6R57E9+6N6NRTPII*VPV5-FJLF6CB9YPD.+IKYJ1A4DBCEF3JTC 5T8MS*XC9NDF0D*JC10067T\$2JE%50OPG989B92FF9B9LW4G%8Z*8CNNK1H7/GVD9H:OD4OYGFO-O/HL.KJ C1TGL0LOYGFDB5*95MKN4NN3F85QN\$24:O1\$R1 SI5K1*TB3:U-1VVS1UU1\$%HFTIPPAAMI PQVW5/O16%HAT1Z%PHOP+MMBT16Y5+Z9XV7G+SI*VQBKCY0Z44ON1UVI/E2\$4JY/K+.S+2T%:KW/S8JVR+3\$BJ.+I92K70ULOJ1ALJYJAZI-3C ZJ83B7N2*EU:H3N6E N3\$9T5-IZ0K%PIUY25HTS SR633WSNYJF0JEYI1DLZZL162964HUGY3LEGJR4NI:5/M99+RE5G65N8XFKBVU7LSXBKIJ\$7O/5IH.MN%J3S6W.ESVGB7KVR1/VT26MEW9NMS\$EF*:QOJU9AKP/P\$77\$*0NDB\$UF"
         return QrCodeFragmentData(
             type = GreenCardType.Eu,
             originType = OriginType.Vaccination,
-            credentials = listOf("".toByteArray(), "".toByteArray()),
+            credentials = listOf(qrCodeContent.toByteArray(), qrCodeContent.toByteArray()),
             shouldDisclose = QrCodeFragmentData.ShouldDisclose.DoNotDisclose,
             credentialExpirationTimeSeconds = OffsetDateTime.now()
                 .toEpochSecond() + if (expiredQrCode) {
@@ -68,16 +66,6 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
     ) {
         loadKoinModules(
             module(override = true) {
-                factory<QrCodeUtil> {
-                    object : QrCodeUtil {
-                        override fun createQrCode(
-                            qrCodeContent: String,
-                            width: Int,
-                            height: Int,
-                            errorCorrectionLevel: ErrorCorrectionLevel
-                        ) = Bitmap.createBitmap(500, 500, Bitmap.Config.RGB_565)
-                    }
-                }
                 factory {
                     fakeMobileCoreWrapper()
                 }
@@ -117,7 +105,7 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
 
         swipeViewPagerBack()
 
-        assertNotDisplayed(R.id.overlay)
+        assertNotExist(R.id.overlay)
         assertNotExist(R.string.qr_code_newer_dose_available)
     }
 }
