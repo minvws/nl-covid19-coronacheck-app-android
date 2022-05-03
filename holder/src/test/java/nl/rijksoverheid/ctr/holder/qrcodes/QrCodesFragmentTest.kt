@@ -100,12 +100,12 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `not expired dcc qr code has no overlay and shows dosis subtitle`() {
+    fun `not expired dcc qr code has no overlay and doesn't show expired subtitle`() {
         launch(expiredQrCode = false)
 
         swipeViewPagerBack()
 
         assertNotExist(R.id.overlay)
-        assertNotExist(R.string.qr_code_newer_dose_available)
+        assertNotExist(R.string.holder_showQR_label_expiredVaccination)
     }
 }
