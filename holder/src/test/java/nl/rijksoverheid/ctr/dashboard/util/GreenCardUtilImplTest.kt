@@ -19,6 +19,8 @@ import nl.rijksoverheid.ctr.persistence.database.entities.*
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtilImpl
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.Clock
@@ -37,12 +39,12 @@ class GreenCardUtilImplTest {
     fun `getAllGreenCards returns green cards with origins`() = runBlocking {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
 
-        val greenCardWithOrigin = getGreenCard(listOf(fakeOriginEntity()))
-        val greenCardWithoutOrigin = getGreenCard(listOf())
+        val greenCardWithOrigin = getGreenCard(origins = listOf(fakeOriginEntity()))
+        val greenCardWithoutOrigin = getGreenCard(origins = listOf())
 
         coEvery { holderDatabase.greenCardDao().getAll() } answers { listOf(greenCardWithOrigin, greenCardWithoutOrigin) }
 
-        val util = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
+        val util = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
         val allGreenCards = util.getAllGreenCards()
 
         assertEquals(1, allGreenCards.size)
@@ -52,7 +54,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `hasOrigin returns true if green cards contain origin`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val util = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
+        val util = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
 
         val greenCard = fakeGreenCard(originType = OriginType.Vaccination)
 
@@ -67,7 +69,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `hasOrigin returns false if green cards does not contain origin`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val util = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
+        val util = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
 
         val greenCard = fakeGreenCard(originType = OriginType.Recovery)
 
@@ -82,7 +84,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `getExpireDate returns expired date of origin furthest away`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
 
         val greenCard = GreenCard(
             greenCardEntity = GreenCardEntity(
@@ -117,7 +119,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `getExpireDate returns expired date of chosen origin type`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
 
         val greenCard = GreenCard(
             greenCardEntity = GreenCardEntity(
@@ -152,7 +154,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `isExpired returns true if expire date in past`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
 
         val greenCard = GreenCard(
             greenCardEntity = GreenCardEntity(
@@ -187,7 +189,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `isExpired returns false if expire date in future`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
 
         val greenCard = GreenCard(
             greenCardEntity = GreenCardEntity(
@@ -222,7 +224,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `getErrorCorrectionLevel returns correct levels for domestic green card type`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
 
         assertEquals(ErrorCorrectionLevel.M, greenCardUtil.getErrorCorrectionLevel(GreenCardType.Domestic))
     }
@@ -230,7 +232,7 @@ class GreenCardUtilImplTest {
     @Test
     fun `getErrorCorrectionLevel returns correct levels for eu green card type`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
 
         assertEquals(ErrorCorrectionLevel.Q, greenCardUtil.getErrorCorrectionLevel(GreenCardType.Eu))
     }
@@ -240,7 +242,7 @@ class GreenCardUtilImplTest {
         every { credentialUtil.getActiveCredential(any(), any()) } answers { null }
 
         val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
 
         val greenCard = GreenCard(
             greenCardEntity = GreenCardEntity(
@@ -269,7 +271,7 @@ class GreenCardUtilImplTest {
         }
 
         val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil)
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
 
         val greenCard = GreenCard(
             greenCardEntity = GreenCardEntity(
@@ -284,11 +286,47 @@ class GreenCardUtilImplTest {
         assertFalse { greenCardUtil.hasNoActiveCredentials(greenCard) }
     }
 
-    private fun getGreenCard(origins: List<OriginEntity>) = GreenCard(
+    @Test
+    fun `isForeignDcc returns false if green card type is domestic`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
+        assertEquals(false, greenCardUtil.isForeignDcc(getGreenCard()))
+    }
+
+    @Test
+    fun `isForeignDcc returns false if green card type is eu but not foreign`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
+        val mobileCoreWrapper: MobileCoreWrapper = mockk()
+        every { mobileCoreWrapper.isForeignDcc(any()) } answers { false }
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mobileCoreWrapper)
+        val greenCard = getGreenCard(
+            type = GreenCardType.Eu
+        )
+
+        assertEquals(false, greenCardUtil.isForeignDcc(greenCard))
+    }
+
+    @Test
+    fun `isForeignDcc returns true if green card type is eu and foreign`() {
+        val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
+        val mobileCoreWrapper: MobileCoreWrapper = mockk()
+        every { mobileCoreWrapper.isForeignDcc(any()) } answers { true }
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mobileCoreWrapper)
+        val greenCard = getGreenCard(
+            type = GreenCardType.Eu
+        )
+
+        assertEquals(true, greenCardUtil.isForeignDcc(greenCard))
+    }
+
+    private fun getGreenCard(
+        type: GreenCardType = GreenCardType.Domestic,
+        origins: List<OriginEntity> = listOf()
+    ) = GreenCard(
         greenCardEntity = GreenCardEntity(
             id = 0,
             walletId = 0,
-            type = GreenCardType.Domestic
+            type = type
         ),
         origins = origins,
         credentialEntities = listOf(
