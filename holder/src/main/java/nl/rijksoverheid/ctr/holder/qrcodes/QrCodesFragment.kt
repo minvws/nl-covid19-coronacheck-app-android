@@ -345,7 +345,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     }
 
     private fun presentQrLoading(loading: Boolean) {
-        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(loading)
+        (parentFragment?.parentFragment as? HolderMainFragment)?.presentLoading(loading)
         binding.root.visibility = if (loading) View.GONE else View.VISIBLE
     }
 

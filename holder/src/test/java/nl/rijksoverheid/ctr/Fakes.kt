@@ -43,6 +43,7 @@ import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
+import org.json.JSONArray
 import org.json.JSONObject
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -251,7 +252,18 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
         }
 
         override fun readEuropeanCredential(credential: ByteArray): JSONObject {
-            return JSONObject()
+            val jsonObject = JSONObject()
+            val vaccinationJson = JSONObject()
+            vaccinationJson.put("dn", "1")
+            vaccinationJson.put("sd", "1")
+            vaccinationJson.put("dt", "2021-01-22")
+            val dccValues = JSONArray()
+            dccValues.put(0, vaccinationJson)
+            dccValues.put(1, vaccinationJson)
+            val dccJson = JSONObject()
+            dccJson.put("v", dccValues)
+            jsonObject.put("dcc", dccJson)
+            return jsonObject
         }
 
         override fun initializeHolder(configFilesPath: String): String? = null
