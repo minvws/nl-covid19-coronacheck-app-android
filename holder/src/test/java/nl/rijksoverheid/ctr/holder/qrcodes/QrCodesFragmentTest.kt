@@ -38,7 +38,6 @@ import java.time.OffsetDateTime
  *
  */
 @RunWith(RobolectricTestRunner::class)
-@Ignore("tests work locally but fail on CI")
 class QrCodesFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
