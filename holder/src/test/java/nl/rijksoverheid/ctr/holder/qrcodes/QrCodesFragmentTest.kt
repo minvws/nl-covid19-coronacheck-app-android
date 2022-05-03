@@ -6,6 +6,10 @@ import androidx.lifecycle.ViewModelStore
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotExist
 import com.adevinta.android.barista.interaction.BaristaViewPagerInteractions.swipeViewPagerBack
@@ -92,13 +96,11 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `expired dcc qr code is hidden and shows expired subtitle`() {
-        println("debug test")
-        println(RuntimeEnvironment.getQualifiers())
         launch(expiredQrCode = true)
 
         swipeViewPagerBack()
 
-        assertDisplayed(R.id.overlay)
+        onView(withId(R.id.overlay)).check(matches(isCompletelyDisplayed()))
         assertDisplayed(R.string.holder_showQR_label_expiredVaccination)
     }
 
