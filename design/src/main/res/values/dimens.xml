@@ -10,4 +10,6 @@
     <dimen name="design_navigation_separator_vertical_padding">16dp</dimen>
     <dimen name="menu_section_spacing">24dp</dimen>
     <dimen name="menu_list_item_spacing">1dp</dimen>
+    <dimen name="launch_screen_width">182dp</dimen>
+    <dimen name="launch_screen_height">122dp</dimen>
 </resources>
