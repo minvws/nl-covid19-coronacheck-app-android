@@ -63,6 +63,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         refresh()
     }
 
+    /** count of amount of tabs visible. When tab amount changes on policy change the adapter items need to be reset */
+    private var tabItemsCount = 0
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDashboardBinding.bind(view)
@@ -95,8 +98,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner) { dashboardTabItems ->
             val init = adapter.itemCount == 0
 
-            adapter.setItems(dashboardTabItems)
-
             setupTabs(
                 binding = binding,
                 items = dashboardTabItems,
@@ -104,7 +105,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             )
 
             // Setup adapter only once
-            if (init) {
+            if (init || adapter.itemCount != tabItemsCount) {
+                tabItemsCount = dashboardTabItems.count()
+
+                adapter.setItems(dashboardTabItems)
+
                 // Default select the item that we had selected last
                 binding.viewPager.setCurrentItem(
                     persistenceManager.getSelectedDashboardTab(),
@@ -179,7 +184,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         dashboardViewModel.refresh(dashboardSync)
         refreshHandler.postDelayed(
             refreshRunnable,
-            TimeUnit.SECONDS.toMillis(60)
+            TimeUnit.SECONDS.toMillis(10)
         )
     }
 
