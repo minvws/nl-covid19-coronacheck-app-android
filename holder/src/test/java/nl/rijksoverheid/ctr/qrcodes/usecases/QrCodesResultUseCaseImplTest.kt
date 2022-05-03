@@ -12,8 +12,12 @@ import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCaseImpl
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
+import org.robolectric.RobolectricTestRunner
 
-class QrCodesResultUseCaseImplTest {
+@RunWith(RobolectricTestRunner::class)
+class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
 
     private val usecase = QrCodesResultUseCaseImpl(
         qrCodeUseCase = fakeQrCodeUsecase(),
