@@ -24,6 +24,7 @@ data class MenuSection(
     data class MenuItem(
         @DrawableRes val icon: Int,
         @StringRes val title: Int,
+        @StringRes val subtitle: Int? = null,
         val onClick: OnClick
     ): Parcelable {
 
