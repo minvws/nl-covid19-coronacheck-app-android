@@ -9,7 +9,6 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.holder.get_events.models.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.TestInfoScreenUtil
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 
 interface InfoScreenUtil {
@@ -24,7 +23,7 @@ interface InfoScreenUtil {
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean = true,
     ): InfoScreen
 
@@ -33,7 +32,7 @@ interface InfoScreenUtil {
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean = true,
     ): InfoScreen
 
@@ -49,7 +48,7 @@ interface InfoScreenUtil {
         testDate: String,
         fullName: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean = true,
     ): InfoScreen
 
@@ -78,9 +77,9 @@ class InfoScreenUtilImpl(
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean,
-    ) = testInfoScreenUtil.getForNegativeTest(event, fullName, testDate, birthDate, isPaperProof, addExplanation)
+    ) = testInfoScreenUtil.getForNegativeTest(event, fullName, testDate, birthDate, europeanCredential, addExplanation)
 
 
     override fun getForVaccination(
@@ -88,9 +87,9 @@ class InfoScreenUtilImpl(
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean,
-    ) = vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate, providerIdentifier, isPaperProof, addExplanation)
+    ) = vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate, providerIdentifier, europeanCredential, addExplanation)
 
     override fun getForPositiveTest(
         event: RemoteEventPositiveTest,
@@ -104,9 +103,9 @@ class InfoScreenUtilImpl(
         testDate: String,
         fullName: String,
         birthDate: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean,
-    ) = recoveryInfoScreenUtil.getForRecovery(event, testDate, fullName, birthDate, isPaperProof, addExplanation)
+    ) = recoveryInfoScreenUtil.getForRecovery(event, testDate, fullName, birthDate, europeanCredential, addExplanation)
 
     override fun getForVaccinationAssessment(
         event: RemoteEventVaccinationAssessment,

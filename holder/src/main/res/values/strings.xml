@@ -552,7 +552,7 @@
   <string name="no_certificate_created_toolbar_title">Geen bewijs gemaakt</string>
   <string name="certificate_created_recovery_after_vaccination_description"><![CDATA[Van je opgehaalde gegevens kon een herstelbewijs worden gemaakt.<br><br>Omdat je positief getest bent vóór je eerste vaccinatie kon je test ook meegeteld worden in je vaccinatiebewijs.]]></string>
   <string name="paper_proof_event_explanation_header">Deze gegevens staan in je papieren bewijs:</string>
-  <string name="paper_proof_event_explanation_footer"><![CDATA[<b>Kloppen er gegevens niet?</b><br/>Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een andere zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.]]></string>
+  <string name="paper_proof_event_explanation_footer"><![CDATA[<br/><b>Kloppen er gegevens niet?</b><br/>Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een andere zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.]]></string>
   <string name="certificate_created_recovery_after_vaccination_title">Herstelbewijs en vaccinatiebewijs gemaakt</string>
   <string name="rule_engine_no_test_origin_description_scanned_qr_code">gescande QR-code</string>
   <string name="rule_engine_no_test_origin_description_negative_test">negatieve testuitslag</string>
@@ -762,10 +762,12 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_paperproof_startscanning_button_startScanning">Start scannen</string>
   <string name="holder_paperproof_startscanning_title">Een bewijs inscannen met je camera</string>
   <string name="holder_paperproof_startscanning_body"><![CDATA[Je kunt een bestaand bewijs toevoegen aan de CoronaCheck app door ze in te scannen. Bijvoorbeeld bewijzen die je van je zorgverlener hebt gekregen. Of bewijzen die zijn uitgegeven buiten Nederland.<br /><br />Scan de <b>internationale QR-code</b> van jouw bewijs. Deze herken je aan een Europese vlag op het bewijs.]]></string>
-  <string name="holder_menu_paperproof_subTitle">Inscannen met je camera</string>
+  <string name="holder_menu_paperproof_subTitle">(Papieren) bewijs toevoegen</string>
   <string name="holder_scanner_error_action">Opnieuw scannen</string>
   <string name="holder_paperproof_startscanning_toolbar_title">Papieren bewijs</string>
   <string name="holder_newintheapp_foreignproofs_title">Buitenlandse bewijzen toevoegen</string>
   <string name="holder_newintheapp_foreignproofs_body">Heb je een coronabewijs met QR-code van een test of vaccinatie uit het buitenland? Dan kun je jouw bewijs nu toevoegen aan CoronaCheck. Kies in het menu voor “coronabewijs inscannen”.</string>
-  <string name="holder_showQR_label_expiredVaccination">This vaccination has expired</string>
+  <string name="holder_showQR_label_expiredVaccination">Deze vaccinatie is verlopen</string>
+  <string name="holder_listRemoteEvents_somethingWrong_foreignDCC_body"><![CDATA[<br /><b>Kloppen er gegevens niet?</b><br />Neem contact op met de zorgverlener waar je bent getest of gevaccineerd. Vraag of zij je kunnen helpen je gegevens aan te passen.]]></string>
+  <string name="holder_dcc_issuer">Afgever certificaat:</string>
 </resources>

@@ -63,8 +63,9 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                         navDirections = PaperProofStartScanningFragmentDirections.actionYourEvents(
                             toolbarTitle = getString(R.string.your_dcc_event_toolbar_title),
                             type = YourEventsFragmentType.DCC(
-                                remoteEvents = paperProofType.events,
-                                originType = OriginType.fromTypeString(paperProofType.events.keys.first().events!!.first().type!!)
+                                remoteEvent = paperProofType.remoteProtocol3,
+                                eventGroupJsonData = paperProofType.eventGroupJsonData,
+                                originType = OriginType.fromTypeString(paperProofType.remoteProtocol3.events!!.first().type!!)
                             ),
                             flow = HolderFlow.HkviScan
                         )

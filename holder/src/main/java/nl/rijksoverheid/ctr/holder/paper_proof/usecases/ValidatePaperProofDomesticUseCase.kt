@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofDomesticResult
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
-import org.json.JSONObject
 
 interface ValidatePaperProofDomesticUseCase {
     suspend fun validate(qrContent: String, couplingCode: String): PaperProofDomesticResult
@@ -63,11 +62,10 @@ class ValidatePaperProofDomesticUseCaseImpl(
         qrContent: String,
         couplingCode: String
     ) = PaperProofDomesticResult.Valid(
-        mapOf(
-            getEventsFromPaperProofQr.get(qrContent) to paperProofUtil.getSignerCredential(
-                qrContent = qrContent,
-                couplingCode = couplingCode
-            )
+        remoteEvent = getEventsFromPaperProofQr.get(qrContent),
+        eventGroupJsonData = paperProofUtil.getEventGroupJsonData(
+            qrContent = qrContent,
+            couplingCode = couplingCode
         )
     )
 }
