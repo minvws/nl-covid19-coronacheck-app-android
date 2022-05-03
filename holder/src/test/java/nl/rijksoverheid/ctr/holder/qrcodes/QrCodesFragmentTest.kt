@@ -33,8 +33,7 @@ import java.time.OffsetDateTime
  *
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(qualifiers = "nl-rNL-w412dp-h732dp-xhdpi")
-@Ignore("these tests work if run the class tests but fail for some reason when run all module's tests together")
+@Config(qualifiers = "xlarge-port")
 class QrCodesFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
