@@ -118,6 +118,7 @@ class QrCodesResultUseCaseImpl(
         val europeanVaccinationQrCodeDataList = mapToEuropeanVaccinations(
             credentialExpirationTimeSeconds, credentials, qrCodeWidth, qrCodeHeight, shouldDisclose, greenCardType
         )
+
         return QrCodesResult.MultipleQrCodes(
             europeanVaccinationQrCodeDataList = europeanVaccinationQrCodeDataList,
             mostRelevantVaccinationIndex = multipleQrCodesUtil.getMostRelevantQrCodeIndex(
@@ -150,13 +151,15 @@ class QrCodesResultUseCaseImpl(
             val totalDoses =
                 readEuropeanCredentialUtil.getOfTotalDoses(readEuropeanCredential) ?: ""
 
+            val isExpired = credentialUtil.europeanCredentialHasExpired(credentialExpirationTimeSeconds)
+            val isDoseSmaller = credentialUtil.vaccinationShouldBeHidden(readEuropeanCredentials, index)
             QrCodeData.European.Vaccination(
                 dose = dose,
                 ofTotalDoses = totalDoses,
                 bitmap = qrCodeBitmap,
                 readEuropeanCredential = readEuropeanCredential,
-                isExpired = credentialUtil.europeanCredentialHasExpired(credentialExpirationTimeSeconds),
-                isDoseNumberSmallerThanTotalDose = credentialUtil.vaccinationShouldBeHidden(readEuropeanCredentials, index)
+                isExpired = isExpired,
+                isDoseNumberSmallerThanTotalDose = isDoseSmaller
             )
         }
     }

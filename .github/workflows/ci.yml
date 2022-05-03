@@ -15,6 +15,7 @@ jobs:
       - name: Test
         run: ./gradlew testDebug testAccDebug lint
       - name: Archive test-results
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: test-results
@@ -23,6 +24,7 @@ jobs:
             verifier/build/reports
           retention-days: 2
       - name: Download all reports
+        if: always()
         uses: actions/download-artifact@v2
         with:
           name: test-results

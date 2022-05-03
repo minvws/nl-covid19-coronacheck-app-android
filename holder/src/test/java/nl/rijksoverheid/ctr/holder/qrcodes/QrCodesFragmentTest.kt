@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.qrcodes
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.ViewModelStore
@@ -11,14 +12,18 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotExist
 import com.adevinta.android.barista.interaction.BaristaViewPagerInteractions.swipeViewPagerBack
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.fakeMobileCoreWrapper
+import nl.rijksoverheid.ctr.holder.fakeQrCodeUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import org.junit.Ignore
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
@@ -39,6 +44,10 @@ import java.time.OffsetDateTime
  */
 @RunWith(RobolectricTestRunner::class)
 class QrCodesFragmentTest : AutoCloseKoinTest() {
+
+    @get:Rule
+    val rule = InstantTaskExecutorRule()
+
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {
@@ -73,6 +82,9 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
             module(override = true) {
                 factory {
                     fakeMobileCoreWrapper()
+                }
+                factory {
+                    fakeQrCodeUtil()
                 }
             }
         )
@@ -110,7 +122,7 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
 
         swipeViewPagerBack()
 
-        assertNotExist(R.id.overlay)
+        assertNotDisplayed(R.id.overlay)
         assertNotExist(R.string.holder_showQR_label_expiredVaccination)
     }
 }

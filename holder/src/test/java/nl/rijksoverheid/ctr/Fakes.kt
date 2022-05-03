@@ -35,6 +35,7 @@ import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
@@ -685,5 +686,18 @@ fun fakeAppConfig(
     requireUpdateBefore = 0,
     ggdEnabled = true
 )
+
+fun fakeQrCodeUtil() = object: QrCodeUtil {
+    override fun createQrCode(
+        qrCodeContent: String,
+        width: Int,
+        height: Int,
+        errorCorrectionLevel: ErrorCorrectionLevel
+    ) = Bitmap.createBitmap(
+        width,
+        height,
+        Bitmap.Config.RGB_565
+    )
+}
 
 

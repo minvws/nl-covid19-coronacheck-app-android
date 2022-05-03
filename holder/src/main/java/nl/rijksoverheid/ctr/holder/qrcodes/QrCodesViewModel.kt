@@ -43,14 +43,14 @@ class QrCodesViewModelImpl(
         qrCodeFragmentData: QrCodeFragmentData,
         size: Int,
     ) {
-
         viewModelScope.launch {
+            val result = qrCodesResultUseCase.getQrCodesResult(
+                qrCodeFragmentData = qrCodeFragmentData,
+                qrCodeWidth = size,
+                qrCodeHeight = size
+            )
             qrCodeDataListLiveData.postValue(
-                qrCodesResultUseCase.getQrCodesResult(
-                    qrCodeFragmentData = qrCodeFragmentData,
-                    qrCodeWidth = size,
-                    qrCodeHeight = size
-                )
+                result
             )
         }
     }
