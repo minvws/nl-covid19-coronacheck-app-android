@@ -32,6 +32,7 @@ import nl.rijksoverheid.ctr.holder.get_events.usecases.EventProvidersResult
 import nl.rijksoverheid.ctr.holder.get_events.usecases.TestProvidersResult
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
+import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
@@ -371,6 +372,10 @@ fun fakeGreenCardUtil(
     override fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean {
         return true
     }
+
+    override fun isForeignDcc(greenCard: GreenCard): Boolean {
+        return false
+    }
 }
 
 fun fakeGetRemoteGreenCardUseCase(
@@ -668,7 +673,5 @@ fun fakeAppConfig(
     requireUpdateBefore = 0,
     ggdEnabled = true
 )
-
-
 
 

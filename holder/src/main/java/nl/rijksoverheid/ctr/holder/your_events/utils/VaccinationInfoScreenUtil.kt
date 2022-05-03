@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import java.util.*
 
@@ -32,7 +33,7 @@ interface VaccinationInfoScreenUtil {
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean = true,
     ): InfoScreen
 }
@@ -41,6 +42,7 @@ class VaccinationInfoScreenUtilImpl(
     private val lastVaccinationDoseUtil: LastVaccinationDoseUtil,
     private val resources: Resources,
     private val countryUtil: CountryUtil,
+    private val paperProofUtil: PaperProofUtil,
     cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : VaccinationInfoScreenUtil {
 
@@ -51,10 +53,10 @@ class VaccinationInfoScreenUtilImpl(
         fullName: String,
         birthDate: String,
         providerIdentifier: String,
-        isPaperProof: Boolean,
+        europeanCredential: ByteArray?,
         addExplanation: Boolean,
     ): InfoScreen {
-        val title = if (isPaperProof) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
+        val title = if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
 
         val name = resources.getString(R.string.your_vaccination_explanation_name)
 
@@ -98,7 +100,7 @@ class VaccinationInfoScreenUtilImpl(
         val uniqueCode = resources.getString(R.string.your_vaccination_explanation_unique_code)
         val uniqueCodeAnswer = event.unique ?: ""
 
-        val header = if (isPaperProof) {
+        val header = if (europeanCredential != null) {
             resources.getString(R.string.paper_proof_event_explanation_header)
         } else {
             resources.getString(R.string.your_vaccination_explanation_header, providerIdentifier)
@@ -120,8 +122,18 @@ class VaccinationInfoScreenUtilImpl(
                 createdLine(lastDose, lastDoseAnswer, isOptional = true),
                 createdLine(vaccinationDate, vaccinationDateAnswer, isOptional = true),
                 createdLine(vaccinationCountry, fullCountryName, isOptional = true),
+                if (europeanCredential != null) {
+                    val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
+                    createdLine(resources.getString(R.string.holder_dcc_issuer), issuerAnswer, isOptional = true)
+                } else {
+                    ""
+                },
                 createdLine(uniqueCode, uniqueCodeAnswer),
-                if (isPaperProof && addExplanation) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
+                if (europeanCredential != null && addExplanation) {
+                    paperProofUtil.getInfoScreenFooterText(europeanCredential)
+                } else {
+                    ""
+                },
             ) as String)
         )
     }
