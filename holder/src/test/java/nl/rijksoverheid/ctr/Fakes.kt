@@ -35,6 +35,7 @@ import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
@@ -44,6 +45,7 @@ import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
+import org.json.JSONArray
 import org.json.JSONObject
 import java.time.LocalDate
 import java.time.OffsetDateTime
@@ -252,7 +254,18 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
         }
 
         override fun readEuropeanCredential(credential: ByteArray): JSONObject {
-            return JSONObject()
+            val jsonObject = JSONObject()
+            val vaccinationJson = JSONObject()
+            vaccinationJson.put("dn", "1")
+            vaccinationJson.put("sd", "1")
+            vaccinationJson.put("dt", "2021-01-22")
+            val dccValues = JSONArray()
+            dccValues.put(0, vaccinationJson)
+            dccValues.put(1, vaccinationJson)
+            val dccJson = JSONObject()
+            dccJson.put("v", dccValues)
+            jsonObject.put("dcc", dccJson)
+            return jsonObject
         }
 
         override fun initializeHolder(configFilesPath: String): String? = null
@@ -673,5 +686,18 @@ fun fakeAppConfig(
     requireUpdateBefore = 0,
     ggdEnabled = true
 )
+
+fun fakeQrCodeUtil() = object: QrCodeUtil {
+    override fun createQrCode(
+        qrCodeContent: String,
+        width: Int,
+        height: Int,
+        errorCorrectionLevel: ErrorCorrectionLevel
+    ) = Bitmap.createBitmap(
+        width,
+        height,
+        Bitmap.Config.RGB_565
+    )
+}
 
 

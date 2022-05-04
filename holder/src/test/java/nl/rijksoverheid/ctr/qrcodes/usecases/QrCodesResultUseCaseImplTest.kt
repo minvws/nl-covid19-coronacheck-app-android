@@ -12,8 +12,12 @@ import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCaseImpl
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
+import org.robolectric.RobolectricTestRunner
 
-class QrCodesResultUseCaseImplTest {
+@RunWith(RobolectricTestRunner::class)
+class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
 
     private val usecase = QrCodesResultUseCaseImpl(
         qrCodeUseCase = fakeQrCodeUsecase(),
@@ -29,10 +33,13 @@ class QrCodesResultUseCaseImplTest {
     @Test
     fun `getQrCodesResult returns SingleQrCode for domestic vaccination QR`() = runBlocking {
         val result = usecase.getQrCodesResult(
-            greenCardType = GreenCardType.Domestic,
-            originType = OriginType.Vaccination,
-            credentials = listOf("".toByteArray()),
-            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+            qrCodeFragmentData = QrCodeFragmentData(
+                type = GreenCardType.Domestic,
+                originType = OriginType.Vaccination,
+                credentials = listOf("".toByteArray()),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                credentialExpirationTimeSeconds = 0,
+            ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
         )
@@ -42,10 +49,13 @@ class QrCodesResultUseCaseImplTest {
     @Test
     fun `getQrCodesResult returns SingleQrCode for domestic recovery QR`() = runBlocking {
         val result = usecase.getQrCodesResult(
-            greenCardType = GreenCardType.Domestic,
-            originType = OriginType.Recovery,
-            credentials = listOf("".toByteArray()),
-            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+            qrCodeFragmentData = QrCodeFragmentData(
+                type = GreenCardType.Domestic,
+                originType = OriginType.Vaccination,
+                credentials = listOf("".toByteArray()),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                credentialExpirationTimeSeconds = 0,
+            ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
         )
@@ -55,10 +65,13 @@ class QrCodesResultUseCaseImplTest {
     @Test
     fun `getQrCodesResult returns SingleQrCode for domestic test QR`() = runBlocking {
         val result = usecase.getQrCodesResult(
-            greenCardType = GreenCardType.Domestic,
-            originType = OriginType.Test,
-            credentials = listOf("".toByteArray()),
-            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+            qrCodeFragmentData = QrCodeFragmentData(
+                type = GreenCardType.Domestic,
+                originType = OriginType.Vaccination,
+                credentials = listOf("".toByteArray()),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                credentialExpirationTimeSeconds = 0,
+            ),
             qrCodeHeight = 0, 
             qrCodeWidth = 0
         )
@@ -68,10 +81,13 @@ class QrCodesResultUseCaseImplTest {
     @Test
     fun `getQrCodesResult returns SingleQrCode for european recovery QR`() = runBlocking {
         val result = usecase.getQrCodesResult(
-            greenCardType = GreenCardType.Eu,
-            originType = OriginType.Recovery,
-            credentials = listOf("".toByteArray()),
-            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+            qrCodeFragmentData = QrCodeFragmentData(
+                type = GreenCardType.Domestic,
+                originType = OriginType.Vaccination,
+                credentials = listOf("".toByteArray()),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                credentialExpirationTimeSeconds = 0,
+            ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
         )
@@ -81,10 +97,13 @@ class QrCodesResultUseCaseImplTest {
     @Test
     fun `getQrCodesResult returns SingleQrCode for european test QR`() = runBlocking {
         val result = usecase.getQrCodesResult(
-            greenCardType = GreenCardType.Eu,
-            originType = OriginType.Test,
-            credentials = listOf("".toByteArray()),
-            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+            qrCodeFragmentData = QrCodeFragmentData(
+                type = GreenCardType.Domestic,
+                originType = OriginType.Vaccination,
+                credentials = listOf("".toByteArray()),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                credentialExpirationTimeSeconds = 0,
+            ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
         )
@@ -94,10 +113,13 @@ class QrCodesResultUseCaseImplTest {
     @Test
     fun `getQrCodesResult returns MultipleQrCodes for european vaccination QR`() = runBlocking {
         val result = usecase.getQrCodesResult(
-            greenCardType = GreenCardType.Eu,
-            originType = OriginType.Vaccination,
-            credentials = listOf("".toByteArray()),
-            shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+            qrCodeFragmentData = QrCodeFragmentData(
+                type = GreenCardType.Eu,
+                originType = OriginType.Vaccination,
+                credentials = listOf("".toByteArray()),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                credentialExpirationTimeSeconds = 0,
+            ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
         )

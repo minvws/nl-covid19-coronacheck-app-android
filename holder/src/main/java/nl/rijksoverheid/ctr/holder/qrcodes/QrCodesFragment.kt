@@ -329,27 +329,31 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     private fun showDoseInfo(vaccination: QrCodeData.European.Vaccination) {
         TransitionManager.beginDelayedTransition(binding.bottomScroll)
-        if (vaccination.isHidden) {
-            binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
-            binding.doseInfo.visibility = View.VISIBLE
-        } else {
-            binding.doseInfo.visibility = View.GONE
+        when {
+            vaccination.isExpired -> {
+                binding.doseInfo.text = getString(R.string.holder_showQR_label_expiredVaccination)
+                binding.doseInfo.visibility = View.VISIBLE
+            }
+            vaccination.isDoseNumberSmallerThanTotalDose -> {
+                binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
+                binding.doseInfo.visibility = View.VISIBLE
+            }
+            else -> {
+                binding.doseInfo.visibility = View.GONE
+            }
         }
     }
 
     private fun presentQrLoading(loading: Boolean) {
-        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(loading)
+        (parentFragment?.parentFragment as? HolderMainFragment)?.presentLoading(loading)
         binding.root.visibility = if (loading) View.GONE else View.VISIBLE
     }
 
     private fun generateQrCodes() {
         checkShouldAutomaticallyClose()
         qrCodeViewModel.generateQrCodes(
-            greenCardType = args.data.type,
-            originType = args.data.originType,
+            qrCodeFragmentData = args.data,
             size = resources.displayMetrics.widthPixels,
-            credentials = args.data.credentials,
-            shouldDisclose = args.data.shouldDisclose
         )
         val refreshMillis =
             if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.SECONDS.toMillis(
@@ -365,7 +369,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
      * Checks if this fragment should automatically close
      */
     private fun checkShouldAutomaticallyClose() {
-        val shouldClose = qrCodesFragmentUtil.shouldClose(args.data.credentialExpirationTimeSeconds)
+        val shouldClose = qrCodesFragmentUtil.shouldClose(args.data.credentialExpirationTimeSeconds, args.data.type)
         if (shouldClose) {
             findNavControllerSafety()?.popBackStack()
         }

@@ -30,6 +30,8 @@ interface CredentialUtil {
     fun vaccinationShouldBeHidden(
         readEuropeanCredentials: List<JSONObject>, indexOfVaccination: Int
     ): Boolean
+
+    fun europeanCredentialHasExpired(credentialExpirationTimeSeconds: Long): Boolean
 }
 
 class CredentialUtilImpl(
@@ -43,9 +45,9 @@ class CredentialUtilImpl(
 
     override fun getActiveCredential(greenCardType: GreenCardType, entities: List<CredentialEntity>): CredentialEntity? {
 
-        // All credentials that fall into the expiration window
         val credentialsInWindow = entities.filter {
             when (greenCardType) {
+                // All credentials that fall into the expiration window for ctb
                 is GreenCardType.Domestic -> {
                     it.validFrom.isBefore(
                         OffsetDateTime.now(clock)
@@ -55,12 +57,9 @@ class CredentialUtilImpl(
                         )
                     )
                 }
+                // accept expired credentials for dcc
                 is GreenCardType.Eu -> {
-                    it.expirationTime.isAfter(
-                        OffsetDateTime.now(
-                            clock
-                        )
-                    )
+                    true
                 }
             }
         }
@@ -120,6 +119,10 @@ class CredentialUtilImpl(
                     && dose < totalDoses
                     && !hasCompletedButNotRelevantVaccination(vaccinations, dose)
         } ?: false
+    }
+
+    override fun europeanCredentialHasExpired(credentialExpirationTimeSeconds: Long): Boolean {
+        return credentialExpirationTimeSeconds < OffsetDateTime.now(clock).toEpochSecond()
     }
 
     private fun hasCompletedButNotRelevantVaccination(
