@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
+import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
@@ -23,8 +24,10 @@ interface CredentialUtil {
     fun getActiveCredential(greenCardType: GreenCardType, entities: List<CredentialEntity>): CredentialEntity?
     fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean
     fun getTestTypeForEuropeanCredentials(entities: List<CredentialEntity>): String
-    fun getVaccinationDosesForEuropeanCredentials(
-        entities: List<CredentialEntity>, getString: (String, String) -> String
+    fun getVaccinationDosesCountryLineForEuropeanCredentials(
+        entities: List<CredentialEntity>,
+        deviceLanguage: String,
+        getString: (String, String, String) -> String
     ): String
 
     fun vaccinationShouldBeHidden(
@@ -38,6 +41,7 @@ class CredentialUtilImpl(
     private val clock: Clock,
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val appConfigUseCase: HolderCachedAppConfigUseCase,
+    private val countryUtil: CountryUtil,
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : CredentialUtil {
 
@@ -90,16 +94,23 @@ class CredentialUtilImpl(
         }
     }
 
-    override fun getVaccinationDosesForEuropeanCredentials(
+    override fun getVaccinationDosesCountryLineForEuropeanCredentials(
         entities: List<CredentialEntity>,
-        getString: (String, String) -> String
+        deviceLanguage: String,
+        getString: (String, String, String) -> String
     ): String {
         return try {
             val data = mobileCoreWrapper.readEuropeanCredential(entities.first().data)
             val vaccinationData = (((data["dcc"] as JSONObject)["v"] as JSONArray)[0]) as JSONObject
             val dn = vaccinationData["dn"] as Int
             val sd = vaccinationData["sd"] as Int
-            getString("$dn", "$sd")
+            val countryCode = data["issuer"] as String
+            val countryString = if (countryCode != "NL") {
+                " (${countryUtil.getCountryForInfoScreen(deviceLanguage, countryCode)})"
+            } else {
+                ""
+            }
+            getString("$dn", "$sd", countryString)
         } catch (exception: Exception) {
             exception.printStackTrace()
             ""
