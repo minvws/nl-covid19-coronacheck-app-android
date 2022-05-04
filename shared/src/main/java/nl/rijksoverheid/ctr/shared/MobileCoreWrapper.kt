@@ -39,7 +39,7 @@ interface MobileCoreWrapper {
     fun verify(credential: ByteArray, policy: VerificationPolicy): VerificationResult
     fun isDcc(credential: ByteArray): Boolean
     fun isForeignDcc(credential: ByteArray): Boolean
-    fun isCtb(credential: ByteArray): Boolean
+    fun hasDomesticPrefix(credential: ByteArray): Boolean
 }
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
@@ -156,7 +156,7 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
         return Mobilecore.isForeignDCC(credential)
     }
 
-    override fun isCtb(credential: ByteArray): Boolean {
-        return false
+    override fun hasDomesticPrefix(credential: ByteArray): Boolean {
+        return Mobilecore.hasDomesticPrefix(credential)
     }
 }

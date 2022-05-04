@@ -284,7 +284,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return false
         }
 
-        override fun isCtb(credential: ByteArray): Boolean {
+        override fun hasDomesticPrefix(credential: ByteArray): Boolean {
             return false
         }
 
