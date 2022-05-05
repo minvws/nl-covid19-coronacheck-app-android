@@ -60,7 +60,7 @@ class GetPaperProofTypeUseCaseImplTest {
         )
 
         every { mobileCoreWrapper.isDcc("".toByteArray()) } answers { false }
-        every { mobileCoreWrapper.isCtb("".toByteArray()) } answers { true }
+        every { mobileCoreWrapper.hasDomesticPrefix("".toByteArray()) } answers { true }
 
         val paperProofType = usecase.get("")
         assertTrue(paperProofType is PaperProofType.CTB)
@@ -76,7 +76,7 @@ class GetPaperProofTypeUseCaseImplTest {
         )
 
         every { mobileCoreWrapper.isDcc("".toByteArray()) } answers { false }
-        every { mobileCoreWrapper.isCtb("".toByteArray()) } answers { false }
+        every { mobileCoreWrapper.hasDomesticPrefix("".toByteArray()) } answers { false }
 
         val paperProofType = usecase.get("")
         assertTrue(paperProofType is PaperProofType.Unknown)

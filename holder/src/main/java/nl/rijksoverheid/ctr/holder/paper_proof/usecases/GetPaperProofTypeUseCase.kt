@@ -39,8 +39,8 @@ class GetPaperProofTypeUseCaseImpl(
                     )
                 }
             } else {
-                val isCtb = mobileCoreWrapper.isCtb(qrContent.toByteArray())
-                if (isCtb) {
+                val hasDomesticPrefix = mobileCoreWrapper.hasDomesticPrefix(qrContent.toByteArray())
+                if (hasDomesticPrefix) {
                     PaperProofType.CTB
                 } else {
                     PaperProofType.Unknown

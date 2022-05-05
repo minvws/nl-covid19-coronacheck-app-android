@@ -19,7 +19,6 @@ import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
 import nl.rijksoverheid.ctr.shared.models.*
 import org.json.JSONObject
-import timber.log.Timber
 import java.lang.reflect.Type
 
 interface MobileCoreWrapper {
@@ -40,7 +39,7 @@ interface MobileCoreWrapper {
     fun verify(credential: ByteArray, policy: VerificationPolicy): VerificationResult
     fun isDcc(credential: ByteArray): Boolean
     fun isForeignDcc(credential: ByteArray): Boolean
-    fun isCtb(credential: ByteArray): Boolean
+    fun hasDomesticPrefix(credential: ByteArray): Boolean
 }
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
@@ -150,14 +149,14 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
     }
 
     override fun isDcc(credential: ByteArray): Boolean {
-        return true
+        return Mobilecore.isDCC(credential)
     }
 
     override fun isForeignDcc(credential: ByteArray): Boolean {
-        return false
+        return Mobilecore.isForeignDCC(credential)
     }
 
-    override fun isCtb(credential: ByteArray): Boolean {
-        return false
+    override fun hasDomesticPrefix(credential: ByteArray): Boolean {
+        return Mobilecore.hasDomesticPrefix(credential)
     }
 }
