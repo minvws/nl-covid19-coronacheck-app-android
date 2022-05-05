@@ -73,7 +73,7 @@ class RemoteEventUtilImpl(
                 vaccination = RemoteEventVaccination.Vaccination(
                     doseNumber = it.getStringOrNull("dn"),
                     totalDoses = it.getStringOrNull("sd"),
-                    date = LocalDate.parse(it.getStringOrNull("dt")?.take(10)),
+                    date = try { LocalDate.parse(it.getStringOrNull("dt")?.take(10)) } catch(e: Exception) { null },
                     country = it.getStringOrNull("co"),
                     type = it.getStringOrNull("vp"),
                     brand = it.getStringOrNull("mp"),
@@ -94,9 +94,9 @@ class RemoteEventUtilImpl(
                 unique = it.getStringOrNull("ci") ?: "",
                 isSpecimen = false,
                 recovery = RemoteEventRecovery.Recovery(
-                    sampleDate = LocalDate.parse(it.getStringOrNull("fr")?.take(10)),
-                    validFrom = LocalDate.parse(it.getStringOrNull("df")?.take(10)),
-                    validUntil = LocalDate.parse(it.getStringOrNull("du")?.take(10)),
+                    sampleDate = try { LocalDate.parse(it.getStringOrNull("fr")?.take(10)) } catch(e: Exception) { null },
+                    validFrom = try { LocalDate.parse(it.getStringOrNull("df")?.take(10)) } catch(e: Exception) { null },
+                    validUntil = try { LocalDate.parse(it.getStringOrNull("du")?.take(10)) } catch(e: Exception) { null },
                 )
             )
         }
