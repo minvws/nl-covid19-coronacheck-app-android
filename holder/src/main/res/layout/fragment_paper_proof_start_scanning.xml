@@ -42,7 +42,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@+id/title"
                 app:layout_constraintTop_toBottomOf="@+id/title"
-                app:htmlText="@string/holder_paperproof_whichProofsCanBeUsed_body" />
+                app:htmlText="@string/holder_paperproof_startscanning_body" />
 
             <Button
                 android:id="@+id/button"
