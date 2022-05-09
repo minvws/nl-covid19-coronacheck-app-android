@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.introduction.onboarding
+package nl.rijksoverheid.ctr.introduction.privacy_consent
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.core.os.bundleOf
@@ -14,7 +14,7 @@ import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assert
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.internal.performActionOnView
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +23,7 @@ import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class OnboardingFragmentTest : AutoCloseKoinTest() {
+class PrivacyConsentFragmentTest : AutoCloseKoinTest() {
 
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
@@ -36,54 +36,69 @@ class OnboardingFragmentTest : AutoCloseKoinTest() {
     val rule = InstantTaskExecutorRule()
 
     @Test
-    fun `When onboarding is shown the first onboarding item is visible`() {
+    fun `policy items are displayed in the fragment`() {
         startFragment(
             IntroductionData(
-                listOf(
-                    OnboardingItem(
-                        R.drawable.illustration_onboarding_2,
-                        R.string.onboarding_screen_1_title,
-                        R.string.onboarding_screen_1_description,
-                    )
-                )
-            )
-        )
-
-        assertDisplayed(R.string.onboarding_screen_1_title)
-        assertDisplayed(R.string.onboarding_screen_1_description)
-    }
-
-    @Test
-    fun `When clicking on next the onboarding item is shown`() {
-        startFragment(
-            IntroductionData(
-                listOf(
-                    OnboardingItem(
-                        R.drawable.illustration_onboarding_2,
-                        R.string.onboarding_screen_2_title,
-                        R.string.onboarding_screen_2_description,
+                privacyPolicyItems = listOf(
+                    PrivacyPolicyItem(
+                        R.drawable.shield,
+                        R.string.onboarding_screen_1_description
                     ),
-                    OnboardingItem(
-                        R.drawable.illustration_onboarding_4,
-                        R.string.onboarding_screen_3_title,
+                    PrivacyPolicyItem(
+                        R.drawable.shield,
                         R.string.onboarding_screen_3_description
                     )
                 )
             )
         )
 
-        performActionOnView(ViewMatchers.withId(R.id.button), ViewActions.click())
-
-        assertDisplayed(R.string.onboarding_screen_3_title)
+        assertDisplayed(R.string.onboarding_screen_1_description)
         assertDisplayed(R.string.onboarding_screen_3_description)
     }
 
-    private fun startFragment(introductionData: IntroductionData): FragmentScenario<OnboardingFragment> {
+    @Test
+    fun `consent checkbox is hidden when hide consent is true`() {
+        startFragment(
+            IntroductionData(
+                hideConsent = true
+            )
+        )
+
+        assertNotDisplayed(R.id.checkbox_container)
+    }
+
+    @Test
+    fun `consent checkbox is shown when hide consent is false`() {
+        startFragment(
+            IntroductionData(
+                hideConsent = false
+            )
+        )
+
+        assertDisplayed(R.id.checkbox_container)
+    }
+
+    @Test
+    fun `when consent is not checked show error`() {
+        startFragment(
+            IntroductionData(
+                hideConsent = false
+            )
+        )
+
+        assertNotDisplayed(R.id.error_container)
+
+        performActionOnView(ViewMatchers.withId(R.id.checkbox_button), ViewActions.click())
+
+       assertDisplayed(R.id.error_container)
+    }
+
+    private fun startFragment(introductionData: IntroductionData): FragmentScenario<PrivacyConsentFragment> {
         return launchFragmentInContainer(
             bundleOf("introduction_data" to introductionData),
             themeResId = R.style.AppTheme
         ) {
-            OnboardingFragment().also {
+            PrivacyConsentFragment().also {
                 it.viewLifecycleOwnerLiveData.observeForever { viewLifecycleOwner ->
                     if (viewLifecycleOwner != null) {
                         Navigation.setViewNavController(it.requireView(), navController)
