@@ -36,6 +36,13 @@ class PrivacyConsentFragmentTest : AutoCloseKoinTest() {
     val rule = InstantTaskExecutorRule()
 
     @Test
+    fun `title is always displayed`() {
+        startFragment(IntroductionData())
+
+        assertDisplayed(R.id.title, R.string.privacy_policy_title)
+    }
+
+    @Test
     fun `policy items are displayed in the fragment`() {
         startFragment(
             IntroductionData(
