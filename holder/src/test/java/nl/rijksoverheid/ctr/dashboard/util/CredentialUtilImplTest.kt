@@ -233,7 +233,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `eu dcc returns correct dosis string`() {
-        every { mobileCoreWrapper.readEuropeanCredential(any()) } returns getVaccinationJson(issuer = "IT")
+        every { mobileCoreWrapper.readEuropeanCredential(any()) } returns getVaccinationJson(countryCode = "IT")
         val credentialUtil = CredentialUtilImpl(Clock.systemUTC(), mobileCoreWrapper, mockk(), CountryUtilImpl(), mockk(relaxed = true))
 
         val dosisString = credentialUtil.getVaccinationDosesCountryLineForEuropeanCredentials(listOf(credentialIdentity(
@@ -248,11 +248,11 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         assertEquals("2/2 (Italy)", dosisString)
     }
 
-    private fun getVaccinationJson(date: String = "2020-12-01", dose: Int = 2, ofTotalDoses: Int = 2, issuer: String = "NL") =
+    private fun getVaccinationJson(date: String = "2020-12-01", dose: Int = 2, ofTotalDoses: Int = 2, countryCode: String = "NL") =
         JSONObject(
             "{\n" +
                     "    \"credentialVersion\": 1,\n" +
-                    "    \"issuer\": \"$issuer\",\n" +
+                    "    \"issuer\": \"$countryCode\",\n" +
                     "    \"issuedAt\": 1626174495,\n" +
                     "    \"expirationTime\": 1628753641,\n" +
                     "    \"dcc\": {\n" +
@@ -273,7 +273,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
                     "                \"dn\": $dose,\n" +
                     "                \"sd\": $ofTotalDoses,\n" +
                     "                \"dt\": \"$date\",\n" +
-                    "                \"co\": \"NL\",\n" +
+                    "                \"co\": \"$countryCode\",\n" +
                     "                \"is\": \"Ministry of Health Welfare and Sport\",\n" +
                     "                \"ci\": \"URN:UCI:01:NL:IZES3LGRDVDPVIHYKPOE42#\\/\"\n" +
                     "            }\n" +
