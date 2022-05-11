@@ -670,6 +670,7 @@ fun fakeAppConfig(
     appDeactivated: Boolean = false,
     informationURL: String = "",
     configTtlSeconds: Int = 0,
+    domesticQRRefreshSeconds: Int = 10,
     maxValidityHours: Int = 0
 ) = HolderConfig.default(
     holderMinimumVersion = minimumVersion,
@@ -680,6 +681,7 @@ fun fakeAppConfig(
     euLaunchDate = "",
     credentialRenewalDays = 0,
     domesticCredentialValidity = 0,
+    domesticQRRefreshSeconds = domesticQRRefreshSeconds,
     testEventValidityHours = 0,
     recoveryEventValidityDays = 0,
     temporarilyDisabled = false,
