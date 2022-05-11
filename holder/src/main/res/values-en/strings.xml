@@ -21,7 +21,7 @@
   <string name="holder_scanner_error_title_unknown">QR code not recognised</string>
   <string name="holder_scanner_error_message_unknown">The QR code you are trying to scan is not recognised as a coronavirus pass. Make sure you are holding the correct QR code in front of the camera.</string>
   <string name="holder_scanner_error_title_ctb">Scan your international QR code</string>
-  <string name="holder_scanner_error_message_ctb">Scan the QR code on the international certificate you received from your health care provider or the government. It contains the information needed to add your certificate to the app. You can recognise this certificate by the European flag.</string>
+  <string name="holder_scanner_error_message_ctb">You don’t need to scan your Dutch QR code. Scan the QR code on the international certificate you received from your health care provider or the government. It contains the information needed to add your certificate to the app. You can recognise this certificate by the European flag.</string>
   <string name="app_name_test">CoronaCheck (Test)</string>
   <string name="app_name_acc">CoronaCheck (Acc)</string>
   <string name="app_name">CoronaCheck</string>
@@ -767,7 +767,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_paperproof_startscanning_toolbar_title">Add certificate</string>
   <string name="holder_newintheapp_foreignproofs_title">Adding foreign certificates</string>
   <string name="holder_newintheapp_foreignproofs_body">Do you have a coronavirus certificate with QR code of a test or vaccination from abroad? Now you can add your certificate to CoronaCheck. Choose “Scan to add certificate” in the menu.</string>
-  <string name="holder_showQR_label_expiredVaccination">This vaccination has expired</string>
+  <string name="holder_showQR_label_expiredQR">This QR code is no longer valid</string>
   <string name="holder_listRemoteEvents_somethingWrong_foreignDCC_body"><![CDATA[<br /><b>Are your details incorrect?</b><br />Please contact the healthcare provider who vaccinated or tested you. Ask if they can help you correct your data.]]></string>
   <string name="holder_dcc_issuer">Certificate issuer:</string>
 </resources>

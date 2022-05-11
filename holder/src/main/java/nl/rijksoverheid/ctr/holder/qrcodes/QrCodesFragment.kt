@@ -333,7 +333,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         TransitionManager.beginDelayedTransition(binding.bottomScroll)
         when {
             vaccination.isExpired -> {
-                binding.doseInfo.text = getString(R.string.holder_showQR_label_expiredVaccination)
+                binding.doseInfo.text = getString(R.string.holder_showQR_label_expiredQR)
                 binding.doseInfo.visibility = View.VISIBLE
             }
             vaccination.isDoseNumberSmallerThanTotalDose -> {

@@ -113,7 +113,7 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
         swipeViewPagerBack()
 
         onView(withId(R.id.overlay)).check(matches(isCompletelyDisplayed()))
-        assertDisplayed(R.string.holder_showQR_label_expiredVaccination)
+        assertDisplayed(R.string.holder_showQR_label_expiredQR)
     }
 
     @Test
@@ -123,6 +123,6 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
         swipeViewPagerBack()
 
         assertNotDisplayed(R.id.overlay)
-        assertNotExist(R.string.holder_showQR_label_expiredVaccination)
+        assertNotExist(R.string.holder_showQR_label_expiredQR)
     }
 }
