@@ -20,7 +20,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
@@ -39,12 +38,6 @@ abstract class YourEventsViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
     val conflictingEventsResult: LiveData<Event<Boolean>> = MutableLiveData()
-
-    abstract fun saveNegativeTest2(
-        flow: Flow,
-        negativeTest2: RemoteTestResult2,
-        rawResponse: ByteArray
-    )
 
     abstract fun saveRemoteProtocol3Events(
         flow: Flow,
@@ -68,43 +61,6 @@ class YourEventsViewModelImpl(
     private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil,
     private val remoteEventUtil: RemoteEventUtil
 ) : YourEventsViewModel() {
-
-    override fun saveNegativeTest2(
-        flow: Flow,
-        negativeTest2: RemoteTestResult2,
-        rawResponse: ByteArray
-    ) {
-        (loading as MutableLiveData).value = Event(true)
-        viewModelScope.launch {
-            try {
-                // Save the event in the database
-                when (val result =
-                    saveEventsUseCase.saveNegativeTest2(negativeTest2, rawResponse)) {
-                    is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
-                        // Send all events to database and create green cards, origins and credentials
-                        val databaseSyncerResult = holderDatabaseSyncer.sync(
-                            flow = flow,
-                            expectedOriginType = OriginType.Test
-                        )
-
-                        (yourEventsResult as MutableLiveData).value = Event(
-                            databaseSyncerResult
-                        )
-                    }
-                    is SaveEventsUseCaseImpl.SaveEventResult.Failed -> {
-                        (yourEventsResult as MutableLiveData).value =
-                            Event(DatabaseSyncerResult.Failed.Error(result.errorResult))
-                    }
-                }
-            } catch (e: Exception) {
-                (yourEventsResult as MutableLiveData).value = Event(
-                    DatabaseSyncerResult.Failed.Error(AppErrorResult(HolderStep.StoringEvents, e))
-                )
-            } finally {
-                loading.value = Event(false)
-            }
-        }
-    }
 
     override fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>) {
         (loading as MutableLiveData).value = Event(true)

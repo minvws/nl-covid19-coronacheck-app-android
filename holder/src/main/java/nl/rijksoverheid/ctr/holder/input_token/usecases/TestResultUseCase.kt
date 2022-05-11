@@ -10,7 +10,6 @@ package nl.rijksoverheid.ctr.holder.input_token.usecases
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
@@ -112,12 +111,6 @@ class TestResultUseCase(
                 RemoteProtocol.Status.PENDING -> return TestResult.Pending
                 RemoteProtocol.Status.RESULT_BLOCKED -> return TestResult.ResultBlocked
                 RemoteProtocol.Status.COMPLETE -> {
-                    if (remoteTestResult is RemoteTestResult2) {
-                        if (remoteTestResult.result?.negativeResult == false) {
-                            return TestResult.NoNegativeTestResult
-                        }
-                    }
-
                     if (!remoteTestResult.hasEvents()) {
                         return TestResult.NoNegativeTestResult
                     }

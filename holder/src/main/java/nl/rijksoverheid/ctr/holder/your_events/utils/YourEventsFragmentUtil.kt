@@ -32,9 +32,6 @@ class YourEventsFragmentUtilImpl(
 
     override fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int {
         return when (type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                R.string.rule_engine_no_test_origin_description_negative_test
-            }
             is YourEventsFragmentType.DCC -> {
                 R.string.rule_engine_no_test_origin_description_scanned_qr_code
             }
@@ -71,7 +68,6 @@ class YourEventsFragmentUtilImpl(
     override fun getCancelDialogDescription(type: YourEventsFragmentType): Int {
         return when (type) {
             is YourEventsFragmentType.DCC -> R.string.holder_dcc_alert_message
-            is YourEventsFragmentType.TestResult2 -> R.string.holder_test_alert_message
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 when (remoteEventUtil.getOriginType(type.remoteEvents.keys.first().events!!.first())) {
                     is OriginType.Test -> R.string.holder_test_alert_message
