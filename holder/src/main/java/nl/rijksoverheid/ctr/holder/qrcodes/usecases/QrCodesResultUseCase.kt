@@ -23,10 +23,7 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
  */
 interface QrCodesResultUseCase {
     suspend fun getQrCodesResult(
-        greenCardType: GreenCardType,
-        originType: OriginType,
-        credentials: List<ByteArray>,
-        shouldDisclose: QrCodeFragmentData.ShouldDisclose,
+        qrCodeFragmentData: QrCodeFragmentData,
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): QrCodesResult
@@ -38,17 +35,19 @@ class QrCodesResultUseCaseImpl(
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
     private val credentialUtil: CredentialUtil,
-    private val multipleQrCodesUtil: MultipleQrCodesUtil
+    private val multipleQrCodesUtil: MultipleQrCodesUtil,
 ) : QrCodesResultUseCase {
 
     override suspend fun getQrCodesResult(
-        greenCardType: GreenCardType,
-        originType: OriginType,
-        credentials: List<ByteArray>,
-        shouldDisclose: QrCodeFragmentData.ShouldDisclose,
+        qrCodeFragmentData: QrCodeFragmentData,
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): QrCodesResult {
+        val greenCardType = qrCodeFragmentData.type
+        val credentials = qrCodeFragmentData.credentials
+        val shouldDisclose = qrCodeFragmentData.shouldDisclose
+        val originType = qrCodeFragmentData.originType
+        val credentialExpirationTimeSeconds = qrCodeFragmentData.credentialExpirationTimeSeconds
 
         return when (greenCardType) {
             is GreenCardType.Domestic -> {
@@ -67,6 +66,7 @@ class QrCodesResultUseCaseImpl(
                         greenCardType = greenCardType,
                         credentials = credentials,
                         shouldDisclose = shouldDisclose,
+                        credentialExpirationTimeSeconds = credentialExpirationTimeSeconds,
                         qrCodeWidth = qrCodeWidth,
                         qrCodeHeight = qrCodeHeight
                     )
@@ -111,12 +111,14 @@ class QrCodesResultUseCaseImpl(
         greenCardType: GreenCardType,
         credentials: List<ByteArray>,
         shouldDisclose: QrCodeFragmentData.ShouldDisclose,
+        credentialExpirationTimeSeconds: Long,
         qrCodeWidth: Int,
         qrCodeHeight: Int
     ): QrCodesResult.MultipleQrCodes {
         val europeanVaccinationQrCodeDataList = mapToEuropeanVaccinations(
-            credentials, qrCodeWidth, qrCodeHeight, shouldDisclose, greenCardType
+            credentialExpirationTimeSeconds, credentials, qrCodeWidth, qrCodeHeight, shouldDisclose, greenCardType
         )
+
         return QrCodesResult.MultipleQrCodes(
             europeanVaccinationQrCodeDataList = europeanVaccinationQrCodeDataList,
             mostRelevantVaccinationIndex = multipleQrCodesUtil.getMostRelevantQrCodeIndex(
@@ -126,6 +128,7 @@ class QrCodesResultUseCaseImpl(
     }
 
     private suspend fun mapToEuropeanVaccinations(
+        credentialExpirationTimeSeconds: Long,
         credentials: List<ByteArray>,
         qrCodeWidth: Int,
         qrCodeHeight: Int,
@@ -148,12 +151,15 @@ class QrCodesResultUseCaseImpl(
             val totalDoses =
                 readEuropeanCredentialUtil.getOfTotalDoses(readEuropeanCredential) ?: ""
 
+            val isExpired = credentialUtil.europeanCredentialHasExpired(credentialExpirationTimeSeconds)
+            val isDoseSmaller = credentialUtil.vaccinationShouldBeHidden(readEuropeanCredentials, index)
             QrCodeData.European.Vaccination(
                 dose = dose,
                 ofTotalDoses = totalDoses,
                 bitmap = qrCodeBitmap,
                 readEuropeanCredential = readEuropeanCredential,
-                isHidden = credentialUtil.vaccinationShouldBeHidden(readEuropeanCredentials, index)
+                isExpired = isExpired,
+                isDoseNumberSmallerThanTotalDose = isDoseSmaller
             )
         }
     }

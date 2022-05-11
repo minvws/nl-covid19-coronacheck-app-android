@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.dashboard.util
 
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
@@ -56,7 +57,7 @@ class GreenCardRefreshUtilImplTest {
     private val firstJanuaryClock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
 
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
-    private val credentialUtil = CredentialUtilImpl(firstJanuaryClock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
+    private val credentialUtil = CredentialUtilImpl(firstJanuaryClock, mobileCoreWrapper, mockk(), mockk(relaxed = true), mockk(relaxed = true))
 
     private val originUtil: OriginUtil = mockk()
 
@@ -189,5 +190,16 @@ class GreenCardRefreshUtilImplTest {
         greenCardRefreshUtil.shouldRefresh()
 
         verify(inverse = true) { originUtil.isValidWithinRenewalThreshold(any(), any())}
+    }
+
+    @Test
+    fun `validate that foreign dcc green cards are excluded from the refresh`() = runBlocking {
+        val foreignDccGreenCard = expiringGreenCard()
+        val otherGreenCard = validGreenCard()
+
+        coEvery { greenCardUtil.isForeignDcc(foreignDccGreenCard) } answers { true }
+        coEvery { greenCardDao.getAll() } returns listOf(foreignDccGreenCard, otherGreenCard)
+
+        assertFalse(greenCardRefreshUtil.shouldRefresh())
     }
 }

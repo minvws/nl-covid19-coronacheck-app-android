@@ -42,7 +42,7 @@ fun utilsModule(versionCode: Int) = module {
         )
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
-    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get(), get(), get()) }
+    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get(), get(), get(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get(), get(), get()) }
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
@@ -65,5 +65,5 @@ fun utilsModule(versionCode: Int) = module {
     factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }
     factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
-    factory<PaperProofUtil> { PaperProofUtilImpl() }
+    factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
 }

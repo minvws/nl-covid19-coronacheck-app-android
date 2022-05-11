@@ -20,10 +20,10 @@ class MultipleQrCodesUtilImplTest {
     fun `The most relevant QR is the one with the highest dose which is not hidden`() {
         val util = MultipleQrCodesUtilImpl()
         val vaccinations = listOf(
-            createVaccination(dose = "1", totalDoses = "1", isHidden = false),
-            createVaccination(dose = "3", totalDoses = "3", isHidden = false), // most relevant
-            createVaccination(dose = "2", totalDoses = "2", isHidden = false),
-            createVaccination(dose = "4", totalDoses = "2", isHidden = true)
+            createVaccination(dose = "1", totalDoses = "1", isDoseNumberSmallerThanTotalDose = false),
+            createVaccination(dose = "3", totalDoses = "3", isDoseNumberSmallerThanTotalDose = false), // most relevant
+            createVaccination(dose = "2", totalDoses = "2", isDoseNumberSmallerThanTotalDose = false),
+            createVaccination(dose = "4", totalDoses = "2", isDoseNumberSmallerThanTotalDose = true)
         )
 
         assertEquals(util.getMostRelevantQrCodeIndex(vaccinations), 1)
@@ -33,20 +33,21 @@ class MultipleQrCodesUtilImplTest {
     fun `The most relevant QR of highest equal doses is the one with the highest of total doses`() {
         val util = MultipleQrCodesUtilImpl()
         val vaccinations = listOf(
-            createVaccination(dose = "1", totalDoses = "1", isHidden = false),
-            createVaccination(dose = "3", totalDoses = "2", isHidden = false),
-            createVaccination(dose = "3", totalDoses = "3", isHidden = false), // most relevant
-            createVaccination(dose = "4", totalDoses = "5", isHidden = true)
+            createVaccination(dose = "1", totalDoses = "1", isDoseNumberSmallerThanTotalDose = false),
+            createVaccination(dose = "3", totalDoses = "2", isDoseNumberSmallerThanTotalDose = false),
+            createVaccination(dose = "3", totalDoses = "3", isDoseNumberSmallerThanTotalDose = false), // most relevant
+            createVaccination(dose = "4", totalDoses = "5", isDoseNumberSmallerThanTotalDose = true)
         )
 
         assertEquals(util.getMostRelevantQrCodeIndex(vaccinations), 2)
     }
 
-    private fun createVaccination(dose: String, totalDoses: String, isHidden: Boolean) =
+    private fun createVaccination(dose: String, totalDoses: String, isDoseNumberSmallerThanTotalDose: Boolean) =
         QrCodeData.European.Vaccination(
             dose = dose,
             ofTotalDoses = totalDoses,
-            isHidden = isHidden,
+            isDoseNumberSmallerThanTotalDose = isDoseNumberSmallerThanTotalDose,
+            isExpired = false,
             bitmap = mockk(),
             readEuropeanCredential = mockk()
         )

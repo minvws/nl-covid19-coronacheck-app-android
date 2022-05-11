@@ -127,12 +127,6 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
                 }
                 binding.indicators.updateSelected(position)
 
-                binding.indicators.contentDescription = getString(
-                    R.string.onboarding_page_indicator_label,
-                    (position + 1).toString(),
-                    adapter.itemCount.toString()
-                )
-
                 setButtonText(binding, position)
 
                 // Apply bottom elevation if the view inside the viewpager is scrollable
