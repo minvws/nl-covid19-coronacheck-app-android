@@ -26,7 +26,7 @@ class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
 
     val qrCodeDataList: MutableList<QrCodeData> = mutableListOf()
 
-    private var currentPosition = 1
+    private var currentPosition = 0
 
     private val overlayVisibilityStates = mutableListOf<Boolean>()
 

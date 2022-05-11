@@ -307,6 +307,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             binding.nextQrButton.setOnClickListener {
                 binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
             }
+        } else {
+            showDoseInfo(europeanVaccinations.first())
         }
     }
 
