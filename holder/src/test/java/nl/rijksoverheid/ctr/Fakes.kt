@@ -138,7 +138,7 @@ fun fakeIntroductionViewModel(
 fun fakeSetupViewModel(): SetupViewModel {
     return object : SetupViewModel() {
         override fun onConfigUpdated() {
-
+            (introductionDataLiveData as MutableLiveData).postValue(IntroductionData())
         }
     }
 }
