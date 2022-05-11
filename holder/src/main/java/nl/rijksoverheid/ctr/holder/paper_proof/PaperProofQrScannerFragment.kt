@@ -72,7 +72,7 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                     )
                 }
                 is PaperProofType.CTB -> {
-                    val navDirection = InfoFragmentDirections.actionPaperProofStartScanning(true)
+                    val navDirection = InfoFragmentDirections.actionPaperProofStartScanning()
                     holderMainActivityViewModel.navigate(
                         navDirections = PaperProofStartScanningFragmentDirections.actionInfoFragment(
                             toolbarTitle = getString(R.string.add_paper_proof_qr_scanner_title),
@@ -91,7 +91,7 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                     )
                 }
                 is PaperProofType.Unknown -> {
-                    val navDirection = InfoFragmentDirections.actionPaperProofStartScanning(true)
+                    val navDirection = InfoFragmentDirections.actionPaperProofStartScanning()
                     holderMainActivityViewModel.navigate(
                         navDirections = PaperProofStartScanningFragmentDirections.actionInfoFragment(
                             toolbarTitle = getString(R.string.add_paper_proof_qr_scanner_title),

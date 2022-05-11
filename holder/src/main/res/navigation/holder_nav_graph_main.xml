@@ -224,11 +224,6 @@
             android:label="@string/holder_paperproof_startscanning_toolbar_title"
             tools:layout="@layout/fragment_paper_proof_start_scanning">
 
-            <argument
-                android:name="openScanner"
-                android:defaultValue="false"
-                app:argType="boolean" />
-
             <action
                 android:id="@+id/action_paper_proof_code"
                 app:destination="@id/nav_paper_proof_code"
@@ -248,10 +243,11 @@
             <action
                 android:id="@+id/action_info_fragment"
                 app:destination="@id/nav_info_fragment"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right" />
+                app:enterAnim="@anim/fragment_open_enter"
+                app:exitAnim="@anim/fragment_open_exit"
+                app:popEnterAnim="@anim/fragment_close_enter"
+                app:popExitAnim="@anim/fragment_close_exit"
+                app:popUpTo="@id/nav_info_fragment" />
 
         </fragment>
 
@@ -684,15 +680,8 @@
             app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit"
-            app:popUpTo="@id/nav_graph_overview"
-            app:popUpToInclusive="true">
-
-            <argument
-                android:name="openScanner"
-                android:defaultValue="false"
-                app:argType="boolean" />
-
-        </action>
+            app:popUpTo="@id/nav_paper_proof"
+            app:popUpToInclusive="true"/>
 
     </fragment>
 
