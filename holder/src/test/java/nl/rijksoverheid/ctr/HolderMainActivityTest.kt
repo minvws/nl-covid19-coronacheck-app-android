@@ -143,7 +143,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                     fakeDashboardViewModel()
                 }
                 viewModel {
-                    fakeSetupViewModel()
+                    fakeSetupViewModel(updateConfig = false)
                 }
                 factory {
                     fakeSecretKeyUseCase()

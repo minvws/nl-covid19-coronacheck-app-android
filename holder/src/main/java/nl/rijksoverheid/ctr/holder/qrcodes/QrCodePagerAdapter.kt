@@ -26,15 +26,23 @@ class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
 
     val qrCodeDataList: MutableList<QrCodeData> = mutableListOf()
 
-    private var currentPosition = 1
+    private var currentPosition = 0
 
     private val overlayVisibilityStates = mutableListOf<Boolean>()
 
     fun addData(data: List<QrCodeData>) {
         val hasItems = qrCodeDataList.isNotEmpty()
+        val hideOverlayInCurrentPosition = overlayVisibilityStates.getOrNull(currentPosition) == false
         qrCodeDataList.clear()
         overlayVisibilityStates.clear()
-        data.forEach { overlayVisibilityStates.add(isQrCodeHidden(it)) }
+        data.forEachIndexed { index, it ->
+            // if user chose to display the QR, don't hide it until scrolled away from it
+            if (index == currentPosition && hideOverlayInCurrentPosition) {
+                overlayVisibilityStates.add(false)
+            } else {
+                overlayVisibilityStates.add(isQrCodeHidden(it))
+            }
+        }
         qrCodeDataList.addAll(data)
         if (hasItems) {
             notifyItemRangeChanged(0, data.size)
