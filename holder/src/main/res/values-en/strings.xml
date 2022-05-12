@@ -18,9 +18,6 @@
   <string name="holder_eventdetails_vaccinationStatus_complete">yes</string>
   <string name="holder_eventdetails_vaccinationStatus_recovery">yes (I’ve had coronavirus earlier)</string>
   <string name="holder_eventdetails_vaccinationStatus_firstVaccinationElsewhere">yes (I have been vaccinated elsewhere)</string>
-  <string name="holder_scanner_error_title_unknown">QR code not recognised</string>
-  <string name="holder_scanner_error_message_unknown">The QR code you are trying to scan is not recognised as a coronavirus pass. Make sure you are holding the correct QR code in front of the camera.</string>
-  <string name="holder_scanner_error_title_ctb">Scan your international QR code</string>
   <string name="app_name_test">CoronaCheck (Test)</string>
   <string name="app_name_acc">CoronaCheck (Acc)</string>
   <string name="app_name">CoronaCheck</string>
@@ -768,5 +765,9 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_showQR_label_expiredQR">This QR code is no longer valid</string>
   <string name="holder_listRemoteEvents_somethingWrong_foreignDCC_body"><![CDATA[<br /><b>Are your details incorrect?</b><br />Please contact the healthcare provider who vaccinated or tested you. Ask if they can help you correct your data.]]></string>
   <string name="holder_dcc_issuer">Certificate issuer:</string>
-  <string name="holder_scanner_error_action">Sluiten</string>
+  <string name="holder_scanner_error_action">Close</string>
+  <string name="holder_scanner_error_message_ctb">Scan the QR code on your international certificate. It contains the information needed to add your certificate to the app. You don’t need to scan your Dutch QR code.</string>
+  <string name="holder_scanner_error_title_ctb">Scan the international QR code</string>
+  <string name="holder_scanner_error_message_unknown">The QR code you are trying to scan is not recognised as a coronavirus pass. Make sure you are holding the correct QR code in front of the camera.</string>
+  <string name="holder_scanner_error_title_unknown">This QR code is not recognised</string>
 </resources>
