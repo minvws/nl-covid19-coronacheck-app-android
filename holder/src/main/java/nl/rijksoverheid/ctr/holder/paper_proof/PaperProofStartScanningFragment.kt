@@ -14,7 +14,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -30,7 +29,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class PaperProofStartScanningFragment: Fragment(R.layout.fragment_paper_proof_start_scanning) {
 
-    private val args: PaperProofStartScanningFragmentArgs by navArgs()
     private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
 
@@ -41,10 +39,6 @@ class PaperProofStartScanningFragment: Fragment(R.layout.fragment_paper_proof_st
         holderMainActivityViewModel.navigateLiveData.observe(viewLifecycleOwner, EventObserver {
             findNavControllerSafety()?.navigate(it)
         })
-
-        if (args.openScanner) {
-            openScanner()
-        }
 
         binding.button.setOnClickListener {
             infoFragmentUtil.presentAsBottomSheet(
