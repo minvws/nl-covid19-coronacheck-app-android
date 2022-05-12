@@ -371,7 +371,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
      * Checks if this fragment should automatically close
      */
     private fun checkShouldAutomaticallyClose() {
-        val shouldClose = qrCodesFragmentUtil.shouldClose(args.data.credentialExpirationTimeSeconds, args.data.type)
+        val shouldClose = qrCodesFragmentUtil.shouldClose(args.data.credentialsWithExpirationTime.last().second.toEpochSecond(), args.data.type)
         if (shouldClose) {
             findNavControllerSafety()?.popBackStack()
         }

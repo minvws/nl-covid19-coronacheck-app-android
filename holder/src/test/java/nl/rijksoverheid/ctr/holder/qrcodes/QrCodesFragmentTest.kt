@@ -63,14 +63,19 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
         return QrCodeFragmentData(
             type = GreenCardType.Eu,
             originType = OriginType.Vaccination,
-            credentials = List(pages) { qrCodeContent.toByteArray() },
-            shouldDisclose = QrCodeFragmentData.ShouldDisclose.DoNotDisclose,
-            credentialExpirationTimeSeconds = OffsetDateTime.now()
-                .toEpochSecond() + if (expiredQrCode) {
-                -100000
-            } else {
-                100000
+            credentialsWithExpirationTime = List(pages) {
+                Pair(
+                    qrCodeContent.toByteArray(), OffsetDateTime.now()
+                        .plusSeconds(
+                            if (expiredQrCode) {
+                                -100
+                            } else {
+                                100
+                            }
+                        )
+                )
             },
+            shouldDisclose = QrCodeFragmentData.ShouldDisclose.DoNotDisclose,
         )
     }
 
