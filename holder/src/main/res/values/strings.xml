@@ -18,10 +18,6 @@
   <string name="holder_eventdetails_vaccinationStatus_complete">ja</string>
   <string name="holder_eventdetails_vaccinationStatus_recovery">ja (eerder corona gehad)</string>
   <string name="holder_eventdetails_vaccinationStatus_firstVaccinationElsewhere">ja (ergens anders gevaccineerd)</string>
-  <string name="holder_scanner_error_title_unknown">QR-code wordt niet herkend</string>
-  <string name="holder_scanner_error_message_unknown">De QR-code die je probeert te scannen wordt niet herkend als die van een coronabewijs. Controleer of je de goede QR-code voor de camera houdt.</string>
-  <string name="holder_scanner_error_title_ctb">Scan je internationale QR-code</string>
-  <string name="holder_scanner_error_message_ctb">Scan de QR-code op het internationale bewijs dat je van je zorgverlener of de overheid hebt gekregen. Hierin staan de gegevens die nodig zijn om je bewijs in de app te zetten. Je herkent dit bewijs aan de Europese vlag.</string>
   <string name="app_name_test">CoronaCheck (Test)</string>
   <string name="app_name_acc">CoronaCheck (Acc)</string>
   <string name="app_name">CoronaCheck</string>
@@ -67,7 +63,7 @@
   <string name="my_overview_test_result_expires_in_hours_minutes">Verloopt over %1$s en %2$s</string>
   <string name="my_overview_test_result_expires_in_minutes">Verloopt over %1$s</string>
   <string name="my_overview_test_result_footer">Laat QR-code zien bij ingang</string>
-  <string name="my_overview_test_result_button">Bekijk QR</string>
+  <string name="my_overview_test_result_button">Bekijk QR-code</string>
   <string name="general_loading_description">Bezig met laden, even geduld</string>
   <string name="my_overview_no_qr_make_appointment_title">Testafspraak maken</string>
   <string name="my_overview_no_qr_make_appointment_description">Wil je een QR-code maken? Laat je dan eerst testen op corona.</string>
@@ -764,11 +760,15 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_paperproof_startscanning_title">Een coronabewijs inscannen</string>
   <string name="holder_paperproof_startscanning_body"><![CDATA[Heb je al een coronabewijs gekregen en wil je deze aan de app toevoegen? Dat kan door de QR-code te scannen met de camera van je telefoon.<br /><br />Je kunt een bewijs toevoegen van je vaccinatie of test uit het buitenland. Of een bewijs dat je opgestuurd hebt gekregen van je zorgverlener of de Nederlandse overheid.]]></string>
   <string name="holder_menu_paperproof_subTitle">(Papieren) bewijs toevoegen</string>
-  <string name="holder_scanner_error_action">Opnieuw scannen</string>
   <string name="holder_paperproof_startscanning_toolbar_title">Bewijs inscannen</string>
   <string name="holder_newintheapp_foreignproofs_title">Buitenlandse bewijzen toevoegen</string>
   <string name="holder_newintheapp_foreignproofs_body">Heb je een coronabewijs met QR-code van een test of vaccinatie uit het buitenland? Dan kun je jouw bewijs nu toevoegen aan CoronaCheck. Kies in het menu voor “Coronabewijs inscannen”.</string>
-  <string name="holder_showQR_label_expiredVaccination">Deze vaccinatie is verlopen</string>
+  <string name="holder_showQR_label_expiredQR">Deze QR-code is niet meer geldig</string>
   <string name="holder_listRemoteEvents_somethingWrong_foreignDCC_body"><![CDATA[<br /><b>Kloppen er gegevens niet?</b><br />Neem contact op met de zorgverlener waar je bent getest of gevaccineerd. Vraag of zij je kunnen helpen je gegevens aan te passen.]]></string>
   <string name="holder_dcc_issuer">Afgever certificaat:</string>
+  <string name="holder_scanner_error_action">Sluiten</string>
+  <string name="holder_scanner_error_message_ctb">Scan de QR-code op je internationale bewijs. Hierin staan alle gegevens die nodig zijn om je bewijs in de app te zetten. Je hoeft je Nederlandse QR-code niet te scannen.</string>
+  <string name="holder_scanner_error_title_ctb">Scan de internationale QR-code</string>
+  <string name="holder_scanner_error_message_unknown">De QR-code die je probeert te scannen wordt niet herkend als die van een coronabewijs. Controleer of je de goede QR-code voor de camera houdt.</string>
+  <string name="holder_scanner_error_title_unknown">Deze QR-code wordt niet herkend</string>
 </resources>

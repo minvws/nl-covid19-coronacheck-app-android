@@ -9,22 +9,21 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotExist
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
+import com.adevinta.android.barista.interaction.BaristaSleepInteractions
 import com.adevinta.android.barista.interaction.BaristaViewPagerInteractions.swipeViewPagerBack
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.fakeAppConfig
 import nl.rijksoverheid.ctr.holder.fakeMobileCoreWrapper
 import nl.rijksoverheid.ctr.holder.fakeQrCodeUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,10 +31,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
-import org.robolectric.annotation.Config
 import java.time.OffsetDateTime
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -67,21 +63,28 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
         return QrCodeFragmentData(
             type = GreenCardType.Eu,
             originType = OriginType.Vaccination,
-            credentials = List(pages) { qrCodeContent.toByteArray() },
-            shouldDisclose = QrCodeFragmentData.ShouldDisclose.DoNotDisclose,
-            credentialExpirationTimeSeconds = OffsetDateTime.now()
-                .toEpochSecond() + if (expiredQrCode) {
-                -100000
-            } else {
-                100000
+            credentialsWithExpirationTime = List(pages) {
+                Pair(
+                    qrCodeContent.toByteArray(), OffsetDateTime.now()
+                        .plusSeconds(
+                            if (expiredQrCode) {
+                                -100
+                            } else {
+                                100
+                            }
+                        )
+                )
             },
+            shouldDisclose = QrCodeFragmentData.ShouldDisclose.DoNotDisclose,
         )
     }
 
     private fun launch(
         pages: Int = 2,
+        domesticQRRefreshSeconds: Int = 10,
         expiredQrCode: Boolean
     ) {
+        val config = fakeAppConfig(domesticQRRefreshSeconds = domesticQRRefreshSeconds)
         loadKoinModules(
             module(override = true) {
                 factory {
@@ -89,6 +92,14 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
                 }
                 factory {
                     fakeQrCodeUtil()
+                }
+                factory<CachedAppConfigUseCase> {
+                    object : CachedAppConfigUseCase {
+                        override fun isCachedAppConfigValid() = true
+                        override fun getCachedAppConfig() = config
+                        override fun getCachedAppConfigOrNull() = config
+                        override fun getCachedAppConfigHash() = ""
+                    }
                 }
             }
         )
@@ -117,7 +128,7 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
         swipeViewPagerBack()
 
         assertDisplayed(R.id.overlay)
-        assertDisplayed(R.string.holder_showQR_label_expiredVaccination)
+        assertDisplayed(R.string.holder_showQR_label_expiredQR)
     }
 
     @Test
@@ -127,7 +138,7 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
         swipeViewPagerBack()
 
         assertNotDisplayed(R.id.overlay)
-        assertNotExist(R.string.holder_showQR_label_expiredVaccination)
+        assertNotExist(R.string.holder_showQR_label_expiredQR)
     }
 
     @Test
@@ -145,5 +156,16 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
 
         assertNotDisplayed(R.id.overlay)
         assertNotDisplayed(R.id.doseInfo)
+    }
+
+    @Test
+    fun `displaying an initially hidden QR keeps it displayed after regenerating the QR codes`() {
+        launch(expiredQrCode = true, pages = 1, domesticQRRefreshSeconds = 1)
+
+        onView(withId(R.id.overlayButton)).perform(click())
+        // wait until the QR is regenerated
+        BaristaSleepInteractions.sleep(1001)
+
+        assertNotDisplayed(R.id.overlay)
     }
 }
