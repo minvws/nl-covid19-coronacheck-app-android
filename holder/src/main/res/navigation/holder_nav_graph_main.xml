@@ -240,15 +240,6 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
-            <action
-                android:id="@+id/action_info_fragment"
-                app:destination="@id/nav_info_fragment"
-                app:enterAnim="@anim/fragment_open_enter"
-                app:exitAnim="@anim/fragment_open_exit"
-                app:popEnterAnim="@anim/fragment_close_enter"
-                app:popExitAnim="@anim/fragment_close_exit"
-                app:popUpTo="@id/nav_info_fragment" />
-
         </fragment>
 
         <fragment
