@@ -21,7 +21,6 @@
   <string name="holder_scanner_error_title_unknown">QR code not recognised</string>
   <string name="holder_scanner_error_message_unknown">The QR code you are trying to scan is not recognised as a coronavirus pass. Make sure you are holding the correct QR code in front of the camera.</string>
   <string name="holder_scanner_error_title_ctb">Scan your international QR code</string>
-  <string name="holder_scanner_error_message_ctb">You don’t need to scan your Dutch QR code. Scan the QR code on the international certificate you received from your health care provider or the government. It contains the information needed to add your certificate to the app. You can recognise this certificate by the European flag.</string>
   <string name="app_name_test">CoronaCheck (Test)</string>
   <string name="app_name_acc">CoronaCheck (Acc)</string>
   <string name="app_name">CoronaCheck</string>
@@ -67,7 +66,7 @@
   <string name="my_overview_test_result_expires_in_hours_minutes">Expires in %1$s, %2$s</string>
   <string name="my_overview_test_result_expires_in_minutes">Expires in %1$s</string>
   <string name="my_overview_test_result_footer">Show QR code at the entrance</string>
-  <string name="my_overview_test_result_button">View QR</string>
+  <string name="my_overview_test_result_button">View QR code</string>
   <string name="general_loading_description">Loading, please wait</string>
   <string name="my_overview_no_qr_make_appointment_title">Book test appointment</string>
   <string name="my_overview_no_qr_make_appointment_description">Want to make a QR code? Get tested for coronavirus first.</string>
@@ -763,11 +762,11 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_paperproof_startscanning_title">Scan to add a certificate</string>
   <string name="holder_paperproof_startscanning_body"><![CDATA[Have you already received a coronavirus certificate and do you want to add it to the app? You can do this by scanning the QR code with your phone’s camera.<br /><br />You can add a certificate of your vaccination or test from abroad. Or a certificate that you received from your health care provider or the Dutch government.]]></string>
   <string name="holder_menu_paperproof_subTitle">Add (paper) certificate</string>
-  <string name="holder_scanner_error_action">Scan again</string>
   <string name="holder_paperproof_startscanning_toolbar_title">Add certificate</string>
   <string name="holder_newintheapp_foreignproofs_title">Adding foreign certificates</string>
   <string name="holder_newintheapp_foreignproofs_body">Do you have a coronavirus certificate with QR code of a test or vaccination from abroad? Now you can add your certificate to CoronaCheck. Choose “Scan to add certificate” in the menu.</string>
   <string name="holder_showQR_label_expiredQR">This QR code is no longer valid</string>
   <string name="holder_listRemoteEvents_somethingWrong_foreignDCC_body"><![CDATA[<br /><b>Are your details incorrect?</b><br />Please contact the healthcare provider who vaccinated or tested you. Ask if they can help you correct your data.]]></string>
   <string name="holder_dcc_issuer">Certificate issuer:</string>
+  <string name="holder_scanner_error_action">Sluiten</string>
 </resources>
