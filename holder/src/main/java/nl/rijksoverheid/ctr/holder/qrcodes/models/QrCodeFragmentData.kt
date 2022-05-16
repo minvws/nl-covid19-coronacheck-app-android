@@ -5,14 +5,14 @@ import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
+import java.time.OffsetDateTime
 
 @Parcelize
 data class QrCodeFragmentData(
     val type: GreenCardType,
     val originType: OriginType,
-    val credentials: List<ByteArray>,
+    val credentialsWithExpirationTime: List<Pair<ByteArray, OffsetDateTime>>,
     val shouldDisclose: ShouldDisclose,
-    val credentialExpirationTimeSeconds: Long
 ): Parcelable {
 
     sealed class ShouldDisclose: Parcelable {

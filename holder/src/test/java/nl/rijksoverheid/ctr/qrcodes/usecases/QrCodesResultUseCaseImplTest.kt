@@ -15,6 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import java.time.OffsetDateTime
 
 @RunWith(RobolectricTestRunner::class)
 class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
@@ -36,9 +37,8 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
             qrCodeFragmentData = QrCodeFragmentData(
                 type = GreenCardType.Domestic,
                 originType = OriginType.Vaccination,
-                credentials = listOf("".toByteArray()),
+                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
                 shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
-                credentialExpirationTimeSeconds = 0,
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
@@ -52,9 +52,8 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
             qrCodeFragmentData = QrCodeFragmentData(
                 type = GreenCardType.Domestic,
                 originType = OriginType.Vaccination,
-                credentials = listOf("".toByteArray()),
+                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
                 shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
-                credentialExpirationTimeSeconds = 0,
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
@@ -68,9 +67,8 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
             qrCodeFragmentData = QrCodeFragmentData(
                 type = GreenCardType.Domestic,
                 originType = OriginType.Vaccination,
-                credentials = listOf("".toByteArray()),
+                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
                 shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
-                credentialExpirationTimeSeconds = 0,
             ),
             qrCodeHeight = 0, 
             qrCodeWidth = 0
@@ -84,9 +82,8 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
             qrCodeFragmentData = QrCodeFragmentData(
                 type = GreenCardType.Domestic,
                 originType = OriginType.Vaccination,
-                credentials = listOf("".toByteArray()),
+                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
                 shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
-                credentialExpirationTimeSeconds = 0,
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
@@ -100,9 +97,8 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
             qrCodeFragmentData = QrCodeFragmentData(
                 type = GreenCardType.Domestic,
                 originType = OriginType.Vaccination,
-                credentials = listOf("".toByteArray()),
+                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
                 shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
-                credentialExpirationTimeSeconds = 0,
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
@@ -116,9 +112,8 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
             qrCodeFragmentData = QrCodeFragmentData(
                 type = GreenCardType.Eu,
                 originType = OriginType.Vaccination,
-                credentials = listOf("".toByteArray()),
+                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
                 shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
-                credentialExpirationTimeSeconds = 0,
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0

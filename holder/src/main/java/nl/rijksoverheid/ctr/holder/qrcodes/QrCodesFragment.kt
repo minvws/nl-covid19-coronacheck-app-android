@@ -333,7 +333,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         TransitionManager.beginDelayedTransition(binding.bottomScroll)
         when {
             vaccination.isExpired -> {
-                binding.doseInfo.text = getString(R.string.holder_showQR_label_expiredVaccination)
+                binding.doseInfo.text = getString(R.string.holder_showQR_label_expiredQR)
                 binding.doseInfo.visibility = View.VISIBLE
             }
             vaccination.isDoseNumberSmallerThanTotalDose -> {
@@ -371,7 +371,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
      * Checks if this fragment should automatically close
      */
     private fun checkShouldAutomaticallyClose() {
-        val shouldClose = qrCodesFragmentUtil.shouldClose(args.data.credentialExpirationTimeSeconds, args.data.type)
+        val shouldClose = qrCodesFragmentUtil.shouldClose(args.data.credentialsWithExpirationTime.last().second.toEpochSecond(), args.data.type)
         if (shouldClose) {
             findNavControllerSafety()?.popBackStack()
         }

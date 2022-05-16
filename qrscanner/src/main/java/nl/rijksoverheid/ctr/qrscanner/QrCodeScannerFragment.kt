@@ -317,20 +317,19 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         // Add Analyzer to the Usecase, which will receive frames from the camera
         // and processes them using our supplied function
         imageAnalyzer.setAnalyzer(
-            cameraExecutor,
-            { cameraFrame ->
-                if (isAdded) {
-                    qrCodeProcessor.process(
-                        binding = binding,
-                        cameraProvider = cameraProvider,
-                        cameraFrame = cameraFrame,
-                        qrCodeProcessed = {
-                            onQrScanned(it)
-                        }
-                    )
-                }
+            cameraExecutor
+        ) { cameraFrame ->
+            if (isAdded) {
+                qrCodeProcessor.process(
+                    binding = binding,
+                    cameraProvider = cameraProvider,
+                    cameraFrame = cameraFrame,
+                    qrCodeProcessed = {
+                        onQrScanned(it)
+                    }
+                )
             }
-        )
+        }
 
         // bind the Analyzer Usecase to the activity's lifecycle so the preview is automatically unbound
         // and disposed whenever the activity closes
