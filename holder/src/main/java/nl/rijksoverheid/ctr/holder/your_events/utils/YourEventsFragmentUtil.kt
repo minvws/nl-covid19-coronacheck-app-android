@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
 interface YourEventsFragmentUtil {
+    fun getHeaderCopy(type: YourEventsFragmentType): Int
     fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int
     fun getProviderName(type: YourEventsFragmentType, providerIdentifier: String): String
     fun getCancelDialogDescription(type: YourEventsFragmentType): Int
@@ -29,6 +30,16 @@ interface YourEventsFragmentUtil {
 class YourEventsFragmentUtilImpl(
     private val remoteEventUtil: RemoteEventUtil
 ) : YourEventsFragmentUtil {
+    override fun getHeaderCopy(type: YourEventsFragmentType): Int {
+        return when (type) {
+            is YourEventsFragmentType.DCC -> {
+                R.string.holder_listRemoteEvents_paperflow_message
+            }
+            else -> {
+                R.string.holder_listRemoteEvents_vaccination_message
+            }
+        }
+    }
 
     override fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int {
         return when (type) {
