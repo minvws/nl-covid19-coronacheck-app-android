@@ -28,7 +28,7 @@
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textStyle="bold"
                 android:layout_marginHorizontal="16dp"
-                android:text="@string/holder_paperproof_whichProofsCanBeUsed_title"
+                android:text="@string/holder_paperproof_startscanning_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
