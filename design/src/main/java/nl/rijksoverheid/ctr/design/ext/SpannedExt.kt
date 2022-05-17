@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.design.ext
 import android.text.Spanned
 import android.text.style.BulletSpan
 import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import androidx.core.text.getSpans
 import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
 
