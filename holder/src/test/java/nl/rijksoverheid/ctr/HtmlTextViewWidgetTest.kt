@@ -51,29 +51,20 @@ class HtmlTextViewWidgetTest : AutoCloseKoinTest() {
 
         // Heading test
         widget.setHtmlText("<strong>Heading 1</strong><p>Paragraph 1</p><strong>Heading 2</strong><p>Paragraph 2</p>")
-        assertEquals(
-            widget.children.filter { ViewCompat.isAccessibilityHeading(it) }.count(),
-            0
-        ) // 2: Heading 1 + Heading 2
+        assertEquals(widget.children.filter { ViewCompat.isAccessibilityHeading(it) }.count(), 0) // 2: Heading 1 + Heading 2
         assertEquals(widget.childCount, 1) // 5: Heading + Text + Linebreak + Heading + Text
 
         widget.setHtmlText("<h1>Heading 1</h1>")
-        assertEquals(1, widget.childCount)
         assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
         widget.setHtmlText("<h2>Heading 1</h2>")
-        assertEquals(1, widget.childCount)
         assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
         widget.setHtmlText("<h3>Heading 1</h3>")
-        assertEquals(1, widget.childCount)
         assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
         widget.setHtmlText("<h4>Heading 1</h4>")
-        assertEquals(1, widget.childCount)
         assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
         widget.setHtmlText("<h5>Heading 1</h5>")
-        assertEquals(1, widget.childCount)
         assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
         widget.setHtmlText("<h6>Heading 1</h6>")
-        assertEquals(1, widget.childCount)
         assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
 
         // List test
