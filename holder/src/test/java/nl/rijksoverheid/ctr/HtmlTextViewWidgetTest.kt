@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
@@ -53,9 +54,18 @@ class HtmlTextViewWidgetTest : AutoCloseKoinTest() {
         assertEquals(widget.children.filter { ViewCompat.isAccessibilityHeading(it) }.count(), 0) // 2: Heading 1 + Heading 2
         assertEquals(widget.childCount, 1) // 5: Heading + Text + Linebreak + Heading + Text
 
-        widget.setHtmlText("<h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3><h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6>")
-        assertEquals(widget.children.filter { ViewCompat.isAccessibilityHeading(it) }.count(), 0) // 6: h1, h2, h3, h4, h5, h6
-        assertEquals(widget.childCount, 1) // 7: Heading + Heading + Heading + Heading + Heading + Heading + Linebreak
+        widget.setHtmlText("<h1>Heading 1</h1>")
+        assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
+        widget.setHtmlText("<h2>Heading 1</h2>")
+        assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
+        widget.setHtmlText("<h3>Heading 1</h3>")
+        assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
+        widget.setHtmlText("<h4>Heading 1</h4>")
+        assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
+        widget.setHtmlText("<h5>Heading 1</h5>")
+        assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
+        widget.setHtmlText("<h6>Heading 1</h6>")
+        assertTrue(ViewCompat.isAccessibilityHeading(widget.getChildAt(0)))
 
         // List test
         widget.setHtmlText("<ul><li>List item 1</li><li>List item 2</li></ul>")
