@@ -29,16 +29,6 @@ import org.robolectric.RobolectricTestRunner
 class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
 
     @Test
-    fun `getNoOriginTypeCopy returns correct copy for TestResult2`() {
-        val util = YourEventsFragmentUtilImpl(mockk())
-
-        val testResult2 = mockk<YourEventsFragmentType.TestResult2>()
-        val copy = util.getNoOriginTypeCopy(testResult2, HolderFlow.Startup)
-
-        assertEquals(R.string.rule_engine_no_test_origin_description_negative_test, copy)
-    }
-
-    @Test
     fun `getNoOriginTypeCopy returns correct copy for DCC`() {
         val util = YourEventsFragmentUtilImpl(mockk())
 
@@ -155,19 +145,6 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         )
 
         assertEquals(copy, R.string.holder_dcc_alert_message)
-    }
-
-    @Test
-    fun `getCancelDialogDescription returns correct copy for RemoteProtocol3Type with origin test`() {
-        val remoteEventUtil: RemoteEventUtil = mockk()
-        val util = YourEventsFragmentUtilImpl(remoteEventUtil)
-
-        val testResult2 = mockk<YourEventsFragmentType.TestResult2>()
-        val copy = util.getCancelDialogDescription(
-            type = testResult2
-        )
-
-        assertEquals(copy, R.string.holder_test_alert_message)
     }
 
     @Test

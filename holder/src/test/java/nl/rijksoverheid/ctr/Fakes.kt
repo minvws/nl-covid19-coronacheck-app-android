@@ -163,11 +163,12 @@ fun fakeSecretKeyUseCase(
 fun fakeTestProviderRepository(
     model: SignedResponseWithModel<RemoteProtocol> = SignedResponseWithModel(
         rawResponse = "dummy".toByteArray(),
-        model = RemoteTestResult2(
-            result = null,
+        model = RemoteProtocol3(
             protocolVersion = "1",
             providerIdentifier = "1",
-            status = RemoteProtocol.Status.COMPLETE
+            status = RemoteProtocol.Status.COMPLETE,
+            holder = null,
+            events = null
         ),
     ),
     remoteTestResultExceptionCallback: (() -> Unit)? = null,
