@@ -99,6 +99,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         val binding = FragmentYourEventsBinding.bind(view)
 
+        presentHeader(
+            binding = binding
+        )
+
         presentEvents(
             binding = binding
         )
@@ -646,6 +650,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         binding.bottom.setButtonClick {
             retrieveGreenCards()
         }
+    }
+
+    private fun presentHeader(binding: FragmentYourEventsBinding) {
+        binding.description.setText(yourEventsFragmentUtil.getHeaderCopy(args.type))
     }
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {

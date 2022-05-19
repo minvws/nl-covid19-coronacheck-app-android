@@ -274,6 +274,28 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         assertEquals("XX", birthDate)
     }
 
+    @Test
+    fun `getHeaderCopy returns correct copy when type dcc`() {
+        val util = YourEventsFragmentUtilImpl(mockk())
+
+        val copy = util.getHeaderCopy(
+            type = YourEventsFragmentType.DCC(mockk(), "".toByteArray(), mockk())
+        )
+
+        assertEquals(R.string.holder_listRemoteEvents_paperflow_message, copy)
+    }
+
+    @Test
+    fun `getHeaderCopy returns correct copy when type not dcc`() {
+        val util = YourEventsFragmentUtilImpl(mockk())
+
+        val copy = util.getHeaderCopy(
+            type = YourEventsFragmentType.RemoteProtocol3Type(mockk(), listOf())
+        )
+
+        assertEquals(R.string.holder_listRemoteEvents_vaccination_message, copy)
+    }
+
     private fun getRemoteProtocol3(element: RemoteEventNegativeTest) =
         mapOf(
             RemoteProtocol3(
