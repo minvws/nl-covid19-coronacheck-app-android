@@ -12,11 +12,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.*
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 
 interface InfoScreenUtil {
-    fun getForRemoteTestResult2(
-        result: RemoteTestResult2.Result,
-        personalDetails: PersonalDetails,
-        testDate: String
-    ): InfoScreen
 
     fun getForNegativeTest(
         event: RemoteEventNegativeTest,
@@ -65,12 +60,6 @@ class InfoScreenUtilImpl(
     private val recoveryInfoScreenUtil: RecoveryInfoScreenUtil,
     private val vaccinationAssessmentInfoScreenUtil: VaccinationAssessmentInfoScreenUtil
 ) : InfoScreenUtil {
-
-    override fun getForRemoteTestResult2(
-        result: RemoteTestResult2.Result,
-        personalDetails: PersonalDetails,
-        testDate: String
-    ) = testInfoScreenUtil.getForRemoteTestResult2(result, personalDetails, testDate)
 
     override fun getForNegativeTest(
         event: RemoteEventNegativeTest,

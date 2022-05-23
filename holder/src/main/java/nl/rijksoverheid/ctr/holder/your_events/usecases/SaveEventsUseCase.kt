@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
@@ -31,10 +30,6 @@ import java.time.OffsetDateTime
  *
  */
 interface SaveEventsUseCase {
-    suspend fun saveNegativeTest2(
-        negativeTest2: RemoteTestResult2,
-        rawResponse: ByteArray
-    ): SaveEventsUseCaseImpl.SaveEventResult
 
     suspend fun saveRemoteProtocols3(
         remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
@@ -51,35 +46,6 @@ class SaveEventsUseCaseImpl(
     private val scopeUtil: ScopeUtil,
     private val remoteEventUtil: RemoteEventUtil
 ) : SaveEventsUseCase {
-
-    override suspend fun saveNegativeTest2(
-        negativeTest2: RemoteTestResult2,
-        rawResponse: ByteArray
-    ): SaveEventResult {
-        try {
-            // Make remote test results to event group entities to save in the database
-            val entity = EventGroupEntity(
-                walletId = 1,
-                providerIdentifier = negativeTest2.providerIdentifier,
-                type = OriginType.Test,
-                maxIssuedAt = negativeTest2.result?.sampleDate!!,
-                jsonData = rawResponse,
-                scope = ""
-            )
-
-            // Save entity in database
-            holderDatabase.eventGroupDao().insertAll(listOf(entity))
-
-            return SaveEventResult.Success
-        } catch (e: Exception) {
-            return SaveEventResult.Failed(
-                errorResult = AppErrorResult(
-                    step = HolderStep.StoringEvents,
-                    e = e
-                )
-            )
-        }
-    }
 
     override suspend fun remoteProtocols3AreConflicting(remoteProtocols3: Map<RemoteProtocol3, ByteArray>): Boolean {
         val storedEventHolders = holderDatabase.eventGroupDao().getAll()

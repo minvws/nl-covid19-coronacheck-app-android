@@ -1,16 +1,19 @@
 package nl.rijksoverheid.ctr.input_token.usecases
 
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResult
-import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResultUseCase
 import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepository
-import nl.rijksoverheid.ctr.holder.get_events.models.Holder
+import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.holder.fakeConfigProviderUseCase
+import nl.rijksoverheid.ctr.holder.fakeTestProviderRepository
+import nl.rijksoverheid.ctr.holder.fakeTokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteTestResult2
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResult
+import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResultUseCase
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertTrue
@@ -18,7 +21,6 @@ import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
-import java.time.OffsetDateTime
 import kotlin.test.assertEquals
 
 /*
@@ -86,9 +88,11 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    testProviders = listOf(getRemoteTestProvider(
-                        identifier = providerIdentifier
-                    ))
+                    testProviders = listOf(
+                        getRemoteTestProvider(
+                            identifier = providerIdentifier
+                        )
+                    )
                 ),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
@@ -107,10 +111,12 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    testProviders = listOf(getRemoteTestProvider(
-                        identifier = providerIdentifier
+                    testProviders = listOf(
+                        getRemoteTestProvider(
+                            identifier = providerIdentifier
+                        )
                     )
-                )),
+                ),
                 testProviderRepository = fakeTestProviderRepository(
                     model = getRemoteTestResult(
                         status = RemoteProtocol.Status.COMPLETE,
@@ -130,10 +136,12 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    testProviders = listOf(getRemoteTestProvider(
-                        identifier = providerIdentifier
+                    testProviders = listOf(
+                        getRemoteTestProvider(
+                            identifier = providerIdentifier
+                        )
                     )
-                )),
+                ),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
                     getRemoteTestResult(status = RemoteProtocol.Status.VERIFICATION_REQUIRED)
@@ -151,10 +159,12 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    testProviders = listOf(getRemoteTestProvider(
-                        identifier = providerIdentifier
+                    testProviders = listOf(
+                        getRemoteTestProvider(
+                            identifier = providerIdentifier
+                        )
                     )
-                )),
+                ),
                 testProviderRepository = fakeTestProviderRepository(
                     model =
                     getRemoteTestResult(status = RemoteProtocol.Status.INVALID_TOKEN)
@@ -172,10 +182,12 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    testProviders = listOf(getRemoteTestProvider(
-                        identifier = providerIdentifier
+                    testProviders = listOf(
+                        getRemoteTestProvider(
+                            identifier = providerIdentifier
+                        )
                     )
-                )),
+                ),
                 testProviderRepository = fakeTestProviderRepository(
                     remoteTestResultExceptionCallback = {
                         throw HttpException(
@@ -263,10 +275,12 @@ class TestResultUseCaseTest {
             val providerIdentifier = "provider"
             val usecase = TestResultUseCase(
                 configProviderUseCase = fakeConfigProviderUseCase(
-                    testProviders = listOf(getRemoteTestProvider(
-                        identifier = providerIdentifier
+                    testProviders = listOf(
+                        getRemoteTestProvider(
+                            identifier = providerIdentifier
+                        )
                     )
-                    )),
+                ),
                 testProviderRepository = fakeTestProviderRepository(
                     model = getRemoteTestResult(
                         status = RemoteProtocol.Status.COMPLETE,
@@ -276,7 +290,8 @@ class TestResultUseCaseTest {
                 tokenValidatorUtil = fakeTokenValidatorUtil(),
                 configUseCase = fakeCachedAppConfigUseCase()
             )
-            val result = usecase.testResult(uniqueCode = "$providerIdentifier-B-t1", verificationCode = "")
+            val result =
+                usecase.testResult(uniqueCode = "$providerIdentifier-B-t1", verificationCode = "")
             assertEquals(result, TestResult.EmptyVerificationCode)
         }
 
@@ -296,22 +311,13 @@ class TestResultUseCaseTest {
         negativeResult: Boolean = true
     ): SignedResponseWithModel<RemoteProtocol> {
         return SignedResponseWithModel(
-            rawResponse = "dummy".toByteArray(), model = RemoteTestResult2(
-                result = RemoteTestResult2.Result(
-                    unique = "dummy",
-                    sampleDate = OffsetDateTime.now(),
-                    testType = "dummy",
-                    negativeResult = negativeResult,
-                    holder = Holder(
-                        firstNameInitial = "A",
-                        lastNameInitial = "B",
-                        birthDay = "1",
-                        birthMonth = "2"
-                    )
-                ),
-                providerIdentifier = "dummy",
+            rawResponse = "dummy".toByteArray(),
+            model = RemoteProtocol3(
+                providerIdentifier = "",
+                protocolVersion = "",
                 status = status,
-                protocolVersion = "dummy"
+                holder = null,
+                events = if (negativeResult) listOf(mockk()) else emptyList()
             )
         )
     }

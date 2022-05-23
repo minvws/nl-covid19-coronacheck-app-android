@@ -13,17 +13,10 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteTestResult2
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 
 interface TestInfoScreenUtil {
-
-    fun getForRemoteTestResult2(
-        result: RemoteTestResult2.Result,
-        personalDetails: PersonalDetails,
-        testDate: String
-    ): InfoScreen
 
     fun getForNegativeTest(
         event: RemoteEventNegativeTest,
@@ -49,44 +42,6 @@ class TestInfoScreenUtilImpl(
 ) : TestInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
-
-    override fun getForRemoteTestResult2(
-        result: RemoteTestResult2.Result,
-        personalDetails: PersonalDetails,
-        testDate: String
-    ): InfoScreen {
-        val title = resources.getString(R.string.your_test_result_explanation_toolbar_title)
-        val description = (TextUtils.concat(
-            resources.getString(R.string.your_test_result_explanation_description_header),
-            "<br/><br/>",
-            createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_your_details),
-                "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
-            ),
-            "<br/>",
-            createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_test_type),
-                result.testType,
-            ),
-            createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_test_date),
-                testDate
-            ),
-            createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_test_result),
-                resources.getString(R.string.your_test_result_explanation_negative_test_result)
-            ),
-            createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_unique_identifier),
-                result.unique
-            )
-        ) as String)
-
-        return InfoScreen(
-            title = title,
-            description = description
-        )
-    }
 
     override fun getForNegativeTest(
         event: RemoteEventNegativeTest,

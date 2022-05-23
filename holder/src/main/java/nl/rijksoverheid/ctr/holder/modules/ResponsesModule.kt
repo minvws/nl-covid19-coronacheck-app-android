@@ -56,7 +56,6 @@ val responsesModule = module {
                 PolymorphicJsonAdapterFactory.of(
                     RemoteProtocol::class.java, "protocolVersion"
                 )
-                    .withSubtype(RemoteTestResult2::class.java, "2.0")
                     .withSubtype(RemoteProtocol3::class.java, "3.0")
             )
             .add(
