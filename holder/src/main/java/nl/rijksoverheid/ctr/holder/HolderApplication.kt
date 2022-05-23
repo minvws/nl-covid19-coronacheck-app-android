@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder
 
-import android.os.Process
 import android.util.Log
 import androidx.work.Configuration
 import androidx.work.WorkerFactory
@@ -12,13 +11,11 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.dashboard.dashboardModule
 import nl.rijksoverheid.ctr.holder.modules.*
-import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.*
 import nl.rijksoverheid.ctr.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
-import nl.rijksoverheid.ctr.holder.workers.HolderWorkerFactory
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
@@ -109,7 +106,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
             mobileCoreWrapper.initializeHolder(applicationContext.filesDir.path)
         }
 
-        println("GIO says Holder onCreate")
+        println("WM-GIO says Holder onCreate")
     }
 
     override fun getAdditionalModules(): List<Module> {

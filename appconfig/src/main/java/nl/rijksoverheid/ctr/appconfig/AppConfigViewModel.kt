@@ -13,16 +13,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
-import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.initialisationException
 
@@ -32,14 +30,12 @@ abstract class AppConfigViewModel : ViewModel() {
     abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean = false)
     abstract fun saveNewFeaturesFinished()
     abstract fun saveNewTerms()
-
-    abstract suspend fun fetch(): ConfigResult
 }
 
 class AppConfigViewModelImpl(
     private val appConfigUseCase: AppConfigUseCase,
     private val appStatusUseCase: AppStatusUseCase,
-    private val persistConfigUseCase: PersistConfigUseCase,
+    private val configResultUseCase: ConfigResultUseCase,
     private val appConfigStorageManager: AppConfigStorageManager,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val filesDirPath: String,
@@ -49,32 +45,13 @@ class AppConfigViewModelImpl(
     private val appUpdateData: AppUpdateData
 ) : AppConfigViewModel() {
 
-    private val mutex = Mutex()
-
     init {
-        println("GIO says AppConfigViewModelImpl initialised $this")
+        println("WM-GIO says AppConfigViewModelImpl initialised $this")
     }
 
     private fun updateAppStatus(appStatus: AppStatus) {
         if (appStatusLiveData.value != appStatus) {
             appStatusLiveData.postValue(appStatus)
-        }
-    }
-
-    override suspend fun fetch(): ConfigResult {
-        // allow only one config/public keys refresh at a time
-        // cause we store them writing to files and a parallel
-        // operation could break them eventually
-        mutex.withLock {
-            println("GIO says Fetching config")
-            val configResult = appConfigUseCase.get()
-            if (configResult is ConfigResult.Success) {
-                persistConfigUseCase.persist(
-                    appConfigContents = configResult.appConfig,
-                    publicKeyContents = configResult.publicKeys
-                )
-            }
-            return configResult
         }
     }
 
@@ -90,7 +67,7 @@ class AppConfigViewModelImpl(
             return
         }
         viewModelScope.launch {
-            val configResult = fetch()
+            val configResult = configResultUseCase.fetch()
             val appStatus = appStatusUseCase.get(configResult, versionCode)
 
             val configFilesArePresentInFilesFolder =

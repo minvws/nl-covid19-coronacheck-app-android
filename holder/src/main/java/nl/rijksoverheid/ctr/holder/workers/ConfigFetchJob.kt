@@ -5,6 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -16,12 +17,12 @@ import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 class ConfigFetchJob(
     context: Context,
     params: WorkerParameters,
-    private val appConfigViewModel: AppConfigViewModel,
+    private val configResultUseCase: ConfigResultUseCase,
 ): CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        println("GIO says Work work")
-        return when (appConfigViewModel.fetch()) {
+        println("WM-GIO says Work work")
+        return when (configResultUseCase.fetch()) {
             ConfigResult.Error -> Result.retry()
             is ConfigResult.Success -> Result.success()
         }

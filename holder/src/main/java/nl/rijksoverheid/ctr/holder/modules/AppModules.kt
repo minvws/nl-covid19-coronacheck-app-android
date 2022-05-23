@@ -8,8 +8,8 @@ import nl.rijksoverheid.ctr.persistence.database.migration.TestResultsMigrationM
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCase
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCaseImpl
 import nl.rijksoverheid.ctr.design.BuildConfig
-import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerUtil
-import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerUtilImpl
+import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
+import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtilImpl
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCaseImpl
 import nl.rijksoverheid.ctr.holder.usecases.BuildConfigUseCaseImpl

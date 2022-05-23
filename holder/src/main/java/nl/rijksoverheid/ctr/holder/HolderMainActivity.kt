@@ -22,7 +22,7 @@ import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
-import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerUtil
+import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -63,7 +63,7 @@ class HolderMainActivity : AppCompatActivity() {
         NetworkRequest.Builder().build() // blank filter for all networks
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        println("GIO says MainActivity")
+        println("WM-GIO says MainActivity")
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -186,7 +186,7 @@ class HolderMainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        println("GIO says Bye bye mainactivity")
+        println("WM-GIO says Bye bye mainactivity")
     }
 
     override fun onPause() {

@@ -1,9 +1,16 @@
-package nl.rijksoverheid.ctr.holder.persistence
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *  Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *  SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+
+package nl.rijksoverheid.ctr.holder.workers
 
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.work.*
-import nl.rijksoverheid.ctr.holder.workers.ConfigFetchJob
 import nl.rijksoverheid.ctr.shared.models.Environment
 import java.util.concurrent.TimeUnit
 
@@ -18,7 +25,7 @@ class WorkerManagerUtilImpl(
 
     val acc: Boolean = Environment.get(context) == Environment.Acc
 
-    private val interval: Long = if (acc) {
+    private val intervalMinutes: Long = if (acc) {
         15
     } else {
         36
@@ -37,18 +44,12 @@ class WorkerManagerUtilImpl(
             .build()
 
         val request = PeriodicWorkRequestBuilder<ConfigFetchJob>(
-            repeatInterval = interval,
+            repeatInterval = intervalMinutes,
             repeatIntervalTimeUnit = intervalUnit)
             .setConstraints(constraints)
-            .setInitialDelay(interval, intervalUnit)
             .build()
 
-        println("GIO says schedule worker")
-        val workManager = WorkManager.getInstance(context)
-        workManager.getWorkInfosByTagLiveData(ConfigFetchJob.uniqueWorkName).observe(lifecycleOwner) {
-
-        }
-        WorkManager.getInstance(context).getWorkInfosByTag(ConfigFetchJob.uniqueWorkName).addListener()
+        println("WM-GIO says schedule worker")
         WorkManager.getInstance(context)
             .enqueueUniquePeriodicWork(
                 ConfigFetchJob.uniqueWorkName,

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
+import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -14,16 +14,20 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
  *
  */
 class HolderWorkerFactory(
-    private val appConfigViewModel: AppConfigViewModel,
-): WorkerFactory() {
+    private val configResultUseCase: ConfigResultUseCase,
+) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker? {
-        println("GIO says Create worker: $workerClassName")
+        println("WM-GIO says Create worker: $workerClassName")
         return when (workerClassName) {
-            ConfigFetchJob::class.java.name -> ConfigFetchJob(appContext, workerParameters, appConfigViewModel)
+            ConfigFetchJob::class.java.name -> ConfigFetchJob(
+                appContext,
+                workerParameters,
+                configResultUseCase
+            )
             else -> null
         }
     }
