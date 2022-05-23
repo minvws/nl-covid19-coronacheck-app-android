@@ -2,8 +2,6 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import android.content.Context
 import nl.rijksoverheid.ctr.appconfig.usecases.*
-import nl.rijksoverheid.ctr.persistence.database.migration.TestResultsMigrationManager
-import nl.rijksoverheid.ctr.persistence.database.migration.TestResultsMigrationManagerImpl
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCase
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCaseImpl
 import nl.rijksoverheid.ctr.design.BuildConfig
@@ -33,8 +31,6 @@ val appModule = module {
             get()
         )
     }
-
-    factory<TestResultsMigrationManager> { TestResultsMigrationManagerImpl(get()) }
 
     factory<ReturnToExternalAppUseCase> {
         ReturnToExternalAppUseCaseImpl(get())

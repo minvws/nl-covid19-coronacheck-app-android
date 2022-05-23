@@ -10,7 +10,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.dashboardModule
 import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.*
-import nl.rijksoverheid.ctr.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
@@ -34,7 +33,6 @@ open class HolderApplication : SharedApplication() {
 
     private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
-    private val testResultsMigrationManager: TestResultsMigrationManager by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
 
@@ -95,7 +93,6 @@ open class HolderApplication : SharedApplication() {
                 )
             }
 
-            testResultsMigrationManager.removeOldCredential()
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
