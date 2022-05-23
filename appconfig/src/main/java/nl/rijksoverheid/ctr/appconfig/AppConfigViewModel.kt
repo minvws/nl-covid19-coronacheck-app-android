@@ -32,6 +32,8 @@ abstract class AppConfigViewModel : ViewModel() {
     abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean = false)
     abstract fun saveNewFeaturesFinished()
     abstract fun saveNewTerms()
+
+    abstract suspend fun fetch(): ConfigResult
 }
 
 class AppConfigViewModelImpl(
@@ -49,9 +51,30 @@ class AppConfigViewModelImpl(
 
     private val mutex = Mutex()
 
+    init {
+        println("GIO says AppConfigViewModelImpl initialised $this")
+    }
+
     private fun updateAppStatus(appStatus: AppStatus) {
         if (appStatusLiveData.value != appStatus) {
             appStatusLiveData.postValue(appStatus)
+        }
+    }
+
+    override suspend fun fetch(): ConfigResult {
+        // allow only one config/public keys refresh at a time
+        // cause we store them writing to files and a parallel
+        // operation could break them eventually
+        mutex.withLock {
+            println("GIO says Fetching config")
+            val configResult = appConfigUseCase.get()
+            if (configResult is ConfigResult.Success) {
+                persistConfigUseCase.persist(
+                    appConfigContents = configResult.appConfig,
+                    publicKeyContents = configResult.publicKeys
+                )
+            }
+            return configResult
         }
     }
 
@@ -67,37 +90,26 @@ class AppConfigViewModelImpl(
             return
         }
         viewModelScope.launch {
-            // allow only one config/public keys refresh at a time
-            // cause we store them writing to files and a parallel
-            // operation could break them eventually
-            mutex.withLock {
-                val configResult = appConfigUseCase.get()
-                val appStatus = appStatusUseCase.get(configResult, versionCode)
-                if (configResult is ConfigResult.Success) {
-                    persistConfigUseCase.persist(
-                        appConfigContents = configResult.appConfig,
-                        publicKeyContents = configResult.publicKeys
-                    )
-                }
+            val configResult = fetch()
+            val appStatus = appStatusUseCase.get(configResult, versionCode)
 
-                val configFilesArePresentInFilesFolder =
-                    appConfigStorageManager.areConfigFilesPresentInFilesFolder()
-                if (!configFilesArePresentInFilesFolder || !cachedAppConfigUseCase.isCachedAppConfigValid()) {
-                    return@launch appStatusLiveData.postValue(AppStatus.Error)
-                }
-
-                val initializationError = if (isVerifierApp) {
-                    mobileCoreWrapper.initializeVerifier(filesDirPath)
-                } else {
-                    mobileCoreWrapper.initializeHolder(filesDirPath)
-                }
-
-                if (initializationError != null) {
-                    throw initialisationException(initializationError)
-                }
-
-                updateAppStatus(appStatus)
+            val configFilesArePresentInFilesFolder =
+                appConfigStorageManager.areConfigFilesPresentInFilesFolder()
+            if (!configFilesArePresentInFilesFolder || !cachedAppConfigUseCase.isCachedAppConfigValid()) {
+                return@launch appStatusLiveData.postValue(AppStatus.Error)
             }
+
+            val initializationError = if (isVerifierApp) {
+                mobileCoreWrapper.initializeVerifier(filesDirPath)
+            } else {
+                mobileCoreWrapper.initializeHolder(filesDirPath)
+            }
+
+            if (initializationError != null) {
+                throw initialisationException(initializationError)
+            }
+
+            updateAppStatus(appStatus)
         }
     }
 

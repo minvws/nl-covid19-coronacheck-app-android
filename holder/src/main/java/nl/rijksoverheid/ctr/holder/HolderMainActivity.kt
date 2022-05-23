@@ -22,6 +22,7 @@ import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
+import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerUtil
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
@@ -50,6 +51,8 @@ class HolderMainActivity : AppCompatActivity() {
     private val intentUtil: IntentUtil by inject()
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
     private val androidUtil: AndroidUtil by inject()
+    private val workerManagerUtil: WorkerManagerUtil by inject()
+
     private val connectivityChangeCallback =
         object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
@@ -60,6 +63,7 @@ class HolderMainActivity : AppCompatActivity() {
         NetworkRequest.Builder().build() // blank filter for all networks
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        println("GIO says MainActivity")
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -115,6 +119,8 @@ class HolderMainActivity : AppCompatActivity() {
         })
 
         disableSplashscreenExitAnimation()
+
+
     }
 
     private fun navigateToIntroduction(
@@ -176,6 +182,11 @@ class HolderMainActivity : AppCompatActivity() {
             networkChangeFilter, connectivityChangeCallback
         )
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        println("GIO says Bye bye mainactivity")
     }
 
     override fun onPause() {

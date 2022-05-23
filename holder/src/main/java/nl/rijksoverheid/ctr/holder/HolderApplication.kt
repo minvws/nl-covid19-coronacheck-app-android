@@ -1,5 +1,9 @@
 package nl.rijksoverheid.ctr.holder
 
+import android.os.Process
+import android.util.Log
+import androidx.work.Configuration
+import androidx.work.WorkerFactory
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
@@ -8,11 +12,13 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.dashboard.dashboardModule
 import nl.rijksoverheid.ctr.holder.modules.*
+import nl.rijksoverheid.ctr.holder.persistence.WorkerManagerUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.*
 import nl.rijksoverheid.ctr.persistence.database.migration.TestResultsMigrationManager
 import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
+import nl.rijksoverheid.ctr.holder.workers.HolderWorkerFactory
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
@@ -30,11 +36,12 @@ import org.koin.core.module.Module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class HolderApplication : SharedApplication() {
+open class HolderApplication : SharedApplication(), Configuration.Provider {
 
     private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
     private val testResultsMigrationManager: TestResultsMigrationManager by inject()
+    private val holderWorkerFactory: WorkerFactory by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
 
@@ -101,9 +108,22 @@ open class HolderApplication : SharedApplication() {
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
             mobileCoreWrapper.initializeHolder(applicationContext.filesDir.path)
         }
+
+        println("GIO says Holder onCreate")
     }
 
     override fun getAdditionalModules(): List<Module> {
         return listOf(holderPreferenceModule, holderMobileCoreModule)
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder().apply {
+            setMinimumLoggingLevel(if (BuildConfig.DEBUG) {
+                Log.DEBUG
+            } else {
+                Log.ERROR
+            })
+            setWorkerFactory(holderWorkerFactory)
+        }.build()
     }
 }
