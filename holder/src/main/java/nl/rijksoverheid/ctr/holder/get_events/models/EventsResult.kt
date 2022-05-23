@@ -22,7 +22,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 sealed class EventsResult {
     data class Success (
-        val remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        val remoteEvents: Map<RemoteProtocol, ByteArray>,
         val missingEvents: Boolean,
         val eventProviders: List<EventProvider>,
     ) : EventsResult()

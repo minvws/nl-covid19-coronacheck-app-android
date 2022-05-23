@@ -6,7 +6,7 @@ import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -56,7 +56,7 @@ interface EventProviderRepository {
         scope: String?,
         provider: String,
         tlsCertificateBytes: List<ByteArray>,
-    ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>>
+    ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>>
 }
 
 class EventProviderRepositoryImpl(
@@ -104,7 +104,7 @@ class EventProviderRepositoryImpl(
         scope: String?,
         provider: String,
         tlsCertificateBytes: List<ByteArray>,
-    ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
+    ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
         val params = mutableMapOf<String, String>()
         params["filter"] = filter
         scope?.let {

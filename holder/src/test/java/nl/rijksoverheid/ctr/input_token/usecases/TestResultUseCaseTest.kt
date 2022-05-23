@@ -11,7 +11,6 @@ import nl.rijksoverheid.ctr.holder.fakeTestProviderRepository
 import nl.rijksoverheid.ctr.holder.fakeTokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResult
 import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResultUseCase
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -312,7 +311,7 @@ class TestResultUseCaseTest {
     ): SignedResponseWithModel<RemoteProtocol> {
         return SignedResponseWithModel(
             rawResponse = "dummy".toByteArray(),
-            model = RemoteProtocol3(
+            model = RemoteProtocol(
                 providerIdentifier = "",
                 protocolVersion = "",
                 status = status,

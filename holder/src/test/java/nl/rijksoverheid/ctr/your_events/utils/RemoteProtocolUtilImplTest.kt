@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.your_events.utils
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3UtilImpl
 import org.junit.Assert
 import org.junit.Test
@@ -13,7 +12,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import kotlin.test.assertEquals
 
-class RemoteProtocol3UtilImplTest {
+class RemoteProtocolUtilImplTest {
 
     private val util = RemoteProtocol3UtilImpl()
 
@@ -22,7 +21,7 @@ class RemoteProtocol3UtilImplTest {
 
     @Test
     fun `combine one vaccination coming from two different providers`() {
-        val event1 = RemoteProtocol3(
+        val event1 = RemoteProtocol(
             providerIdentifier = "GGD",
             protocolVersion = "2",
             status = RemoteProtocol.Status.COMPLETE,
@@ -30,7 +29,7 @@ class RemoteProtocol3UtilImplTest {
             events = listOf(vaccination())
         )
 
-        val event2 = RemoteProtocol3(
+        val event2 = RemoteProtocol(
             providerIdentifier = "RIVM",
             protocolVersion = "2",
             status = RemoteProtocol.Status.COMPLETE,
@@ -50,7 +49,7 @@ class RemoteProtocol3UtilImplTest {
 
     @Test
     fun `combine two vaccinations coming from two different providers`() {
-        val event1 = RemoteProtocol3(
+        val event1 = RemoteProtocol(
             providerIdentifier = "RIVM",
             protocolVersion = "2",
             status = RemoteProtocol.Status.COMPLETE,
@@ -66,7 +65,7 @@ class RemoteProtocol3UtilImplTest {
                 ))
         )
 
-        val event2 = RemoteProtocol3(
+        val event2 = RemoteProtocol(
             providerIdentifier = "GGD",
             protocolVersion = "2",
             status = RemoteProtocol.Status.COMPLETE,
@@ -97,7 +96,7 @@ class RemoteProtocol3UtilImplTest {
 
     @Test
     fun `combine same events from same provider to 1 event`() {
-        val remoteProtocol = RemoteProtocol3(
+        val remoteProtocol = RemoteProtocol(
             providerIdentifier = "GGD",
             protocolVersion = "2",
             status = RemoteProtocol.Status.COMPLETE,
@@ -112,7 +111,7 @@ class RemoteProtocol3UtilImplTest {
 
     @Test
     fun `combine same date events with different hpk and manufacturer from same provider to 2 events`() {
-        val remoteProtocol = RemoteProtocol3(
+        val remoteProtocol = RemoteProtocol(
             providerIdentifier = "GGD",
             protocolVersion = "2",
             status = RemoteProtocol.Status.COMPLETE,
@@ -131,7 +130,7 @@ class RemoteProtocol3UtilImplTest {
 
     @Test
     fun `combine different date events with same hpk and manufacturer from same provider to 2 events`() {
-        val remoteProtocol = RemoteProtocol3(
+        val remoteProtocol = RemoteProtocol(
             providerIdentifier = "GGD",
             protocolVersion = "2",
             status = RemoteProtocol.Status.COMPLETE,
@@ -160,7 +159,7 @@ class RemoteProtocol3UtilImplTest {
             totalDoses = "2",
             clock = Clock.fixed(Instant.parse("2021-06-09T00:00:00.00Z"), ZoneId.of("UTC"))
         )
-        val event1 = RemoteProtocol3(
+        val event1 = RemoteProtocol(
             providerIdentifier = "GGD",
             protocolVersion = "2",
             status = RemoteProtocol.Status.COMPLETE,
@@ -174,7 +173,7 @@ class RemoteProtocol3UtilImplTest {
         val recovery = recovery(
             clock = Clock.fixed(Instant.parse("2021-06-20T00:00:00.00Z"), ZoneId.of("UTC"))
         )
-        val event2 = RemoteProtocol3(
+        val event2 = RemoteProtocol(
             providerIdentifier = "GGD",
             protocolVersion = "2",
             status = RemoteProtocol.Status.COMPLETE,
@@ -191,8 +190,8 @@ class RemoteProtocol3UtilImplTest {
         assertEquals(vaccination1, groupedEvents.keys.last())
     }
 
-    private fun holder(): RemoteProtocol3.Holder {
-        return RemoteProtocol3.Holder(
+    private fun holder(): RemoteProtocol.Holder {
+        return RemoteProtocol.Holder(
             infix = null,
             firstName = "First",
             lastName = "Last",

@@ -20,13 +20,13 @@ import java.time.OffsetDateTime
 
 interface RemoteEventUtil {
     fun isDccEvent(providerIdentifier: String): Boolean
-    fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol3.Holder
+    fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol.Holder
     fun removeDuplicateEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent>
     fun getRemoteEventFromDcc(dcc: JSONObject): RemoteEvent
     fun getRemoteVaccinationFromDcc(dcc: JSONObject): RemoteEventVaccination?
     fun getRemoteRecoveryFromDcc(dcc: JSONObject): RemoteEventRecovery?
     fun getRemoteTestFromDcc(dcc: JSONObject): RemoteEventNegativeTest?
-    fun getRemoteProtocol3FromNonDcc(eventGroupEntity: EventGroupEntity): RemoteProtocol3?
+    fun getRemoteProtocol3FromNonDcc(eventGroupEntity: EventGroupEntity): RemoteProtocol?
     fun getOriginType(remoteEvent: RemoteEvent): OriginType
 }
 
@@ -49,9 +49,9 @@ class RemoteEventUtilImpl(
     }
 
     @Throws(NullPointerException::class)
-    override fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol3.Holder {
+    override fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol.Holder {
         val fullName = dcc.optJSONObject("nam") ?: throw NullPointerException("can't parse name")
-        return RemoteProtocol3.Holder(
+        return RemoteProtocol.Holder(
             infix = "",
             firstName = fullName.getStringOrNull("gn"),
             lastName = fullName.getStringOrNull("fn"),
@@ -122,11 +122,11 @@ class RemoteEventUtilImpl(
         }
     }
 
-    override fun getRemoteProtocol3FromNonDcc(eventGroupEntity: EventGroupEntity): RemoteProtocol3? {
+    override fun getRemoteProtocol3FromNonDcc(eventGroupEntity: EventGroupEntity): RemoteProtocol? {
         val payload = moshi.adapter(SignedResponse::class.java)
             .fromJson(String(eventGroupEntity.jsonData))?.payload
         val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
-        return moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)
+        return moshi.adapter(RemoteProtocol::class.java).fromJson(decodedPayload)
     }
 
     private fun getEventByType(dcc: JSONObject, key: String) = try {

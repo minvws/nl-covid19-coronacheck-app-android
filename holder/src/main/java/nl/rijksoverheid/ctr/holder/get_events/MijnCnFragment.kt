@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentMijnCnBinding
 import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
 import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
@@ -115,7 +115,7 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
                         )
                     } else {
                         navigateToYourEvents(
-                            remoteProtocols3 = it.remoteEvents,
+                            remoteProtocols = it.remoteEvents,
                             eventProviders = it.eventProviders,
                         )
                     }
@@ -190,13 +190,13 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
     }
 
     private fun navigateToYourEvents(
-        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
+        remoteProtocols: Map<RemoteProtocol, ByteArray>,
         eventProviders: List<EventProvider> = emptyList(),
     ) {
         navigateSafety(
             MijnCnFragmentDirections.actionYourEvents(
                 type = YourEventsFragmentType.RemoteProtocol3Type(
-                    remoteEvents = remoteProtocols3,
+                    remoteEvents = remoteProtocols,
                     eventProviders = eventProviders,
                 ),
                 toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),

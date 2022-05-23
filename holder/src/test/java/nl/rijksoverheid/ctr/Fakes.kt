@@ -163,7 +163,7 @@ fun fakeSecretKeyUseCase(
 fun fakeTestProviderRepository(
     model: SignedResponseWithModel<RemoteProtocol> = SignedResponseWithModel(
         rawResponse = "dummy".toByteArray(),
-        model = RemoteProtocol3(
+        model = RemoteProtocol(
             protocolVersion = "1",
             providerIdentifier = "1",
             status = RemoteProtocol.Status.COMPLETE,
@@ -312,11 +312,11 @@ fun fakeEventProviderRepository(
             RemoteUnomi("", "", false)
         )
     },
-    events: ((url: String) -> NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>>) = {
+    events: ((url: String) -> NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>>) = {
         NetworkRequestResult.Success(
             SignedResponseWithModel(
                 "".toByteArray(),
-                RemoteProtocol3(
+                RemoteProtocol(
                     "", "", RemoteProtocol.Status.COMPLETE, null, listOf()
                 ),
             )
@@ -343,7 +343,7 @@ fun fakeEventProviderRepository(
         scope: String?,
         provider: String,
         tlsCertificateBytes: List<ByteArray>,
-    ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol3>> {
+    ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
         return events.invoke(url)
     }
 }

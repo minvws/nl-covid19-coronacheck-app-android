@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.shared.models.Flow
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -23,8 +23,8 @@ interface YourEventsFragmentUtil {
     fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int
     fun getProviderName(type: YourEventsFragmentType, providerIdentifier: String): String
     fun getCancelDialogDescription(type: YourEventsFragmentType): Int
-    fun getFullName(holder: RemoteProtocol3.Holder?): String
-    fun getBirthDate(holder: RemoteProtocol3.Holder?): String
+    fun getFullName(holder: RemoteProtocol.Holder?): String
+    fun getBirthDate(holder: RemoteProtocol.Holder?): String
 }
 
 class YourEventsFragmentUtilImpl(
@@ -90,7 +90,7 @@ class YourEventsFragmentUtilImpl(
         }
     }
 
-    override fun getFullName(holder: RemoteProtocol3.Holder?): String {
+    override fun getFullName(holder: RemoteProtocol.Holder?): String {
         return holder?.let {
             return if (it.infix.isNullOrEmpty()) {
                 "${it.lastName}, ${it.firstName}"
@@ -100,7 +100,7 @@ class YourEventsFragmentUtilImpl(
         } ?: ""
     }
 
-    override fun getBirthDate(holder: RemoteProtocol3.Holder?): String {
+    override fun getBirthDate(holder: RemoteProtocol.Holder?): String {
         return holder?.birthDate?.let { birthDate ->
             try {
                 LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()

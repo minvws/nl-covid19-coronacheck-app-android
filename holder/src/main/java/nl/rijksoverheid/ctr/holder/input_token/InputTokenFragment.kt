@@ -25,7 +25,6 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentInputTokenBinding
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResult
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
@@ -230,7 +229,7 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
 
     fun getOriginType(remoteProtocol: RemoteProtocol): OriginType {
         return when (remoteProtocol) {
-            is RemoteProtocol3 -> {
+            is RemoteProtocol -> {
                 if (remoteProtocol.events?.any { it is RemoteEventVaccinationAssessment } == true) {
                     OriginType.VaccinationAssessment
                 } else {
@@ -244,7 +243,7 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
 
     fun getYourEventsToolbarTitle(remoteProtocol: RemoteProtocol): Int {
         return when (remoteProtocol) {
-            is RemoteProtocol3 -> {
+            is RemoteProtocol -> {
                 if (remoteProtocol.events?.any { it is RemoteEventVaccinationAssessment } == true) {
                     R.string.holder_event_vaccination_assessment_toolbar_title
                 } else {
