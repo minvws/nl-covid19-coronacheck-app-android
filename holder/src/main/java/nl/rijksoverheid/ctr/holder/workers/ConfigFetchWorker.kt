@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ConfigFetchJob(
+open class ConfigFetchWorker(
     context: Context,
     params: WorkerParameters,
     private val configResultUseCase: ConfigResultUseCase,
@@ -29,6 +29,6 @@ class ConfigFetchJob(
     }
 
     companion object {
-        const val uniqueWorkName = "fetch_config"
+        const val uniqueWorkNameTag = "fetch_config_worker"
     }
 }

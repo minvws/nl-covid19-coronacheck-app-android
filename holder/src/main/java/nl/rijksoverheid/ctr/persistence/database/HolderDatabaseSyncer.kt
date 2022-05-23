@@ -125,6 +125,7 @@ class HolderDatabaseSyncerImpl(
 
                             when (result) {
                                 is SyncRemoteGreenCardsResult.Success -> {
+                                    println("schedule here the worker")
                                     return@withContext DatabaseSyncerResult.Success(
                                         false,
                                         combinedVaccinationRecovery

@@ -9,56 +9,58 @@
 package nl.rijksoverheid.ctr.holder.workers
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
 import androidx.work.*
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.shared.models.Environment
 import java.util.concurrent.TimeUnit
 
 interface WorkerManagerUtil {
-    fun scheduleConfigJob(lifecycleOwner: LifecycleOwner)
-    fun cancelConfigJob(context: Context)
+    suspend fun scheduleRefreshCredentialsJob()
+    fun cancelRefreshCredentialsJob(context: Context)
 }
 
 class WorkerManagerUtilImpl(
     private val context: Context,
-): WorkerManagerUtil {
+    private val greenCardRefreshUtil: GreenCardRefreshUtil,
+) : WorkerManagerUtil {
 
     val acc: Boolean = Environment.get(context) == Environment.Acc
-
-    private val intervalMinutes: Long = if (acc) {
-        15
-    } else {
-        36
-    }
 
     private val intervalUnit = if (acc) {
         TimeUnit.MINUTES
     } else {
-        TimeUnit.HOURS
+        TimeUnit.DAYS
     }
 
-    override fun scheduleConfigJob(lifecycleOwner: LifecycleOwner) {
+    override suspend fun scheduleRefreshCredentialsJob() {
+        val interval: Long = if (acc) {
+            15
+        } else {
+            30
+        }
+
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .setRequiresBatteryNotLow(true)
             .build()
 
-        val request = PeriodicWorkRequestBuilder<ConfigFetchJob>(
-            repeatInterval = intervalMinutes,
+        val request = PeriodicWorkRequestBuilder<CredentialRefreshWorker>(
+            repeatInterval = interval,
             repeatIntervalTimeUnit = intervalUnit)
+            .setInitialDelay(greenCardRefreshUtil.credentialsExpireInDays(), intervalUnit)
             .setConstraints(constraints)
             .build()
 
         println("WM-GIO says schedule worker")
         WorkManager.getInstance(context)
             .enqueueUniquePeriodicWork(
-                ConfigFetchJob.uniqueWorkName,
+                CredentialRefreshWorker.uniqueWorkNameTag,
                 ExistingPeriodicWorkPolicy.REPLACE,
                 request,
             )
     }
 
-    override fun cancelConfigJob(context: Context) {
-        WorkManager.getInstance(context).cancelUniqueWork(ConfigFetchJob.uniqueWorkName)
+    override fun cancelRefreshCredentialsJob(context: Context) {
+        WorkManager.getInstance(context).cancelUniqueWork(CredentialRefreshWorker.uniqueWorkNameTag)
     }
 }
