@@ -45,7 +45,8 @@ class WorkerManagerUtilImpl(
         println("GIO scheduleRefreshCredentialsJob")
         val refreshState = greenCardRefreshUtil.refreshState()
         if (refreshState is RefreshState.Refreshable ) {
-            val credentialsExpireInDays = refreshState.days
+            val credentialsRefreshInDays = refreshState.days
+            println("GIO scheduleRefreshCredentialsJob refresh in $credentialsRefreshInDays")
 
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -55,7 +56,7 @@ class WorkerManagerUtilImpl(
             val request = PeriodicWorkRequestBuilder<CredentialRefreshWorker>(
                 repeatInterval = interval(),
                 repeatIntervalTimeUnit = intervalUnit)
-                .setInitialDelay(credentialsExpireInDays, intervalUnit)
+                .setInitialDelay(credentialsRefreshInDays, intervalUnit)
                 .setConstraints(constraints)
                 .build()
 
