@@ -15,6 +15,7 @@ import android.net.NetworkRequest
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
@@ -120,7 +121,9 @@ class HolderMainActivity : AppCompatActivity() {
 
         disableSplashscreenExitAnimation()
 
-
+        lifecycleScope.launchWhenCreated {
+                    workerManagerUtil.scheduleRefreshCredentialsJob()
+        }
     }
 
     private fun navigateToIntroduction(

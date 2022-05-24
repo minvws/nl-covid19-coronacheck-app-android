@@ -11,6 +11,8 @@ package nl.rijksoverheid.ctr.holder.workers
 import android.content.Context
 import androidx.work.*
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.RefreshState
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.Environment
 import java.util.concurrent.TimeUnit
 
@@ -22,6 +24,7 @@ interface WorkerManagerUtil {
 class WorkerManagerUtilImpl(
     private val context: Context,
     private val greenCardRefreshUtil: GreenCardRefreshUtil,
+    private val appConfigUseCase: HolderCachedAppConfigUseCase,
 ) : WorkerManagerUtil {
 
     val acc: Boolean = Environment.get(context) == Environment.Acc
@@ -32,32 +35,38 @@ class WorkerManagerUtilImpl(
         TimeUnit.DAYS
     }
 
+    private fun interval(): Long = if (acc) {
+        15
+    } else {
+        appConfigUseCase.getCachedAppConfig().internationalQRRelevancyDays.toLong()
+    }
+
     override suspend fun scheduleRefreshCredentialsJob() {
-        val interval: Long = if (acc) {
-            15
-        } else {
-            30
+        println("GIO scheduleRefreshCredentialsJob")
+        val refreshState = greenCardRefreshUtil.refreshState()
+        if (refreshState is RefreshState.Refreshable ) {
+            val credentialsExpireInDays = refreshState.days
+
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresBatteryNotLow(true)
+                .build()
+
+            val request = PeriodicWorkRequestBuilder<CredentialRefreshWorker>(
+                repeatInterval = interval(),
+                repeatIntervalTimeUnit = intervalUnit)
+                .setInitialDelay(credentialsExpireInDays, intervalUnit)
+                .setConstraints(constraints)
+                .build()
+
+            println("WM-GIO says schedule worker")
+            WorkManager.getInstance(context)
+                .enqueueUniquePeriodicWork(
+                    CredentialRefreshWorker.uniqueWorkNameTag,
+                    ExistingPeriodicWorkPolicy.REPLACE,
+                    request,
+                )
         }
-
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresBatteryNotLow(true)
-            .build()
-
-        val request = PeriodicWorkRequestBuilder<CredentialRefreshWorker>(
-            repeatInterval = interval,
-            repeatIntervalTimeUnit = intervalUnit)
-            .setInitialDelay(greenCardRefreshUtil.credentialsExpireInDays(), intervalUnit)
-            .setConstraints(constraints)
-            .build()
-
-        println("WM-GIO says schedule worker")
-        WorkManager.getInstance(context)
-            .enqueueUniquePeriodicWork(
-                CredentialRefreshWorker.uniqueWorkNameTag,
-                ExistingPeriodicWorkPolicy.REPLACE,
-                request,
-            )
     }
 
     override fun cancelRefreshCredentialsJob(context: Context) {

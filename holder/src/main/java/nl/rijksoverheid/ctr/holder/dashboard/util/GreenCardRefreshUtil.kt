@@ -14,10 +14,16 @@ import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit.DAYS
 
+sealed class RefreshState {
+    class Refreshable(val days: Long): RefreshState()
+    object NoRefresh: RefreshState()
+}
+
 interface GreenCardRefreshUtil {
     suspend fun shouldRefresh(): Boolean
     suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean
     suspend fun credentialsExpireInDays(): Long
+    suspend fun refreshState(): RefreshState
 }
 
 class GreenCardRefreshUtilImpl(
@@ -61,6 +67,31 @@ class GreenCardRefreshUtilImpl(
             }
 
         return greenCardExpiring != null || hasValidFutureOrigins
+    }
+
+    override suspend fun refreshState(): RefreshState {
+        val credentialRenewalDays = holderConfig.credentialRenewalDays.toLong()
+
+        val greenCardsToRefresh = holderDatabase.greenCardDao().getAll()
+            .filter { !greenCardUtil.isForeignDcc(it) }
+
+        val latestCredentialExpirationTime: OffsetDateTime? = // has new credentials
+                // has new credentials
+            greenCardsToRefresh.filter { greenCard ->
+                    !greenCardUtil.getExpireDate(greenCard).isEqual(
+                        greenCard.credentialEntities.lastOrNull()?.expirationTime
+                            ?: OffsetDateTime.now(clock)
+                    )
+                }.mapNotNull { greenCard ->
+                    greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.expirationTime
+                }.maxOrNull()
+
+        return when {
+            latestCredentialExpirationTime != null -> RefreshState.Refreshable(
+                DAYS.between(OffsetDateTime.now(clock), latestCredentialExpirationTime.minusDays(credentialRenewalDays))
+            )
+            else -> RefreshState.NoRefresh
+        }
     }
 
     override suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean {

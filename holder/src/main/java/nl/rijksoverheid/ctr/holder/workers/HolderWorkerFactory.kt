@@ -5,6 +5,7 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -15,6 +16,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
  */
 class HolderWorkerFactory(
     private val configResultUseCase: ConfigResultUseCase,
+    private val holderDatabaseSyncer: HolderDatabaseSyncer,
 ) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
@@ -26,7 +28,13 @@ class HolderWorkerFactory(
             ConfigFetchWorker::class.java.name -> ConfigFetchWorker(
                 appContext,
                 workerParameters,
-                configResultUseCase
+                configResultUseCase,
+            )
+            CredentialRefreshWorker::class.java.name -> CredentialRefreshWorker(
+                appContext,
+                workerParameters,
+                configResultUseCase,
+                holderDatabaseSyncer,
             )
             else -> null
         }

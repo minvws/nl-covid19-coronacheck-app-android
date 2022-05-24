@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndStat
 import nl.rijksoverheid.ctr.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -44,6 +45,7 @@ interface HolderDatabaseSyncer {
 class HolderDatabaseSyncerImpl(
     private val holderDatabase: HolderDatabase,
     private val greenCardUtil: GreenCardUtil,
+    private val workerManagerUtil: WorkerManagerUtil,
     private val getRemoteGreenCardsUseCase: GetRemoteGreenCardsUseCase,
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
@@ -126,6 +128,7 @@ class HolderDatabaseSyncerImpl(
                             when (result) {
                                 is SyncRemoteGreenCardsResult.Success -> {
                                     println("schedule here the worker")
+                                    workerManagerUtil.scheduleRefreshCredentialsJob()
                                     return@withContext DatabaseSyncerResult.Success(
                                         false,
                                         combinedVaccinationRecovery

@@ -52,8 +52,8 @@ val appModule = module {
         HolderFeatureFlagUseCaseImpl(get())
     }
 
-    factory<WorkerManagerUtil> { WorkerManagerUtilImpl(androidContext(), get()) }
-    factory<WorkerFactory> { HolderWorkerFactory(get()) }
+    factory<WorkerManagerUtil> { WorkerManagerUtilImpl(androidContext(), get(), get()) }
+    factory<WorkerFactory> { HolderWorkerFactory(get(), get()) }
 }
 
 private fun isDebugApp(androidContext: Context) =
