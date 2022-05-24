@@ -19,7 +19,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
@@ -39,18 +39,18 @@ abstract class YourEventsViewModel : ViewModel() {
     val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
     val conflictingEventsResult: LiveData<Event<Boolean>> = MutableLiveData()
 
-    abstract fun saveRemoteProtocol3Events(
+    abstract fun saveRemoteProtocolEvents(
         flow: Flow,
-        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
+        remoteProtocols: Map<RemoteProtocol, ByteArray>,
         removePreviousEvents: Boolean
     )
 
-    abstract fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>)
+    abstract fun checkForConflictingEvents(remoteProtocols: Map<RemoteProtocol, ByteArray>)
 }
 
 data class RemoteEventInformation(
     val providerIdentifier: String,
-    val holder: RemoteProtocol3.Holder?,
+    val holder: RemoteProtocol.Holder?,
     val remoteEvent: RemoteEvent
 )
 
@@ -62,12 +62,12 @@ class YourEventsViewModelImpl(
     private val remoteEventUtil: RemoteEventUtil
 ) : YourEventsViewModel() {
 
-    override fun checkForConflictingEvents(remoteProtocols3: Map<RemoteProtocol3, ByteArray>) {
+    override fun checkForConflictingEvents(remoteProtocols: Map<RemoteProtocol, ByteArray>) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
                 val conflictingEvents =
-                    saveEventsUseCase.remoteProtocols3AreConflicting(remoteProtocols3)
+                    saveEventsUseCase.remoteProtocols3AreConflicting(remoteProtocols)
 
                 (conflictingEventsResult as MutableLiveData).postValue(Event(conflictingEvents))
             } catch (e: Exception) {
@@ -80,9 +80,9 @@ class YourEventsViewModelImpl(
         }
     }
 
-    override fun saveRemoteProtocol3Events(
+    override fun saveRemoteProtocolEvents(
         flow: Flow,
-        remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        remoteEvents: Map<RemoteProtocol, ByteArray>,
         removePreviousEvents: Boolean
     ) {
         (loading as MutableLiveData).value = Event(true)
@@ -90,7 +90,7 @@ class YourEventsViewModelImpl(
             try {
                 // Save the events in the database
                 val result = saveEventsUseCase.saveRemoteProtocols3(
-                    remoteProtocols3 = remoteEvents,
+                    remoteProtocols = remoteEvents,
                     removePreviousEvents = removePreviousEvents,
                     flow = flow
                 )

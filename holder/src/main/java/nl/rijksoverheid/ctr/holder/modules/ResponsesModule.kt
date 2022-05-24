@@ -54,12 +54,6 @@ val responsesModule = module {
             .add(RemoteCouplingStatusJsonAdapter())
             .add(
                 PolymorphicJsonAdapterFactory.of(
-                    RemoteProtocol::class.java, "protocolVersion"
-                )
-                    .withSubtype(RemoteProtocol3::class.java, "3.0")
-            )
-            .add(
-                PolymorphicJsonAdapterFactory.of(
                     RemoteEvent::class.java, "type"
                 )
                     .withSubtype(RemoteEventVaccinationAssessment::class.java, "vaccinationassessment")

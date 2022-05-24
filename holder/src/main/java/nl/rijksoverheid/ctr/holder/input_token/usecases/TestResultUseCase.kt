@@ -9,9 +9,9 @@ package nl.rijksoverheid.ctr.holder.input_token.usecases
 
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.ConfigProvidersUseCase

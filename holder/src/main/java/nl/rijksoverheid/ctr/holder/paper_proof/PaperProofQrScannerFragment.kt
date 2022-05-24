@@ -2,10 +2,6 @@ package nl.rijksoverheid.ctr.holder.paper_proof
 
 import android.os.Bundle
 import android.view.View
-import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
-import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
-import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
-import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.R
@@ -66,9 +62,9 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                         navDirections = PaperProofStartScanningFragmentDirections.actionYourEvents(
                             toolbarTitle = getString(R.string.your_dcc_event_toolbar_title),
                             type = YourEventsFragmentType.DCC(
-                                remoteEvent = paperProofType.remoteProtocol3,
+                                remoteEvent = paperProofType.remoteProtocol,
                                 eventGroupJsonData = paperProofType.eventGroupJsonData,
-                                originType = OriginType.fromTypeString(paperProofType.remoteProtocol3.events!!.first().type!!)
+                                originType = OriginType.fromTypeString(paperProofType.remoteProtocol.events!!.first().type!!)
                             ),
                             flow = HolderFlow.HkviScan
                         )

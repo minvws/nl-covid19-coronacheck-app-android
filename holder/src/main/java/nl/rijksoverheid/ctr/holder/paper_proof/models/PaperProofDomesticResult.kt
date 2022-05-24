@@ -7,12 +7,12 @@
 
 package nl.rijksoverheid.ctr.holder.paper_proof.models
 
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 
 sealed class PaperProofDomesticResult {
     data class Valid(
-        val remoteEvent: RemoteProtocol3,
+        val remoteEvent: RemoteProtocol,
         val eventGroupJsonData: ByteArray
     ) : PaperProofDomesticResult() {
         override fun equals(other: Any?): Boolean {

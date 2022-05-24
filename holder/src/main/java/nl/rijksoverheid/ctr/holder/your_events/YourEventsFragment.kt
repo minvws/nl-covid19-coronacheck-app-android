@@ -46,9 +46,6 @@ import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
@@ -79,12 +76,12 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         when (val type = args.type) {
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 yourEventsViewModel.checkForConflictingEvents(
-                    remoteProtocols3 = type.remoteEvents
+                    remoteProtocols = type.remoteEvents
                 )
             }
             is YourEventsFragmentType.DCC -> {
                 yourEventsViewModel.checkForConflictingEvents(
-                    remoteProtocols3 = type.getRemoteEvents(),
+                    remoteProtocols = type.getRemoteEvents(),
                 )
             }
         }
@@ -168,7 +165,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         if (it) {
                             replaceCertificateDialog(type.remoteEvents)
                         } else {
-                            yourEventsViewModel.saveRemoteProtocol3Events(
+                            yourEventsViewModel.saveRemoteProtocolEvents(
                                 getFlow(), type.remoteEvents, false
                             )
                         }
@@ -177,7 +174,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         if (it) {
                             replaceCertificateDialog(type.getRemoteEvents())
                         } else {
-                            yourEventsViewModel.saveRemoteProtocol3Events(
+                            yourEventsViewModel.saveRemoteProtocolEvents(
                                 getFlow(), type.getRemoteEvents(), false
                             )
                         }
@@ -305,7 +302,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         getFlow() == HolderFlow.VaccinationAndPositiveTest
 
     private fun replaceCertificateDialog(
-        remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        remoteEvents: Map<RemoteProtocol, ByteArray>,
     ) {
         dialogUtil.presentDialog(
             context = requireContext(),
@@ -313,9 +310,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             message = getString(R.string.your_events_replace_dialog_message),
             positiveButtonText = R.string.your_events_replace_dialog_positive_button,
             positiveButtonCallback = {
-                yourEventsViewModel.saveRemoteProtocol3Events(
+                yourEventsViewModel.saveRemoteProtocolEvents(
                     flow = getFlow(),
-                    remoteProtocols3 = remoteEvents,
+                    remoteProtocols = remoteEvents,
                     removePreviousEvents = true
                 )
             },
@@ -343,7 +340,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     private fun presentEvents(
-        remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        remoteEvents: Map<RemoteProtocol, ByteArray>,
         binding: FragmentYourEventsBinding,
         isDccEvent: Boolean = false
     ) {

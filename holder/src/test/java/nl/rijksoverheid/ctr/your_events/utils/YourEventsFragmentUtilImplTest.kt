@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtilImpl
 import org.junit.Assert.assertEquals
@@ -203,7 +202,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
 
-        val holder = RemoteProtocol3.Holder(
+        val holder = RemoteProtocol.Holder(
             infix = "",
             firstName = "Bob",
             lastName = "Bouwer",
@@ -222,7 +221,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
 
-        val holder = RemoteProtocol3.Holder(
+        val holder = RemoteProtocol.Holder(
             infix = "de",
             firstName = "Bob",
             lastName = "Bouwer",
@@ -241,7 +240,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
 
-        val holder = RemoteProtocol3.Holder(
+        val holder = RemoteProtocol.Holder(
             infix = "de",
             firstName = "Bob",
             lastName = "Bouwer",
@@ -260,7 +259,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
 
-        val holder = RemoteProtocol3.Holder(
+        val holder = RemoteProtocol.Holder(
             infix = "de",
             firstName = "Bob",
             lastName = "Bouwer",
@@ -298,7 +297,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
 
     private fun getRemoteProtocol3(element: RemoteEventNegativeTest) =
         mapOf(
-            RemoteProtocol3(
+            RemoteProtocol(
                 "",
                 "",
                 RemoteProtocol.Status.UNKNOWN,

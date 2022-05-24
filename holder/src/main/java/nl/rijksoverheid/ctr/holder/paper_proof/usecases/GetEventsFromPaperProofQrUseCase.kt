@@ -10,13 +10,12 @@ package nl.rijksoverheid.ctr.holder.paper_proof.usecases
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.json.JSONException
 
 interface GetEventsFromPaperProofQrUseCase {
-    fun get(qrCode: String): RemoteProtocol3
+    fun get(qrCode: String): RemoteProtocol
 }
 
 class GetEventsFromPaperProofQrUseCaseImpl(
@@ -25,7 +24,7 @@ class GetEventsFromPaperProofQrUseCaseImpl(
 ) : GetEventsFromPaperProofQrUseCase {
 
     @Throws(NullPointerException::class, JSONException::class)
-    override fun get(qrCode: String): RemoteProtocol3 {
+    override fun get(qrCode: String): RemoteProtocol {
         val credential = qrCode.toByteArray()
         val credentials = mobileCoreWrapper.readEuropeanCredential(credential)
         val dcc = credentials.optJSONObject("dcc")
@@ -44,7 +43,7 @@ class GetEventsFromPaperProofQrUseCaseImpl(
             }
         }
 
-        return RemoteProtocol3(
+        return RemoteProtocol(
             providerIdentifier = providerIdentifier,
             protocolVersion = "3.0",
             status = RemoteProtocol.Status.COMPLETE,

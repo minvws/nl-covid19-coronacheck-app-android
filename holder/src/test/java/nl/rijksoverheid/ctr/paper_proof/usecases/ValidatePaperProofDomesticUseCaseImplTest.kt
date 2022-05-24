@@ -12,7 +12,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofDomesticResult
 import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingResponse
 import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingStatus
@@ -115,7 +114,7 @@ class ValidatePaperProofDomesticUseCaseImplTest {
 
         // Mock getting events from qr content
         coEvery { getEventsFromPaperProofQr.get(any()) } answers {
-            RemoteProtocol3(
+            RemoteProtocol(
                 "", "", RemoteProtocol.Status.COMPLETE, null, listOf()
             )
         }

@@ -30,7 +30,7 @@ class GetPaperProofTypeUseCaseImpl(
 
                 if (isForeign) {
                     PaperProofType.DCC.Foreign(
-                        remoteProtocol3 = event,
+                        remoteProtocol = event,
                         eventGroupJsonData = paperProofUtil.getEventGroupJsonData(qrContent = qrContent)
                     )
                 } else {
