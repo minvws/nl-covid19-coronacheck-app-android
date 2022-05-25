@@ -21,7 +21,6 @@ open class ConfigFetchWorker(
 ): CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        println("WM-GIO ConfigFetchWorker work")
         return when (configResultUseCase.fetch()) {
             ConfigResult.Error -> Result.retry()
             is ConfigResult.Success -> Result.success()

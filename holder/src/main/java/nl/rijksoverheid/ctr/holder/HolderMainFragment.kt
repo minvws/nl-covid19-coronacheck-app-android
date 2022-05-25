@@ -27,7 +27,6 @@ class HolderMainFragment : Fragment(R.layout.fragment_main) {
     private val navController get() = _navController!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        println("WM-GIO says HolderMainFragment onViewCreated")
         super.onViewCreated(view, savedInstanceState)
 
         _binding = FragmentMainBinding.bind(view)

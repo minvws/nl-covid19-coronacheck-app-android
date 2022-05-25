@@ -45,10 +45,6 @@ class AppConfigViewModelImpl(
     private val appUpdateData: AppUpdateData
 ) : AppConfigViewModel() {
 
-    init {
-        println("WM-GIO says AppConfigViewModelImpl initialised $this")
-    }
-
     private fun updateAppStatus(appStatus: AppStatus) {
         if (appStatusLiveData.value != appStatus) {
             appStatusLiveData.postValue(appStatus)

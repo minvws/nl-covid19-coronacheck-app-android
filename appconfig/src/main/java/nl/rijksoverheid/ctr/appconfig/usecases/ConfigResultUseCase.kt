@@ -28,7 +28,6 @@ class ConfigResultUseCaseImpl(
         // cause we store them writing to files and a parallel
         // operation could break them eventually
         mutex.withLock {
-            println("GIO fetch config")
             val configResult = appConfigUseCase.get()
             if (configResult is ConfigResult.Success) {
                 persistConfigUseCase.persist(

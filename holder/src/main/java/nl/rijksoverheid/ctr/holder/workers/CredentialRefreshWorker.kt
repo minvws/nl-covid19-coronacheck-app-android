@@ -22,10 +22,8 @@ class CredentialRefreshWorker(
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
 ): ConfigFetchWorker(context, params, configResultUseCase) {
     override suspend fun doWork(): Result {
-        println("WM-GIO CredentialRefreshWorker work 1")
         return when (val configWorkResult = super.doWork()) {
             Result.success() -> {
-                println("WM-GIO CredentialRefreshWorker work 2")
                 credentialsRefresh()
             }
             else -> configWorkResult

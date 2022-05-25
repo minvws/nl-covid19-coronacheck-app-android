@@ -105,8 +105,6 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
             mobileCoreWrapper.initializeHolder(applicationContext.filesDir.path)
         }
-
-        println("WM-GIO says Holder onCreate")
     }
 
     override fun getAdditionalModules(): List<Module> {

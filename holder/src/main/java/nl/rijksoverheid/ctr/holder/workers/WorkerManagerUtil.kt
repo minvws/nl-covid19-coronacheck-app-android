@@ -29,6 +29,7 @@ class WorkerManagerUtilImpl(
 
     val acc: Boolean = Environment.get(context) == Environment.Acc
 
+    // for testing, use minutes in acc builds
     private val intervalUnit = if (acc) {
         TimeUnit.MINUTES
     } else {
@@ -42,11 +43,9 @@ class WorkerManagerUtilImpl(
     }
 
     override suspend fun scheduleRefreshCredentialsJob() {
-        println("GIO scheduleRefreshCredentialsJob")
         val refreshState = greenCardRefreshUtil.refreshState()
-        if (refreshState is RefreshState.Refreshable ) {
+        if (refreshState is RefreshState.Refreshable) {
             val credentialsRefreshInDays = refreshState.days
-            println("GIO scheduleRefreshCredentialsJob refresh in $credentialsRefreshInDays")
 
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -60,7 +59,6 @@ class WorkerManagerUtilImpl(
                 .setConstraints(constraints)
                 .build()
 
-            println("WM-GIO says schedule worker")
             WorkManager.getInstance(context)
                 .enqueueUniquePeriodicWork(
                     CredentialRefreshWorker.uniqueWorkNameTag,

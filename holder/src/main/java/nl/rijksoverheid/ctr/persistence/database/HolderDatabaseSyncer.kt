@@ -127,7 +127,6 @@ class HolderDatabaseSyncerImpl(
 
                             when (result) {
                                 is SyncRemoteGreenCardsResult.Success -> {
-                                    println("schedule here the worker")
                                     workerManagerUtil.scheduleRefreshCredentialsJob()
                                     return@withContext DatabaseSyncerResult.Success(
                                         false,

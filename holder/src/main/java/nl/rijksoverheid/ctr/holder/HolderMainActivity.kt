@@ -64,7 +64,6 @@ class HolderMainActivity : AppCompatActivity() {
         NetworkRequest.Builder().build() // blank filter for all networks
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        println("WM-GIO says MainActivity")
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -121,8 +120,9 @@ class HolderMainActivity : AppCompatActivity() {
 
         disableSplashscreenExitAnimation()
 
+        // schedule background refresh for existing greencards
         lifecycleScope.launchWhenCreated {
-                    workerManagerUtil.scheduleRefreshCredentialsJob()
+            workerManagerUtil.scheduleRefreshCredentialsJob()
         }
     }
 
@@ -185,11 +185,6 @@ class HolderMainActivity : AppCompatActivity() {
             networkChangeFilter, connectivityChangeCallback
         )
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        println("WM-GIO says Bye bye mainactivity")
     }
 
     override fun onPause() {

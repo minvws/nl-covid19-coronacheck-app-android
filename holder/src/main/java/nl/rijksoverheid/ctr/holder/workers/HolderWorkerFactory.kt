@@ -23,7 +23,6 @@ class HolderWorkerFactory(
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker? {
-        println("WM-GIO says Create worker: $workerClassName")
         return when (workerClassName) {
             ConfigFetchWorker::class.java.name -> ConfigFetchWorker(
                 appContext,
