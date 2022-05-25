@@ -12,8 +12,7 @@ import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteTestResult2
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 
@@ -40,19 +39,7 @@ class CommercialTestInputTokenFragment : InputTokenFragment() {
 
     override fun navigateMyEvents(result: TestResult.NegativeTestResult) {
         when (result.remoteTestResult) {
-            is RemoteTestResult2 -> {
-                findNavController().navigate(
-                    CommercialTestInputTokenFragmentDirections.actionYourEvents(
-                        type = YourEventsFragmentType.TestResult2(
-                            remoteTestResult = result.remoteTestResult,
-                            rawResponse = result.signedResponseWithTestResult.rawResponse
-                        ),
-                        toolbarTitle = getString(R.string.your_negative_test_results_toolbar),
-                        flow = HolderFlow.CommercialTest
-                    )
-                )
-            }
-            is RemoteProtocol3 -> {
+            is RemoteProtocol -> {
                 findNavController().navigate(
                     CommercialTestInputTokenFragmentDirections.actionYourEvents(
                         type = YourEventsFragmentType.RemoteProtocol3Type(

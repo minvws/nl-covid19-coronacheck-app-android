@@ -7,12 +7,12 @@
 
 package nl.rijksoverheid.ctr.holder.paper_proof.models
 
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 
 sealed class PaperProofType {
     sealed class DCC: PaperProofType() {
         data class Foreign(
-            val remoteProtocol3: RemoteProtocol3,
+            val remoteProtocol: RemoteProtocol,
             val eventGroupJsonData: ByteArray
         ) : DCC() {
             override fun equals(other: Any?): Boolean {
@@ -21,14 +21,14 @@ sealed class PaperProofType {
 
                 other as Foreign
 
-                if (remoteProtocol3 != other.remoteProtocol3) return false
+                if (remoteProtocol != other.remoteProtocol) return false
                 if (!eventGroupJsonData.contentEquals(other.eventGroupJsonData)) return false
 
                 return true
             }
 
             override fun hashCode(): Int {
-                var result = remoteProtocol3.hashCode()
+                var result = remoteProtocol.hashCode()
                 result = 31 * result + eventGroupJsonData.contentHashCode()
                 return result
             }

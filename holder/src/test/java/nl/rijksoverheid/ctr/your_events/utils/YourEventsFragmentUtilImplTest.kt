@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtilImpl
 import org.junit.Assert.assertEquals
@@ -27,16 +26,6 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
-
-    @Test
-    fun `getNoOriginTypeCopy returns correct copy for TestResult2`() {
-        val util = YourEventsFragmentUtilImpl(mockk())
-
-        val testResult2 = mockk<YourEventsFragmentType.TestResult2>()
-        val copy = util.getNoOriginTypeCopy(testResult2, HolderFlow.Startup)
-
-        assertEquals(R.string.rule_engine_no_test_origin_description_negative_test, copy)
-    }
 
     @Test
     fun `getNoOriginTypeCopy returns correct copy for DCC`() {
@@ -158,19 +147,6 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getCancelDialogDescription returns correct copy for RemoteProtocol3Type with origin test`() {
-        val remoteEventUtil: RemoteEventUtil = mockk()
-        val util = YourEventsFragmentUtilImpl(remoteEventUtil)
-
-        val testResult2 = mockk<YourEventsFragmentType.TestResult2>()
-        val copy = util.getCancelDialogDescription(
-            type = testResult2
-        )
-
-        assertEquals(copy, R.string.holder_test_alert_message)
-    }
-
-    @Test
     fun `getCancelDialogDescription returns correct copy for RemoteProtocol3Type with origin recovery`() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
@@ -226,7 +202,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
 
-        val holder = RemoteProtocol3.Holder(
+        val holder = RemoteProtocol.Holder(
             infix = "",
             firstName = "Bob",
             lastName = "Bouwer",
@@ -245,7 +221,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
 
-        val holder = RemoteProtocol3.Holder(
+        val holder = RemoteProtocol.Holder(
             infix = "de",
             firstName = "Bob",
             lastName = "Bouwer",
@@ -264,7 +240,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
 
-        val holder = RemoteProtocol3.Holder(
+        val holder = RemoteProtocol.Holder(
             infix = "de",
             firstName = "Bob",
             lastName = "Bouwer",
@@ -283,7 +259,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
 
-        val holder = RemoteProtocol3.Holder(
+        val holder = RemoteProtocol.Holder(
             infix = "de",
             firstName = "Bob",
             lastName = "Bouwer",
@@ -321,7 +297,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
 
     private fun getRemoteProtocol3(element: RemoteEventNegativeTest) =
         mapOf(
-            RemoteProtocol3(
+            RemoteProtocol(
                 "",
                 "",
                 RemoteProtocol.Status.UNKNOWN,

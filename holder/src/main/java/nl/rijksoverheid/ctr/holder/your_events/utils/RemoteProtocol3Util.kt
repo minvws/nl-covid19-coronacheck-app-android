@@ -9,10 +9,10 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 
 import nl.rijksoverheid.ctr.holder.your_events.RemoteEventInformation
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 
 interface RemoteProtocol3Util {
-    fun groupEvents(remoteEvents: List<RemoteProtocol3>): Map<RemoteEvent, List<RemoteEventInformation>>
+    fun groupEvents(remoteEvents: List<RemoteProtocol>): Map<RemoteEvent, List<RemoteEventInformation>>
 }
 
 class RemoteProtocol3UtilImpl: RemoteProtocol3Util {
@@ -27,7 +27,7 @@ class RemoteProtocol3UtilImpl: RemoteProtocol3Util {
      * It's possible that your vaccination is known at both the GGD or RIVM
      * so this merges the two
      */
-    override fun groupEvents(remoteEvents: List<RemoteProtocol3>): Map<RemoteEvent, List<RemoteEventInformation>> {
+    override fun groupEvents(remoteEvents: List<RemoteProtocol>): Map<RemoteEvent, List<RemoteEventInformation>> {
         val sameEventsGrouped = mutableMapOf<RemoteEvent, MutableList<RemoteEventInformation>>()
 
         remoteEvents.sortedBy { it.providerIdentifier }.forEach {

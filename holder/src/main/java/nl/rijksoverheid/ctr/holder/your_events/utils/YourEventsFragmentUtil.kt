@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.shared.models.Flow
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -23,8 +23,8 @@ interface YourEventsFragmentUtil {
     fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int
     fun getProviderName(type: YourEventsFragmentType, providerIdentifier: String): String
     fun getCancelDialogDescription(type: YourEventsFragmentType): Int
-    fun getFullName(holder: RemoteProtocol3.Holder?): String
-    fun getBirthDate(holder: RemoteProtocol3.Holder?): String
+    fun getFullName(holder: RemoteProtocol.Holder?): String
+    fun getBirthDate(holder: RemoteProtocol.Holder?): String
 }
 
 class YourEventsFragmentUtilImpl(
@@ -43,9 +43,6 @@ class YourEventsFragmentUtilImpl(
 
     override fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int {
         return when (type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                R.string.rule_engine_no_test_origin_description_negative_test
-            }
             is YourEventsFragmentType.DCC -> {
                 R.string.rule_engine_no_test_origin_description_scanned_qr_code
             }
@@ -82,7 +79,6 @@ class YourEventsFragmentUtilImpl(
     override fun getCancelDialogDescription(type: YourEventsFragmentType): Int {
         return when (type) {
             is YourEventsFragmentType.DCC -> R.string.holder_dcc_alert_message
-            is YourEventsFragmentType.TestResult2 -> R.string.holder_test_alert_message
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 when (remoteEventUtil.getOriginType(type.remoteEvents.keys.first().events!!.first())) {
                     is OriginType.Test -> R.string.holder_test_alert_message
@@ -94,7 +90,7 @@ class YourEventsFragmentUtilImpl(
         }
     }
 
-    override fun getFullName(holder: RemoteProtocol3.Holder?): String {
+    override fun getFullName(holder: RemoteProtocol.Holder?): String {
         return holder?.let {
             return if (it.infix.isNullOrEmpty()) {
                 "${it.lastName}, ${it.firstName}"
@@ -104,7 +100,7 @@ class YourEventsFragmentUtilImpl(
         } ?: ""
     }
 
-    override fun getBirthDate(holder: RemoteProtocol3.Holder?): String {
+    override fun getBirthDate(holder: RemoteProtocol.Holder?): String {
         return holder?.birthDate?.let { birthDate ->
             try {
                 LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()

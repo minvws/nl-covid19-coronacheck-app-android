@@ -32,10 +32,6 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
     .add(OriginTypeJsonAdapter())
     .add(RemoteCouplingStatusJsonAdapter())
     .add(PolymorphicJsonAdapterFactory.of(
-        RemoteProtocol::class.java, "protocolVersion")
-        .withSubtype(RemoteTestResult2::class.java, "2.0")
-        .withSubtype(RemoteProtocol3::class.java, "3.0"))
-    .add(PolymorphicJsonAdapterFactory.of(
         RemoteEvent::class.java, "type")
         .withSubtype(RemoteEventPositiveTest::class.java, "positivetest")
         .withSubtype(RemoteEventRecovery::class.java, "recovery")
@@ -168,11 +164,11 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
     @Test
     fun `two matching holders with different birth month are conflicting`() {
         val storedHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-06-25")
+            RemoteProtocol.Holder("De", "jan", "pijter", "1982-06-25")
         )
 
         val incomingHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-05-25")
+            RemoteProtocol.Holder("De", "jan", "pijter", "1982-05-25")
         )
 
         val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk(), mockk(), YourEventsFragmentUtilImpl(mockk()))
@@ -183,11 +179,11 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
     @Test
     fun `two matching holders with different birth day are conflicting`() {
         val storedHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-06-26")
+            RemoteProtocol.Holder("De", "jan", "pijter", "1982-06-26")
         )
 
         val incomingHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-06-25")
+            RemoteProtocol.Holder("De", "jan", "pijter", "1982-06-25")
         )
 
         val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk(), mockk(), YourEventsFragmentUtilImpl(mockk()))
@@ -198,11 +194,11 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
     @Test
     fun `two holders, with one having null name, are conflicting`() {
         val storedHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", null, "1982-06-26")
+            RemoteProtocol.Holder("De", "jan", null, "1982-06-26")
         )
 
         val incomingHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-06-25")
+            RemoteProtocol.Holder("De", "jan", "pijter", "1982-06-25")
         )
 
         val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk(), mockk(), YourEventsFragmentUtilImpl(mockk()))
@@ -213,11 +209,11 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
     @Test
     fun `two holders, both with invalid birthdate, are not conflicting`() {
         val storedHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", "pijter", "1982--06-26")
+            RemoteProtocol.Holder("De", "jan", "pijter", "1982--06-26")
         )
 
         val incomingHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", "pijter", "1982--06-25")
+            RemoteProtocol.Holder("De", "jan", "pijter", "1982--06-25")
         )
 
         val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk(), mockk(), YourEventsFragmentUtilImpl(mockk()))
@@ -228,11 +224,11 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
     @Test
     fun `two holders, both with obscured birthdate, are not conflicting`() {
         val storedHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-XX-XX")
+            RemoteProtocol.Holder("De", "jan", "pijter", "1982-XX-XX")
         )
 
         val incomingHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-XX-XX")
+            RemoteProtocol.Holder("De", "jan", "pijter", "1982-XX-XX")
         )
 
         val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk(), mockk(), YourEventsFragmentUtilImpl(mockk()))
@@ -243,11 +239,11 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
     @Test
     fun `two holders, one with obscured birthdate and one with visible birthdate, are conflicting`() {
         val storedHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-XX-XX")
+            RemoteProtocol.Holder("De", "jan", "pijter", "1982-XX-XX")
         )
 
         val incomingHolders = listOf(
-            RemoteProtocol3.Holder("De", "jan", "pijter", "1982-01-01")
+            RemoteProtocol.Holder("De", "jan", "pijter", "1982-01-01")
         )
 
         val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk(), mockk(), YourEventsFragmentUtilImpl(mockk()))
@@ -258,5 +254,5 @@ class RemoteEventHolderUtilImplTest: AutoCloseKoinTest() {
     private fun getHolderExample(
         firstName: String = "jan",
         lastName: String = "rijter"
-    ) = RemoteProtocol3.Holder("De", firstName, lastName, "1982-05-25")
+    ) = RemoteProtocol.Holder("De", firstName, lastName, "1982-05-25")
 }
