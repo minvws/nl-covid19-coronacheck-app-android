@@ -8,7 +8,6 @@
 package nl.rijksoverheid.ctr.dashboard.util
 
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
@@ -24,13 +23,11 @@ import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.fakeGreenCard
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.junit.Assert.*
 import org.junit.Test
-import java.time.Clock
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
+import java.time.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -202,4 +199,70 @@ class GreenCardRefreshUtilImplTest {
 
         assertFalse(greenCardRefreshUtil.shouldRefresh())
     }
+
+    @Test
+    fun `expiring greencard with new credentials should refresh`() = runBlocking {
+        val expirationTime = OffsetDateTime.now(firstJanuaryClock).plusDays(3)
+        val greenCard = fakeGreenCard(
+            expirationTime = expirationTime,
+            eventTime = OffsetDateTime.now(firstJanuaryClock).minusDays(15),
+            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1),
+        )
+        coEvery { greenCardUtil.getExpireDate(greenCard) } returns OffsetDateTime.now(firstJanuaryClock).plusDays(30)
+        coEvery { greenCardDao.getAll() } returns listOf(greenCard)
+
+        assertTrue(greenCardRefreshUtil.shouldRefresh())
+    }
+
+    @Test
+    fun `greencard with nearly valid credentials should refresh`() = runBlocking {
+        val greenCard = fakeGreenCard(
+            validFrom = OffsetDateTime.now(firstJanuaryClock).plusDays(2),
+            credentialEntities = emptyList(),
+        )
+        coEvery { greenCardDao.getAll() } returns listOf(greenCard)
+        coEvery { originUtil.isValidWithinRenewalThreshold(any(), any()) } returns true
+
+        assertTrue(greenCardRefreshUtil.shouldRefresh())
+    }
+
+    @Test
+    fun `greencard with distant future credentials should not refresh`() = runBlocking {
+        val greenCard = fakeGreenCard(
+            validFrom = OffsetDateTime.now(firstJanuaryClock).plusDays(10),
+            credentialEntities = emptyList(),
+        )
+        coEvery { greenCardDao.getAll() } returns listOf(greenCard)
+        coEvery { originUtil.isValidWithinRenewalThreshold(any(), any()) } returns false
+
+        assertFalse(greenCardRefreshUtil.shouldRefresh())
+    }
+
+    @Test
+    fun `expiring greencard with no new credentials should not refresh`() = runBlocking {
+        val expirationTime = OffsetDateTime.now(firstJanuaryClock).plusDays(3)
+        val greenCard = fakeGreenCard(
+            expirationTime = expirationTime,
+            eventTime = OffsetDateTime.now(firstJanuaryClock).minusDays(15),
+            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1),
+        )
+        coEvery { greenCardDao.getAll() } returns listOf(greenCard)
+        coEvery { greenCardUtil.getExpireDate(greenCard) } returns expirationTime
+
+        assertFalse(greenCardRefreshUtil.shouldRefresh())
+    }
+
+    @Test
+    fun `non expiring greencard should not refresh`() = runBlocking {
+        val expirationTime = OffsetDateTime.now(firstJanuaryClock).plusDays(10)
+        val greenCard = fakeGreenCard(
+            expirationTime = expirationTime,
+            eventTime = OffsetDateTime.now(firstJanuaryClock).minusDays(15),
+            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1),
+        )
+        coEvery { greenCardDao.getAll() } returns listOf(greenCard)
+
+        assertFalse(greenCardRefreshUtil.shouldRefresh())
+    }
+
 }
