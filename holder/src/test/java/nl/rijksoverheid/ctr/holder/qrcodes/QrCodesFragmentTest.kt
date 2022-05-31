@@ -14,7 +14,6 @@ import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assert
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotExist
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
-import com.adevinta.android.barista.interaction.BaristaSleepInteractions
 import com.adevinta.android.barista.interaction.BaristaViewPagerInteractions.swipeViewPagerBack
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.R
@@ -81,10 +80,9 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
 
     private fun launch(
         pages: Int = 2,
-        domesticQRRefreshSeconds: Int = 10,
         expiredQrCode: Boolean
     ) {
-        val config = fakeAppConfig(domesticQRRefreshSeconds = domesticQRRefreshSeconds)
+        val config = fakeAppConfig(domesticQRRefreshSeconds = 60)
         loadKoinModules(
             module(override = true) {
                 factory {
@@ -154,17 +152,19 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
     fun `not expired dcc qr code one page has no overlay and has no subtitle`() {
         launch(expiredQrCode = false, pages = 1)
 
+        swipeViewPagerBack()
+
         assertNotDisplayed(R.id.overlay)
         assertNotDisplayed(R.id.doseInfo)
     }
 
     @Test
     fun `displaying an initially hidden QR keeps it displayed after regenerating the QR codes`() {
-        launch(expiredQrCode = true, pages = 1, domesticQRRefreshSeconds = 1)
+        launch(expiredQrCode = true, pages = 1)
+
+        swipeViewPagerBack()
 
         onView(withId(R.id.overlayButton)).perform(click())
-        // wait until the QR is regenerated
-        BaristaSleepInteractions.sleep(1001)
 
         assertNotDisplayed(R.id.overlay)
     }
