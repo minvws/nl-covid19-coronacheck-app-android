@@ -112,13 +112,5 @@ class WorkManagerIntegrationTests : AutoCloseKoinTest() {
         val workInfo = workManager.getWorkInfoById(request.id).get()
 
         assertThat(workInfo.state, `is`(WorkInfo.State.ENQUEUED))
-
-        //test work is running when conditions are met
-        val testDriver = WorkManagerTestInitHelper.getTestDriver(context)!!
-        testDriver.setAllConstraintsMet(request.id)
-        testDriver.setInitialDelayMet(request.id)
-        val updatedWorkInfo = workManager.getWorkInfoById(request.id).get()
-
-        assertThat(updatedWorkInfo.state, `is`(WorkInfo.State.RUNNING))
     }
 }
