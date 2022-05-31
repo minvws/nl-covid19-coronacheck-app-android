@@ -51,6 +51,7 @@ buildscript {
     ext.work_manager_version = '2.7.1'
     ext.espresso_version = '3.4.0'
     ext.certificatetransparency_version = '1.1.0'
+    ext.junit_ext_version = '1.1.3'
 
     repositories {
         google()
@@ -67,6 +68,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.10'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
         classpath "com.project.starter:easylauncher:5.0.1"
+        classpath "com.karumi:shot:5.14.1"
     }
 }
 
