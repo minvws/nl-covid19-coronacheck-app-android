@@ -330,7 +330,7 @@
   <string name="no_vaccinations_title">Geen vaccinaties beschikbaar</string>
   <string name="no_vaccinations_description"><![CDATA[Er zijn geen gegevens over je vaccinatie(s) beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren tot de gegevens beschikbaar zijn.]]></string>
   <string name="no_test_results_title">Geen testuitslag beschikbaar</string>
-  <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testuitslag beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Heb je al een negatieve testuitslag van de GGD gekregen? Het kan een paar uur duren voordat je de uitslag hier kunt ophalen. Probeer het later opnieuw.]]></string>
+  <string name="no_test_results_description"><![CDATA[Er zijn geen gegevens over je testuitslag beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Heb je al een testuitslag van de GGD gekregen? Het kan een paar uur duren voordat je de uitslag hier kunt ophalen. Probeer het later opnieuw.]]></string>
   <string name="not_yet_tested_title">Ben je nog niet getest?</string>
   <string name="not_yet_tested_description"><![CDATA[Voor een testbewijs moet je eerst een test doen bij een aangesloten testlocatie. Blijkt uit de test dat je geen corona hebt? Dan kun je een bewijs maken.]]></string>
   <string name="not_yet_tested_button">Maak een afspraak</string>
@@ -732,16 +732,16 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_storedEvents_message">De gegevens hieronder staan opgeslagen op je telefoon en worden gebruikt door CoronaCheck om je coronabewijs te maken.</string>
   <string name="holder_storedEvents_button_handleData">Hoe gaat CoronaCheck met gegevens om?</string>
   <string name="holder_storedEvents_url">https://coronacheck.nl/nl/privacy</string>
-  <string name="holder_storedEvents_button_removeEvents">Deze gegevens wissen</string>
+  <string name="holder_storedEvents_button_removeEvents">Uit de app verwijderen</string>
   <string name="holder_storedEvents_list_noEvents">Geen gegevens opgeslagen</string>
   <string name="holder_storedEvents_listHeader_fetchedFromProvider">Opgehaald bij %s</string>
   <string name="holder_storedEvents_listHeader_paperFlow">Ingescand bewijs</string>
   <string name="general_negativeTest">Negatieve testuitslag</string>
   <string name="general_positiveTest">Positieve testuitslag</string>
-  <string name="holder_storedEvent_alert_removeEvents_title">Deze gegevens wissen?</string>
-  <string name="holder_storedEvent_alert_removeEvents_message">Bij het wissen van deze gegevens worden er mogelijk bewijzen met QR-codes uit de app verwijderd.</string>
-  <string name="general_delete">Wis gegevens</string>
-  <string name="holder_storedEvents_eraseEvents_title">Gegevens wissen</string>
+  <string name="holder_storedEvent_alert_removeEvents_title">Deze gegevens verwijderen?</string>
+  <string name="holder_storedEvent_alert_removeEvents_message">Bij het verwijderen van deze gegevens worden er mogelijk ook bewijzen met QR-codes uit de app verwijderd.</string>
+  <string name="general_delete">Verwijderen</string>
+  <string name="holder_storedEvents_eraseEvents_title">Gegevens verwijderen</string>
   <string name="holder_newintheapp_content_dutchAndInternationalCertificates_title">Nederlandse en internationale bewijzen</string>
   <string name="holder_newintheapp_content_dutchAndInternationalCertificates_body">Er zijn weer bewijzen voor in Nederland en het buitenland. Gebruik je Nederlandse bewijs voor toegang tot plekken en activiteiten in Nederland. Ga je de grens over of ben je in het buitenland? Gebruik dan je internationale bewijs.</string>
   <string name="holder_newintheapp_content_dutchAndInternationalCertificates_button_toMyCertificates">Naar mijn bewijzen</string>
@@ -764,11 +764,14 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_newintheapp_foreignproofs_title">Buitenlandse bewijzen toevoegen</string>
   <string name="holder_newintheapp_foreignproofs_body">Heb je een coronabewijs met QR-code van een test of vaccinatie uit het buitenland? Dan kun je jouw bewijs nu toevoegen aan CoronaCheck. Kies in het menu voor “Coronabewijs inscannen”.</string>
   <string name="holder_showQR_label_expiredQR">Deze QR-code is niet meer geldig</string>
-  <string name="holder_listRemoteEvents_somethingWrong_foreignDCC_body"><![CDATA[<br /><b>Kloppen er gegevens niet?</b><br />Neem contact op met de zorgverlener waar je bent getest of gevaccineerd. Vraag of zij je kunnen helpen je gegevens aan te passen.]]></string>
+  <string name="holder_listRemoteEvents_somethingWrong_foreignDCC_body"><![CDATA[<br /><b>Kloppen er gegevens niet?</b><br />Check in het land waar je getest of gevaccineerd bent hoe je jouw gegevens kunt aanpassen.]]></string>
   <string name="holder_dcc_issuer">Afgever certificaat:</string>
   <string name="holder_scanner_error_action">Sluiten</string>
   <string name="holder_scanner_error_message_ctb">Scan de QR-code op je internationale bewijs. Hierin staan alle gegevens die nodig zijn om je bewijs in de app te zetten. Je hoeft je Nederlandse QR-code niet te scannen.</string>
   <string name="holder_scanner_error_title_ctb">Scan de internationale QR-code</string>
   <string name="holder_scanner_error_message_unknown">De QR-code die je probeert te scannen wordt niet herkend als die van een coronabewijs. Controleer of je de goede QR-code voor de camera houdt.</string>
   <string name="holder_scanner_error_title_unknown">Deze QR-code wordt niet herkend</string>
+  <string name="holder_dashboard_recoveryAlmostExpiredBanner_title">Je herstelbewijs verloopt bijna</string>
+  <string name="holder_recoveryAlmostExpiredModal_title">Herstelbewijs verloopt bijna</string>
+  <string name="holder_recoveryAlmostExpiredModal_message">Je herstelbewijs verloopt op %@. Daarna heb je geen coronabewijs meer. Heb je een nieuw coronabewijs nodig? Dan zijn er verschillende mogelijkheden. Lees meer op <a href="https://www.rijksoverheid.nl/onderwerpen/coronavirus-coronabewijs-en-coronatoegangsbewijs">Rijksoverheid.nl</a></string>
 </resources>
