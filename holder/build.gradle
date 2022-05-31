@@ -187,6 +187,7 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$androix_test_version"
     androidTestImplementation "androidx.test:rules:$androix_test_version"
     androidTestImplementation "androidx.test:core-ktx:$androix_test_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
