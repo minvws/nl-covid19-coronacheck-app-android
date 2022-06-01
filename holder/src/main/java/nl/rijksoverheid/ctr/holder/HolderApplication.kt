@@ -1,5 +1,8 @@
 package nl.rijksoverheid.ctr.holder
 
+import android.util.Log
+import androidx.work.Configuration
+import androidx.work.WorkerFactory
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
@@ -29,10 +32,11 @@ import org.koin.core.module.Module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class HolderApplication : SharedApplication() {
+open class HolderApplication : SharedApplication(), Configuration.Provider {
 
     private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
+    private val holderWorkerFactory: WorkerFactory by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
 
@@ -102,5 +106,16 @@ open class HolderApplication : SharedApplication() {
 
     override fun getAdditionalModules(): List<Module> {
         return listOf(holderPreferenceModule, holderMobileCoreModule)
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder().apply {
+            setMinimumLoggingLevel(if (BuildConfig.DEBUG) {
+                Log.DEBUG
+            } else {
+                Log.ERROR
+            })
+            setWorkerFactory(holderWorkerFactory)
+        }.build()
     }
 }
