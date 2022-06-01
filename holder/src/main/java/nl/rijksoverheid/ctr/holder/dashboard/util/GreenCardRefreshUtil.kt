@@ -9,7 +9,6 @@ package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit.DAYS
@@ -21,7 +20,6 @@ sealed class RefreshState {
 
 interface GreenCardRefreshUtil {
     suspend fun shouldRefresh(): Boolean
-    suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean
     suspend fun refreshState(): RefreshState
 }
 
@@ -66,15 +64,6 @@ class GreenCardRefreshUtilImpl(
             }
 
         return greenCardExpiring != null || hasValidFutureOrigins
-    }
-
-    override suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean {
-        val allGreenCards = holderDatabase.greenCardDao().getAll()
-        return allGreenCards.filter {
-            it.greenCardEntity.type == selectedType
-        }.all {
-            credentialUtil.getActiveCredential(it.greenCardEntity.type, it.credentialEntities) == null
-        }
     }
 
     // returns the refresh state of the app,
