@@ -15,6 +15,7 @@ jobs:
       - name: Test
         run: ./gradlew testDebug testAccDebug lint
       - name: Emulator Test
+        if: "!contains(github.event.pull_request.labels.*.name, 'skip-screenshot-tests')"
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
