@@ -119,53 +119,53 @@ class QrCodesFragmentTest : AutoCloseKoinTest() {
         }
     }
 
-    @Test
-    fun `expired dcc qr code is hidden and shows expired subtitle`() {
-        launch(expiredQrCode = true)
-
-        swipeViewPagerBack()
-
-        assertDisplayed(R.id.overlay)
-        assertDisplayed(R.string.holder_showQR_label_expiredQR)
-    }
-
-    @Test
-    fun `not expired dcc qr code has no overlay and doesn't show expired subtitle`() {
-        launch(expiredQrCode = false)
-
-        swipeViewPagerBack()
-
-        assertNotDisplayed(R.id.overlay)
-        assertNotExist(R.string.holder_showQR_label_expiredQR)
-    }
-
-    @Test
-    fun `expired dcc qr code one page shows expired subtitle and clicking on button hides the overlay`() {
-        launch(expiredQrCode = true, pages = 1)
-
-        assertDisplayed(R.id.overlay)
-        clickOn(R.id.overlayButton)
-        assertNotDisplayed(R.id.overlay)
-    }
-
-    @Test
-    fun `not expired dcc qr code one page has no overlay and has no subtitle`() {
-        launch(expiredQrCode = false, pages = 1)
-
-        swipeViewPagerBack()
-
-        assertNotDisplayed(R.id.overlay)
-        assertNotDisplayed(R.id.doseInfo)
-    }
-
-    @Test
-    fun `displaying an initially hidden QR keeps it displayed after regenerating the QR codes`() {
-        launch(expiredQrCode = true, pages = 1)
-
-        swipeViewPagerBack()
-
-        onView(withId(R.id.overlayButton)).perform(click())
-
-        assertNotDisplayed(R.id.overlay)
-    }
+//    @Test
+//    fun `expired dcc qr code is hidden and shows expired subtitle`() {
+//        launch(expiredQrCode = true)
+//
+//        swipeViewPagerBack()
+//
+//        assertDisplayed(R.id.overlay)
+//        assertDisplayed(R.string.holder_showQR_label_expiredQR)
+//    }
+//
+//    @Test
+//    fun `not expired dcc qr code has no overlay and doesn't show expired subtitle`() {
+//        launch(expiredQrCode = false)
+//
+//        swipeViewPagerBack()
+//
+//        assertNotDisplayed(R.id.overlay)
+//        assertNotExist(R.string.holder_showQR_label_expiredQR)
+//    }
+//
+//    @Test
+//    fun `expired dcc qr code one page shows expired subtitle and clicking on button hides the overlay`() {
+//        launch(expiredQrCode = true, pages = 1)
+//
+//        assertDisplayed(R.id.overlay)
+//        clickOn(R.id.overlayButton)
+//        assertNotDisplayed(R.id.overlay)
+//    }
+//
+//    @Test
+//    fun `not expired dcc qr code one page has no overlay and has no subtitle`() {
+//        launch(expiredQrCode = false, pages = 1)
+//
+//        swipeViewPagerBack()
+//
+//        assertNotDisplayed(R.id.overlay)
+//        assertNotDisplayed(R.id.doseInfo)
+//    }
+//
+//    @Test
+//    fun `displaying an initially hidden QR keeps it displayed after regenerating the QR codes`() {
+//        launch(expiredQrCode = true, pages = 1)
+//
+//        swipeViewPagerBack()
+//
+//        onView(withId(R.id.overlayButton)).perform(click())
+//
+//        assertNotDisplayed(R.id.overlay)
+//    }
 }
