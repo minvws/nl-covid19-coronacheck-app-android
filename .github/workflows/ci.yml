@@ -18,7 +18,8 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew accDebugExecuteScreenshotTests
+          script: ./gradlew connectedAccDebugAndroidTest
+          profile: pixel
       - name: Archive test-results
         if: always()
         uses: actions/upload-artifact@v2
