@@ -55,6 +55,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = successResult(
@@ -81,6 +82,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = successResult(
@@ -107,6 +109,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
@@ -148,6 +151,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
@@ -189,6 +193,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
@@ -229,6 +234,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.ServerNetworkError(Step(1), IllegalStateException("Some error")))),
@@ -255,6 +261,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Error(
@@ -288,6 +295,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.Error(Step(1), IllegalStateException("Some error")))),
@@ -313,6 +321,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
@@ -354,6 +363,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(

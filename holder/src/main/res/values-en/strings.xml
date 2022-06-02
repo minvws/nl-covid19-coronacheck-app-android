@@ -327,10 +327,10 @@
   <string name="rule_engine_no_origin_title">We can\'t create a certificate</string>
   <string name="rule_engine_no_test_origin_description"><![CDATA[At this moment, we can\'t create a certificate from your %1$s. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost</a>.]]></string>
   <string name="back_to_overview">To my certificates</string>
-  <string name="no_vaccinations_title">Vaccinations not available</string>
+  <string name="no_vaccinations_title">No vaccinations available</string>
   <string name="no_vaccinations_description"><![CDATA[There are no available vaccination details. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/>Got vaccinated recently? It can take a few hours until your details are available.]]></string>
   <string name="no_test_results_title">No test result available</string>
-  <string name="no_test_results_description"><![CDATA[There is no available data of your test result. This can have various causes. Read the <a href=\"https://www.coronacheck.nl/en/guidepost\"> Guidepost</a> for more information.<br/><br/>Already got a negative test result from the GGD? It can take a few hours until your details are available. Try again later.]]></string>
+  <string name="no_test_results_description"><![CDATA[There is no available data of your test result. This can have various causes. Read the <a href=\"https://www.coronacheck.nl/en/guidepost\"> Guidepost</a> for more information.<br/><br/>Already got a test result from the GGD? It can take a few hours until your details are available. Try again later.]]></string>
   <string name="not_yet_tested_title">Were you not tested yet?</string>
   <string name="not_yet_tested_description"><![CDATA[For a test certificate, you must take a test first at an affiliated test location. Does the test prove you don\'t have coronavirus? Then you can make a certificate.]]></string>
   <string name="not_yet_tested_button">Make an appointment</string>
@@ -731,16 +731,16 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_storedEvents_message">The data below is stored on your phone and is used by CoronaCheck to create your coronavirus pass.</string>
   <string name="holder_storedEvents_button_handleData">How does Coronacheck handle my data?</string>
   <string name="holder_storedEvents_url">https://coronacheck.nl/en/privacy</string>
-  <string name="holder_storedEvents_button_removeEvents">Clear this data</string>
+  <string name="holder_storedEvents_button_removeEvents">Remove from the app</string>
   <string name="holder_storedEvents_list_noEvents">No stored data</string>
   <string name="holder_storedEvents_listHeader_fetchedFromProvider">Retrieved at %s</string>
   <string name="holder_storedEvents_listHeader_paperFlow">Scanned certificate</string>
   <string name="general_negativeTest">Negative test result</string>
   <string name="general_positiveTest">Positive test result</string>
-  <string name="holder_storedEvent_alert_removeEvents_title">Clear this data?</string>
-  <string name="holder_storedEvent_alert_removeEvents_message">Clearing this data will possibly remove certificates with QR codes from the app.</string>
-  <string name="general_delete">Clear data</string>
-  <string name="holder_storedEvents_eraseEvents_title">Clearing data</string>
+  <string name="holder_storedEvent_alert_removeEvents_title">Remove this data?</string>
+  <string name="holder_storedEvent_alert_removeEvents_message">Removing this data will possibly also remove certificates with QR codes from the app.</string>
+  <string name="general_delete">Remove data</string>
+  <string name="holder_storedEvents_eraseEvents_title">Removing data</string>
   <string name="holder_newintheapp_content_dutchAndInternationalCertificates_title">Dutch and international certificates</string>
   <string name="holder_newintheapp_content_dutchAndInternationalCertificates_body">You’ll find certificates for in the Netherlands and abroad in the app. Use your Dutch certificate for access to places and activities in the Netherlands. Are you planning to cross the border or are you abroad? Then use your international certificate.</string>
   <string name="holder_newintheapp_content_dutchAndInternationalCertificates_button_toMyCertificates">To my certificates</string>
@@ -763,11 +763,14 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_newintheapp_foreignproofs_title">Adding foreign certificates</string>
   <string name="holder_newintheapp_foreignproofs_body">Do you have a coronavirus certificate with QR code of a test or vaccination from abroad? Now you can add your certificate to CoronaCheck. Choose “Scan to add certificate” in the menu.</string>
   <string name="holder_showQR_label_expiredQR">This QR code is no longer valid</string>
-  <string name="holder_listRemoteEvents_somethingWrong_foreignDCC_body"><![CDATA[<br /><b>Are your details incorrect?</b><br />Please contact the healthcare provider who vaccinated or tested you. Ask if they can help you correct your data.]]></string>
+  <string name="holder_listRemoteEvents_somethingWrong_foreignDCC_body"><![CDATA[<br /><b>Are your details incorrect?</b><br />Please check in the country where you were tested or vaccinated how you can adjust your details.]]></string>
   <string name="holder_dcc_issuer">Certificate issuer:</string>
   <string name="holder_scanner_error_action">Close</string>
   <string name="holder_scanner_error_message_ctb">Scan the QR code on your international certificate. It contains the information needed to add your certificate to the app. You don’t need to scan your Dutch QR code.</string>
   <string name="holder_scanner_error_title_ctb">Scan the international QR code</string>
   <string name="holder_scanner_error_message_unknown">The QR code you are trying to scan is not recognised as a coronavirus pass. Make sure you are holding the correct QR code in front of the camera.</string>
   <string name="holder_scanner_error_title_unknown">This QR code is not recognised</string>
+  <string name="holder_dashboard_recoveryAlmostExpiredBanner_title">Je herstelbewijs verloopt bijna</string>
+  <string name="holder_recoveryAlmostExpiredModal_title">Herstelbewijs verloopt bijna</string>
+  <string name="holder_recoveryAlmostExpiredModal_message">Je herstelbewijs verloopt op %@. Daarna heb je geen coronabewijs meer. Heb je een nieuw coronabewijs nodig? Dan zijn er verschillende mogelijkheden. Lees meer op <a href="https://www.rijksoverheid.nl/onderwerpen/coronavirus-coronabewijs-en-coronatoegangsbewijs">Rijksoverheid.nl</a></string>
 </resources>

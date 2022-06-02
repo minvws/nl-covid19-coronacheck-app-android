@@ -483,7 +483,18 @@ fun fakeGreenCard(
     eventTime: OffsetDateTime = OffsetDateTime.now(),
     expirationTime: OffsetDateTime = OffsetDateTime.now(),
     validFrom: OffsetDateTime = OffsetDateTime.now(),
-    category: String? = null
+    category: String? = null,
+    credentialEntities: List<CredentialEntity> = listOf(
+        CredentialEntity(
+            id = 0,
+            greenCardId = 0,
+            data = "".toByteArray(),
+            credentialVersion = 0,
+            validFrom = validFrom,
+            expirationTime = expirationTime,
+            category = category
+        )
+    ),
 ) = GreenCard(
     greenCardEntity = GreenCardEntity(
         id = 0,
@@ -500,17 +511,7 @@ fun fakeGreenCard(
             validFrom = validFrom
         )
     ),
-    credentialEntities = listOf(
-        CredentialEntity(
-            id = 0,
-            greenCardId = 0,
-            data = "".toByteArray(),
-            credentialVersion = 0,
-            validFrom = validFrom,
-            expirationTime = expirationTime,
-            category = category
-        )
-    )
+    credentialEntities = credentialEntities
 )
 
 fun fakeGreenCardWithOrigins(

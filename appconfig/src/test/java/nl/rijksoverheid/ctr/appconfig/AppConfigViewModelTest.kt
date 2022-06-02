@@ -12,10 +12,7 @@ import kotlinx.coroutines.test.setMain
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
-import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.*
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import okio.BufferedSource
 import org.junit.Assert
@@ -41,14 +38,14 @@ class AppConfigViewModelTest {
         every { canRefresh(any()) } returns true
     }
     private val appStatusUseCase: AppStatusUseCase = mockk(relaxed = true)
-    private val persistConfigUseCase: PersistConfigUseCase = mockk(relaxed = true)
+    private val configResultUseCase: ConfigResultUseCase = mockk(relaxed = true)
     private val appConfigStorageManager: AppConfigStorageManager = mockk(relaxed = true)
     private val cachedAppConfigUseCase: CachedAppConfigUseCase = mockk(relaxed = true)
 
     private fun appConfigViewModel(isVerifier: Boolean = false) = AppConfigViewModelImpl(
         appConfigUseCase = appConfigUseCase,
         appStatusUseCase = appStatusUseCase,
-        persistConfigUseCase = persistConfigUseCase,
+        configResultUseCase = configResultUseCase,
         appConfigStorageManager = appConfigStorageManager,
         cachedAppConfigUseCase = cachedAppConfigUseCase,
         filesDirPath = filesDirPath,
@@ -85,7 +82,7 @@ class AppConfigViewModelTest {
 
         appConfigViewModel().refresh(mobileCoreWrapper)
 
-        coVerify { persistConfigUseCase.persist(appConfigContents, publicKeysContents) }
+        coVerify { configResultUseCase.fetch() }
         coVerify { mobileCoreWrapper.initializeHolder(filesDirPath) }
         coVerify(exactly = 0) { mobileCoreWrapper.initializeVerifier(filesDirPath) }
     }
@@ -111,7 +108,7 @@ class AppConfigViewModelTest {
 
         appConfigViewModel(true).refresh(mobileCoreWrapper)
 
-        coVerify { persistConfigUseCase.persist(appConfigContents, publicKeysContents) }
+        coVerify { configResultUseCase.fetch() }
         coVerify(exactly = 0) { mobileCoreWrapper.initializeHolder(any()) }
         coVerify { mobileCoreWrapper.initializeVerifier(filesDirPath) }
     }
