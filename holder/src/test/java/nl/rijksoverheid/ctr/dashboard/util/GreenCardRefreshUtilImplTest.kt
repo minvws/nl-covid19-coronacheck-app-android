@@ -12,7 +12,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.*
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
@@ -20,9 +20,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtilImpl
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.fakeGreenCard
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.junit.Assert.*
@@ -133,42 +130,6 @@ class GreenCardRefreshUtilImplTest {
     }
 
     @Test
-    fun `given a green with credential expiring in 7 days after now, when checking the last expiring one, then it returns it with refreshInDays set to 2`() = runBlocking {
-        coEvery { greenCardDao.getAll() } returns listOf(validGreenCard("2021-01-08T07:00:00.00Z"))
-
-        val credentialsExpireInDays = greenCardRefreshUtil.credentialsExpireInDays()
-
-        assertEquals(2, credentialsExpireInDays)
-    }
-
-    @Test
-    fun `given a green with credential expiring 6 days after now, when checking the last expiring one, then it returns it with refreshInDays set to 1`() = runBlocking {
-        coEvery { greenCardDao.getAll() } returns listOf(validGreenCard())
-
-        val credentialsExpireInDays = greenCardRefreshUtil.credentialsExpireInDays()
-
-        assertEquals(1, credentialsExpireInDays)
-    }
-
-    @Test
-    fun `given a green with credential expiring today, when checking the last expiring one, then it returns it with refreshInDays set to 1`() = runBlocking {
-        coEvery { greenCardDao.getAll() } returns listOf(expiringGreenCard())
-
-        val credentialsExpireInDays = greenCardRefreshUtil.credentialsExpireInDays()
-
-        assertEquals(1, credentialsExpireInDays)
-    }
-
-    @Test
-    fun `given no green cards, when checking the last expiring one, then it returns None (so no refresh is scheduled)`() = runBlocking {
-        coEvery { greenCardDao.getAll() } returns listOf()
-
-        val credentialsExpireInDays = greenCardRefreshUtil.credentialsExpireInDays()
-
-        assertEquals(0, credentialsExpireInDays)
-    }
-
-    @Test
     fun `given green card with no credentials and valid origins, it should refresh`() = runBlocking {
         val greenCard = greenCard(
             originEntities = listOf(validOriginEntity()),
@@ -263,6 +224,53 @@ class GreenCardRefreshUtilImplTest {
         coEvery { greenCardDao.getAll() } returns listOf(greenCard)
 
         assertFalse(greenCardRefreshUtil.shouldRefresh())
+    }
+
+    private fun greenCardWithExpiringCredentials(inDays: Long) {
+        val expirationTime = OffsetDateTime.now(firstJanuaryClock).plusDays(inDays)
+        val greenCard = fakeGreenCard(
+            expirationTime = expirationTime,
+            eventTime = OffsetDateTime.now(firstJanuaryClock).minusDays(15),
+            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1),
+        )
+        coEvery { greenCardUtil.getExpireDate(greenCard) } returns OffsetDateTime.now(firstJanuaryClock).plusDays(30)
+        coEvery { greenCardDao.getAll() } returns listOf(greenCard)
+    }
+
+    @Test
+    fun `refresh state with expiring credentials in 3 days`() = runBlocking {
+        greenCardWithExpiringCredentials(3)
+
+        assertEquals(1, (greenCardRefreshUtil.refreshState() as RefreshState.Refreshable).days)
+    }
+
+    @Test
+    fun `refresh state with expiring credentials in 11 days`() = runBlocking {
+        greenCardWithExpiringCredentials(11)
+
+        assertEquals(6, (greenCardRefreshUtil.refreshState() as RefreshState.Refreshable).days)
+    }
+
+    @Test
+    fun `refresh state with expiring credentials and expiring origin`() = runBlocking {
+        greenCardWithExpiringCredentials(11)
+        coEvery { greenCardUtil.getExpireDate(any()) } returns OffsetDateTime.now(firstJanuaryClock).plusDays(11)
+
+        assertTrue(greenCardRefreshUtil.refreshState() is RefreshState.NoRefresh)
+    }
+
+    @Test
+    fun `refresh state future origin`() = runBlocking {
+        val greenCard = fakeGreenCard(
+            expirationTime = OffsetDateTime.now(firstJanuaryClock).plusYears(1),
+            eventTime = OffsetDateTime.now(firstJanuaryClock).minusDays(15),
+            validFrom = OffsetDateTime.now(firstJanuaryClock).plusDays(1),
+        )
+        val noCredentialsGreenCard = greenCard.copy(credentialEntities = emptyList())
+        coEvery { greenCardDao.getAll() } returns listOf(noCredentialsGreenCard)
+        coEvery { originUtil.getOriginState(any()) } returns listOf(OriginState.Future(greenCard.origins.first()))
+
+        assertEquals(1, (greenCardRefreshUtil.refreshState() as RefreshState.Refreshable).days)
     }
 
 }
