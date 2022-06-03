@@ -6,16 +6,17 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.introduction.IntroductionData
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
+import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.*
-import nl.rijksoverheid.ctr.verifier.ui.scanner.models.VerifiedQrResultState
-import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.TestResultValidUseCase
-import nl.rijksoverheid.ctr.verifier.ui.scanner.usecases.VerifyQrUseCase
+import nl.rijksoverheid.ctr.verifier.scanner.models.VerifiedQrResultState
+import nl.rijksoverheid.ctr.verifier.scanner.usecases.TestResultValidUseCase
+import nl.rijksoverheid.ctr.verifier.scanner.usecases.VerifyQrUseCase
 import org.json.JSONObject
 
 /*
@@ -29,40 +30,46 @@ import org.json.JSONObject
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
         override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
-            appStatusLiveData.value = appStatus
+            if (appStatusLiveData.value != appStatus) {
+                appStatusLiveData.postValue(appStatus)
+            }
+        }
+
+        override fun saveNewFeaturesFinished() {
+
+        }
+
+        override fun saveNewTerms() {
+
         }
     }
 
 fun fakeIntroductionViewModel(
-    introductionStatus: IntroductionStatus? = null,
-    setupRequired: Boolean = true
+    introductionRequired: Boolean = true
 ): IntroductionViewModel {
     return object : IntroductionViewModel() {
 
         init {
-            if (setupRequired) {
-                (introductionStatusLiveData as MutableLiveData)
-                    .postValue(Event(IntroductionStatus.SetupNotFinished))
+            if (introductionRequired) {
+                (introductionRequiredLiveData as MutableLiveData)
+                    .postValue(Event(Unit))
             }
         }
 
-        override fun getIntroductionStatus(): IntroductionStatus {
-            return introductionStatus ?: IntroductionStatus.IntroductionFinished
+        override fun getIntroductionRequired(): Boolean {
+            return true
         }
 
         override fun saveIntroductionFinished(introductionData: IntroductionData) {
 
         }
+    }
+}
 
-        override fun saveNewFeaturesFinished(newFeaturesVersion: Int) {
-
-        }
-
+fun fakeSetupViewModel(): SetupViewModel {
+    return object : SetupViewModel() {
         override fun onConfigUpdated() {
-            introductionStatus?.let {
-                (introductionStatusLiveData as MutableLiveData)
-                    .postValue(Event(it))
-            }
+
         }
     }
 }
@@ -123,6 +130,10 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
+    override fun getCachedAppConfigOrNull(): AppConfig? {
+        return appConfig
+    }
+
     override fun getCachedAppConfigHash(): String {
         return ""
     }
@@ -166,6 +177,18 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             TODO("Not yet implemented")
         }
 
+        override fun isDcc(credential: ByteArray): Boolean {
+            return false
+        }
+
+        override fun isForeignDcc(credential: ByteArray): Boolean {
+            return false
+        }
+
+        override fun hasDomesticPrefix(credential: ByteArray): Boolean {
+            return false
+        }
+
         override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
             return ReadDomesticCredential(
                 "",
@@ -182,3 +205,30 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
         }
     }
 }
+
+fun fakeAppConfigPersistenceManager(
+    lastFetchedSeconds: Long = 0L
+) = object : AppConfigPersistenceManager {
+
+    override fun getAppConfigLastFetchedSeconds(): Long {
+        return lastFetchedSeconds
+    }
+
+    override fun saveAppConfigLastFetchedSeconds(seconds: Long) {
+
+    }
+}
+
+fun fakeAppConfig(
+    minimumVersion: Int = 1,
+    appDeactivated: Boolean = false,
+    informationURL: String = "",
+    configTtlSeconds: Int = 0,
+    maxValidityHours: Int = 0
+) = VerifierConfig.default(
+    verifierMinimumVersion = minimumVersion,
+    verifierAppDeactivated = appDeactivated,
+    verifierInformationURL = informationURL,
+    configTTL = configTtlSeconds,
+    maxValidityHours = maxValidityHours
+)

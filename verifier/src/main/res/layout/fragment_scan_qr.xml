@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layoutAnimation="@anim/layout_fade_in"
     android:layout_height="match_parent">
 
     <ScrollView
@@ -55,7 +56,7 @@
                 app:barrierAllowsGoneWidgets="true"
                 app:constraint_referenced_ids="lockedAnimation, image" />
 
-            <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
+            <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -113,7 +114,7 @@
 
     </ScrollView>
 
-    <nl.rijksoverheid.ctr.verifier.ui.views.ScrollViewPolicyButtonWidget
+    <nl.rijksoverheid.ctr.verifier.widgets.ScrollViewPolicyButtonWidget
         android:id="@+id/bottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

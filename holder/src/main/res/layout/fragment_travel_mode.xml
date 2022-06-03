@@ -53,7 +53,7 @@
             app:layout_constraintStart_toStartOf="@+id/description"
             app:layout_constraintTop_toBottomOf="@+id/description">
 
-            <nl.rijksoverheid.ctr.design.views.OutlinedToggleButtonWidget
+            <nl.rijksoverheid.ctr.design.widgets.OutlinedToggleButtonWidget
                 android:id="@+id/button_domestic"
                 style="@style/Widget.App.Button.Toggle"
                 android:layout_width="0dp"
@@ -61,7 +61,7 @@
                 android:layout_weight="1"
                 android:text="@string/travel_button_domestic" />
 
-            <nl.rijksoverheid.ctr.design.views.OutlinedToggleButtonWidget
+            <nl.rijksoverheid.ctr.design.widgets.OutlinedToggleButtonWidget
                 android:id="@+id/button_foreign"
                 style="@style/Widget.App.Button.Toggle"
                 android:layout_width="0dp"

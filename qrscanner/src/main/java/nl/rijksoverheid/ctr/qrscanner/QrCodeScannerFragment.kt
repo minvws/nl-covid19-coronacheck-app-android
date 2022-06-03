@@ -29,6 +29,7 @@ import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellManager
 import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
 import nl.rijksoverheid.ctr.zebrascanner.ZebraManager
@@ -62,6 +63,8 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     }
 
     private val qrCodeProcessor: QrCodeProcessor by inject()
+
+    private val dialogUtil: DialogUtil by inject()
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -314,20 +317,19 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         // Add Analyzer to the Usecase, which will receive frames from the camera
         // and processes them using our supplied function
         imageAnalyzer.setAnalyzer(
-            cameraExecutor,
-            { cameraFrame ->
-                if (isAdded) {
-                    qrCodeProcessor.process(
-                        binding = binding,
-                        cameraProvider = cameraProvider,
-                        cameraFrame = cameraFrame,
-                        qrCodeProcessed = {
-                            onQrScanned(it)
-                        }
-                    )
-                }
+            cameraExecutor
+        ) { cameraFrame ->
+            if (isAdded) {
+                qrCodeProcessor.process(
+                    binding = binding,
+                    cameraProvider = cameraProvider,
+                    cameraFrame = cameraFrame,
+                    qrCodeProcessed = {
+                        onQrScanned(it)
+                    }
+                )
             }
-        )
+        }
 
         // bind the Analyzer Usecase to the activity's lifecycle so the preview is automatically unbound
         // and disposed whenever the activity closes
@@ -402,13 +404,18 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
     private fun showRationaleDialog(rationaleDialog: Copy.RationaleDialog) {
         if (isAdded) {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(rationaleDialog.title)
-                .setMessage(rationaleDialog.description)
-                .setPositiveButton(rationaleDialog.okayButtonText) { _, _ ->
+            dialogUtil.presentDialog(
+                context = requireContext(),
+                title = rationaleDialog.title,
+                message = rationaleDialog.description,
+                onDismissCallback = {
+                    requestPermission()
+                },
+                positiveButtonText = rationaleDialog.okayButtonText,
+                positiveButtonCallback = {
                     requestPermission()
                 }
-                .show()
+            )
         }
     }
 
@@ -420,9 +427,9 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         val verificationPolicy: VerificationPolicy? = null,
     ) {
         data class RationaleDialog(
-            val title: String,
+            val title: Int,
             val description: String,
-            val okayButtonText: String
+            val okayButtonText: Int
         )
 
         data class VerificationPolicy(

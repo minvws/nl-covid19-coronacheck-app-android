@@ -3,32 +3,23 @@ package nl.rijksoverheid.ctr.holder
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.RemoteProtocol3
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ValidatePaperProofResult
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavDirections
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 abstract class HolderMainActivityViewModel: ViewModel() {
-    /**
-     * For when we need to communicate events between different navigations (holder_nav_graph_root and holder_nav_graph_main)
-     */
-    val eventsLiveData: LiveData<Event<Map<RemoteProtocol3, ByteArray>>> = MutableLiveData()
-
-    /**
-     * For when we need to communicate paper proof event errors between different navigations (holder_nav_graph_root and holder_nav_graph_main)
-     */
-    val validatePaperProofError: LiveData<Event<ValidatePaperProofResult.Invalid>> = MutableLiveData()
-
-    abstract fun sendEvents(events: Map<RemoteProtocol3, ByteArray>)
-    abstract fun sendValidatePaperProofInvalid(result: ValidatePaperProofResult.Invalid)
+    val navigateLiveData: LiveData<Event<NavDirections>> = MutableLiveData()
+    abstract fun navigate(navDirections: NavDirections, delayMillis: Long = 0)
 }
 
 class HolderMainActivityViewModelImpl: HolderMainActivityViewModel() {
 
-    override fun sendEvents(events: Map<RemoteProtocol3, ByteArray>) {
-        (eventsLiveData as MutableLiveData).postValue(Event(events))
-    }
-
-    override fun sendValidatePaperProofInvalid(result: ValidatePaperProofResult.Invalid) {
-        (validatePaperProofError as MutableLiveData).postValue(Event(result))
+    override fun navigate(navDirections: NavDirections, delayMillis: Long) {
+        viewModelScope.launch {
+            delay(delayMillis)
+            (navigateLiveData as MutableLiveData).postValue(Event(navDirections))
+        }
     }
 }

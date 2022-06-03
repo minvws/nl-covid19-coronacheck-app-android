@@ -15,17 +15,17 @@ import android.widget.TextView
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
-import nl.rijksoverheid.ctr.design.ext.formatDayShortMonthYear
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.CredentialEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginEntity
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.CredentialUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
-import nl.rijksoverheid.ctr.holder.usecase.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.capitalize
+import nl.rijksoverheid.ctr.shared.ext.locale
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
@@ -321,15 +321,21 @@ class DashboardGreenCardAdapterItemUtilImpl(
         greenCard: GreenCard,
         origin: OriginEntity
     ) {
-        val getCurrentDosesString: (String, String) -> String =
-            { currentDose: String, sumDoses: String ->
-                context.getString(
+        val getCurrentDosesString: (String, String, String) -> String =
+            { currentDose: String, sumDoses: String, country: String ->
+                val dosisString = context.getString(
                     R.string.qr_card_vaccination_doses,
                     currentDose, sumDoses
                 )
+                if (country.isNotEmpty()) {
+                    "$dosisString$country"
+                } else {
+                    dosisString
+                }
             }
-        val doses = credentialUtil.getVaccinationDosesForEuropeanCredentials(
+        val doses = credentialUtil.getVaccinationDosesCountryLineForEuropeanCredentials(
             greenCard.credentialEntities,
+            context.locale().language,
             getCurrentDosesString
         )
         setOriginTitle(

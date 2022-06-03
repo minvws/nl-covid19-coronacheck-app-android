@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.appconfig.persistence.*
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
 import nl.rijksoverheid.ctr.appconfig.usecases.*
-import nl.rijksoverheid.ctr.design.BuildConfig
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -31,17 +30,8 @@ import retrofit2.Retrofit
 fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
     factory<ConfigRepository> { ConfigRepositoryImpl(get()) }
     factory<AppConfigUseCase> { AppConfigUseCaseImpl(get(), get(), get(), get()) }
-    factory<AppStatusUseCase> {
-        AppStatusUseCaseImpl(
-            get(),
-            get(),
-            get(),
-            get(),
-            get(),
-            isVerifierApp(androidContext()),
-        )
-    }
     factory<AppConfigPersistenceManager> { AppConfigPersistenceManagerImpl(get()) }
+    factory<AppUpdatePersistenceManager> { AppUpdatePersistenceManagerImpl(get()) }
     factory<AppConfigStorageManager> { AppConfigStorageManagerImpl(androidContext().filesDir.path) }
     factory<CachedAppConfigUseCase> {
         CachedAppConfigUseCaseImpl(
@@ -69,6 +59,8 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
             .create(AppConfigApi::class.java)
     }
 
+    single<ConfigResultUseCase> { ConfigResultUseCaseImpl(get(), get()) }
+
     viewModel<AppConfigViewModel> {
         AppConfigViewModelImpl(
             get(),
@@ -78,11 +70,11 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
             get(),
             androidContext().filesDir.path,
             isVerifierApp(androidContext()),
-            versionCode
+            versionCode,
+            get(),
+            get()
         )
     }
-
-    factory<FeatureFlagUseCase> { FeatureFlagUseCaseImpl(get()) }
 }
 
 fun isVerifierApp(applicationContext: Context): Boolean =

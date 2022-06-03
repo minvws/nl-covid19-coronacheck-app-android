@@ -7,8 +7,8 @@
 
 package nl.rijksoverheid.ctr.dashboard.usecases
 
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 
 /**
  * Remove expired green cards (= no more origins). We do this every time before fetching green cards.

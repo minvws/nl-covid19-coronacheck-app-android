@@ -14,16 +14,17 @@ import androidx.core.view.ViewCompat
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardGreenCardBinding
-import nl.rijksoverheid.ctr.holder.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItem.CardsItem.CredentialState.HasCredential
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.GreenCardEnabledState
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.OriginState
+import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem.CredentialState.HasCredential
+import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
+import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.time.OffsetDateTime
 
 data class AdapterCard(
     val greenCard: GreenCard,
@@ -32,7 +33,7 @@ data class AdapterCard(
 
 class DashboardGreenCardAdapterItem(
     private val cards: List<DashboardItem.CardsItem.CardItem>,
-    private val onButtonClick: (cardItem: DashboardItem.CardsItem.CardItem, credentials: List<ByteArray>, credentialExpirationTimeSeconds: Long) -> Unit,
+    private val onButtonClick: (cardItem: DashboardItem.CardsItem.CardItem, credentials: List<Pair<ByteArray, OffsetDateTime>>) -> Unit,
     private val onRetryClick: () -> Unit = {}
 ) :
     BindableItem<AdapterItemDashboardGreenCardBinding>(R.layout.adapter_item_dashboard_green_card.toLong()),
@@ -76,13 +77,12 @@ class DashboardGreenCardAdapterItem(
                 viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
                     val mainCredentialState = cards.first().credentialState
                     if (mainCredentialState is HasCredential) {
-                        val credentials = cards.mapNotNull {
-                            (it.credentialState as? HasCredential)?.credential?.data
+                        val credentialEntities = cards.mapNotNull {
+                            (it.credentialState as? HasCredential)?.credential
                         }
                         onButtonClick.invoke(
                             cards.first(),
-                            credentials,
-                            mainCredentialState.credential.expirationTime.toEpochSecond()
+                            credentialEntities.map { Pair(it.data, it.expirationTime) },
                         )
                     }
                 }

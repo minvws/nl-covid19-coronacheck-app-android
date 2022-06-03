@@ -36,16 +36,10 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
             stringBuilder.append(" ${flow.code}")
             stringBuilder.append("${errorResults.first().getCurrentStep().code}")
 
-            when (it) {
-                is NetworkRequestResult.Failed.ProviderHttpError -> {
-                    stringBuilder.append(" ${it.provider}")
-                }
-                is NetworkRequestResult.Failed.ProviderError -> {
-                    stringBuilder.append(" ${it.provider}")
-                }
-                else -> {
-                    stringBuilder.append(" 000")
-                }
+            if (it is NetworkRequestResult.Failed.CoronaCheckHttpError && it.provider != null) {
+                stringBuilder.append(" ${it.provider}")
+            } else {
+                stringBuilder.append(" 000")
             }
 
             val exceptionErrorCode = when (val exception = it.getException()) {

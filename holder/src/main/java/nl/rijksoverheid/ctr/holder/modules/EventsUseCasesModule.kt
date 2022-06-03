@@ -1,10 +1,15 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.get_events.usecases.*
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.*
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCaseImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.saved_events.usecases.GetSavedEventsUseCase
+import nl.rijksoverheid.ctr.holder.saved_events.usecases.GetSavedEventsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCase
+import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCaseImpl
 import org.koin.dsl.module
 import java.time.Clock
 
@@ -16,8 +21,12 @@ import java.time.Clock
  *
  */
 val eventsUseCasesModule = module {
-    factory<PaperProofCodeUseCase> {
-        PaperProofCodeUseCaseImpl()
+    factory<ValidatePaperProofDomesticInputCodeUseCase> {
+        ValidatePaperProofDomesticInputCodeUseCaseImpl()
+    }
+
+    factory<ValidatePaperProofDomesticUseCase> {
+        ValidatePaperProofDomesticUseCaseImpl(get(), get(), get())
     }
 
     factory<GetEventProvidersWithTokensUseCase> {
@@ -37,9 +46,6 @@ val eventsUseCasesModule = module {
     factory<GetDigidEventsUseCase> { GetDigidEventsUseCaseImpl(get(), get(), get(), get(), get()) }
     factory<GetMijnCnEventsUsecase> { GetMijnCnEventsUsecaseImpl(get(), get(), get()) }
     factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get(), get(), get()) }
-    factory<ValidatePaperProofUseCase> {
-        ValidatePaperProofUseCaseImpl(get(), get())
-    }
 
     factory<GetEventsFromPaperProofQrUseCase> {
         GetEventsFromPaperProofQrUseCaseImpl(get(), get())
@@ -47,5 +53,8 @@ val eventsUseCasesModule = module {
 
     factory<RemoveExpiredEventsUseCase> {
         RemoveExpiredEventsUseCaseImpl(Clock.systemUTC(), get(), get())
+    }
+    factory<GetSavedEventsUseCase> {
+        GetSavedEventsUseCaseImpl(get(), get(), get(), get(), get(), get(), get())
     }
 }

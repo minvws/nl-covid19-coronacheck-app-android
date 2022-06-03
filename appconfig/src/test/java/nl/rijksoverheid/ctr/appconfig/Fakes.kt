@@ -39,6 +39,10 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
+    override fun getCachedAppConfigOrNull(): AppConfig? {
+        return appConfig
+    }
+
     override fun getCachedAppConfigHash(): String {
         val bytes = getCachedAppConfig().toString().toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
@@ -53,12 +57,14 @@ fun fakeAppConfig(
     appDeactivated: Boolean = false,
     informationURL: String = "",
     configTtlSeconds: Int = 0,
-    maxValidityHours: Int = 0
+    maxValidityHours: Int = 0,
+    holderConfigAlmostOutOfDateWarningSeconds: Int = 0,
 ) = HolderConfig.default(
     holderMinimumVersion = minimumVersion,
     holderAppDeactivated = appDeactivated,
     holderInformationURL = informationURL,
     configTTL = configTtlSeconds,
+    holderConfigAlmostOutOfDateWarningSeconds = holderConfigAlmostOutOfDateWarningSeconds,
     maxValidityHours = maxValidityHours,
     euLaunchDate = "",
     credentialRenewalDays = 0,

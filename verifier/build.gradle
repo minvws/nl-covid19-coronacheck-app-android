@@ -4,6 +4,7 @@ plugins {
     id "kotlin-kapt"
     id 'kotlin-parcelize'
     id "androidx.navigation.safeargs.kotlin"
+    id "com.starter.easylauncher"
 }
 
 def appVersionCode =  1000000
@@ -17,6 +18,9 @@ android {
     testOptions {
         unitTests {
             includeAndroidResources = true
+            unitTests.all {
+                jvmArgs '-Xmx2g'
+            }
         }
     }
 
@@ -35,12 +39,8 @@ android {
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
-        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v7/\""
-        buildConfigField "String[]", "CERTIFICATE_PINS",
-                "{" +
-                        "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
-                        "}"
-        buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v7/\""
+        buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.coronacheck.nl/v8/\""
+        buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.coronacheck.nl/v8/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
         ndk {
             debugSymbolLevel "FULL"
@@ -70,12 +70,8 @@ android {
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
-            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v7/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v7/\""
-            buildConfigField "String[]", "CERTIFICATE_PINS",
-                    "{" +
-                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
-                            "}"
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v8/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v8/\""
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
             manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
@@ -86,12 +82,8 @@ android {
             versionNameSuffix "-fdroid"
             applicationIdSuffix ".fdroid.acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
-            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v7/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v7/\""
-            buildConfigField "String[]", "CERTIFICATE_PINS",
-                    "{" +
-                            "\"sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0=\"" +
-                            "}"
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.acc.coronacheck.nl/v8/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.acc.coronacheck.nl/v8/\""
             manifestPlaceholders = [appLabel: "@string/app_name_acc", deepLinkHost: "web.acc.coronacheck.nl"]
             matchingFallbacks = ['zxing']
         }
@@ -169,4 +161,27 @@ dependencies {
 
     // Needed in order for room to work with Apple Sillicon M1
     kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
+}
+
+easylauncher {
+    buildTypes {
+        debug {
+            filters = customRibbon(
+                    label: "Debug",
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+    }
+    variants {
+        accRelease {
+            filters = customRibbon(
+                    label: appVersionCode,
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+    }
 }

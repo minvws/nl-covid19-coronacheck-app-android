@@ -5,10 +5,11 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import nl.rijksoverheid.ctr.holder.modules.qualifier.ErrorResponseQualifier
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.OriginTypeJsonAdapter
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteCouplingStatusJsonAdapter
-import nl.rijksoverheid.ctr.holder.ui.create_qr.api.RemoteTestStatusJsonAdapter
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.*
+import nl.rijksoverheid.ctr.holder.api.OriginTypeJsonAdapter
+import nl.rijksoverheid.ctr.holder.api.RemoteCouplingStatusJsonAdapter
+import nl.rijksoverheid.ctr.holder.api.RemoteTestStatusJsonAdapter
+import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.get_events.models.*
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.MijnCnErrorResponse
 import okhttp3.ResponseBody
@@ -51,13 +52,6 @@ val responsesModule = module {
             .add(RemoteTestStatusJsonAdapter())
             .add(OriginTypeJsonAdapter())
             .add(RemoteCouplingStatusJsonAdapter())
-            .add(
-                PolymorphicJsonAdapterFactory.of(
-                    RemoteProtocol::class.java, "protocolVersion"
-                )
-                    .withSubtype(RemoteTestResult2::class.java, "2.0")
-                    .withSubtype(RemoteProtocol3::class.java, "3.0")
-            )
             .add(
                 PolymorphicJsonAdapterFactory.of(
                     RemoteEvent::class.java, "type"

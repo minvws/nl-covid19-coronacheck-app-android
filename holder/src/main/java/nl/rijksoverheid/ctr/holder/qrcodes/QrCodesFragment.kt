@@ -29,14 +29,14 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodesBinding
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeAnimation
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.QrInfoScreenUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
@@ -66,7 +66,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private val infoScreenUtil: QrInfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase by inject()
     private val qrCodesFragmentUtil: QrCodesFragmentUtil by inject()
     private lateinit var qrCodePagerAdapter: QrCodePagerAdapter
 
@@ -108,14 +108,15 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         _binding = FragmentQrCodesBinding.bind(view)
 
         setupViewPager()
-        applyStyling()
         dispatchTouchEventDoseInfo()
 
         qrCodeViewModel.qrCodeDataListLiveData.observe(viewLifecycleOwner, ::bindQrCodeDataList)
         qrCodeViewModel.returnAppLivedata.observe(viewLifecycleOwner, ::returnToApp)
+        qrCodeViewModel.animationLiveData.observe(viewLifecycleOwner, ::applyAnimation)
         clockDeviationUseCase.serverTimeSyncedLiveData.observe(viewLifecycleOwner) { onServerTimeSynced() }
 
         args.returnUri?.let { qrCodeViewModel.onReturnUriGiven(it, args.data.type) }
+        qrCodeViewModel.getAnimation(args.data.type)
     }
 
     /**
@@ -141,15 +142,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         binding.viewPager.adapter = qrCodePagerAdapter
     }
 
-    private fun applyStyling() {
-        when (args.data.type) {
-            is GreenCardType.Domestic -> {
-                binding.animation.setWidget(R.raw.winter_domestic)
-            }
-            is GreenCardType.Eu -> {
-                binding.animation.setWidget(R.raw.winter_international)
-            }
-        }
+    private fun applyAnimation(qrCodeAnimation: QrCodeAnimation) {
+        binding.animation.setWidget(qrCodeAnimation.animationResource)
     }
 
     private fun returnToApp(externalReturnAppData: ExternalReturnAppData) {
@@ -249,7 +243,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                                 childFragmentManager, InfoFragmentData.TitleDescriptionWithFooter(
                                     title = infoScreen.title,
                                     descriptionData = DescriptionData(
-                                        htmlTextString = infoScreen.description
+                                        htmlTextString = infoScreen.description,
+                                        htmlLinksEnabled = true
                                     ),
                                     footerText = infoScreen.footer
                                 )
@@ -297,8 +292,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                         onPageSelectedPostAction(position, europeanVaccinations)
                     }
 
-                    // reset qr overlay state on page change
-                    qrCodePagerAdapter.isOverlayStateReset = true
+                    qrCodePagerAdapter.onPositionChanged(position)
                 }
             })
 
@@ -313,6 +307,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             binding.nextQrButton.setOnClickListener {
                 binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
             }
+        } else {
+            showDoseInfo(europeanVaccinations.first())
         }
     }
 
@@ -335,27 +331,31 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     private fun showDoseInfo(vaccination: QrCodeData.European.Vaccination) {
         TransitionManager.beginDelayedTransition(binding.bottomScroll)
-        if (vaccination.isHidden) {
-            binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
-            binding.doseInfo.visibility = View.VISIBLE
-        } else {
-            binding.doseInfo.visibility = View.GONE
+        when {
+            vaccination.isExpired -> {
+                binding.doseInfo.text = getString(R.string.holder_showQR_label_expiredQR)
+                binding.doseInfo.visibility = View.VISIBLE
+            }
+            vaccination.isDoseNumberSmallerThanTotalDose -> {
+                binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
+                binding.doseInfo.visibility = View.VISIBLE
+            }
+            else -> {
+                binding.doseInfo.visibility = View.GONE
+            }
         }
     }
 
     private fun presentQrLoading(loading: Boolean) {
-        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(loading)
+        (parentFragment?.parentFragment as? HolderMainFragment)?.presentLoading(loading)
         binding.root.visibility = if (loading) View.GONE else View.VISIBLE
     }
 
     private fun generateQrCodes() {
         checkShouldAutomaticallyClose()
         qrCodeViewModel.generateQrCodes(
-            greenCardType = args.data.type,
-            originType = args.data.originType,
+            qrCodeFragmentData = args.data,
             size = resources.displayMetrics.widthPixels,
-            credentials = args.data.credentials,
-            shouldDisclose = args.data.shouldDisclose
         )
         val refreshMillis =
             if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.SECONDS.toMillis(
@@ -371,7 +371,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
      * Checks if this fragment should automatically close
      */
     private fun checkShouldAutomaticallyClose() {
-        val shouldClose = qrCodesFragmentUtil.shouldClose(args.data.credentialExpirationTimeSeconds)
+        val shouldClose = qrCodesFragmentUtil.shouldClose(args.data.credentialsWithExpirationTime.last().second.toEpochSecond(), args.data.type)
         if (shouldClose) {
             findNavControllerSafety()?.popBackStack()
         }

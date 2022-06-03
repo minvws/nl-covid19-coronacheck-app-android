@@ -10,10 +10,10 @@ package nl.rijksoverheid.ctr.holder.dashboard.datamappers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
-import nl.rijksoverheid.ctr.holder.persistence.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.ui.create_qr.models.DashboardItems
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface DashboardTabsItemDataMapper {
@@ -21,7 +21,7 @@ interface DashboardTabsItemDataMapper {
 }
 
 class DashboardTabsItemDataMapperImpl(
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ): DashboardTabsItemDataMapper {
 
     override suspend fun transform(dashboardItems: DashboardItems): List<DashboardTabItem> {

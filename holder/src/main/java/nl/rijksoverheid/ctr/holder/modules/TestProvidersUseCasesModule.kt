@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.ConfigProvidersUseCaseImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.TestResultUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.ConfigProvidersUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.ConfigProvidersUseCaseImpl
+import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResultUseCase
 import org.koin.dsl.module
 
 /*

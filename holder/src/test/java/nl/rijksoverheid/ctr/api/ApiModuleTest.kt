@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.api
 
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
-import nl.rijksoverheid.ctr.holder.BuildConfig.BASE_API_URL
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.tls.decodeCertificatePem
@@ -23,7 +22,6 @@ class ApiModuleTest: AutoCloseKoinTest() {
             signatureCertificateCnMatch = "",
             coronaCheckApiChecks = true,
             testProviderApiChecks = true,
-            certificatePins = arrayOf("sha256/lR7gRvqDMW5nhsCMRPE7TKLq0tJkTWMxQ5HAzHCIfQ0="),
         ))
         val okHttpClient: OkHttpClient by inject()
         val acceptedIssuers = okHttpClient.x509TrustManager!!.acceptedIssuers

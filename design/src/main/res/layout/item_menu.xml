@@ -11,18 +11,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="74dp"
     android:background="?colorSurface"
     android:foreground="?attr/selectableItemBackground"
-    android:paddingVertical="24dp"
-    android:paddingHorizontal="30dp">
+    android:paddingHorizontal="30dp"
+    android:paddingVertical="16dp">
 
     <ImageView
         android:id="@id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/subtitle"
         tools:src="@drawable/ic_menu_add" />
 
     <TextView
@@ -34,10 +35,23 @@
         android:textSize="16sp"
         android:layout_marginStart="24dp"
         app:layout_constraintStart_toEndOf="@id/icon"
-        app:layout_constraintTop_toTopOf="@id/icon"
-        app:layout_constraintBottom_toBottomOf="@id/icon"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/subtitle"
         app:layout_constraintHorizontal_bias="0"
         tools:text="Title"/>
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Caption"
+        android:id="@+id/subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toStartOf="@id/title"
+        app:layout_constraintEnd_toEndOf="@id/title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        tools:text="Subtitle"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

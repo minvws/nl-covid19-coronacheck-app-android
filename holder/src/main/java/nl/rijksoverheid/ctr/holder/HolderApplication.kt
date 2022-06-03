@@ -1,5 +1,8 @@
 package nl.rijksoverheid.ctr.holder
 
+import android.util.Log
+import androidx.work.Configuration
+import androidx.work.WorkerFactory
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
@@ -8,11 +11,9 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.dashboard.dashboardModule
 import nl.rijksoverheid.ctr.holder.modules.*
-import nl.rijksoverheid.ctr.holder.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.*
-import nl.rijksoverheid.ctr.holder.persistence.database.migration.TestResultsMigrationManager
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.CheckNewValidityInfoCardUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -31,14 +32,13 @@ import org.koin.core.module.Module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class HolderApplication : SharedApplication() {
+open class HolderApplication : SharedApplication(), Configuration.Provider {
 
     private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
-    private val testResultsMigrationManager: TestResultsMigrationManager by inject()
+    private val holderWorkerFactory: WorkerFactory by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
-    private val checkNewValidityInfoCardUseCase: CheckNewValidityInfoCardUseCase by inject()
 
     private val holderModules = listOf(
         storageModule,
@@ -53,7 +53,7 @@ open class HolderApplication : SharedApplication() {
         qrsModule,
         appModule,
         errorsModule(BuildConfig.FLAVOR),
-        retrofitModule(BuildConfig.BASE_API_URL),
+        retrofitModule(BuildConfig.BASE_API_URL, BuildConfig.CDN_API_URL),
         responsesModule,
         qrScannerModule,
         disclosurePolicyModule,
@@ -68,12 +68,12 @@ open class HolderApplication : SharedApplication() {
             modules(
                 *holderModules,
                 holderIntroductionModule,
+                holderAppStatusModule,
                 apiModule(
                     BuildConfig.BASE_API_URL.toHttpUrl(),
                     BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH,
                     BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS,
                     BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS,
-                    BuildConfig.CERTIFICATE_PINS,
                 ),
                 sharedModule,
                 appConfigModule(BuildConfig.CDN_API_URL,"holder", BuildConfig.VERSION_CODE),
@@ -97,10 +97,6 @@ open class HolderApplication : SharedApplication() {
                 )
             }
 
-            testResultsMigrationManager.removeOldCredential()
-
-            // check if we need to show the new validity info card use case
-            checkNewValidityInfoCardUseCase.check()
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
@@ -110,5 +106,16 @@ open class HolderApplication : SharedApplication() {
 
     override fun getAdditionalModules(): List<Module> {
         return listOf(holderPreferenceModule, holderMobileCoreModule)
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder().apply {
+            setMinimumLoggingLevel(if (BuildConfig.DEBUG) {
+                Log.DEBUG
+            } else {
+                Log.ERROR
+            })
+            setWorkerFactory(holderWorkerFactory)
+        }.build()
     }
 }

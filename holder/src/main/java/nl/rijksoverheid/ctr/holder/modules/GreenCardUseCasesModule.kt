@@ -2,8 +2,9 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCaseImpl
-import nl.rijksoverheid.ctr.holder.persistence.database.usecases.*
-import nl.rijksoverheid.ctr.holder.ui.create_qr.usecases.*
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.*
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.*
+import nl.rijksoverheid.ctr.persistence.database.usecases.*
 import org.koin.dsl.module
 
 /*
@@ -14,9 +15,6 @@ import org.koin.dsl.module
  *
  */
 val greenCardUseCasesModule = module {
-    factory<CheckNewValidityInfoCardUseCase> {
-        CheckNewValidityInfoCardUseCaseImpl(get(), get(), get())
-    }
     factory<GetRemoteGreenCardsUseCase> {
         GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }
@@ -30,7 +28,7 @@ val greenCardUseCasesModule = module {
         CreateEuGreenCardUseCaseImpl(get(), get())
     }
     factory<GetDashboardItemsUseCase> {
-        GetDashboardItemsUseCaseImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
+        GetDashboardItemsUseCaseImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
     factory<SplitDomesticGreenCardsUseCase> {
         SplitDomesticGreenCardsUseCaseImpl(get(), get())
@@ -40,5 +38,14 @@ val greenCardUseCasesModule = module {
     }
     factory<RemoveExpiredGreenCardsUseCase> {
         RemoveExpiredGreenCardsUseCaseImpl(get())
+    }
+    factory<GetPaperProofTypeUseCase> {
+        GetPaperProofTypeUseCaseImpl(get(), get(), get())
+    }
+    factory<ShowCoronaMelderItemUseCase> {
+        ShowCoronaMelderItemUseCaseImpl(get(), get())
+    }
+    factory<GetDccFromEuropeanCredentialUseCase> {
+        GetDccFromEuropeanCredentialUseCaseImpl(get())
     }
 }

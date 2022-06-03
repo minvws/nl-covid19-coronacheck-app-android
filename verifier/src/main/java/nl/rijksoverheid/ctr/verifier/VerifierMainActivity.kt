@@ -4,20 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
-import nl.rijksoverheid.ctr.appconfig.AppStatusFragment
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
-import nl.rijksoverheid.ctr.introduction.IntroductionFragment
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
-import nl.rijksoverheid.ctr.introduction.ui.status.models.IntroductionStatus
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.ext.disableSplashscreenExitAnimation
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.verifier.databinding.ActivityMainBinding
+import nl.rijksoverheid.ctr.verifier.managers.DeeplinkManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -50,20 +48,20 @@ class VerifierMainActivity : AppCompatActivity() {
         setProductionFlags()
 
         observeStatuses()
+
+        disableSplashscreenExitAnimation()
     }
 
     override fun onStart() {
         super.onStart()
-        if (isIntroductionFinished()) {
-            if (isFreshStart) {
-                // Force retrieval of config once on startup for clock deviation checks
-                appConfigViewModel.refresh(mobileCoreWrapper, force = true)
-            } else {
-                // Only get app config on every app foreground when introduction is finished and the app has already started
-                appConfigViewModel.refresh(mobileCoreWrapper)
-            }
-            isFreshStart = false
+        if (isFreshStart) {
+            // Force retrieval of config once on startup for clock deviation checks
+            appConfigViewModel.refresh(mobileCoreWrapper, force = true)
+        } else {
+            // Only get app config on every app foreground when introduction is finished and the app has already started
+            appConfigViewModel.refresh(mobileCoreWrapper)
         }
+        isFreshStart = false
         verifierMainActivityViewModel.cleanup()
     }
 
@@ -72,8 +70,8 @@ class VerifierMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        introductionViewModel.introductionStatusLiveData.observe(this, EventObserver {
-            navigateToIntroduction(navController, it)
+        introductionViewModel.introductionRequiredLiveData.observe(this, EventObserver {
+            navigateToIntroduction(navController)
         })
 
         appConfigViewModel.appStatusLiveData.observe(this) {
@@ -109,12 +107,9 @@ class VerifierMainActivity : AppCompatActivity() {
     }
 
     private fun navigateToIntroduction(
-        navController: NavController,
-        introductionStatus: IntroductionStatus
+        navController: NavController
     ) {
-        navController.navigate(
-            R.id.action_introduction, IntroductionFragment.getBundle(introductionStatus)
-        )
+        navController.navigate(RootNavDirections.actionIntroduction())
     }
 
     private fun restartApp() {
@@ -124,8 +119,7 @@ class VerifierMainActivity : AppCompatActivity() {
         Runtime.getRuntime().exit(0)
     }
 
-    private fun isIntroductionFinished() =
-        introductionViewModel.getIntroductionStatus() is IntroductionStatus.IntroductionFinished
+    private fun isIntroductionFinished() = !introductionViewModel.getIntroductionRequired()
 
     private fun handleAppStatus(
         appStatus: AppStatus,
@@ -137,23 +131,19 @@ class VerifierMainActivity : AppCompatActivity() {
         }
 
         if (appStatus !is AppStatus.NoActionRequired) {
-            navigateToAppStatus(appStatus, navController)
+            navController.navigate(RootNavDirections.actionAppStatus(appStatus))
         } else {
-            introductionViewModel.onConfigUpdated()
+            closeAppStatusIfOpen(navController)
         }
     }
 
-    private fun navigateToAppStatus(
-        appStatus: AppStatus,
+    private fun closeAppStatusIfOpen(
         navController: NavController
     ) {
-        val bundle = bundleOf(AppStatusFragment.EXTRA_APP_STATUS to appStatus)
-        // don't navigate to the same app status fragment, if it is already open
-        // otherwise, it can open again on top of the previous one looking like a glitch
-        val currentAppStatus =
-            navController.currentBackStackEntry?.arguments?.get(AppStatusFragment.EXTRA_APP_STATUS)
-        if (appStatus != currentAppStatus) {
-            navController.navigate(R.id.action_app_status, bundle)
+        val isAppStatusFragment =
+            navController.currentBackStackEntry?.destination?.id == R.id.nav_app_locked
+        if (isAppStatusFragment) {
+            navController.popBackStack()
         }
     }
 

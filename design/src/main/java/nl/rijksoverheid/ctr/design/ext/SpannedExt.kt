@@ -1,10 +1,8 @@
 package nl.rijksoverheid.ctr.design.ext
 
-import android.graphics.Typeface
 import android.text.Spanned
 import android.text.style.BulletSpan
 import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import androidx.core.text.getSpans
 import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
 
@@ -50,17 +48,11 @@ fun Spanned.substring(start: Int, end: Int): Spanned {
 
 /**
  * Determines whether a Spanned object is a heading
- * This is the case in two situations:
- * (1) If the Spanned object contains a StyleSpan with Typeface.Bold for the whole length
- * (2) If the Spanned object contains one or more RelativeSizeSpans with a size change (= h1-h6)
+ * If the Spanned object contains one or more RelativeSizeSpans with a size change (= h1-h6)
  */
 val Spanned.isHeading: Boolean
     get() {
-        return getSpans<StyleSpan>().any { span ->
-            return span.style == Typeface.BOLD &&
-                   getSpanStart(span) == 0 &&
-                   getSpanEnd(span) == length
-        } || getSpans<RelativeSizeSpan>().any { span ->
+        return getSpans<RelativeSizeSpan>().any { span ->
             return span.sizeChange > 0
         }
     }

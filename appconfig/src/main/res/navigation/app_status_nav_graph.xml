@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_status"
+    app:startDestination="@+id/nav_app_status">
+
+    <fragment
+        android:id="@+id/nav_app_status"
+        android:name="nl.rijksoverheid.ctr.appconfig.AppStatusFragment">
+
+        <argument
+            android:name="app_status"
+            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppStatus" />
+
+        <action
+            android:id="@+id/action_nav_new_features"
+            app:destination="@id/nav_new_features"
+            app:popUpTo="@id/nav_app_status"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_new_terms"
+            app:destination="@id/nav_new_terms"
+            app:popUpTo="@id/nav_app_status"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_app_locked"
+            app:destination="@id/nav_app_locked"
+            app:popUpTo="@id/nav_app_status"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_app_locked"
+        android:name="nl.rijksoverheid.ctr.appconfig.AppLockedFragment"
+        tools:layout="@layout/fragment_app_locked" >
+
+        <argument
+            android:name="app_status"
+            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppStatus" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_new_features"
+        android:name="nl.rijksoverheid.ctr.appconfig.app_update.NewFeaturesFragment"
+        android:label="NewFeaturesFragment">
+
+        <argument
+            android:name="app_update_data"
+            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppUpdateData" />
+
+        <action
+            android:id="@+id/action_new_terms"
+            app:destination="@id/nav_new_terms"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit">
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_new_terms"
+        android:name="nl.rijksoverheid.ctr.appconfig.app_update.NewTermsFragment"
+        tools:layout="@layout/fragment_new_terms">
+
+        <argument
+            android:name="app_update_data"
+            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppUpdateData" />
+
+    </fragment>
+
+</navigation>

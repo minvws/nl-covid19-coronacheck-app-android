@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier.modules
 
+import nl.rijksoverheid.ctr.shared.models.Environment
 import nl.rijksoverheid.ctr.verifier.persistance.database.VerifierDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -16,7 +17,7 @@ val storageModule = module {
         VerifierDatabase.createInstance(
             androidContext(),
             get(),
-            androidContext().packageName == "nl.rijksoverheid.ctr.verifier"
+            Environment.get(androidContext()) is Environment.Prod
         )
     }
 }

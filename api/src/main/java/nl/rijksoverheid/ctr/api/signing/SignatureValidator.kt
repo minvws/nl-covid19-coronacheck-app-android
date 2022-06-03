@@ -4,7 +4,7 @@
  *
  *  SPDX-License-Identifier: EUPL-1.2
  */
-package nl.rijksoverheid.ctr.signing
+package nl.rijksoverheid.ctr.api.signing
 
 import org.bouncycastle.asn1.x500.style.BCStyle
 import org.bouncycastle.asn1.x500.style.IETFUtils
@@ -24,14 +24,14 @@ import java.time.Clock
 
 
 class SignatureValidator private constructor(
-    private val signingCertificate: X509Certificate?,
+    private val signingCertificates: List<X509Certificate>,
     private val trustAnchors: Set<TrustAnchor>,
     private val matchingString: String?,
 ) {
 
     class Builder {
         private var trustAnchors = mutableSetOf<TrustAnchor>()
-        private var signingCertificate: X509Certificate? = null
+        private var signingCertificates: List<X509Certificate> = emptyList()
         private var matchingString: String? = null
 
         /**
@@ -57,17 +57,19 @@ class SignatureValidator private constructor(
          * The signing certificate that needs to be for the signature. If set, the signing certificate needs to match this certificate
          * in order to pass the signature validation.
          */
-        fun signingCertificate(signingCertificate: X509Certificate): Builder {
-            this.signingCertificate = signingCertificate
+        fun signingCertificate(signingCertificates: List<X509Certificate>): Builder {
+            this.signingCertificates = signingCertificates
             this.matchingString = null
             return this
         }
 
-        fun signingCertificate(signingCertificateBytes: ByteArray): Builder {
-            val x509 = CertificateFactory.getInstance("X509")
-                .generateCertificate(ByteArrayInputStream(signingCertificateBytes)) as X509Certificate
+        fun signingCertificateBytes(signingCertificateBytes: List<ByteArray>): Builder {
+            val x509s = signingCertificateBytes.map {
+                CertificateFactory.getInstance("X509")
+                    .generateCertificate(ByteArrayInputStream(it)) as X509Certificate
+            }
             signingCertificate(
-                x509
+                x509s
             )
             return this
         }
@@ -76,7 +78,7 @@ class SignatureValidator private constructor(
          * Set a substring that the CN of the signing certificate should match. Not used when [signingCertificate] is set.
          */
         fun cnMatching(substring: String): Builder {
-            if (signingCertificate != null) {
+            if (signingCertificates.isNotEmpty()) {
                 throw IllegalStateException("CN matching string cannot be used if signing certificate is set")
             }
             this.matchingString = substring
@@ -85,7 +87,7 @@ class SignatureValidator private constructor(
 
         fun build(): SignatureValidator {
             return SignatureValidator(
-                signingCertificate,
+                signingCertificates,
                 trustAnchors,
                 matchingString
             )
@@ -94,7 +96,11 @@ class SignatureValidator private constructor(
 
     private val provider = BouncyCastleProvider()
 
-    fun verifySignature(content: InputStream, signature: ByteArray, clock: Clock = Clock.systemUTC()) {
+    fun verifySignature(
+        content: InputStream,
+        signature: ByteArray,
+        clock: Clock = Clock.systemUTC()
+    ) {
 
         try {
             val sp = CMSSignedDataParser(
@@ -121,9 +127,12 @@ class SignatureValidator private constructor(
                 sp.signerInfos.signers.firstOrNull()
                     ?: throw SignatureValidationException("No signing certificate found")
 
-            if (this.signingCertificate != null) {
-                val expiringTime = this.signingCertificate.notAfter.time
-                if (clock.millis() > expiringTime) {
+            if (this.signingCertificates.isNotEmpty()) {
+                val nowMs = clock.millis()
+                if (this.signingCertificates.all {
+                        val expiringTime = it.notAfter.time
+                        nowMs > expiringTime
+                    }) {
                     throw SignatureValidationException("Expired certificate")
                 }
             }
@@ -131,12 +140,14 @@ class SignatureValidator private constructor(
             val result = checkCertPath(trustAnchors, signer.sid, store)
             val signingCertificate = result.certPath.certificates[0] as X509Certificate
 
-            if (this.signingCertificate != null && this.signingCertificate != signingCertificate) {
+            if (this.signingCertificates.isNotEmpty() && this.signingCertificates.all { it != signingCertificate }) {
                 throw SignatureValidationException("Signing certificate does not match expected certificate")
             }
 
             if (matchingString != null) {
-                val subjectRDNs = JcaX509CertificateHolder(signingCertificate).subject.getRDNs(BCStyle.CN).map { IETFUtils.valueToString(it.first.value) }
+                val subjectRDNs =
+                    JcaX509CertificateHolder(signingCertificate).subject.getRDNs(BCStyle.CN)
+                        .map { IETFUtils.valueToString(it.first.value) }
                 if (!subjectRDNs.any {
                         it.endsWith(matchingString)
                     }) {

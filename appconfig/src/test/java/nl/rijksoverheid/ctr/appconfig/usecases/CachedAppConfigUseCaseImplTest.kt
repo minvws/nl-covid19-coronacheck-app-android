@@ -12,6 +12,8 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.BufferedSource
 import org.junit.Assert.*
 import org.junit.Test
+import java.io.File
+import java.nio.file.Paths
 
 class CachedAppConfigUseCaseImplTest {
 
@@ -23,6 +25,8 @@ class CachedAppConfigUseCaseImplTest {
         every { appConfigBufferedSource.readUtf8() } returns fileContents
         every { appConfigStorageManager.getFileAsBufferedSource(any()) } returns appConfigBufferedSource
     }
+
+    private val configFilePath = Paths.get(File(this.javaClass.classLoader!!.getResource("config.json").file).absolutePath).parent.toString()
 
     @Test
     fun `valid file returns true`() {
@@ -59,11 +63,11 @@ class CachedAppConfigUseCaseImplTest {
         mockWithFileContents(VerifierConfig.default(verifierInformationURL = "test").toJson(moshi))
 
         val cachedAppConfigUseCase =
-            CachedAppConfigUseCaseImpl(appConfigStorageManager, "", moshi, true)
+            CachedAppConfigUseCaseImpl(appConfigStorageManager, configFilePath, moshi, true)
 
         cachedAppConfigUseCase.getCachedAppConfig().run {
             assertTrue(this is VerifierConfig)
-            assertEquals(informationURL, "test")
+            assertEquals("test", informationURL)
         }
 
     }
@@ -73,7 +77,7 @@ class CachedAppConfigUseCaseImplTest {
         mockWithFileContents(HolderConfig.default(holderInformationURL = "test").toJson(moshi))
 
         val cachedAppConfigUseCase =
-            CachedAppConfigUseCaseImpl(appConfigStorageManager, "", moshi, false)
+            CachedAppConfigUseCaseImpl(appConfigStorageManager, configFilePath, moshi, false)
 
         cachedAppConfigUseCase.getCachedAppConfig().run {
             assertTrue(this is HolderConfig)

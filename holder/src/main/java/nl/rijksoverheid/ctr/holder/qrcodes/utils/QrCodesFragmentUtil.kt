@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.holder.qrcodes.utils
 
 import nl.rijksoverheid.ctr.holder.qrcodes.QrCodesFragment
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import java.time.Clock
 import java.time.Instant
 
@@ -15,14 +16,17 @@ interface QrCodesFragmentUtil {
     /**
      * If [QrCodesFragment] should close
      */
-    fun shouldClose(credentialExpirationTimeSeconds: Long): Boolean
+    fun shouldClose(credentialExpirationTimeSeconds: Long, type: GreenCardType): Boolean
 }
 
 class QrCodesFragmentUtilImpl(
     private val utcClock: Clock
 ): QrCodesFragmentUtil {
 
-    override fun shouldClose(credentialExpirationTimeSeconds: Long): Boolean {
+    override fun shouldClose(credentialExpirationTimeSeconds: Long, type: GreenCardType): Boolean {
+        if (type == GreenCardType.Eu) {
+            return false
+        }
         val now = Instant.now(utcClock)
         val expiration = Instant.ofEpochSecond(credentialExpirationTimeSeconds)
         return now.isAfter(expiration)

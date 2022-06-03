@@ -14,6 +14,21 @@ jobs:
         uses: ./scripts
       - name: Test
         run: ./gradlew testDebug testAccDebug lint
+      - name: Archive test-results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: |
+            holder/build/reports
+            verifier/build/reports
+          retention-days: 2
+      - name: Download all reports
+        if: always()
+        uses: actions/download-artifact@v2
+        with:
+          name: test-results
+          path: test-results
 
   distribute:
     if: ${{ (github.ref == 'refs/heads/main' && github.event.repository.name != 'nl-covid19-coronacheck-app-android') || (github.event.repository.name != 'nl-covid19-coronacheck-app-android' && contains(github.event.pull_request.labels.*.name, 'generate-builds')) }}
@@ -94,7 +109,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 14.x
 
       - name: Install firebase-cli
         run: npm install -g firebase-tools

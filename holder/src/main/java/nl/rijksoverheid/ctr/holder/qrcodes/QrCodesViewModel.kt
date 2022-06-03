@@ -11,51 +11,46 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.holder.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCase
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
-import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeAnimation
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeAnimationUseCase
+import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 
 abstract class QrCodesViewModel : ViewModel() {
     val qrCodeDataListLiveData = MutableLiveData<QrCodesResult>()
     val returnAppLivedata = MutableLiveData<ExternalReturnAppData>()
+    val animationLiveData = MutableLiveData<QrCodeAnimation>()
     abstract fun generateQrCodes(
-        greenCardType: GreenCardType,
-        originType: OriginType,
+        qrCodeFragmentData: QrCodeFragmentData,
         size: Int,
-        credentials: List<ByteArray>,
-        shouldDisclose: QrCodeFragmentData.ShouldDisclose
     )
 
     abstract fun onReturnUriGiven(uri: String, type: GreenCardType)
+    abstract fun getAnimation(greenCardType: GreenCardType)
 }
 
 class QrCodesViewModelImpl(
     private val qrCodesResultUseCase: QrCodesResultUseCase,
-    private val returnToExternalAppUseCase: ReturnToExternalAppUseCase
+    private val returnToExternalAppUseCase: ReturnToExternalAppUseCase,
+    private val qrCodeAnimationUseCase: QrCodeAnimationUseCase,
 ) : QrCodesViewModel() {
 
     override fun generateQrCodes(
-        greenCardType: GreenCardType,
-        originType: OriginType,
+        qrCodeFragmentData: QrCodeFragmentData,
         size: Int,
-        credentials: List<ByteArray>,
-        shouldDisclose: QrCodeFragmentData.ShouldDisclose
     ) {
-
         viewModelScope.launch {
+            val result = qrCodesResultUseCase.getQrCodesResult(
+                qrCodeFragmentData = qrCodeFragmentData,
+                qrCodeWidth = size,
+                qrCodeHeight = size
+            )
             qrCodeDataListLiveData.postValue(
-                qrCodesResultUseCase.getQrCodesResult(
-                    greenCardType = greenCardType,
-                    originType = originType,
-                    credentials = credentials,
-                    shouldDisclose = shouldDisclose,
-                    qrCodeWidth = size,
-                    qrCodeHeight = size
-                )
+                result
             )
         }
     }
@@ -67,5 +62,11 @@ class QrCodesViewModelImpl(
                 returnAppLivedata.postValue(it)
             }
         }
+    }
+
+    override fun getAnimation(greenCardType: GreenCardType) {
+        animationLiveData.postValue(
+            qrCodeAnimationUseCase.get(greenCardType)
+        )
     }
 }

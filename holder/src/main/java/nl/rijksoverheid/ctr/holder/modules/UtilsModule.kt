@@ -1,21 +1,26 @@
 package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.dashboard.items.*
-import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtilImpl
-import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.*
+import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
+import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtilImpl
 import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtilImpl
-import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtil
-import nl.rijksoverheid.ctr.holder.persistence.database.util.YourEventFragmentEndStateUtilImpl
+import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
+import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtilImpl
+import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
+import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtilImpl
+import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtil
-import nl.rijksoverheid.ctr.holder.ui.create_qr.widgets.YourEventWidgetUtilImpl
-import nl.rijksoverheid.ctr.holder.ui.create_qr.util.*
+import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
+import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtilImpl
+import nl.rijksoverheid.ctr.holder.utils.CountryUtil
+import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
+import nl.rijksoverheid.ctr.holder.your_events.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import java.time.Clock
@@ -37,7 +42,7 @@ fun utilsModule(versionCode: Int) = module {
         )
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
-    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get(), get(), get()) }
+    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get(), get(), get(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get(), get(), get()) }
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
@@ -55,8 +60,10 @@ fun utilsModule(versionCode: Int) = module {
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
     factory<DashboardInfoCardAdapterItemUtil> { DashboardInfoCardAdapterItemUtilImpl() }
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
-    factory<MenuUtil> { MenuUtilImpl(get(), get()) }
+    factory<MenuUtil> { MenuUtilImpl(get(), get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
     factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }
     factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
+    factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
+    factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
 }

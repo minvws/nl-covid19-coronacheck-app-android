@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <nl.rijksoverheid.ctr.design.views.AccessibilityHeaderWidget
+            <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title"
-                android:text="@string/holder_listRemoteEvents_vaccination_message" />
+                tools:text="@string/holder_listRemoteEvents_vaccination_message" />
 
             <View
                 android:id="@+id/divider_top"
@@ -84,7 +84,7 @@
 
     </ScrollView>
 
-    <nl.rijksoverheid.ctr.design.views.ScrollViewButtonWidget
+    <nl.rijksoverheid.ctr.design.widgets.ScrollViewButtonWidget
         android:id="@+id/bottom"
         style="@style/Widget.App.Button"
         android:layout_width="0dp"

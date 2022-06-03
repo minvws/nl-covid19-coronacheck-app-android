@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <nl.rijksoverheid.ctr.design.views.Toolbar
+    <nl.rijksoverheid.ctr.design.widgets.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_menu"
         android:touchscreenBlocksFocus="false"
+        android:layoutAnimation="@anim/layout_fade_in"
         app:title="@string/my_overview" />
 
     <androidx.fragment.app.FragmentContainerView

@@ -38,11 +38,12 @@ class ErrorCodeStringFactoryImplTest {
                     Response.error<String>(
                         400, "".toResponseBody()
                     )
-                )
+                ),
+                provider = "GGD"
             ))
         )
 
-        assertEquals(errorCodeString, "A 01 000 400")
+        assertEquals(errorCodeString, "A 01 GGD 400")
     }
 
     @Test
@@ -77,7 +78,8 @@ class ErrorCodeStringFactoryImplTest {
                 errorResponse = CoronaCheckErrorResponse(
                     status = "",
                     code = 2
-                )
+                ),
+                provider = null
             )
         ))
 
