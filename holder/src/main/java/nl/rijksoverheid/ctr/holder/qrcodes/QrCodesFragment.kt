@@ -319,8 +319,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             binding.nextQrButton.setOnClickListener {
                 binding.viewPager.setCurrentItem(binding.viewPager.currentItem + 1, true)
             }
-        } else {
-            showDoseInfo(europeanVaccinations.first())
         }
     }
 
@@ -336,25 +334,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
             )
             binding.qrVaccinationDose.text = doses
             binding.qrVaccinationDose.contentDescription = doses
-
-            showDoseInfo(vaccination)
-        }
-    }
-
-    private fun showDoseInfo(vaccination: QrCodeData.European.Vaccination) {
-        TransitionManager.beginDelayedTransition(binding.bottomScroll)
-        when {
-            vaccination.isExpired -> {
-                binding.doseInfo.text = getString(R.string.holder_showQR_label_expiredQR)
-                binding.doseInfo.visibility = View.VISIBLE
-            }
-            vaccination.isDoseNumberSmallerThanTotalDose -> {
-                binding.doseInfo.text = getString(R.string.qr_code_newer_dose_available)
-                binding.doseInfo.visibility = View.VISIBLE
-            }
-            else -> {
-                binding.doseInfo.visibility = View.GONE
-            }
         }
     }
 
