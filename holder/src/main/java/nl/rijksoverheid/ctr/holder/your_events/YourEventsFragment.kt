@@ -489,7 +489,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         val type = args.type
 
         val testDate =
-            event.negativeTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
+            event.negativeTest?.sampleDate?.formatDayMonthYearTime(requireContext()) ?: ""
 
         val infoScreen = infoScreenUtil.getForNegativeTest(
             event = event,

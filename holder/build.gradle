@@ -5,13 +5,14 @@ plugins {
     id 'kotlin-parcelize'
     id "androidx.navigation.safeargs.kotlin"
     id "com.starter.easylauncher"
+    id "shot"
 }
 
 def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
-version = "4.2"
+version = "4.3"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
@@ -34,7 +35,7 @@ android {
         versionName version
         vectorDrawables.useSupportLibrary = true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.karumi.shot.ShotTestRunner"
 
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
@@ -199,6 +200,12 @@ dependencies {
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 
     accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
+
+    androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+    androidTestImplementation "androidx.test:runner:$androix_test_version"
+    androidTestImplementation "androidx.test:rules:$androix_test_version"
+    androidTestImplementation "androidx.test:core-ktx:$androix_test_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
