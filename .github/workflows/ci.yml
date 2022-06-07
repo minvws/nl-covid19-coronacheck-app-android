@@ -116,10 +116,10 @@ jobs:
 
       - name: Distribute holder test variant
         run: |
-        firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/tst/release/holder-*.apk` \
-        --app 1:168257592968:android:cbb6d05f4163e39026493d \
-        --token $FIREBASE_TOKEN \
-        --groups testers
+          firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/tst/release/holder-*.apk` \
+          --app 1:168257592968:android:cbb6d05f4163e39026493d \
+          --token $FIREBASE_TOKEN \
+          --groups testers
 
       - name: Distribute holder acc variant
         run: |
