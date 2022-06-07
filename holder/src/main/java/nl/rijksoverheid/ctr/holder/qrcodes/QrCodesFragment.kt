@@ -138,8 +138,20 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     }
 
     private fun setupViewPager() {
-        qrCodePagerAdapter = QrCodePagerAdapter()
+        qrCodePagerAdapter = QrCodePagerAdapter(::onOverlayExplanationClick)
         binding.viewPager.adapter = qrCodePagerAdapter
+    }
+
+    private fun onOverlayExplanationClick(qrCodeVisibility: QrCodeViewHolder.QrCodeVisibility) {
+        infoFragmentUtil.presentAsBottomSheet(
+            childFragmentManager, InfoFragmentData.TitleDescription(
+                title = "Verlopen QR-code",
+                descriptionData = DescriptionData(
+                    htmlTextString = "test",
+                    htmlLinksEnabled = true
+                ),
+            )
+        )
     }
 
     private fun applyAnimation(qrCodeAnimation: QrCodeAnimation) {

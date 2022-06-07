@@ -22,25 +22,26 @@ import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
+class QrCodePagerAdapter(private val onOverlayExplanationClick: (QrCodeViewHolder.QrCodeVisibility) -> Unit) :
+    RecyclerView.Adapter<QrCodeViewHolder>() {
 
     val qrCodeDataList: MutableList<QrCodeData> = mutableListOf()
 
     private var currentPosition = 0
 
-    private val overlayVisibilityStates = mutableListOf<QrCodeViewHolder.OverlayVisibility>()
+    private val overlayVisibilityStates = mutableListOf<QrCodeViewHolder.QrCodeVisibility>()
 
     fun addData(data: List<QrCodeData>) {
         val hasItems = qrCodeDataList.isNotEmpty()
         val hideOverlayInCurrentPosition =
-            overlayVisibilityStates.getOrNull(currentPosition) == QrCodeViewHolder.OverlayVisibility.HIDDEN
-                    || overlayVisibilityStates.getOrNull(currentPosition) == QrCodeViewHolder.OverlayVisibility.EXPIRED
+            overlayVisibilityStates.getOrNull(currentPosition) == QrCodeViewHolder.QrCodeVisibility.HIDDEN
+                    || overlayVisibilityStates.getOrNull(currentPosition) == QrCodeViewHolder.QrCodeVisibility.EXPIRED
         qrCodeDataList.clear()
         overlayVisibilityStates.clear()
         data.forEachIndexed { index, it ->
             // if user chose to display the QR, don't hide it until scrolled away from it
             if (index == currentPosition && hideOverlayInCurrentPosition) {
-                overlayVisibilityStates.add(QrCodeViewHolder.OverlayVisibility.VISIBLE)
+                overlayVisibilityStates.add(QrCodeViewHolder.QrCodeVisibility.VISIBLE)
             } else {
                 overlayVisibilityStates.add(isQrCodeHidden(it))
             }
@@ -53,12 +54,12 @@ class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
         }
     }
 
-    private fun isQrCodeHidden(data: QrCodeData): QrCodeViewHolder.OverlayVisibility {
+    private fun isQrCodeHidden(data: QrCodeData): QrCodeViewHolder.QrCodeVisibility {
         val vaccinationData = data as? QrCodeData.European.Vaccination
         return when {
-            vaccinationData?.isDoseNumberSmallerThanTotalDose == true -> QrCodeViewHolder.OverlayVisibility.HIDDEN
-            vaccinationData?.isExpired == true -> QrCodeViewHolder.OverlayVisibility.EXPIRED
-            else -> QrCodeViewHolder.OverlayVisibility.VISIBLE
+            vaccinationData?.isDoseNumberSmallerThanTotalDose == true -> QrCodeViewHolder.QrCodeVisibility.HIDDEN
+            vaccinationData?.isExpired == true -> QrCodeViewHolder.QrCodeVisibility.EXPIRED
+            else -> QrCodeViewHolder.QrCodeVisibility.VISIBLE
         }
     }
 
@@ -79,9 +80,10 @@ class QrCodePagerAdapter : RecyclerView.Adapter<QrCodeViewHolder>() {
         holder.bind(
             qrCodeDataList[position],
             position == currentPosition,
-            overlayVisibilityStates[position]
+            overlayVisibilityStates[position],
+            onOverlayExplanationClick
         ) {
-            overlayVisibilityStates[currentPosition] = QrCodeViewHolder.OverlayVisibility.VISIBLE
+            overlayVisibilityStates[currentPosition] = QrCodeViewHolder.QrCodeVisibility.VISIBLE
             notifyItemChanged(currentPosition)
         }
     }
@@ -99,19 +101,23 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(
         qrCodeData: QrCodeData,
         isCurrentlyDisplayed: Boolean,
-        overlayVisibility: OverlayVisibility,
+        qrCodeVisibility: QrCodeVisibility,
+        onOverlayExplanationClick: (QrCodeVisibility) -> Unit,
         onOverlayButtonClick: () -> Unit,
     ) {
-        val showOverlay = overlayVisibility == OverlayVisibility.VISIBLE
+        val showOverlay = qrCodeVisibility != QrCodeVisibility.VISIBLE
 
         binding.image.setImageBitmap(qrCodeData.bitmap)
         binding.overlayShowQrButton.setOnClickListener {
             onOverlayButtonClick.invoke()
         }
+        binding.overlayButton.setOnClickListener {
+            onOverlayExplanationClick.invoke(qrCodeVisibility)
+        }
 
         // using View.INVISIBLE instead View.GONE cause the latter breaks
         // the click listener for physical keyboards accessibility
-        setOverlay(showOverlay, overlayVisibility)
+        setOverlay(showOverlay, qrCodeVisibility)
 
         // not visible pages can also gain focus, so we have to take care of that for hardware keyboard users
         binding.image.isFocusable = isCurrentlyDisplayed && !showOverlay
@@ -125,23 +131,23 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private fun setOverlay(
         showOverlay: Boolean,
-        overlayVisibility: OverlayVisibility
+        qrCodeVisibility: QrCodeVisibility
     ) {
         binding.overlay.visibility = if (showOverlay) {
             View.VISIBLE
         } else {
             View.INVISIBLE
         }
-        binding.overlayText.text = when (overlayVisibility) {
-            OverlayVisibility.HIDDEN -> itemView.context.getText(R.string.qr_code_hidden_title)
-            OverlayVisibility.EXPIRED -> "QR-code is verborgen"
+        binding.overlayText.text = when (qrCodeVisibility) {
+            QrCodeVisibility.HIDDEN -> itemView.context.getText(R.string.qr_code_hidden_title)
+            QrCodeVisibility.EXPIRED -> "QR-code is verlopen"
             else -> ""
         }
         binding.overlayText.setCompoundDrawablesWithIntrinsicBounds(
             0,
-            when (overlayVisibility) {
-                OverlayVisibility.HIDDEN -> R.drawable.ic_visibility_off
-                OverlayVisibility.EXPIRED -> R.drawable.ic_qr_hidden
+            when (qrCodeVisibility) {
+                QrCodeVisibility.HIDDEN -> R.drawable.ic_visibility_off
+                QrCodeVisibility.EXPIRED -> R.drawable.ic_qr_hidden
                 else -> 0
             },
             0,
@@ -149,7 +155,7 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         )
     }
 
-    enum class OverlayVisibility {
+    enum class QrCodeVisibility {
         HIDDEN, EXPIRED, VISIBLE
     }
 }
