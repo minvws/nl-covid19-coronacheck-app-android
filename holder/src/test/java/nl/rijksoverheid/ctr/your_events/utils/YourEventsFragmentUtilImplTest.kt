@@ -9,11 +9,11 @@ package nl.rijksoverheid.ctr.your_events.utils
 
 import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
-import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
@@ -26,6 +26,10 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
+
+    private val eventProviders = listOf(
+        AppConfig.Code(name = "MVWS-TEST", code = "ZZZ"), AppConfig.Code(name = "Test Provider", code = "test")
+    )
 
     @Test
     fun `getNoOriginTypeCopy returns correct copy for DCC`() {
@@ -98,15 +102,8 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
 
-        val vaccination = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
-        val eventProvider = EventProvider(
-            identifier = "test",
-            name = "Test Provider"
-        )
-        every { vaccination.eventProviders } answers { listOf(eventProvider) }
-
         val providerName = util.getProviderName(
-            type = vaccination,
+            providers = eventProviders,
             providerIdentifier = "test"
         )
 
@@ -118,19 +115,12 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
 
-        val vaccination = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
-        val eventProvider = EventProvider(
-            identifier = "test2",
-            name = "Test Provider"
-        )
-        every { vaccination.eventProviders } answers { listOf(eventProvider) }
-
         val providerName = util.getProviderName(
-            type = vaccination,
-            providerIdentifier = "test"
+            providers = eventProviders,
+            providerIdentifier = "test2"
         )
 
-        assertEquals("test", providerName)
+        assertEquals("test2", providerName)
     }
 
     @Test

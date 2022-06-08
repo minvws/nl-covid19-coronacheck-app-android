@@ -13,7 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
@@ -42,7 +42,6 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.Flow
-import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -51,7 +50,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private val args: YourEventsFragmentArgs by navArgs()
 
-    private val personalDetailsUtil: PersonalDetailsUtil by inject()
     private val infoScreenUtil: InfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
@@ -61,6 +59,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val yourEventsFragmentUtil: YourEventsFragmentUtil by inject()
     private val yourEventWidgetUtil: YourEventWidgetUtil by inject()
     private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase by inject()
+
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
     private val yourEventsViewModel: YourEventsViewModel by viewModel()
 
@@ -354,7 +354,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 protocolGroupedEvent.value.map { it.providerIdentifier }
                     .map {
                         yourEventsFragmentUtil.getProviderName(
-                            type = args.type,
+                            providers = cachedAppConfigUseCase.getCachedAppConfig().providers,
                             providerIdentifier = it
                         )
                     }
@@ -462,7 +462,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                     fullName = fullName,
                                     birthDate = birthDate,
                                     providerIdentifier = yourEventsFragmentUtil.getProviderName(
-                                        type = args.type,
+                                        providers = cachedAppConfigUseCase.getCachedAppConfig().providers,
                                         providerIdentifier = it.providerIdentifier
                                     ),
                                     europeanCredential = if (type is YourEventsFragmentType.DCC) {
