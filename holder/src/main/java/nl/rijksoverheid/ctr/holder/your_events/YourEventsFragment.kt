@@ -14,9 +14,7 @@ import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.design.ext.formatDayMonth
-import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
-import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
+import nl.rijksoverheid.ctr.design.ext.*
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -489,7 +487,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         val type = args.type
 
         val testDate =
-            event.negativeTest?.sampleDate?.formatDayMonthYearTime(requireContext()) ?: ""
+            event.negativeTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
 
         val infoScreen = infoScreenUtil.getForNegativeTest(
             event = event,
