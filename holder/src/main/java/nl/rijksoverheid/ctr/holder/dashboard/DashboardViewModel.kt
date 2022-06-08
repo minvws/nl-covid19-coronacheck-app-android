@@ -29,6 +29,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import java.time.Clock
@@ -56,7 +57,6 @@ class DashboardViewModelImpl(
     private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
-    private val clock: Clock,
     private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
     private val dashboardTabsItemDataMapper: DashboardTabsItemDataMapper
 ) : DashboardViewModel() {

@@ -50,7 +50,8 @@ class HolderDatabaseSyncerImpl(
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
     private val featureFlagUseCase: HolderFeatureFlagUseCase,
-    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil
+    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil,
+    private val updateEventExpirationUseCase: UpdateEventExpirationUseCase
 ) : HolderDatabaseSyncer {
 
     private val mutex = Mutex()
@@ -64,11 +65,6 @@ class HolderDatabaseSyncerImpl(
         return withContext(Dispatchers.IO) {
             mutex.withLock {
                 val events = holderDatabase.eventGroupDao().getAll()
-
-                // Clean up expired events in the database
-                removeExpiredEventsUseCase.execute(
-                    events = events
-                )
 
                 if (syncWithRemote) {
                     if (events.isEmpty()) {
@@ -84,6 +80,12 @@ class HolderDatabaseSyncerImpl(
 
                     when (remoteGreenCardsResult) {
                         is RemoteGreenCardsResult.Success -> {
+                            // Update event expire dates
+                            updateEventExpirationUseCase.update(
+                                blobExpiries = remoteGreenCardsResult.remoteGreenCards.blobExpiries
+                            )
+
+                            // Handle green cards
                             val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
                             val combinedVaccinationRecovery =
                                 yourEventFragmentEndStateUtil.getResult(
@@ -123,6 +125,11 @@ class HolderDatabaseSyncerImpl(
                             // Insert green cards in database
                             val result = syncRemoteGreenCardsUseCase.execute(
                                 remoteGreenCards = remoteGreenCards
+                            )
+
+                            // Clean up expired events in the database
+                            removeExpiredEventsUseCase.execute(
+                                events = events
                             )
 
                             when (result) {

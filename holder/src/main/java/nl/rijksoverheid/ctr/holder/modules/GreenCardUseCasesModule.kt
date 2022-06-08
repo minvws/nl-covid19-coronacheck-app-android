@@ -48,4 +48,7 @@ val greenCardUseCasesModule = module {
     factory<GetDccFromEuropeanCredentialUseCase> {
         GetDccFromEuropeanCredentialUseCaseImpl(get())
     }
+    factory<UpdateEventExpirationUseCase> {
+        UpdateEventExpirationUseCaseImpl(get())
+    }
 }
