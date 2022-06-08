@@ -52,7 +52,7 @@ val eventsUseCasesModule = module {
     }
 
     factory<RemoveExpiredEventsUseCase> {
-        RemoveExpiredEventsUseCaseImpl(Clock.systemUTC(), get(), get())
+        RemoveExpiredEventsUseCaseImpl(Clock.systemUTC(), get())
     }
     factory<GetSavedEventsUseCase> {
         GetSavedEventsUseCaseImpl(get(), get(), get(), get(), get(), get(), get())

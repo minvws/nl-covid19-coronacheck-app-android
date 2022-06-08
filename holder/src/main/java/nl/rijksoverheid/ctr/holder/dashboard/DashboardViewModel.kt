@@ -58,7 +58,8 @@ class DashboardViewModelImpl(
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
     private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
-    private val dashboardTabsItemDataMapper: DashboardTabsItemDataMapper
+    private val dashboardTabsItemDataMapper: DashboardTabsItemDataMapper,
+    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase
 ) : DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -108,6 +109,10 @@ class DashboardViewModelImpl(
 
             val allGreenCards = greenCardUtil.getAllGreenCards()
             val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
+
+            removeExpiredEventsUseCase.execute(
+                events = allEventGroupEntities
+            )
 
             removeExpiredGreenCardsUseCase.execute(
                 allGreenCards = allGreenCards
