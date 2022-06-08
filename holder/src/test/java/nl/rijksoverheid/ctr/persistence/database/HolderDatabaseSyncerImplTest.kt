@@ -43,7 +43,7 @@ class HolderDatabaseSyncerImplTest {
             walletId = 1,
             providerIdentifier = "1",
             type = OriginType.Test,
-            maxIssuedAt = OffsetDateTime.now(),
+            expiryDate = OffsetDateTime.now(),
             scope = "",
             jsonData = "".toByteArray()
         )
@@ -125,7 +125,8 @@ class HolderDatabaseSyncerImplTest {
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
-                        euGreencards = null
+                        euGreencards = null,
+                        blobExpiries = listOf()
                     )
                 )
             ),
@@ -167,7 +168,8 @@ class HolderDatabaseSyncerImplTest {
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
-                        euGreencards = null
+                        euGreencards = null,
+                        blobExpiries = listOf()
                     )
                 )
             ),
@@ -209,7 +211,8 @@ class HolderDatabaseSyncerImplTest {
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
-                        euGreencards = null
+                        euGreencards = null,
+                        blobExpiries = listOf()
                     )
                 )
             ),
@@ -337,7 +340,8 @@ class HolderDatabaseSyncerImplTest {
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
-                        euGreencards = null
+                        euGreencards = null,
+                        blobExpiries = listOf()
                     )
                 )
             ),
@@ -372,7 +376,8 @@ class HolderDatabaseSyncerImplTest {
                             origins = listOf(),
                             createCredentialMessages = "".toByteArray()
                         ),
-                        euGreencards = null
+                        euGreencards = null,
+                        blobExpiries = listOf()
                     )
                 )
             ),
@@ -403,7 +408,8 @@ class HolderDatabaseSyncerImplTest {
                 )),
                 createCredentialMessages = "".toByteArray()
             ),
-            euGreencards = null
+            euGreencards = null,
+            blobExpiries = listOf()
         )
     )
 }

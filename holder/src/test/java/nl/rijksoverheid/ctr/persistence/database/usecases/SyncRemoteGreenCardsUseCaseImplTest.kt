@@ -53,7 +53,8 @@ class SyncRemoteGreenCardsUseCaseImplTest {
         usecase.execute(
             remoteGreenCards = RemoteGreenCards(
                 domesticGreencard = null,
-                euGreencards = listOf(euGreenCard)
+                euGreencards = listOf(euGreenCard),
+                blobExpiries = listOf()
             )
         )
 
@@ -90,7 +91,8 @@ class SyncRemoteGreenCardsUseCaseImplTest {
         usecase.execute(
             remoteGreenCards = RemoteGreenCards(
                 domesticGreencard = domesticGreenCard,
-                euGreencards = listOf()
+                euGreencards = listOf(),
+                blobExpiries = listOf()
             )
         )
 
@@ -103,7 +105,8 @@ class SyncRemoteGreenCardsUseCaseImplTest {
         usecase.execute(
             RemoteGreenCards(
                 domesticGreencard = null,
-                euGreencards = listOf()
+                euGreencards = listOf(),
+                blobExpiries = listOf()
             )
         )
 
