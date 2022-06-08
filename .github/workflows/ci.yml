@@ -84,7 +84,7 @@ jobs:
         run: echo $KEYSTORE_FILE | base64 --decode > keystore.jks
       - name: Build
         if: github.event.repository.name != 'nl-covid19-coronacheck-app-android'
-        run: ./gradlew assemAccRelease assemProdRelease bundleProdRelease
+        run: ./gradlew assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
       - name: Build fdroid
         if: ${{ env.GENERATE_FDROID_BUILDS == 'true' }}
         run: /gradlew assemFdroidAccRelease
@@ -120,6 +120,13 @@ jobs:
 
       - name: Install firebase-cli
         run: npm install -g firebase-tools
+
+      - name: Distribute holder test variant
+        run: |
+          firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/tst/release/holder-*.apk` \
+          --app 1:168257592968:android:cbb6d05f4163e39026493d \
+          --token $FIREBASE_TOKEN \
+          --groups testers
 
       - name: Distribute holder acc variant
         run: |
