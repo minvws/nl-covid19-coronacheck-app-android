@@ -15,7 +15,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.core.view.isVisible
-import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -234,7 +233,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onPause() {
         super.onPause()
         refreshHandler.removeCallbacks(refreshRunnable)
-        (parentFragment?.parentFragment as HolderMainFragment).getToolbar().menu.clear()
+        
+        // Do this check because our screenshot fragment tests run in it's own test activity
+        if (parentFragment != null && requireParentFragment().parentFragment != null) {
+            (requireParentFragment().requireParentFragment() as HolderMainFragment).getToolbar().menu.clear()
+        }
     }
 
     override fun onResume() {

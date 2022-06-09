@@ -13,16 +13,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
-import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.initialisationException
 
@@ -37,7 +35,7 @@ abstract class AppConfigViewModel : ViewModel() {
 class AppConfigViewModelImpl(
     private val appConfigUseCase: AppConfigUseCase,
     private val appStatusUseCase: AppStatusUseCase,
-    private val persistConfigUseCase: PersistConfigUseCase,
+    private val configResultUseCase: ConfigResultUseCase,
     private val appConfigStorageManager: AppConfigStorageManager,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val filesDirPath: String,
@@ -46,8 +44,6 @@ class AppConfigViewModelImpl(
     private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
     private val appUpdateData: AppUpdateData
 ) : AppConfigViewModel() {
-
-    private val mutex = Mutex()
 
     private fun updateAppStatus(appStatus: AppStatus) {
         if (appStatusLiveData.value != appStatus) {
@@ -67,37 +63,26 @@ class AppConfigViewModelImpl(
             return
         }
         viewModelScope.launch {
-            // allow only one config/public keys refresh at a time
-            // cause we store them writing to files and a parallel
-            // operation could break them eventually
-            mutex.withLock {
-                val configResult = appConfigUseCase.get()
-                val appStatus = appStatusUseCase.get(configResult, versionCode)
-                if (configResult is ConfigResult.Success) {
-                    persistConfigUseCase.persist(
-                        appConfigContents = configResult.appConfig,
-                        publicKeyContents = configResult.publicKeys
-                    )
-                }
+            val configResult = configResultUseCase.fetch()
+            val appStatus = appStatusUseCase.get(configResult, versionCode)
 
-                val configFilesArePresentInFilesFolder =
-                    appConfigStorageManager.areConfigFilesPresentInFilesFolder()
-                if (!configFilesArePresentInFilesFolder || !cachedAppConfigUseCase.isCachedAppConfigValid()) {
-                    return@launch appStatusLiveData.postValue(AppStatus.Error)
-                }
-
-                val initializationError = if (isVerifierApp) {
-                    mobileCoreWrapper.initializeVerifier(filesDirPath)
-                } else {
-                    mobileCoreWrapper.initializeHolder(filesDirPath)
-                }
-
-                if (initializationError != null) {
-                    throw initialisationException(initializationError)
-                }
-
-                updateAppStatus(appStatus)
+            val configFilesArePresentInFilesFolder =
+                appConfigStorageManager.areConfigFilesPresentInFilesFolder()
+            if (!configFilesArePresentInFilesFolder || !cachedAppConfigUseCase.isCachedAppConfigValid()) {
+                return@launch appStatusLiveData.postValue(AppStatus.Error)
             }
+
+            val initializationError = if (isVerifierApp) {
+                mobileCoreWrapper.initializeVerifier(filesDirPath)
+            } else {
+                mobileCoreWrapper.initializeHolder(filesDirPath)
+            }
+
+            if (initializationError != null) {
+                throw initialisationException(initializationError)
+            }
+
+            updateAppStatus(appStatus)
         }
     }
 
