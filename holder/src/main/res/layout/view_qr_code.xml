@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:text="wat betekent dit?"
+            android:text="@string/holder_qr_code_hidden_explanation_button"
             android:textColor="@color/link"
             app:layout_constraintEnd_toEndOf="@id/overlayBackground"
             app:layout_constraintStart_toStartOf="@id/overlayBackground"
