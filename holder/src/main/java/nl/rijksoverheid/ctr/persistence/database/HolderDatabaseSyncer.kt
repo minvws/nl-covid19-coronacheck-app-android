@@ -82,7 +82,7 @@ class HolderDatabaseSyncerImpl(
                         is RemoteGreenCardsResult.Success -> {
                             // Update event expire dates
                             updateEventExpirationUseCase.update(
-                                blobExpiries = remoteGreenCardsResult.remoteGreenCards.blobExpiries
+                                blobExpireDates = remoteGreenCardsResult.remoteGreenCards.blobExpireDates
                             )
 
                             // Handle green cards

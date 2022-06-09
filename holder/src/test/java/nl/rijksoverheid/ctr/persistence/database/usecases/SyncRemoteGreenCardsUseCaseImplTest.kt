@@ -54,7 +54,7 @@ class SyncRemoteGreenCardsUseCaseImplTest {
             remoteGreenCards = RemoteGreenCards(
                 domesticGreencard = null,
                 euGreencards = listOf(euGreenCard),
-                blobExpiries = listOf()
+                blobExpireDates = listOf()
             )
         )
 
@@ -92,7 +92,7 @@ class SyncRemoteGreenCardsUseCaseImplTest {
             remoteGreenCards = RemoteGreenCards(
                 domesticGreencard = domesticGreenCard,
                 euGreencards = listOf(),
-                blobExpiries = listOf()
+                blobExpireDates = listOf()
             )
         )
 
@@ -106,7 +106,7 @@ class SyncRemoteGreenCardsUseCaseImplTest {
             RemoteGreenCards(
                 domesticGreencard = null,
                 euGreencards = listOf(),
-                blobExpiries = listOf()
+                blobExpireDates = listOf()
             )
         )
 

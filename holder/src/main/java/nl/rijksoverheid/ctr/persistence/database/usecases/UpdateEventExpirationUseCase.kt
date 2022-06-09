@@ -11,15 +11,15 @@ import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 
 interface UpdateEventExpirationUseCase {
-    suspend fun update(blobExpiries: List<RemoteGreenCards.BlobExpiry>)
+    suspend fun update(blobExpireDates: List<RemoteGreenCards.BlobExpiry>)
 }
 
 class UpdateEventExpirationUseCaseImpl(
     private val holderDatabase: HolderDatabase
 ): UpdateEventExpirationUseCase {
 
-    override suspend fun update(blobExpiries: List<RemoteGreenCards.BlobExpiry>) {
-        blobExpiries.forEach {
+    override suspend fun update(blobExpireDates: List<RemoteGreenCards.BlobExpiry>) {
+        blobExpireDates.forEach {
             holderDatabase.eventGroupDao().updateExpiryDate(
                 eventGroupId = it.id,
                 expiryDate = it.expiry

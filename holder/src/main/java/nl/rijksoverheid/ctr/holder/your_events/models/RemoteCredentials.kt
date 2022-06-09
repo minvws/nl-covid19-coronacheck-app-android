@@ -22,7 +22,7 @@ import java.time.OffsetDateTime
 data class RemoteGreenCards(
     val domesticGreencard: DomesticGreenCard?,
     val euGreencards: List<EuGreenCard>?,
-    val blobExpiries: List<BlobExpiry>
+    val blobExpireDates: List<BlobExpiry>
 ) {
     data class DomesticGreenCard(
         val origins: List<Origin>,

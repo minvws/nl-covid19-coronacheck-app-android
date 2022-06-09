@@ -128,7 +128,7 @@ class HolderDatabaseSyncerImplTest {
                             createCredentialMessages = "".toByteArray()
                         ),
                         euGreencards = null,
-                        blobExpiries = listOf()
+                        blobExpireDates = listOf()
                     )
                 )
             ),
@@ -172,7 +172,7 @@ class HolderDatabaseSyncerImplTest {
                             createCredentialMessages = "".toByteArray()
                         ),
                         euGreencards = null,
-                        blobExpiries = listOf()
+                        blobExpireDates = listOf()
                     )
                 )
             ),
@@ -216,7 +216,7 @@ class HolderDatabaseSyncerImplTest {
                             createCredentialMessages = "".toByteArray()
                         ),
                         euGreencards = null,
-                        blobExpiries = listOf()
+                        blobExpireDates = listOf()
                     )
                 )
             ),
@@ -349,7 +349,7 @@ class HolderDatabaseSyncerImplTest {
                             createCredentialMessages = "".toByteArray()
                         ),
                         euGreencards = null,
-                        blobExpiries = listOf()
+                        blobExpireDates = listOf()
                     )
                 )
             ),
@@ -386,7 +386,7 @@ class HolderDatabaseSyncerImplTest {
                             createCredentialMessages = "".toByteArray()
                         ),
                         euGreencards = null,
-                        blobExpiries = listOf()
+                        blobExpireDates = listOf()
                     )
                 )
             ),
@@ -419,7 +419,7 @@ class HolderDatabaseSyncerImplTest {
                 createCredentialMessages = "".toByteArray()
             ),
             euGreencards = null,
-            blobExpiries = listOf()
+            blobExpireDates = listOf()
         )
     )
 }

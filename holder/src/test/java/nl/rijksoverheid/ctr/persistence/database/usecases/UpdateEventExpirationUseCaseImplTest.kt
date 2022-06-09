@@ -69,7 +69,7 @@ class UpdateEventExpirationUseCaseImplTest: AutoCloseKoinTest() {
         )
 
         usecase.update(
-            blobExpiries = listOf(
+            blobExpireDates = listOf(
                 RemoteGreenCards.BlobExpiry(
                     id = 1,
                     expiry = eventGroupExpireDate
@@ -114,7 +114,7 @@ class UpdateEventExpirationUseCaseImplTest: AutoCloseKoinTest() {
         )
 
         usecase.update(
-            blobExpiries = listOf(
+            blobExpireDates = listOf(
                 RemoteGreenCards.BlobExpiry(
                     id = 2,
                     expiry = eventGroupExpireDate
