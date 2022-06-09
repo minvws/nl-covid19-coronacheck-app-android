@@ -34,8 +34,7 @@ class QrCodePagerAdapter(private val onOverlayExplanationClick: (QrCodeViewHolde
     fun addData(data: List<QrCodeData>) {
         val hasItems = qrCodeDataList.isNotEmpty()
         val hideOverlayInCurrentPosition =
-            overlayVisibilityStates.getOrNull(currentPosition) == QrCodeViewHolder.QrCodeVisibility.HIDDEN
-                    || overlayVisibilityStates.getOrNull(currentPosition) == QrCodeViewHolder.QrCodeVisibility.EXPIRED
+            overlayVisibilityStates.getOrNull(currentPosition) == QrCodeViewHolder.QrCodeVisibility.VISIBLE
         qrCodeDataList.clear()
         overlayVisibilityStates.clear()
         data.forEachIndexed { index, it ->
@@ -138,11 +137,13 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         } else {
             View.INVISIBLE
         }
-        binding.overlayText.text = when (qrCodeVisibility) {
-            QrCodeVisibility.HIDDEN -> itemView.context.getText(R.string.qr_code_hidden_title)
-            QrCodeVisibility.EXPIRED -> "QR-code is verlopen"
-            else -> ""
-        }
+        binding.overlayText.text = itemView.context.getString(
+            if (qrCodeVisibility == QrCodeVisibility.HIDDEN) {
+                R.string.qr_code_hidden_title }
+            else {
+                R.string.holder_qr_code_expired_overlay_title
+            }
+        )
         binding.overlayText.setCompoundDrawablesWithIntrinsicBounds(
             0,
             when (qrCodeVisibility) {

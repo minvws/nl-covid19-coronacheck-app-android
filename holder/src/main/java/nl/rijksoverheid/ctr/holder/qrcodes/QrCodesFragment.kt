@@ -21,6 +21,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
@@ -144,12 +145,40 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     private fun onOverlayExplanationClick(qrCodeVisibility: QrCodeViewHolder.QrCodeVisibility) {
         infoFragmentUtil.presentAsBottomSheet(
-            childFragmentManager, InfoFragmentData.TitleDescription(
-                title = "Verlopen QR-code",
+            childFragmentManager, InfoFragmentData.TitleDescriptionWithButton(
+                title = getString(
+                    if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
+                        R.string.holder_qr_code_expired_explanation_title
+                    } else {
+                        R.string.holder_qr_code_hidden_explanation_title
+                    }
+                ),
                 descriptionData = DescriptionData(
-                    htmlTextString = "test",
+                    htmlTextString = getString(
+                        if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
+                            R.string.holder_qr_code_expired_explanation_description
+                        } else {
+                            R.string.holder_qr_code_hidden_explanation_description
+                        }
+                    ),
                     htmlLinksEnabled = true
                 ),
+                primaryButtonData = ButtonData.LinkButton(
+                    text = getString(
+                        if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
+                            R.string.holder_qr_code_expired_explanation_action
+                        } else {
+                            R.string.holder_qr_code_hidden_explanation_action
+                        }
+                    ),
+                    link = getString(
+                        if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
+                            R.string.holder_qr_code_expired_explanation_url
+                        } else {
+                            R.string.holder_qr_code_hidden_explanation_url
+                        }
+                    )
+                )
             )
         )
     }
