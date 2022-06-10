@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <dimen name="bullet_point_span_gap_width">16dp</dimen>
     <dimen name="scroll_view_button_elevation">8dp</dimen>
     <dimen name="view_pager_indicator_bubble_spacing">6dp</dimen>
@@ -7,7 +7,7 @@
     <dimen name="deeplink_exit_icon_padding">8dp</dimen>
     <dimen name="deeplink_button_padding_end">36dp</dimen>
     <dimen name="deeplink_button_padding_vertical">14dp</dimen>
-    <dimen name="design_navigation_separator_vertical_padding">16dp</dimen>
+    <dimen name="design_navigation_separator_vertical_padding" tools:override="true">16dp</dimen>
     <dimen name="menu_section_spacing">24dp</dimen>
     <dimen name="menu_list_item_spacing">1dp</dimen>
     <dimen name="onboarding_item_image_height">216dp</dimen>
