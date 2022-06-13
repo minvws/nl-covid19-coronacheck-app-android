@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-parcelize'
     id "androidx.navigation.safeargs.kotlin"
     id "com.starter.easylauncher"
+    id "shot"
 }
 
 def appVersionCode = 1000000
@@ -34,7 +35,7 @@ android {
         versionName version
         vectorDrawables.useSupportLibrary = true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.karumi.shot.ShotTestRunner"
 
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
@@ -67,6 +68,24 @@ android {
 
     flavorDimensions "environment"
     productFlavors {
+        tst {
+            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.test.coronacheck.nl/v8/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://holder-api.test.coronacheck.nl/v8/\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://max.test.coronacheck.nl\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
+            buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.test.coronacheck.nl/app/auth2\""
+            buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL",  "\"https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.test.coronacheck.nl/app/open?returnUri=scanner-test\""
+            buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.test.coronacheck.nl\""
+            dimension "environment"
+            versionNameSuffix "-test"
+            applicationIdSuffix ".test"
+            manifestPlaceholders = [appLabel: "@string/app_name_test", deepLinkHost: "web.test.coronacheck.nl", digidSchema: "coronacheck-test"]
+            apply plugin: 'com.google.gms.google-services'
+            apply plugin: 'com.google.firebase.crashlytics'
+            matchingFallbacks = ['mlkit']
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
+            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
+        }
         acc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v8/\""
             buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v8/\""
@@ -181,6 +200,12 @@ dependencies {
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
 
     accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
+
+    androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+    androidTestImplementation "androidx.test:runner:$androix_test_version"
+    androidTestImplementation "androidx.test:rules:$androix_test_version"
+    androidTestImplementation "androidx.test:core-ktx:$androix_test_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 

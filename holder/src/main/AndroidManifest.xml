@@ -18,7 +18,8 @@
         android:label="${appLabel}"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Launcher">
+        android:theme="@style/AppTheme.Launcher"
+        android:requestLegacyExternalStorage="true">
 
         <activity android:name=".HolderMainActivity" android:exported="true">
             <intent-filter>

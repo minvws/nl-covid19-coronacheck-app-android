@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:parentTag="android.widget.FrameLayout">
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button"
         style="@style/Widget.App.Button.Small"
         android:layout_width="wrap_content"

@@ -131,7 +131,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
 
                 // Apply bottom elevation if the view inside the viewpager is scrollable
                 val scrollView =
-                    childFragmentManager.fragments[position]?.view?.findViewById<ScrollView>(R.id.scroll)
+                    childFragmentManager.fragments.getOrNull(position)?.view?.findViewById<ScrollView>(R.id.scroll)
                 if (scrollView?.canScrollVertically(1) == true) {
                     binding.bottom.cardElevation =
                         resources.getDimensionPixelSize(R.dimen.scroll_view_button_elevation)

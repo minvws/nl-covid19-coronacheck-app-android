@@ -3,7 +3,7 @@ package nl.rijksoverheid.ctr.design.widgets
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
-import android.view.View
+import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import nl.rijksoverheid.ctr.design.R
@@ -25,8 +25,12 @@ class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs
 
     private var buttonText = ""
 
-    private val binding: ButtonWithProgressWidgetBinding =
-        ButtonWithProgressWidgetBinding.bind(View.inflate(context, R.layout.button_with_progress_widget, this))
+    private val binding: ButtonWithProgressWidgetBinding
+
+    init {
+        ButtonWithProgressWidgetBinding.inflate(LayoutInflater.from(context), this)
+        binding = ButtonWithProgressWidgetBinding.bind(this)
+    }
 
     init {
         context.theme.obtainStyledAttributes(

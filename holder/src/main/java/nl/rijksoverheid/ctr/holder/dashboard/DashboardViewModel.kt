@@ -75,7 +75,6 @@ class DashboardViewModelImpl(
     private suspend fun refreshCredentials(dashboardSync: DashboardSync) {
         mutex.withLock {
             val previousSyncResult = databaseSyncerResultLiveData.value?.peekContent()
-            val hasDoneRefreshCall = previousSyncResult != null
 
             // Check if we need to load new credentials
             val shouldLoadNewCredentials = when (dashboardSync) {
@@ -89,8 +88,7 @@ class DashboardViewModelImpl(
                 }
                 is DashboardSync.CheckSync -> {
                     // Load new credentials if no previous refresh has been executed and we should refresh because a credentials for a green card expired
-                    val shouldRefreshCredentials =
-                        (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
+                    val shouldRefreshCredentials = greenCardRefreshUtil.shouldRefresh()
 
                     // Load new credentials if we the previous request failed more than once and more than x minutes ago
                     val shouldRetryFailedRequest =
