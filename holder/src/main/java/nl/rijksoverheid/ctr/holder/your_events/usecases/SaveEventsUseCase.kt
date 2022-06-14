@@ -50,7 +50,7 @@ class SaveEventsUseCaseImpl(
         val storedEventHolders = holderDatabase.eventGroupDao().getAll()
             .mapNotNull { remoteEventHolderUtil.holder(it.jsonData, it.providerIdentifier) }
             .distinct()
-        val incomingEventHolders = remoteProtocols.map { it.key.holder!! }.distinct()
+        val incomingEventHolders = remoteProtocols.mapNotNull { it.key.holder }.distinct()
 
         return remoteEventHolderUtil.conflicting(storedEventHolders, incomingEventHolders)
     }
