@@ -490,7 +490,7 @@
   <string name="qr_code_dosis">Dose %1s</string>
   <string name="qr_code_over_vaccinated">This QR code is not yet valid everywhere. In which case, use one from a previous dose.</string>
   <string name="qr_code_newer_dose_available">You probably won\'t need this QR code because you have a more recent dose.</string>
-  <string name="qr_code_hidden_title">QR code hidden</string>
+  <string name="qr_code_hidden_title">QR code is hidden</string>
   <string name="qr_code_hidden_button">Show anyway</string>
   <string name="qr_code_previous_button">Previous QR code</string>
   <string name="qr_code_next_button">Next QR code</string>
@@ -773,4 +773,14 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_dashboard_recoveryAlmostExpiredBanner_title">Je herstelbewijs verloopt bijna</string>
   <string name="holder_recoveryAlmostExpiredModal_title">Herstelbewijs verloopt bijna</string>
   <string name="holder_recoveryAlmostExpiredModal_message">Je herstelbewijs verloopt op %@. Daarna heb je geen coronabewijs meer. Heb je een nieuw coronabewijs nodig? Dan zijn er verschillende mogelijkheden. Lees meer op <a href="https://www.rijksoverheid.nl/onderwerpen/coronavirus-coronabewijs-en-coronatoegangsbewijs">Rijksoverheid.nl</a></string>
+  <string name="holder_qr_code_hidden_explanation_button">What does this mean?</string>
+  <string name="holder_qr_code_hidden_explanation_title">Hidden QR code</string>
+  <string name="holder_qr_code_hidden_explanation_description"><![CDATA[If the QR code of your vaccination is hidden, you probably don’t need it. This is because there are QR codes of your more recent vaccinations in the app too.<br/><br/>You can still show and use hidden QR codes if needed.]]></string>
+  <string name="holder_qr_code_expired_overlay_title">QR code has expired</string>
+  <string name="holder_qr_code_expired_explanation_title">Expired QR code</string>
+  <string name="holder_qr_code_expired_explanation_description"><![CDATA[If your QR code has expired this means your vaccination is still valid, but the certificate that you’ve added is no longer. You can request a new certificate with QR code and add it to the app again.<br/><br/>Do you have a more recent vaccination in the app? Then you can also use that QR code.]]></string>
+  <string name="holder_qr_code_expired_explanation_action">Read more on CoronaCheck.nl</string>
+  <string name="holder_qr_code_expired_explanation_url">https://coronacheck.nl/en/</string>
+  <string name="holder_qr_code_hidden_explanation_action">Read more on CoronaCheck.nl</string>
+  <string name="holder_qr_code_hidden_explanation_url">https://coronacheck.nl/en/</string>
 </resources>

@@ -106,6 +106,21 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
                         }
                     }
                 }
+                expandedBottomSheetData.primaryButtonData?.let { buttonData ->
+                    binding.navigationButton.run {
+                        text = buttonData.text
+                        setOnClickListener {
+                            when (buttonData) {
+                                is ButtonData.LinkButton -> buttonData.link.launchUrl(context)
+                                is ButtonData.NavigationButton -> findNavControllerSafety()?.navigate(
+                                    buttonData.navigationActionId,
+                                    buttonData.navigationArguments
+                                )
+                            }
+                        }
+                        binding.navigationButton.visibility = View.VISIBLE
+                    }
+                }
             }
             is InfoFragmentData.TitleDescriptionWithFooter -> {
                 binding.footer.text = expandedBottomSheetData.footerText
