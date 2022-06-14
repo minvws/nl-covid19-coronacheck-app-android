@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.persistence.database.dao
 import androidx.room.*
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,7 +20,10 @@ interface EventGroupDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(entity: List<EventGroupEntity>)
-    
+
+    @Query("UPDATE event_group SET expiryDate = :expiryDate WHERE id = :eventGroupId")
+    suspend fun updateExpiryDate(eventGroupId: Int, expiryDate: OffsetDateTime)
+
     @Delete
     suspend fun delete(entity: EventGroupEntity)
 

@@ -162,7 +162,7 @@ class SaveEventsUseCaseImplTest {
         walletId = 1,
         providerIdentifier = remoteEvents.providerIdentifier,
         type = eventType,
-        maxIssuedAt = remoteEvents.events!!.first().getDate()!!,
+        expiryDate = null,
         jsonData = byteArray,
         scope = scopeUtil.getScopeForOriginType(
             eventType,

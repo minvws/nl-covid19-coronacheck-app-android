@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import org.json.JSONObject
 
 /**
  * Get green cards from remote
@@ -48,7 +49,11 @@ class GetRemoteGreenCardsUseCaseImpl(
 
             val remoteGreenCardsResult =  coronaCheckRepository.getGreenCards(
                 stoken = prepareIssue.stoken,
-                events = events.map { String(it.jsonData) },
+                events = events.map {
+                    val jsonObject = JSONObject(it.jsonData.decodeToString())
+                    jsonObject.put("id", it.id.toString())
+                    jsonObject.toString()
+                },
                 issueCommitmentMessage = commitmentMessage
             )
 
