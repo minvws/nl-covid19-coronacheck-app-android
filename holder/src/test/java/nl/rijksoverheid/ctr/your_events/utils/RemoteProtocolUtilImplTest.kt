@@ -5,6 +5,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3UtilImpl
 import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.time.Clock
 import java.time.Instant
@@ -39,9 +40,9 @@ class RemoteProtocolUtilImplTest {
 
         val groupedEvents = util.groupEvents(listOf(event1, event2))
 
-        Assert.assertEquals(1, groupedEvents.keys.size)
-        Assert.assertEquals(1, groupedEvents.values.size)
-        Assert.assertEquals(
+        assertEquals(1, groupedEvents.keys.size)
+        assertEquals(1, groupedEvents.values.size)
+        assertEquals(
             "GGD, RIVM",
             groupedEvents.values.first().joinToString(", ") { it.providerIdentifier }
         )
@@ -83,12 +84,12 @@ class RemoteProtocolUtilImplTest {
 
         val groupedEvents = util.groupEvents(listOf(event1, event2))
 
-        Assert.assertEquals(2, groupedEvents.keys.size)
-        Assert.assertEquals(2, groupedEvents.values.size)
+        assertEquals(2, groupedEvents.keys.size)
+        assertEquals(2, groupedEvents.values.size)
         val firstEvent = groupedEvents.keys.toList()[0]
         val secondEvent = groupedEvents.keys.toList()[1]
         Assert.assertTrue(firstEvent.getDate()!! > secondEvent.getDate()!!)
-        Assert.assertEquals(
+        assertEquals(
             "GGD, RIVM",
             groupedEvents.values.first().map { it.providerIdentifier }.joinToString(", ")
         )
@@ -106,7 +107,7 @@ class RemoteProtocolUtilImplTest {
 
         val combinedEvents = util.groupEvents(listOf(remoteProtocol))
 
-        Assert.assertEquals(1, combinedEvents.size)
+        assertEquals(1, combinedEvents.size)
     }
 
     @Test
@@ -125,7 +126,7 @@ class RemoteProtocolUtilImplTest {
 
         val combinedEvents = util.groupEvents(listOf(remoteProtocol))
 
-        Assert.assertEquals(2, combinedEvents.size)
+        assertEquals(2, combinedEvents.size)
     }
 
     @Test
@@ -144,7 +145,7 @@ class RemoteProtocolUtilImplTest {
 
         val combinedEvents = util.groupEvents(listOf(remoteProtocol))
 
-        Assert.assertEquals(2, combinedEvents.size)
+        assertEquals(2, combinedEvents.size)
     }
 
     @Test
@@ -190,6 +191,86 @@ class RemoteProtocolUtilImplTest {
         assertEquals(vaccination1, groupedEvents.keys.last())
     }
 
+    @Test
+    fun `getProviderIdentifier returns normal provider identifier if ggd`() {
+        val remoteProtocol = RemoteProtocol(
+            providerIdentifier = "GGD",
+            protocolVersion = "2",
+            status = RemoteProtocol.Status.COMPLETE,
+            holder = holder(),
+            events = listOf(
+                vaccination()
+            )
+        )
+        val providerIdentifier = util.getProviderIdentifier(
+            remoteProtocol = remoteProtocol
+        )
+        assertEquals("GGD", providerIdentifier)
+    }
+
+    @Test
+    fun `getProviderIdentifier returns normal provider identifier if rivm`() {
+        val remoteProtocol = RemoteProtocol(
+            providerIdentifier = "RIVM",
+            protocolVersion = "2",
+            status = RemoteProtocol.Status.COMPLETE,
+            holder = holder(),
+            events = listOf(
+                vaccination()
+            )
+        )
+        val providerIdentifier = util.getProviderIdentifier(
+            remoteProtocol = remoteProtocol
+        )
+        assertEquals("RIVM", providerIdentifier)
+    }
+
+    @Test
+    fun `getProviderIdentifier returns provider identifier with concatted uniques if zzz`() {
+        val remoteProtocol = RemoteProtocol(
+            providerIdentifier = "ZZZ",
+            protocolVersion = "2",
+            status = RemoteProtocol.Status.COMPLETE,
+            holder = holder(),
+            events = listOf(
+                vaccination(
+                    unique = "123"
+                ),
+                vaccination(
+                    unique = "456"
+                )
+            )
+        )
+        val providerIdentifier = util.getProviderIdentifier(
+            remoteProtocol = remoteProtocol
+        )
+        assertEquals("ZZZ_123456", providerIdentifier)
+    }
+
+    @Test
+    fun `areGGDEvents returns true if provider identifier is GGD`() {
+        val providerIdentifier = "GGD"
+        assertEquals(true, util.areGGDEvents(providerIdentifier))
+    }
+
+    @Test
+    fun `areGGDEvents returns false if provider identifier is ZZZ`() {
+        val providerIdentifier = "ZZZ"
+        assertEquals(false, util.areGGDEvents(providerIdentifier))
+    }
+
+    @Test
+    fun `areRIVMEvents returns true if provider identifier is RIVM`() {
+        val providerIdentifier = "RIVM"
+        assertEquals(true, util.areRIVMEvents(providerIdentifier))
+    }
+
+    @Test
+    fun `areRIVMEvents returns false if provider identifier is ZZZ`() {
+        val providerIdentifier = "ZZZ"
+        assertEquals(false, util.areRIVMEvents(providerIdentifier))
+    }
+
     private fun holder(): RemoteProtocol.Holder {
         return RemoteProtocol.Holder(
             infix = null,
@@ -200,6 +281,7 @@ class RemoteProtocolUtilImplTest {
     }
 
     private fun vaccination(
+        unique: String? = null,
         doseNumber: String = "1",
         totalDoses: String = "1",
         hpkCode: String? = "hpkCode",
@@ -207,7 +289,7 @@ class RemoteProtocolUtilImplTest {
         clock: Clock = clock1,
     ) = RemoteEventVaccination(
         type = "vaccination",
-        unique = null,
+        unique = unique,
         vaccination = RemoteEventVaccination.Vaccination(
             date = LocalDate.now(clock),
             type = "vaccination",
