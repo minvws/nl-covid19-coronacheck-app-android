@@ -1,12 +1,6 @@
-/*
- * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
- * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
- *
- * SPDX-License-Identifier: EUPL-1.2
- */
+package nl.rijksoverheid.ctr.holder.input_token
 
-package nl.rijksoverheid.ctr.holder.paper_proof
-
+import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.karumi.shot.FragmentScenarioUtils.waitForFragment
@@ -16,13 +10,16 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class PaperProofStartFragmentScreenshotTest: ScreenshotTest {
-
+class CommercialTestInputTokenFragmentScreenshotTest: ScreenshotTest {
     @Test
-    fun PaperProofStartFragment_Screenshot() {
-        val fragmentScenario = launchFragmentInContainer<PaperProofStartScanningFragment>(
+    fun commercialTestInputTokenFragment_Screenshot() {
+        val fragmentScenario = launchFragmentInContainer<CommercialTestInputTokenFragment>(
+            bundleOf(
+                "token" to "Token"
+            ),
             themeResId = R.style.TestAppTheme
         )
+
         compareScreenshot(fragmentScenario.waitForFragment())
     }
 }

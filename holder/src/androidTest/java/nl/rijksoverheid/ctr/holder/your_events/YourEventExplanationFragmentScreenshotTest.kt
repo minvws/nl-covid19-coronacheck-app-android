@@ -11,7 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class YourEventExplanationFragmentTest: ScreenshotTest {
+class YourEventExplanationFragmentScreenshotTest: ScreenshotTest {
     @Test
     fun yourEventExplanationFragment_Screenshot() {
         val fragmentScenario = launchFragmentInContainer<YourEventExplanationFragment>(

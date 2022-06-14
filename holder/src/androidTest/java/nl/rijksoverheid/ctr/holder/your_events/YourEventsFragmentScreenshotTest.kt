@@ -15,7 +15,7 @@ import org.junit.runner.RunWith
 import java.time.LocalDate
 
 @RunWith(AndroidJUnit4::class)
-class YourEventsFragmentTest: ScreenshotTest {
+class YourEventsFragmentScreenshotTest: ScreenshotTest {
     @Test
     fun yourEventsFragment_Screenshot() {
         val fragmentScenario = launchFragmentInContainer<YourEventsFragment>(

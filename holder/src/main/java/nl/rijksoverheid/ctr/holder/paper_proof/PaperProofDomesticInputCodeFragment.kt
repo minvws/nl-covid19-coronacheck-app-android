@@ -161,7 +161,7 @@ class PaperProofDomesticInputCodeFragment : BaseFragment(R.layout.fragment_paper
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
+        (parentFragment?.parentFragment as? HolderMainFragment)?.presentLoading(false)
         _binding = null
     }
 
