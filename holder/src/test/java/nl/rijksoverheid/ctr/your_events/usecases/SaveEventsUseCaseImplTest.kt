@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtilImpl
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.junit.After
 import org.junit.Test
@@ -38,6 +39,7 @@ class SaveEventsUseCaseImplTest {
     }
     private val scopeUtil = ScopeUtilImpl()
     private val remoteEventUtil: RemoteEventUtil = mockk()
+    private val remoteProtocol3Util: RemoteProtocol3Util = mockk(relaxed = true)
 
     private val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
 
@@ -48,7 +50,7 @@ class SaveEventsUseCaseImplTest {
 
     private val saveEventsUseCaseImpl = SaveEventsUseCaseImpl(
         holderDatabase, remoteEventHolderUtil,
-        scopeUtil, remoteEventUtil
+        scopeUtil, remoteEventUtil, remoteProtocol3Util
     )
 
     @Test
