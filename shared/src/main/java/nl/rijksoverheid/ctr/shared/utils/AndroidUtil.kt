@@ -35,7 +35,8 @@ interface AndroidUtil {
 class AndroidUtilImpl(private val context: Context) : AndroidUtil {
     override fun isSmallScreen(): Boolean {
         val configuration = context.resources.configuration
-        return configuration.smallestScreenWidthDp < 600 && configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        return configuration.smallestScreenWidthDp < 600 && configuration.orientation == Configuration.ORIENTATION_LANDSCAPE ||
+                configuration.screenWidthDp < 600 && configuration.screenHeightDp < 600
     }
 
     override fun getMasterKeyAlias(): String =
