@@ -9,13 +9,20 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.forEachIndexed
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.ViewPagerIndicatorBubbleBinding
+import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 class ViewPagerIndicator @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
+    private var selectedIndex = 0
+
     init {
         orientation = HORIZONTAL
+        // allow the indicator only for Talkback users
+        if (Accessibility.screenReader(context)) {
+            isFocusable = true
+        }
     }
 
     fun initIndicator(amount: Int) {
@@ -32,6 +39,7 @@ class ViewPagerIndicator @JvmOverloads constructor(
             (view as ViewPagerIndicatorBubble).toggleSelected(index == selectedIndex)
         }
         contentDescription = context.getString(R.string.page_indicator_label, selectedIndex + 1, childCount)
+        this.selectedIndex = selectedIndex
     }
 
     private class ViewPagerIndicatorBubble @JvmOverloads constructor(

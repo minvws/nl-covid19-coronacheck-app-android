@@ -7,7 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import java.time.Clock
@@ -22,7 +22,7 @@ interface GreenCardRefreshUtil {
 
 class GreenCardRefreshUtilImpl(
     private val holderDatabase: HolderDatabase,
-    cachedAppConfigUseCase: CachedAppConfigUseCase,
+    cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
     private val greenCardUtil: GreenCardUtil,
     private val clock: Clock,
     private val credentialUtil: CredentialUtil,
@@ -34,9 +34,11 @@ class GreenCardRefreshUtilImpl(
     override suspend fun shouldRefresh(): Boolean {
         val credentialRenewalDays = holderConfig.credentialRenewalDays.toLong()
 
-        val greenCards = holderDatabase.greenCardDao().getAll()
+        // Foreign dccs should not be refreshed so exclude them from the refresh logic
+        val greenCardsToRefresh = holderDatabase.greenCardDao().getAll()
+            .filter { !greenCardUtil.isForeignDcc(it) }
 
-        val greenCardExpiring = greenCards.firstOrNull { greenCard ->
+        val greenCardExpiring = greenCardsToRefresh.firstOrNull { greenCard ->
             val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(
                 greenCard.credentialEntities.lastOrNull()?.expirationTime
                     ?: OffsetDateTime.now(clock)
@@ -50,7 +52,7 @@ class GreenCardRefreshUtilImpl(
 
         // It can be that a green card has no credentials but they will be available in the future.
         // A refresh should be done in the case there are valid origins within the threshold.
-        val hasValidFutureOrigins = greenCards
+        val hasValidFutureOrigins = greenCardsToRefresh
             .filter { it.credentialEntities.isEmpty() }
             .any { greenCard ->
                 greenCard.origins.any {
@@ -66,13 +68,12 @@ class GreenCardRefreshUtilImpl(
         return allGreenCards.filter {
             it.greenCardEntity.type == selectedType
         }.all {
-            credentialUtil.getActiveCredential(it.credentialEntities) == null
+            credentialUtil.getActiveCredential(it.greenCardEntity.type, it.credentialEntities) == null
         }
     }
 
     override suspend fun credentialsExpireInDays(): Long {
-        val configCredentialRenewalDays =
-            holderConfig.credentialRenewalDays.toLong()
+        val configCredentialRenewalDays = holderConfig.credentialRenewalDays.toLong()
 
         val firstExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll()
             .filterNot {

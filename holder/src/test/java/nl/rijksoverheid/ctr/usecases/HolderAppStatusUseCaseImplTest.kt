@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.usecases.HolderAppStatusUseCaseImpl
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.usecases.ShowNewDisclosurePolicyUseCase
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -279,42 +280,6 @@ class HolderAppStatusUseCaseImplTest {
             assertEquals(AppStatus.NoActionRequired, appStatus)
         }
 
-    private fun appStatusUseCase(
-        appDeactivated: Boolean,
-        minimumVersion: Int,
-        appUpdateData: AppUpdateData = getAppUpdateData(),
-        appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk(),
-        introductionPersistenceManager: IntroductionPersistenceManager = mockk(),
-        showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk(),
-        cachedAppConfig: HolderConfig? = mockk(),
-        configLastFetchedSeconds: Long = 0,
-        configTtlSeconds: Int = 0,
-        clock: Clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
-    ) =
-        HolderAppStatusUseCaseImpl(
-            clock = clock,
-            cachedAppConfigUseCase = mockk {
-                every { getCachedAppConfigOrNull() } returns cachedAppConfig
-                if (cachedAppConfig != null) {
-                    every { getCachedAppConfig() } returns cachedAppConfig
-                    every { cachedAppConfig.appDeactivated } returns appDeactivated
-                    every { cachedAppConfig.minimumVersion } returns minimumVersion
-                    every { cachedAppConfig.configTtlSeconds } returns configTtlSeconds
-                    every { cachedAppConfig.recommendedVersion } returns 1000
-                }
-            },
-            appConfigPersistenceManager = mockk<AppConfigPersistenceManager>().apply {
-                every { getAppConfigLastFetchedSeconds() } returns configLastFetchedSeconds
-            },
-            moshi = moshi,
-            recommendedUpdatePersistenceManager = mockk(relaxed = true),
-            appUpdateData = appUpdateData,
-            appUpdatePersistenceManager = appUpdatePersistenceManager,
-            introductionPersistenceManager = introductionPersistenceManager,
-            persistenceManager = mockk(),
-            showNewDisclosurePolicyUseCase = showNewDisclosurePolicyUseCase
-        )
-
     @Test
     fun `isAppActive returns false if is app is deactivated from the config`() {
         val appStatusUseCase = appStatusUseCase(true, 1000)
@@ -342,16 +307,18 @@ class HolderAppStatusUseCaseImplTest {
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
         val holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk()
+        val persistenceManager: PersistenceManager = mockk()
         val appStatusUseCase = appStatusUseCase(
-            false, 1000, getAppUpdateData(), appUpdatePersistenceManager, 
-            introductionPersistenceManager, showNewDisclosurePolicyUseCase
+            false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
+            introductionPersistenceManager, showNewDisclosurePolicyUseCase,
+            persistenceManager = persistenceManager
         )
         
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneG
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
-
+        every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.ThreeG
 
         val appStatus = appStatusUseCase.get(
             config = ConfigResult.Success(
@@ -402,15 +369,18 @@ class HolderAppStatusUseCaseImplTest {
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
         val holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk()
+        val persistenceManager: PersistenceManager = mockk()
         val appStatusUseCase = appStatusUseCase(
             false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
-            introductionPersistenceManager, showNewDisclosurePolicyUseCase
+            introductionPersistenceManager, showNewDisclosurePolicyUseCase,
+            persistenceManager = persistenceManager
         )
         
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneAndThreeG
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneAndThreeG
+        every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.ThreeG
 
         val appStatus = appStatusUseCase.get(
             config = ConfigResult.Success(
@@ -447,15 +417,18 @@ class HolderAppStatusUseCaseImplTest {
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
         val holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk()
+        val persistenceManager: PersistenceManager = mockk()
         val appStatusUseCase = appStatusUseCase(
             false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
-            introductionPersistenceManager, showNewDisclosurePolicyUseCase
+            introductionPersistenceManager, showNewDisclosurePolicyUseCase,
+            persistenceManager = persistenceManager
         )
         
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneG
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.OneG
+        every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.ThreeG
 
         val appStatus = appStatusUseCase.get(
             config = ConfigResult.Success(
@@ -491,15 +464,18 @@ class HolderAppStatusUseCaseImplTest {
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
         val holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk()
+        val persistenceManager: PersistenceManager = mockk()
         val appStatusUseCase = appStatusUseCase(
             false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
-            introductionPersistenceManager, showNewDisclosurePolicyUseCase
+            introductionPersistenceManager, showNewDisclosurePolicyUseCase,
+            persistenceManager = persistenceManager
         )
         
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
+        every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.OneAndThreeG
 
         val appStatus = appStatusUseCase.get(
             config = ConfigResult.Success(
@@ -536,15 +512,18 @@ class HolderAppStatusUseCaseImplTest {
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
         val holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk()
+        val persistenceManager: PersistenceManager = mockk()
         val appStatusUseCase = appStatusUseCase(
             false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
-            introductionPersistenceManager, showNewDisclosurePolicyUseCase
+            introductionPersistenceManager, showNewDisclosurePolicyUseCase,
+            persistenceManager = persistenceManager
         )
         
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ZeroG
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
+        every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.ThreeG
 
         val appStatus = appStatusUseCase.get(
             config = ConfigResult.Success(
@@ -581,15 +560,18 @@ class HolderAppStatusUseCaseImplTest {
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
         val holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk()
+        val persistenceManager: PersistenceManager = mockk()
         val appStatusUseCase = appStatusUseCase(
             false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
-            introductionPersistenceManager, showNewDisclosurePolicyUseCase
+            introductionPersistenceManager, showNewDisclosurePolicyUseCase,
+            persistenceManager = persistenceManager
         )
         
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns true
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
+        every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.OneAndThreeG
 
         val appStatus = appStatusUseCase.get(
             config = ConfigResult.Success(
@@ -711,4 +693,121 @@ class HolderAppStatusUseCaseImplTest {
         newFeatureVersion = 2,
         hideConsent = true
     )
+
+    @Test
+    fun `when there is switch from 0G to CTB, there should be a new feature item`() = runBlocking {
+        val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
+        val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
+        val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
+        val persistenceManager: PersistenceManager = mockk()
+        val appStatusUseCase = appStatusUseCase(
+            false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
+            introductionPersistenceManager, showNewDisclosurePolicyUseCase,
+            persistenceManager = persistenceManager
+        )
+
+        every { introductionPersistenceManager.getIntroductionFinished() } returns true
+        every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns true
+        every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
+        every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.ZeroG
+
+        val appStatus = appStatusUseCase.get(
+            config = ConfigResult.Success(
+                appConfig = getHolderConfig(),
+                publicKeys = publicKeys
+            ),
+            currentVersionCode = 1
+        )
+
+        with(appStatus as AppStatus.NewFeatures) {
+            assertEquals(
+                R.string.holder_newintheapp_content_dutchAndInternationalCertificates_title,
+                appUpdateData.newFeatures.last().titleResource
+            )
+            assertEquals(
+                R.string.holder_newintheapp_content_dutchAndInternationalCertificates_body,
+                appUpdateData.newFeatures.last().description
+            )
+            assertEquals(
+                R.drawable.illustration_new_dutch_and_international_certificate,
+                appUpdateData.newFeatures.last().imageResource
+            )
+            assertEquals(
+                R.string.holder_newintheapp_content_dutchAndInternationalCertificates_button_toMyCertificates,
+                appUpdateData.newFeatures.last().buttonResource
+            )
+            assertEquals(
+                R.string.new_in_app_subtitle,
+                appUpdateData.newFeatures.last().subtitleResource
+            )
+            assertEquals(2, appUpdateData.newFeatures.size)
+        }
+    }
+
+    @Test
+    fun `when switching policy and there is no change in CTB, there should not be a new feature item`() = runBlocking {
+        val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
+        val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
+        val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
+        val persistenceManager: PersistenceManager = mockk()
+        val appStatusUseCase = appStatusUseCase(
+            false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
+            introductionPersistenceManager, showNewDisclosurePolicyUseCase,
+            persistenceManager = persistenceManager
+        )
+
+        every { introductionPersistenceManager.getIntroductionFinished() } returns true
+        every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns true
+        every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
+        every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.OneG
+
+        val appStatus = appStatusUseCase.get(
+            config = ConfigResult.Success(
+                appConfig = getHolderConfig(),
+                publicKeys = publicKeys
+            ),
+            currentVersionCode = 1
+        )
+
+        with(appStatus as AppStatus.NewFeatures) {
+            assertEquals(1, appUpdateData.newFeatures.size)
+        }
+    }
+
+    private fun appStatusUseCase(
+        appDeactivated: Boolean,
+        minimumVersion: Int,
+        appUpdateData: AppUpdateData = getAppUpdateData(),
+        appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk(),
+        introductionPersistenceManager: IntroductionPersistenceManager = mockk(),
+        showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk(),
+        cachedAppConfig: HolderConfig? = mockk(),
+        configLastFetchedSeconds: Long = 0,
+        configTtlSeconds: Int = 0,
+        clock: Clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
+        persistenceManager: PersistenceManager = mockk()
+    ) =
+        HolderAppStatusUseCaseImpl(
+            clock = clock,
+            cachedAppConfigUseCase = mockk {
+                every { getCachedAppConfigOrNull() } returns cachedAppConfig
+                if (cachedAppConfig != null) {
+                    every { getCachedAppConfig() } returns cachedAppConfig
+                    every { cachedAppConfig.appDeactivated } returns appDeactivated
+                    every { cachedAppConfig.minimumVersion } returns minimumVersion
+                    every { cachedAppConfig.configTtlSeconds } returns configTtlSeconds
+                    every { cachedAppConfig.recommendedVersion } returns 1000
+                }
+            },
+            appConfigPersistenceManager = mockk<AppConfigPersistenceManager>().apply {
+                every { getAppConfigLastFetchedSeconds() } returns configLastFetchedSeconds
+            },
+            moshi = moshi,
+            recommendedUpdatePersistenceManager = mockk(relaxed = true),
+            appUpdateData = appUpdateData,
+            appUpdatePersistenceManager = appUpdatePersistenceManager,
+            introductionPersistenceManager = introductionPersistenceManager,
+            persistenceManager = persistenceManager,
+            showNewDisclosurePolicyUseCase = showNewDisclosurePolicyUseCase
+        )
 }

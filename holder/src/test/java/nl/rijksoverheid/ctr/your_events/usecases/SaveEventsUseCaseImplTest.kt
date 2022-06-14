@@ -154,7 +154,7 @@ class SaveEventsUseCaseImplTest {
     }
 
     private fun mapEventsToEntity(
-        remoteEvents: RemoteProtocol3,
+        remoteEvents: RemoteProtocol,
         byteArray: ByteArray,
         eventType: OriginType,
         flow: Flow
@@ -170,7 +170,7 @@ class SaveEventsUseCaseImplTest {
         )
     )
 
-    private fun createRemoteProtocol3(remoteEvent: RemoteEvent) = RemoteProtocol3(
+    private fun createRemoteProtocol3(remoteEvent: RemoteEvent) = RemoteProtocol(
         events = listOf(remoteEvent),
         protocolVersion = "pro",
         providerIdentifier = "ide",

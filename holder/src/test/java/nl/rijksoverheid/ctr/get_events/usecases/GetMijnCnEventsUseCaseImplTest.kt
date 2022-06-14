@@ -44,7 +44,7 @@ class GetMijnCnEventsUseCaseImplTest {
     private val jwt = "jwt"
     private val originType = RemoteOriginType.Test
     private val scopeUtil: ScopeUtil = mockk<ScopeUtil>().apply {
-        every { getScopeForRemoteOriginType(any(), any()) } answers { null }
+        every { getScopeForRemoteOriginType(any(), any()) } answers { "" }
     }
 
     private val remoteEventProviders = listOf(eventProvider1, eventProvider2)
@@ -76,13 +76,13 @@ class GetMijnCnEventsUseCaseImplTest {
     fun `given getRemoteEvents call returns two events then getEvents returns EventsResultSuccess`() =
         runBlocking {
             val (provider1, provider2) = mockProvidersResult()
-            val signedModel1: SignedResponseWithModel<RemoteProtocol3> =
-                mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
+            val signedModel1: SignedResponseWithModel<RemoteProtocol> =
+                mockk<SignedResponseWithModel<RemoteProtocol>>().apply {
                     coEvery { model.events } returns listOf(mockk())
                     coEvery { rawResponse } returns ByteArray(1)
                 }
-            val signedModel2: SignedResponseWithModel<RemoteProtocol3> =
-                mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
+            val signedModel2: SignedResponseWithModel<RemoteProtocol> =
+                mockk<SignedResponseWithModel<RemoteProtocol>>().apply {
                     coEvery { model.events } returns listOf(mockk())
                     coEvery { rawResponse } returns ByteArray(1)
                 }
@@ -122,8 +122,8 @@ class GetMijnCnEventsUseCaseImplTest {
     fun `given getRemoteEvents call returns one event and one missing events then getEvents returns EventsResultSuccess`() =
         runBlocking {
             val (provider1, provider2) = mockProvidersResult()
-            val signedModel1: SignedResponseWithModel<RemoteProtocol3> =
-                mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
+            val signedModel1: SignedResponseWithModel<RemoteProtocol> =
+                mockk<SignedResponseWithModel<RemoteProtocol>>().apply {
                     coEvery { model.events } returns listOf(mockk())
                     coEvery { rawResponse } returns ByteArray(1)
                 }
@@ -164,8 +164,8 @@ class GetMijnCnEventsUseCaseImplTest {
     fun `given getRemoteEvents call returns one missing event and one error then getEvents returns EventsResultHasNoEvents`() =
         runBlocking {
             val (provider1, provider2) = mockProvidersResult()
-            val signedModel1: SignedResponseWithModel<RemoteProtocol3> =
-                mockk<SignedResponseWithModel<RemoteProtocol3>>().apply {
+            val signedModel1: SignedResponseWithModel<RemoteProtocol> =
+                mockk<SignedResponseWithModel<RemoteProtocol>>().apply {
                     coEvery { model.events } returns listOf()
                 }
 

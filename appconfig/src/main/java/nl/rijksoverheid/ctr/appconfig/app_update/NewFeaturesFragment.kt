@@ -59,7 +59,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
             }
             button.setOnClickListener {
                 val currentItem = viewPager.currentItem
-                if (currentItem == adapter.itemCount - 1) finishFlow() else showNextPage(currentItem)
+                if (currentItem == adapter.itemCount - 1) finishFlow() else showNextPage(currentItem, binding)
             }
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
                 OnBackPressedCallback(true) {
@@ -78,8 +78,13 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
         }
     }
 
-    private fun FragmentNewFeaturesBinding.showNextPage(currentItem: Int) {
-        viewPager.currentItem = currentItem + 1
+    private fun FragmentNewFeaturesBinding.showNextPage(
+        currentItem: Int,
+        binding: FragmentNewFeaturesBinding
+    ) {
+        val nextIndex = currentItem + 1
+        viewPager.currentItem = nextIndex
+        setButtonText(binding, nextIndex)
         toolbar.getNavigationIconView()?.setAccessibilityFocus()
     }
 
@@ -110,7 +115,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
         binding.viewPager.adapter = adapter
         val hideToolbar = adapter.itemCount == 1
         if (hideToolbar) {
-            binding.toolbar.visibility = View.GONE
+            binding.toolbar.visibility = View.INVISIBLE
         }
         binding.viewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
@@ -122,11 +127,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
                 }
                 binding.indicators.updateSelected(position)
 
-                binding.indicators.contentDescription = getString(
-                    R.string.onboarding_page_indicator_label,
-                    (position + 1).toString(),
-                    adapter.itemCount.toString()
-                )
+                setButtonText(binding, position)
 
                 // Apply bottom elevation if the view inside the viewpager is scrollable
                 val scrollView =
@@ -140,5 +141,9 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
                 }
             }
         })
+    }
+
+    private fun setButtonText(binding: FragmentNewFeaturesBinding, position: Int) {
+        binding.button.text = getString(args.appUpdateData.newFeatures[position].buttonResource)
     }
 }

@@ -14,7 +14,7 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.*
@@ -25,7 +25,7 @@ import kotlin.test.assertEquals
 
 class YourEventFragmentEndStateUtilImplTest {
 
-    private val appConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true)
+    private val appConfigUseCase = mockk<HolderCachedAppConfigUseCase>(relaxed = true)
     private val holderFeatureFlagUseCase = mockk<HolderFeatureFlagUseCase> {
         every { getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
     }
@@ -185,7 +185,7 @@ class YourEventFragmentEndStateUtilImplTest {
 
         assertEquals(
             util.getResult(HolderFlow.Recovery, storedGreenCards, events, remoteGreenCards),
-            NoRecoveryWithStoredVaccination
+            NotApplicable
         )
     }
 

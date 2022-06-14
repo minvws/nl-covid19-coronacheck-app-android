@@ -20,13 +20,13 @@ import java.time.OffsetDateTime
 
 interface RemoteEventUtil {
     fun isDccEvent(providerIdentifier: String): Boolean
-    fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol3.Holder
+    fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol.Holder
     fun removeDuplicateEvents(remoteEvents: List<RemoteEvent>): List<RemoteEvent>
     fun getRemoteEventFromDcc(dcc: JSONObject): RemoteEvent
     fun getRemoteVaccinationFromDcc(dcc: JSONObject): RemoteEventVaccination?
     fun getRemoteRecoveryFromDcc(dcc: JSONObject): RemoteEventRecovery?
     fun getRemoteTestFromDcc(dcc: JSONObject): RemoteEventNegativeTest?
-    fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent>
+    fun getRemoteProtocol3FromNonDcc(eventGroupEntity: EventGroupEntity): RemoteProtocol?
     fun getOriginType(remoteEvent: RemoteEvent): OriginType
 }
 
@@ -49,9 +49,9 @@ class RemoteEventUtilImpl(
     }
 
     @Throws(NullPointerException::class)
-    override fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol3.Holder {
+    override fun getHolderFromDcc(dcc: JSONObject): RemoteProtocol.Holder {
         val fullName = dcc.optJSONObject("nam") ?: throw NullPointerException("can't parse name")
-        return RemoteProtocol3.Holder(
+        return RemoteProtocol.Holder(
             infix = "",
             firstName = fullName.getStringOrNull("gn"),
             lastName = fullName.getStringOrNull("fn"),
@@ -73,7 +73,7 @@ class RemoteEventUtilImpl(
                 vaccination = RemoteEventVaccination.Vaccination(
                     doseNumber = it.getStringOrNull("dn"),
                     totalDoses = it.getStringOrNull("sd"),
-                    date = LocalDate.parse(it.getStringOrNull("dt")),
+                    date = try { LocalDate.parse(it.getStringOrNull("dt")?.take(10)) } catch(e: Exception) { null },
                     country = it.getStringOrNull("co"),
                     type = it.getStringOrNull("vp"),
                     brand = it.getStringOrNull("mp"),
@@ -94,9 +94,9 @@ class RemoteEventUtilImpl(
                 unique = it.getStringOrNull("ci") ?: "",
                 isSpecimen = false,
                 recovery = RemoteEventRecovery.Recovery(
-                    sampleDate = LocalDate.parse(it.getStringOrNull("fr")),
-                    validFrom = LocalDate.parse(it.getStringOrNull("df")),
-                    validUntil = LocalDate.parse(it.getStringOrNull("du")),
+                    sampleDate = try { LocalDate.parse(it.getStringOrNull("fr")?.take(10)) } catch(e: Exception) { null },
+                    validFrom = try { LocalDate.parse(it.getStringOrNull("df")?.take(10)) } catch(e: Exception) { null },
+                    validUntil = try { LocalDate.parse(it.getStringOrNull("du")?.take(10)) } catch(e: Exception) { null },
                 )
             )
         }
@@ -122,11 +122,11 @@ class RemoteEventUtilImpl(
         }
     }
 
-    override fun getRemoteEventsFromNonDcc(eventGroupEntity: EventGroupEntity): List<RemoteEvent> {
+    override fun getRemoteProtocol3FromNonDcc(eventGroupEntity: EventGroupEntity): RemoteProtocol? {
         val payload = moshi.adapter(SignedResponse::class.java)
             .fromJson(String(eventGroupEntity.jsonData))?.payload
         val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
-        return moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)?.events ?: listOf()
+        return moshi.adapter(RemoteProtocol::class.java).fromJson(decodedPayload)
     }
 
     private fun getEventByType(dcc: JSONObject, key: String) = try {

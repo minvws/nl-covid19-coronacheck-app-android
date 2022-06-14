@@ -154,7 +154,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         adapterItems.add(
             DashboardGreenCardAdapterItem(
                 cards = dashboardItem.cards,
-                onButtonClick = { cardItem, credentials, expiration ->
+                onButtonClick = { cardItem, credentialsWithExpirationTime ->
                     navigateSafety(
                         DashboardPageFragmentDirections.actionQrCode(
                             toolbarTitle = when (cardItem.greenCard.greenCardEntity.type) {
@@ -166,8 +166,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
                                 }
                             }, data = QrCodeFragmentData(
                                 shouldDisclose = cardItemUtil.shouldDisclose(cardItem),
-                                credentials = credentials,
-                                credentialExpirationTimeSeconds = expiration,
+                                credentialsWithExpirationTime = credentialsWithExpirationTime,
                                 type = cardItem.greenCard.greenCardEntity.type,
                                 originType = cardItem.greenCard.origins.first().type
                             ), returnUri = arguments?.getString(EXTRA_RETURN_URI)

@@ -4,6 +4,7 @@ plugins {
     id "kotlin-kapt"
     id 'kotlin-parcelize'
     id "androidx.navigation.safeargs.kotlin"
+    id "com.starter.easylauncher"
 }
 
 def appVersionCode =  1000000
@@ -17,6 +18,9 @@ android {
     testOptions {
         unitTests {
             includeAndroidResources = true
+            unitTests.all {
+                jvmArgs '-Xmx2g'
+            }
         }
     }
 
@@ -157,4 +161,27 @@ dependencies {
 
     // Needed in order for room to work with Apple Sillicon M1
     kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
+}
+
+easylauncher {
+    buildTypes {
+        debug {
+            filters = customRibbon(
+                    label: "Debug",
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+    }
+    variants {
+        accRelease {
+            filters = customRibbon(
+                    label: appVersionCode,
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+    }
 }

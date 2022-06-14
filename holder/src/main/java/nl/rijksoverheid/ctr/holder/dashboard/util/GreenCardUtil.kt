@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import java.time.Clock
 import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -44,12 +45,15 @@ interface GreenCardUtil {
      * @param greenCard The greencard to check
      */
     fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean
+
+    fun isForeignDcc(greenCard: GreenCard): Boolean
 }
 
 class GreenCardUtilImpl(
     private val holderDatabase: HolderDatabase,
     private val clock: Clock,
-    private val credentialUtil: CredentialUtil
+    private val credentialUtil: CredentialUtil,
+    private val mobileCoreWrapper: MobileCoreWrapper
 ): GreenCardUtil {
 
     override fun getExpireDate(greenCard: GreenCard, type: OriginType?): OffsetDateTime {
@@ -89,11 +93,25 @@ class GreenCardUtilImpl(
     }
 
     override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
-        return credentialUtil.getActiveCredential(greenCard.credentialEntities) == null
+        return credentialUtil.getActiveCredential(greenCard.greenCardEntity.type, greenCard.credentialEntities) == null
     }
 
     override fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean {
         return greenCard.greenCardEntity.type == GreenCardType.Domestic &&
                 greenCard.origins.size == 1 && hasOrigin(listOf(greenCard), OriginType.Test)
+    }
+
+    override fun isForeignDcc(greenCard: GreenCard): Boolean {
+        return when (greenCard.greenCardEntity.type) {
+            is GreenCardType.Domestic -> {
+                false
+            }
+            is GreenCardType.Eu -> {
+                val activeCredential = credentialUtil.getActiveCredential(greenCard.greenCardEntity.type, greenCard.credentialEntities)
+                activeCredential?.let {
+                    mobileCoreWrapper.isForeignDcc(activeCredential.data)
+                } ?: false
+            }
+        }
     }
 }

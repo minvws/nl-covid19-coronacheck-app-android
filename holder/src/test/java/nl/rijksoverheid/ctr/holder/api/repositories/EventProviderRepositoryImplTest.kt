@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.api.signing.certificates.EMAX_ROOT_CA
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtil
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteUnomi
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import org.junit.Assert.assertEquals
@@ -84,7 +84,7 @@ class EventProviderRepositoryImplTest {
 
     @Test
     fun `pin with the passed certificates the getEvents request`() = runBlockingTest {
-        mockRequestResult<SignedResponseWithModel<RemoteProtocol3>>()
+        mockRequestResult<SignedResponseWithModel<RemoteProtocol>>()
         val signingCertificateSlot = slot<SigningCertificate>()
 
         eventProviderRepository.getEvents(

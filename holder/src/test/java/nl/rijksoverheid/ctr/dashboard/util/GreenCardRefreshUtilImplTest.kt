@@ -8,12 +8,13 @@
 package nl.rijksoverheid.ctr.dashboard.util
 
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtilImpl
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
@@ -47,7 +48,7 @@ class GreenCardRefreshUtilImplTest {
     private val appConfig = mockk<HolderConfig>(relaxed = true).apply {
         coEvery { credentialRenewalDays } returns 5
     }
-    private val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>(relaxed = true).apply {
+    private val cachedAppConfigUseCase = mockk<HolderCachedAppConfigUseCase>(relaxed = true).apply {
         coEvery { getCachedAppConfig() } returns appConfig
     }
 
@@ -56,7 +57,7 @@ class GreenCardRefreshUtilImplTest {
     private val firstJanuaryClock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
 
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
-    private val credentialUtil = CredentialUtilImpl(firstJanuaryClock, mobileCoreWrapper, mockk(), mockk(relaxed = true))
+    private val credentialUtil = CredentialUtilImpl(firstJanuaryClock, mobileCoreWrapper, mockk(), mockk(relaxed = true), mockk(relaxed = true))
 
     private val originUtil: OriginUtil = mockk()
 
@@ -189,5 +190,16 @@ class GreenCardRefreshUtilImplTest {
         greenCardRefreshUtil.shouldRefresh()
 
         verify(inverse = true) { originUtil.isValidWithinRenewalThreshold(any(), any())}
+    }
+
+    @Test
+    fun `validate that foreign dcc green cards are excluded from the refresh`() = runBlocking {
+        val foreignDccGreenCard = expiringGreenCard()
+        val otherGreenCard = validGreenCard()
+
+        coEvery { greenCardUtil.isForeignDcc(foreignDccGreenCard) } answers { true }
+        coEvery { greenCardDao.getAll() } returns listOf(foreignDccGreenCard, otherGreenCard)
+
+        assertFalse(greenCardRefreshUtil.shouldRefresh())
     }
 }

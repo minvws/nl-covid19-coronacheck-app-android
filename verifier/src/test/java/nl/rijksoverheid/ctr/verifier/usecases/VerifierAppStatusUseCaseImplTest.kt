@@ -11,7 +11,6 @@ import nl.rijksoverheid.ctr.appconfig.models.*
 import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.verifier.fakeAppConfig
 import nl.rijksoverheid.ctr.verifier.fakeAppConfigPersistenceManager
@@ -267,7 +266,7 @@ class VerifierAppStatusUseCaseImplTest {
         appUpdateData: AppUpdateData = getAppUpdateData(),
         appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk(),
         introductionPersistenceManager: IntroductionPersistenceManager = mockk(),
-        featureFlagUseCase: FeatureFlagUseCase = mockk()
+        featureFlagUseCase: VerifierFeatureFlagUseCase = mockk()
     ) =
         VerifierAppStatusUseCaseImpl(
             clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC")),
@@ -337,7 +336,7 @@ class VerifierAppStatusUseCaseImplTest {
     fun `when new features are available, the status is new features`() = runBlocking {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
+        val featureFlagUseCase: VerifierFeatureFlagUseCase = mockk()
         val appUpdateData = getAppUpdateData()
         val configResult = ConfigResult.Success(
             getVerifierConfig(appDeactivated = false, minimumVersion = 1),
@@ -362,7 +361,7 @@ class VerifierAppStatusUseCaseImplTest {
     fun `when new terms are available, the status is consent needed`() = runBlocking {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
+        val featureFlagUseCase: VerifierFeatureFlagUseCase = mockk()
         val appUpdateData = getAppUpdateData()
         val configResult = ConfigResult.Success(
             getVerifierConfig(appDeactivated = false, minimumVersion = 1),
@@ -388,7 +387,7 @@ class VerifierAppStatusUseCaseImplTest {
     fun `when intro is finished and there are no new features or terms, the status is no action required`() = runBlocking {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
-        val featureFlagUseCase: FeatureFlagUseCase = mockk()
+        val featureFlagUseCase: VerifierFeatureFlagUseCase = mockk()
         val appUpdateData = getAppUpdateData()
         val configResult = ConfigResult.Success(
             getVerifierConfig(appDeactivated = false, minimumVersion = 1),

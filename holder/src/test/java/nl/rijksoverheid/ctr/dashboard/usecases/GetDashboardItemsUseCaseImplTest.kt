@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert.assertEquals
@@ -48,6 +49,12 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             factory {
                 mockk<BuildConfigUseCase>(relaxed = true).apply {
                     every { getVersionCode() } returns 99999
+                }
+            }
+            factory {
+                mockk<HolderCachedAppConfigUseCase>(relaxed = true).apply {
+                    every { getCachedAppConfig().shouldShowCoronaMelderRecommendation } returns true
+                    every { getCachedAppConfig().disclosurePolicy } returns DisclosurePolicy.ThreeG
                 }
             }
         })

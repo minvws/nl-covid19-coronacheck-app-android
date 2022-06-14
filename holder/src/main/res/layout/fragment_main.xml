@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_menu"
         android:touchscreenBlocksFocus="false"
+        android:layoutAnimation="@anim/layout_fade_in"
         app:title="@string/my_overview" />
 
     <androidx.fragment.app.FragmentContainerView

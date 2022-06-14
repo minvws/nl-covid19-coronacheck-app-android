@@ -29,9 +29,10 @@ class CountryUtilImpl: CountryUtil {
             val countryIso3Code = locale.isO3Country
             val fullCountryName = locale.displayCountry
             countriesMap[countryIso3Code] = fullCountryName
+            countriesMap[it] = fullCountryName
         }
 
-        return countriesMap[countryCode] ?: ""
+        return countriesMap[countryCode] ?: countryCode
     }
 
     override fun getCountryForQrInfoScreen(countryCode: String?, currentLocale: Locale?): String = if (countryCode != null) {

@@ -5,32 +5,26 @@
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-package nl.rijksoverheid.ctr.holder.ui.create_qr.util
+package nl.rijksoverheid.ctr.holder.your_events.utils
 
 import android.content.res.Resources
 import android.text.TextUtils
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteTestResult2
-import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreen
+import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 
 interface TestInfoScreenUtil {
-
-    fun getForRemoteTestResult2(
-        result: RemoteTestResult2.Result,
-        personalDetails: PersonalDetails,
-        testDate: String
-    ): InfoScreen
 
     fun getForNegativeTest(
         event: RemoteEventNegativeTest,
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean
+        europeanCredential: ByteArray?,
+        addExplanation: Boolean = true,
     ): InfoScreen
 
     fun getForPositiveTest(
@@ -43,55 +37,19 @@ interface TestInfoScreenUtil {
 
 class TestInfoScreenUtilImpl(
     private val resources: Resources,
-    cachedAppConfigUseCase: CachedAppConfigUseCase
+    private val paperProofUtil: PaperProofUtil,
+    cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : TestInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
-
-    override fun getForRemoteTestResult2(
-        result: RemoteTestResult2.Result,
-        personalDetails: PersonalDetails,
-        testDate: String
-    ): InfoScreen {
-        val title = resources.getString(R.string.your_test_result_explanation_toolbar_title)
-        val description = (TextUtils.concat(
-            resources.getString(R.string.your_test_result_explanation_description_header),
-            "<br/><br/>",
-            createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_your_details),
-                "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
-            ),
-            "<br/>",
-            createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_test_type),
-                result.testType,
-            ),
-            createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_test_date),
-                testDate
-            ),
-            createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_test_result),
-                resources.getString(R.string.your_test_result_explanation_negative_test_result)
-            ),
-            createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_unique_identifier),
-                result.unique
-            )
-        ) as String)
-
-        return InfoScreen(
-            title = title,
-            description = description
-        )
-    }
 
     override fun getForNegativeTest(
         event: RemoteEventNegativeTest,
         fullName: String,
         testDate: String,
         birthDate: String,
-        isPaperProof: Boolean
+        europeanCredential: ByteArray?,
+        addExplanation: Boolean,
     ): InfoScreen {
         val testType = holderConfig.euTestTypes.firstOrNull {
             it.code == event.negativeTest?.type
@@ -116,8 +74,8 @@ class TestInfoScreenUtilImpl(
 
         val unique = event.unique ?: ""
 
-        val title = if (isPaperProof) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
-        val header = if (isPaperProof) {
+        val title = if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
+        val header = if (europeanCredential != null) {
             resources.getString(R.string.paper_proof_event_explanation_header)
         } else {
             resources.getString(R.string.your_test_result_explanation_description_header)
@@ -160,11 +118,21 @@ class TestInfoScreenUtilImpl(
                 resources.getString(R.string.your_test_result_explanation_description_test_manufacturer),
                 testManufacturer
             ),
+            if (europeanCredential != null) {
+                val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
+                createdLine(resources.getString(R.string.holder_dcc_issuer), issuerAnswer, isOptional = true)
+            } else {
+                ""
+            },
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_unique_identifier),
                 unique
             ),
-            if (isPaperProof) "<br/>${resources.getString(R.string.paper_proof_event_explanation_footer)}" else ""
+            if (europeanCredential != null && addExplanation) {
+                paperProofUtil.getInfoScreenFooterText(europeanCredential)
+            } else {
+                ""
+            },
         ) as String)
 
         return InfoScreen(

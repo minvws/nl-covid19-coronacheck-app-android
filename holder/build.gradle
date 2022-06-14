@@ -4,19 +4,23 @@ plugins {
     id "kotlin-kapt"
     id 'kotlin-parcelize'
     id "androidx.navigation.safeargs.kotlin"
+    id "com.starter.easylauncher"
 }
 
 def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
-version = "4.0.2"
+version = "4.2"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
     testOptions {
         unitTests {
             includeAndroidResources = true
+            unitTests.all {
+                jvmArgs '-Xmx2g'
+            }
         }
     }
 
@@ -37,7 +41,7 @@ android {
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://coronacheck.nl/app/auth2\""
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v8/\""
-        buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.coronacheck.nl\""
+        buildConfigField "String", "DIGI_D_BASE_URL", "\"https://max.coronacheck.nl\""
         buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
         buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL",  "\"\""
         buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.coronacheck.nl\""
@@ -66,7 +70,7 @@ android {
         acc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v8/\""
             buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v8/\""
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://max.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.acc.coronacheck.nl/app/auth2\""
             buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL",  "\"https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.acc.coronacheck.nl/app/open?returnUri=scanner-test\""
@@ -84,7 +88,7 @@ android {
         fdroidAcc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v8/\""
             buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v8/\""
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://tvs.acc.coronacheck.nl\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://max.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"coronacheck-acc://auth/login\""
             dimension "environment"
@@ -182,4 +186,27 @@ dependencies {
 
     // Needed in order for room to work with Apple Sillicon M1
     kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
+}
+
+easylauncher {
+    buildTypes {
+        debug {
+            filters = customRibbon(
+                    label: "Debug",
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+    }
+    variants {
+        accRelease {
+            filters = customRibbon(
+                    label: appVersionCode,
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+    }
 }

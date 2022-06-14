@@ -7,9 +7,9 @@ import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtil
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.api.post.GetTestResultPostData
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody
 import retrofit2.Converter

@@ -23,12 +23,12 @@ import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
 import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -48,7 +48,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
     private val intentUtil: IntentUtil by inject()
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
 
@@ -107,7 +107,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                             positiveButtonCallback = {},
                             onDismissCallback = {
                                 navigateToYourEvents(
-                                    remoteProtocols3 = it.remoteEvents,
+                                    remoteProtocols = it.remoteEvents,
                                     eventProviders = it.eventProviders,
                                     getPositiveTestWithVaccination = checkboxButtonBinding.checkbox.isChecked
                                 )
@@ -115,7 +115,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                         )
                     } else {
                         navigateToYourEvents(
-                            remoteProtocols3 = it.remoteEvents,
+                            remoteProtocols = it.remoteEvents,
                             eventProviders = it.eventProviders,
                             getPositiveTestWithVaccination = checkboxButtonBinding.checkbox.isChecked
                         )
@@ -248,7 +248,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             onButtonClickWithRetryAction()
         }
         binding.noDigidButton.setOnClickListener {
-            if (cachedAppConfigUseCase.getCachedAppConfig().mijnCnEnabled &&
+            if (featureFlagUseCase.getMijnCnEnabled() &&
                 args.originType == RemoteOriginType.Vaccination
             ) {
                 navigateSafety(GetEventsFragmentDirections.actionMijnCn())
@@ -295,7 +295,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     }
 
     private fun navigateToYourEvents(
-        remoteProtocols3: Map<RemoteProtocol3, ByteArray>,
+        remoteProtocols: Map<RemoteProtocol, ByteArray>,
         eventProviders: List<EventProvider> = emptyList(),
         getPositiveTestWithVaccination: Boolean
     ) {
@@ -303,7 +303,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         navigateSafety(
             GetEventsFragmentDirections.actionYourEvents(
                 type = YourEventsFragmentType.RemoteProtocol3Type(
-                    remoteEvents = remoteProtocols3,
+                    remoteEvents = remoteProtocols,
                     eventProviders = eventProviders
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,

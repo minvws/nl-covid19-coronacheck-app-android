@@ -43,11 +43,9 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
+import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
@@ -76,21 +74,14 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun retrieveGreenCards() {
         when (val type = args.type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                yourEventsViewModel.saveNegativeTest2(
-                    flow = getFlow(),
-                    negativeTest2 = type.remoteTestResult,
-                    rawResponse = type.rawResponse
-                )
-            }
             is YourEventsFragmentType.RemoteProtocol3Type -> {
                 yourEventsViewModel.checkForConflictingEvents(
-                    remoteProtocols3 = type.remoteEvents
+                    remoteProtocols = type.remoteEvents
                 )
             }
             is YourEventsFragmentType.DCC -> {
                 yourEventsViewModel.checkForConflictingEvents(
-                    remoteProtocols3 = type.remoteEvents,
+                    remoteProtocols = type.getRemoteEvents(),
                 )
             }
         }
@@ -104,6 +95,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentYourEventsBinding.bind(view)
+
+        presentHeader(
+            binding = binding
+        )
 
         presentEvents(
             binding = binding
@@ -170,22 +165,19 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         if (it) {
                             replaceCertificateDialog(type.remoteEvents)
                         } else {
-                            yourEventsViewModel.saveRemoteProtocol3Events(
+                            yourEventsViewModel.saveRemoteProtocolEvents(
                                 getFlow(), type.remoteEvents, false
                             )
                         }
                     }
                     is YourEventsFragmentType.DCC -> {
                         if (it) {
-                            replaceCertificateDialog(type.remoteEvents)
+                            replaceCertificateDialog(type.getRemoteEvents())
                         } else {
-                            yourEventsViewModel.saveRemoteProtocol3Events(
-                                getFlow(), type.remoteEvents, false
+                            yourEventsViewModel.saveRemoteProtocolEvents(
+                                getFlow(), type.getRemoteEvents(), false
                             )
                         }
-                    }
-                    is YourEventsFragmentType.TestResult2 -> {
-                        // TODO check
                     }
                 }
             }
@@ -310,7 +302,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         getFlow() == HolderFlow.VaccinationAndPositiveTest
 
     private fun replaceCertificateDialog(
-        remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        remoteEvents: Map<RemoteProtocol, ByteArray>,
     ) {
         dialogUtil.presentDialog(
             context = requireContext(),
@@ -318,9 +310,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             message = getString(R.string.your_events_replace_dialog_message),
             positiveButtonText = R.string.your_events_replace_dialog_positive_button,
             positiveButtonCallback = {
-                yourEventsViewModel.saveRemoteProtocol3Events(
+                yourEventsViewModel.saveRemoteProtocolEvents(
                     flow = getFlow(),
-                    remoteProtocols3 = remoteEvents,
+                    remoteProtocols = remoteEvents,
                     removePreviousEvents = true
                 )
             },
@@ -335,18 +327,12 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun presentEvents(binding: FragmentYourEventsBinding) {
         when (val type = args.type) {
-            is YourEventsFragmentType.TestResult2 -> {
-                presentTestResult2(
-                    binding = binding,
-                    remoteProtocol2 = type.remoteTestResult
-                )
-            }
             is YourEventsFragmentType.RemoteProtocol3Type -> presentEvents(
                 type.remoteEvents,
                 binding
             )
             is YourEventsFragmentType.DCC -> presentEvents(
-                type.remoteEvents,
+                type.getRemoteEvents(),
                 binding,
                 isDccEvent = true
             )
@@ -354,7 +340,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     private fun presentEvents(
-        remoteEvents: Map<RemoteProtocol3, ByteArray>,
+        remoteEvents: Map<RemoteProtocol, ByteArray>,
         binding: FragmentYourEventsBinding,
         isDccEvent: Boolean = false
     ) {
@@ -428,52 +414,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         }
     }
 
-    private fun presentTestResult2(
-        binding: FragmentYourEventsBinding,
-        remoteProtocol2: RemoteTestResult2
-    ) {
-        remoteProtocol2.result?.let { result ->
-            val personalDetails = personalDetailsUtil.getPersonalDetails(
-                firstNameInitial = result.holder.firstNameInitial,
-                lastNameInitial = result.holder.lastNameInitial,
-                birthDay = result.holder.birthDay,
-                birthMonth = result.holder.birthMonth,
-                includeBirthMonthNumber = false
-            )
-
-            val testDate = OffsetDateTime.ofInstant(
-                Instant.ofEpochSecond(result.sampleDate.toEpochSecond()),
-                ZoneOffset.UTC
-            ).formatDayMonthYearTime(requireContext())
-
-            val infoScreen = infoScreenUtil.getForRemoteTestResult2(
-                result = remoteProtocol2.result,
-                personalDetails = personalDetails,
-                testDate = testDate
-            )
-
-            val eventWidget = YourEventWidget(requireContext()).apply {
-                setContent(
-                    title = getString(R.string.your_negative_test_results_row_title),
-                    subtitle = getString(
-                        R.string.your_negative_test_results_row_subtitle,
-                        testDate,
-                        "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
-                    ),
-                    infoClickListener = {
-                        navigateSafety(
-                            YourEventsFragmentDirections.actionShowExplanation(
-                                data = arrayOf(infoScreen),
-                                toolbarTitle = infoScreen.title
-                            )
-                        )
-                    }
-                )
-            }
-            binding.eventsGroup.addView(eventWidget)
-        }
-    }
-
     private fun presentVaccinationEvent(
         binding: FragmentYourEventsBinding,
         providerIdentifiers: String,
@@ -483,13 +423,17 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         allEventsInformation: List<RemoteEventInformation>,
         isDccEvent: Boolean,
     ) {
-
+        val type = args.type
         val infoScreen = infoScreenUtil.getForVaccination(
             event = currentEvent,
             fullName = fullName,
             birthDate = birthDate,
             providerIdentifier = allEventsInformation.first().providerIdentifier,
-            isPaperProof = args.type is YourEventsFragmentType.DCC
+            europeanCredential = if (type is YourEventsFragmentType.DCC) {
+                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+            } else {
+                null
+            }
         )
 
         val eventWidget = YourEventWidget(requireContext()).apply {
@@ -521,7 +465,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                         type = args.type,
                                         providerIdentifier = it.providerIdentifier
                                     ),
-                                    isPaperProof = args.type is YourEventsFragmentType.DCC
+                                    europeanCredential = if (type is YourEventsFragmentType.DCC) {
+                                        JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+                                    } else {
+                                        null
+                                    },
                                 )
                             }.toTypedArray()
                         )
@@ -538,6 +486,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         birthDate: String,
         event: RemoteEventNegativeTest
     ) {
+        val type = args.type
+
         val testDate =
             event.negativeTest?.sampleDate?.formatDateTime(requireContext()) ?: ""
 
@@ -546,7 +496,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             fullName = fullName,
             testDate = testDate,
             birthDate = birthDate,
-            isPaperProof = args.type is YourEventsFragmentType.DCC
+            europeanCredential = if (type is YourEventsFragmentType.DCC) {
+                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+            } else {
+                null
+            }
         )
 
         val eventWidget = YourEventWidget(requireContext()).apply {
@@ -652,6 +606,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         birthDate: String,
         event: RemoteEventRecovery
     ) {
+        val type = args.type
         val testDate = event.recovery?.sampleDate?.formatDayMonthYear() ?: ""
 
         val infoScreen = infoScreenUtil.getForRecovery(
@@ -659,7 +614,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             fullName = fullName,
             testDate = testDate,
             birthDate = birthDate,
-            isPaperProof = args.type is YourEventsFragmentType.DCC
+            europeanCredential = if (type is YourEventsFragmentType.DCC) {
+                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+            } else {
+                null
+            }
         )
 
         val eventWidget = YourEventWidget(requireContext()).apply {
@@ -688,6 +647,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         binding.bottom.setButtonClick {
             retrieveGreenCards()
         }
+    }
+
+    private fun presentHeader(binding: FragmentYourEventsBinding) {
+        binding.description.setText(yourEventsFragmentUtil.getHeaderCopy(args.type))
     }
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {

@@ -10,7 +10,7 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 import android.util.Base64
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol3
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetEventsFromPaperProofQrUseCase
 import nl.rijksoverheid.ctr.shared.models.JSON
 import org.json.JSONObject
@@ -23,10 +23,10 @@ import org.json.JSONObject
  *
  */
 interface RemoteEventHolderUtil {
-    fun holder(data: ByteArray, providerIdentifier: String): RemoteProtocol3.Holder?
+    fun holder(data: ByteArray, providerIdentifier: String): RemoteProtocol.Holder?
     fun conflicting(
-        storedEventHolders: List<RemoteProtocol3.Holder>,
-        incomingEventHolders: List<RemoteProtocol3.Holder>
+        storedEventHolders: List<RemoteProtocol.Holder>,
+        incomingEventHolders: List<RemoteProtocol.Holder>
     ): Boolean
 }
 
@@ -36,7 +36,7 @@ class RemoteEventHolderUtilImpl(
     private val remoteEventUtil: RemoteEventUtil,
     private val yourEventsFragmentUtil: YourEventsFragmentUtil,
 ) : RemoteEventHolderUtil {
-    override fun holder(data: ByteArray, providerIdentifier: String): RemoteProtocol3.Holder? {
+    override fun holder(data: ByteArray, providerIdentifier: String): RemoteProtocol.Holder? {
         val remoteEvent =
             if (remoteEventUtil.isDccEvent(providerIdentifier)) {
                 val qr = JSONObject(String(data)).optString("credential")
@@ -45,7 +45,7 @@ class RemoteEventHolderUtilImpl(
                 val payload =
                     moshi.adapter(SignedResponse::class.java).fromJson(String(data))!!.payload
                 val decodedPayload = String(Base64.decode(payload, Base64.DEFAULT))
-                moshi.adapter(RemoteProtocol3::class.java).fromJson(decodedPayload)!!
+                moshi.adapter(RemoteProtocol::class.java).fromJson(decodedPayload)!!
             }
         return remoteEvent.holder
     }
@@ -56,8 +56,8 @@ class RemoteEventHolderUtilImpl(
      * we should keep only one of them.
      */
     override fun conflicting(
-        storedEventHolders: List<RemoteProtocol3.Holder>,
-        incomingEventHolders: List<RemoteProtocol3.Holder>
+        storedEventHolders: List<RemoteProtocol.Holder>,
+        incomingEventHolders: List<RemoteProtocol.Holder>
     ): Boolean {
         storedEventHolders.forEach { storedEventHolder ->
             // if any of the stored or the new data is null

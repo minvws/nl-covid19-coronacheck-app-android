@@ -14,10 +14,12 @@ import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
+import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppFragmentDirections
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragmentDirections
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 
 interface MenuUtil {
@@ -26,7 +28,8 @@ interface MenuUtil {
 
 class MenuUtilImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
-    private val appConfigPersistenceManager: AppConfigPersistenceManager
+    private val appConfigPersistenceManager: AppConfigPersistenceManager,
+    private val featureFlagUseCase: HolderFeatureFlagUseCase
 ): MenuUtil {
 
     override fun showMenu(dashboardFragment: DashboardFragment) {
@@ -45,7 +48,7 @@ class MenuUtilImpl(
             data = getAboutThisAppData(context)
         )
 
-        val isVisitorPassEnabled = (cachedAppConfigUseCase.getCachedAppConfig() as HolderConfig).visitorPassEnabled
+        val isVisitorPassEnabled = featureFlagUseCase.getVisitorPassEnabled()
 
         val menuSections = mutableListOf<MenuSection>()
 
@@ -60,7 +63,8 @@ class MenuUtilImpl(
 
         val addPaperProofMenuItem = MenuSection.MenuItem(
             icon = R.drawable.ic_menu_paper,
-            title = R.string.add_paper_proof,
+            title = R.string.holder_menu_paperproof_title,
+            subtitle = R.string.holder_menu_paperproof_subTitle,
             onClick = MenuSection.MenuItem.OnClick.Navigate(
                 navigationActionId = actionPaperProof.actionId,
                 navigationArguments = actionPaperProof.arguments
@@ -161,8 +165,12 @@ class MenuUtilImpl(
                         text = context.getString(R.string.about_this_app_colofon),
                         url = context.getString(R.string.about_this_app_colofon_url),
                     ),
+                    AboutThisAppData.Destination(
+                        text = context.getString(R.string.holder_menu_storedEvents),
+                        destinationId = AboutThisAppFragmentDirections.actionSavedEvents().actionId
+                    ),
                     AboutThisAppData.ClearAppData(
-                        text = context.getString(R.string.about_this_clear_data)
+                        text = context.getString(R.string.holder_menu_resetApp)
                     )
                 )
             )

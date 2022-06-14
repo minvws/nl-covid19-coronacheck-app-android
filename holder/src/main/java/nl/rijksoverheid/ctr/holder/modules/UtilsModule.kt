@@ -6,6 +6,8 @@ import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtilImpl
 import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtilImpl
+import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
+import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtilImpl
 import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
@@ -40,7 +42,7 @@ fun utilsModule(versionCode: Int) = module {
         )
     }
     factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
-    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get(), get(), get()) }
+    factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get(), get(), get(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get(), get(), get()) }
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
@@ -58,8 +60,10 @@ fun utilsModule(versionCode: Int) = module {
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
     factory<DashboardInfoCardAdapterItemUtil> { DashboardInfoCardAdapterItemUtilImpl() }
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
-    factory<MenuUtil> { MenuUtilImpl(get(), get()) }
+    factory<MenuUtil> { MenuUtilImpl(get(), get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
     factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }
     factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
+    factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
+    factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
 }

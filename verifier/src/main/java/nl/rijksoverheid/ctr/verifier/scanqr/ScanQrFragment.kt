@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
+import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieDrawable.INFINITE
@@ -23,6 +24,7 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.managers.DeeplinkManager
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
 import nl.rijksoverheid.ctr.verifier.models.ScannerState

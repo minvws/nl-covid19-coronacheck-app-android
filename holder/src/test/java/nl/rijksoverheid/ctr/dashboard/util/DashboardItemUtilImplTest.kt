@@ -12,7 +12,7 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.*
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
@@ -26,9 +26,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem.Card
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
-import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.*
@@ -181,66 +179,8 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `shouldShowCoronaMelderItem returns false if no green cards`() {
-        val util = getUtil()
-
-        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
-            greenCards = listOf(),
-            databaseSyncerResult = DatabaseSyncerResult.Success()
-        )
-
-        assertFalse(shouldShowCoronaMelderItem)
-    }
-
-    @Test
-    fun `shouldShowCoronaMelderItem returns true if green cards`() {
-        val util = getUtil()
-
-        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
-            greenCards = listOf(fakeGreenCard()),
-            databaseSyncerResult = DatabaseSyncerResult.Success()
-        )
-
-        assertTrue(shouldShowCoronaMelderItem)
-    }
-
-    @Test
-    fun `shouldShowCoronaMelderItem returns false if green cards but expired`() {
-        val greenCardUtil: GreenCardUtil = mockk()
-        every { greenCardUtil.isExpired(any()) } answers { true }
-
-        val util = getUtil(
-            greenCardUtil = greenCardUtil
-        )
-
-        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
-            greenCards = listOf(fakeGreenCard()),
-            databaseSyncerResult = DatabaseSyncerResult.Success()
-        )
-
-        assertFalse(shouldShowCoronaMelderItem)
-    }
-
-    @Test
-    fun `shouldShowCoronaMelderItem returns false if green cards but with error DatabaseSyncerResult`() {
-        val util = getUtil()
-
-        val shouldShowCoronaMelderItem = util.shouldShowCoronaMelderItem(
-            greenCards = listOf(fakeGreenCard()),
-            databaseSyncerResult = DatabaseSyncerResult.Failed.Error(
-                AppErrorResult(
-                    HolderStep.TestResultNetworkRequest,
-                    IllegalStateException()
-                )
-            )
-        )
-
-        assertFalse(shouldShowCoronaMelderItem)
-    }
-
-    @Test
     fun `App update is available when the recommended version is higher than current version`() {
-        val appConfigUseCase: CachedAppConfigUseCase = mockk()
+        val appConfigUseCase: HolderCachedAppConfigUseCase = mockk()
         every { appConfigUseCase.getCachedAppConfig().recommendedVersion } answers { 2 }
 
         val buildConfigUseCase: BuildConfigUseCase = mockk()
@@ -256,7 +196,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `App update is not available when the recommended version is current version`() {
-        val appConfigUseCase: CachedAppConfigUseCase = mockk()
+        val appConfigUseCase: HolderCachedAppConfigUseCase = mockk()
         every { appConfigUseCase.getCachedAppConfig().recommendedVersion } answers { 1 }
 
         val buildConfigUseCase: BuildConfigUseCase = mockk()
@@ -272,7 +212,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `App update is not available when the recommended version lower is current version`() {
-        val appConfigUseCase: CachedAppConfigUseCase = mockk()
+        val appConfigUseCase: HolderCachedAppConfigUseCase = mockk()
         every { appConfigUseCase.getCachedAppConfig().recommendedVersion } answers { 1 }
 
         val buildConfigUseCase: BuildConfigUseCase = mockk()
@@ -486,7 +426,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         type = originType,
         maxIssuedAt = OffsetDateTime.now(),
         jsonData = "".toByteArray(),
-        scope = null
+        scope = ""
     )
 
     private fun getGreenCard(originType: OriginType) = GreenCard(
@@ -508,7 +448,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         clockDeviationUseCase: ClockDeviationUseCase = mockk(relaxed = true),
         persistenceManager: PersistenceManager = mockk(relaxed = true),
         appConfigFreshnessUseCase: AppConfigFreshnessUseCase = mockk(relaxed = true),
-        appConfigUseCase: CachedAppConfigUseCase = mockk(relaxed = true),
+        appConfigUseCase: HolderCachedAppConfigUseCase = mockk(relaxed = true),
         buildConfigUseCase: BuildConfigUseCase = mockk(relaxed = true),
         greenCardUtil: GreenCardUtil = mockk(relaxed = true),
     ) = DashboardItemUtilImpl(

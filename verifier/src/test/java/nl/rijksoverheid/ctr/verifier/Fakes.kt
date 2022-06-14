@@ -177,6 +177,18 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             TODO("Not yet implemented")
         }
 
+        override fun isDcc(credential: ByteArray): Boolean {
+            return false
+        }
+
+        override fun isForeignDcc(credential: ByteArray): Boolean {
+            return false
+        }
+
+        override fun hasDomesticPrefix(credential: ByteArray): Boolean {
+            return false
+        }
+
         override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
             return ReadDomesticCredential(
                 "",

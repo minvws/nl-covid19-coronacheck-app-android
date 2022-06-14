@@ -32,6 +32,7 @@ class YourEventWidget @JvmOverloads constructor(
         binding.rowTitle.text = title
         binding.rowSubtitle.setHtmlText(subtitle)
         binding.detailsButton.setOnClickListener { infoClickListener.invoke() }
+        binding.detailsButton.contentDescription = "${binding.detailsButton.text}, $title"
 
         with(binding.testResultsGroup) {
             setOnClickListener { infoClickListener.invoke() }

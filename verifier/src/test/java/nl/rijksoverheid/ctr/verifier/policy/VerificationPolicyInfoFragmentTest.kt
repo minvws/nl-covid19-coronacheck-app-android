@@ -8,11 +8,11 @@ import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assert
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionState.*
 import nl.rijksoverheid.ctr.verifier.usecases.ScannerStateUseCase
+import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
@@ -90,7 +90,7 @@ class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
                     }
                 }
                 factory {
-                    mockk<FeatureFlagUseCase>().apply {
+                    mockk<VerifierFeatureFlagUseCase>().apply {
                         every { isVerificationPolicySelectionEnabled() } answers { isVerificationPolicySelectionEnabled }
                     }
                 }

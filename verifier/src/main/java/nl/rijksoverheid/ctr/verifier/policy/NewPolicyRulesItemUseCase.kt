@@ -10,15 +10,15 @@
 
 package nl.rijksoverheid.ctr.verifier.policy
 
-import nl.rijksoverheid.ctr.appconfig.usecases.FeatureFlagUseCase
 import nl.rijksoverheid.ctr.verifier.R
+import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 
 interface NewPolicyRulesItemUseCase {
         fun get(): NewPolicyItem
 }
 
 class NewPolicyRulesItemUseCaseImpl(
-    private val featureFlagUseCase: FeatureFlagUseCase
+    private val featureFlagUseCase: VerifierFeatureFlagUseCase
 ) : NewPolicyRulesItemUseCase {
 
     override fun get(): NewPolicyItem {

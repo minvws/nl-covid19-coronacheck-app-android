@@ -24,4 +24,6 @@
     <item name="new_terms_no_consent_dialog_title" type="string" />
     <item name="new_terms_no_consent_dialog_message" type="string" />
     <item name="new_terms_no_consent_dialog_button" type="string" />
+    <item name="back" type="string" />
+    <item name="onboarding_next" type="string" />
 </resources>

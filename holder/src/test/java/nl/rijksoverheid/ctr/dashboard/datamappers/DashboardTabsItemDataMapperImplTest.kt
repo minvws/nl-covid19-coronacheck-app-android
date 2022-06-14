@@ -13,7 +13,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.dashboard.datamappers.DashboardTabsItemDataMapperImpl
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItems
-import nl.rijksoverheid.ctr.persistence.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert.assertEquals
@@ -23,7 +23,7 @@ class DashboardTabsItemDataMapperImplTest {
 
     @Test
     fun `Only one international tab is returned if 0G policy`() = runBlocking {
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
+        val cachedAppConfigUseCase = mockk<HolderCachedAppConfigUseCase>()
         coEvery { cachedAppConfigUseCase.getCachedAppConfig() } answers {
             HolderConfig.default(
                 disclosurePolicy = DisclosurePolicy.ZeroG
@@ -46,7 +46,7 @@ class DashboardTabsItemDataMapperImplTest {
 
     @Test
     fun `Domestic and international tab items are returned when policy not 0G`() = runBlocking {
-        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>()
+        val cachedAppConfigUseCase = mockk<HolderCachedAppConfigUseCase>()
         coEvery { cachedAppConfigUseCase.getCachedAppConfig() } answers {
             HolderConfig.default(
                 disclosurePolicy = DisclosurePolicy.OneG
