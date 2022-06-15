@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.fakeAppConfig
 import nl.rijksoverheid.ctr.verifier.fakeAppConfigPersistenceManager
 import nl.rijksoverheid.ctr.verifier.fakeCachedAppConfigUseCase
@@ -415,7 +416,7 @@ class VerifierAppStatusUseCaseImplTest {
             needsConsent = false
         ),
         newFeatures = listOf(
-            NewFeatureItem(1, 2, 3)
+            NewFeatureItem(1, 2, 3, lastButtonResource = R.string.onboarding_next)
         ),
         newFeatureVersion = 2,
         hideConsent = true
