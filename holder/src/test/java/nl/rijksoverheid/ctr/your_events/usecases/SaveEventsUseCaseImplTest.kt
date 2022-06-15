@@ -1,209 +1,240 @@
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 package nl.rijksoverheid.ctr.your_events.usecases
 
-import io.mockk.coVerify
-import io.mockk.every
+import android.content.Context
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
+import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
-import nl.rijksoverheid.ctr.holder.get_events.models.*
-import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCase
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtil
-import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
-import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtilImpl
-import nl.rijksoverheid.ctr.shared.models.Flow
-import org.junit.After
+import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
+import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.context.stopKoin
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import java.time.LocalDate
+import java.time.OffsetDateTime
 
-/*
- *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
- *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
- *
- *   SPDX-License-Identifier: EUPL-1.2
- *
- */
 @RunWith(RobolectricTestRunner::class)
-class SaveEventsUseCaseImplTest {
+class SaveEventsUseCaseImplTest: AutoCloseKoinTest() {
 
-    private val eventGroupDao: EventGroupDao = mockk(relaxed = true)
-    private val holderDatabase: HolderDatabase = mockk {
-        every { eventGroupDao() } returns eventGroupDao
-    }
-    private val scopeUtil = ScopeUtilImpl()
-    private val remoteEventUtil: RemoteEventUtil = mockk()
-
-    private val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
-
-    @After
-    fun tearDown() {
-        stopKoin()
-    }
-
-    private val saveEventsUseCaseImpl = SaveEventsUseCaseImpl(
-        holderDatabase, remoteEventHolderUtil,
-        scopeUtil, remoteEventUtil
-    )
-
-    @Test
-    fun `when saving vaccinations it should be inserted into the database with old one deleted`() {
-        val remoteProtocol3 = createRemoteProtocol3(createVaccination())
-        val byteArray = ByteArray(1)
-        val remoteProtocols3 = mapOf(remoteProtocol3 to byteArray)
-        every { remoteEventUtil.getOriginType(remoteProtocol3.events!!.first()) } returns OriginType.Vaccination
-
-        runBlocking {
-            saveEventsUseCaseImpl.saveRemoteProtocols3(
-                remoteProtocols3,
-                true,
-                HolderFlow.Vaccination
+    @Before
+    fun setup() = runBlocking {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val db = Room.inMemoryDatabaseBuilder(context, HolderDatabase::class.java).build()
+        db.walletDao().insert(
+            WalletEntity(
+                id = 1,
+                label = "Wallet"
             )
+        )
 
-            coVerify { eventGroupDao.deleteAll() }
-            coVerify {
-                eventGroupDao.insertAll(
-                    remoteProtocols3.map {
-                        mapEventsToEntity(
-                            it.key,
-                            it.value,
-                            OriginType.Vaccination,
-                            HolderFlow.Vaccination
-                        )
-                    }
-                )
+        loadKoinModules(
+            module(override = true) {
+                single {
+                    db
+                }
             }
-        }
+        )
     }
 
     @Test
-    fun `when saving recoveries it should be inserted into the database with old one deleted`() {
-        val remoteProtocol3 = createRemoteProtocol3(createRecovery())
-        val byteArray = ByteArray(1)
-        val remoteProtocols3 = mapOf(remoteProtocol3 to byteArray)
-        every { remoteEventUtil.getOriginType(remoteProtocol3.events!!.first()) } returns OriginType.Recovery
-
-        runBlocking {
-            saveEventsUseCaseImpl.saveRemoteProtocols3(
-                remoteProtocols3,
-                true,
-                HolderFlow.Recovery
-            )
-
-            coVerify { eventGroupDao.deleteAll() }
-            coVerify {
-                eventGroupDao.insertAll(
-                    remoteProtocols3.map {
-                        mapEventsToEntity(
-                            it.key,
-                            it.value,
-                            OriginType.Recovery,
-                            HolderFlow.Recovery
-                        )
-                    }
+    fun `saveRemoteProtocols3 correctly saves ggd events`() = runBlocking {
+        val remoteProtocol = RemoteProtocol(
+            providerIdentifier = "ggd",
+            protocolVersion = "1",
+            status = RemoteProtocol.Status.COMPLETE,
+            holder = null,
+            events = listOf(
+                RemoteEventVaccination(
+                    type = "vaccination",
+                    unique = "",
+                    vaccination = null
                 )
-            }
-        }
+            )
+        )
+
+        val db: HolderDatabase by inject()
+        val usecase: SaveEventsUseCase by inject()
+
+        usecase.saveRemoteProtocols3(
+            remoteProtocols = mapOf(
+                remoteProtocol to "".toByteArray()
+            ),
+            removePreviousEvents = false,
+            flow = HolderFlow.SyncGreenCards
+        )
+
+        val events = db.eventGroupDao().getAll()
+        assertEquals(1, events.size)
+        assertEquals("ggd", events.first().providerIdentifier)
     }
 
     @Test
-    fun `when saving recovery and vaccination it should both be inserted into the database with old one deleted`() {
-        val remoteProtocol3Recovery = createRemoteProtocol3(createRecovery())
-        val byteArrayRecovery = ByteArray(1)
-        val remoteProtocols3Recovery = mapOf(remoteProtocol3Recovery to byteArrayRecovery)
-
-        val remoteProtocol3Vaccination = createRemoteProtocol3(createVaccination())
-        val byteArray2Vaccination = ByteArray(1)
-        val remoteProtocols3Vaccination = mapOf(remoteProtocol3Vaccination to byteArray2Vaccination)
-
-        val remoteProtocols3 = remoteProtocols3Recovery + remoteProtocols3Vaccination
-        val entities =
-            remoteProtocols3Recovery.map {
-                mapEventsToEntity(
-                    it.key,
-                    it.value,
-                    OriginType.Recovery,
-                    HolderFlow.VaccinationAndPositiveTest
+    fun `saveRemoteProtocols3 correctly saves zzz events`() = runBlocking {
+        val remoteProtocol = RemoteProtocol(
+            providerIdentifier = "zzz",
+            protocolVersion = "1",
+            status = RemoteProtocol.Status.COMPLETE,
+            holder = null,
+            events = listOf(
+                RemoteEventVaccination(
+                    type = "vaccination",
+                    unique = "123",
+                    vaccination = null
+                ),
+                RemoteEventVaccination(
+                    type = "vaccination",
+                    unique = "456",
+                    vaccination = null
                 )
-            } + remoteProtocols3Vaccination.map {
-                mapEventsToEntity(
-                    it.key,
-                    it.value,
-                    OriginType.Vaccination,
-                    HolderFlow.VaccinationAndPositiveTest
-                )
-            }
-        every { remoteEventUtil.getOriginType(remoteProtocols3.keys.first().events!!.first()) } returns OriginType.Recovery
-        every { remoteEventUtil.getOriginType(remoteProtocols3.keys.elementAt(1).events!!.first()) } returns OriginType.Vaccination
-
-        runBlocking {
-            saveEventsUseCaseImpl.saveRemoteProtocols3(
-                remoteProtocols3,
-                true,
-                HolderFlow.VaccinationAndPositiveTest
             )
+        )
 
-            coVerify { eventGroupDao.deleteAll() }
-            coVerify { eventGroupDao.insertAll(entities) }
-        }
+        val db: HolderDatabase by inject()
+        val usecase: SaveEventsUseCase by inject()
+
+        usecase.saveRemoteProtocols3(
+            remoteProtocols = mapOf(
+                remoteProtocol to "".toByteArray()
+            ),
+            removePreviousEvents = false,
+            flow = HolderFlow.SyncGreenCards
+        )
+
+        val events = db.eventGroupDao().getAll()
+        assertEquals(1, events.size)
+        assertEquals("zzz_123456", events.first().providerIdentifier)
     }
 
-    private fun mapEventsToEntity(
-        remoteEvents: RemoteProtocol,
-        byteArray: ByteArray,
-        eventType: OriginType,
-        flow: Flow
-    ) = EventGroupEntity(
-        walletId = 1,
-        providerIdentifier = remoteEvents.providerIdentifier,
-        type = eventType,
-        expiryDate = null,
-        jsonData = byteArray,
-        scope = scopeUtil.getScopeForOriginType(
-            eventType,
-            flow == HolderFlow.VaccinationAndPositiveTest
+    @Test
+    fun `saveRemoteProtocols3 removes previous events if removePreviousEvents is true`() = runBlocking {
+        // Insert event into database
+        val db: HolderDatabase by inject()
+        val eventGroupEntity = EventGroupEntity(
+            id = 0,
+            walletId = 1,
+            providerIdentifier = "ggd",
+            type = OriginType.Test,
+            scope = "",
+            expiryDate = OffsetDateTime.now(),
+            jsonData = "".toByteArray()
         )
-    )
+        db.eventGroupDao().insertAll(listOf(eventGroupEntity))
+        val eventGroups = db.eventGroupDao().getAll()
+        assertEquals(1, eventGroups.size)
+        assertEquals("ggd", eventGroups.first().providerIdentifier)
 
-    private fun createRemoteProtocol3(remoteEvent: RemoteEvent) = RemoteProtocol(
-        events = listOf(remoteEvent),
-        protocolVersion = "pro",
-        providerIdentifier = "ide",
-        status = RemoteProtocol.Status.COMPLETE,
-        holder = null
-    )
-
-    private fun createVaccination() = RemoteEventVaccination(
-        type = null,
-        unique = null,
-        vaccination = RemoteEventVaccination.Vaccination(
-            date = LocalDate.of(2000, 1, 1),
-            hpkCode = null,
-            type = null,
-            brand = null,
-            completedByMedicalStatement = null,
-            doseNumber = null,
-            totalDoses = null,
-            country = null,
-            manufacturer = null,
-            completedByPersonalStatement = null,
-            completionReason = null
+        // When calling usecase with removePreviousEvents to true, it should remove previous events
+        val usecase: SaveEventsUseCase by inject()
+        usecase.saveRemoteProtocols3(
+            remoteProtocols = mapOf(),
+            removePreviousEvents = true,
+            flow = HolderFlow.SyncGreenCards
         )
-    )
+        val newEventGroups = db.eventGroupDao().getAll()
+        assertEquals(0, newEventGroups.size)
+    }
 
-    private fun createRecovery() = RemoteEventRecovery(
-        type = null,
-        unique = "uni",
-        isSpecimen = true,
-        recovery = RemoteEventRecovery.Recovery(
-            sampleDate = LocalDate.of(2000, 1, 1),
-            validFrom = LocalDate.of(2000, 2, 1),
-            validUntil = LocalDate.of(2000, 7, 1)
+    @Test
+    fun `remoteProtocols3AreConflicting returns false if holders are conflicting`() = runBlocking {
+        // Mock remoteEventHolderUtil because of signed json blob
+        val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
+        coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { true }
+        loadKoinModules(
+            module(override = true) {
+                factory {
+                    remoteEventHolderUtil
+                }
+            }
         )
-    )
+
+        // Insert event into database
+        val db: HolderDatabase by inject()
+        val eventGroupEntity1 = EventGroupEntity(
+            id = 0,
+            walletId = 1,
+            providerIdentifier = "ggd",
+            type = OriginType.Vaccination,
+            scope = "",
+            expiryDate = OffsetDateTime.now(),
+            jsonData = "".toByteArray()
+        )
+        db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
+
+        // Check with remote protocol
+        val usecase: SaveEventsUseCase by inject()
+        val conflicting = usecase.remoteProtocols3AreConflicting(
+            remoteProtocols = mapOf(
+                RemoteProtocol(
+                    providerIdentifier = "ggd",
+                    protocolVersion = "1",
+                    status = RemoteProtocol.Status.COMPLETE,
+                    holder = null,
+                    events = listOf()
+                ) to "".toByteArray()
+            )
+        )
+        assertTrue(conflicting)
+    }
+
+    @Test
+    fun `remoteProtocols3AreConflicting returns false if holders are not conflicting`() = runBlocking {
+        // Mock remoteEventHolderUtil because of signed json blob
+        val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
+        coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { false }
+        loadKoinModules(
+            module(override = true) {
+                factory {
+                    remoteEventHolderUtil
+                }
+            }
+        )
+
+        // Insert event into database
+        val db: HolderDatabase by inject()
+        val eventGroupEntity1 = EventGroupEntity(
+            id = 0,
+            walletId = 1,
+            providerIdentifier = "ggd",
+            type = OriginType.Vaccination,
+            scope = "",
+            expiryDate = OffsetDateTime.now(),
+            jsonData = "".toByteArray()
+        )
+        db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
+
+        // Check with remote protocol
+        val usecase: SaveEventsUseCase by inject()
+        val conflicting = usecase.remoteProtocols3AreConflicting(
+            remoteProtocols = mapOf(
+                RemoteProtocol(
+                    providerIdentifier = "ggd",
+                    protocolVersion = "1",
+                    status = RemoteProtocol.Status.COMPLETE,
+                    holder = null,
+                    events = listOf()
+                ) to "".toByteArray()
+            )
+        )
+        assertFalse(conflicting)
+    }
 }
