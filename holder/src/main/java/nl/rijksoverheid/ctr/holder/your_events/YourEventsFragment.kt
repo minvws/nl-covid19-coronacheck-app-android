@@ -722,6 +722,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
+        (parentFragment?.parentFragment as? HolderMainFragment)?.presentLoading(false)
     }
 }

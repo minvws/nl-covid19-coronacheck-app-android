@@ -21,7 +21,8 @@ import java.time.OffsetDateTime
 @JsonClass(generateAdapter = true)
 data class RemoteGreenCards(
     val domesticGreencard: DomesticGreenCard?,
-    val euGreencards: List<EuGreenCard>?
+    val euGreencards: List<EuGreenCard>?,
+    val blobExpireDates: List<BlobExpiry>?
 ) {
     data class DomesticGreenCard(
         val origins: List<Origin>,
@@ -57,6 +58,11 @@ data class RemoteGreenCards(
         val expirationTime: OffsetDateTime,
         val validFrom: OffsetDateTime,
         val doseNumber: Int?
+    )
+
+    data class BlobExpiry(
+        val id: Int,
+        val expiry: OffsetDateTime
     )
 
     fun getEuOrigins(): List<OriginType> =

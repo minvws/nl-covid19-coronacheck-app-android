@@ -281,7 +281,7 @@
   <string name="qr_card_vaccination_doses">Dosis %1$s/%2$s</string>
   <string name="your_test_result_explanation_toolbar_title">Details</string>
   <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens: <b>%1$s</b><br/><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>Uniek testnummer: <b>%5$s</b>]]></string>
-  <string name="your_test_result_explanation_negative_test_result">negatief (geen corona)</string>
+  <string name="your_test_result_explanation_negative_test_result">negatief (geen corona) / negative (no coronavirus)</string>
   <string name="your_test_result_explanation_description_header">De volgende gegevens zijn opgehaald bij de testlocatie:</string>
   <string name="your_test_result_explanation_description_your_details">Jouw gegevens:</string>
   <string name="your_test_result_explanation_description_name">Naam:</string>
@@ -490,7 +490,7 @@
   <string name="qr_code_dosis">Dosis %1s</string>
   <string name="qr_code_over_vaccinated">Deze QR-code is nog niet overal geldig. Gebruik dan die van een eerdere dosis.</string>
   <string name="qr_code_newer_dose_available">Deze QR-code heb je waarschijnlijk niet nodig, want je hebt een nieuwere dosis.</string>
-  <string name="qr_code_hidden_title">QR-code verborgen</string>
+  <string name="qr_code_hidden_title">QR-code is verborgen</string>
   <string name="qr_code_hidden_button">Laat toch zien</string>
   <string name="qr_code_previous_button">Vorige QR-code</string>
   <string name="qr_code_next_button">Volgende QR-code</string>
@@ -774,4 +774,14 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_dashboard_recoveryAlmostExpiredBanner_title">Je herstelbewijs verloopt bijna</string>
   <string name="holder_recoveryAlmostExpiredModal_title">Herstelbewijs verloopt bijna</string>
   <string name="holder_recoveryAlmostExpiredModal_message">Je herstelbewijs verloopt op %@. Daarna heb je geen coronabewijs meer. Heb je een nieuw coronabewijs nodig? Dan zijn er verschillende mogelijkheden. Lees meer op <a href="https://www.rijksoverheid.nl/onderwerpen/coronavirus-coronabewijs-en-coronatoegangsbewijs">Rijksoverheid.nl</a></string>
+  <string name="holder_qr_code_hidden_explanation_button">Wat betekent dit?</string>
+  <string name="holder_qr_code_hidden_explanation_title">Verborgen QR-code</string>
+  <string name="holder_qr_code_hidden_explanation_description"><![CDATA[Als de QR-code van je vaccinatie verborgen is, dan heb je deze waarschijnlijk niet nodig. Dit komt omdat je ook QR-codes van nieuwere vaccinaties in de app hebt staan.<br/><br/>Verborgen QR-codes kun je gewoon nog laten zien en gebruiken als dat nodig is.]]></string>
+  <string name="holder_qr_code_expired_overlay_title">QR-code is verlopen</string>
+  <string name="holder_qr_code_expired_explanation_title">Verlopen QR-code</string>
+  <string name="holder_qr_code_expired_explanation_description"><![CDATA[Als je QR-code is verlopen betekent dit dat je vaccinatie nog geldig is, maar het bewijs dat je hebt toegevoegd niet meer. Je kunt een nieuw bewijs met QR-code aanvragen en deze opnieuw toevoegen aan de app.<br/><br/>Heb je een nieuwere vaccinatie in de app staan? Dan kun je ook die QR-code gebruiken.]]></string>
+  <string name="holder_qr_code_expired_explanation_action">Lees meer op CoronaCheck.nl</string>
+  <string name="holder_qr_code_expired_explanation_url">https://coronacheck.nl</string>
+  <string name="holder_qr_code_hidden_explanation_action">Lees meer op CoronaCheck.nl</string>
+  <string name="holder_qr_code_hidden_explanation_url">https://coronacheck.nl</string>
 </resources>

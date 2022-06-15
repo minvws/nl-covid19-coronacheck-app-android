@@ -10,12 +10,32 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 import nl.rijksoverheid.ctr.holder.your_events.RemoteEventInformation
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import java.lang.StringBuilder
 
 interface RemoteProtocol3Util {
+    fun areGGDEvents(providerIdentifier: String): Boolean
+    fun areRIVMEvents(providerIdentifier: String): Boolean
+    fun getProviderIdentifier(remoteProtocol: RemoteProtocol): String
     fun groupEvents(remoteEvents: List<RemoteProtocol>): Map<RemoteEvent, List<RemoteEventInformation>>
 }
 
 class RemoteProtocol3UtilImpl: RemoteProtocol3Util {
+
+    override fun getProviderIdentifier(remoteProtocol: RemoteProtocol): String {
+        return if (!areGGDEvents(remoteProtocol.providerIdentifier) && !areRIVMEvents(remoteProtocol.providerIdentifier)) {
+            val providerIdentifierBuilder = StringBuilder()
+            providerIdentifierBuilder.append(remoteProtocol.providerIdentifier)
+            providerIdentifierBuilder.append("_")
+            remoteProtocol.events?.forEach { remoteEvent ->
+                run {
+                    providerIdentifierBuilder.append(remoteEvent.unique)
+                }
+            }
+            providerIdentifierBuilder.toString()
+        } else {
+            remoteProtocol.providerIdentifier
+        }
+    }
 
     /**
      * Group all events that have the same:
@@ -46,5 +66,13 @@ class RemoteProtocol3UtilImpl: RemoteProtocol3Util {
         return sameEventsGrouped.entries
             .sortedByDescending { it.key.getDate() }
             .associate { it.key to it.value }
+    }
+
+    override fun areGGDEvents(providerIdentifier: String): Boolean {
+        return providerIdentifier.lowercase() == "ggd"
+    }
+
+    override fun areRIVMEvents(providerIdentifier: String): Boolean {
+        return providerIdentifier.lowercase() == "rivm"
     }
 }

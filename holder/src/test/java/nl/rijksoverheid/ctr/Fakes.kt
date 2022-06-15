@@ -394,7 +394,7 @@ fun fakeGreenCardUtil(
 
 fun fakeGetRemoteGreenCardUseCase(
     result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
-        RemoteGreenCards(null, null)
+        RemoteGreenCards(null, null, listOf())
     )
 ) = object : GetRemoteGreenCardsUseCase {
     override suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult {
@@ -592,7 +592,7 @@ fun fakeEventGroupEntity(
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),
     euGreencards: List<RemoteGreenCards.EuGreenCard>? = listOf(fakeEuGreenCard())
-) = RemoteGreenCards(domesticGreencard, euGreencards)
+) = RemoteGreenCards(domesticGreencard, euGreencards, listOf())
 
 fun fakeDomesticGreenCard(
     origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),
