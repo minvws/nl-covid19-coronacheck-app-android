@@ -27,14 +27,16 @@ interface AndroidUtil {
     fun getMasterKeyAlias(): String
     fun isFirstInstall(): Boolean
     fun isNetworkAvailable(): Boolean
-    fun getConnectivityManager() : ConnectivityManager
+    fun getConnectivityManager(): ConnectivityManager
     fun generateRandomKey(): ByteArray
     fun getFirstInstallTime(): OffsetDateTime
 }
 
 class AndroidUtilImpl(private val context: Context) : AndroidUtil {
     override fun isSmallScreen(): Boolean {
-        return context.resources.displayMetrics.heightPixels <= 800 || context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val configuration = context.resources.configuration
+        return configuration.smallestScreenWidthDp < 600 && configuration.orientation == Configuration.ORIENTATION_LANDSCAPE ||
+                configuration.screenWidthDp < 600 && configuration.screenHeightDp < 600
     }
 
     override fun getMasterKeyAlias(): String =
@@ -69,7 +71,8 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
     }
 
     override fun isNetworkAvailable(): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetwork ?: return false
         val activeNetworkCapabilities =
             connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false

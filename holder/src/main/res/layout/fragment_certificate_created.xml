@@ -26,7 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="@dimen/horizontal_padding"
+            android:paddingVertical="16dp">
 
             <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
                 android:id="@+id/title"

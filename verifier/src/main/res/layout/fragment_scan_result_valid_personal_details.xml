@@ -32,7 +32,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:paddingHorizontal="@dimen/horizontal_padding"
+            android:paddingVertical="16dp">
 
             <nl.rijksoverheid.ctr.verifier.widgets.PersonalDetailItemWidget
                 android:id="@+id/personal_details_lastname"
