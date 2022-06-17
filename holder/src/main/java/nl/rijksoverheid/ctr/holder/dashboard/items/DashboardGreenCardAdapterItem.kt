@@ -43,7 +43,7 @@ class DashboardGreenCardAdapterItem(
 
     override fun bind(viewBinding: AdapterItemDashboardGreenCardBinding, position: Int) {
         applyStyling(viewBinding = viewBinding)
-        setContent(viewBinding = viewBinding, position = position)
+        setContent(viewBinding = viewBinding)
         initButton(
             viewBinding = viewBinding,
             card = cards.first()
@@ -126,7 +126,7 @@ class DashboardGreenCardAdapterItem(
         }
     }
 
-    private fun setContent(viewBinding: AdapterItemDashboardGreenCardBinding, position: Int) {
+    private fun setContent(viewBinding: AdapterItemDashboardGreenCardBinding) {
         // reset layout
         viewBinding.run {
             (proof2.layoutParams as ViewGroup.MarginLayoutParams).height = 0
@@ -143,7 +143,7 @@ class DashboardGreenCardAdapterItem(
 
         stackAdditionalCards(viewBinding)
 
-        showError(viewBinding, position)
+        showError(viewBinding)
     }
 
     /**
@@ -163,43 +163,39 @@ class DashboardGreenCardAdapterItem(
         }
     }
 
-    private fun showError(viewBinding: AdapterItemDashboardGreenCardBinding, position: Int) {
+    private fun showError(viewBinding: AdapterItemDashboardGreenCardBinding) {
         val context = viewBinding.root.context
-        cards.getOrNull(position)?.let { card ->
-            if (card.credentialState is DashboardItem.CardsItem.CredentialState.NoCredential) {
-                when (card.databaseSyncerResult) {
-                    is DatabaseSyncerResult.Failed.NetworkError -> {
-                        viewBinding.errorText.setHtmlText(
-                            htmlText = context.getString(R.string.my_overview_green_card_internet_error),
-                            htmlTextColor = ContextCompat.getColor(context, R.color.error),
-                            htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
-                        )
-                        viewBinding.errorText.enableCustomLinks(onRetryClick)
-                        viewBinding.errorContainer.visibility = View.VISIBLE
-                    }
-                    is DatabaseSyncerResult.Failed.ServerError.FirstTime -> {
-                        viewBinding.errorText.setHtmlText(
-                            htmlText = context.getString(R.string.my_overview_green_card_server_error),
-                            htmlTextColor = ContextCompat.getColor(context, R.color.error),
-                            htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
-                        )
-                        viewBinding.errorText.enableCustomLinks(onRetryClick)
-                        viewBinding.errorContainer.visibility = View.VISIBLE
-                    }
-                    is DatabaseSyncerResult.Failed.ServerError.MultipleTimes -> {
-                        viewBinding.errorText.setHtmlText(
-                            htmlText = context.getString(R.string.my_overview_green_card_server_error_after_retry),
-                            htmlTextColor = ContextCompat.getColor(context, R.color.error),
-                            htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
-                        )
-                        viewBinding.errorContainer.visibility = View.VISIBLE
-                    }
-                    else -> {
-                        viewBinding.errorContainer.visibility = View.GONE
-                    }
+        if (cards.first().credentialState is DashboardItem.CardsItem.CredentialState.NoCredential) {
+            when (cards.first().databaseSyncerResult) {
+                is DatabaseSyncerResult.Failed.NetworkError -> {
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_internet_error),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
+                    )
+                    viewBinding.errorText.enableCustomLinks(onRetryClick)
+                    viewBinding.errorContainer.visibility = View.VISIBLE
                 }
-            } else {
-                viewBinding.errorContainer.visibility = View.GONE
+                is DatabaseSyncerResult.Failed.ServerError.FirstTime -> {
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_server_error),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
+                    )
+                    viewBinding.errorText.enableCustomLinks(onRetryClick)
+                    viewBinding.errorContainer.visibility = View.VISIBLE
+                }
+                is DatabaseSyncerResult.Failed.ServerError.MultipleTimes -> {
+                    viewBinding.errorText.setHtmlText(
+                        htmlText = context.getString(R.string.my_overview_green_card_server_error_after_retry),
+                        htmlTextColor = ContextCompat.getColor(context, R.color.error),
+                        htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
+                    )
+                    viewBinding.errorContainer.visibility = View.VISIBLE
+                }
+                else -> {
+
+                }
             }
         }
     }
