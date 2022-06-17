@@ -783,4 +783,9 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_qr_code_expired_explanation_url">https://coronacheck.nl/en/</string>
   <string name="holder_qr_code_hidden_explanation_action">Read more on CoronaCheck.nl</string>
   <string name="holder_qr_code_hidden_explanation_url">https://coronacheck.nl/en/</string>
+  <string name="holder_showQR_euAboutVaccination_daysSince">Days since vaccination:</string>
+  <plurals name="general_days">
+    <item quantity="one">day</item>
+    <item quantity="other">days</item>
+  </plurals>
 </resources>
