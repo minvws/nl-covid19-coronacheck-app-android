@@ -29,6 +29,7 @@ val verifierAppStatusModule = module {
                     R.string.new_in_app_risksetting_subtitle,
                     R.color.primary_blue,
                     R.color.light_blue,
+                    lastButtonResource = R.string.onboarding_next
                 )
             ),
             newFeatureVersion = 1,

@@ -144,6 +144,13 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
     }
 
     private fun setButtonText(binding: FragmentNewFeaturesBinding, position: Int) {
-        binding.button.text = getString(args.appUpdateData.newFeatures[position].buttonResource)
+        val newFeature = args.appUpdateData.newFeatures[position]
+        binding.button.text = getString(
+            if (position == args.appUpdateData.newFeatures.size - 1) {
+                newFeature.lastButtonResource
+            } else {
+                newFeature.buttonResource
+            }
+        )
     }
 }
