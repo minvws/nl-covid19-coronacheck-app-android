@@ -83,6 +83,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
                             setEuTestOrigin(
                                 dashboardGreenCardAdapterItemBinding, it, originState, origin
                             )
+                            setExpiryText(origin, dashboardGreenCardAdapterItemBinding)
                         }
                         is OriginType.Vaccination -> {
                             when (featureFlagUseCase.getDisclosurePolicy()) {
@@ -98,6 +99,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
                             setEuVaccinationOrigin(
                                 dashboardGreenCardAdapterItemBinding, it, origin
                             )
+                            setExpiryText(origin, dashboardGreenCardAdapterItemBinding)
                         }
                         is OriginType.Recovery -> {
                             when (featureFlagUseCase.getDisclosurePolicy()) {
@@ -111,6 +113,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
                                 }
                             }
                             setEuRecoveryOrigin(dashboardGreenCardAdapterItemBinding, originState, origin)
+                            setExpiryText(origin, dashboardGreenCardAdapterItemBinding)
                         }
                         is OriginType.VaccinationAssessment -> {
                             // Visitor pass is only for domestic
