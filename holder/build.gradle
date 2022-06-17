@@ -133,6 +133,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            productFlavors.tst.signingConfig signingConfigs.release
             productFlavors.acc.signingConfig signingConfigs.release
             productFlavors.prod.signingConfig signingConfigs.release
         }
@@ -225,9 +226,33 @@ easylauncher {
         }
     }
     variants {
+        tstDebug {
+            filters = customRibbon(
+                    label: "Test Debug",
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+        accDebug {
+            filters = customRibbon(
+                    label: "Acc Debug",
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+        tstRelease {
+            filters = customRibbon(
+                    label: "Test $appVersionCode",
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
         accRelease {
             filters = customRibbon(
-                    label: appVersionCode,
+                    label: "Acc $appVersionCode",
                     ribbonColor: "#727679",
                     labelColor: "#FFFFFF",
                     textSizeRatio: 0.2
