@@ -209,6 +209,73 @@ class DashboardFragmentScreenshotTest: ScreenshotTest {
     }
 
     @Test
+    fun Invalid_ServerError_MultipleTimes_TwoEuGreenCardsWithOneGPolicy_Screenshot() {
+        val greenCardEntity = GreenCardEntity(
+            walletId = 1,
+            type = GreenCardType.Eu
+        )
+
+        val vaccinationOriginEntity = fakeOriginEntity(
+            type = OriginType.Vaccination,
+            validFrom = AndroidTestUtils.getOffsetDateTime("2020-01-01T00:00:00.00Z"),
+            expirationTime = AndroidTestUtils.getOffsetDateTime("2030-01-01T00:00:00.00Z")
+        )
+
+        val recoveryOriginEntity = fakeOriginEntity(
+            type = OriginType.Recovery,
+            validFrom = AndroidTestUtils.getOffsetDateTime("2020-01-01T00:00:00.00Z"),
+            expirationTime = AndroidTestUtils.getOffsetDateTime("2030-01-01T00:00:00.00Z")
+        )
+
+        val credentialEntity = fakeCredentialEntity()
+
+        val vaccinationCardItem = DashboardItem.CardsItem(
+            cards = listOf(
+                DashboardItem.CardsItem.CardItem(
+                    greenCard = GreenCard(
+                        greenCardEntity = greenCardEntity,
+                        origins = listOf(vaccinationOriginEntity),
+                        credentialEntities = listOf(credentialEntity)
+                    ),
+                    originStates = listOf(
+                        OriginState.Valid(vaccinationOriginEntity),
+                    ),
+                    credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
+                    databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError.MultipleTimes(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException(""))),
+                    disclosurePolicy = GreenCardDisclosurePolicy.OneG,
+                    greenCardEnabledState = GreenCardEnabledState.Enabled
+                ),
+            )
+        )
+
+        val recoveryCardItem =
+            DashboardItem.CardsItem(
+                cards = listOf(
+                    DashboardItem.CardsItem.CardItem(
+                greenCard = GreenCard(
+                    greenCardEntity = greenCardEntity,
+                    origins = listOf(recoveryOriginEntity),
+                    credentialEntities = listOf(credentialEntity)
+                ),
+                originStates = listOf(
+                    OriginState.Valid(recoveryOriginEntity),
+                ),
+                credentialState = DashboardItem.CardsItem.CredentialState.HasCredential(credentialEntity),
+                databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError.MultipleTimes(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException(""))),
+                disclosurePolicy = GreenCardDisclosurePolicy.OneG,
+                greenCardEnabledState = GreenCardEnabledState.Enabled
+                    ),
+                )
+            )
+
+        val fragmentScenario = startFragment(
+            items = listOf(vaccinationCardItem, recoveryCardItem)
+        )
+
+        compareScreenshot(fragmentScenario.waitForFragment())
+    }
+
+    @Test
     fun Future_DomesticGreenCardWithOneGPolicy_Screenshot() {
         val greenCardEntity = GreenCardEntity(
             walletId = 1,
@@ -266,6 +333,7 @@ class DashboardFragmentScreenshotTest: ScreenshotTest {
         loadKoinModules(
             module(override = true) {
                 viewModel { fakeDashboardViewModel(listOf(tabItem)) }
+                factory { fakeMobileCoreWrapper }
             }
         )
 

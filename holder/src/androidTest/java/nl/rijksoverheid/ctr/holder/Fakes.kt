@@ -16,7 +16,9 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.persistence.database.entities.*
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.*
+import org.json.JSONArray
+import org.json.JSONObject
 import java.time.OffsetDateTime
 
 fun fakeGreenCardEntity(
@@ -81,3 +83,81 @@ val fakeDashboardTabItem = DashboardTabItem(
     greenCardType = GreenCardType.Domestic,
     items = listOf()
 )
+
+val fakeMobileCoreWrapper = object: MobileCoreWrapper {
+    override fun createCredentials(body: ByteArray): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
+        TODO("Not yet implemented")
+    }
+
+    override fun readCredential(credentials: ByteArray): ByteArray {
+        TODO("Not yet implemented")
+    }
+
+    override fun createCommitmentMessage(
+        secretKey: ByteArray,
+        prepareIssueMessage: ByteArray
+    ): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun disclose(
+        secretKey: ByteArray,
+        credential: ByteArray,
+        currentTimeMillis: Long,
+        disclosurePolicy: GreenCardDisclosurePolicy
+    ): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun generateHolderSk(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
+        TODO("Not yet implemented")
+    }
+
+    override fun readEuropeanCredential(credential: ByteArray): JSONObject {
+        return JSONObject().apply {
+            val v0 = JSONObject().apply {
+                put("dn", 1)
+                put("sd", 1)
+                put("co", "NL")
+            }
+            val v = JSONArray()
+            v.put(0, v0)
+            val dcc = JSONObject().apply {
+                put("v", v)
+            }
+            put("dcc", dcc)
+        }
+    }
+
+    override fun initializeHolder(configFilesPath: String): String? {
+        TODO("Not yet implemented")
+    }
+
+    override fun initializeVerifier(configFilesPath: String): String? {
+        TODO("Not yet implemented")
+    }
+
+    override fun verify(credential: ByteArray, policy: VerificationPolicy): VerificationResult {
+        TODO("Not yet implemented")
+    }
+
+    override fun isDcc(credential: ByteArray): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun isForeignDcc(credential: ByteArray): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun hasDomesticPrefix(credential: ByteArray): Boolean {
+        TODO("Not yet implemented")
+    }
+}
