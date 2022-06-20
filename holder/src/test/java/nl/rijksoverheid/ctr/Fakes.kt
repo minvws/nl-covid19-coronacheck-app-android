@@ -382,7 +382,7 @@ fun fakeGetRemoteGreenCardUseCase(
         RemoteGreenCards(null, null, listOf())
     )
 ) = object : GetRemoteGreenCardsUseCase {
-    override suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult {
+    override suspend fun get(events: List<EventGroupEntity>, secretKey: String): RemoteGreenCardsResult {
         return result
     }
 }
@@ -390,7 +390,7 @@ fun fakeGetRemoteGreenCardUseCase(
 fun fakeSyncRemoteGreenCardUseCase(
     result: SyncRemoteGreenCardsResult = SyncRemoteGreenCardsResult.Success,
 ) = object : SyncRemoteGreenCardsUseCase {
-    override suspend fun execute(remoteGreenCards: RemoteGreenCards): SyncRemoteGreenCardsResult {
+    override suspend fun execute(remoteGreenCards: RemoteGreenCards, secretKey: String): SyncRemoteGreenCardsResult {
         return result
     }
 }

@@ -38,7 +38,7 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
                 type = GreenCardType.Domestic,
                 originType = OriginType.Vaccination,
                 credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG),
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
@@ -53,7 +53,7 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
                 type = GreenCardType.Domestic,
                 originType = OriginType.Vaccination,
                 credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG),
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
@@ -68,7 +68,7 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
                 type = GreenCardType.Domestic,
                 originType = OriginType.Vaccination,
                 credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG),
             ),
             qrCodeHeight = 0, 
             qrCodeWidth = 0
@@ -83,7 +83,7 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
                 type = GreenCardType.Domestic,
                 originType = OriginType.Vaccination,
                 credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG),
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
@@ -98,7 +98,7 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
                 type = GreenCardType.Domestic,
                 originType = OriginType.Vaccination,
                 credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG),
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
@@ -113,7 +113,7 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
                 type = GreenCardType.Eu,
                 originType = OriginType.Vaccination,
                 credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(GreenCardDisclosurePolicy.ThreeG),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG),
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0

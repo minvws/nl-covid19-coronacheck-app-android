@@ -11,7 +11,7 @@ import nl.rijksoverheid.ctr.shared.models.ErrorResult
  * Inserts the green cards fetched from remote into the database
  */
 interface SyncRemoteGreenCardsUseCase {
-    suspend fun execute(remoteGreenCards: RemoteGreenCards): SyncRemoteGreenCardsResult
+    suspend fun execute(remoteGreenCards: RemoteGreenCards, secretKey: String): SyncRemoteGreenCardsResult
 }
 
 class SyncRemoteGreenCardsUseCaseImpl(
@@ -21,7 +21,7 @@ class SyncRemoteGreenCardsUseCaseImpl(
     private val mobileCoreWrapper: MobileCoreWrapper
     ): SyncRemoteGreenCardsUseCase {
 
-    override suspend fun execute(remoteGreenCards: RemoteGreenCards): SyncRemoteGreenCardsResult {
+    override suspend fun execute(remoteGreenCards: RemoteGreenCards, secretKey: String): SyncRemoteGreenCardsResult {
         try {
             // Create credentials
             val domesticCredentials = if (remoteGreenCards.domesticGreencard != null) {
@@ -40,6 +40,7 @@ class SyncRemoteGreenCardsUseCaseImpl(
                     createDomesticGreenCardUseCase.create(
                         greenCard = domesticGreenCard,
                         domesticCredentials = it,
+                        secretKey = secretKey
                     )
                 }
             }
