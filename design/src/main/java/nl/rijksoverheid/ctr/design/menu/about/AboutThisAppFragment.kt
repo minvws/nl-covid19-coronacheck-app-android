@@ -30,8 +30,10 @@ import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.Environment
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -107,7 +109,7 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         }
 
         // On test and acceptance builds show buttons to set policy locally
-        if (BuildConfig.DEBUG || context?.packageName == "nl.rijksoverheid.ctr.holder.acc") {
+        if (BuildConfig.DEBUG || Environment.get(requireContext()) is Environment.Acc || Environment.get(requireContext()) is Environment.Tst) {
             bindDebugPolicyButtons(binding)
         }
     }
