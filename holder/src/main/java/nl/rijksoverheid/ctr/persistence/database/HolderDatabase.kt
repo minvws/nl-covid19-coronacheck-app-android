@@ -97,9 +97,15 @@ val MIGRATION_5_6 = object: Migration(5,6) {
     }
 }
 
+val MIGRATION_6_7 = object: Migration(6, 7) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("CREATE TABLE secret_key (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, green_card_id INTEGER NOT NULL, secret_key TEXT NOT NULL, FOREIGN KEY(green_card_id) REFERENCES green_card(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
+    }
+}
+
 @Database(
-    entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class, OriginEntity::class],
-    version = 6
+    entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class, OriginEntity::class, SecretKeyEntity::class],
+    version = 7
 )
 @TypeConverters(HolderDatabaseConverter::class)
 abstract class HolderDatabase : RoomDatabase() {
@@ -108,6 +114,7 @@ abstract class HolderDatabase : RoomDatabase() {
     abstract fun credentialDao(): CredentialDao
     abstract fun eventGroupDao(): EventGroupDao
     abstract fun originDao(): OriginDao
+    abstract fun secretKeyDao(): SecretKeyDao
 
     companion object {
         fun createInstance(
@@ -119,7 +126,7 @@ abstract class HolderDatabase : RoomDatabase() {
                 SupportFactory(SQLiteDatabase.getBytes(secretKeyUseCase.json().toCharArray()))
             return Room
                 .databaseBuilder(context, HolderDatabase::class.java, "holder-database")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
                 .apply {
                     if (isProd) {
                         openHelperFactory(supportFactory)
