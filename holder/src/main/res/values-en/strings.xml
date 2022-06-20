@@ -59,7 +59,7 @@
   <string name="accessibility_label_my_overview_test_result_personal_data">Your personal data: %1$s %2$s %3$s %4$s</string>
   <string name="accessibility_label_selected">Selected</string>
   <string name="accessibility_label_not_selected">Not selected</string>
-  <string name="my_overview_test_result_expires_in_hours_minutes">Expires in %1$s, %2$s</string>
+  <string name="my_overview_test_result_expires_in_hours_minutes">Expires in %1$s and %2$s</string>
   <string name="my_overview_test_result_expires_in_minutes">Expires in %1$s</string>
   <string name="my_overview_test_result_footer">Show QR code at the entrance</string>
   <string name="my_overview_test_result_button">View QR code</string>
@@ -273,7 +273,7 @@
   <string name="qr_card_vaccination_title_eu">Vaccination date:</string>
   <string name="qr_card_test_title_eu">Test date:</string>
   <string name="qr_card_recovery_title_eu">Recovery date:</string>
-  <string name="qr_card_validity_valid">valid until %1$s</string>
+  <string name="qr_card_validity_valid">Valid until %1$s</string>
   <string name="qr_card_validity_future_days">automatically becomes valid in %1$s days</string>
   <string name="qr_card_validity_future_day">automatically becomes valid in %1$s day</string>
   <string name="qr_card_validity_future_hours">automatically becomes valid in %1$s hours</string>

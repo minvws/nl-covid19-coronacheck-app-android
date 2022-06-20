@@ -273,7 +273,7 @@
   <string name="qr_card_vaccination_title_eu">Vaccinatiedatum:</string>
   <string name="qr_card_test_title_eu">Testdatum:</string>
   <string name="qr_card_recovery_title_eu">Hersteldatum:</string>
-  <string name="qr_card_validity_valid">geldig tot %1$s</string>
+  <string name="qr_card_validity_valid">Geldig tot %1$s</string>
   <string name="qr_card_validity_future_days">wordt automatisch geldig over %1$s dagen</string>
   <string name="qr_card_validity_future_day">wordt automatisch geldig over %1$s dag</string>
   <string name="qr_card_validity_future_hours">wordt automatisch geldig over %1$s uur</string>
