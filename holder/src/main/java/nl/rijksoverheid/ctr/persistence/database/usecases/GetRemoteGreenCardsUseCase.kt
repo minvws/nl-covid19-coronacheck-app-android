@@ -4,7 +4,6 @@ import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
-import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
@@ -20,8 +19,7 @@ interface GetRemoteGreenCardsUseCase {
 
 class GetRemoteGreenCardsUseCaseImpl(
     private val coronaCheckRepository: CoronaCheckRepository,
-    private val mobileCoreWrapper: MobileCoreWrapper,
-    private val secretKeyUseCase: SecretKeyUseCase,
+    private val mobileCoreWrapper: MobileCoreWrapper
 ) : GetRemoteGreenCardsUseCase {
 
     override suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult {
@@ -37,7 +35,7 @@ class GetRemoteGreenCardsUseCaseImpl(
 
             val commitmentMessage = try {
                 mobileCoreWrapper.createCommitmentMessage(
-                    secretKey = secretKeyUseCase.json().toByteArray(),
+                    secretKey = "tmp".toByteArray(),
                     prepareIssueMessage = prepareIssue.prepareIssueMessage
                 )
             } catch (e: Exception) {

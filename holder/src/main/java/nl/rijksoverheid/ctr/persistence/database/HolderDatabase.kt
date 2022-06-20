@@ -9,10 +9,11 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
-import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.converters.HolderDatabaseConverter
 import nl.rijksoverheid.ctr.persistence.database.dao.*
 import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -97,9 +98,11 @@ val MIGRATION_5_6 = object: Migration(5,6) {
     }
 }
 
-val MIGRATION_6_7 = object: Migration(6, 7) {
+fun MIGRATION_6_7(persistenceManager: PersistenceManager, newPassPhrase: String) = object: Migration(6, 7) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE secret_key (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, green_card_id INTEGER NOT NULL, secret_key TEXT NOT NULL, FOREIGN KEY(green_card_id) REFERENCES green_card(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
+        database.query("PRAGMA rekey = '$newPassPhrase';", emptyArray())
+        persistenceManager.saveDatabasePassPhrase(newPassPhrase)
     }
 }
 
@@ -119,14 +122,15 @@ abstract class HolderDatabase : RoomDatabase() {
     companion object {
         fun createInstance(
             context: Context,
-            secretKeyUseCase: SecretKeyUseCase,
+            persistenceManager: PersistenceManager,
+            androidUtil: AndroidUtil,
             isProd: Boolean = true
         ): HolderDatabase {
             val supportFactory =
-                SupportFactory(SQLiteDatabase.getBytes(secretKeyUseCase.json().toCharArray()))
+                SupportFactory(SQLiteDatabase.getBytes(persistenceManager.getDatabasePassPhrase()?.toCharArray()))
             return Room
                 .databaseBuilder(context, HolderDatabase::class.java, "holder-database")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7(persistenceManager, androidUtil.generateRandomKey().decodeToString()))
                 .apply {
                     if (isProd) {
                         openHelperFactory(supportFactory)

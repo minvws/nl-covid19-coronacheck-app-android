@@ -13,7 +13,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.dashboardModule
 import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.*
-import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -34,7 +33,6 @@ import org.koin.core.module.Module
  */
 open class HolderApplication : SharedApplication(), Configuration.Provider {
 
-    private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
     private val holderWorkerFactory: WorkerFactory by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
@@ -44,7 +42,6 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         storageModule,
         greenCardUseCasesModule,
         eventsUseCasesModule,
-        secretUseCasesModule,
         testProvidersUseCasesModule,
         utilsModule(BuildConfig.VERSION_CODE),
         viewModels,
@@ -82,9 +79,6 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
                 designModule
             )
         }
-
-        // Generate and store secret key to be used by rest of the app
-        secretKeyUseCase.persist()
 
         // Create default wallet in database if empty
         GlobalScope.launch {

@@ -21,6 +21,7 @@ val storageModule = module {
         HolderDatabase.createInstance(
             androidContext(),
             get(),
+            get(),
             Environment.get(androidContext()) is Environment.Prod
         )
     }

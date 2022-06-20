@@ -45,8 +45,7 @@ class QrCodeUseCaseImpl(
     ): Bitmap =
         withContext(Dispatchers.IO) {
 
-            val secretKey = persistenceManager.getSecretKeyJson()
-                ?: throw IllegalStateException("Secret key should exist")
+            val secretKey = "tmp"
 
             val qrCodeContent = if (shouldDisclose is QrCodeFragmentData.ShouldDisclose.Disclose) mobileCoreWrapper.disclose(
                 secretKey.toByteArray(),
