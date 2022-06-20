@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.persistence.database
 
+import android.content.ContentValues
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
@@ -11,6 +12,7 @@ import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+
 
 @RunWith(RobolectricTestRunner::class)
 class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
@@ -55,7 +57,40 @@ class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
     }
 
     @Test
-    fun testMigration6To7() {
+    fun `Database v6 to v7 migration migrates successfully with existing domestic green card`() {
+        // Add a secret to to our preferences to migrate
+        persistenceManager.saveDatabasePassPhrase("123456789")
+
+        // Our database before the migration
+        val dbV6 = helper.createDatabase(DATABASE_NAME, 6)
+
+        // Insert green card entity
+        val insertValues = ContentValues()
+        insertValues.put("id", 1)
+        insertValues.put("wallet_id", 1)
+        insertValues.put("type", "domestic")
+        dbV6.insert("green_card", 0, insertValues)
+
+        dbV6.close()
+
+        // The database after the migration
+        val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager, "123"))
+
+        // Assert new secret key is stored in preference
+        assertEquals("123", persistenceManager.getDatabasePassPhrase())
+
+        // Assert that the secret key from shared preferences is migrated to secret key table
+        val secretKeyCursor = dbV7.query("SELECT * FROM secret_key")
+        secretKeyCursor.moveToFirst()
+        assertEquals(1, secretKeyCursor.count)
+        assertEquals("123456789", secretKeyCursor.getString(secretKeyCursor.getColumnIndex("secret")))
+    }
+
+    @Test
+    fun `Database v6 to v7 migration migrates successfully without domestic green card`() {
+        // Add a secret to to our preferences to migrate
+        persistenceManager.saveDatabasePassPhrase("123456789")
+
         // Our database before the migration
         val dbV6 = helper.createDatabase(DATABASE_NAME, 6)
         dbV6.close()
@@ -63,11 +98,11 @@ class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
         // The database after the migration
         val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager, "123"))
 
-        // Assert no errors
-        val cursor = dbV7.query("SELECT * FROM event_group")
-        assertNotNull(cursor)
-
         // Assert new secret key is stored in preference
         assertEquals("123", persistenceManager.getDatabasePassPhrase())
+
+        // Assert that the secret key from shared preferences is migrated to secret key table
+        val secretKeyCursor = dbV7.query("SELECT * FROM secret_key")
+        assertEquals(0, secretKeyCursor.count)
     }
 }

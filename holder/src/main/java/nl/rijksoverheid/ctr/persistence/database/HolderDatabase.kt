@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.persistence.database
 
+import android.content.ContentValues
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -14,6 +15,7 @@ import nl.rijksoverheid.ctr.persistence.database.converters.HolderDatabaseConver
 import nl.rijksoverheid.ctr.persistence.database.dao.*
 import nl.rijksoverheid.ctr.persistence.database.entities.*
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -98,10 +100,33 @@ val MIGRATION_5_6 = object: Migration(5,6) {
     }
 }
 
+/**
+ * [PersistenceManager.getDatabasePassPhrase] used to hold the value generated from [MobileCoreWrapper.generateHolderSk].
+ * This value would both be used for the encryption of the database (which is incorrect) and as secret key for the QR's.
+ * This migration decouples that. It uses [PersistenceManager.getDatabasePassPhrase] (with a new key) only as the key for the database
+ * and it creates a new table linked to the domestic green card that holds the value of [MobileCoreWrapper.generateHolderSk].
+ * This means that during the migration, the old "database pass phrase" is the same as the "secret key".
+ * Because of that, during this migration, if a domestic green card exists then it transfers that preference key to the newly created table
+ * so signing of the qr's still work as expected.
+ */
 fun MIGRATION_6_7(persistenceManager: PersistenceManager, newPassPhrase: String) = object: Migration(6, 7) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("CREATE TABLE secret_key (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, green_card_id INTEGER NOT NULL, secret_key TEXT NOT NULL, FOREIGN KEY(green_card_id) REFERENCES green_card(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
+        database.execSQL("CREATE TABLE secret_key (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, green_card_id INTEGER NOT NULL, secret TEXT NOT NULL, FOREIGN KEY(green_card_id) REFERENCES green_card(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
         database.query("PRAGMA rekey = '$newPassPhrase';", emptyArray())
+
+        val domesticGreenCardCursor = database.query("SELECT * FROM green_card WHERE type = 'domestic'")
+
+        // If we have a domestic green card migrate old secret key
+        if (domesticGreenCardCursor.count == 1 && persistenceManager.getDatabasePassPhrase() != null) {
+            domesticGreenCardCursor.moveToFirst()
+            val greenCardIdIndex = domesticGreenCardCursor.getColumnIndex("id")
+            val domesticGreenCardId = domesticGreenCardCursor.getInt(greenCardIdIndex)
+            val insertValues = ContentValues()
+            insertValues.put("green_card_id", domesticGreenCardId)
+            insertValues.put("secret", persistenceManager.getDatabasePassPhrase()) // The old database pass phrase is the new secret key
+            database.insert("secret_key", 0, insertValues)
+        }
+
         persistenceManager.saveDatabasePassPhrase(newPassPhrase)
     }
 }

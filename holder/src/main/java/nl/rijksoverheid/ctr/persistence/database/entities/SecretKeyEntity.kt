@@ -24,5 +24,5 @@ import androidx.room.PrimaryKey
 data class SecretKeyEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "green_card_id") val greenCardId: Int,
-    @ColumnInfo(name = "secret_key") val secretKey: String
+    @ColumnInfo(name = "secret") val secretKey: String
 )

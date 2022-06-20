@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "5e001a27b7d00e38344b0c0080593390",
+    "identityHash": "5a43cc77d0d33546ea8833da3dc1587d",
     "entities": [
       {
         "tableName": "wallet",
@@ -311,7 +311,7 @@
       },
       {
         "tableName": "secret_key",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `green_card_id` INTEGER NOT NULL, `secret_key` TEXT NOT NULL, FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `green_card_id` INTEGER NOT NULL, `secret` TEXT NOT NULL, FOREIGN KEY(`green_card_id`) REFERENCES `green_card`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -327,7 +327,7 @@
           },
           {
             "fieldPath": "secretKey",
-            "columnName": "secret_key",
+            "columnName": "secret",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -357,7 +357,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5e001a27b7d00e38344b0c0080593390')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5a43cc77d0d33546ea8833da3dc1587d')"
     ]
   }
 }
