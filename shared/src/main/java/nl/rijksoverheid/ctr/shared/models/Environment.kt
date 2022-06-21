@@ -10,6 +10,7 @@ import android.content.Context
  *
  */
 sealed class Environment {
+    object Tst: Environment()
     object Acc: Environment()
     object Prod: Environment()
 
@@ -17,6 +18,8 @@ sealed class Environment {
         fun get(context: Context): Environment {
             return if (context.packageName.contains(".acc")) {
                 Acc
+            } else if (context.packageName.contains(".tst")) {
+                Tst
             } else {
                 Prod
             }
