@@ -216,7 +216,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
         val actual = util.getExpiryText(result)
 
-        assertEquals("Expires in 2 hours, 15 minutes", actual)
+        assertEquals("Expires in 2 hours and 15 minutes", actual)
     }
 
     @Test
@@ -231,7 +231,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
         val actual = util.getExpiryText(result)
 
-        assertEquals("Expires in 1 hour, 15 minutes", actual)
+        assertEquals("Expires in 1 hour and 15 minutes", actual)
     }
 
     @Test
@@ -246,7 +246,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
         val actual = util.getExpiryText(result)
 
-        assertEquals("Expires in 2 hours, 1 minute", actual)
+        assertEquals("Expires in 2 hours and 1 minute", actual)
     }
 
     @Test
@@ -261,7 +261,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
         val actual = util.getExpiryText(result)
 
-        assertEquals("Expires in 1 hour, 1 minute", actual)
+        assertEquals("Expires in 1 hour and 1 minute", actual)
     }
 
     @Test
@@ -276,7 +276,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
         val actual = util.getExpiryText(result)
 
-        assertEquals("Expires in 2 days, 5 hours", actual)
+        assertEquals("Expires in 2 days and 5 hours", actual)
     }
 
     @Test
@@ -291,7 +291,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
         val actual = util.getExpiryText(result)
 
-        assertEquals("Expires in 1 day, 1 hour", actual)
+        assertEquals("Expires in 1 day and 1 hour", actual)
     }
 
     @Test
