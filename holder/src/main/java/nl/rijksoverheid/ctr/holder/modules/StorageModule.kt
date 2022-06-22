@@ -21,12 +21,13 @@ val storageModule = module {
         HolderDatabase.createInstance(
             androidContext(),
             get(),
+            get(),
             Environment.get(androidContext()) is Environment.Prod
         )
     }
 
     factory<HolderDatabaseSyncer> {
-        HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get(), get(), get(), get())
+        HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     single<PersistenceManager> {

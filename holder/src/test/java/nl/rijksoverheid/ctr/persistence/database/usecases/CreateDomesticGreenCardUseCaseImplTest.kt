@@ -92,7 +92,7 @@ class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
             )
         )
 
-        usecase.create(remoteGreenCard, domesticCredentials)
+        usecase.create(remoteGreenCard, domesticCredentials, "")
 
         // We should have 1 green card
         val expectedGreenCard = GreenCard(

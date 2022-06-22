@@ -11,8 +11,9 @@ import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
  *
  */
 interface PersistenceManager {
-    fun saveSecretKeyJson(json: String)
-    fun getSecretKeyJson(): String?
+    fun saveDatabasePassPhrase(passPhrase: String)
+    fun getDatabasePassPhrase(): String?
+    fun deleteDatabasePassPhrase()
     fun saveCredentials(credentials: String)
     fun getCredentials(): String?
     fun deleteCredentials()
@@ -57,12 +58,16 @@ class SharedPreferencesPersistenceManager(
         const val POLICY_SCREEN_SEEN = "POLICY_SCREEN_SEEN"
     }
 
-    override fun saveSecretKeyJson(json: String) {
-        sharedPreferences.edit().putString(SECRET_KEY_JSON, json).commit()
+    override fun saveDatabasePassPhrase(passPhrase: String) {
+        sharedPreferences.edit().putString(SECRET_KEY_JSON, passPhrase).commit()
     }
 
-    override fun getSecretKeyJson(): String? {
+    override fun getDatabasePassPhrase(): String? {
         return sharedPreferences.getString(SECRET_KEY_JSON, null)
+    }
+
+    override fun deleteDatabasePassPhrase() {
+        sharedPreferences.edit().remove(SECRET_KEY_JSON).commit()
     }
 
     override fun saveCredentials(credentials: String) {

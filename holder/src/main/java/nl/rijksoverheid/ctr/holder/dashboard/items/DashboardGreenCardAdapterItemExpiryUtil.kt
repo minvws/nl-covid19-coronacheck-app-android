@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -25,7 +26,9 @@ import java.time.temporal.ChronoUnit
 
 interface DashboardGreenCardAdapterItemExpiryUtil {
     sealed class ExpireCountDown {
-        data class Show(val hoursLeft: Long, val minutesLeft: Long) : ExpireCountDown()
+        data class Show(val daysLeft: Long,
+                        val hoursLeft: Long,
+                        val minutesLeft: Long) : ExpireCountDown()
         object Hide : ExpireCountDown()
     }
 
@@ -52,6 +55,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
 
     private val minutesInSeconds = 60
     private val hoursInSeconds = 60 * 60
+    private val daysInSeconds = 60 * 60 * 24
 
     override fun getExpireCountdown(
         expireDate: OffsetDateTime,
@@ -62,13 +66,14 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
         return if (hoursBetweenExpiration >= getExpiryHoursForType(type)) {
             DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Hide
         } else {
-            var diff =
-                expireDate.toEpochSecond() - OffsetDateTime.now(clock)
-                    .toEpochSecond()
+            var diff = expireDate.toEpochSecond() - OffsetDateTime.now(clock).toEpochSecond()
+            val daysUntilFinish = diff / daysInSeconds
+            diff %= daysInSeconds
             val hoursUntilFinish = diff / hoursInSeconds
             diff %= hoursInSeconds
             val minutesUntilFinish = (diff / minutesInSeconds).coerceAtLeast(1)
             DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(
+                daysLeft = daysUntilFinish,
                 hoursLeft = hoursUntilFinish,
                 minutesLeft = minutesUntilFinish
             )
@@ -76,25 +81,40 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
     }
 
     private fun getExpiryHoursForType(type: OriginType): Int {
-        return if (type == OriginType.Test) 6 else 24
+        return if (type == OriginType.Test) {
+            TimeUnit.HOURS.toHours(6).toInt()
+         } else {
+            TimeUnit.DAYS.toHours(21).toInt()
+         }
     }
 
     override fun getExpiryText(
         result: DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show
     ): String {
+        val daysLeft = result.daysLeft.toInt()
         val hoursLeft = result.hoursLeft.toInt()
         val minutesLeft = result.minutesLeft.toInt()
-        return if (hoursLeft == 0) {
-            context.getString(
-                R.string.my_overview_test_result_expires_in_minutes,
-                "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}"
-            )
-        } else {
-            context.getString(
-                R.string.my_overview_test_result_expires_in_hours_minutes,
-                "$hoursLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_hours, hoursLeft)}",
-                "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}",
-            )
+        return when {
+            daysLeft >= 1 -> {
+                context.getString(
+                    R.string.my_overview_test_result_expires_in_hours_minutes,
+                    "$daysLeft ${context.resources.getQuantityString(R.plurals.general_days, daysLeft)}",
+                    "$hoursLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_hours, hoursLeft)}",
+                )
+            }
+            hoursLeft >= 1 -> {
+                context.getString(
+                    R.string.my_overview_test_result_expires_in_hours_minutes,
+                    "$hoursLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_hours, hoursLeft)}",
+                    "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}",
+                )
+            }
+            else -> {
+                context.getString(
+                    R.string.my_overview_test_result_expires_in_minutes,
+                    "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}"
+                )
+            }
         }
     }
 

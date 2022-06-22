@@ -55,10 +55,11 @@ class SyncRemoteGreenCardsUseCaseImplTest {
                 domesticGreencard = null,
                 euGreencards = listOf(euGreenCard),
                 blobExpireDates = listOf()
-            )
+            ),
+            secretKey = ""
         )
 
-        coVerify(exactly = 0) { createDomesticGreenCardUseCase.create(any(), any()) }
+        coVerify(exactly = 0) { createDomesticGreenCardUseCase.create(any(), any(), any()) }
         coVerify(exactly = 1) { createEuGreenCardUseCase.create(euGreenCard) }
     }
 
@@ -93,10 +94,11 @@ class SyncRemoteGreenCardsUseCaseImplTest {
                 domesticGreencard = domesticGreenCard,
                 euGreencards = listOf(),
                 blobExpireDates = listOf()
-            )
+            ),
+            secretKey = ""
         )
 
-        coVerify(exactly = 1) { createDomesticGreenCardUseCase.create(domesticGreenCard, domesticCredentials) }
+        coVerify(exactly = 1) { createDomesticGreenCardUseCase.create(domesticGreenCard, domesticCredentials, any()) }
         coVerify(exactly = 0) { createEuGreenCardUseCase.create(any()) }
     }
 
@@ -107,7 +109,8 @@ class SyncRemoteGreenCardsUseCaseImplTest {
                 domesticGreencard = null,
                 euGreencards = listOf(),
                 blobExpireDates = listOf()
-            )
+            ),
+            secretKey = ""
         )
 
         coVerify(exactly = 1) { greenCardDao.deleteAll() }

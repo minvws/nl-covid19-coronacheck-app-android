@@ -56,7 +56,6 @@
   <string name="terms_of_use">Gebruikersvoorwaarden</string>
   <string name="my_overview_test_result_title">Mijn bewijs</string>
   <string name="my_overview_test_result_international_title">Internationale QR</string>
-  <string name="my_overview_test_result_validity">Geldig tot %1$s</string>
   <string name="accessibility_label_my_overview_test_result_personal_data">Jouw persoonsgegevens: %1$s %2$s %3$s %4$s</string>
   <string name="accessibility_label_selected">Geselecteerd</string>
   <string name="accessibility_label_not_selected">Niet geselecteerd</string>
@@ -274,7 +273,7 @@
   <string name="qr_card_vaccination_title_eu">Vaccinatiedatum:</string>
   <string name="qr_card_test_title_eu">Testdatum:</string>
   <string name="qr_card_recovery_title_eu">Hersteldatum:</string>
-  <string name="qr_card_validity_valid">geldig tot %1$s</string>
+  <string name="qr_card_validity_valid">Geldig tot %1$s</string>
   <string name="qr_card_validity_future_days">wordt automatisch geldig over %1$s dagen</string>
   <string name="qr_card_validity_future_day">wordt automatisch geldig over %1$s dag</string>
   <string name="qr_card_validity_future_hours">wordt automatisch geldig over %1$s uur</string>
@@ -784,4 +783,9 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_qr_code_expired_explanation_url">https://coronacheck.nl</string>
   <string name="holder_qr_code_hidden_explanation_action">Lees meer op CoronaCheck.nl</string>
   <string name="holder_qr_code_hidden_explanation_url">https://coronacheck.nl</string>
+  <string name="holder_showQR_euAboutVaccination_daysSince">Dagen sinds vaccinatie / Days since vaccination:</string>
+  <plurals name="general_days">
+    <item quantity="one">dag</item>
+    <item quantity="other">dagen</item>
+  </plurals>
 </resources>

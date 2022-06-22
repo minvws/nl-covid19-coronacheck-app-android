@@ -9,13 +9,13 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 interface CreateDomesticGreenCardUseCase {
-    suspend fun create(greenCard: RemoteGreenCards.DomesticGreenCard, domesticCredentials: List<DomesticCredential>)
+    suspend fun create(greenCard: RemoteGreenCards.DomesticGreenCard, domesticCredentials: List<DomesticCredential>, secretKey: String)
 }
 
 class CreateDomesticGreenCardUseCaseImpl(
     private val holderDatabase: HolderDatabase,
 ): CreateDomesticGreenCardUseCase {
-    override suspend fun create(greenCard: RemoteGreenCards.DomesticGreenCard, domesticCredentials: List<DomesticCredential>) {
+    override suspend fun create(greenCard: RemoteGreenCards.DomesticGreenCard, domesticCredentials: List<DomesticCredential>, secretKey: String) {
         // Create green card
         val localDomesticGreenCardId = holderDatabase.greenCardDao().insert(
             GreenCardEntity(
@@ -23,6 +23,16 @@ class CreateDomesticGreenCardUseCaseImpl(
                 type = GreenCardType.Domestic
             )
         )
+
+        // Save secret key
+        holderDatabase
+            .secretKeyDao()
+            .insert(
+                entity = SecretKeyEntity(
+                    greenCardId = localDomesticGreenCardId.toInt(),
+                    secretKey = secretKey
+                )
+            )
 
         // Create origins
         greenCard.origins.forEach { remoteOrigin ->

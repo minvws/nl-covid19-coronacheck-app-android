@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import java.time.Clock
 
@@ -30,7 +31,7 @@ interface QrCodeUseCase {
 }
 
 class QrCodeUseCaseImpl(
-    private val persistenceManager: PersistenceManager,
+    private val holderDatabase: HolderDatabase,
     private val qrCodeUtil: QrCodeUtil,
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val clockDeviationUseCase: ClockDeviationUseCase
@@ -44,16 +45,20 @@ class QrCodeUseCaseImpl(
         errorCorrectionLevel: ErrorCorrectionLevel
     ): Bitmap =
         withContext(Dispatchers.IO) {
-
-            val secretKey = persistenceManager.getSecretKeyJson()
-                ?: throw IllegalStateException("Secret key should exist")
-
-            val qrCodeContent = if (shouldDisclose is QrCodeFragmentData.ShouldDisclose.Disclose) mobileCoreWrapper.disclose(
-                secretKey.toByteArray(),
-                credential,
-                Clock.systemDefaultZone().millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis(),
-                shouldDisclose.disclosurePolicy
-            ) else String(credential)
+            val qrCodeContent = when (shouldDisclose) {
+                is QrCodeFragmentData.ShouldDisclose.Disclose -> {
+                    val secretKey = holderDatabase.secretKeyDao().get(shouldDisclose.greenCardId).secretKey
+                    mobileCoreWrapper.disclose(
+                        secretKey.toByteArray(),
+                        credential,
+                        Clock.systemDefaultZone().millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis(),
+                        shouldDisclose.disclosurePolicy
+                    )
+                }
+                is QrCodeFragmentData.ShouldDisclose.DoNotDisclose -> {
+                    String(credential)
+                }
+            }
 
             qrCodeUtil.createQrCode(
                 qrCodeContent = qrCodeContent,

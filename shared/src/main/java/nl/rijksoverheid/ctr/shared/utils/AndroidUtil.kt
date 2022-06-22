@@ -91,11 +91,7 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
     }
 
     override fun generateRandomKey(): ByteArray = ByteArray(32).apply {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            SecureRandom.getInstanceStrong().nextBytes(this)
-        } else {
-            SecureRandom().nextBytes(this)
-        }
+        SecureRandom().nextBytes(this)
     }
 
     override fun getFirstInstallTime(): OffsetDateTime {

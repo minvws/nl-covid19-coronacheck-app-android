@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.persistence.database.dao
 import androidx.room.*
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.SecretKeyEntity
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 
 /*
@@ -20,6 +21,9 @@ interface GreenCardDao {
 
     @Query("SELECT * FROM green_card WHERE type = :type AND wallet_id = :walletId")
     suspend fun getAll(type: GreenCardType, walletId: Int): List<GreenCard>
+
+    @Query("SELECT * FROM green_card WHERE id = :greenCardId")
+    suspend fun get(greenCardId: Int): GreenCardEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: GreenCardEntity): Long

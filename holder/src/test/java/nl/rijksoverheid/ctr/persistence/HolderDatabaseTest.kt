@@ -19,6 +19,8 @@ import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import java.io.IOException
 import java.time.*
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -142,6 +144,38 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
         )
 
         assertEquals(expiryDate, db.eventGroupDao().getAll().first().expiryDate)
+    }
+
+    @Test
+    fun `Removing green card removes secret key as well`() = runBlocking {
+        val wallet = getDummyWallet()
+
+        // Insert entities into database
+        insertWalletInDatabase(
+            wallet = wallet
+        )
+
+        // Insert secret key
+        val secretKey = SecretKeyEntity(
+            id = 1,
+            greenCardId = 1,
+            secretKey = "123"
+        )
+        db.secretKeyDao().insert(
+            entity = secretKey
+        )
+
+        // We have a green card and a secret key
+        val greenCard = db.greenCardDao().get(1)
+        assertNotNull(greenCard)
+        assertEquals(secretKey, db.secretKeyDao().get(1))
+
+        // If we remove the green card
+        db.greenCardDao().delete(greenCard)
+
+        // The green card and the secret key is removed
+        assertNull(db.greenCardDao().get(1))
+        assertNull(db.secretKeyDao().get(1))
     }
 
     private fun getDummyWallet() = Wallet(

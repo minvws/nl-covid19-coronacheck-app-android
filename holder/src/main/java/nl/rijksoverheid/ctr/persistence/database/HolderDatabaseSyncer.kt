@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -43,6 +44,7 @@ interface HolderDatabaseSyncer {
 }
 
 class HolderDatabaseSyncerImpl(
+    private val mobileCoreWrapper: MobileCoreWrapper,
     private val holderDatabase: HolderDatabase,
     private val greenCardUtil: GreenCardUtil,
     private val workerManagerUtil: WorkerManagerUtil,
@@ -73,9 +75,13 @@ class HolderDatabaseSyncerImpl(
                         return@withContext DatabaseSyncerResult.Success()
                     }
 
+                    // Generate a new secret key
+                    val secretKey = mobileCoreWrapper.generateHolderSk()
+
                     // Sync with remote
                     val remoteGreenCardsResult = getRemoteGreenCardsUseCase.get(
-                        events = events
+                        events = events,
+                        secretKey = secretKey
                     )
 
                     when (remoteGreenCardsResult) {
@@ -124,7 +130,8 @@ class HolderDatabaseSyncerImpl(
 
                             // Insert green cards in database
                             val result = syncRemoteGreenCardsUseCase.execute(
-                                remoteGreenCards = remoteGreenCards
+                                remoteGreenCards = remoteGreenCards,
+                                secretKey = secretKey
                             )
 
                             // Clean up expired events in the database
