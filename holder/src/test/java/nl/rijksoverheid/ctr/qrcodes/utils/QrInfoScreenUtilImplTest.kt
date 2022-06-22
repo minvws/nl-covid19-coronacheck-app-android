@@ -14,12 +14,16 @@ import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrInfoScreenUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
+import nl.rijksoverheid.ctr.holder.utils.LocalDateUtilImpl
 import org.json.JSONObject
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl")
@@ -32,7 +36,8 @@ class QrInfoScreenUtilImplTest : AutoCloseKoinTest() {
                 ApplicationProvider.getApplicationContext()
             ),
             CountryUtilImpl(),
-            fakeCachedAppConfigUseCase()
+            LocalDateUtilImpl(Clock.fixed(Instant.parse("2022-01-01T00:00:00.00Z"), ZoneId.of("UTC")), ApplicationProvider.getApplicationContext()),
+            fakeCachedAppConfigUseCase(),
         )
 
     @Test
@@ -50,6 +55,19 @@ class QrInfoScreenUtilImplTest : AutoCloseKoinTest() {
         assertEquals(
             "*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.",
             infoScreen.footer
+        )
+    }
+
+    @Test
+    fun `getForEuropeanVaccinationQr returns correct info`() {
+        val jsonObject =
+            JSONObject("{\"credentialVersion\":1,\"issuer\":\"NL\",\"issuedAt\":1655458911,\"expirationTime\":1657885768,\"dcc\":{\"ver\":\"1.3.0\",\"dob\":\"1960-01-01\",\"nam\":{\"fn\":\"van Geer\",\"fnt\":\"VAN<GEER\",\"gn\":\"Corrie\",\"gnt\":\"CORRIE\"},\"v\":[{\"tg\":\"840539006\",\"vp\":\"1119349007\",\"mp\":\"EU\\/1\\/20\\/1528\",\"ma\":\"ORG-100030215\",\"dn\":2,\"sd\":2,\"dt\":\"2021-03-17\",\"co\":\"NL\",\"is\":\"Ministry of Health Welfare and Sport\",\"ci\":\"URN:UCI:01:NL:RINECVIKHZDWHFQ2VKAG42#I\"}],\"t\":null,\"r\":null}}")
+
+        val infoScreen = infoScreenUtil.getForEuropeanVaccinationQr(jsonObject)
+
+        assertEquals(
+            "In jouw internationale QR-code staan de volgende gegevens:<br/><br/>Naam / Name:<br/><b>van Geer, Corrie</b><br/><br/>Geboortedatum / Date of birth*:<br/><b>01-01-1960</b><br/><br/>Ziekteverwekker / Disease targeted:<br/><b>COVID-19</b><br/><br/>Vaccin / Vaccine:<br/><b>EU/1/20/1528</b><br/><br/>Type vaccin / Vaccine medicinal product:<br/><b>1119349007</b><br/><br/>Producent / Vaccine manufacturer:<br/><b>ORG-100030215</b><br/><br/>Dosis / Number in series of doses:<br/><b>2 / 2</b><br/><br/>Vaccinatiedatum / Date of vaccination*:<br/><b>17-03-2021</b><br/><br/>Dagen sinds vaccinatie / Days since vaccination:<br/><b>290 dagen</b><br/><br/>Gevaccineerd in / Member state of vaccination:<br/><b>Netherlands</b><br/><br/>Afgever certificaat / Certificate issuer:<br/><b>Ministerie van VWS / Ministry of Health, Welfare and Sport</b><br/><br/>Uniek certificaatnummer / Unique certificate identifier:<br/><b>URN:UCI:01:NL:RINECVIKHZDWHFQ2VKAG42#I</b><br/><br/>",
+            infoScreen.description
         )
     }
 
