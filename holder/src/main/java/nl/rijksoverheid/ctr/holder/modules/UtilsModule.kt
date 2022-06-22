@@ -20,6 +20,8 @@ import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
+import nl.rijksoverheid.ctr.holder.utils.LocalDateUtil
+import nl.rijksoverheid.ctr.holder.utils.LocalDateUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -50,6 +52,7 @@ fun utilsModule(versionCode: Int) = module {
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
     factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
+    factory<LocalDateUtil> { LocalDateUtilImpl(get(), get()) }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<DashboardPageInfoItemHandlerUtil> { DashboardPageInfoItemHandlerUtilImpl(get(), get(), get()) }
     factory<YourEventFragmentEndStateUtil> {

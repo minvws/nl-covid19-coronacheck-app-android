@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
+import nl.rijksoverheid.ctr.holder.utils.LocalDateUtil
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.ext.locale
@@ -40,7 +41,7 @@ class QrInfoScreenUtilImpl(
     private val application: Application,
     private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
     private val countryUtil: CountryUtil,
-    private val clock: Clock,
+    private val localDateUtil: LocalDateUtil,
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : QrInfoScreenUtil {
 
@@ -210,21 +211,7 @@ class QrInfoScreenUtilImpl(
 
         val (vaccinationDate, vaccinationDays) = vaccination.getStringOrNull("dt")
             ?.let { vaccinationDate ->
-                try {
-                    val localDate = LocalDate.parse(vaccinationDate, DateTimeFormatter.ISO_DATE)
-                    val days = LocalDate.now(clock).toEpochDay() - localDate.toEpochDay()
-                    Pair(
-                        localDate.formatDayMonthYearNumerical(),
-                        "$days ${
-                            application.resources.getQuantityString(
-                                R.plurals.general_days,
-                                days.toInt()
-                            )
-                        }"
-                    )
-                } catch (e: Exception) {
-                    Pair("", "")
-                }
+                localDateUtil.dateAndDaysSince(vaccinationDate)
             } ?: Pair("", "")
 
         val countryCode = vaccination.getStringOrNull("co")

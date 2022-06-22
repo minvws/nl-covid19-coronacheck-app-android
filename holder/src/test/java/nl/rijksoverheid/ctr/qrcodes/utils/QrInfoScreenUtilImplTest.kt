@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrInfoScreenUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
+import nl.rijksoverheid.ctr.holder.utils.LocalDateUtilImpl
 import org.json.JSONObject
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,7 +36,7 @@ class QrInfoScreenUtilImplTest : AutoCloseKoinTest() {
                 ApplicationProvider.getApplicationContext()
             ),
             CountryUtilImpl(),
-            Clock.fixed(Instant.parse("2022-01-01T00:00:00.00Z"), ZoneId.of("UTC")),
+            LocalDateUtilImpl(Clock.fixed(Instant.parse("2022-01-01T00:00:00.00Z"), ZoneId.of("UTC")), ApplicationProvider.getApplicationContext()),
             fakeCachedAppConfigUseCase(),
         )
 
