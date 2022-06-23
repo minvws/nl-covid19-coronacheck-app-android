@@ -592,7 +592,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             context.getString(
                 R.string.my_overview_test_result_expires_in_hours_minutes,
                 "1 uur",
-                "1 minuut"
+                "0 minuten"
             ), viewBinding.expiresIn.text
         )
     }
