@@ -7,14 +7,14 @@
 
 package nl.rijksoverheid.ctr.saved_events.usecases
 
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.saved_events.usecases.GetSavedEventsUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -28,19 +28,17 @@ import java.time.ZoneId
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
-class GetSavedEventsUseCaseImplTest: AutoCloseKoinTest() {
+class GetSavedEventsUseCaseImplTest : AutoCloseKoinTest() {
 
     private val holderDatabase: HolderDatabase by inject()
     private val usecase: GetSavedEventsUseCase by inject()
 
     @After
-    fun setup() = runBlocking {
+    fun tearDown() = runBlocking {
         withContext(Dispatchers.IO) {
             holderDatabase.clearAllTables()
         }
     }
-
-    private suspend fun getWalletEntityWhenReady() = holderDatabase.walletDao().get().first { it.isNotEmpty() }.first().walletEntity
 
     @Test
     fun `No saved events are returned when there are no stored events`() = runBlocking {
@@ -50,11 +48,9 @@ class GetSavedEventsUseCaseImplTest: AutoCloseKoinTest() {
 
     @Test
     fun `Saved events are returned when there is a stored event`() = runBlocking {
-        val walletEntity = getWalletEntityWhenReady()
-
         val eventGroupEntity = EventGroupEntity(
             id = 0,
-            walletId = walletEntity.id,
+            walletId = 1,
             providerIdentifier = "GGD",
             type = OriginType.Vaccination,
             scope = "",
@@ -71,11 +67,9 @@ class GetSavedEventsUseCaseImplTest: AutoCloseKoinTest() {
 
     @Test
     fun `Saved events are ordered from newest to oldest`() = runBlocking {
-        val walletEntity = getWalletEntityWhenReady()
-
         val eventGroupEntity = EventGroupEntity(
             id = 0,
-            walletId = walletEntity.id,
+            walletId = 1,
             providerIdentifier = "GGD",
             type = OriginType.Vaccination,
             scope = "",
@@ -86,8 +80,10 @@ class GetSavedEventsUseCaseImplTest: AutoCloseKoinTest() {
         holderDatabase.eventGroupDao().insertAll(listOf(eventGroupEntity))
 
         val savedEvents = usecase.getSavedEvents()
-        val expectedFirstDate = OffsetDateTime.ofInstant(Instant.parse("2022-01-12T00:00:00.00Z"), ZoneId.of("UTC"))
-        val expectedSecondDate = OffsetDateTime.ofInstant(Instant.parse("2021-12-13T00:00:00.00Z"), ZoneId.of("UTC"))
+        val expectedFirstDate =
+            OffsetDateTime.ofInstant(Instant.parse("2022-01-12T00:00:00.00Z"), ZoneId.of("UTC"))
+        val expectedSecondDate =
+            OffsetDateTime.ofInstant(Instant.parse("2021-12-13T00:00:00.00Z"), ZoneId.of("UTC"))
 
         assertEquals(expectedFirstDate, savedEvents.first().events[0].remoteEvent.getDate())
         assertEquals(expectedSecondDate, savedEvents.first().events[1].remoteEvent.getDate())
