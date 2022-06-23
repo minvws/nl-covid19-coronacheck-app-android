@@ -3,8 +3,7 @@ package nl.rijksoverheid.ctr.holder
 import android.util.Log
 import androidx.work.Configuration
 import androidx.work.WorkerFactory
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
@@ -37,6 +36,11 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
     private val holderWorkerFactory: WorkerFactory by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
+
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    open fun coroutineScopeBlock(block: suspend () -> Unit) {
+        coroutineScope.launch { block() }
+    }
 
     private val holderModules = listOf(
         storageModule,
@@ -81,7 +85,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         }
 
         // Create default wallet in database if empty
-        GlobalScope.launch {
+        coroutineScopeBlock {
             if (holderDatabase.walletDao().getAll().isEmpty()) {
                 holderDatabase.walletDao().insert(
                     WalletEntity(
@@ -90,7 +94,6 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
                     )
                 )
             }
-
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
