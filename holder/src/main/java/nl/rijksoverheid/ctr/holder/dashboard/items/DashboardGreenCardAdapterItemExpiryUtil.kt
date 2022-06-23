@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import java.time.Clock
+import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
@@ -28,7 +29,8 @@ interface DashboardGreenCardAdapterItemExpiryUtil {
     sealed class ExpireCountDown {
         data class Show(val daysLeft: Long,
                         val hoursLeft: Long,
-                        val minutesLeft: Long) : ExpireCountDown()
+                        val minutesLeft: Long,
+                        val secondsLeft: Long) : ExpireCountDown()
         object Hide : ExpireCountDown()
     }
 
@@ -53,10 +55,6 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
     private val context: Context
 ) : DashboardGreenCardAdapterItemExpiryUtil {
 
-    private val minutesInSeconds = 60
-    private val hoursInSeconds = 60 * 60
-    private val daysInSeconds = 60 * 60 * 24
-
     override fun getExpireCountdown(
         expireDate: OffsetDateTime,
         type: OriginType
@@ -66,16 +64,21 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
         return if (hoursBetweenExpiration >= getExpiryHoursForType(type)) {
             DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Hide
         } else {
-            var diff = expireDate.toEpochSecond() - OffsetDateTime.now(clock).toEpochSecond()
-            val daysUntilFinish = diff / daysInSeconds
-            diff %= daysInSeconds
-            val hoursUntilFinish = diff / hoursInSeconds
-            diff %= hoursInSeconds
-            val minutesUntilFinish = (diff / minutesInSeconds).coerceAtLeast(1)
+            var diff = expireDate.toInstant().toEpochMilli() - Instant.now(clock).toEpochMilli()
+            val daysUntilFinish = diff / TimeUnit.DAYS.toMillis(1)
+            diff %= TimeUnit.DAYS.toMillis(1)
+            val hoursUntilFinish = diff / TimeUnit.HOURS.toMillis(1)
+            diff %= TimeUnit.HOURS.toMillis(1)
+            val minutesUntilFinish = diff / TimeUnit.MINUTES.toMillis(1)
+            diff %= TimeUnit.MINUTES.toMillis(1)
+            val secondsUntilFinish = diff / TimeUnit.SECONDS.toMillis(1)
+            diff %= TimeUnit.SECONDS.toMillis(1)
+
             DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(
                 daysLeft = daysUntilFinish,
                 hoursLeft = hoursUntilFinish,
-                minutesLeft = minutesUntilFinish
+                minutesLeft = minutesUntilFinish,
+                secondsLeft = secondsUntilFinish
             )
         }
     }
@@ -94,6 +97,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
         val daysLeft = result.daysLeft.toInt()
         val hoursLeft = result.hoursLeft.toInt()
         val minutesLeft = result.minutesLeft.toInt()
+        val secondsLeft = result.secondsLeft.toInt()
         return when {
             daysLeft >= 1 -> {
                 context.getString(
@@ -109,10 +113,23 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
                     "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}",
                 )
             }
-            else -> {
+            minutesLeft >= 5 -> {
                 context.getString(
                     R.string.my_overview_test_result_expires_in_minutes,
                     "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}"
+                )
+            }
+            minutesLeft <= 5 && minutesLeft != 0 -> {
+                context.getString(
+                    R.string.my_overview_test_result_expires_in_hours_minutes,
+                    "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}",
+                    "$secondsLeft ${context.resources.getString(R.string.general_seconds)}"
+                )
+            }
+            else -> {
+                context.getString(
+                    R.string.my_overview_test_result_expires_in_minutes,
+                    "$secondsLeft ${context.resources.getString(R.string.general_seconds)}"
                 )
             }
         }

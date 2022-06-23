@@ -757,7 +757,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_paperproof_startscanning_button_whichProofs">Welke bewijzen kan ik inscannen?</string>
   <string name="holder_paperproof_startscanning_button_startScanning">Start scannen</string>
   <string name="holder_paperproof_startscanning_title">Een coronabewijs inscannen</string>
-  <string name="holder_paperproof_startscanning_body"><![CDATA[Heb je al een coronabewijs gekregen en wil je deze aan de app toevoegen? Dat kan door de QR-code te scannen met de camera van je telefoon.<br /><br />Je kunt een bewijs toevoegen van je vaccinatie of test uit het buitenland. Of een bewijs dat je opgestuurd hebt gekregen van je zorgverlener of de Nederlandse overheid.]]></string>
+  <string name="holder_paperproof_startscanning_body">Heb je al een coronabewijs gekregen en wil je deze aan de app toevoegen? Dat kan door de QR-code op je bewijs te scannen met de camera van je telefoon.</string>
   <string name="holder_menu_paperproof_subTitle">(Papieren) bewijs toevoegen</string>
   <string name="holder_paperproof_startscanning_toolbar_title">Bewijs inscannen</string>
   <string name="holder_newintheapp_foreignproofs_title">Buitenlandse bewijzen toevoegen</string>
@@ -780,12 +780,13 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_qr_code_expired_explanation_title">Verlopen QR-code</string>
   <string name="holder_qr_code_expired_explanation_description"><![CDATA[Als je QR-code is verlopen betekent dit dat je vaccinatie nog geldig is, maar het bewijs dat je hebt toegevoegd niet meer. Je kunt een nieuw bewijs met QR-code aanvragen en deze opnieuw toevoegen aan de app.<br/><br/>Heb je een nieuwere vaccinatie in de app staan? Dan kun je ook die QR-code gebruiken.]]></string>
   <string name="holder_qr_code_expired_explanation_action">Lees meer op CoronaCheck.nl</string>
-  <string name="holder_qr_code_expired_explanation_url">https://coronacheck.nl</string>
+  <string name="holder_qr_code_expired_explanation_url">https://www.coronacheck.nl/nl/faq/1-12-de-qr-code-van-mijn-vaccinatie-is-verlopen-wat-moet-ik-doen/</string>
   <string name="holder_qr_code_hidden_explanation_action">Lees meer op CoronaCheck.nl</string>
-  <string name="holder_qr_code_hidden_explanation_url">https://coronacheck.nl</string>
+  <string name="holder_qr_code_hidden_explanation_url">https://coronacheck.nl/nl/faq/1-11-mijn-qr-code-is-verborgen-wat-betekent-dit/</string>
   <string name="holder_showQR_euAboutVaccination_daysSince">Dagen sinds vaccinatie / Days since vaccination:</string>
   <plurals name="general_days">
     <item quantity="one">dag</item>
     <item quantity="other">dagen</item>
   </plurals>
+  <string name="general_seconds">seconden</string>
 </resources>
