@@ -327,7 +327,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
         val actual = util.getExpiryText(result)
 
-        assertEquals("Expires in 2 days and 5 hours", actual)
+        assertEquals("Expires in 2 days", actual)
     }
 
     @Test

@@ -60,7 +60,7 @@
   <string name="accessibility_label_selected">Geselecteerd</string>
   <string name="accessibility_label_not_selected">Niet geselecteerd</string>
   <string name="my_overview_test_result_expires_in_hours_minutes">Verloopt over %1$s en %2$s</string>
-  <string name="my_overview_test_result_expires_in_minutes">Verloopt over %1$s</string>
+  <string name="my_overview_test_result_expires_in">Verloopt over %1$s</string>
   <string name="my_overview_test_result_footer">Laat QR-code zien bij ingang</string>
   <string name="my_overview_test_result_button">Bekijk QR-code</string>
   <string name="general_loading_description">Bezig met laden, even geduld</string>
