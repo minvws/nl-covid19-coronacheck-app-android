@@ -10,6 +10,7 @@
   <string name="holder_test_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="general_cancel">Annuleer</string>
   <string name="general_toMyOverview">Naar mijn bewijzen</string>
+  <string name="general_notification">Let op!</string>
   <string name="general_vaccination">vaccinatie</string>
   <string name="holder_menu_paperproof_title">Coronabewijs inscannen</string>
   <string name="holder_listRemoteEvents_title">Kloppen de gegevens?</string>
