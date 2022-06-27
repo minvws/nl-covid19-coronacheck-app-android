@@ -1,50 +1,61 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="28dp"
-    android:height="29dp"
-    android:viewportWidth="28"
-    android:viewportHeight="29">
+    android:width="24dp"
+    android:height="27dp"
+    android:viewportWidth="24"
+    android:viewportHeight="27">
   <path
-      android:pathData="M5,5.5h7v7h-7z"
+      android:pathData="M3,3.5h7v7h-7z"
       android:strokeWidth="2"
       android:fillColor="#00000000"
       android:strokeColor="#383836"/>
   <path
-      android:pathData="M16,5.5h7v7h-7z"
+      android:pathData="M14,3.5h7v7h-7z"
       android:strokeWidth="2"
       android:fillColor="#00000000"
       android:strokeColor="#383836"/>
   <path
-      android:pathData="M5,16.5h7v7h-7z"
+      android:pathData="M3,14.5h7v7h-7z"
       android:strokeWidth="2"
       android:fillColor="#00000000"
       android:strokeColor="#383836"/>
   <path
-      android:pathData="M15.75,16.25h1.5v1.5h-1.5z"
+      android:pathData="M13.75,14.25h1.5v1.5h-1.5z"
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
       android:strokeColor="#383836"/>
   <path
-      android:pathData="M21.75,16.25h1.5v1.5h-1.5z"
+      android:pathData="M19.75,14.25h1.5v1.5h-1.5z"
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
       android:strokeColor="#383836"/>
   <path
-      android:pathData="M18.75,19.25h1.5v1.5h-1.5z"
+      android:pathData="M16.75,17.25h1.5v1.5h-1.5z"
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
       android:strokeColor="#383836"/>
   <path
-      android:pathData="M15.75,22.25h1.5v1.5h-1.5z"
+      android:pathData="M13.75,20.25h1.5v1.5h-1.5z"
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
       android:strokeColor="#383836"/>
   <path
-      android:pathData="M21.75,22.25h1.5v1.5h-1.5z"
+      android:pathData="M19.75,20.25h1.5v1.5h-1.5z"
       android:strokeWidth="1.5"
       android:fillColor="#00000000"
       android:strokeColor="#383836"/>
+  <group
+      android:translateX="1"
+      android:translateY="1"
+      >
+    <path
+        android:pathData="M1,23.5L23,1.5"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:strokeColor="#ffffff"
+        android:strokeLineCap="round"/>
+  </group>
   <path
-      android:pathData="M3,25.5L25,3.5"
+      android:pathData="M1,23.5L23,1.5"
       android:strokeWidth="2"
       android:fillColor="#00000000"
       android:strokeColor="#383836"

@@ -99,6 +99,12 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
         val minutesLeft = result.minutesLeft.toInt()
         val secondsLeft = result.secondsLeft.toInt()
         return when {
+            daysLeft >= 2 -> {
+                context.getString(
+                    R.string.my_overview_test_result_expires_in,
+                    "$daysLeft ${context.resources.getQuantityString(R.plurals.general_days, daysLeft)}"
+                )
+            }
             daysLeft >= 1 -> {
                 context.getString(
                     R.string.my_overview_test_result_expires_in_hours_minutes,
@@ -115,7 +121,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
             }
             minutesLeft >= 5 -> {
                 context.getString(
-                    R.string.my_overview_test_result_expires_in_minutes,
+                    R.string.my_overview_test_result_expires_in,
                     "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}"
                 )
             }
@@ -128,7 +134,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
             }
             else -> {
                 context.getString(
-                    R.string.my_overview_test_result_expires_in_minutes,
+                    R.string.my_overview_test_result_expires_in,
                     "$secondsLeft ${context.resources.getString(R.string.general_seconds)}"
                 )
             }
