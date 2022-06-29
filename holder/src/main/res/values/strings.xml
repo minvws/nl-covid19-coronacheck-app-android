@@ -10,8 +10,10 @@
   <string name="holder_test_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="general_cancel">Annuleer</string>
   <string name="general_toMyOverview">Naar mijn bewijzen</string>
+  <string name="general_notification">Let op!</string>
   <string name="general_vaccination">vaccinatie</string>
   <string name="holder_menu_paperproof_title">Coronabewijs inscannen</string>
+  <string name="holder_addVaccination_title">Gegevens van je vaccinatie ophalen</string>
   <string name="holder_listRemoteEvents_title">Kloppen de gegevens?</string>
   <string name="holder_vaccination_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je gegevens ophalen.</string>
   <string name="holder_listRemoteEvents_somethingWrong_title">Klopt er iets niet?</string>
@@ -210,8 +212,7 @@
   <string name="qr_code_type_negative_test_description">Uit de test blijkt dat ik geen corona heb</string>
   <string name="qr_code_type_vaccination_title">Vaccinatie</string>
   <string name="qr_code_type_vaccination_description">Ik heb een (booster)vaccinatie gehad</string>
-  <string name="get_vaccination_title">Gegevens van je vaccinatie ophalen</string>
-  <string name="get_vaccination_description"><![CDATA[Heb je een (booster)vaccinatie gehad? Log in met DigiD om al je vaccinatiegegevens op te halen.<br/><br/><b>Corona gehad vóór je eerste vaccinatie?</b><br/>Dan heb je vaak een prik minder nodig om volledig gevaccineerd te zijn. Haal ook je positieve testuitslag op om die mee te laten tellen in je vaccinatiebewijs.]]></string>
+  <string name="holder_addVaccination_message"><![CDATA[Heb je een (booster)vaccinatie gehad? Log in met DigiD om al je vaccinatiegegevens op te halen.]]></string>
   <string name="get_vaccination_button">Log in met DigiD</string>
   <string name="get_vaccination_no_digid_button">Ik heb geen DigiD</string>
   <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
@@ -789,4 +790,8 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
     <item quantity="other">dagen</item>
   </plurals>
   <string name="general_seconds">seconden</string>
+  <string name="holder_listRemoteEvents_listElement_title_vaccination">Vaccinatie</string>
+  <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccinatiedatum %s</string>
+  <string name="holder_eventHints_title">Je bewijzen zijn gemaakt</string>
+  <string name="holder_addVaccination_alsoCollectPositiveTestResults_message"><![CDATA[<b>Heb je corona gehad?</b><br/>Dan heb je soms een prik minder nodig om volledig gevaccineerd te zijn. Haal ook je oudste positieve testuitslag op om die mogelijk mee te laten tellen in je vaccinatiebewijs.]]></string>
 </resources>

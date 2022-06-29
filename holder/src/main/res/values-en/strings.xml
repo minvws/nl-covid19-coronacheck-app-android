@@ -10,8 +10,10 @@
   <string name="holder_test_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="general_cancel">Cancel</string>
   <string name="general_toMyOverview">To my certificates</string>
+  <string name="general_notification">Watch out!</string>
   <string name="general_vaccination">vaccination</string>
   <string name="holder_menu_paperproof_title">Scan to add certificate</string>
+  <string name="holder_addVaccination_title">Retrieve your vaccination details</string>
   <string name="holder_listRemoteEvents_title">Are the details correct?</string>
   <string name="holder_vaccination_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your details again later.</string>
   <string name="holder_listRemoteEvents_somethingWrong_title">Is something wrong?</string>
@@ -210,8 +212,7 @@
   <string name="qr_code_type_negative_test_description">The test proves I do not have coronavirus</string>
   <string name="qr_code_type_vaccination_title">Vaccination</string>
   <string name="qr_code_type_vaccination_description">I received a (booster) vaccination</string>
-  <string name="get_vaccination_title">Retrieve your vaccination details</string>
-  <string name="get_vaccination_description"><![CDATA[Did you receive a (booster) vaccination? Log in using DigiD to retrieve all your vaccination details.<br/><br/><b>Had coronavirus before your first vaccination?</b><br/>Then you often need a vaccination less to be considered fully vaccinated. Retrieve your positive test result to record it into your vaccination certificate.]]></string>
+  <string name="holder_addVaccination_message"><![CDATA[Did you receive a (booster) vaccination? Log in using DigiD to retrieve all your vaccination details.]]></string>
   <string name="get_vaccination_button">Log in with DigiD</string>
   <string name="get_vaccination_no_digid_button">I don\'t have DigiD</string>
   <string name="your_retrieved_vaccinations_title">Your retrieved vaccinations</string>
@@ -777,7 +778,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_qr_code_hidden_explanation_description"><![CDATA[If the QR code of your vaccination is hidden, you probably don’t need it. This is because there are QR codes of your more recent vaccinations in the app too.<br/><br/>You can still show and use hidden QR codes if needed.]]></string>
   <string name="holder_qr_code_expired_overlay_title">QR code has expired</string>
   <string name="holder_qr_code_expired_explanation_title">Expired QR code</string>
-  <string name="holder_qr_code_expired_explanation_description"><![CDATA[If your QR code has expired this means your vaccination is still valid, but the certificate that you’ve added is no longer. You can request a new certificate with QR code and add it to the app again.<br/><br/>Do you have a more recent vaccination in the app? Then you can also use that QR code.]]></string>
+  <string name="holder_qr_code_expired_explanation_description"><![CDATA[If your QR code has expired it means your vaccination is still valid, but the certificate that you’ve added isn\'t. You can request a new certificate with QR code and add it to the app again.<br/><br/>Do you have a more recent vaccination in the app? Then you can also use that QR code.]]></string>
   <string name="holder_qr_code_expired_explanation_action">Read more on CoronaCheck.nl</string>
   <string name="holder_qr_code_expired_explanation_url">https://www.coronacheck.nl/en/faq/1-12-de-qr-code-van-mijn-vaccinatie-is-verlopen-wat-moet-ik-doen/</string>
   <string name="holder_qr_code_hidden_explanation_action">Read more on CoronaCheck.nl</string>
@@ -788,4 +789,8 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
     <item quantity="other">days</item>
   </plurals>
   <string name="general_seconds">seconds</string>
+  <string name="holder_listRemoteEvents_listElement_title_vaccination">Vaccination</string>
+  <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccination date %s</string>
+  <string name="holder_eventHints_title">Je bewijzen zijn gemaakt</string>
+  <string name="holder_addVaccination_alsoCollectPositiveTestResults_message"><![CDATA[<b>Heb je corona gehad?</b><br/>Dan heb je soms een prik minder nodig om volledig gevaccineerd te zijn. Haal ook je oudste positieve testuitslag op om die mogelijk mee te laten tellen in je vaccinatiebewijs.]]></string>
 </resources>

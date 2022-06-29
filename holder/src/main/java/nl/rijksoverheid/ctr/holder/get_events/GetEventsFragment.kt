@@ -9,7 +9,6 @@ package nl.rijksoverheid.ctr.holder.get_events
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewCheckboxButtonBinding
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
@@ -67,10 +66,10 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentGetEventsBinding.bind(view)
-        val checkboxButtonBinding = WidgetScrollViewCheckboxButtonBinding.bind(binding.root)
+        val scrollViewCheckboxButtonBinding = WidgetScrollViewCheckboxButtonBinding.bind(binding.root)
         val copy = getCopyForOriginType()
         setBindings(binding, copy)
-        setObservers(binding, copy, checkboxButtonBinding)
+        setObservers(binding, copy, scrollViewCheckboxButtonBinding)
     }
 
     override fun onDestroyView() {
@@ -259,7 +258,10 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 )
             }
         }
-        binding.checkboxContainer.isVisible = args.originType == RemoteOriginType.Vaccination
+        if (args.originType == RemoteOriginType.Vaccination) {
+            binding.checkboxWithHeader.visibility = View.VISIBLE
+            binding.checkboxWithHeader.header(R.string.holder_addVaccination_alsoCollectPositiveTestResults_message)
+        }
     }
 
     private fun getCopyForOriginType(): GetEventsFragmentCopy {
@@ -275,8 +277,8 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             }
             is RemoteOriginType.Vaccination -> {
                 return GetEventsFragmentCopy(
-                    title = getString(R.string.get_vaccination_title),
-                    description = getString(R.string.get_vaccination_description),
+                    title = getString(R.string.holder_addVaccination_title),
+                    description = getString(R.string.holder_addVaccination_message),
                     toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
                     hasNoEventsTitle = getString(R.string.no_vaccinations_title),
                     hasNoEventsDescription = getString(R.string.no_vaccinations_description)
