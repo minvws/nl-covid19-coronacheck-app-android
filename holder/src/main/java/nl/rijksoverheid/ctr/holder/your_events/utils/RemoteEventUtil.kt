@@ -45,7 +45,7 @@ class RemoteEventUtilImpl(
     }
 
     override fun isDccEvent(providerIdentifier: String): Boolean {
-        return providerIdentifier.contains(RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC)
+        return providerIdentifier.startsWith(RemoteConfigProviders.EventProvider.PROVIDER_IDENTIFIER_DCC)
     }
 
     @Throws(NullPointerException::class)
