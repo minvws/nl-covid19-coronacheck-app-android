@@ -10,6 +10,7 @@
   <string name="holder_test_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="general_cancel">Cancel</string>
   <string name="general_toMyOverview">To my certificates</string>
+  <string name="general_notification">Watch out!</string>
   <string name="general_vaccination">vaccination</string>
   <string name="holder_menu_paperproof_title">Scan to add certificate</string>
   <string name="holder_listRemoteEvents_title">Are the details correct?</string>
@@ -777,7 +778,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_qr_code_hidden_explanation_description"><![CDATA[If the QR code of your vaccination is hidden, you probably don’t need it. This is because there are QR codes of your more recent vaccinations in the app too.<br/><br/>You can still show and use hidden QR codes if needed.]]></string>
   <string name="holder_qr_code_expired_overlay_title">QR code has expired</string>
   <string name="holder_qr_code_expired_explanation_title">Expired QR code</string>
-  <string name="holder_qr_code_expired_explanation_description"><![CDATA[If your QR code has expired this means your vaccination is still valid, but the certificate that you’ve added is no longer. You can request a new certificate with QR code and add it to the app again.<br/><br/>Do you have a more recent vaccination in the app? Then you can also use that QR code.]]></string>
+  <string name="holder_qr_code_expired_explanation_description"><![CDATA[If your QR code has expired it means your vaccination is still valid, but the certificate that you’ve added isn\'t. You can request a new certificate with QR code and add it to the app again.<br/><br/>Do you have a more recent vaccination in the app? Then you can also use that QR code.]]></string>
   <string name="holder_qr_code_expired_explanation_action">Read more on CoronaCheck.nl</string>
   <string name="holder_qr_code_expired_explanation_url">https://www.coronacheck.nl/en/faq/1-12-de-qr-code-van-mijn-vaccinatie-is-verlopen-wat-moet-ik-doen/</string>
   <string name="holder_qr_code_hidden_explanation_action">Read more on CoronaCheck.nl</string>
