@@ -368,6 +368,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             binding = binding,
                             providerIdentifiers = providerIdentifiers.toSet()
                                 .joinToString(" ${getString(R.string.your_events_and)} "),
+                            vaccinationDate = yourEventsFragmentUtil.getVaccinationDate(remoteEvent.vaccination?.date),
                             fullName = yourEventsFragmentUtil.getFullName(holder),
                             birthDate = yourEventsFragmentUtil.getBirthDate(holder),
                             currentEvent = remoteEvent,
@@ -415,6 +416,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private fun presentVaccinationEvent(
         binding: FragmentYourEventsBinding,
         providerIdentifiers: String,
+        vaccinationDate: String,
         fullName: String,
         birthDate: String,
         currentEvent: RemoteEventVaccination,
@@ -445,6 +447,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     context,
                     isDccEvent,
                     providerIdentifiers,
+                    vaccinationDate,
                     fullName,
                     birthDate
                 ),
