@@ -108,10 +108,6 @@ class DashboardViewModelImpl(
             val allGreenCards = greenCardUtil.getAllGreenCards()
             val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
 
-            removeExpiredEventsUseCase.execute(
-                events = allEventGroupEntities
-            )
-
             removeExpiredGreenCardsUseCase.execute(
                 allGreenCards = allGreenCards
             )
@@ -140,6 +136,10 @@ class DashboardViewModelImpl(
                     isLoadingNewCredentials = false
                 )
             }
+
+            removeExpiredEventsUseCase.execute(
+                events = allEventGroupEntities
+            )
         }
     }
 
