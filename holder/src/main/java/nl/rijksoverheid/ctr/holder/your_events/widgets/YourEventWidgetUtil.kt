@@ -39,7 +39,7 @@ class YourEventWidgetUtilImpl: YourEventWidgetUtil {
             context.getString(R.string.retrieved_vaccination_dcc_title, currentEvent.vaccination?.doseNumber ?: "", currentEvent.vaccination?.totalDoses ?: "")
         } else {
             context.getString(
-                R.string.qr_code_type_vaccination_title
+                R.string.retrieved_vaccination_title
             )
         }
     }
@@ -55,6 +55,7 @@ class YourEventWidgetUtilImpl: YourEventWidgetUtil {
         return if (isDccEvent) {
             context.getString(
                 R.string.your_vaccination_dcc_row_subtitle,
+                vaccinationDate,
                 fullName,
                 birthDate)
         } else {
