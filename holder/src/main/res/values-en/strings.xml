@@ -218,7 +218,7 @@
   <string name="your_retrieved_vaccinations_title">Your retrieved vaccinations</string>
   <string name="your_retrieved_vaccinations_description">Are the details correct? If the details about your vaccination are correct, you can create a certificate.</string>
   <string name="your_vaccination_result_toolbar_title">Retrieved vaccinations</string>
-  <string name="retrieved_vaccination_title">Vaccination %1$s</string>
+  <string name="retrieved_vaccination_title">Vaccination</string>
   <string name="retrieved_vaccination_dcc_title">Vaccination certificate dose %1$s/%2$s</string>
   <string name="travel_toggle_europe">I\'m travelling internationally</string>
   <string name="travel_toggle_domestic">I\'m in the Netherlands</string>
@@ -517,7 +517,7 @@
   <string name="recover_domestic_recovery_green_card_button">Restore certificate</string>
   <string name="cannot_create_recovery_proof_title">Positive test result no longer valid</string>
   <string name="cannot_create_recovery_proof_description"><![CDATA[It has been too long ago since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
-  <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Name: %1$s<br/>Date of birth: %2$s]]></string>
+  <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Vaccination date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
   <string name="qr_card_vaccination_title_domestic_with_doses">Vaccination certificate (%1$s doses):</string>
   <string name="add_paper_proof_why_only_international_title">Why the international QR code?</string>
   <string name="add_paper_proof_why_only_international_description">Your international QR code contains the details needed to get your certificate in the app. Do you also have a certificate with a Dutch QR code? Then you don’t have to scan it.</string>

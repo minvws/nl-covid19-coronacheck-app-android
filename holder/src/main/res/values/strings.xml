@@ -218,7 +218,7 @@
   <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
   <string name="your_retrieved_vaccinations_description">Kloppen de gegevens? Als de gegevens van je vaccinatie kloppen kun je een bewijs maken.</string>
   <string name="your_vaccination_result_toolbar_title">Opgehaalde vaccinaties</string>
-  <string name="retrieved_vaccination_title">Vaccinatie %1$s</string>
+  <string name="retrieved_vaccination_title">Vaccinatie</string>
   <string name="retrieved_vaccination_dcc_title">Vaccinatiebewijs dosis %1$s/%2$s</string>
   <string name="travel_toggle_europe">Ik reis internationaal</string>
   <string name="travel_toggle_domestic">Ik ben in Nederland</string>
@@ -517,7 +517,7 @@
   <string name="recover_domestic_recovery_green_card_button">Bewijs terugzetten</string>
   <string name="cannot_create_recovery_proof_title">Positieve testuitslag niet meer geldig</string>
   <string name="cannot_create_recovery_proof_description"><![CDATA[Het is te lang geleden dat je positief getest bent op corona. Daarom is je testuitslag niet meer geldig. Je kunt helaas geen herstelbewijs maken.<br/><br/>Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
-  <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s]]></string>
+  <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Vaccinatiedatum: %1$s<br />Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
   <string name="qr_card_vaccination_title_domestic_with_doses">Vaccinatiebewijs (%1$s doses):</string>
   <string name="add_paper_proof_why_only_international_title">Waarom de internationale QR-code?</string>
   <string name="add_paper_proof_why_only_international_description">In je internationale QR-code staan de gegevens die nodig zijn om jouw bewijs in de app te zetten. Heb je ook een papieren bewijs met een Nederlandse QR-code? Dan hoef je deze niet te scannen.</string>
