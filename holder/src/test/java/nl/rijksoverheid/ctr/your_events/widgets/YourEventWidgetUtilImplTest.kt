@@ -57,7 +57,7 @@ class YourEventWidgetUtilImplTest: AutoCloseKoinTest() {
             currentEvent = vaccination
         )
 
-        val expectedTitle = context.getString(R.string.retrieved_vaccination_title, "January")
+        val expectedTitle = context.getString(R.string.retrieved_vaccination_title)
         assertEquals(expectedTitle, title)
     }
 
@@ -70,11 +70,12 @@ class YourEventWidgetUtilImplTest: AutoCloseKoinTest() {
             context = context,
             isDccEvent = true,
             providerIdentifiers = "",
+            vaccinationDate = "29 Juni 2022",
             fullName = "de Bouwer, Bob",
-            birthDate = "1 January 1970"
+            birthDate = "1 Januari 1970"
         )
 
-        val expectedSubtitle = context.getString(R.string.your_vaccination_dcc_row_subtitle, "de Bouwer, Bob", "1 January 1970")
+        val expectedSubtitle = context.getString(R.string.your_vaccination_dcc_row_subtitle, "29 Juni 2022", "de Bouwer, Bob", "1 Januari 1970")
         assertEquals(expectedSubtitle, subtitle)
     }
 
@@ -87,11 +88,12 @@ class YourEventWidgetUtilImplTest: AutoCloseKoinTest() {
             context = context,
             isDccEvent = false,
             providerIdentifiers = "GGD",
+            vaccinationDate = "29 Juni 2022",
             fullName = "de Bouwer, Bob",
-            birthDate = "1 January 1970"
+            birthDate = "1 Januari 1970"
         )
 
-        val expectedSubtitle = context.getString(R.string.your_vaccination_row_subtitle, "de Bouwer, Bob", "1 January 1970", "GGD")
+        val expectedSubtitle = context.getString(R.string.your_vaccination_row_subtitle, "29 Juni 2022", "de Bouwer, Bob", "1 Januari 1970", "GGD")
         assertEquals(expectedSubtitle, subtitle)
     }
 }
