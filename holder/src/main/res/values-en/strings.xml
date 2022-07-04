@@ -13,6 +13,7 @@
   <string name="general_notification">Watch out!</string>
   <string name="general_vaccination">vaccination</string>
   <string name="holder_menu_paperproof_title">Scan to add certificate</string>
+  <string name="holder_addVaccination_title">Retrieve your vaccination details</string>
   <string name="holder_listRemoteEvents_title">Are the details correct?</string>
   <string name="holder_vaccination_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your details again later.</string>
   <string name="holder_listRemoteEvents_somethingWrong_title">Is something wrong?</string>
@@ -211,8 +212,7 @@
   <string name="qr_code_type_negative_test_description">The test proves I do not have coronavirus</string>
   <string name="qr_code_type_vaccination_title">Vaccination</string>
   <string name="qr_code_type_vaccination_description">I received a (booster) vaccination</string>
-  <string name="get_vaccination_title">Retrieve your vaccination details</string>
-  <string name="get_vaccination_description"><![CDATA[Did you receive a (booster) vaccination? Log in using DigiD to retrieve all your vaccination details.<br/><br/><b>Had coronavirus before your first vaccination?</b><br/>Then you often need a vaccination less to be considered fully vaccinated. Retrieve your positive test result to record it into your vaccination certificate.]]></string>
+  <string name="holder_addVaccination_message"><![CDATA[Did you receive a (booster) vaccination? Log in using DigiD to retrieve all your vaccination details.]]></string>
   <string name="get_vaccination_button">Log in with DigiD</string>
   <string name="get_vaccination_no_digid_button">I don\'t have DigiD</string>
   <string name="your_retrieved_vaccinations_title">Your retrieved vaccinations</string>
@@ -789,4 +789,8 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
     <item quantity="other">days</item>
   </plurals>
   <string name="general_seconds">seconds</string>
+  <string name="holder_listRemoteEvents_listElement_title_vaccination">Vaccination</string>
+  <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccination date %s</string>
+  <string name="holder_eventHints_title">Je bewijzen zijn gemaakt</string>
+  <string name="holder_addVaccination_alsoCollectPositiveTestResults_message"><![CDATA[<b>Heb je corona gehad?</b><br/>Dan heb je soms een prik minder nodig om volledig gevaccineerd te zijn. Haal ook je oudste positieve testuitslag op om die mogelijk mee te laten tellen in je vaccinatiebewijs.]]></string>
 </resources>

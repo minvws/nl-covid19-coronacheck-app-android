@@ -108,7 +108,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
         dashboardPageFragment: DashboardPageFragment,
     ) {
         val navigationDirection = MainNavDirections.actionGetEvents(
-            toolbarTitle = dashboardPageFragment.getString(R.string.get_vaccination_title),
+            toolbarTitle = dashboardPageFragment.getString(R.string.holder_addVaccination_title),
             originType = RemoteOriginType.Vaccination
         )
 
