@@ -18,7 +18,7 @@ sealed class Environment {
         fun get(context: Context): Environment {
             return if (context.packageName.contains(".acc")) {
                 Acc
-            } else if (context.packageName.contains(".tst")) {
+            } else if (context.packageName.contains(".tst") || context.packageName.contains(".test")) {
                 Tst
             } else {
                 Prod

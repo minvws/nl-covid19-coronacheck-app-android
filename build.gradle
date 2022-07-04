@@ -36,7 +36,7 @@ buildscript {
     ext.mlkit_barcode_version = '17.0.2'
     ext.camerax_version = '1.1.0-beta03'
     ext.camerax_view_version = '1.1.0-beta03'
-    ext.robolectric_version = '4.7.3'
+    ext.robolectric_version = '4.8.1'
     ext.androix_test_version = '1.4.0'
     ext.lottie_version = '3.7.1'
     ext.barista_version = '4.1.0'
