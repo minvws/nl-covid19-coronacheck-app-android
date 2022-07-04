@@ -28,6 +28,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
 import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.no_digid.NoDigidFragmentData
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -253,10 +254,24 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             ) {
                 navigateSafety(GetEventsFragmentDirections.actionMijnCn())
             } else {
-                intentUtil.openUrl(
-                    context = requireContext(),
-                    url = getString(R.string.no_digid_url)
-                )
+//                intentUtil.openUrl(
+//                    context = requireContext(),
+//                    url = getString(R.string.no_digid_url)
+//                )
+                navigateSafety(GetEventsFragmentDirections.actionNoDigid(
+                    NoDigidFragmentData(
+                        title = "Ik heb geen DigiD",
+                        description = "Woon je in Nederland en heb je een Nederlands identiteitsbewijs? Dan kun je een DigiD aanvragen om je testuitslag of vaccinatiegegevens op te halen.",
+                        firstButtonData = nl.rijksoverheid.ctr.holder.no_digid.ButtonData(
+                            title = R.string.no_digid_nodigid_button_description,
+                            icon = R.drawable.ic_digid_logo
+                        ),
+                        secondButtonData = nl.rijksoverheid.ctr.holder.no_digid.ButtonData(
+                            title = R.string.travel_toggle_change_domestic,
+                            subtitle = "Als ge geen DigiD kunt of wilt aanvragen"
+                        )
+                    )
+                ))
             }
         }
         binding.checkboxContainer.isVisible = args.originType == RemoteOriginType.Vaccination
