@@ -80,7 +80,7 @@ class RandomKeyUseCaseImplTest : AutoCloseKoinTest() {
 
         usecase.persist()
 
-        assertEquals("123".toByteArray().toHex(), usecase.get())
+        assertEquals("123", usecase.get())
     }
 
     @Test
@@ -96,6 +96,6 @@ class RandomKeyUseCaseImplTest : AutoCloseKoinTest() {
 
         usecase.persist()
 
-        verify { persistenceManager.saveRandomKey("123".toByteArray().toHex()) }
+        verify { persistenceManager.saveRandomKey("123") }
     }
 }
