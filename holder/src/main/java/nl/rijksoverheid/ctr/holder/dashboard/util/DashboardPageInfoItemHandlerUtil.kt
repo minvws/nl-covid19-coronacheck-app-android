@@ -152,7 +152,16 @@ class DashboardPageInfoItemHandlerUtilImpl(
     }
 
     private fun onMissingDutchVaccinationItemClicked(dashboardPageFragment: DashboardPageFragment) {
-        dashboardPageFragment.navigateSafety(DashboardFragmentDirections.actionMissingDutchCertificate())
+        infoFragmentUtil.presentAsBottomSheet(
+            dashboardPageFragment.childFragmentManager,
+            InfoFragmentData.TitleDescription(
+                title = dashboardPageFragment.getString(R.string.missing_dutch_certificate_title),
+                descriptionData = DescriptionData(
+                    htmlText = R.string.holder_incompletedutchvaccination_paragraph_secondvaccine,
+                    htmlLinksEnabled = true
+                )
+            )
+        )
     }
 
     private fun onConfigRefreshClicked(
