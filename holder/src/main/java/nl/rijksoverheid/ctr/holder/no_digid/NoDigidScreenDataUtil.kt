@@ -7,8 +7,15 @@ import nl.rijksoverheid.ctr.holder.could_not_create_qr.CouldNotCreateQrFragmentA
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.shared.models.Flow
 
+/*
+ *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
 interface NoDigidScreenDataUtil {
-    fun requestDigidButton(flow: Flow): NavigationButtonData
+    fun requestDigidButton(): NavigationButtonData
     fun continueWithoutDigidButton(flow: Flow): NavigationButtonData
 }
 
@@ -59,7 +66,7 @@ class NoDigidScreenDataUtilImpl(
         )
     )
 
-    override fun requestDigidButton(flow: Flow) = NavigationButtonData(
+    override fun requestDigidButton() = NavigationButtonData(
         title = R.string.holder_noDigiD_buttonTitle_requestDigiD,
         icon = R.drawable.ic_digid_logo,
         externalUrl = getString(R.string.holder_noDigiD_url),

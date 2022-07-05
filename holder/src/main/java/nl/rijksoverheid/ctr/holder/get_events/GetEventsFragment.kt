@@ -257,7 +257,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     NoDigidFragmentData(
                         title = getString(R.string.holder_noDigiD_title),
                         description = getString(R.string.holder_noDigiD_message),
-                        firstNavigationButtonData = noDigidScreenDataUtil.requestDigidButton(getFlow()),
+                        firstNavigationButtonData = noDigidScreenDataUtil.requestDigidButton(),
                         secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(getFlow())
                 )))
             }
