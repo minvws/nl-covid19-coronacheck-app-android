@@ -23,6 +23,7 @@ interface YourEventWidgetUtil {
         context: Context,
         isDccEvent: Boolean,
         providerIdentifiers: String,
+        vaccinationDate: String,
         fullName: String,
         birthDate: String,
     ): String
@@ -38,8 +39,7 @@ class YourEventWidgetUtilImpl: YourEventWidgetUtil {
             context.getString(R.string.retrieved_vaccination_dcc_title, currentEvent.vaccination?.doseNumber ?: "", currentEvent.vaccination?.totalDoses ?: "")
         } else {
             context.getString(
-                R.string.retrieved_vaccination_title,
-                currentEvent.vaccination?.date?.formatMonth(),
+                R.string.retrieved_vaccination_title
             )
         }
     }
@@ -48,17 +48,20 @@ class YourEventWidgetUtilImpl: YourEventWidgetUtil {
         context: Context,
         isDccEvent: Boolean,
         providerIdentifiers: String,
+        vaccinationDate: String,
         fullName: String,
         birthDate: String
     ): String {
         return if (isDccEvent) {
             context.getString(
                 R.string.your_vaccination_dcc_row_subtitle,
+                vaccinationDate,
                 fullName,
                 birthDate)
         } else {
             context.getString(
                 R.string.your_vaccination_row_subtitle,
+                vaccinationDate,
                 fullName,
                 birthDate,
                 providerIdentifiers

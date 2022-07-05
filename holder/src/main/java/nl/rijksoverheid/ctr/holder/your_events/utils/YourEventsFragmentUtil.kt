@@ -26,6 +26,7 @@ interface YourEventsFragmentUtil {
     fun getCancelDialogDescription(type: YourEventsFragmentType): Int
     fun getFullName(holder: RemoteProtocol.Holder?): String
     fun getBirthDate(holder: RemoteProtocol.Holder?): String
+    fun getVaccinationDate(date: LocalDate?): String
 }
 
 class YourEventsFragmentUtilImpl(
@@ -109,6 +110,16 @@ class YourEventsFragmentUtilImpl(
                 if (birthDate.contains("XX")) {
                     birthDate
                 } else ""
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: ""
+    }
+
+    override fun getVaccinationDate(vaccinationDate: LocalDate?): String {
+        return vaccinationDate?.let { date ->
+            try {
+                date.formatDayMonthYear()
             } catch (e: Exception) {
                 ""
             }
