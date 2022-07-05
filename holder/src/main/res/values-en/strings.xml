@@ -338,7 +338,6 @@
   <string name="new_terms"><![CDATA[Read the full privacy statement <a href=\"https://coronacheck.nl/en/privacy-in-app\">here</a>.]]></string>
   <string name="too_busy_title">Sorry, it is really busy</string>
   <string name="too_busy_description">There are currently many visitors on the affiliated partner\'s website. We can\'t retrieve your details now. Please try again later.</string>
-  <string name="no_digid_url">https://www.digid.nl/en/apply-or-activate-digid</string>
   <string name="event_provider_error_title">Sorry, something went wrong</string>
   <string name="event_provider_error_description">Something went wrong with the server of your test or injection location. Please try again later.</string>
   <string name="coronacheck_error_title">Sorry, something went wrong</string>

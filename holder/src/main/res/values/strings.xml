@@ -338,7 +338,6 @@
   <string name="new_terms"><![CDATA[Lees <a href=\"https://coronacheck.nl/nl/privacy-in-app\">hier</a> de volledige privacyverklaring.]]></string>
   <string name="too_busy_title">Sorry, het is erg druk</string>
   <string name="too_busy_description">Het is druk bij een aangesloten partij. Daardoor kunnen je gegevens nu niet worden opgehaald. Probeer het later nog eens.</string>
-  <string name="no_digid_url">https://www.digid.nl/digid-aanvragen-activeren#hoe-vraag-ik-digid-aan</string>
   <string name="event_provider_error_title">Sorry, er gaat iets mis</string>
   <string name="event_provider_error_description">Er gaat iets mis op de server van je testlocatie of priklocatie. Probeer het later nog eens.</string>
   <string name="coronacheck_error_title">Sorry, er gaat iets mis</string>

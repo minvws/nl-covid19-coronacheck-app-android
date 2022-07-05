@@ -6,6 +6,8 @@ import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtilImpl
 import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtilImpl
+import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtil
+import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtilImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtilImpl
 import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
@@ -69,4 +71,5 @@ fun utilsModule(versionCode: Int) = module {
     factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
+    factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get()) }
 }

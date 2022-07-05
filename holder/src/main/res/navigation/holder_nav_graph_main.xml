@@ -324,24 +324,16 @@
             app:argType="nl.rijksoverheid.ctr.holder.no_digid.NoDigidFragmentData" />
 
         <action
-            android:id="@+id/action_choose_provider"
-            app:destination="@id/nav_choose_provider"
+            android:id="@+id/action_no_digid"
+            app:destination="@id/nav_no_digid"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/action_input_token"
-            app:destination="@id/nav_commercial_test_input_token"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
-            android:id="@+id/action_get_events"
-            app:destination="@id/nav_get_events"
+            android:id="@+id/action_could_not_create_qr"
+            app:destination="@id/nav_could_not_create_qr"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

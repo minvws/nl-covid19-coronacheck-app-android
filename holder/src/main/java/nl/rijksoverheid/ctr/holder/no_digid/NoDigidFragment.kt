@@ -11,9 +11,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDigidBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import org.koin.android.ext.android.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -25,6 +28,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
 
     private val args: NoDigidFragmentArgs by navArgs()
+    private val intentUtil: IntentUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,19 +40,35 @@ class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
             binding.description.text = description
 
             binding.firstButton.bind(
-                title = firstButtonData.title,
-                subtitle = firstButtonData.subtitle,
-                logo = firstButtonData.icon
+                title = firstNavigationButtonData.title,
+                subtitle = firstNavigationButtonData.subtitle,
+                logo = firstNavigationButtonData.icon
             ) {
-                println("1")
+                firstNavigationButtonData.buttonClickDirection?.let {
+                    navigateSafety(
+                        destinationId = it.actionId,
+                        args = it.arguments
+                    )
+                }
+                firstNavigationButtonData.externalUrl?.let {
+                    intentUtil.openUrl(
+                        context = requireContext(),
+                        url = it,
+                    )
+                }
             }
 
             binding.secondButton.bind(
-                title = secondButtonData.title,
-                subtitle = secondButtonData.subtitle,
-                logo = secondButtonData.icon
+                title = secondNavigationButtonData.title,
+                subtitle = secondNavigationButtonData.subtitle,
+                logo = secondNavigationButtonData.icon
             ) {
-                println("2")
+                secondNavigationButtonData.buttonClickDirection?.let {
+                    navigateSafety(
+                        destinationId = it.actionId,
+                        args = it.arguments
+                    )
+                }
             }
         }
     }
