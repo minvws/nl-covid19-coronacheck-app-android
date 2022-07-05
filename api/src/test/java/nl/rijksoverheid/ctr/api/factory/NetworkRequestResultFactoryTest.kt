@@ -213,8 +213,8 @@ class NetworkRequestResultFactoryTest {
                 TODO("Not yet implemented")
             }
 
-            override fun generateRandomKey(): ByteArray {
-                return "".toByteArray()
+            override fun generateRandomKey(): String {
+                return ""
             }
 
             override fun getFirstInstallTime(): OffsetDateTime {
