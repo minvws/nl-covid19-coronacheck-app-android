@@ -13,7 +13,6 @@ import org.robolectric.RobolectricTestRunner
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-
 @RunWith(RobolectricTestRunner::class)
 class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
 

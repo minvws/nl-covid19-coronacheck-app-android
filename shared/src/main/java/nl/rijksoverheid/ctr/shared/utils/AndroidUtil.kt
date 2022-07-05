@@ -10,6 +10,7 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.security.keystore.StrongBoxUnavailableException
 import androidx.security.crypto.MasterKeys
+import java.math.BigInteger
 import java.security.SecureRandom
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -28,7 +29,7 @@ interface AndroidUtil {
     fun isFirstInstall(): Boolean
     fun isNetworkAvailable(): Boolean
     fun getConnectivityManager(): ConnectivityManager
-    fun generateRandomKey(): ByteArray
+    fun generateRandomKey(): String
     fun getFirstInstallTime(): OffsetDateTime
 }
 
@@ -90,8 +91,9 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
         return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
-    override fun generateRandomKey(): ByteArray = ByteArray(32).apply {
-        SecureRandom().nextBytes(this)
+    override fun generateRandomKey(): String = ByteArray(20).let {
+        SecureRandom().nextBytes(it)
+        BigInteger(1, it).toString(16)
     }
 
     override fun getFirstInstallTime(): OffsetDateTime {

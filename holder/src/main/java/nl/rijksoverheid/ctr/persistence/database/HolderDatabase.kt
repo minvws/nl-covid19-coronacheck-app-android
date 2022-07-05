@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.persistence.database
 
 import android.content.ContentValues
 import android.content.Context
+import android.util.Base64
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -112,7 +113,7 @@ val MIGRATION_5_6 = object: Migration(5,6) {
 fun MIGRATION_6_7(persistenceManager: PersistenceManager, newPassPhrase: String) = object: Migration(6, 7) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE secret_key (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, green_card_id INTEGER NOT NULL, secret TEXT NOT NULL, FOREIGN KEY(green_card_id) REFERENCES green_card(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
-        database.query("PRAGMA rekey = $newPassPhrase", emptyArray())
+        database.query("PRAGMA rekey = '$newPassPhrase';", emptyArray())
 
         val domesticGreenCardCursor = database.query("SELECT * FROM green_card WHERE type = 'domestic'")
 
@@ -155,7 +156,7 @@ abstract class HolderDatabase : RoomDatabase() {
                 SupportFactory(SQLiteDatabase.getBytes(persistenceManager.getDatabasePassPhrase()?.toCharArray()))
             return Room
                 .databaseBuilder(context, HolderDatabase::class.java, "holder-database")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7(persistenceManager, androidUtil.generateRandomKey().decodeToString()))
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7(persistenceManager, androidUtil.generateRandomKey()))
                 .apply {
                     if (isProd) {
                         openHelperFactory(supportFactory)
