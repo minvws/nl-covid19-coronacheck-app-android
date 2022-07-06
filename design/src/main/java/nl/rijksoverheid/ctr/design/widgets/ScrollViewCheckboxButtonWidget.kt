@@ -65,6 +65,9 @@ class ScrollViewCheckboxButtonWidget @JvmOverloads constructor(
                     ?.let { binding.checkboxButton.text = it }
                 binding.checkboxButton.isVisible =
                     !getBoolean(R.styleable.ScrollViewCheckboxButtonWidget_buttonHidden, false)
+                setOnClickListener {
+                    binding.checkbox.isChecked = !binding.checkbox.isChecked
+                }
             } finally {
                 recycle()
             }
