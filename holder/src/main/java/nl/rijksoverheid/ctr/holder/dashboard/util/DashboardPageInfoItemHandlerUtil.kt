@@ -300,7 +300,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
             )
             OriginType.Vaccination -> Pair(
                 dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination
+                R.string.holder_addVaccination_message
             )
             OriginType.Recovery -> Pair(
                 dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),

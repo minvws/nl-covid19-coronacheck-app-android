@@ -321,7 +321,6 @@
   <string name="my_overview_green_card_not_valid_title_vaccination">About your vaccination certificate</string>
   <string name="my_overview_green_card_not_valid_title_test">About your test certificate</string>
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/><br/>It\'s possible the validity period in the Netherlands is shorter than the validity period in other countries. Get tested again.]]></string>
-  <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid in the Netherlands. That\'s why only an international certificate was made.<br/>It\'s possible you\'ve only had one injection. Add your second vaccination to get a valid Dutch certificate. <a href=\"https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse\">Read all about the possible causes.</a>]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Your test certificate isn\'t valid internationally. That\'s why only a Dutch certificate was created.<br/><br/>It\'s possible that your type of test isn\'t accepted abroad. Please get tested again.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
   <string name="rule_engine_no_origin_title">We can\'t create a certificate</string>
@@ -339,7 +338,6 @@
   <string name="new_terms"><![CDATA[Read the full privacy statement <a href=\"https://coronacheck.nl/en/privacy-in-app\">here</a>.]]></string>
   <string name="too_busy_title">Sorry, it is really busy</string>
   <string name="too_busy_description">There are currently many visitors on the affiliated partner\'s website. We can\'t retrieve your details now. Please try again later.</string>
-  <string name="no_digid_url">https://www.digid.nl/en/apply-or-activate-digid</string>
   <string name="event_provider_error_title">Sorry, something went wrong</string>
   <string name="event_provider_error_description">Something went wrong with the server of your test or injection location. Please try again later.</string>
   <string name="coronacheck_error_title">Sorry, something went wrong</string>
@@ -792,5 +790,26 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_listRemoteEvents_listElement_title_vaccination">Vaccination</string>
   <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccination date %s</string>
   <string name="holder_eventHints_title">Je bewijzen zijn gemaakt</string>
-  <string name="holder_addVaccination_alsoCollectPositiveTestResults_message"><![CDATA[<b>Heb je corona gehad?</b><br/>Dan heb je soms een prik minder nodig om volledig gevaccineerd te zijn. Haal ook je oudste positieve testuitslag op om die mogelijk mee te laten tellen in je vaccinatiebewijs.]]></string>
+  <string name="holder_addVaccination_alsoCollectPositiveTestResults_message"><![CDATA[<b>Did you have coronavirus?</b><br/>In some cases, you need one less vaccination to be fully vaccinated. Retrieve your oldest positive test result as well to possibly have it count for your vaccination certificate.]]></string>
+  <string name="holder_noDigiD_title">I don\'t have a DigiD</string>
+  <string name="holder_noDigiD_message">Are you living in the Netherlands and do you have a Dutch proof of identity? Then you can request a DigiD to retrieve your test result or vaccination details.</string>
+  <string name="holder_noDigiD_buttonTitle_requestDigiD">Request a DigiD</string>
+  <string name="holder_noDigiD_buttonTitle_continueWithoutDigiD">Continue without DigiD</string>
+  <string name="holder_noDigiD_buttonSubTitle_continueWithoutDigiD">If you can’t or don’t want to request a DigiD</string>
+  <string name="holder_noDigiD_url">https://www.digid.nl/en/apply-or-activate-digid</string>
+  <string name="holder_checkForBSN_title">Do you have a Dutch citizen service number (BSN)?</string>
+  <string name="holder_checkForBSN_message">With your BSN, you can request your certificate at the CoronaCheck helpdesk. Don’t have a BSN? The you can get a certificate from your test or vaccination location.</string>
+  <string name="holder_checkForBSN_buttonTitle_doesHaveBSN">Yes, I have a BSN</string>
+  <string name="holder_checkForBSN_buttonSubTitle_doesHaveBSN">Get your certificate from the CoronaCheck helpdesk</string>
+  <string name="holder_checkForBSN_buttonTitle_doesNotHaveBSN">No, I don’t have a BSN</string>
+  <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN">Get your certificate from your test or vaccination location</string>
+  <string name="holder_contactCoronaCheckHelpdesk_title">Request your certificate via the helpdesk</string>
+  <string name="holder.showqr.animation.voiceover.label">[placeholder]</string>
+  <string name="holder_contactCoronaCheckHelpdesk_message"><![CDATA[Request your certificate at the CoronaCheck helpdesk. You can call them every day between 8AM and 8PM at: <a href=\"tel:0800-1421\">0800-1421</a> (free).<br/><br/>Or if you’re calling from abroad: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>. In the menu you can choose “request a certificate”.<br/><br/>Or request your certificate by emailing: <a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a><br/><br/>Please provide the following:<ul><li>your citizen service number (BSN)</li><li>your zipcode</li></ul><br/><br/>Your certificate with QR code will be sent by post. This can take up to 7 working days.]]></string>
+  <string name="holder_contactProviderHelpdesk_title">Request your certificate at your test %s</string>
+  <string name="holder_contactProviderHelpdesk_testLocation">test location</string>
+  <string name="holder_contactProviderHelpdesk_vaccinationLocation">vaccination location</string>
+  <string name="holder_contactProviderHelpdesk_tested">tested</string>
+  <string name="holder_contactProviderHelpdesk_vaccinated">vaccinated</string>
+  <string name="holder_contactProviderHelpdesk_message"><![CDATA[Request your certificate at the location where you were %s.<br/><br/><ul><li>Was this at the GGD? Call the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a> to request your certificate. </li><li>Was this somewhere else? For example with your GP or another healthcare provider? Contact them directly.</li></ul><br/><br/>You can request your certificate on paper or as a PDF file.]]></string>
 </resources>

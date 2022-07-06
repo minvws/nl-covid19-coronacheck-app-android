@@ -34,6 +34,7 @@ fun IncludeContentButtonBinding.bind(
             providerTitle.context.resources.getDimensionPixelSize(R.dimen.test_provider_title_without_subtitle_padding)
         )
         root.contentDescription = providerTitle.text
+        logo?.let { providerTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, it, 0) }
     } else {
         root.contentDescription = String.format("%s. %s", providerTitle.text, providerSubtitle.text)
         logo?.let { providerSubtitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, it, 0) }

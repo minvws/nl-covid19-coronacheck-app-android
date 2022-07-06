@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
-import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -27,6 +26,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
 import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.no_digid.*
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -46,10 +46,10 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
 
     private val args: GetEventsFragmentArgs by navArgs()
     private val dialogUtil: DialogUtil by inject()
-    private val intentUtil: IntentUtil by inject()
     private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
+    private val noDigidScreenDataUtil: NoDigidScreenDataUtil by inject()
 
     override fun onButtonClickWithRetryAction() {
         loginWithDigiD()
@@ -252,10 +252,13 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             ) {
                 navigateSafety(GetEventsFragmentDirections.actionMijnCn())
             } else {
-                intentUtil.openUrl(
-                    context = requireContext(),
-                    url = getString(R.string.no_digid_url)
-                )
+                navigateSafety(GetEventsFragmentDirections.actionNoDigid(
+                    NoDigidFragmentData(
+                        title = getString(R.string.holder_noDigiD_title),
+                        description = getString(R.string.holder_noDigiD_message),
+                        firstNavigationButtonData = noDigidScreenDataUtil.requestDigidButton(),
+                        secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(getFlow())
+                )))
             }
         }
         if (args.originType == RemoteOriginType.Vaccination) {

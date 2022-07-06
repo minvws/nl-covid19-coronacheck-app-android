@@ -54,7 +54,7 @@ class MijnCnFragment : DigiDFragment(R.layout.fragment_mijn_cn) {
             onClick = {
                 intentUtil.openUrl(
                     context = requireContext(),
-                    url = getString(R.string.no_digid_url)
+                    url = getString(R.string.holder_noDigiD_url)
                 )
             })
 
