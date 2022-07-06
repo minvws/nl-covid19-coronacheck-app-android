@@ -39,7 +39,11 @@ class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
 
         with(args.data) {
             binding.title.text = title
-            binding.description.text = description
+            if (description.isNotEmpty()) {
+                binding.description.text = description
+            } else {
+                binding.description.visibility = View.GONE
+            }
 
             binding.firstButton.bind(
                 title = firstNavigationButtonData.title,

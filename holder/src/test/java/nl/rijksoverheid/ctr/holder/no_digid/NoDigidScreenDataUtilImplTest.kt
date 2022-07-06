@@ -33,15 +33,25 @@ class NoDigidScreenDataUtilImplTest : AutoCloseKoinTest() {
         assertNull(data.icon)
         assertEquals(applicationContext.getString(R.string.holder_noDigiD_buttonSubTitle_continueWithoutDigiD), data.subtitle)
 
-        val firstButtonData = data.noDigidFragmentData.firstNavigationButtonData
-        val secondButtonData = data.noDigidFragmentData.secondNavigationButtonData as NoDigidNavigationButtonData.Info
+        val firstButtonData = data.noDigidFragmentData.firstNavigationButtonData as NoDigidNavigationButtonData.Info
+        val secondButtonData = data.noDigidFragmentData.secondNavigationButtonData as NoDigidNavigationButtonData.NoDigid
 
         assertEquals(R.string.holder_checkForBSN_buttonTitle_doesHaveBSN, firstButtonData.title)
         assertEquals(applicationContext.getString(R.string.holder_checkForBSN_buttonSubTitle_doesHaveBSN), firstButtonData.subtitle)
         assertEquals(R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN, secondButtonData.title)
         assertEquals(applicationContext.getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN), secondButtonData.subtitle)
-        assertEquals(applicationContext.getString(R.string.holder_contactProviderHelpdesk_title, applicationContext.getString(R.string.holder_contactProviderHelpdesk_testLocation)), secondButtonData.infoFragmentData.title)
-        assertEquals(R.string.holder_contactProviderHelpdesk_message, secondButtonData.infoFragmentData.descriptionData.htmlText)
-        assertEquals(applicationContext.getString(R.string.general_toMyOverview), secondButtonData.infoFragmentData.primaryButtonData!!.text)
+        assertEquals(applicationContext.getString(R.string.holder_contactCoronaCheckHelpdesk_title), firstButtonData.infoFragmentData.title)
+        assertEquals(R.string.holder_contactCoronaCheckHelpdesk_message, firstButtonData.infoFragmentData.descriptionData.htmlText)
+        assertEquals(applicationContext.getString(R.string.holder_chooseEventLocation_title, applicationContext.getString(R.string.holder_contactProviderHelpdesk_tested)), secondButtonData.noDigidFragmentData.title)
+        assertEquals("", secondButtonData.noDigidFragmentData.description)
+        val eventLocationFirstButtonData = secondButtonData.noDigidFragmentData.firstNavigationButtonData as NoDigidNavigationButtonData.Info
+        val eventLocationSecondButtonData = secondButtonData.noDigidFragmentData.secondNavigationButtonData as NoDigidNavigationButtonData.Info
+        assertEquals(R.string.holder_chooseEventLocation_buttonTitle_GGD, eventLocationFirstButtonData.title)
+        assertEquals(applicationContext.getString(R.string.holder_chooseEventLocation_buttonSubTitle_GGD), eventLocationFirstButtonData.subtitle)
+        assertEquals(R.string.holder_chooseEventLocation_buttonTitle_other, eventLocationSecondButtonData.title)
+        assertEquals(applicationContext.getString(R.string.holder_chooseEventLocation_buttonSubTitle_other), eventLocationSecondButtonData.subtitle)
+        assertEquals(applicationContext.getString(R.string.holder_contactProviderHelpdesk_title), eventLocationSecondButtonData.infoFragmentData.title)
+        assertEquals(R.string.holder_contactProviderHelpdesk_message, eventLocationSecondButtonData.infoFragmentData.descriptionData.htmlText)
+        assertEquals(applicationContext.getString(R.string.general_toMyOverview), eventLocationSecondButtonData.infoFragmentData.primaryButtonData!!.text)
     }
 }

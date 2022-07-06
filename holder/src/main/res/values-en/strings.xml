@@ -806,10 +806,14 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_contactCoronaCheckHelpdesk_title">Request your certificate via the helpdesk</string>
   <string name="holder.showqr.animation.voiceover.label">[placeholder]</string>
   <string name="holder_contactCoronaCheckHelpdesk_message"><![CDATA[Request your certificate at the CoronaCheck helpdesk. You can call them every day between 8AM and 8PM at: <a href=\"tel:0800-1421\">0800-1421</a> (free).<br/><br/>Or if you’re calling from abroad: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>. In the menu you can choose “request a certificate”.<br/><br/>Or request your certificate by emailing: <a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a><br/><br/>Please provide the following:<ul><li>your citizen service number (BSN)</li><li>your zipcode</li></ul><br/><br/>Your certificate with QR code will be sent by post. This can take up to 7 working days.]]></string>
-  <string name="holder_contactProviderHelpdesk_title">Request your certificate at your test %s</string>
-  <string name="holder_contactProviderHelpdesk_testLocation">test location</string>
-  <string name="holder_contactProviderHelpdesk_vaccinationLocation">vaccination location</string>
+  <string name="holder_contactProviderHelpdesk_title">Vraag je coronabewijs aan via een zorgverlener</string>
   <string name="holder_contactProviderHelpdesk_tested">tested</string>
   <string name="holder_contactProviderHelpdesk_vaccinated">vaccinated</string>
   <string name="holder_contactProviderHelpdesk_message"><![CDATA[Request your certificate at the location where you were %s.<br/><br/><ul><li>Was this at the GGD? Call the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a> to request your certificate. </li><li>Was this somewhere else? For example with your GP or another healthcare provider? Contact them directly.</li></ul><br/><br/>You can request your certificate on paper or as a PDF file.]]></string>
+  <string name="holder_contactProviderHelpdesk_message_ggdPortalEnabled">Neem contact op met de zorgverlener waar je bent %s. Hier kun je jouw coronabewijs aanvragen op papier of als pdf-bestand.</string>
+  <string name="holder_chooseEventLocation_title">Waar ben je %s?</string>
+  <string name="holder_chooseEventLocation_buttonTitle_GGD">GGD</string>
+  <string name="holder_chooseEventLocation_buttonSubTitle_GGD">Regel je bewijs via de GGD</string>
+  <string name="holder_chooseEventLocation_buttonTitle_other">Een andere zorgverlener</string>
+  <string name="holder_chooseEventLocation_buttonSubTitle_other">Regel je bewijs via bijvoorbeeld je huisarts of andere zorginstelling</string>
 </resources>

@@ -247,19 +247,19 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             onButtonClickWithRetryAction()
         }
         binding.noDigidButton.setOnClickListener {
-            if (featureFlagUseCase.getMijnCnEnabled() &&
-                args.originType == RemoteOriginType.Vaccination
-            ) {
-                navigateSafety(GetEventsFragmentDirections.actionMijnCn())
-            } else {
-                navigateSafety(GetEventsFragmentDirections.actionNoDigid(
-                    NoDigidFragmentData(
-                        title = getString(R.string.holder_noDigiD_title),
-                        description = getString(R.string.holder_noDigiD_message),
-                        firstNavigationButtonData = noDigidScreenDataUtil.requestDigidButton(),
-                        secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(getFlow())
+            navigateSafety(GetEventsFragmentDirections.actionNoDigid(
+                NoDigidFragmentData(
+                    title = getString(R.string.holder_noDigiD_title),
+                    description = getString(R.string.holder_noDigiD_message),
+                    firstNavigationButtonData = noDigidScreenDataUtil.requestDigidButton(),
+                    secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(getFlow())
                 )))
-            }
+            // TODO add the mijncn button as third button of NoDigidFragment
+//            if (featureFlagUseCase.getMijnCnEnabled() &&
+//                args.originType == RemoteOriginType.Vaccination
+//            ) {
+//                navigateSafety(GetEventsFragmentDirections.actionMijnCn())
+//            }
         }
         if (args.originType == RemoteOriginType.Vaccination) {
             binding.checkboxWithHeader.visibility = View.VISIBLE

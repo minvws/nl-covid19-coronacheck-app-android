@@ -43,26 +43,49 @@ class NoDigidScreenDataUtilImpl(
         )
     )
 
-    private fun doesNotHaveBSNButton(flow: Flow) = NoDigidNavigationButtonData.Info(
-        title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN,
-        subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN),
+    private val eventLocationGGDButtonData = NoDigidNavigationButtonData.Info(
+        title = R.string.holder_chooseEventLocation_buttonTitle_GGD,
+        subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_GGD),
+        // TODO replace with action opening the GGD GHOR portal
         infoFragmentData = InfoFragmentData.TitleDescriptionWithButton(
-            title = getStringArgs(
-                R.string.holder_contactProviderHelpdesk_title, arrayOf(
-                    getString(
-                        if (flow == HolderFlow.Vaccination) {
-                            R.string.holder_contactProviderHelpdesk_vaccinationLocation
-                        } else {
-                            R.string.holder_contactProviderHelpdesk_testLocation
-                        }
-                    )
-                )
-            ),
+            title = getString(R.string.holder_contactProviderHelpdesk_title),
             descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_message),
             primaryButtonData = ButtonData.NavigationButton(
                 text = getString(R.string.general_toMyOverview),
                 navigationActionId = R.id.action_my_overview
             )
+        )
+    )
+
+    private val eventLocationOtherButtonData = NoDigidNavigationButtonData.Info(
+        title = R.string.holder_chooseEventLocation_buttonTitle_other,
+        subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_other),
+        infoFragmentData = InfoFragmentData.TitleDescriptionWithButton(
+            title = getString(R.string.holder_contactProviderHelpdesk_title),
+            descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_message),
+            primaryButtonData = ButtonData.NavigationButton(
+                text = getString(R.string.general_toMyOverview),
+                navigationActionId = R.id.action_my_overview
+            )
+        )
+    )
+
+    private fun doesNotHaveBSNButton(flow: Flow) = NoDigidNavigationButtonData.NoDigid(
+        title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN,
+        subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN),
+        noDigidFragmentData = NoDigidFragmentData(
+            title = getStringArgs(R.string.holder_chooseEventLocation_title, arrayOf(
+                getString(
+                    if (flow == HolderFlow.Vaccination) {
+                        R.string.holder_contactProviderHelpdesk_vaccinated
+                    } else {
+                        R.string.holder_contactProviderHelpdesk_tested
+                    }
+                )
+            )),
+            description = "",
+            firstNavigationButtonData = eventLocationGGDButtonData,
+            secondNavigationButtonData = eventLocationOtherButtonData
         )
     )
 
