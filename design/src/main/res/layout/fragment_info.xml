@@ -61,6 +61,7 @@
 
             <Button
                 android:id="@+id/button"
+                android:visibility="gone"
                 style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
