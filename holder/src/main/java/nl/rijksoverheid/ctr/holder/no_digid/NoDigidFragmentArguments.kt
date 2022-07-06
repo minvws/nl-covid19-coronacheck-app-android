@@ -7,30 +7,43 @@
 
 package nl.rijksoverheid.ctr.holder.no_digid
 
-import android.os.Bundle
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
-import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 
 @Parcelize
 data class NoDigidFragmentData(
     val title: String,
     val description: String,
-    val firstNavigationButtonData: NavigationButtonData,
-    val secondNavigationButtonData: NavigationButtonData
+    val firstNavigationButtonData: NoDigidNavigationButtonData,
+    val secondNavigationButtonData: NoDigidNavigationButtonData
 ) : Parcelable
 
-@Parcelize
-data class ButtonClickDirection(@IdRes val actionId: Int, val arguments: Bundle) : Parcelable
 
-@Parcelize
-data class NavigationButtonData(
-    @StringRes val title: Int,
-    val subtitle: String? = null,
-    @DrawableRes val icon: Int? = null,
-    val buttonClickDirection: ButtonClickDirection? = null,
-    val externalUrl: String? = null
-) : Parcelable
+sealed class NoDigidNavigationButtonData(
+    @StringRes open val title: Int,
+    open val subtitle: String? = null,
+    @DrawableRes open val icon: Int? = null,
+) : Parcelable {
+    
+    @Parcelize
+    data class NoDigid(@StringRes override val title: Int,
+                       override val subtitle: String? = null,
+                       @DrawableRes override val icon: Int? = null,
+                       val noDigidFragmentData: NoDigidFragmentData): NoDigidNavigationButtonData(title, subtitle, icon)
+
+    @Parcelize
+    data class Info(@StringRes override val title: Int,
+                    override val subtitle: String? = null,
+                    @DrawableRes override val icon: Int? = null, 
+                    val infoFragmentData: InfoFragmentData.TitleDescriptionWithButton): NoDigidNavigationButtonData(title, subtitle, icon)
+
+    @Parcelize
+    data class Link(@StringRes override val title: Int,
+                    override val subtitle: String? = null,
+                    @DrawableRes override val icon: Int? = null,
+                    val externalUrl: String): NoDigidNavigationButtonData(title, subtitle, icon)
+}
 

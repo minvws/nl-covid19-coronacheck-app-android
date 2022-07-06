@@ -33,16 +33,15 @@ class NoDigidScreenDataUtilImplTest : AutoCloseKoinTest() {
         assertNull(data.icon)
         assertEquals(applicationContext.getString(R.string.holder_noDigiD_buttonSubTitle_continueWithoutDigiD), data.subtitle)
 
-        val firstButtonData = (data.buttonClickDirection!!.arguments["data"] as NoDigidFragmentData).firstNavigationButtonData
-        val secondButtonData = (data.buttonClickDirection!!.arguments["data"] as NoDigidFragmentData).secondNavigationButtonData
+        val firstButtonData = data.noDigidFragmentData.firstNavigationButtonData
+        val secondButtonData = data.noDigidFragmentData.secondNavigationButtonData as NoDigidNavigationButtonData.Info
 
         assertEquals(R.string.holder_checkForBSN_buttonTitle_doesHaveBSN, firstButtonData.title)
         assertEquals(applicationContext.getString(R.string.holder_checkForBSN_buttonSubTitle_doesHaveBSN), firstButtonData.subtitle)
         assertEquals(R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN, secondButtonData.title)
         assertEquals(applicationContext.getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN), secondButtonData.subtitle)
-        assertEquals(applicationContext.getString(R.string.choose_provider_toolbar), secondButtonData.buttonClickDirection!!.arguments["toolbarTitle"])
-        assertEquals(applicationContext.getString(R.string.holder_contactProviderHelpdesk_title, applicationContext.getString(R.string.holder_contactProviderHelpdesk_testLocation)), secondButtonData.buttonClickDirection!!.arguments["title"])
-        assertEquals(applicationContext.getString(R.string.holder_contactProviderHelpdesk_message), secondButtonData.buttonClickDirection!!.arguments["description"])
-        assertEquals(applicationContext.getString(R.string.general_toMyOverview), secondButtonData.buttonClickDirection!!.arguments["buttonTitle"])
+        assertEquals(applicationContext.getString(R.string.holder_contactProviderHelpdesk_title, applicationContext.getString(R.string.holder_contactProviderHelpdesk_testLocation)), secondButtonData.infoFragmentData.title)
+        assertEquals(R.string.holder_contactProviderHelpdesk_message, secondButtonData.infoFragmentData.descriptionData.htmlText)
+        assertEquals(applicationContext.getString(R.string.general_toMyOverview), secondButtonData.infoFragmentData.primaryButtonData!!.text)
     }
 }

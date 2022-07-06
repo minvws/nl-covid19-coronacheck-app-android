@@ -324,8 +324,8 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/action_could_not_create_qr"
-            app:destination="@id/nav_could_not_create_qr"
+            android:id="@+id/action_info_fragment"
+            app:destination="@id/nav_info_fragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

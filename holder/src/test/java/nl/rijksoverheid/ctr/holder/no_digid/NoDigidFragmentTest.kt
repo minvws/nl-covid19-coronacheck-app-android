@@ -64,8 +64,8 @@ class NoDigidFragmentTest : AutoCloseKoinTest() {
             "data" to NoDigidFragmentData(
                 title = "screen title",
                 description = "screen description",
-                firstNavigationButtonData =  NavigationButtonData(R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD, "button subtitle", null, null, "url"),
-                secondNavigationButtonData = NavigationButtonData(R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD, null, R.drawable.ic_digid_logo, ButtonClickDirection(R.id.nav_no_digid, bundleOf())),
+                firstNavigationButtonData =  NoDigidNavigationButtonData.Link(R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD, "button subtitle", null, "url"),
+                secondNavigationButtonData = NoDigidNavigationButtonData.NoDigid(R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD, null, R.drawable.ic_digid_logo, mockk()),
             ),
             "toolbarTitle" to "toolbar title"
         )

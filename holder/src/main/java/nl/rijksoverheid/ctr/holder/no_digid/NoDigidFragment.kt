@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDigidBinding
@@ -29,6 +30,7 @@ class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
 
     private val args: NoDigidFragmentArgs by navArgs()
     private val intentUtil: IntentUtil by inject()
+    private val infoFragmentUtil: InfoFragmentUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,18 +46,7 @@ class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
                 subtitle = firstNavigationButtonData.subtitle,
                 logo = firstNavigationButtonData.icon
             ) {
-                firstNavigationButtonData.buttonClickDirection?.let {
-                    navigateSafety(
-                        destinationId = it.actionId,
-                        args = it.arguments
-                    )
-                }
-                firstNavigationButtonData.externalUrl?.let {
-                    intentUtil.openUrl(
-                        context = requireContext(),
-                        url = it,
-                    )
-                }
+                onButtonClick(firstNavigationButtonData)
             }
 
             binding.secondButton.bind(
@@ -63,12 +54,30 @@ class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
                 subtitle = secondNavigationButtonData.subtitle,
                 logo = secondNavigationButtonData.icon
             ) {
-                secondNavigationButtonData.buttonClickDirection?.let {
-                    navigateSafety(
-                        destinationId = it.actionId,
-                        args = it.arguments
-                    )
-                }
+                onButtonClick(secondNavigationButtonData)
+            }
+        }
+    }
+    
+    private fun onButtonClick(data: NoDigidNavigationButtonData) {
+        when (data) {
+            is NoDigidNavigationButtonData.NoDigid -> {
+                navigateSafety(
+                    NoDigidFragmentDirections.actionNoDigid(data.noDigidFragmentData)
+                )
+            }
+            is NoDigidNavigationButtonData.Info -> {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    toolbarTitle = getString(R.string.choose_provider_toolbar),
+                    data = data.infoFragmentData
+                )
+            }
+            is NoDigidNavigationButtonData.Link -> {
+                intentUtil.openUrl(
+                    context = requireContext(),
+                    url = data.externalUrl,
+                )
             }
         }
     }
