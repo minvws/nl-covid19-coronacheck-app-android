@@ -17,10 +17,13 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDigidBinding
 import nl.rijksoverheid.ctr.holder.get_events.DigiDFragment
+import nl.rijksoverheid.ctr.holder.get_events.GetEventsFragmentDirections
 import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
+import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -44,7 +47,11 @@ class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
     }
 
     override fun getFlow(): Flow {
-        return args.data.flow
+        return when (args.data.originType) {
+            RemoteOriginType.Recovery -> HolderFlow.Recovery
+            RemoteOriginType.Test -> HolderFlow.DigidTest
+            RemoteOriginType.Vaccination -> HolderFlow.Vaccination
+        }
     }
 
     override fun onDestroyView() {
@@ -105,7 +112,16 @@ class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
         remoteProtocols: Map<RemoteProtocol, ByteArray>,
         eventProviders: List<EventProvider>
     ) {
-
+        navigateSafety(
+            GetEventsFragmentDirections.actionYourEvents(
+                type = YourEventsFragmentType.RemoteProtocol3Type(
+                    remoteEvents = remoteProtocols,
+                    eventProviders = eventProviders
+                ),
+                toolbarTitle = getCopyForOriginType().toolbarTitle,
+                flow = getFlow()
+            )
+        )
     }
 
     private fun onButtonClick(data: NoDigidNavigationButtonData) {

@@ -270,9 +270,8 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                 )
             }.toTypedArray()
 
-    private fun getCopyForOriginType(): GetEventsFragmentCopy {
-        val originTypeForCopy = getOriginTypes().first()
-        when (originTypeForCopy) {
+    protected fun getCopyForOriginType(): GetEventsFragmentCopy {
+        when (getOriginTypes().first()) {
             is RemoteOriginType.Test -> {
                 return GetEventsFragmentCopy(
                     title = getString(R.string.holder_negativetest_ggd_title),

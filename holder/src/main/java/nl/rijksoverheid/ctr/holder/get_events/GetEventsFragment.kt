@@ -70,8 +70,8 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     title = getString(R.string.holder_noDigiD_title),
                     description = getString(R.string.holder_noDigiD_message),
                     firstNavigationButtonData = noDigidScreenDataUtil.requestDigidButton(),
-                    secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(getFlow()),
-                    flow = getFlow(),
+                    secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(args.originType),
+                    originType = args.originType
                 ))
             )
         }
@@ -79,38 +79,6 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         if (args.originType == RemoteOriginType.Vaccination) {
             binding.checkboxWithHeader.visibility = View.VISIBLE
             binding.checkboxWithHeader.header(R.string.holder_addVaccination_alsoCollectPositiveTestResults_message)
-        }
-    }
-
-    private fun getCopyForOriginType(): GetEventsFragmentCopy {
-        when (args.originType) {
-            is RemoteOriginType.Test -> {
-                return GetEventsFragmentCopy(
-                    title = getString(R.string.holder_negativetest_ggd_title),
-                    description = getString(R.string.holder_negativetest_ggd_message),
-                    toolbarTitle = getString(R.string.your_negative_test_results_header),
-                    hasNoEventsTitle = getString(R.string.no_test_results_title),
-                    hasNoEventsDescription = getString(R.string.no_test_results_description)
-                )
-            }
-            is RemoteOriginType.Vaccination -> {
-                return GetEventsFragmentCopy(
-                    title = getString(R.string.holder_addVaccination_title),
-                    description = getString(R.string.holder_addVaccination_message),
-                    toolbarTitle = getString(R.string.your_vaccination_result_toolbar_title),
-                    hasNoEventsTitle = getString(R.string.no_vaccinations_title),
-                    hasNoEventsDescription = getString(R.string.no_vaccinations_description)
-                )
-            }
-            is RemoteOriginType.Recovery -> {
-                return GetEventsFragmentCopy(
-                    title = getString(R.string.get_recovery_title),
-                    description = getString(R.string.get_recovery_description),
-                    toolbarTitle = getString(R.string.your_positive_test_toolbar_title),
-                    hasNoEventsTitle = getString(R.string.no_positive_test_result_title),
-                    hasNoEventsDescription = getString(R.string.no_positive_test_result_description)
-                )
-            }
         }
     }
 
