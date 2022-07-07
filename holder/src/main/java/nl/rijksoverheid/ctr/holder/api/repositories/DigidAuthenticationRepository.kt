@@ -32,8 +32,8 @@ class DigidAuthenticationRepository: AuthenticationRepository {
 
     private suspend fun authorizationServiceConfiguration(loginType: LoginType): AuthorizationServiceConfiguration {
         val url = when (loginType) {
-            is LoginType.Digid -> BuildConfig.DIGI_D_BASE_URL
-            is LoginType.Ggd -> BuildConfig.GGD_BASE_URL
+            is LoginType.Max -> BuildConfig.DIGI_D_BASE_URL
+            is LoginType.Pap -> BuildConfig.GGD_BASE_URL
         }
         return suspendCoroutine { continuation ->
             AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse(url)) { serviceConfiguration, error ->
@@ -63,8 +63,8 @@ class DigidAuthenticationRepository: AuthenticationRepository {
         return suspendCoroutine { continuation ->
             authService.performTokenRequest(authResponse.createTokenExchangeRequest()) { resp, error ->
                 val jwt = when (loginType) {
-                    is LoginType.Digid -> resp?.idToken
-                    is LoginType.Ggd -> resp?.accessToken
+                    is LoginType.Max -> resp?.idToken
+                    is LoginType.Pap -> resp?.accessToken
                 }
                 when {
                     jwt != null -> continuation.resume(jwt)

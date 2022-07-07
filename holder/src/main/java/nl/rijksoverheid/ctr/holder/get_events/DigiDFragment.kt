@@ -179,6 +179,7 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
             when (it) {
                 is LoginResult.Success -> {
                     getEventsViewModel.getDigidEvents(
+                        getLoginType(),
                         it.jwt,
                         getOriginTypes()
                     )

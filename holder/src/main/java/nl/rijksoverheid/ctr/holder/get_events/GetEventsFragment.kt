@@ -58,7 +58,7 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     }
 
     override fun getLoginType(): LoginType {
-        return LoginType.Digid
+        return LoginType.Max
     }
 
     private fun setBindings() {

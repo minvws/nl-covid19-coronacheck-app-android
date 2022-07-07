@@ -98,7 +98,7 @@ class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
     }
 
     override fun getLoginType(): LoginType {
-        return LoginType.Ggd
+        return LoginType.Pap
     }
 
     override fun onDigidLoading(loading: Boolean) {
