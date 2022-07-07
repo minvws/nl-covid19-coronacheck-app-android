@@ -17,6 +17,9 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDigidBinding
 import nl.rijksoverheid.ctr.holder.get_events.DigiDFragment
+import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -38,10 +41,6 @@ class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
 
     override fun onButtonClickWithRetryAction() {
         loginWithDigiD()
-    }
-
-    override fun onButtonClickWithRetryTitle(): Int {
-        return super.onButtonClickWithRetryTitle()
     }
 
     override fun getFlow(): Flow {
@@ -89,7 +88,26 @@ class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
             }
         }
     }
-    
+
+    override fun onDigidLoading(loading: Boolean) {
+
+    }
+
+    override fun onGetEventsLoading(loading: Boolean) {
+
+    }
+
+    override fun getOriginTypes(): List<RemoteOriginType> {
+        return listOf(RemoteOriginType.Vaccination)
+    }
+
+    override fun onNavigateToYourEvents(
+        remoteProtocols: Map<RemoteProtocol, ByteArray>,
+        eventProviders: List<EventProvider>
+    ) {
+
+    }
+
     private fun onButtonClick(data: NoDigidNavigationButtonData) {
         when (data) {
             is NoDigidNavigationButtonData.NoDigid -> {

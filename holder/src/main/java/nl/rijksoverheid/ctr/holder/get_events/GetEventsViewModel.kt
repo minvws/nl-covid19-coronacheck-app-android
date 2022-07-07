@@ -31,7 +31,7 @@ abstract class GetEventsViewModel : ViewModel() {
 
     abstract fun getDigidEvents(
         jwt: String,
-        originType: RemoteOriginType,
+        originTypes: List<RemoteOriginType>,
         getPositiveTestWithVaccination: Boolean = false
     )
 
@@ -49,12 +49,9 @@ class GetEventsViewModelImpl(
 
     override fun getDigidEvents(
         jwt: String,
-        originType: RemoteOriginType,
+        originTypes: List<RemoteOriginType>,
         getPositiveTestWithVaccination: Boolean
     ) {
-        val originTypes =
-            listOf(originType) +
-                    if (getPositiveTestWithVaccination) listOf(RemoteOriginType.Recovery) else emptyList()
         getEvents {
             getDigidEventsUseCase.getEvents(
                 jwt = jwt,
