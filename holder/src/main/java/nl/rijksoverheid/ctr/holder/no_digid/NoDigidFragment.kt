@@ -13,11 +13,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDigidBinding
 import nl.rijksoverheid.ctr.holder.get_events.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.android.ext.android.inject
 
@@ -44,6 +46,11 @@ class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
 
     override fun getFlow(): Flow {
         return args.data.flow
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,6 +80,12 @@ class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
                 logo = secondNavigationButtonData.icon
             ) {
                 onButtonClick(secondNavigationButtonData)
+            }
+
+            if (args.data.firstNavigationButtonData is NoDigidNavigationButtonData.Ggd) {
+                digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
+                    (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
+                })
             }
         }
     }
