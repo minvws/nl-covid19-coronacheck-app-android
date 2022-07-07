@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.no_digid.*
@@ -54,6 +55,10 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         _binding = FragmentGetEventsBinding.bind(view)
         super.onViewCreated(view, savedInstanceState)
         setBindings()
+    }
+
+    override fun getLoginType(): LoginType {
+        return LoginType.Digid
     }
 
     private fun setBindings() {
@@ -120,28 +125,6 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                 ),
                 toolbarTitle = getCopyForOriginType().toolbarTitle,
                 flow = if (flow == HolderFlow.Vaccination && checkedPositiveTest) {
-                    HolderFlow.VaccinationAndPositiveTest
-                } else {
-                    flow
-                }
-            )
-        )
-    }
-
-    private fun navigateToYourEvents(
-        remoteProtocols: Map<RemoteProtocol, ByteArray>,
-        eventProviders: List<EventProvider> = emptyList(),
-        getPositiveTestWithVaccination: Boolean
-    ) {
-        val flow = getFlow()
-        navigateSafety(
-            GetEventsFragmentDirections.actionYourEvents(
-                type = YourEventsFragmentType.RemoteProtocol3Type(
-                    remoteEvents = remoteProtocols,
-                    eventProviders = eventProviders
-                ),
-                toolbarTitle = getCopyForOriginType().toolbarTitle,
-                flow = if (flow == HolderFlow.Vaccination && getPositiveTestWithVaccination) {
                     HolderFlow.VaccinationAndPositiveTest
                 } else {
                     flow

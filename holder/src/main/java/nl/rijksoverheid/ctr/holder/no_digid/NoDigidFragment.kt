@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDigidBinding
 import nl.rijksoverheid.ctr.holder.get_events.DigiDFragment
 import nl.rijksoverheid.ctr.holder.get_events.GetEventsFragmentDirections
 import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
@@ -96,12 +97,16 @@ class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
         }
     }
 
-    override fun onDigidLoading(loading: Boolean) {
+    override fun getLoginType(): LoginType {
+        return LoginType.Ggd
+    }
 
+    override fun onDigidLoading(loading: Boolean) {
+        // TODO Disable buttons
     }
 
     override fun onGetEventsLoading(loading: Boolean) {
-
+        // TODO Disable buttons
     }
 
     override fun getOriginTypes(): List<RemoteOriginType> {

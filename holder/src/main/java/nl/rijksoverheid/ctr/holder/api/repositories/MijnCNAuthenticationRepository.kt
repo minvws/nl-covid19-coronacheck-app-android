@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.api.MijnCnApiClient
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import nl.rijksoverheid.ctr.holder.get_events.models.MijnCNTokenResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import kotlin.coroutines.resume
@@ -27,6 +28,7 @@ class MijnCNAuthenticationRepository(
 ) : AuthenticationRepository {
 
     override suspend fun authResponse(
+        loginType: LoginType,
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
     ) {
@@ -58,6 +60,7 @@ class MijnCNAuthenticationRepository(
     }
 
     override suspend fun jwt(
+        loginType: LoginType,
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
     ): String {

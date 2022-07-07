@@ -25,11 +25,8 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
-import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
+import nl.rijksoverheid.ctr.holder.get_events.models.*
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -59,21 +56,9 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
         AuthorizationService(requireActivity(), appAuthConfig)
     }
 
-    private val loginResultMijnCn =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            mijnCnViewModel.handleActivityResult(it, authService)
-        }
-
-    private val authServiceMijnCn by lazy {
-        val appAuthConfig = AppAuthConfiguration.Builder()
-            .setBrowserMatcher(BrowserAllowList(*getSupportedBrowsers()))
-            .build()
-        AuthorizationService(requireActivity(), appAuthConfig)
-    }
-
     private val loginResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            digidViewModel.handleActivityResult(it, authService)
+            digidViewModel.handleActivityResult(getLoginType(), it, authService)
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -229,21 +214,17 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
     }
 
     fun loginWithDigiD() {
-        digidViewModel.login(loginResult, authService)
+        digidViewModel.login(getLoginType(), loginResult, authService)
     }
 
-    fun loginWithMijnCN() {
-        mijnCnViewModel.login(loginResultMijnCn, authServiceMijnCn)
-    }
-
-    protected fun getErrorCodes(errorResults: List<ErrorResult>): String {
+    private fun getErrorCodes(errorResults: List<ErrorResult>): String {
         return errorCodeStringFactory.get(
             flow = getFlow(),
             errorResults = errorResults
         )
     }
 
-    protected fun getDialogTitleFromOriginType(originType: RemoteOriginType): Int {
+    private fun getDialogTitleFromOriginType(originType: RemoteOriginType): Int {
         return when (originType) {
             RemoteOriginType.Recovery -> R.string.error_get_events_missing_events_dialog_title_recoveries
             RemoteOriginType.Test -> R.string.error_get_events_missing_events_dialog_title_testresults
@@ -302,6 +283,7 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
         }
     }
 
+    abstract fun getLoginType(): LoginType
     abstract fun onDigidLoading(loading: Boolean)
     abstract fun onGetEventsLoading(loading: Boolean)
     abstract fun getOriginTypes(): List<RemoteOriginType>

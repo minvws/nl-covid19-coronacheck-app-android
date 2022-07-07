@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import net.openid.appauth.*
 import nl.rijksoverheid.ctr.holder.BuildConfig
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -19,18 +20,23 @@ import kotlin.coroutines.suspendCoroutine
 class DigidAuthenticationRepository: AuthenticationRepository {
 
     override suspend fun authResponse(
+        loginType: LoginType,
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
     ) {
-        val authServiceConfiguration = authorizationServiceConfiguration()
+        val authServiceConfiguration = authorizationServiceConfiguration(loginType)
         val authRequest = authRequest(serviceConfiguration = authServiceConfiguration)
         val authIntent = authService.getAuthorizationRequestIntent(authRequest)
         activityResultLauncher.launch(authIntent)
     }
 
-    private suspend fun authorizationServiceConfiguration(): AuthorizationServiceConfiguration {
+    private suspend fun authorizationServiceConfiguration(loginType: LoginType): AuthorizationServiceConfiguration {
+        val url = when (loginType) {
+            is LoginType.Digid -> BuildConfig.DIGI_D_BASE_URL
+            is LoginType.Ggd -> BuildConfig.GGD_BASE_URL
+        }
         return suspendCoroutine { continuation ->
-            AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse(BuildConfig.DIGI_D_BASE_URL)) { serviceConfiguration, error ->
+            AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse(url)) { serviceConfiguration, error ->
                 when {
                     error != null -> continuation.resumeWithException(error)
                     serviceConfiguration != null -> continuation.resume(serviceConfiguration)
@@ -50,12 +56,16 @@ class DigidAuthenticationRepository: AuthenticationRepository {
     }
 
     override suspend fun jwt(
+        loginType: LoginType,
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
     ): String {
         return suspendCoroutine { continuation ->
             authService.performTokenRequest(authResponse.createTokenExchangeRequest()) { resp, error ->
-                val jwt = resp?.idToken
+                val jwt = when (loginType) {
+                    is LoginType.Digid -> resp?.idToken
+                    is LoginType.Ggd -> resp?.accessToken
+                }
                 when {
                     jwt != null -> continuation.resume(jwt)
                     error != null -> continuation.resumeWithException(error)
