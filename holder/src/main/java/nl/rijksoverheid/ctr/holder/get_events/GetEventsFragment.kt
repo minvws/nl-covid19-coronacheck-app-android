@@ -252,7 +252,8 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
                     title = getString(R.string.holder_noDigiD_title),
                     description = getString(R.string.holder_noDigiD_message),
                     firstNavigationButtonData = noDigidScreenDataUtil.requestDigidButton(),
-                    secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(getFlow())
+                    secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(getFlow()),
+                    flow = getFlow(),
                 )))
             // TODO add the mijncn button as third button of NoDigidFragment
 //            if (featureFlagUseCase.getMijnCnEnabled() &&

@@ -43,18 +43,9 @@ class NoDigidScreenDataUtilImpl(
         )
     )
 
-    private val eventLocationGGDButtonData = NoDigidNavigationButtonData.Info(
+    private val eventLocationGGDButtonData = NoDigidNavigationButtonData.Ggd(
         title = R.string.holder_chooseEventLocation_buttonTitle_GGD,
         subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_GGD),
-        // TODO replace with action opening the GGD GHOR portal
-        infoFragmentData = InfoFragmentData.TitleDescriptionWithButton(
-            title = getString(R.string.holder_contactProviderHelpdesk_title),
-            descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_message),
-            primaryButtonData = ButtonData.NavigationButton(
-                text = getString(R.string.general_toMyOverview),
-                navigationActionId = R.id.action_my_overview
-            )
-        )
     )
 
     private val eventLocationOtherButtonData = NoDigidNavigationButtonData.Info(
@@ -85,7 +76,8 @@ class NoDigidScreenDataUtilImpl(
             )),
             description = "",
             firstNavigationButtonData = eventLocationGGDButtonData,
-            secondNavigationButtonData = eventLocationOtherButtonData
+            secondNavigationButtonData = eventLocationOtherButtonData,
+            flow = flow
         )
     )
 
@@ -102,7 +94,8 @@ class NoDigidScreenDataUtilImpl(
             title = getString(R.string.holder_checkForBSN_title),
             description = getString(R.string.holder_checkForBSN_message),
             firstNavigationButtonData = doesHaveBSNButton,
-            secondNavigationButtonData = doesNotHaveBSNButton(flow)
+            secondNavigationButtonData = doesNotHaveBSNButton(flow),
+            flow = flow
         )
     )
 }

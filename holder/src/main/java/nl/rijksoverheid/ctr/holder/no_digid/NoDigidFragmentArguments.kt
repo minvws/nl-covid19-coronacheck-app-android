@@ -12,13 +12,16 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.shared.models.Flow
 
 @Parcelize
 data class NoDigidFragmentData(
     val title: String,
     val description: String,
     val firstNavigationButtonData: NoDigidNavigationButtonData,
-    val secondNavigationButtonData: NoDigidNavigationButtonData
+    val secondNavigationButtonData: NoDigidNavigationButtonData,
+    val flow: Flow
 ) : Parcelable
 
 
@@ -45,5 +48,10 @@ sealed class NoDigidNavigationButtonData(
                     override val subtitle: String? = null,
                     @DrawableRes override val icon: Int? = null,
                     val externalUrl: String): NoDigidNavigationButtonData(title, subtitle, icon)
+
+    @Parcelize
+    data class Ggd(@StringRes override val title: Int,
+                    override val subtitle: String? = null,
+                    @DrawableRes override val icon: Int? = null): NoDigidNavigationButtonData(title, subtitle, icon)
 }
 

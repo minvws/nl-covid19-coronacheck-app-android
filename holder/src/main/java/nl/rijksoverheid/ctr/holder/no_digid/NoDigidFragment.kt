@@ -15,8 +15,10 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDigidBinding
+import nl.rijksoverheid.ctr.holder.get_events.DigiDFragment
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.android.ext.android.inject
 
 /*
@@ -26,11 +28,23 @@ import org.koin.android.ext.android.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
+class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
 
     private val args: NoDigidFragmentArgs by navArgs()
     private val intentUtil: IntentUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
+
+    override fun onButtonClickWithRetryAction() {
+        loginWithDigiD()
+    }
+
+    override fun onButtonClickWithRetryTitle(): Int {
+        return super.onButtonClickWithRetryTitle()
+    }
+
+    override fun getFlow(): Flow {
+        return args.data.flow
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -82,6 +96,9 @@ class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
                     context = requireContext(),
                     url = data.externalUrl,
                 )
+            }
+            is NoDigidNavigationButtonData.Ggd -> {
+                loginWithDigiD()
             }
         }
     }
