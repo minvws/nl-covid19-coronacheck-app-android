@@ -142,7 +142,7 @@ abstract class HolderDatabase : RoomDatabase() {
         ): HolderDatabase {
             // From db migration 6 to 7 there was a database encryption key migration issue.
             // This code checks if we can open the database, and if not delete the old database.
-            if (isProd) {
+            if (isProd && persistenceManager.getCheckCanOpenDatabase()) {
                 try {
                     val file = File(context.filesDir.parentFile, "databases/holder-database")
                     try {
@@ -150,9 +150,13 @@ abstract class HolderDatabase : RoomDatabase() {
                         SQLiteDatabase.openDatabase(file.absolutePath, persistenceManager.getDatabasePassPhrase(), null, SQLiteDatabase.OPEN_READONLY)
                     } catch (e: SQLiteException) {
                         file.delete()
+                    } finally {
+                        persistenceManager.setCheckCanOpenDatabase(false)
                     }
                 } catch (e: Exception) {
                     // Make sure this hack never crashes
+                } finally {
+                    persistenceManager.setCheckCanOpenDatabase(false)
                 }
             }
 
