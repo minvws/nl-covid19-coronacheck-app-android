@@ -73,7 +73,7 @@ class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
         dbV6.close()
 
         // The database after the migration
-        val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager, "123"))
+        val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager))
 
         // Assert new secret key is stored in preference
         assertEquals("123", persistenceManager.getDatabasePassPhrase())
@@ -95,7 +95,7 @@ class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
         dbV6.close()
 
         // The database after the migration
-        val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager, "123"))
+        val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager))
 
         // Assert new secret key is stored in preference
         assertEquals("123", persistenceManager.getDatabasePassPhrase())
