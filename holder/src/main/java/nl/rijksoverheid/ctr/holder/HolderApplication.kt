@@ -64,7 +64,6 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
-        SQLiteDatabase.loadLibs(applicationContext)
 
         startKoin {
             androidContext(this@HolderApplication)

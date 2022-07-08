@@ -145,6 +145,7 @@ abstract class HolderDatabase : RoomDatabase() {
             try {
                 val file = File(context.filesDir.parentFile, "databases/holder-database")
                 try {
+                    SQLiteDatabase.loadLibs(context)
                     SQLiteDatabase.openDatabase(file.absolutePath, persistenceManager.getDatabasePassPhrase(), null, SQLiteDatabase.OPEN_READONLY)
                 } catch (e: SQLiteException) {
                     file.delete()
