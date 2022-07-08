@@ -9,6 +9,7 @@ package nl.rijksoverheid.ctr.holder.qrcodes.utils
 import android.app.Application
 import android.text.TextUtils
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.design.ext.formatDateTimeWithTimeZone
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
@@ -100,7 +101,7 @@ class QrInfoScreenUtilImpl(
         val testDate = test.getStringOrNull("sc")?.let {
             try {
                 OffsetDateTime.parse(it, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                    .formatDateTime(application)
+                    .formatDateTimeWithTimeZone(application)
             } catch (e: Exception) {
                 ""
             }

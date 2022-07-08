@@ -27,7 +27,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/get_vaccination_title" />
+                tools:text="@string/holder_addVaccination_title" />
 
             <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
                 android:id="@+id/description"
@@ -39,14 +39,16 @@
                 app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@+id/title"
                 app:layout_constraintTop_toBottomOf="@+id/title"
-                tools:htmlText="@string/get_vaccination_description" />
+                tools:htmlText="@string/holder_addVaccination_message" />
 
             <nl.rijksoverheid.ctr.design.widgets.ScrollViewCheckboxButtonWidget
-                android:id="@+id/checkbox_container"
+                android:id="@+id/checkbox_with_header"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:checkboxText="@string/holder_addVaccine_alsoCollectPositiveTestResults_checkbox"
                 app:buttonHidden="true"
+                android:layout_marginTop="24dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description" />
@@ -64,7 +66,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/no_digid_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/checkbox_container"
+                app:layout_constraintTop_toBottomOf="@id/checkbox_with_header"
                 app:layout_constraintVertical_bias="1"
                 app:layout_constraintVertical_chainStyle="packed"
                 tools:ignore="RtlSymmetry" />

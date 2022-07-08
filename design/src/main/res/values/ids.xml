@@ -32,4 +32,7 @@
     <item name="page_indicator_label" type="string" />
     <item name="ic_info" type="drawable" />
     <item name="privacy_policy_checkbox_error" type="string" />
+    <item name="holder_addVaccination_alsoCollectPositiveTestResults_message" type="string" />
+    <item name="general_notification" type="string" />
+    <item name="checkbox_padding" type="dimen" />
 </resources>

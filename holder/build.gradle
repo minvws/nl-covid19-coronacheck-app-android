@@ -209,9 +209,6 @@ dependencies {
     androidTestImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
 
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
-
-    // Needed in order for room to work with Apple Sillicon M1
-    kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
 }
 
 easylauncher {

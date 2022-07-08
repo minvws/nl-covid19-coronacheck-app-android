@@ -13,6 +13,7 @@
   <string name="general_notification">Let op!</string>
   <string name="general_vaccination">vaccinatie</string>
   <string name="holder_menu_paperproof_title">Coronabewijs inscannen</string>
+  <string name="holder_addVaccination_title">Gegevens van je vaccinatie ophalen</string>
   <string name="holder_listRemoteEvents_title">Kloppen de gegevens?</string>
   <string name="holder_vaccination_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je gegevens ophalen.</string>
   <string name="holder_listRemoteEvents_somethingWrong_title">Klopt er iets niet?</string>
@@ -211,14 +212,13 @@
   <string name="qr_code_type_negative_test_description">Uit de test blijkt dat ik geen corona heb</string>
   <string name="qr_code_type_vaccination_title">Vaccinatie</string>
   <string name="qr_code_type_vaccination_description">Ik heb een (booster)vaccinatie gehad</string>
-  <string name="get_vaccination_title">Gegevens van je vaccinatie ophalen</string>
-  <string name="get_vaccination_description"><![CDATA[Heb je een (booster)vaccinatie gehad? Log in met DigiD om al je vaccinatiegegevens op te halen.<br/><br/><b>Corona gehad vóór je eerste vaccinatie?</b><br/>Dan heb je vaak een prik minder nodig om volledig gevaccineerd te zijn. Haal ook je positieve testuitslag op om die mee te laten tellen in je vaccinatiebewijs.]]></string>
+  <string name="holder_addVaccination_message"><![CDATA[Heb je een (booster)vaccinatie gehad? Log in met DigiD om al je vaccinatiegegevens op te halen.]]></string>
   <string name="get_vaccination_button">Log in met DigiD</string>
   <string name="get_vaccination_no_digid_button">Ik heb geen DigiD</string>
   <string name="your_retrieved_vaccinations_title">Jouw opgehaalde vaccinaties</string>
   <string name="your_retrieved_vaccinations_description">Kloppen de gegevens? Als de gegevens van je vaccinatie kloppen kun je een bewijs maken.</string>
   <string name="your_vaccination_result_toolbar_title">Opgehaalde vaccinaties</string>
-  <string name="retrieved_vaccination_title">Vaccinatie %1$s</string>
+  <string name="retrieved_vaccination_title">Vaccinatie</string>
   <string name="retrieved_vaccination_dcc_title">Vaccinatiebewijs dosis %1$s/%2$s</string>
   <string name="travel_toggle_europe">Ik reis internationaal</string>
   <string name="travel_toggle_domestic">Ik ben in Nederland</string>
@@ -293,7 +293,7 @@
   <string name="your_test_result_explanation_description_test_location">Testlocatie:</string>
   <string name="your_test_result_explanation_description_test_manufacturer">Testproducent:</string>
   <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
-  <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s<br/>Gegevens opgehaald bij: %3$s]]></string>
+  <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Vaccinatiedatum: %2$s<br/>Geboortedatum: %3$s<br/>Gegevens opgehaald bij: %4$s]]></string>
   <string name="your_vaccination_explanation_toolbar_title">Details</string>
   <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is dit de laatste dosis van je vaccinatie? <b>%8$s</b><br/> Vaccinatiedatum: <b>%9$s</b><br/>Gevaccineerd in: <b>%10$s</b><br/>Uniek certificaatnummer: <b>%11$s</b>]]></string>
   <string name="your_vaccination_explanation_last_dose_yes">ja</string>
@@ -321,7 +321,6 @@
   <string name="my_overview_green_card_not_valid_title_vaccination">Over je vaccinatiebewijs</string>
   <string name="my_overview_green_card_not_valid_title_test">Over je testbewijs</string>
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Dit kan komen doordat de geldigheidsduur in Nederland korter is dan in andere landen. Laat je opnieuw testen voor een bewijs dat ook in Nederland geldig is.]]></string>
-  <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Het kan bijvoorbeeld zijn dat je maar één prik hebt gehad. Voeg je tweede vaccinatie toe om een bewijs te maken dat ook in Nederland geldig is. <a href=\"https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse\"> Lees hier meer over de mogelijke oorzaken.</a>]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat je type test niet geaccepteerd wordt in andere landen. Laat je opnieuw testen voor een bewijs dat ook internationaal geldig is.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat jouw type vaccin niet geaccepteerd wordt in het buitenland.]]></string>
   <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
@@ -339,7 +338,6 @@
   <string name="new_terms"><![CDATA[Lees <a href=\"https://coronacheck.nl/nl/privacy-in-app\">hier</a> de volledige privacyverklaring.]]></string>
   <string name="too_busy_title">Sorry, het is erg druk</string>
   <string name="too_busy_description">Het is druk bij een aangesloten partij. Daardoor kunnen je gegevens nu niet worden opgehaald. Probeer het later nog eens.</string>
-  <string name="no_digid_url">https://www.digid.nl/digid-aanvragen-activeren#hoe-vraag-ik-digid-aan</string>
   <string name="event_provider_error_title">Sorry, er gaat iets mis</string>
   <string name="event_provider_error_description">Er gaat iets mis op de server van je testlocatie of priklocatie. Probeer het later nog eens.</string>
   <string name="coronacheck_error_title">Sorry, er gaat iets mis</string>
@@ -517,7 +515,7 @@
   <string name="recover_domestic_recovery_green_card_button">Bewijs terugzetten</string>
   <string name="cannot_create_recovery_proof_title">Positieve testuitslag niet meer geldig</string>
   <string name="cannot_create_recovery_proof_description"><![CDATA[Het is te lang geleden dat je positief getest bent op corona. Daarom is je testuitslag niet meer geldig. Je kunt helaas geen herstelbewijs maken.<br/><br/>Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
-  <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Naam: %1$s<br/>Geboortedatum: %2$s]]></string>
+  <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Vaccinatiedatum: %1$s<br />Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
   <string name="qr_card_vaccination_title_domestic_with_doses">Vaccinatiebewijs (%1$s doses):</string>
   <string name="add_paper_proof_why_only_international_title">Waarom de internationale QR-code?</string>
   <string name="add_paper_proof_why_only_international_description">In je internationale QR-code staan de gegevens die nodig zijn om jouw bewijs in de app te zetten. Heb je ook een papieren bewijs met een Nederlandse QR-code? Dan hoef je deze niet te scannen.</string>
@@ -790,4 +788,29 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
     <item quantity="other">dagen</item>
   </plurals>
   <string name="general_seconds">seconden</string>
+  <string name="holder_listRemoteEvents_listElement_title_vaccination">Vaccinatie</string>
+  <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccinatiedatum %s</string>
+  <string name="holder_eventHints_title">Je bewijzen zijn gemaakt</string>
+  <string name="holder_addVaccination_alsoCollectPositiveTestResults_message"><![CDATA[<b>Heb je corona gehad?</b><br/>Dan heb je soms een prik minder nodig om volledig gevaccineerd te zijn. Haal ook je oudste positieve testuitslag op om die mogelijk mee te laten tellen in je vaccinatiebewijs.]]></string>
+  <string name="holder_noDigiD_title">Ik heb geen DigiD</string>
+  <string name="holder_noDigiD_message">Woon je in Nederland en heb je een Nederlands identiteitsbewijs? Dan kun je een DigiD aanvragen om je testuitslag of vaccinatiegegevens op te halen.</string>
+  <string name="holder_noDigiD_buttonTitle_requestDigiD">DigiD aanvragen</string>
+  <string name="holder_noDigiD_buttonTitle_continueWithoutDigiD">Doorgaan zonder DigiD</string>
+  <string name="holder_noDigiD_buttonSubTitle_continueWithoutDigiD">Als je geen DigiD kunt of wilt aanvragen</string>
+  <string name="holder_noDigiD_url">https://www.digid.nl/digid-aanvragen-activeren#hoe-vraag-ik-digid-aan</string>
+  <string name="holder_checkForBSN_title">Heb je wel een Nederlands burgerservicenummer (BSN)?</string>
+  <string name="holder_checkForBSN_message">Met je BSN kun je jouw bewijs aanvragen bij de CoronaCheck helpdesk. Heb je geen BSN? Dan kun je een bewijs krijgen via je test- of vaccinatielocatie.</string>
+  <string name="holder_checkForBSN_buttonTitle_doesHaveBSN">Ja, ik heb een BSN</string>
+  <string name="holder_checkForBSN_buttonSubTitle_doesHaveBSN">Krijg je bewijs via de CoronaCheck helpdesk</string>
+  <string name="holder_checkForBSN_buttonTitle_doesNotHaveBSN">Nee, ik heb geen BSN</string>
+  <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN">Krijg je bewijs via jouw test- of vaccinatielocatie</string>
+  <string name="holder_contactCoronaCheckHelpdesk_title">Vraag je coronabewijs aan via de helpdesk</string>
+  <string name="holder.showqr.animation.voiceover.label">[placeholder]</string>
+  <string name="holder_contactCoronaCheckHelpdesk_message"><![CDATA[Vraag je bewijs aan bij de CoronaCheck helpdesk. Die kun je elke dag tussen 08.00 en 20.00 uur bellen op: <a href=\"tel:0800-1421\">0800-1421</a> (gratis).<br/><br/>Of als je vanuit het buitenland belt: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>. Kies in het keuzemenu voor “een bewijs aanvragen”.<br/><br/>Of vraag je bewijs aan door te mailen naar: <a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a><br/><br/>Geef het volgende door:<ul><li>je burgerservicenummer (BSN)</li><li>je postcode</li></ul><br/><br/>Je bewijs met QR-code wordt per post opgestuurd. Dit kan maximaal 7 werkdagen duren.]]></string>
+  <string name="holder_contactProviderHelpdesk_title">Vraag je coronabewijs aan bij je %s</string>
+  <string name="holder_contactProviderHelpdesk_testLocation">testlocatie</string>
+  <string name="holder_contactProviderHelpdesk_vaccinationLocation">vaccinatielocatie</string>
+  <string name="holder_contactProviderHelpdesk_tested">getest</string>
+  <string name="holder_contactProviderHelpdesk_vaccinated">gevaccineerd</string>
+  <string name="holder_contactProviderHelpdesk_message"><![CDATA[Vraag je bewijs aan bij de locatie waar je %s bent.<br/><br/><ul><li>Was dit bij de GGD? Bel de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a> om je bewijs aan te vragen. </li><li>Was dit ergens anders? Bijvoorbeeld bij je huisarts of een andere zorgverlener? Neem direct contact op met hen.</li></ul><br/><br/>Je kunt je coronabewijs aanvragen op papier of als pdf-bestand.]]></string>
 </resources>

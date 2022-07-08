@@ -17,6 +17,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.ScrollView
+import androidx.annotation.StringRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import nl.rijksoverheid.ctr.design.R
@@ -95,5 +97,11 @@ class ScrollViewCheckboxButtonWidget @JvmOverloads constructor(
             val scrollView = parentLayout.findViewById<ScrollView>(attachToScrollViewId)
             scrollView.viewTreeObserver.removeOnGlobalLayoutListener(scrollViewGlobalLayoutListener)
         }
+    }
+
+    fun header(@StringRes textId: Int) {
+        binding.headerTitle.setHtmlText(textId)
+        binding.headerTitle.visibility = View.VISIBLE
+        binding.checkboxContainer.background = AppCompatResources.getDrawable(context, R.drawable.shape_add_vaccination_checkbox_background)
     }
 }
