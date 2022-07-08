@@ -36,6 +36,8 @@ interface PersistenceManager {
     fun setPolicyBannerDismissed(policy: DisclosurePolicy)
     fun getPolicyScreenSeen(): DisclosurePolicy?
     fun setPolicyScreenSeen(policy: DisclosurePolicy)
+    fun setCheckCanOpenDatabase(check: Boolean)
+    fun getCheckCanOpenDatabase(): Boolean
 }
 
 class SharedPreferencesPersistenceManager(
@@ -56,6 +58,7 @@ class SharedPreferencesPersistenceManager(
         const val HAS_DISMISSED_VALIDITY_INFO_CARD = "HAS_DISMISSED_VALIDITY_INFO_CARD"
         const val POLICY_BANNER_DISMISSED = "POLICY_BANNER_DISMISSED"
         const val POLICY_SCREEN_SEEN = "POLICY_SCREEN_SEEN"
+        const val CHECK_CAN_OPEN_DATABASE = "CHECK_CAN_OPEN_DATABASE"
     }
 
     override fun saveDatabasePassPhrase(passPhrase: String) {
@@ -158,5 +161,13 @@ class SharedPreferencesPersistenceManager(
 
     override fun setPolicyScreenSeen(policy: DisclosurePolicy) {
         sharedPreferences.edit().putString(POLICY_SCREEN_SEEN, policy.stringValue).apply()
+    }
+
+    override fun setCheckCanOpenDatabase(check: Boolean) {
+        sharedPreferences.edit().putBoolean(CHECK_CAN_OPEN_DATABASE, check).commit()
+    }
+
+    override fun getCheckCanOpenDatabase(): Boolean {
+        return sharedPreferences.getBoolean(CHECK_CAN_OPEN_DATABASE, true)
     }
 }
