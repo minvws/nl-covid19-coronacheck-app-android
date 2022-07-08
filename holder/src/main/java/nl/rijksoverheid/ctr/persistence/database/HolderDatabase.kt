@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.persistence.database
 
 import android.content.ContentValues
 import android.content.Context
-import android.util.Base64
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -10,6 +9,7 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SQLiteException
 import net.sqlcipher.database.SupportFactory
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.converters.HolderDatabaseConverter
@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.persistence.database.dao.*
 import nl.rijksoverheid.ctr.persistence.database.entities.*
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import java.io.File
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -152,6 +153,19 @@ abstract class HolderDatabase : RoomDatabase() {
             androidUtil: AndroidUtil,
             isProd: Boolean = true
         ): HolderDatabase {
+            // From db migration 6 to 7 there was a database encryption key migration issue.
+            // This code checks if we can open the database, and if not delete the old database.
+            try {
+                val file = File(context.filesDir.parentFile, "databases/holder-database")
+                try {
+                    SQLiteDatabase.openDatabase(file.absolutePath, persistenceManager.getDatabasePassPhrase(), null, SQLiteDatabase.OPEN_READONLY)
+                } catch (e: SQLiteException) {
+                    file.delete()
+                }
+            } catch (e: Exception) {
+                // Make sure this hack never crashes
+            }
+
             val supportFactory =
                 SupportFactory(SQLiteDatabase.getBytes(persistenceManager.getDatabasePassPhrase()?.toCharArray()))
             return Room
