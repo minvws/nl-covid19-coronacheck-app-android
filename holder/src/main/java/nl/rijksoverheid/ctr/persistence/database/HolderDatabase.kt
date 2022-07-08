@@ -142,25 +142,27 @@ abstract class HolderDatabase : RoomDatabase() {
         ): HolderDatabase {
             // From db migration 6 to 7 there was a database encryption key migration issue.
             // This code checks if we can open the database, and if not delete the old database.
-            try {
-                val file = File(context.filesDir.parentFile, "databases/holder-database")
+            if (isProd) {
                 try {
-                    SQLiteDatabase.loadLibs(context)
-                    SQLiteDatabase.openDatabase(file.absolutePath, persistenceManager.getDatabasePassPhrase(), null, SQLiteDatabase.OPEN_READONLY)
-                } catch (e: SQLiteException) {
-                    file.delete()
+                    val file = File(context.filesDir.parentFile, "databases/holder-database")
+                    try {
+                        SQLiteDatabase.loadLibs(context)
+                        SQLiteDatabase.openDatabase(file.absolutePath, persistenceManager.getDatabasePassPhrase(), null, SQLiteDatabase.OPEN_READONLY)
+                    } catch (e: SQLiteException) {
+                        file.delete()
+                    }
+                } catch (e: Exception) {
+                    // Make sure this hack never crashes
                 }
-            } catch (e: Exception) {
-                // Make sure this hack never crashes
             }
 
-            val supportFactory =
-                SupportFactory(SQLiteDatabase.getBytes(persistenceManager.getDatabasePassPhrase()?.toCharArray()))
             return Room
                 .databaseBuilder(context, HolderDatabase::class.java, "holder-database")
                 .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7(persistenceManager))
                 .apply {
                     if (isProd) {
+                        val supportFactory =
+                            SupportFactory(SQLiteDatabase.getBytes(persistenceManager.getDatabasePassPhrase()?.toCharArray()))
                         openHelperFactory(supportFactory)
                     }
                 }.build()

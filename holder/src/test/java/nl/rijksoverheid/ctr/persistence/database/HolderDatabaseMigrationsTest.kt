@@ -76,7 +76,7 @@ class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
         val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager))
 
         // Assert new secret key is stored in preference
-        assertEquals("123", persistenceManager.getDatabasePassPhrase())
+        assertEquals("123456789", persistenceManager.getDatabasePassPhrase())
 
         // Assert that the secret key from shared preferences is migrated to secret key table
         val secretKeyCursor = dbV7.query("SELECT * FROM secret_key")
@@ -98,7 +98,7 @@ class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
         val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager))
 
         // Assert new secret key is stored in preference
-        assertEquals("123", persistenceManager.getDatabasePassPhrase())
+        assertEquals("123456789", persistenceManager.getDatabasePassPhrase())
 
         // Assert that the secret key from shared preferences is migrated to secret key table
         val secretKeyCursor = dbV7.query("SELECT * FROM secret_key")
