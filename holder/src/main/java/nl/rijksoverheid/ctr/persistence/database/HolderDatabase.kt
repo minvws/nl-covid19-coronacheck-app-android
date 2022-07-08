@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.persistence.database.converters.HolderDatabaseConver
 import nl.rijksoverheid.ctr.persistence.database.dao.*
 import nl.rijksoverheid.ctr.persistence.database.entities.*
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import java.io.File
 
 /*
@@ -140,6 +139,10 @@ abstract class HolderDatabase : RoomDatabase() {
             androidUtil: AndroidUtil,
             isProd: Boolean = true
         ): HolderDatabase {
+            if (persistenceManager.getDatabasePassPhrase() == null) {
+                persistenceManager.saveDatabasePassPhrase(androidUtil.generateRandomKey())
+            }
+
             // From db migration 6 to 7 there was a database encryption key migration issue.
             // This code checks if we can open the database, and if not delete the old database.
             if (isProd && persistenceManager.getCheckCanOpenDatabase()) {
