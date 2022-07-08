@@ -12,7 +12,9 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.models.Flow
 
 @Parcelize
@@ -21,7 +23,7 @@ data class NoDigidFragmentData(
     val description: String,
     val firstNavigationButtonData: NoDigidNavigationButtonData,
     val secondNavigationButtonData: NoDigidNavigationButtonData,
-    val flow: Flow
+    val originType: RemoteOriginType
 ) : Parcelable
 
 

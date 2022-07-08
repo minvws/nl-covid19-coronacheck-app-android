@@ -6,6 +6,7 @@ import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.shared.models.Flow
 
@@ -18,7 +19,7 @@ import nl.rijksoverheid.ctr.shared.models.Flow
  */
 interface NoDigidScreenDataUtil {
     fun requestDigidButton(): NoDigidNavigationButtonData
-    fun continueWithoutDigidButton(flow: Flow): NoDigidNavigationButtonData
+    fun continueWithoutDigidButton(originType: RemoteOriginType): NoDigidNavigationButtonData
 }
 
 class NoDigidScreenDataUtilImpl(
@@ -61,13 +62,13 @@ class NoDigidScreenDataUtilImpl(
         )
     )
 
-    private fun doesNotHaveBSNButton(flow: Flow) = NoDigidNavigationButtonData.NoDigid(
+    private fun doesNotHaveBSNButton(originType: RemoteOriginType) = NoDigidNavigationButtonData.NoDigid(
         title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN,
         subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN),
         noDigidFragmentData = NoDigidFragmentData(
             title = getStringArgs(R.string.holder_chooseEventLocation_title, arrayOf(
                 getString(
-                    if (flow == HolderFlow.Vaccination) {
+                    if (originType is RemoteOriginType.Vaccination) {
                         R.string.holder_contactProviderHelpdesk_vaccinated
                     } else {
                         R.string.holder_contactProviderHelpdesk_tested
@@ -77,7 +78,7 @@ class NoDigidScreenDataUtilImpl(
             description = "",
             firstNavigationButtonData = eventLocationGGDButtonData,
             secondNavigationButtonData = eventLocationOtherButtonData,
-            flow = flow
+            originType = originType
         )
     )
 
@@ -87,15 +88,15 @@ class NoDigidScreenDataUtilImpl(
         externalUrl = getString(R.string.holder_noDigiD_url),
     )
 
-    override fun continueWithoutDigidButton(flow: Flow) = NoDigidNavigationButtonData.NoDigid(
+    override fun continueWithoutDigidButton(originType: RemoteOriginType) = NoDigidNavigationButtonData.NoDigid(
         title = R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD,
         subtitle = getString(R.string.holder_noDigiD_buttonSubTitle_continueWithoutDigiD),
         noDigidFragmentData = NoDigidFragmentData(
             title = getString(R.string.holder_checkForBSN_title),
             description = getString(R.string.holder_checkForBSN_message),
             firstNavigationButtonData = doesHaveBSNButton,
-            secondNavigationButtonData = doesNotHaveBSNButton(flow),
-            flow = flow
+            secondNavigationButtonData = doesNotHaveBSNButton(originType),
+            originType = originType
         )
     )
 }

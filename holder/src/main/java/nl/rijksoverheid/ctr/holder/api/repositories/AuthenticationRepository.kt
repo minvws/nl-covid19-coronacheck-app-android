@@ -14,15 +14,18 @@ import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 
 interface AuthenticationRepository {
 
     suspend fun authResponse(
+        loginType: LoginType,
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
     )
 
     suspend fun jwt(
+        loginType: LoginType,
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
     ): String
