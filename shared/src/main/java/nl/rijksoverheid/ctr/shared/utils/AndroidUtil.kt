@@ -10,11 +10,10 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.security.keystore.StrongBoxUnavailableException
 import androidx.security.crypto.MasterKeys
-import java.math.BigInteger
-import java.security.SecureRandom
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.util.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -91,10 +90,7 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
         return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
-    override fun generateRandomKey(): String = ByteArray(20).let {
-        SecureRandom().nextBytes(it)
-        BigInteger(1, it).toString(16)
-    }
+    override fun generateRandomKey(): String = UUID.randomUUID().toString()
 
     override fun getFirstInstallTime(): OffsetDateTime {
         val millis = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
