@@ -13,6 +13,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -66,6 +67,7 @@ class NoDigidFragmentTest : AutoCloseKoinTest() {
                 description = "screen description",
                 firstNavigationButtonData =  NoDigidNavigationButtonData.Link(R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD, "button subtitle", null, "url"),
                 secondNavigationButtonData = NoDigidNavigationButtonData.NoDigid(R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD, null, R.drawable.ic_digid_logo, mockk()),
+                originType = RemoteOriginType.Vaccination
             ),
             "toolbarTitle" to "toolbar title"
         )
