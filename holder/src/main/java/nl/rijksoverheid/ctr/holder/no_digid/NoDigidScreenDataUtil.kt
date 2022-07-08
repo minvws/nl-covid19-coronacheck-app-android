@@ -7,8 +7,6 @@ import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
-import nl.rijksoverheid.ctr.holder.models.HolderFlow
-import nl.rijksoverheid.ctr.shared.models.Flow
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -44,42 +42,9 @@ class NoDigidScreenDataUtilImpl(
         )
     )
 
-    private val eventLocationGGDButtonData = NoDigidNavigationButtonData.Ggd(
-        title = R.string.holder_chooseEventLocation_buttonTitle_GGD,
-        subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_GGD),
-    )
-
-    private val eventLocationOtherButtonData = NoDigidNavigationButtonData.Info(
-        title = R.string.holder_chooseEventLocation_buttonTitle_other,
-        subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_other),
-        infoFragmentData = InfoFragmentData.TitleDescriptionWithButton(
-            title = getString(R.string.holder_contactProviderHelpdesk_title),
-            descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_message),
-            primaryButtonData = ButtonData.NavigationButton(
-                text = getString(R.string.general_toMyOverview),
-                navigationActionId = R.id.action_my_overview
-            )
-        )
-    )
-
-    private fun doesNotHaveBSNButton(originType: RemoteOriginType) = NoDigidNavigationButtonData.NoDigid(
+    private fun doesNotHaveBSNButton() = NoDigidNavigationButtonData.Ggd(
         title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN,
-        subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN),
-        noDigidFragmentData = NoDigidFragmentData(
-            title = getStringArgs(R.string.holder_chooseEventLocation_title, arrayOf(
-                getString(
-                    if (originType is RemoteOriginType.Vaccination) {
-                        R.string.holder_contactProviderHelpdesk_vaccinated
-                    } else {
-                        R.string.holder_contactProviderHelpdesk_tested
-                    }
-                )
-            )),
-            description = "",
-            firstNavigationButtonData = eventLocationGGDButtonData,
-            secondNavigationButtonData = eventLocationOtherButtonData,
-            originType = originType
-        )
+        subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN)
     )
 
     override fun requestDigidButton() = NoDigidNavigationButtonData.Link(
@@ -95,7 +60,7 @@ class NoDigidScreenDataUtilImpl(
             title = getString(R.string.holder_checkForBSN_title),
             description = getString(R.string.holder_checkForBSN_message),
             firstNavigationButtonData = doesHaveBSNButton,
-            secondNavigationButtonData = doesNotHaveBSNButton(originType),
+            secondNavigationButtonData = doesNotHaveBSNButton(),
             originType = originType
         )
     )
