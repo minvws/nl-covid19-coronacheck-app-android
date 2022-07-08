@@ -104,7 +104,7 @@ val MIGRATION_5_6 = object: Migration(5,6) {
 
 fun MIGRATION_6_7(persistenceManager: PersistenceManager) = object: Migration(6, 7) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("CREATE TABLE secret_key (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, green_card_id INTEGER NOT NULL, secret TEXT NOT NULL, FOREIGN KEY(green_card_id) REFERENCES green_card(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
+        database.execSQL("CREATE TABLE IF NOT EXISTS secret_key (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, green_card_id INTEGER NOT NULL, secret TEXT NOT NULL, FOREIGN KEY(green_card_id) REFERENCES green_card(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
         val domesticGreenCardCursor = database.query("SELECT * FROM green_card WHERE type = 'domestic'")
 
         // If we have a domestic green card migrate old secret key
