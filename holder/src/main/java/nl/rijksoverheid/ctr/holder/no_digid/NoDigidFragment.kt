@@ -16,18 +16,8 @@ import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDigidBinding
-import nl.rijksoverheid.ctr.holder.get_events.DigiDFragment
-import nl.rijksoverheid.ctr.holder.get_events.GetEventsFragmentDirections
-import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
-import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
-import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.android.ext.android.inject
 
 /*
@@ -37,23 +27,11 @@ import org.koin.android.ext.android.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
+class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
 
     private val args: NoDigidFragmentArgs by navArgs()
     private val intentUtil: IntentUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
-
-    override fun onButtonClickWithRetryAction() {
-        loginWithDigiD()
-    }
-
-    override fun getFlow(): Flow {
-        return when (args.data.originType) {
-            RemoteOriginType.Recovery -> HolderFlow.Recovery
-            RemoteOriginType.Test -> HolderFlow.DigidTest
-            RemoteOriginType.Vaccination -> HolderFlow.Vaccination
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -88,45 +66,7 @@ class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
             ) {
                 onButtonClick(secondNavigationButtonData)
             }
-
-            if (args.data.firstNavigationButtonData is NoDigidNavigationButtonData.Ggd) {
-                digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
-                    (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
-                })
-            }
         }
-    }
-
-    override fun getLoginType(): LoginType {
-        return LoginType.Pap
-    }
-
-    override fun onDigidLoading(loading: Boolean) {
-        // TODO Disable buttons
-    }
-
-    override fun onGetEventsLoading(loading: Boolean) {
-        // TODO Disable buttons
-    }
-
-    override fun getOriginTypes(): List<RemoteOriginType> {
-        return listOf(RemoteOriginType.Vaccination)
-    }
-
-    override fun onNavigateToYourEvents(
-        remoteProtocols: Map<RemoteProtocol, ByteArray>,
-        eventProviders: List<EventProvider>
-    ) {
-        navigateSafety(
-            GetEventsFragmentDirections.actionYourEvents(
-                type = YourEventsFragmentType.RemoteProtocol3Type(
-                    remoteEvents = remoteProtocols,
-                    eventProviders = eventProviders
-                ),
-                toolbarTitle = getCopyForOriginType().toolbarTitle,
-                flow = getFlow()
-            )
-        )
     }
 
     private fun onButtonClick(data: NoDigidNavigationButtonData) {
@@ -150,7 +90,9 @@ class NoDigidFragment : DigiDFragment(R.layout.fragment_no_digid) {
                 )
             }
             is NoDigidNavigationButtonData.Ggd -> {
-                loginWithDigiD()
+                navigateSafety(
+                    NoDigidFragmentDirections.actionPap(args.data.originType)
+                )
             }
         }
     }
