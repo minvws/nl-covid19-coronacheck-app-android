@@ -30,7 +30,6 @@ import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
-import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
@@ -142,20 +141,6 @@ fun fakeSetupViewModel(updateConfig: Boolean = true): SetupViewModel {
             if (updateConfig) {
                 (introductionDataLiveData as MutableLiveData).postValue(IntroductionData())
             }
-        }
-    }
-}
-
-fun fakeSecretKeyUseCase(
-    json: String = "{}"
-): SecretKeyUseCase {
-    return object : SecretKeyUseCase {
-        override fun json(): String {
-            return json
-        }
-
-        override fun persist() {
-
         }
     }
 }
@@ -394,10 +379,10 @@ fun fakeGreenCardUtil(
 
 fun fakeGetRemoteGreenCardUseCase(
     result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
-        RemoteGreenCards(null, null)
+        RemoteGreenCards(null, null, listOf())
     )
 ) = object : GetRemoteGreenCardsUseCase {
-    override suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult {
+    override suspend fun get(events: List<EventGroupEntity>, secretKey: String): RemoteGreenCardsResult {
         return result
     }
 }
@@ -405,7 +390,7 @@ fun fakeGetRemoteGreenCardUseCase(
 fun fakeSyncRemoteGreenCardUseCase(
     result: SyncRemoteGreenCardsResult = SyncRemoteGreenCardsResult.Success,
 ) = object : SyncRemoteGreenCardsUseCase {
-    override suspend fun execute(remoteGreenCards: RemoteGreenCards): SyncRemoteGreenCardsResult {
+    override suspend fun execute(remoteGreenCards: RemoteGreenCards, secretKey: String): SyncRemoteGreenCardsResult {
         return result
     }
 }
@@ -483,7 +468,18 @@ fun fakeGreenCard(
     eventTime: OffsetDateTime = OffsetDateTime.now(),
     expirationTime: OffsetDateTime = OffsetDateTime.now(),
     validFrom: OffsetDateTime = OffsetDateTime.now(),
-    category: String? = null
+    category: String? = null,
+    credentialEntities: List<CredentialEntity> = listOf(
+        CredentialEntity(
+            id = 0,
+            greenCardId = 0,
+            data = "".toByteArray(),
+            credentialVersion = 0,
+            validFrom = validFrom,
+            expirationTime = expirationTime,
+            category = category
+        )
+    ),
 ) = GreenCard(
     greenCardEntity = GreenCardEntity(
         id = 0,
@@ -500,17 +496,7 @@ fun fakeGreenCard(
             validFrom = validFrom
         )
     ),
-    credentialEntities = listOf(
-        CredentialEntity(
-            id = 0,
-            greenCardId = 0,
-            data = "".toByteArray(),
-            credentialVersion = 0,
-            validFrom = validFrom,
-            expirationTime = expirationTime,
-            category = category
-        )
-    )
+    credentialEntities = credentialEntities
 )
 
 fun fakeGreenCardWithOrigins(
@@ -591,7 +577,7 @@ fun fakeEventGroupEntity(
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),
     euGreencards: List<RemoteGreenCards.EuGreenCard>? = listOf(fakeEuGreenCard())
-) = RemoteGreenCards(domesticGreencard, euGreencards)
+) = RemoteGreenCards(domesticGreencard, euGreencards, listOf())
 
 fun fakeDomesticGreenCard(
     origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),

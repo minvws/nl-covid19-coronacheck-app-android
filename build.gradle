@@ -36,7 +36,7 @@ buildscript {
     ext.mlkit_barcode_version = '17.0.2'
     ext.camerax_version = '1.1.0-beta03'
     ext.camerax_view_version = '1.1.0-beta03'
-    ext.robolectric_version = '4.7.3'
+    ext.robolectric_version = '4.8.1'
     ext.androix_test_version = '1.4.0'
     ext.lottie_version = '3.7.1'
     ext.barista_version = '4.1.0'
@@ -51,6 +51,7 @@ buildscript {
     ext.work_manager_version = '2.7.1'
     ext.espresso_version = '3.4.0'
     ext.certificatetransparency_version = '1.1.0'
+    ext.junit_ext_version = '1.1.3'
 
     repositories {
         google()
@@ -67,6 +68,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.10'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
         classpath "com.project.starter:easylauncher:5.0.1"
+        classpath "com.karumi:shot:5.14.1"
     }
 }
 

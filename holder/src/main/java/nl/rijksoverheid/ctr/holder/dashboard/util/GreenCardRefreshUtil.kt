@@ -9,15 +9,18 @@ package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit.DAYS
 
+sealed class RefreshState {
+    class Refreshable(val days: Long): RefreshState()
+    object NoRefresh: RefreshState()
+}
+
 interface GreenCardRefreshUtil {
     suspend fun shouldRefresh(): Boolean
-    suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean
-    suspend fun credentialsExpireInDays(): Long
+    suspend fun refreshState(): RefreshState
 }
 
 class GreenCardRefreshUtilImpl(
@@ -63,37 +66,66 @@ class GreenCardRefreshUtilImpl(
         return greenCardExpiring != null || hasValidFutureOrigins
     }
 
-    override suspend fun allCredentialsExpired(selectedType: GreenCardType): Boolean {
-        val allGreenCards = holderDatabase.greenCardDao().getAll()
-        return allGreenCards.filter {
-            it.greenCardEntity.type == selectedType
-        }.all {
-            credentialUtil.getActiveCredential(it.greenCardEntity.type, it.credentialEntities) == null
+    // returns the refresh state of the app,
+    // if it should schedule a refresh or not
+    // and if so, in how many days from now
+    override suspend fun refreshState(): RefreshState {
+        val credentialRenewalDays = holderConfig.credentialRenewalDays.toLong()
+
+        val greenCardsToRefresh = holderDatabase.greenCardDao().getAll()
+            .filter { !greenCardUtil.isForeignDcc(it) }
+
+        // find the furthest in the future credentials that
+        // can be renewed, if any
+        val latestCredentialExpirationTime: OffsetDateTime? =
+            greenCardsToRefresh.filter { greenCard ->
+                    !greenCardUtil.getExpireDate(greenCard).isEqual(
+                        greenCard.credentialEntities.lastOrNull()?.expirationTime
+                            ?: OffsetDateTime.now(clock)
+                    )
+                }.mapNotNull { greenCard ->
+                    greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.expirationTime
+                }.maxOrNull()
+
+        // for domestic, we don't get credentials for origins which are not valid yet
+        // so we take into account to fetch them when they become valid
+        val firstFutureValidFrom: OffsetDateTime? = greenCardsToRefresh
+            .filter { it.credentialEntities.isEmpty() }
+            .flatMap { originUtil.getOriginState(it.origins) }
+            .filterIsInstance<OriginState.Future>()
+            .map { it.origin.validFrom }
+            .minOrNull()
+
+        // either we have a future origin to refresh, or an expiring credentials or both
+        // in the latter case, use the one closest to now
+        return when {
+            firstFutureValidFrom != null && latestCredentialExpirationTime != null -> {
+                if (firstFutureValidFrom.isBefore(latestCredentialExpirationTime.minusDays(credentialRenewalDays))) {
+                    RefreshState.Refreshable(
+                        daysBetween(firstFutureValidFrom)
+                    )
+                } else {
+                    RefreshState.Refreshable(
+                        daysBetween(latestCredentialExpirationTime.minusDays(credentialRenewalDays))
+                    )
+                }
+            }
+            firstFutureValidFrom != null -> RefreshState.Refreshable(
+                daysBetween(firstFutureValidFrom)
+            )
+            latestCredentialExpirationTime != null -> RefreshState.Refreshable(
+                daysBetween(latestCredentialExpirationTime.minusDays(credentialRenewalDays))
+            )
+            else -> RefreshState.NoRefresh
         }
     }
 
-    override suspend fun credentialsExpireInDays(): Long {
-        val configCredentialRenewalDays = holderConfig.credentialRenewalDays.toLong()
-
-        val firstExpiringGreenCardRenewal = holderDatabase.greenCardDao().getAll()
-            .filterNot {
-                greenCardUtil.isExpiring(configCredentialRenewalDays, it)
-            }
-            .mapNotNull { greenCard ->
-                greenCard.credentialEntities.maxByOrNull { it.expirationTime }?.expirationTime
-            }.minByOrNull { it.toEpochSecond() }?.minusDays(configCredentialRenewalDays)
-
-        val now = OffsetDateTime.now(clock)
-
-        return if (firstExpiringGreenCardRenewal != null) {
-            val days = DAYS.between(now, firstExpiringGreenCardRenewal)
-            if (days < 1) {
-                1
-            } else {
-                days
-            }
+    private fun daysBetween(toDate: OffsetDateTime): Long {
+        val days = DAYS.between(OffsetDateTime.now(clock), toDate)
+        return if (days < 1) {
+            1
         } else {
-            0
+            days
         }
     }
 }

@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.*
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.persistence.database.models.Wallet
 import org.junit.After
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -18,6 +19,8 @@ import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import java.io.IOException
 import java.time.*
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -71,7 +74,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
             providerIdentifier = "ggd",
             type = OriginType.Recovery,
             scope = "firstepisode",
-            maxIssuedAt = OffsetDateTime.now(),
+            expiryDate = null,
             jsonData = "".toByteArray()
         )
 
@@ -81,7 +84,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
             providerIdentifier = "ggd",
             type = OriginType.Recovery,
             scope = "recovery",
-            maxIssuedAt = OffsetDateTime.now(),
+            expiryDate = null,
             jsonData = "".toByteArray()
         )
 
@@ -111,6 +114,70 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
         assertEquals(db.originDao().getAll(), listOf<OriginEntity>())
     }
 
+    @Test
+    fun `Updating expiryDate updates field for event group`() = runBlocking {
+        val eventGroup = EventGroupEntity(
+            id = 1,
+            walletId = 1,
+            providerIdentifier = "ggd",
+            type = OriginType.Recovery,
+            scope = "firstepisode",
+            expiryDate = null,
+            jsonData = "".toByteArray()
+        )
+
+        insertWalletInDatabase(
+            wallet = getDummyWallet()
+        )
+
+        val expiryDate = OffsetDateTime.ofInstant(
+            Instant.ofEpochSecond(1),
+            ZoneOffset.UTC
+        )
+
+        db.eventGroupDao().insertAll(listOf(eventGroup))
+        assertEquals(null, db.eventGroupDao().getAll().first().expiryDate)
+
+        db.eventGroupDao().updateExpiryDate(
+            eventGroupId = 1,
+            expiryDate = expiryDate
+        )
+
+        assertEquals(expiryDate, db.eventGroupDao().getAll().first().expiryDate)
+    }
+
+    @Test
+    fun `Removing green card removes secret key as well`() = runBlocking {
+        val wallet = getDummyWallet()
+
+        // Insert entities into database
+        insertWalletInDatabase(
+            wallet = wallet
+        )
+
+        // Insert secret key
+        val secretKey = SecretKeyEntity(
+            id = 1,
+            greenCardId = 1,
+            secretKey = "123"
+        )
+        db.secretKeyDao().insert(
+            entity = secretKey
+        )
+
+        // We have a green card and a secret key
+        val greenCard = db.greenCardDao().get(1)
+        assertNotNull(greenCard)
+        assertEquals(secretKey, db.secretKeyDao().get(1))
+
+        // If we remove the green card
+        db.greenCardDao().delete(greenCard)
+
+        // The green card and the secret key is removed
+        assertNull(db.greenCardDao().get(1))
+        assertNull(db.secretKeyDao().get(1))
+    }
+
     private fun getDummyWallet() = Wallet(
         walletEntity = WalletEntity(
             id = 1,
@@ -121,9 +188,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 id = 1,
                 walletId = 1,
                 type = OriginType.Vaccination,
-                maxIssuedAt = LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay().atOffset(
-                    ZoneOffset.UTC
-                ),
+                expiryDate = null,
                 jsonData = "".toByteArray(),
                 scope = "",
                 providerIdentifier = "1"
@@ -132,9 +197,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 id = 2,
                 walletId = 1,
                 type = OriginType.Vaccination,
-                maxIssuedAt = LocalDate.of(2020, Month.JANUARY, 1).atStartOfDay().atOffset(
-                    ZoneOffset.UTC
-                ),
+                expiryDate = null,
                 scope = "",
                 jsonData = "".toByteArray(),
                 providerIdentifier = "2"

@@ -45,14 +45,14 @@ val eventsUseCasesModule = module {
     }
     factory<GetDigidEventsUseCase> { GetDigidEventsUseCaseImpl(get(), get(), get(), get(), get()) }
     factory<GetMijnCnEventsUsecase> { GetMijnCnEventsUsecaseImpl(get(), get(), get()) }
-    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get(), get(), get()) }
+    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get(), get(), get(), get()) }
 
     factory<GetEventsFromPaperProofQrUseCase> {
         GetEventsFromPaperProofQrUseCaseImpl(get(), get())
     }
 
     factory<RemoveExpiredEventsUseCase> {
-        RemoveExpiredEventsUseCaseImpl(Clock.systemUTC(), get(), get())
+        RemoveExpiredEventsUseCaseImpl(Clock.systemUTC(), get())
     }
     factory<GetSavedEventsUseCase> {
         GetSavedEventsUseCaseImpl(get(), get(), get(), get(), get(), get(), get())

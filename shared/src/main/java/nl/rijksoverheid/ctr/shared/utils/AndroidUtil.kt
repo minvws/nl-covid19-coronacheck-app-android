@@ -10,10 +10,10 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.security.keystore.StrongBoxUnavailableException
 import androidx.security.crypto.MasterKeys
-import java.security.SecureRandom
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.util.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -27,14 +27,16 @@ interface AndroidUtil {
     fun getMasterKeyAlias(): String
     fun isFirstInstall(): Boolean
     fun isNetworkAvailable(): Boolean
-    fun getConnectivityManager() : ConnectivityManager
-    fun generateRandomKey(): ByteArray
+    fun getConnectivityManager(): ConnectivityManager
+    fun generateRandomKey(): String
     fun getFirstInstallTime(): OffsetDateTime
 }
 
 class AndroidUtilImpl(private val context: Context) : AndroidUtil {
     override fun isSmallScreen(): Boolean {
-        return context.resources.displayMetrics.heightPixels <= 800 || context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        val configuration = context.resources.configuration
+        return configuration.smallestScreenWidthDp < 600 && configuration.orientation == Configuration.ORIENTATION_LANDSCAPE ||
+                configuration.screenWidthDp < 600 && configuration.screenHeightDp < 600
     }
 
     override fun getMasterKeyAlias(): String =
@@ -69,7 +71,8 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
     }
 
     override fun isNetworkAvailable(): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetwork ?: return false
         val activeNetworkCapabilities =
             connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
@@ -87,13 +90,7 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
         return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
-    override fun generateRandomKey(): ByteArray = ByteArray(32).apply {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            SecureRandom.getInstanceStrong().nextBytes(this)
-        } else {
-            SecureRandom().nextBytes(this)
-        }
-    }
+    override fun generateRandomKey(): String = UUID.randomUUID().toString()
 
     override fun getFirstInstallTime(): OffsetDateTime {
         val millis = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime

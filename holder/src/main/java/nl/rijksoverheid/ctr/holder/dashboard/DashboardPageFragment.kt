@@ -70,7 +70,6 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
             EXTRA_GREEN_CARD_TYPE
         ) ?: error("EXTRA_GREEN_CARD_TYPE should not be null")
     }
-    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

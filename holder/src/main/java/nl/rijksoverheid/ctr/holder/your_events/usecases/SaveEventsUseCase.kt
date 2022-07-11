@@ -11,15 +11,14 @@ import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -43,14 +42,15 @@ class SaveEventsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val remoteEventHolderUtil: RemoteEventHolderUtil,
     private val scopeUtil: ScopeUtil,
-    private val remoteEventUtil: RemoteEventUtil
+    private val remoteEventUtil: RemoteEventUtil,
+    private val remoteProtocol3Util: RemoteProtocol3Util
 ) : SaveEventsUseCase {
 
     override suspend fun remoteProtocols3AreConflicting(remoteProtocols: Map<RemoteProtocol, ByteArray>): Boolean {
         val storedEventHolders = holderDatabase.eventGroupDao().getAll()
             .mapNotNull { remoteEventHolderUtil.holder(it.jsonData, it.providerIdentifier) }
             .distinct()
-        val incomingEventHolders = remoteProtocols.map { it.key.holder!! }.distinct()
+        val incomingEventHolders = remoteProtocols.mapNotNull { it.key.holder }.distinct()
 
         return remoteEventHolderUtil.conflicting(storedEventHolders, incomingEventHolders)
     }
@@ -66,18 +66,19 @@ class SaveEventsUseCaseImpl(
             }
 
             val entities = remoteProtocols.map {
-                val remoteEvents = it.key.events ?: listOf()
+                val remoteProtocol = it.key
+                val remoteEvents = remoteProtocol.events ?: listOf()
                 val originType = remoteEventUtil.getOriginType(remoteEvents.first())
                 EventGroupEntity(
                     walletId = 1,
-                    providerIdentifier = it.key.providerIdentifier,
+                    providerIdentifier = remoteProtocol3Util.getProviderIdentifier(remoteProtocol),
                     type = originType,
-                    maxIssuedAt = getMaxIssuedAt(remoteEvents),
                     jsonData = it.value,
                     scope = scopeUtil.getScopeForOriginType(
                         originType = originType,
                         getPositiveTestWithVaccination = flow == HolderFlow.VaccinationAndPositiveTest
-                    )
+                    ),
+                    expiryDate = null
                 )
             }
 
@@ -92,12 +93,6 @@ class SaveEventsUseCaseImpl(
             )
         }
         return SaveEventResult.Success
-    }
-
-    private fun getMaxIssuedAt(remoteEvents: List<RemoteEvent>): OffsetDateTime {
-        return remoteEvents.map { event -> event.getDate() }
-            .maxByOrNull { date -> date?.toEpochSecond() ?: error("Date should not be null") }
-            ?: error("At least one event must be present with a date")
     }
 
     sealed class SaveEventResult {

@@ -424,7 +424,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         walletId = 0,
         providerIdentifier = "1",
         type = originType,
-        maxIssuedAt = OffsetDateTime.now(),
+        expiryDate = OffsetDateTime.now(),
         jsonData = "".toByteArray(),
         scope = ""
     )

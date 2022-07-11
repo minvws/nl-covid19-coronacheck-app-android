@@ -98,6 +98,7 @@ class CardItemUtilImpl(
         return when (cardItem.greenCard.greenCardEntity.type) {
             is GreenCardType.Domestic -> {
                 QrCodeFragmentData.ShouldDisclose.Disclose(
+                    cardItem.greenCard.greenCardEntity.id,
                     cardItem.disclosurePolicy
                 )
             }

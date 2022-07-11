@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.holder.fakeGetRemoteGreenCardUseCase
 import nl.rijksoverheid.ctr.holder.fakeGreenCardUtil
 import nl.rijksoverheid.ctr.holder.fakeRemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.holder.fakeSyncRemoteGreenCardUseCase
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -31,6 +32,7 @@ import java.time.OffsetDateTime
 
 class HolderDatabaseSyncerImplTest {
 
+    private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
     private val greenCardDao = mockk<GreenCardDao>(relaxed = true)
     private val eventGroupDao = mockk<EventGroupDao>(relaxed = true)
     private val holderDatabase = mockk<HolderDatabase>(relaxed = true).apply {
@@ -43,7 +45,7 @@ class HolderDatabaseSyncerImplTest {
             walletId = 1,
             providerIdentifier = "1",
             type = OriginType.Test,
-            maxIssuedAt = OffsetDateTime.now(),
+            expiryDate = OffsetDateTime.now(),
             scope = "",
             jsonData = "".toByteArray()
         )
@@ -55,6 +57,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = successResult(
@@ -64,7 +67,9 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             featureFlagUseCase = mockk(),
-            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable}
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable},
+            updateEventExpirationUseCase = mockk(relaxed = true),
+            mobileCoreWrapper = mobileCoreWrapper
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -81,6 +86,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = successResult(
@@ -90,7 +96,9 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             featureFlagUseCase = mockk(relaxed = true),
-            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable },
+            updateEventExpirationUseCase = mockk(relaxed = true),
+            mobileCoreWrapper = mobileCoreWrapper
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -107,6 +115,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
@@ -122,7 +131,8 @@ class HolderDatabaseSyncerImplTest {
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
-                        euGreencards = null
+                        euGreencards = null,
+                        blobExpireDates = listOf()
                     )
                 )
             ),
@@ -131,7 +141,9 @@ class HolderDatabaseSyncerImplTest {
             featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
                 every { getDisclosurePolicy() } answers { DisclosurePolicy.ThreeG }
             },
-            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable },
+            updateEventExpirationUseCase = mockk(relaxed = true),
+            mobileCoreWrapper = mobileCoreWrapper
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -148,6 +160,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
@@ -163,7 +176,8 @@ class HolderDatabaseSyncerImplTest {
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
-                        euGreencards = null
+                        euGreencards = null,
+                        blobExpireDates = listOf()
                     )
                 )
             ),
@@ -172,7 +186,9 @@ class HolderDatabaseSyncerImplTest {
             featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
                 every { getDisclosurePolicy() } answers { DisclosurePolicy.ZeroG }
             },
-            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable },
+            updateEventExpirationUseCase = mockk(relaxed = true),
+            mobileCoreWrapper = mobileCoreWrapper
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -189,6 +205,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
@@ -204,14 +221,17 @@ class HolderDatabaseSyncerImplTest {
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
-                        euGreencards = null
+                        euGreencards = null,
+                        blobExpireDates = listOf()
                     )
                 )
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             featureFlagUseCase = mockk(relaxed = true),
-            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable },
+            updateEventExpirationUseCase = mockk(relaxed = true),
+            mobileCoreWrapper = mobileCoreWrapper
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -229,6 +249,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.ServerNetworkError(Step(1), IllegalStateException("Some error")))),
@@ -237,7 +258,9 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             featureFlagUseCase = mockk(relaxed = true),
-            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable },
+            updateEventExpirationUseCase = mockk(relaxed = true),
+            mobileCoreWrapper = mobileCoreWrapper
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -255,6 +278,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Error(
@@ -270,7 +294,9 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             featureFlagUseCase = mockk(relaxed = true),
-            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable },
+            updateEventExpirationUseCase = mockk(relaxed = true),
+            mobileCoreWrapper = mobileCoreWrapper
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -288,6 +314,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Error(NetworkRequestResult.Failed.Error(Step(1), IllegalStateException("Some error")))),
@@ -296,7 +323,9 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             featureFlagUseCase = mockk(relaxed = true),
-            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable },
+            updateEventExpirationUseCase = mockk(relaxed = true),
+            mobileCoreWrapper = mobileCoreWrapper
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -313,6 +342,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
@@ -328,7 +358,8 @@ class HolderDatabaseSyncerImplTest {
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
-                        euGreencards = null
+                        euGreencards = null,
+                        blobExpireDates = listOf()
                     )
                 )
             ),
@@ -337,7 +368,9 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             featureFlagUseCase = mockk(relaxed = true),
-            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable },
+            updateEventExpirationUseCase = mockk(relaxed = true),
+            mobileCoreWrapper = mobileCoreWrapper
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -354,6 +387,7 @@ class HolderDatabaseSyncerImplTest {
 
         val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
             holderDatabase = holderDatabase,
+            workerManagerUtil = mockk(relaxed = true),
             greenCardUtil = fakeGreenCardUtil(),
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
@@ -362,14 +396,17 @@ class HolderDatabaseSyncerImplTest {
                             origins = listOf(),
                             createCredentialMessages = "".toByteArray()
                         ),
-                        euGreencards = null
+                        euGreencards = null,
+                        blobExpireDates = listOf()
                     )
                 )
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             featureFlagUseCase = mockk(relaxed = true),
-            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable }
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable },
+            updateEventExpirationUseCase = mockk(relaxed = true),
+            mobileCoreWrapper = mobileCoreWrapper
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -393,7 +430,8 @@ class HolderDatabaseSyncerImplTest {
                 )),
                 createCredentialMessages = "".toByteArray()
             ),
-            euGreencards = null
+            euGreencards = null,
+            blobExpireDates = listOf()
         )
     )
 }

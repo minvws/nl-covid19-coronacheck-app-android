@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.your_events.utils
 
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
@@ -21,10 +22,11 @@ import java.time.format.DateTimeParseException
 interface YourEventsFragmentUtil {
     fun getHeaderCopy(type: YourEventsFragmentType): Int
     fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int
-    fun getProviderName(type: YourEventsFragmentType, providerIdentifier: String): String
+    fun getProviderName(providers: List<AppConfig.Code>, providerIdentifier: String): String
     fun getCancelDialogDescription(type: YourEventsFragmentType): Int
     fun getFullName(holder: RemoteProtocol.Holder?): String
     fun getBirthDate(holder: RemoteProtocol.Holder?): String
+    fun getVaccinationDate(date: LocalDate?): String
 }
 
 class YourEventsFragmentUtilImpl(
@@ -69,9 +71,8 @@ class YourEventsFragmentUtilImpl(
         }
     }
 
-    override fun getProviderName(type: YourEventsFragmentType, providerIdentifier: String): String {
-        return (type as? YourEventsFragmentType.RemoteProtocol3Type)
-            ?.eventProviders?.firstOrNull { it.identifier == providerIdentifier }
+    override fun getProviderName(providers: List<AppConfig.Code>, providerIdentifier: String): String {
+        return providers.firstOrNull { it.code == providerIdentifier }
             ?.name
             ?: providerIdentifier
     }
@@ -109,6 +110,16 @@ class YourEventsFragmentUtilImpl(
                 if (birthDate.contains("XX")) {
                     birthDate
                 } else ""
+            } catch (e: Exception) {
+                ""
+            }
+        } ?: ""
+    }
+
+    override fun getVaccinationDate(vaccinationDate: LocalDate?): String {
+        return vaccinationDate?.let { date ->
+            try {
+                date.formatDayMonthYear()
             } catch (e: Exception) {
                 ""
             }

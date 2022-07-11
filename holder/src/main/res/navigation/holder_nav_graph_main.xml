@@ -54,14 +54,6 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
-            <action
-                android:id="@+id/action_missing_dutch_certificate"
-                app:destination="@+id/missing_dutch_certificate"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right" />
-
             <action android:id="@+id/action_input_token"
                 app:destination="@id/nav_commercial_test_input_token"
                 app:enterAnim="@anim/slide_in_right"
@@ -314,6 +306,34 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_no_digid"
+        android:name="nl.rijksoverheid.ctr.holder.no_digid.NoDigidFragment"
+        android:label="@string/choose_provider_toolbar"
+        tools:layout="@layout/fragment_no_digid">
+
+        <argument
+            android:name="data"
+            app:argType="nl.rijksoverheid.ctr.holder.no_digid.NoDigidFragmentData" />
+
+        <action
+            android:id="@+id/action_no_digid"
+            app:destination="@id/nav_no_digid"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_info_fragment"
+            app:destination="@id/nav_info_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_choose_provider"
         android:name="nl.rijksoverheid.ctr.holder.choose_provider.ChooseProviderFragment"
         android:label="@string/choose_provider_toolbar"
@@ -370,6 +390,14 @@
         <action
             android:id="@+id/action_mijn_cn"
             app:destination="@id/nav_mijn_cn"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_no_digid"
+            app:destination="@id/nav_no_digid"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.appconfig.persistence.*
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
 import nl.rijksoverheid.ctr.appconfig.usecases.*
-import nl.rijksoverheid.ctr.design.BuildConfig
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -59,6 +58,8 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
         retrofit.newBuilder().baseUrl(baseUrl).client(okHttpClient).build()
             .create(AppConfigApi::class.java)
     }
+
+    single<ConfigResultUseCase> { ConfigResultUseCaseImpl(get(), get()) }
 
     viewModel<AppConfigViewModel> {
         AppConfigViewModelImpl(

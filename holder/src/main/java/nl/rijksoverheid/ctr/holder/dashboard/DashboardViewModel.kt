@@ -29,6 +29,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import java.time.Clock
@@ -56,9 +57,9 @@ class DashboardViewModelImpl(
     private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
     private val persistenceManager: PersistenceManager,
-    private val clock: Clock,
     private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
-    private val dashboardTabsItemDataMapper: DashboardTabsItemDataMapper
+    private val dashboardTabsItemDataMapper: DashboardTabsItemDataMapper,
+    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase
 ) : DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -75,7 +76,6 @@ class DashboardViewModelImpl(
     private suspend fun refreshCredentials(dashboardSync: DashboardSync) {
         mutex.withLock {
             val previousSyncResult = databaseSyncerResultLiveData.value?.peekContent()
-            val hasDoneRefreshCall = previousSyncResult != null
 
             // Check if we need to load new credentials
             val shouldLoadNewCredentials = when (dashboardSync) {
@@ -89,8 +89,7 @@ class DashboardViewModelImpl(
                 }
                 is DashboardSync.CheckSync -> {
                     // Load new credentials if no previous refresh has been executed and we should refresh because a credentials for a green card expired
-                    val shouldRefreshCredentials =
-                        (greenCardRefreshUtil.shouldRefresh() && !hasDoneRefreshCall)
+                    val shouldRefreshCredentials = greenCardRefreshUtil.shouldRefresh()
 
                     // Load new credentials if we the previous request failed more than once and more than x minutes ago
                     val shouldRetryFailedRequest =
@@ -137,6 +136,10 @@ class DashboardViewModelImpl(
                     isLoadingNewCredentials = false
                 )
             }
+
+            removeExpiredEventsUseCase.execute(
+                events = allEventGroupEntities
+            )
         }
     }
 

@@ -12,6 +12,8 @@ import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndStat
 import nl.rijksoverheid.ctr.persistence.database.usecases.*
 import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -42,13 +44,16 @@ interface HolderDatabaseSyncer {
 }
 
 class HolderDatabaseSyncerImpl(
+    private val mobileCoreWrapper: MobileCoreWrapper,
     private val holderDatabase: HolderDatabase,
     private val greenCardUtil: GreenCardUtil,
+    private val workerManagerUtil: WorkerManagerUtil,
     private val getRemoteGreenCardsUseCase: GetRemoteGreenCardsUseCase,
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
     private val featureFlagUseCase: HolderFeatureFlagUseCase,
-    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil
+    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil,
+    private val updateEventExpirationUseCase: UpdateEventExpirationUseCase
 ) : HolderDatabaseSyncer {
 
     private val mutex = Mutex()
@@ -63,11 +68,6 @@ class HolderDatabaseSyncerImpl(
             mutex.withLock {
                 val events = holderDatabase.eventGroupDao().getAll()
 
-                // Clean up expired events in the database
-                removeExpiredEventsUseCase.execute(
-                    events = events
-                )
-
                 if (syncWithRemote) {
                     if (events.isEmpty()) {
                         // Remote does not handle empty events, so we decide that empty events == no green cards
@@ -75,13 +75,23 @@ class HolderDatabaseSyncerImpl(
                         return@withContext DatabaseSyncerResult.Success()
                     }
 
+                    // Generate a new secret key
+                    val secretKey = mobileCoreWrapper.generateHolderSk()
+
                     // Sync with remote
                     val remoteGreenCardsResult = getRemoteGreenCardsUseCase.get(
-                        events = events
+                        events = events,
+                        secretKey = secretKey
                     )
 
                     when (remoteGreenCardsResult) {
                         is RemoteGreenCardsResult.Success -> {
+                            // Update event expire dates
+                            updateEventExpirationUseCase.update(
+                                blobExpireDates = remoteGreenCardsResult.remoteGreenCards.blobExpireDates ?: listOf()
+                            )
+
+                            // Handle green cards
                             val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
                             val combinedVaccinationRecovery =
                                 yourEventFragmentEndStateUtil.getResult(
@@ -105,13 +115,13 @@ class HolderDatabaseSyncerImpl(
                             // We expect a certain origin but that is not present on the server
                             val doesNotContainExpectedOrigin = expectedOriginType != null && !originsToCheck.contains(expectedOriginType)
 
-                            // If the expected origin is vaccination assessment
-                            val expectedOriginIsVaccinationAssessment = expectedOriginType != OriginType.VaccinationAssessment
+                            // If the expected origin is not vaccination assessment
+                            val expectedOriginIsNotVaccinationAssessment = expectedOriginType != OriginType.VaccinationAssessment
 
                             // If there are no origins returned
                             val hasNoOrigins = originsToCheck.isEmpty()
 
-                            if ((doesNotContainExpectedOrigin || hasNoOrigins) && expectedOriginIsVaccinationAssessment) {
+                            if ((doesNotContainExpectedOrigin || hasNoOrigins) && expectedOriginIsNotVaccinationAssessment) {
                                 return@withContext DatabaseSyncerResult.Success(
                                     missingOrigin = true,
                                     combinedVaccinationRecovery
@@ -120,11 +130,18 @@ class HolderDatabaseSyncerImpl(
 
                             // Insert green cards in database
                             val result = syncRemoteGreenCardsUseCase.execute(
-                                remoteGreenCards = remoteGreenCards
+                                remoteGreenCards = remoteGreenCards,
+                                secretKey = secretKey
+                            )
+
+                            // Clean up expired events in the database
+                            removeExpiredEventsUseCase.execute(
+                                events = events
                             )
 
                             when (result) {
                                 is SyncRemoteGreenCardsResult.Success -> {
+                                    workerManagerUtil.scheduleRefreshCredentialsJob()
                                     return@withContext DatabaseSyncerResult.Success(
                                         false,
                                         combinedVaccinationRecovery

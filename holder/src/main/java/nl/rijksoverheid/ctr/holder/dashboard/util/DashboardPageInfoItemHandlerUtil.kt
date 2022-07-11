@@ -108,7 +108,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
         dashboardPageFragment: DashboardPageFragment,
     ) {
         val navigationDirection = MainNavDirections.actionGetEvents(
-            toolbarTitle = dashboardPageFragment.getString(R.string.get_vaccination_title),
+            toolbarTitle = dashboardPageFragment.getString(R.string.holder_addVaccination_title),
             originType = RemoteOriginType.Vaccination
         )
 
@@ -152,7 +152,16 @@ class DashboardPageInfoItemHandlerUtilImpl(
     }
 
     private fun onMissingDutchVaccinationItemClicked(dashboardPageFragment: DashboardPageFragment) {
-        dashboardPageFragment.navigateSafety(DashboardFragmentDirections.actionMissingDutchCertificate())
+        infoFragmentUtil.presentAsBottomSheet(
+            dashboardPageFragment.childFragmentManager,
+            InfoFragmentData.TitleDescription(
+                title = dashboardPageFragment.getString(R.string.missing_dutch_certificate_title),
+                descriptionData = DescriptionData(
+                    htmlText = R.string.holder_incompletedutchvaccination_paragraph_secondvaccine,
+                    htmlLinksEnabled = true
+                )
+            )
+        )
     }
 
     private fun onConfigRefreshClicked(
@@ -291,7 +300,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
             )
             OriginType.Vaccination -> Pair(
                 dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                R.string.my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_vaccination
+                R.string.holder_addVaccination_message
             )
             OriginType.Recovery -> Pair(
                 dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),

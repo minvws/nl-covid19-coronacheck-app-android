@@ -53,11 +53,13 @@ class SyncRemoteGreenCardsUseCaseImplTest {
         usecase.execute(
             remoteGreenCards = RemoteGreenCards(
                 domesticGreencard = null,
-                euGreencards = listOf(euGreenCard)
-            )
+                euGreencards = listOf(euGreenCard),
+                blobExpireDates = listOf()
+            ),
+            secretKey = ""
         )
 
-        coVerify(exactly = 0) { createDomesticGreenCardUseCase.create(any(), any()) }
+        coVerify(exactly = 0) { createDomesticGreenCardUseCase.create(any(), any(), any()) }
         coVerify(exactly = 1) { createEuGreenCardUseCase.create(euGreenCard) }
     }
 
@@ -90,11 +92,13 @@ class SyncRemoteGreenCardsUseCaseImplTest {
         usecase.execute(
             remoteGreenCards = RemoteGreenCards(
                 domesticGreencard = domesticGreenCard,
-                euGreencards = listOf()
-            )
+                euGreencards = listOf(),
+                blobExpireDates = listOf()
+            ),
+            secretKey = ""
         )
 
-        coVerify(exactly = 1) { createDomesticGreenCardUseCase.create(domesticGreenCard, domesticCredentials) }
+        coVerify(exactly = 1) { createDomesticGreenCardUseCase.create(domesticGreenCard, domesticCredentials, any()) }
         coVerify(exactly = 0) { createEuGreenCardUseCase.create(any()) }
     }
 
@@ -103,8 +107,10 @@ class SyncRemoteGreenCardsUseCaseImplTest {
         usecase.execute(
             RemoteGreenCards(
                 domesticGreencard = null,
-                euGreencards = listOf()
-            )
+                euGreencards = listOf(),
+                blobExpireDates = listOf()
+            ),
+            secretKey = ""
         )
 
         coVerify(exactly = 1) { greenCardDao.deleteAll() }

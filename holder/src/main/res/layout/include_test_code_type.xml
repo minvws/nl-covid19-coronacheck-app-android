@@ -18,8 +18,7 @@
     android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@color/grey_5"
     app:cardCornerRadius="@dimen/test_button_corner_radius"
-    app:cardElevation="2dp"
-    tools:showIn="@layout/fragment_commercial_test_type">
+    app:cardElevation="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

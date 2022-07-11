@@ -1,7 +1,10 @@
 package nl.rijksoverheid.ctr.holder
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import android.util.Log
+import androidx.work.Configuration
+import androidx.work.WorkerFactory
+import kotlinx.coroutines.*
+import net.sqlcipher.database.SQLiteDatabase
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
@@ -10,7 +13,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.dashboardModule
 import nl.rijksoverheid.ctr.holder.modules.*
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.*
-import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -29,18 +31,22 @@ import org.koin.core.module.Module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class HolderApplication : SharedApplication() {
+open class HolderApplication : SharedApplication(), Configuration.Provider {
 
-    private val secretKeyUseCase: SecretKeyUseCase by inject()
     private val holderDatabase: HolderDatabase by inject()
+    private val holderWorkerFactory: WorkerFactory by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
+
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    open fun coroutineScopeBlock(block: suspend () -> Unit) {
+        coroutineScope.launch { block() }
+    }
 
     private val holderModules = listOf(
         storageModule,
         greenCardUseCasesModule,
         eventsUseCasesModule,
-        secretUseCasesModule,
         testProvidersUseCasesModule,
         utilsModule(BuildConfig.VERSION_CODE),
         viewModels,
@@ -79,11 +85,8 @@ open class HolderApplication : SharedApplication() {
             )
         }
 
-        // Generate and store secret key to be used by rest of the app
-        secretKeyUseCase.persist()
-
         // Create default wallet in database if empty
-        GlobalScope.launch {
+        coroutineScopeBlock {
             if (holderDatabase.walletDao().getAll().isEmpty()) {
                 holderDatabase.walletDao().insert(
                     WalletEntity(
@@ -92,7 +95,6 @@ open class HolderApplication : SharedApplication() {
                     )
                 )
             }
-
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
@@ -102,5 +104,16 @@ open class HolderApplication : SharedApplication() {
 
     override fun getAdditionalModules(): List<Module> {
         return listOf(holderPreferenceModule, holderMobileCoreModule)
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder().apply {
+            setMinimumLoggingLevel(if (BuildConfig.DEBUG) {
+                Log.DEBUG
+            } else {
+                Log.ERROR
+            })
+            setWorkerFactory(holderWorkerFactory)
+        }.build()
     }
 }

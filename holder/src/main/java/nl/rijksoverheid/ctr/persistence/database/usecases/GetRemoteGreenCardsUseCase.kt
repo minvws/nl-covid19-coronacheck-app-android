@@ -4,26 +4,26 @@ import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
-import nl.rijksoverheid.ctr.holder.usecases.SecretKeyUseCase
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import org.json.JSONObject
 
 /**
  * Get green cards from remote
  */
 interface GetRemoteGreenCardsUseCase {
-    suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult
+    suspend fun get(events: List<EventGroupEntity>, secretKey: String): RemoteGreenCardsResult
 }
 
 class GetRemoteGreenCardsUseCaseImpl(
     private val coronaCheckRepository: CoronaCheckRepository,
-    private val mobileCoreWrapper: MobileCoreWrapper,
-    private val secretKeyUseCase: SecretKeyUseCase,
+    private val mobileCoreWrapper: MobileCoreWrapper
 ) : GetRemoteGreenCardsUseCase {
 
-    override suspend fun get(events: List<EventGroupEntity>): RemoteGreenCardsResult {
+    override suspend fun get(events: List<EventGroupEntity>, secretKey: String): RemoteGreenCardsResult {
         return try {
             val prepareIssue = when (val prepareIssueResult = coronaCheckRepository.getPrepareIssue()) {
                 is NetworkRequestResult.Success -> {
@@ -36,7 +36,7 @@ class GetRemoteGreenCardsUseCaseImpl(
 
             val commitmentMessage = try {
                 mobileCoreWrapper.createCommitmentMessage(
-                    secretKey = secretKeyUseCase.json().toByteArray(),
+                    secretKey = secretKey.toByteArray(),
                     prepareIssueMessage = prepareIssue.prepareIssueMessage
                 )
             } catch (e: Exception) {
@@ -48,7 +48,11 @@ class GetRemoteGreenCardsUseCaseImpl(
 
             val remoteGreenCardsResult =  coronaCheckRepository.getGreenCards(
                 stoken = prepareIssue.stoken,
-                events = events.map { String(it.jsonData) },
+                events = events.map {
+                    val jsonObject = JSONObject(it.jsonData.decodeToString())
+                    jsonObject.put("id", it.id.toString())
+                    jsonObject.toString()
+                },
                 issueCommitmentMessage = commitmentMessage
             )
 

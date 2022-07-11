@@ -33,14 +33,14 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getExpireCountdownText returns Hide when expire date more than 24 hours away for vaccination`() {
+    fun `getExpireCountdownText returns Hide when expire date more than 21 days away for vaccination`() {
         val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")),
             context = context
         )
         val result = util.getExpireCountdown(
             expireDate = OffsetDateTime.ofInstant(
-                Instant.parse("2021-01-02T00:01:00.00Z"),
+                Instant.parse("2021-01-22T00:01:00.00Z"),
                 ZoneId.of("UTC")
             ),
             type = OriginType.Vaccination
@@ -63,26 +63,51 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
         )
         assertEquals(
             DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(
+                daysLeft = 0,
                 hoursLeft = 23,
-                minutesLeft = 50
+                minutesLeft = 50,
+                secondsLeft = 0
             ), result
         )
     }
 
     @Test
-    fun `getExpireCountdownText returns Hide when expire date more than 24 hours away for recovery`() {
+    fun `getExpireCountdownText returns Hide when expire date more than 21 days away for recovery`() {
         val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")),
             context = context
         )
         val result = util.getExpireCountdown(
             expireDate = OffsetDateTime.ofInstant(
-                Instant.parse("2021-01-02T00:01:00.00Z"),
+                Instant.parse("2021-01-22T00:01:00.00Z"),
                 ZoneId.of("UTC")
             ),
             type = OriginType.Recovery
         )
         assertEquals(DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Hide, result)
+    }
+
+    @Test
+    fun `getExpireCountdownText returns Show when expire date less than 21 days away for recovery`() {
+        val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
+            clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")),
+            context = context
+        )
+        val result = util.getExpireCountdown(
+            expireDate = OffsetDateTime.ofInstant(
+                Instant.parse("2021-01-21T23:59:00.00Z"),
+                ZoneId.of("UTC")
+            ),
+            type = OriginType.Recovery
+        )
+        assertEquals(
+            DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(
+                daysLeft = 20,
+                hoursLeft = 23,
+                minutesLeft = 59,
+                secondsLeft = 0
+            ), result
+        )
     }
 
     @Test
@@ -100,8 +125,10 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
         )
         assertEquals(
             DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(
+                daysLeft = 0,
                 hoursLeft = 23,
-                minutesLeft = 59
+                minutesLeft = 59,
+                secondsLeft = 0
             ), result
         )
     }
@@ -137,29 +164,79 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
         )
         assertEquals(
             DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(
+                daysLeft = 0,
                 hoursLeft = 5,
-                minutesLeft = 59
+                minutesLeft = 59,
+                secondsLeft = 0
             ), result
         )
     }
 
     @Test
-    fun `getExpireCountdownText returned minutes should never be below 1`() {
+    fun `getExpireCountdownText returned minutes when less than one day and more than 5 minutes`() {
         val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")),
             context = context
         )
         val result = util.getExpireCountdown(
             expireDate = OffsetDateTime.ofInstant(
-                Instant.parse("2021-01-01T00:00:50.00Z"),
+                Instant.parse("2021-01-01T00:50:00.00Z"),
                 ZoneId.of("UTC")
             ),
             type = OriginType.Vaccination
         )
         assertEquals(
             DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(
+                daysLeft = 0,
                 hoursLeft = 0,
-                minutesLeft = 1
+                minutesLeft = 50,
+                secondsLeft = 0
+            ), result
+        )
+    }
+
+    @Test
+    fun `getExpireCountdownText returned minutes and seconds when less than 5 minutes and more than 0 minutes`() {
+        val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
+            clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")),
+            context = context
+        )
+        val result = util.getExpireCountdown(
+            expireDate = OffsetDateTime.ofInstant(
+                Instant.parse("2021-01-01T00:04:30.00Z"),
+                ZoneId.of("UTC")
+            ),
+            type = OriginType.Vaccination
+        )
+        assertEquals(
+            DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(
+                daysLeft = 0,
+                hoursLeft = 0,
+                minutesLeft = 4,
+                secondsLeft = 30
+            ), result
+        )
+    }
+
+    @Test
+    fun `getExpireCountdownText returned seconds when only seconds`() {
+        val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
+            clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")),
+            context = context
+        )
+        val result = util.getExpireCountdown(
+            expireDate = OffsetDateTime.ofInstant(
+                Instant.parse("2021-01-01T00:00:26.00Z"),
+                ZoneId.of("UTC")
+            ),
+            type = OriginType.Vaccination
+        )
+        assertEquals(
+            DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(
+                daysLeft = 0,
+                hoursLeft = 0,
+                minutesLeft = 0,
+                secondsLeft = 26
             ), result
         )
     }
@@ -172,7 +249,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
             context = context
         )
 
-        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(0, 15)
+        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(0, 0, 15, 0)
 
         val actual = util.getExpiryText(result)
 
@@ -181,17 +258,16 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getExpiryText should return text of hours and minutes`() {
-        
         val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")),
             context = context
         )
 
-        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(2, 15)
+        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(0,2, 15, 0)
 
         val actual = util.getExpiryText(result)
 
-        assertEquals("Expires in 2 hours, 15 minutes", actual)
+        assertEquals("Expires in 2 hours and 15 minutes", actual)
     }
 
     @Test
@@ -202,11 +278,11 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
             context = context
         )
 
-        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(1, 15)
+        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(0, 1, 15, 0)
 
         val actual = util.getExpiryText(result)
 
-        assertEquals("Expires in 1 hour, 15 minutes", actual)
+        assertEquals("Expires in 1 hour and 15 minutes", actual)
     }
 
     @Test
@@ -217,11 +293,11 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
             context = context
         )
 
-        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(2, 1)
+        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(0, 2, 1, 0)
 
         val actual = util.getExpiryText(result)
 
-        assertEquals("Expires in 2 hours, 1 minute", actual)
+        assertEquals("Expires in 2 hours and 1 minute", actual)
     }
 
     @Test
@@ -232,11 +308,41 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
             context = context
         )
 
-        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(1, 1)
+        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(0, 1, 1, 0)
 
         val actual = util.getExpiryText(result)
 
-        assertEquals("Expires in 1 hour, 1 minute", actual)
+        assertEquals("Expires in 1 hour and 1 minute", actual)
+    }
+
+    @Test
+    fun `getExpiryText should return text of days and hours`() {
+
+        val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
+            clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")),
+            context = context
+        )
+
+        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(2, 5, 1, 0)
+
+        val actual = util.getExpiryText(result)
+
+        assertEquals("Expires in 2 days", actual)
+    }
+
+    @Test
+    fun `getExpiryText should return text of day and hour`() {
+
+        val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
+            clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")),
+            context = context
+        )
+
+        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(1, 1, 1, 0)
+
+        val actual = util.getExpiryText(result)
+
+        assertEquals("Expires in 1 day and 1 hour", actual)
     }
 
     @Test
@@ -248,7 +354,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
             context = context
         )
 
-        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(1, 1)
+        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(0, 1, 1, 0)
 
         val actual = util.getExpiryText(result)
 

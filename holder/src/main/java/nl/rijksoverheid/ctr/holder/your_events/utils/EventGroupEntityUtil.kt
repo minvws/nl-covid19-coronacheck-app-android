@@ -18,8 +18,11 @@ class EventGroupEntityUtilImpl(
 ): EventGroupEntityUtil {
 
     override fun getProviderName(providerIdentifier: String): String {
+        // Some provider identifiers have a unique appended to it, the first part is the actual provider identifier
+        val providerIdentifierWithoutUnique = providerIdentifier.split("_").first()
+
         return cachedAppConfigUseCase.getCachedAppConfig().providerIdentifiers
-            .firstOrNull { it.code == providerIdentifier }
+            .firstOrNull { it.code == providerIdentifierWithoutUnique }
             ?.name
             ?: providerIdentifier
     }

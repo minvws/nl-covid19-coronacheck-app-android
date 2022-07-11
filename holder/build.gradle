@@ -5,13 +5,14 @@ plugins {
     id 'kotlin-parcelize'
     id "androidx.navigation.safeargs.kotlin"
     id "com.starter.easylauncher"
+    id "shot"
 }
 
 def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
-version = "4.2"
+version = "4.4.2"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
@@ -34,7 +35,7 @@ android {
         versionName version
         vectorDrawables.useSupportLibrary = true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.karumi.shot.ShotTestRunner"
 
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
@@ -67,6 +68,24 @@ android {
 
     flavorDimensions "environment"
     productFlavors {
+        tst {
+            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.test.coronacheck.nl/v8/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://holder-api.test.coronacheck.nl/v8/\""
+            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://max.test.coronacheck.nl\""
+            buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
+            buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.test.coronacheck.nl/app/auth2\""
+            buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL",  "\"https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.test.coronacheck.nl/app/open?returnUri=scanner-test\""
+            buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.test.coronacheck.nl\""
+            dimension "environment"
+            versionNameSuffix "-test"
+            applicationIdSuffix ".test"
+            manifestPlaceholders = [appLabel: "@string/app_name_test", deepLinkHost: "web.test.coronacheck.nl", digidSchema: "coronacheck-test"]
+            apply plugin: 'com.google.gms.google-services'
+            apply plugin: 'com.google.firebase.crashlytics'
+            matchingFallbacks = ['mlkit']
+            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
+            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
+        }
         acc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v8/\""
             buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v8/\""
@@ -114,6 +133,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            productFlavors.tst.signingConfig signingConfigs.release
             productFlavors.acc.signingConfig signingConfigs.release
             productFlavors.prod.signingConfig signingConfigs.release
         }
@@ -182,10 +202,13 @@ dependencies {
 
     accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
 
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+    androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+    androidTestImplementation "androidx.test:runner:$androix_test_version"
+    androidTestImplementation "androidx.test:rules:$androix_test_version"
+    androidTestImplementation "androidx.test:core-ktx:$androix_test_version"
+    androidTestImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
 
-    // Needed in order for room to work with Apple Sillicon M1
-    kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 }
 
 easylauncher {
@@ -200,9 +223,33 @@ easylauncher {
         }
     }
     variants {
+        tstDebug {
+            filters = customRibbon(
+                    label: "Test Debug",
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+        accDebug {
+            filters = customRibbon(
+                    label: "Acc Debug",
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
+        tstRelease {
+            filters = customRibbon(
+                    label: "Test $appVersionCode",
+                    ribbonColor: "#727679",
+                    labelColor: "#FFFFFF",
+                    textSizeRatio: 0.2
+            )
+        }
         accRelease {
             filters = customRibbon(
-                    label: appVersionCode,
+                    label: "Acc $appVersionCode",
                     ribbonColor: "#727679",
                     labelColor: "#FFFFFF",
                     textSizeRatio: 0.2

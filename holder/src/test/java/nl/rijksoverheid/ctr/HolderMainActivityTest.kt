@@ -146,9 +146,6 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                     fakeSetupViewModel(updateConfig = false)
                 }
                 factory {
-                    fakeSecretKeyUseCase()
-                }
-                factory {
                     fakeCachedAppConfigUseCase()
                 }
                 single {
