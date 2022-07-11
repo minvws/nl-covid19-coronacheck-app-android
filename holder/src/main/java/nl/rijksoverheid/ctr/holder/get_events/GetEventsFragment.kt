@@ -70,15 +70,21 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             onButtonClickWithRetryAction()
         }
         binding.noDigidButton.setOnClickListener {
-            navigateSafety(GetEventsFragmentDirections.actionNoDigid(
-                NoDigidFragmentData(
-                    title = getString(R.string.holder_noDigiD_title),
-                    description = getString(R.string.holder_noDigiD_message),
-                    firstNavigationButtonData = noDigidScreenDataUtil.requestDigidButton(),
-                    secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(args.originType),
-                    originType = args.originType
-                ))
-            )
+            if (args.originType == RemoteOriginType.Vaccination) {
+                navigateSafety(GetEventsFragmentDirections.actionNoDigid(
+                    NoDigidFragmentData(
+                        title = getString(R.string.holder_noDigiD_title),
+                        description = getString(R.string.holder_noDigiD_message),
+                        firstNavigationButtonData = noDigidScreenDataUtil.requestDigidButton(),
+                        secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(args.originType),
+                        originType = args.originType
+                    ))
+                )
+            } else {
+                navigateSafety(
+                    GetEventsFragmentDirections.actionPap(args.originType)
+                )
+            }
         }
 
         if (args.originType == RemoteOriginType.Vaccination) {

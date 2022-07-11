@@ -59,40 +59,61 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
 
         val binding = FragmentNoDigidBinding.bind(view)
 
-        binding.title.text = getString(
-            R.string.holder_chooseEventLocation_title, getString(
-                if (args.originType is RemoteOriginType.Vaccination) {
-                    R.string.holder_contactProviderHelpdesk_vaccinated
-                } else {
-                    R.string.holder_contactProviderHelpdesk_tested
-                }
-            )
-        )
-        binding.description.visibility = View.GONE
+        if (args.originType is RemoteOriginType.Vaccination) {
+            binding.title.text = getString(R.string.holder_chooseEventLocation_title, getString(R.string.holder_contactProviderHelpdesk_vaccinated))
+            binding.description.visibility = View.GONE
+            binding.firstButton.bind(
+                title = R.string.holder_chooseEventLocation_buttonTitle_GGD,
+                subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_GGD),
+            ) {
+                loginWithDigiD()
+            }
 
-        binding.firstButton.bind(
-            title = R.string.holder_chooseEventLocation_buttonTitle_GGD,
-            subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_GGD),
-        ) {
-            loginWithDigiD()
-        }
-
-        binding.secondButton.bind(
-            title = R.string.holder_chooseEventLocation_buttonTitle_other,
-            subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_other),
-        ) {
-            infoFragmentUtil.presentFullScreen(
-                currentFragment = this@PapFragment,
-                toolbarTitle = getString(R.string.choose_provider_toolbar),
-                data = InfoFragmentData.TitleDescriptionWithButton(
-                    title = getString(R.string.holder_contactProviderHelpdesk_title),
-                    descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_message),
-                    primaryButtonData = ButtonData.NavigationButton(
-                        text = getString(R.string.general_toMyOverview),
-                        navigationActionId = R.id.action_my_overview
+            binding.secondButton.bind(
+                title = R.string.holder_chooseEventLocation_buttonTitle_other,
+                subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_other),
+            ) {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this@PapFragment,
+                    toolbarTitle = getString(R.string.choose_provider_toolbar),
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.holder_contactProviderHelpdesk_title),
+                        descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_message),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.general_toMyOverview),
+                            navigationActionId = R.id.action_my_overview
+                        )
                     )
                 )
-            )
+            }
+        } else {
+            binding.title.text = getString(R.string.holder_checkForBSN_title)
+            binding.description.text = getString(R.string.holder_checkForBSN_message)
+            binding.description.visibility = View.VISIBLE
+            binding.firstButton.bind(
+                title = R.string.holder_checkForBSN_buttonTitle_doesHaveBSN,
+                subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesHaveBSN),
+            ) {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this@PapFragment,
+                    toolbarTitle = getString(R.string.choose_provider_toolbar),
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.holder_contactCoronaCheckHelpdesk_title),
+                        descriptionData = DescriptionData(R.string.holder_contactCoronaCheckHelpdesk_message),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.general_toMyOverview),
+                            navigationActionId = R.id.action_my_overview
+                        )
+                    )
+                )
+            }
+
+            binding.secondButton.bind(
+                title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN,
+                subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow),
+            ) {
+                loginWithDigiD()
+            }
         }
 
         digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {

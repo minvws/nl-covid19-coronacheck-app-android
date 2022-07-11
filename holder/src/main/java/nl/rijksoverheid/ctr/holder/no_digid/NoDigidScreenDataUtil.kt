@@ -44,7 +44,7 @@ class NoDigidScreenDataUtilImpl(
 
     private fun doesNotHaveBSNButton() = NoDigidNavigationButtonData.Ggd(
         title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN,
-        subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN)
+        subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow)
     )
 
     override fun requestDigidButton() = NoDigidNavigationButtonData.Link(

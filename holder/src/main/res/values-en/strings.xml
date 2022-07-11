@@ -802,9 +802,8 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_checkForBSN_buttonTitle_doesHaveBSN">Yes, I have a BSN</string>
   <string name="holder_checkForBSN_buttonSubTitle_doesHaveBSN">Get your certificate from the CoronaCheck helpdesk</string>
   <string name="holder_checkForBSN_buttonTitle_doesNotHaveBSN">No, I don’t have a BSN</string>
-  <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN">Get your certificate from your test or vaccination location</string>
+  <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow">Get your certificate from your test or vaccination location</string>
   <string name="holder_contactCoronaCheckHelpdesk_title">Request your certificate via the helpdesk</string>
-  <string name="holder.showqr.animation.voiceover.label">[placeholder]</string>
   <string name="holder_contactCoronaCheckHelpdesk_message"><![CDATA[Request your certificate at the CoronaCheck helpdesk. You can call them every day between 8AM and 8PM at: <a href=\"tel:0800-1421\">0800-1421</a> (free).<br/><br/>Or if you’re calling from abroad: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>. In the menu you can choose “request a certificate”.<br/><br/>Or request your certificate by emailing: <a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a><br/><br/>Please provide the following:<ul><li>your citizen service number (BSN)</li><li>your zipcode</li></ul><br/><br/>Your certificate with QR code will be sent by post. This can take up to 7 working days.]]></string>
   <string name="holder_contactProviderHelpdesk_title">Vraag je coronabewijs aan via een zorgverlener</string>
   <string name="holder_contactProviderHelpdesk_tested">tested</string>
@@ -816,4 +815,28 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_chooseEventLocation_buttonSubTitle_GGD">Regel je bewijs via de GGD</string>
   <string name="holder_chooseEventLocation_buttonTitle_other">Een andere zorgverlener</string>
   <string name="holder_chooseEventLocation_buttonSubTitle_other">Regel je bewijs via bijvoorbeeld je huisarts of andere zorginstelling</string>
+  <string name="general_unrecoverableError_sendCrashReport_title">App error</string>
+  <string name="general_unrecoverableError_sendCrashReport_message">A technical error has occurred. Please report the error. We will try to fix it as soon as possible.</string>
+  <string name="general_unrecoverableError_sendCrashReport_action">Report error</string>
+  <string name="general_unrecoverableError_restartTheApp_title">Restart the app</string>
+  <string name="general_unrecoverableError_restartTheApp_message">Please restart CoronaCheck. Does the problem still occur? Delete and reinstall the app.</string>
+  <string name="general_unrecoverableError_email_body" formatted="false">This email was generated automatically, containing the information we need. We ask you not to add additional information. We will receive your e-mail address along with information about the technical issue. This information will be deleted as soon as possible.
+
+This message is directed at the CoronaCheck development team. The problem will be solved as soon as possible.
+
+An unrecoverable error was caught in CoronaCheck %s %s version %s (%s).
+
+-----------
+Error details:
+	Message: %s
+	More Info: %s
+-----------</string>
+  <string name="general_unrecoverableError_email_subject" formatted="false">CoronaCheck problem report (%s %s)</string>
+  <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_vaccinationFlow">Krijg je bewijs via je zorgverlener</string>
+  <string name="holder_showqr_animation_winterctb_voiceover_label">Animatie van mensen op een slee en schaatsen</string>
+  <string name="holder_showqr_animation_summerdcc_voiceover_label">Animatie van reizigers op een loopband.</string>
+  <string name="holder_showqr_animation_winterdcc_voiceover_label">Animatie van reizigers op een loopband.</string>
+  <string name="holder_showqr_animation_summerctb_voiceover_label">Animatie van mensen op een fiets en skateboard.</string>
+  <string name="holder_showqr_animation_voiceover_hint">Verandert de beweging van richting.</string>
+  <string name="holder_showqr_animation_voiceover_result">Beweging van richting veranderd.</string>
 </resources>
