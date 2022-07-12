@@ -115,10 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:contentDescription="@null"
-            android:focusable="false"
-            android:importantForAccessibility="no"
-            android:screenReaderFocusable="false" />
+            android:contentDescription="@null" />
 
         <ScrollView
             android:id="@+id/bottomScroll"

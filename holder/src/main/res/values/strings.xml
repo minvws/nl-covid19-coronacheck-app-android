@@ -805,7 +805,11 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_checkForBSN_buttonTitle_doesNotHaveBSN">Nee, ik heb geen BSN</string>
   <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN">Krijg je bewijs via jouw test- of vaccinatielocatie</string>
   <string name="holder_contactCoronaCheckHelpdesk_title">Vraag je coronabewijs aan via de helpdesk</string>
-  <string name="holder.showqr.animation.voiceover.label">[placeholder]</string>
+  <string name="holder_showqr_animation_winterctb_voiceover_label">Animatie van mensen op een slee en schaatsen</string>
+  <string name="holder_showqr_animation_summerdcc_voiceover_label">Animatie van reizigers op een loopband</string>
+  <string name="holder_showqr_animation_winterdcc_voiceover_label">Animatie van reizigers op een loopband</string>
+  <string name="holder_showqr_animation_summerctb_voiceover_label">Animatie van mensen op een fiets en skateboard</string>
+  <string name="holder_showqr_animation_voiceover_hint">Verandert de beweging van richting</string>
   <string name="holder_contactCoronaCheckHelpdesk_message"><![CDATA[Vraag je bewijs aan bij de CoronaCheck helpdesk. Die kun je elke dag tussen 08.00 en 20.00 uur bellen op: <a href=\"tel:0800-1421\">0800-1421</a> (gratis).<br/><br/>Of als je vanuit het buitenland belt: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>. Kies in het keuzemenu voor “een bewijs aanvragen”.<br/><br/>Of vraag je bewijs aan door te mailen naar: <a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a><br/><br/>Geef het volgende door:<ul><li>je burgerservicenummer (BSN)</li><li>je postcode</li></ul><br/><br/>Je bewijs met QR-code wordt per post opgestuurd. Dit kan maximaal 7 werkdagen duren.]]></string>
   <string name="holder_contactProviderHelpdesk_title">Vraag je coronabewijs aan bij je %s</string>
   <string name="holder_contactProviderHelpdesk_testLocation">testlocatie</string>
