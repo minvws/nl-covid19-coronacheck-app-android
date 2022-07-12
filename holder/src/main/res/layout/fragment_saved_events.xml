@@ -13,7 +13,7 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:fillViewport="true"
-    android:importantForAccessibility="auto"
+    android:importantForAccessibility="no"
     android:scrollbars="vertical"
     android:background="@color/blue_5_percent"
     android:paddingBottom="40dp"
