@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -34,8 +35,11 @@ import org.koin.android.ext.android.inject
  */
 class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
 
+    var _binding: FragmentNoDigidBinding? = null
+    val binding: FragmentNoDigidBinding get() = _binding!!
     private val args: PapFragmentArgs by navArgs()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase by inject()
 
     override fun onButtonClickWithRetryAction() {
         loginWithDigiD()
@@ -57,10 +61,10 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentNoDigidBinding.bind(view)
+        _binding = FragmentNoDigidBinding.bind(view)
 
         if (args.originType is RemoteOriginType.Vaccination) {
-            binding.title.text = getString(R.string.holder_chooseEventLocation_title, getString(R.string.holder_contactProviderHelpdesk_vaccinated))
+            binding.title.text = getString(R.string.holder_chooseEventLocation_title)
             binding.description.visibility = View.GONE
             binding.firstButton.bind(
                 title = R.string.holder_chooseEventLocation_buttonTitle_GGD,
@@ -77,8 +81,8 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
                     currentFragment = this@PapFragment,
                     toolbarTitle = getString(R.string.choose_provider_toolbar),
                     data = InfoFragmentData.TitleDescriptionWithButton(
-                        title = getString(R.string.holder_contactProviderHelpdesk_title),
-                        descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_message),
+                        title = getString(R.string.holder_contactProviderHelpdesk_vaccinationFlow_title),
+                        descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_message_ggdPortalEnabled),
                         primaryButtonData = ButtonData.NavigationButton(
                             text = getString(R.string.general_toMyOverview),
                             navigationActionId = R.id.action_my_overview
@@ -112,7 +116,22 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
                 title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN,
                 subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow),
             ) {
-                loginWithDigiD()
+                if (holderFeatureFlagUseCase.getPapEnabled()) {
+                    loginWithDigiD()
+                } else {
+                    infoFragmentUtil.presentFullScreen(
+                        currentFragment = this@PapFragment,
+                        toolbarTitle = getString(R.string.choose_provider_toolbar),
+                        data = InfoFragmentData.TitleDescriptionWithButton(
+                            title = getString(R.string.holder_contactProviderHelpdesk_testFlow_title),
+                            descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_testFlow_message),
+                            primaryButtonData = ButtonData.NavigationButton(
+                                text = getString(R.string.general_toMyOverview),
+                                navigationActionId = R.id.action_my_overview
+                            )
+                        )
+                    )
+                }
             }
         }
 

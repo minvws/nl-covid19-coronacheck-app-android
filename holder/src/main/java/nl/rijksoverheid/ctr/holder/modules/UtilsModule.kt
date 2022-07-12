@@ -71,5 +71,5 @@ fun utilsModule(versionCode: Int) = module {
     factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
-    factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get()) }
+    factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get()) }
 }
