@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.no_digid
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -18,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
+import nl.rijksoverheid.ctr.holder.ui.create_qr.setEnabled
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -35,8 +37,8 @@ import org.koin.android.ext.android.inject
  */
 class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
 
-    var _binding: FragmentNoDigidBinding? = null
-    val binding: FragmentNoDigidBinding get() = _binding!!
+    private var _binding: FragmentNoDigidBinding? = null
+    private val binding: FragmentNoDigidBinding get() = _binding!!
     private val args: PapFragmentArgs by navArgs()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase by inject()
@@ -144,12 +146,27 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
         return LoginType.Pap
     }
 
+    private fun setEnabled(enabled: Boolean) {
+        listOf(binding.title, binding.description).forEach {
+            it.setTextColor(
+                ContextCompat.getColor(requireContext(), if (enabled) {
+                    R.color.primary_text
+                } else {
+                    R.color.grey_2
+                }))
+        }
+    }
+
     override fun onDigidLoading(loading: Boolean) {
-        // TODO Disable buttons
+        binding.firstButton.setEnabled(!loading)
+        binding.secondButton.setEnabled(!loading)
+        setEnabled(!loading)
     }
 
     override fun onGetEventsLoading(loading: Boolean) {
-        // TODO Disable buttons
+        binding.firstButton.setEnabled(!loading)
+        binding.secondButton.setEnabled(!loading)
+        setEnabled(!loading)
     }
 
     override fun getOriginTypes(): List<RemoteOriginType> {
