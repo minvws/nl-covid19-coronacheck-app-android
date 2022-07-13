@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.no_digid
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -147,14 +146,8 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
     }
 
     private fun setEnabled(enabled: Boolean) {
-        listOf(binding.title, binding.description).forEach {
-            it.setTextColor(
-                ContextCompat.getColor(requireContext(), if (enabled) {
-                    R.color.primary_text
-                } else {
-                    R.color.grey_2
-                }))
-        }
+        binding.title.isEnabled = enabled
+        binding.description.isEnabled = enabled
     }
 
     override fun onDigidLoading(loading: Boolean) {

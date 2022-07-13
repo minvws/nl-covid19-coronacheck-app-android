@@ -50,16 +50,7 @@ fun IncludeContentButtonBinding.bind(
 
 fun IncludeContentButtonBinding.setEnabled(enabled: Boolean) {
     root.isClickable = enabled
-    providerTitle.setTextColor(ContextCompat.getColor(providerTitle.context, if (enabled) {
-        R.color.primary_text
-    } else {
-        R.color.grey_2
-    }))
-    providerSubtitle.setTextColor(ContextCompat.getColor(providerSubtitle.context, if (enabled) {
-        R.color.primary_text
-    } else {
-        R.color.grey_2
-    }))
+    root.isEnabled = enabled
 }
 
 fun ItemPaperProofExplanationBinding.bind(
