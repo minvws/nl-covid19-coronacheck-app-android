@@ -18,6 +18,8 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
+import nl.rijksoverheid.ctr.holder.ui.create_qr.setEnabled
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -34,8 +36,11 @@ import org.koin.android.ext.android.inject
  */
 class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
 
+    private var _binding: FragmentNoDigidBinding? = null
+    private val binding: FragmentNoDigidBinding get() = _binding!!
     private val args: PapFragmentArgs by navArgs()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase by inject()
 
     override fun onButtonClickWithRetryAction() {
         loginWithDigiD()
@@ -57,42 +62,78 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentNoDigidBinding.bind(view)
+        _binding = FragmentNoDigidBinding.bind(view)
 
-        binding.title.text = getString(
-            R.string.holder_chooseEventLocation_title, getString(
-                if (args.originType is RemoteOriginType.Vaccination) {
-                    R.string.holder_contactProviderHelpdesk_vaccinated
-                } else {
-                    R.string.holder_contactProviderHelpdesk_tested
-                }
-            )
-        )
-        binding.description.visibility = View.GONE
+        if (args.originType is RemoteOriginType.Vaccination) {
+            binding.title.text = getString(R.string.holder_chooseEventLocation_title)
+            binding.description.visibility = View.GONE
+            binding.firstButton.bind(
+                title = R.string.holder_chooseEventLocation_buttonTitle_GGD,
+                subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_GGD),
+            ) {
+                loginWithDigiD()
+            }
 
-        binding.firstButton.bind(
-            title = R.string.holder_chooseEventLocation_buttonTitle_GGD,
-            subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_GGD),
-        ) {
-            loginWithDigiD()
-        }
-
-        binding.secondButton.bind(
-            title = R.string.holder_chooseEventLocation_buttonTitle_other,
-            subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_other),
-        ) {
-            infoFragmentUtil.presentFullScreen(
-                currentFragment = this@PapFragment,
-                toolbarTitle = getString(R.string.choose_provider_toolbar),
-                data = InfoFragmentData.TitleDescriptionWithButton(
-                    title = getString(R.string.holder_contactProviderHelpdesk_title),
-                    descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_message),
-                    primaryButtonData = ButtonData.NavigationButton(
-                        text = getString(R.string.general_toMyOverview),
-                        navigationActionId = R.id.action_my_overview
+            binding.secondButton.bind(
+                title = R.string.holder_chooseEventLocation_buttonTitle_other,
+                subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_other),
+            ) {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this@PapFragment,
+                    toolbarTitle = getString(R.string.choose_provider_toolbar),
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.holder_contactProviderHelpdesk_vaccinationFlow_title),
+                        descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_message_ggdPortalEnabled),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.general_toMyOverview),
+                            navigationActionId = R.id.action_my_overview
+                        )
                     )
                 )
-            )
+            }
+        } else {
+            binding.title.text = getString(R.string.holder_checkForBSN_title)
+            binding.description.text = getString(R.string.holder_checkForBSN_message)
+            binding.description.visibility = View.VISIBLE
+            binding.firstButton.bind(
+                title = R.string.holder_checkForBSN_buttonTitle_doesHaveBSN,
+                subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesHaveBSN),
+            ) {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this@PapFragment,
+                    toolbarTitle = getString(R.string.choose_provider_toolbar),
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.holder_contactCoronaCheckHelpdesk_title),
+                        descriptionData = DescriptionData(R.string.holder_contactCoronaCheckHelpdesk_message),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.general_toMyOverview),
+                            navigationActionId = R.id.action_my_overview
+                        )
+                    )
+                )
+            }
+
+            binding.secondButton.bind(
+                title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN,
+                subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow),
+            ) {
+                if (holderFeatureFlagUseCase.getPapEnabled()) {
+                    loginWithDigiD()
+                } else {
+                    infoFragmentUtil.presentFullScreen(
+                        currentFragment = this@PapFragment,
+                        toolbarTitle = getString(R.string.choose_provider_toolbar),
+                        data = InfoFragmentData.TitleDescriptionWithButton(
+                            title = getString(R.string.holder_contactProviderHelpdesk_testFlow_title),
+                            descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_testFlow_message),
+                            primaryButtonData = ButtonData.NavigationButton(
+                                text = getString(R.string.general_toMyOverview),
+                                navigationActionId = R.id.action_my_overview
+                            )
+                        )
+                    )
+                }
+            }
         }
 
         digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
@@ -104,12 +145,21 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
         return LoginType.Pap
     }
 
+    private fun setEnabled(enabled: Boolean) {
+        binding.title.isEnabled = enabled
+        binding.description.isEnabled = enabled
+    }
+
     override fun onDigidLoading(loading: Boolean) {
-        // TODO Disable buttons
+        binding.firstButton.setEnabled(!loading)
+        binding.secondButton.setEnabled(!loading)
+        setEnabled(!loading)
     }
 
     override fun onGetEventsLoading(loading: Boolean) {
-        // TODO Disable buttons
+        binding.firstButton.setEnabled(!loading)
+        binding.secondButton.setEnabled(!loading)
+        setEnabled(!loading)
     }
 
     override fun getOriginTypes(): List<RemoteOriginType> {

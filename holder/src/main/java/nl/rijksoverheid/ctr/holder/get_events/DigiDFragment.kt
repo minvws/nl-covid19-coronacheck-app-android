@@ -26,6 +26,7 @@ import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.get_events.models.*
+import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
@@ -46,6 +47,7 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
 
     private val dialogUtil: DialogUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
+    private val loginTypeUtil: LoginTypeUtil by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
     protected val digidViewModel: LoginViewModel by sharedViewModel(named(LoginQualifier.DIGID))
     protected val mijnCnViewModel: LoginViewModel by viewModel(named(LoginQualifier.MIJN_CN))
@@ -190,8 +192,8 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                 is LoginResult.Cancelled -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
-                        title = R.string.digid_login_cancelled_title,
-                        message = getString(R.string.digid_login_cancelled_description),
+                        title = loginTypeUtil.getCanceledDialogTitle(getLoginType()),
+                        message = getString(loginTypeUtil.getCanceledDialogDescription(getLoginType())),
                         positiveButtonText = R.string.dialog_close,
                         positiveButtonCallback = {}
                     )

@@ -5,6 +5,7 @@
   <string name="holder_fetchRemoteEvents_title">Gegevens ophalen</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_title">Er is alleen een internationaal bewijs gemaakt</string>
   <string name="general_readmore">Lees meer</string>
+  <string name="holder_authentication_popup_digid_title">Inloggen afgebroken</string>
   <string name="holder_dcc_alert_message">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
   <string name="holder_recovery_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="holder_test_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
@@ -803,18 +804,29 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_checkForBSN_buttonTitle_doesHaveBSN">Ja, ik heb een BSN</string>
   <string name="holder_checkForBSN_buttonSubTitle_doesHaveBSN">Krijg je bewijs via de CoronaCheck helpdesk</string>
   <string name="holder_checkForBSN_buttonTitle_doesNotHaveBSN">Nee, ik heb geen BSN</string>
-  <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN">Krijg je bewijs via jouw test- of vaccinatielocatie</string>
+  <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow">Krijg je bewijs via de GGD</string>
   <string name="holder_contactCoronaCheckHelpdesk_title">Vraag je coronabewijs aan via de helpdesk</string>
-  <string name="holder.showqr.animation.voiceover.label">[placeholder]</string>
   <string name="holder_contactCoronaCheckHelpdesk_message"><![CDATA[Vraag je bewijs aan bij de CoronaCheck helpdesk. Die kun je elke dag tussen 08.00 en 20.00 uur bellen op: <a href=\"tel:0800-1421\">0800-1421</a> (gratis).<br/><br/>Of als je vanuit het buitenland belt: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>. Kies in het keuzemenu voor “een bewijs aanvragen”.<br/><br/>Of vraag je bewijs aan door te mailen naar: <a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a><br/><br/>Geef het volgende door:<ul><li>je burgerservicenummer (BSN)</li><li>je postcode</li></ul><br/><br/>Je bewijs met QR-code wordt per post opgestuurd. Dit kan maximaal 7 werkdagen duren.]]></string>
-  <string name="holder_contactProviderHelpdesk_title">Vraag je coronabewijs aan via een zorgverlener</string>
-  <string name="holder_contactProviderHelpdesk_tested">getest</string>
-  <string name="holder_contactProviderHelpdesk_vaccinated">gevaccineerd</string>
+  <string name="holder_contactProviderHelpdesk_vaccinationFlow_title">Vraag je coronabewijs aan via een zorgverlener</string>
   <string name="holder_contactProviderHelpdesk_message"><![CDATA[Vraag je bewijs aan bij de locatie waar je %s bent.<br/><br/><ul><li>Was dit bij de GGD? Bel de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a> om je bewijs aan te vragen. </li><li>Was dit ergens anders? Bijvoorbeeld bij je huisarts of een andere zorgverlener? Neem direct contact op met hen.</li></ul><br/><br/>Je kunt je coronabewijs aanvragen op papier of als pdf-bestand.]]></string>
-  <string name="holder_contactProviderHelpdesk_message_ggdPortalEnabled">Neem contact op met de zorgverlener waar je bent %s. Hier kun je jouw coronabewijs aanvragen op papier of als pdf-bestand.</string>
-  <string name="holder_chooseEventLocation_title">Waar ben je %s?</string>
+  <string name="holder_contactProviderHelpdesk_message_ggdPortalEnabled">Neem contact op met de zorgverlener waar je bent gevaccineerd. Hier kun je jouw coronabewijs aanvragen op papier of als pdf-bestand.</string>
+  <string name="holder_chooseEventLocation_title">Waar ben je gevaccineerd?</string>
   <string name="holder_chooseEventLocation_buttonTitle_GGD">GGD</string>
   <string name="holder_chooseEventLocation_buttonSubTitle_GGD">Regel je bewijs via de GGD</string>
   <string name="holder_chooseEventLocation_buttonTitle_other">Een andere zorgverlener</string>
   <string name="holder_chooseEventLocation_buttonSubTitle_other">Regel je bewijs via bijvoorbeeld je huisarts of andere zorginstelling</string>
+  <string name="general_unrecoverableError_sendCrashReport_message">Er is een technisch probleem opgetreden.
+Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
+  <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_vaccinationFlow">Krijg je bewijs via je zorgverlener</string>
+  <string name="holder_showqr_animation_winterctb_voiceover_label">Animatie van mensen op een slee en schaatsen</string>
+  <string name="holder_showqr_animation_summerdcc_voiceover_label">Animatie van reizigers op een loopband</string>
+  <string name="holder_showqr_animation_winterdcc_voiceover_label">Animatie van reizigers op een loopband</string>
+  <string name="holder_showqr_animation_summerctb_voiceover_label">Animatie van mensen op een fiets en skateboard</string>
+  <string name="holder_showqr_animation_voiceover_hint">Verandert de beweging van richting</string>
+  <string name="holder_contactProviderHelpdesk_testFlow_title">Vraag je coronabewijs aan via de GGD</string>
+  <string name="holder_contactProviderHelpdesk_testFlow_message"><![CDATA[Vraag een papieren coronabewijs aan door te bellen met de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a>.<br /><br />Je bewijs met QR-code wordt per post opgestuurd.]]></string>
+  <string name="holder_contactProviderHelpdesk_vaccinationFlow_message"><![CDATA[Waar je jouw coronabewijs kunt aanvragen hangt af van waar je gevaccineerd bent. <br /><br /><ul><li>Was dit bij de GGD? Bel de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a> om je bewijs aan te vragen. </li><br /><li>Was dit ergens anders? Bijvoorbeeld bij je huisarts of een andere zorgverlener? Neem direct contact op met hen.</li></ul><br />Je kunt je coronabewijs aanvragen op papier of als pdf-bestand.]]></string>
+  <string name="holder_authentication_popup_digid_message">Wil je jouw gegevens ophalen? Log dan opnieuw in met DigiD.</string>
+  <string name="holder_authentication_popup_portal_message">Wil je jouw gegevens ophalen? Log dan opnieuw in met DigiD.</string>
+  <string name="holder_authentication_popup_portal_title">Inloggen afgebroken</string>
 </resources>

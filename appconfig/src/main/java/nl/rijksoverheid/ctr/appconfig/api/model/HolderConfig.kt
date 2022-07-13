@@ -55,6 +55,7 @@ data class HolderConfig(
     @Json(name = "disclosurePolicies") val disclosurePolicy: DisclosurePolicy,
     @Json(name = "backendTLSCertificates") val backendTLSCertificates: List<String>,
     @Json(name = "shouldShowCoronaMelderRecommendation") val shouldShowCoronaMelderRecommendation: Boolean?,
+    @Json(name = "papEnabled") val papEnabled: Boolean,
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -150,6 +151,7 @@ data class HolderConfig(
             disclosurePolicy = disclosurePolicy,
             backendTLSCertificates = emptyList(),
             shouldShowCoronaMelderRecommendation = false,
+            papEnabled = false,
         )
     }
 }
