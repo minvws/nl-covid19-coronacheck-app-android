@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.work.Configuration
 import androidx.work.WorkerFactory
 import kotlinx.coroutines.*
+import net.sqlcipher.database.SQLiteDatabase
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.*
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager

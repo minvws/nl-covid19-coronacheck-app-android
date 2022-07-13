@@ -43,7 +43,7 @@ class RandomKeyUseCaseImplTest : AutoCloseKoinTest() {
     @Test
     fun `exists returns true if random key has been persisted`() {
         val androidUtil = mockk<AndroidUtil>()
-        every { androidUtil.generateRandomKey() } answers { "123".toByteArray() }
+        every { androidUtil.generateRandomKey() } answers { "123" }
 
         val usecase = RandomKeyUseCaseImpl(
             persistenceManager = persistenceManager,
@@ -58,7 +58,7 @@ class RandomKeyUseCaseImplTest : AutoCloseKoinTest() {
     @Test
     fun `exists returns false if random key has not been persisted`() {
         val androidUtil = mockk<AndroidUtil>()
-        every { androidUtil.generateRandomKey() } answers { "".toByteArray() }
+        every { androidUtil.generateRandomKey() } answers { "" }
 
         val usecase = RandomKeyUseCaseImpl(
             persistenceManager = persistenceManager,
@@ -71,7 +71,7 @@ class RandomKeyUseCaseImplTest : AutoCloseKoinTest() {
     @Test
     fun `get returns the persisted random key`() {
         val androidUtil = mockk<AndroidUtil>()
-        every { androidUtil.generateRandomKey() } answers { "123".toByteArray() }
+        every { androidUtil.generateRandomKey() } answers { "123" }
 
         val usecase = RandomKeyUseCaseImpl(
             persistenceManager = persistenceManager,
@@ -80,14 +80,14 @@ class RandomKeyUseCaseImplTest : AutoCloseKoinTest() {
 
         usecase.persist()
 
-        assertEquals("123".toByteArray().toHex(), usecase.get())
+        assertEquals("123", usecase.get())
     }
 
     @Test
     fun `persist persists the random key`() {
         val persistenceManager = mockk<PersistenceManager>(relaxed = true)
         val androidUtil = mockk<AndroidUtil>()
-        every { androidUtil.generateRandomKey() } answers { "123".toByteArray() }
+        every { androidUtil.generateRandomKey() } answers { "123" }
 
         val usecase = RandomKeyUseCaseImpl(
             persistenceManager = persistenceManager,
@@ -96,6 +96,6 @@ class RandomKeyUseCaseImplTest : AutoCloseKoinTest() {
 
         usecase.persist()
 
-        verify { persistenceManager.saveRandomKey("123".toByteArray().toHex()) }
+        verify { persistenceManager.saveRandomKey("123") }
     }
 }

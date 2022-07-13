@@ -14,7 +14,7 @@
     android:background="@color/white"
     android:layout_marginTop="40dp">
 
-    <TextView
+    <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
         android:id="@+id/retrievedAt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

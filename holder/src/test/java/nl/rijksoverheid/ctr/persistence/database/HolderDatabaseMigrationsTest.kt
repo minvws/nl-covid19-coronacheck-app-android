@@ -13,7 +13,6 @@ import org.robolectric.RobolectricTestRunner
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-
 @RunWith(RobolectricTestRunner::class)
 class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
 
@@ -74,10 +73,10 @@ class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
         dbV6.close()
 
         // The database after the migration
-        val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager, "123"))
+        val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager))
 
         // Assert new secret key is stored in preference
-        assertEquals("123", persistenceManager.getDatabasePassPhrase())
+        assertEquals("123456789", persistenceManager.getDatabasePassPhrase())
 
         // Assert that the secret key from shared preferences is migrated to secret key table
         val secretKeyCursor = dbV7.query("SELECT * FROM secret_key")
@@ -96,10 +95,10 @@ class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
         dbV6.close()
 
         // The database after the migration
-        val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager, "123"))
+        val dbV7 = helper.runMigrationsAndValidate(DATABASE_NAME, 7, true, MIGRATION_6_7(persistenceManager))
 
         // Assert new secret key is stored in preference
-        assertEquals("123", persistenceManager.getDatabasePassPhrase())
+        assertEquals("123456789", persistenceManager.getDatabasePassPhrase())
 
         // Assert that the secret key from shared preferences is migrated to secret key table
         val secretKeyCursor = dbV7.query("SELECT * FROM secret_key")

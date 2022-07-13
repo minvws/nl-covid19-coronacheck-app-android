@@ -34,7 +34,7 @@ class RandomKeyUseCaseImpl(
 
     override fun persist() {
         if (!exists()) {
-            persistenceManager.saveRandomKey(androidUtil.generateRandomKey().toHex())
+            persistenceManager.saveRandomKey(androidUtil.generateRandomKey())
         }
     }
 }
