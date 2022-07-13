@@ -49,9 +49,9 @@ class DigidAuthenticationRepository: AuthenticationRepository {
     private fun authRequest(serviceConfiguration: AuthorizationServiceConfiguration): AuthorizationRequest {
         return AuthorizationRequest.Builder(
             serviceConfiguration,
-            BuildConfig.DIGI_D_CLIENT_ID,
+            BuildConfig.OPEN_ID_CLIENT_ID,
             ResponseTypeValues.CODE,
-            Uri.parse(BuildConfig.DIGI_D_REDIRECT_URI)
+            Uri.parse(BuildConfig.OPEN_ID_REDIRECT_URL)
         ).setScope("openid email profile").build()
     }
 
