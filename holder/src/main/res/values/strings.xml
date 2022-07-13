@@ -815,24 +815,8 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_chooseEventLocation_buttonSubTitle_GGD">Regel je bewijs via de GGD</string>
   <string name="holder_chooseEventLocation_buttonTitle_other">Een andere zorgverlener</string>
   <string name="holder_chooseEventLocation_buttonSubTitle_other">Regel je bewijs via bijvoorbeeld je huisarts of andere zorginstelling</string>
-  <string name="general_unrecoverableError_sendCrashReport_title">Probleem met de app</string>
   <string name="general_unrecoverableError_sendCrashReport_message">Er is een technisch probleem opgetreden.
 Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
-  <string name="general_unrecoverableError_sendCrashReport_action">Probleem rapporteren</string>
-  <string name="general_unrecoverableError_restartTheApp_title">Start de app opnieuw op</string>
-  <string name="general_unrecoverableError_restartTheApp_message">Start CoronaCheck opnieuw op. Nog steeds een probleem? Verwijder de app en installeer deze opnieuw.</string>
-  <string name="general_unrecoverableError_email_body" formatted="false">Deze email is automatisch gegenereerd met alle gegevens die wij nodig hebben. Wij vragen u geen extra informatie toe te voegen. Wij ontvangen bij verzending uw e-mail adres tezamen met informatie over het technische probleem. Deze informatie zal zo spoedig mogelijk worden verwijderd.
-
-Dit bericht is bedoeld voor het CoronaCheck ontwikkelteam. Het probleem zal zo snel mogelijk opgelost worden.
-
-Een onoplosbaar probleem heeft plaats gevonden in CoronaCheck %s %s version %s (%s).
-
------------
-Error details:
-	Bericht: %s
-	Meer informatie: %s
------------</string>
-  <string name="general_unrecoverableError_email_subject" formatted="false">CoronaCheck problem report (%s %s)</string>
   <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_vaccinationFlow">Krijg je bewijs via je zorgverlener</string>
   <string name="holder_showqr_animation_winterctb_voiceover_label">Animatie van mensen op een slee en schaatsen</string>
   <string name="holder_showqr_animation_summerdcc_voiceover_label">Animatie van reizigers op een loopband</string>

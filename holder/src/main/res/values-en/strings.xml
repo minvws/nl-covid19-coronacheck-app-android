@@ -814,23 +814,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_chooseEventLocation_buttonSubTitle_GGD">Regel je bewijs via de GGD</string>
   <string name="holder_chooseEventLocation_buttonTitle_other">Een andere zorgverlener</string>
   <string name="holder_chooseEventLocation_buttonSubTitle_other">Regel je bewijs via bijvoorbeeld je huisarts of andere zorginstelling</string>
-  <string name="general_unrecoverableError_sendCrashReport_title">App error</string>
   <string name="general_unrecoverableError_sendCrashReport_message">A technical error has occurred. Please report the error. We will try to fix it as soon as possible.</string>
-  <string name="general_unrecoverableError_sendCrashReport_action">Report error</string>
-  <string name="general_unrecoverableError_restartTheApp_title">Restart the app</string>
-  <string name="general_unrecoverableError_restartTheApp_message">Please restart CoronaCheck. Does the problem still occur? Delete and reinstall the app.</string>
-  <string name="general_unrecoverableError_email_body" formatted="false">This email was generated automatically, containing the information we need. We ask you not to add additional information. We will receive your e-mail address along with information about the technical issue. This information will be deleted as soon as possible.
-
-This message is directed at the CoronaCheck development team. The problem will be solved as soon as possible.
-
-An unrecoverable error was caught in CoronaCheck %s %s version %s (%s).
-
------------
-Error details:
-	Message: %s
-	More Info: %s
------------</string>
-  <string name="general_unrecoverableError_email_subject" formatted="false">CoronaCheck problem report (%s %s)</string>
   <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_vaccinationFlow">Krijg je bewijs via je zorgverlener</string>
   <string name="holder_showqr_animation_winterctb_voiceover_label">Animation of people on a sledge and ice skates</string>
   <string name="holder_showqr_animation_summerdcc_voiceover_label">Animation of travelers on a moving walkway</string>
