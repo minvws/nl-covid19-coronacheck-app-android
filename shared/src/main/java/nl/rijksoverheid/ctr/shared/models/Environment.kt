@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.shared.models
 
 import android.content.Context
+import android.os.Build
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -13,16 +14,22 @@ sealed class Environment {
     object Tst: Environment()
     object Acc: Environment()
     object Prod: Environment()
+    object InstrumentationTests: Environment()
 
     companion object {
         fun get(context: Context): Environment {
-            return if (context.packageName.contains(".acc")) {
-                Acc
-            } else if (context.packageName.contains(".tst") || context.packageName.contains(".test")) {
-                Tst
-            } else {
-                Prod
+            return with(context.packageName) {
+                when {
+                    contains(".test") || isRobolectricTest() -> InstrumentationTests
+                    contains(".tst") -> Tst
+                    contains(".acc") -> Acc
+                    else -> Prod
+                }
             }
+        }
+
+        private fun isRobolectricTest(): Boolean {
+            return "robolectric" == Build.FINGERPRINT
         }
     }
 }
