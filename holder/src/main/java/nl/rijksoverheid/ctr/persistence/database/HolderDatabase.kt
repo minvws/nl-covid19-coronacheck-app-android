@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.converters.HolderDatabaseConverter
 import nl.rijksoverheid.ctr.persistence.database.dao.*
 import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.shared.models.Environment
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import java.io.File
 
@@ -137,7 +138,7 @@ abstract class HolderDatabase : RoomDatabase() {
             context: Context,
             persistenceManager: PersistenceManager,
             androidUtil: AndroidUtil,
-            isProd: Boolean = true
+            environment: Environment
         ): HolderDatabase {
             if (persistenceManager.getDatabasePassPhrase() == null) {
                 persistenceManager.saveDatabasePassPhrase(androidUtil.generateRandomKey())
@@ -145,7 +146,7 @@ abstract class HolderDatabase : RoomDatabase() {
 
             // From db migration 6 to 7 there was a database encryption key migration issue.
             // This code checks if we can open the database, and if not delete the old database.
-            if (isProd && persistenceManager.getCheckCanOpenDatabase()) {
+            if (environment is Environment.Prod && persistenceManager.getCheckCanOpenDatabase()) {
                 try {
                     val file = File(context.filesDir.parentFile, "databases/holder-database")
                     try {
@@ -167,9 +168,8 @@ abstract class HolderDatabase : RoomDatabase() {
                 .databaseBuilder(context, HolderDatabase::class.java, "holder-database")
                 .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7(persistenceManager))
                 .apply {
-                    if (isProd) {
-                        val supportFactory =
-                            SupportFactory(SQLiteDatabase.getBytes(persistenceManager.getDatabasePassPhrase()?.toCharArray()))
+                    if (environment !is Environment.InstrumentationTests) {
+                        val supportFactory = SupportFactory(SQLiteDatabase.getBytes(persistenceManager.getDatabasePassPhrase()?.toCharArray()))
                         openHelperFactory(supportFactory)
                     }
                 }.build()
