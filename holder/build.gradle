@@ -42,7 +42,7 @@ android {
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://coronacheck.nl/app/auth2\""
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v8/\""
-        buildConfigField "String", "DIGI_D_BASE_URL", "\"https://max.coronacheck.nl\""
+        buildConfigField "String", "MAX_BASE_URL", "\"https://max.coronacheck.nl\""
         buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
         buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL",  "\"\""
         buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.coronacheck.nl\""
@@ -72,7 +72,7 @@ android {
         tst {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.test.coronacheck.nl/v8/\""
             buildConfigField "String", "CDN_API_URL", "\"https://holder-api.test.coronacheck.nl/v8/\""
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://max.test.coronacheck.nl\""
+            buildConfigField "String", "MAX_BASE_URL", "\"https://max.test.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.test.coronacheck.nl/app/auth2\""
             buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL",  "\"https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.test.coronacheck.nl/app/open?returnUri=scanner-test\""
@@ -91,7 +91,7 @@ android {
         acc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v8/\""
             buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v8/\""
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://max.acc.coronacheck.nl\""
+            buildConfigField "String", "MAX_BASE_URL", "\"https://max.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"https://web.acc.coronacheck.nl/app/auth2\""
             buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL",  "\"https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.acc.coronacheck.nl/app/open?returnUri=scanner-test\""
@@ -110,7 +110,7 @@ android {
         fdroidAcc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v8/\""
             buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v8/\""
-            buildConfigField "String", "DIGI_D_BASE_URL", "\"https://max.acc.coronacheck.nl\""
+            buildConfigField "String", "MAX_BASE_URL", "\"https://max.acc.coronacheck.nl\""
             buildConfigField "String", "DIGI_D_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "DIGI_D_REDIRECT_URI", "\"coronacheck-acc://auth/login\""
             buildConfigField "String", "PAP_BASE_URL", "\"https://acceptatie.qrcodezonderdigid.ggdghor.nl\""
