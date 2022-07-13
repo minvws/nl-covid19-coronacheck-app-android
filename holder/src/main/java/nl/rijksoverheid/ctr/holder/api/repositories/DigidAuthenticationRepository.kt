@@ -33,7 +33,7 @@ class DigidAuthenticationRepository: AuthenticationRepository {
     private suspend fun authorizationServiceConfiguration(loginType: LoginType): AuthorizationServiceConfiguration {
         val url = when (loginType) {
             is LoginType.Max -> BuildConfig.DIGI_D_BASE_URL
-            is LoginType.Pap -> BuildConfig.GGD_BASE_URL
+            is LoginType.Pap -> BuildConfig.PAP_BASE_URL
         }
         return suspendCoroutine { continuation ->
             AuthorizationServiceConfiguration.fetchFromIssuer(Uri.parse(url)) { serviceConfiguration, error ->
