@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.IncludeContentButtonBinding
 import nl.rijksoverheid.ctr.holder.databinding.ItemPaperProofExplanationBinding
@@ -45,6 +46,11 @@ fun IncludeContentButtonBinding.bind(
     root.setOnClickListener {
         onClick()
     }
+}
+
+fun IncludeContentButtonBinding.setEnabled(enabled: Boolean) {
+    root.isClickable = enabled
+    root.isEnabled = enabled
 }
 
 fun ItemPaperProofExplanationBinding.bind(

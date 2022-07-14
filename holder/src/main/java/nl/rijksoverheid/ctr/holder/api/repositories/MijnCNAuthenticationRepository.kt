@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.api.MijnCnApiClient
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import nl.rijksoverheid.ctr.holder.get_events.models.MijnCNTokenResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import kotlin.coroutines.resume
@@ -27,6 +28,7 @@ class MijnCNAuthenticationRepository(
 ) : AuthenticationRepository {
 
     override suspend fun authResponse(
+        loginType: LoginType,
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
     ) {
@@ -51,13 +53,14 @@ class MijnCNAuthenticationRepository(
     private fun authRequest(serviceConfiguration: AuthorizationServiceConfiguration): AuthorizationRequest {
         return AuthorizationRequest.Builder(
             serviceConfiguration,
-            BuildConfig.DIGI_D_CLIENT_ID,
+            BuildConfig.OPEN_ID_CLIENT_ID,
             ResponseTypeValues.CODE,
-            Uri.parse(BuildConfig.DIGI_D_REDIRECT_URI)
+            Uri.parse(BuildConfig.OPEN_ID_REDIRECT_URL)
         ).setScope("openid email profile").build()
     }
 
     override suspend fun jwt(
+        loginType: LoginType,
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
     ): String {
@@ -78,7 +81,7 @@ class MijnCNAuthenticationRepository(
                     url = tokenRequest.configuration.tokenEndpoint.toString(),
                     code = tokenRequest.authorizationCode ?: "",
                     grantType = tokenRequest.grantType,
-                    redirectUri = BuildConfig.DIGI_D_REDIRECT_URI,
+                    redirectUri = BuildConfig.OPEN_ID_REDIRECT_URL,
                     codeVerifier = tokenRequest.codeVerifier ?: "",
                     clientId = tokenRequest.clientId
                 )

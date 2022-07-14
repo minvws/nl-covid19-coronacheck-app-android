@@ -5,6 +5,7 @@
   <string name="holder_fetchRemoteEvents_title">Retrieve details</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_title">Only an international certificate was created</string>
   <string name="general_readmore">Read more</string>
+  <string name="holder_authentication_popup_digid_title">Login was cancelled</string>
   <string name="holder_dcc_alert_message">You can try to add a paper certificate again later.</string>
   <string name="holder_recovery_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="holder_test_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
@@ -214,7 +215,7 @@
   <string name="qr_code_type_vaccination_description">I received a (booster) vaccination</string>
   <string name="holder_addVaccination_message"><![CDATA[Did you receive a (booster) vaccination? Log in using DigiD to retrieve all your vaccination details.]]></string>
   <string name="get_vaccination_button">Log in with DigiD</string>
-  <string name="get_vaccination_no_digid_button">I don\'t have DigiD</string>
+  <string name="get_vaccination_no_digid_button">Don’t have DigiD?</string>
   <string name="your_retrieved_vaccinations_title">Your retrieved vaccinations</string>
   <string name="your_retrieved_vaccinations_description">Are the details correct? If the details about your vaccination are correct, you can create a certificate.</string>
   <string name="your_vaccination_result_toolbar_title">Retrieved vaccinations</string>
@@ -334,7 +335,7 @@
   <string name="not_yet_tested_description"><![CDATA[For a test certificate, you must take a test first at an affiliated test location. Does the test prove you don\'t have coronavirus? Then you can make a certificate.]]></string>
   <string name="not_yet_tested_button">Make an appointment</string>
   <string name="privacy_policy_3"><![CDATA[The QR code contains a minimum amount of <b>personal data</b>.]]></string>
-  <string name="choose_provider_no_digid">I don\'t have DigiD</string>
+  <string name="choose_provider_no_digid">Don’t have DigiD?</string>
   <string name="new_terms"><![CDATA[Read the full privacy statement <a href=\"https://coronacheck.nl/en/privacy-in-app\">here</a>.]]></string>
   <string name="too_busy_title">Sorry, it is really busy</string>
   <string name="too_busy_description">There are currently many visitors on the affiliated partner\'s website. We can\'t retrieve your details now. Please try again later.</string>
@@ -556,7 +557,7 @@
   <string name="holder_my_overview_3g_test_validity_card">Your test certificate is only valid for 3G access within the Netherlands</string>
   <string name="holder_my_overview_3g_test_validity_bottom_sheet_title">Test certificate only valid for 3G access</string>
   <string name="holder_my_overview_3g_test_validity_bottom_sheet_body"><![CDATA[A Dutch test certificate is only valid in places with 3G access. This means that you cannot use your test certificate to get access to places with 2G access.<br><br><b>What is the difference between 3G and 2G?</b><br>The Gs determine which people can be given access: only those who were vaccinated and/or have recovered (2G), or people who tested negative as well (3G).<br><br>•	3G access means you can enter places with a test, vaccination or recovery certificate.<br>•	2G access means you cannot enter places with a test certificate. You\'ll need a vaccination or recovery certificate.<br><br><a href=\"https://www.government.nl/2g-cc\">You can read more about 3G and 2G here</a>.]]></string>
-  <string name="no_digid_page_title">I don\'t have DigiD</string>
+  <string name="no_digid_page_title">Don’t have DigiD?</string>
   <string name="no_digid_page_description"><![CDATA[Wanneer je in Nederland woont kan je een DigiD aanvragen.<br\><br\>Woon je in Caribisch Nederland? Dan kan je inloggen met MijnCN.]]></string>
   <string name="no_digid_nodigid_button_title">Ik ben in Nederland ingeschreven</string>
   <string name="no_digid_nodigid_button_description">DigiD aanvragen</string>
@@ -791,29 +792,39 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccination date %s</string>
   <string name="holder_eventHints_title">Je bewijzen zijn gemaakt</string>
   <string name="holder_addVaccination_alsoCollectPositiveTestResults_message"><![CDATA[<b>Did you have coronavirus?</b><br/>In some cases, you need one less vaccination to be fully vaccinated. Retrieve your oldest positive test result as well to possibly have it count for your vaccination certificate.]]></string>
-  <string name="holder_noDigiD_title">I don\'t have a DigiD</string>
+  <string name="holder_noDigiD_title">I don’t have a DigiD</string>
   <string name="holder_noDigiD_message">Are you living in the Netherlands and do you have a Dutch proof of identity? Then you can request a DigiD to retrieve your test result or vaccination details.</string>
   <string name="holder_noDigiD_buttonTitle_requestDigiD">Request a DigiD</string>
   <string name="holder_noDigiD_buttonTitle_continueWithoutDigiD">Continue without DigiD</string>
   <string name="holder_noDigiD_buttonSubTitle_continueWithoutDigiD">If you can’t or don’t want to request a DigiD</string>
-  <string name="holder_noDigiD_url">https://www.digid.nl/en/apply-or-activate-digid</string>
+  <string name="holder_noDigiD_url">Don\'t have DigiD?</string>
   <string name="holder_checkForBSN_title">Do you have a Dutch citizen service number (BSN)?</string>
-  <string name="holder_checkForBSN_message">With your BSN, you can request your certificate at the CoronaCheck helpdesk. Don’t have a BSN? The you can get a certificate from your test or vaccination location.</string>
+  <string name="holder_checkForBSN_message">With your BSN, you can request your certificate at the CoronaCheck helpdesk. Don’t have a BSN? Then you can get a certificate from your test or vaccination location.</string>
   <string name="holder_checkForBSN_buttonTitle_doesHaveBSN">Yes, I have a BSN</string>
   <string name="holder_checkForBSN_buttonSubTitle_doesHaveBSN">Get your certificate from the CoronaCheck helpdesk</string>
   <string name="holder_checkForBSN_buttonTitle_doesNotHaveBSN">No, I don’t have a BSN</string>
-  <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN">Get your certificate from your test or vaccination location</string>
+  <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow">Get your certificate from the GGD</string>
   <string name="holder_contactCoronaCheckHelpdesk_title">Request your certificate via the helpdesk</string>
+  <string name="holder_contactCoronaCheckHelpdesk_message"><![CDATA[Request your certificate at the CoronaCheck helpdesk. You can call them every day between 8AM and 8PM at: <a href=\"tel:0800-1421\">0800-1421</a> (free).<br/><br/>Or if you’re calling from abroad: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>. In the menu you can choose “request a certificate”.<br/><br/>Please provide the following:<ul><li>your citizen service number (BSN)</li><li>your zipcode</li></ul><br/><br/>Your certificate with QR code will be sent by post. This can take up to 7 working days.]]></string>
+  <string name="holder_contactProviderHelpdesk_vaccinationFlow_title">Request your certificate from your healthcare provider</string>
+  <string name="holder_contactProviderHelpdesk_message"><![CDATA[Request your certificate at the location where you were %s.<br/><br/><ul><li>Was this at the GGD? Call the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a> to request your certificate. </li><li>Was this somewhere else? For example with your GP or another healthcare provider? Contact them directly.</li></ul><br/><br/>You can request your certificate on paper or as a PDF file.]]></string>
+  <string name="holder_contactProviderHelpdesk_message_ggdPortalEnabled">Please contact the care provider who vaccinated you. Here you can request your certificate on paper or as a PDF file.</string>
+  <string name="holder_chooseEventLocation_title">Where were you vaccinated?</string>
+  <string name="holder_chooseEventLocation_buttonTitle_GGD">GGD</string>
+  <string name="holder_chooseEventLocation_buttonSubTitle_GGD">Arrange your certificate via the GGD</string>
+  <string name="holder_chooseEventLocation_buttonTitle_other">Another healthcare provider</string>
+  <string name="holder_chooseEventLocation_buttonSubTitle_other">Arrange certificate via, for example, your GP or care facility</string>
+  <string name="general_unrecoverableError_sendCrashReport_message">A technical error has occurred. Please report the error. We will try to fix it as soon as possible.</string>
+  <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_vaccinationFlow">Get your certificate from your healthcare provider</string>
   <string name="holder_showqr_animation_winterctb_voiceover_label">Animation of people on a sledge and ice skates</string>
   <string name="holder_showqr_animation_summerdcc_voiceover_label">Animation of travelers on a moving walkway</string>
   <string name="holder_showqr_animation_winterdcc_voiceover_label">Animation of travelers on a moving walkway</string>
   <string name="holder_showqr_animation_summerctb_voiceover_label">Animation of people on a bicycle and skateboard</string>
   <string name="holder_showqr_animation_voiceover_hint">Reverses the movement</string>
-  <string name="holder_contactCoronaCheckHelpdesk_message"><![CDATA[Request your certificate at the CoronaCheck helpdesk. You can call them every day between 8AM and 8PM at: <a href=\"tel:0800-1421\">0800-1421</a> (free).<br/><br/>Or if you’re calling from abroad: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>. In the menu you can choose “request a certificate”.<br/><br/>Or request your certificate by emailing: <a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a><br/><br/>Please provide the following:<ul><li>your citizen service number (BSN)</li><li>your zipcode</li></ul><br/><br/>Your certificate with QR code will be sent by post. This can take up to 7 working days.]]></string>
-  <string name="holder_contactProviderHelpdesk_title">Request your certificate at your test %s</string>
-  <string name="holder_contactProviderHelpdesk_testLocation">test location</string>
-  <string name="holder_contactProviderHelpdesk_vaccinationLocation">vaccination location</string>
-  <string name="holder_contactProviderHelpdesk_tested">tested</string>
-  <string name="holder_contactProviderHelpdesk_vaccinated">vaccinated</string>
-  <string name="holder_contactProviderHelpdesk_message"><![CDATA[Request your certificate at the location where you were %s.<br/><br/><ul><li>Was this at the GGD? Call the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a> to request your certificate. </li><li>Was this somewhere else? For example with your GP or another healthcare provider? Contact them directly.</li></ul><br/><br/>You can request your certificate on paper or as a PDF file.]]></string>
+  <string name="holder_contactProviderHelpdesk_testFlow_title">Request your certificate via the GGD</string>
+  <string name="holder_contactProviderHelpdesk_testFlow_message"><![CDATA[Request your paper certificate by calling the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a>.<br /><br />Your certificate with QR code will be sent by post.]]></string>
+  <string name="holder_contactProviderHelpdesk_vaccinationFlow_message"><![CDATA[Where you can request your certificate depends on where you were vaccinated.<br /><br /><ul><li>Was this at the GGD? Call the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a> to request your certificate. </li><br /><li>Was this somewhere else? For example with your GP or another healthcare provider? Contact them directly.</li></ul><br />You can request your certificate on paper or as a PDF file.]]></string>
+  <string name="holder_authentication_popup_digid_message">Want to retrieve your details? Log in again with DigiD.</string>
+  <string name="holder_authentication_popup_portal_message">You\'re redirected to the CoronaCheck app. Want to retrieve your details? That\'s only possible via the GGD.</string>
+  <string name="holder_authentication_popup_portal_title">Retrieving was cancelled</string>
 </resources>

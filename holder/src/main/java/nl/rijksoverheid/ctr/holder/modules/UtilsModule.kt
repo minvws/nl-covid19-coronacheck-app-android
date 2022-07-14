@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.holder.dashboard.items.*
 import nl.rijksoverheid.ctr.holder.dashboard.util.*
+import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
+import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtilImpl
 import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
@@ -67,9 +69,10 @@ fun utilsModule(versionCode: Int) = module {
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
     factory<MenuUtil> { MenuUtilImpl(get(), get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
+    factory<LoginTypeUtil> { LoginTypeUtilImpl() }
     factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }
     factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
-    factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get()) }
+    factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get()) }
 }

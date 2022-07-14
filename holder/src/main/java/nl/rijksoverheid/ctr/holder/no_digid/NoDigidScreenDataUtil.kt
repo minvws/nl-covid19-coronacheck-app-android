@@ -6,8 +6,8 @@ import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.models.HolderFlow
-import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,11 +18,12 @@ import nl.rijksoverheid.ctr.shared.models.Flow
  */
 interface NoDigidScreenDataUtil {
     fun requestDigidButton(): NoDigidNavigationButtonData
-    fun continueWithoutDigidButton(flow: Flow): NoDigidNavigationButtonData
+    fun continueWithoutDigidButton(originType: RemoteOriginType): NoDigidNavigationButtonData
 }
 
 class NoDigidScreenDataUtilImpl(
     private val context: Context,
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase,
 ) : NoDigidScreenDataUtil {
 
     private fun getString(@StringRes stringId: Int) = context.getString(stringId)
@@ -43,28 +44,46 @@ class NoDigidScreenDataUtilImpl(
         )
     )
 
-    private fun doesNotHaveBSNButton(flow: Flow) = NoDigidNavigationButtonData.Info(
-        title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN,
-        subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN),
-        infoFragmentData = InfoFragmentData.TitleDescriptionWithButton(
-            title = getStringArgs(
-                R.string.holder_contactProviderHelpdesk_title, arrayOf(
-                    getString(
-                        if (flow == HolderFlow.Vaccination) {
-                            R.string.holder_contactProviderHelpdesk_vaccinationLocation
+    private fun doesNotHaveBSNButton(originType: RemoteOriginType): NoDigidNavigationButtonData {
+        val title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN
+        val subtitle = getString(if (originType == RemoteOriginType.Vaccination) {
+            R.string.holder_contactProviderHelpdesk_vaccinationFlow_title
+        } else {
+            R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow
+        })
+
+        return if (holderFeatureFlagUseCase.getPapEnabled()) {
+            NoDigidNavigationButtonData.Ggd(
+                title = title,
+                subtitle = subtitle
+            )
+        } else {
+            NoDigidNavigationButtonData.Info(
+                title = title,
+                subtitle = subtitle,
+                infoFragmentData = InfoFragmentData.TitleDescriptionWithButton(
+                    title = getString(
+                        if (originType == RemoteOriginType.Vaccination) {
+                            R.string.holder_contactProviderHelpdesk_vaccinationFlow_title
                         } else {
-                            R.string.holder_contactProviderHelpdesk_testLocation
+                            R.string.holder_contactProviderHelpdesk_testFlow_title
                         }
+                    ),
+                    descriptionData = DescriptionData(
+                        if (originType == RemoteOriginType.Vaccination) {
+                            R.string.holder_contactProviderHelpdesk_vaccinationFlow_message
+                        } else {
+                            R.string.holder_contactProviderHelpdesk_testFlow_message
+                        }
+                    ),
+                    primaryButtonData = ButtonData.NavigationButton(
+                        text = getString(R.string.general_toMyOverview),
+                        navigationActionId = R.id.action_my_overview
                     )
                 )
-            ),
-            descriptionData = DescriptionData(R.string.holder_contactProviderHelpdesk_message),
-            primaryButtonData = ButtonData.NavigationButton(
-                text = getString(R.string.general_toMyOverview),
-                navigationActionId = R.id.action_my_overview
             )
-        )
-    )
+        }
+    }
 
     override fun requestDigidButton() = NoDigidNavigationButtonData.Link(
         title = R.string.holder_noDigiD_buttonTitle_requestDigiD,
@@ -72,14 +91,15 @@ class NoDigidScreenDataUtilImpl(
         externalUrl = getString(R.string.holder_noDigiD_url),
     )
 
-    override fun continueWithoutDigidButton(flow: Flow) = NoDigidNavigationButtonData.NoDigid(
+    override fun continueWithoutDigidButton(originType: RemoteOriginType) = NoDigidNavigationButtonData.NoDigid(
         title = R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD,
         subtitle = getString(R.string.holder_noDigiD_buttonSubTitle_continueWithoutDigiD),
         noDigidFragmentData = NoDigidFragmentData(
             title = getString(R.string.holder_checkForBSN_title),
             description = getString(R.string.holder_checkForBSN_message),
             firstNavigationButtonData = doesHaveBSNButton,
-            secondNavigationButtonData = doesNotHaveBSNButton(flow)
+            secondNavigationButtonData = doesNotHaveBSNButton(originType),
+            originType = originType
         )
     )
 }

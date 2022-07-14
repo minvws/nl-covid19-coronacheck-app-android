@@ -49,7 +49,7 @@ class GetDigidEventsUseCaseImplTest {
 
     private suspend fun getEvents(): EventsResult {
         val getEventsUseCase = GetDigidEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
-        return getEventsUseCase.getEvents(jwt, listOf(originType))
+        return getEventsUseCase.getEvents(jwt, listOf(originType), LoginType.Max)
     }
 
     @Test
@@ -246,7 +246,7 @@ class GetDigidEventsUseCaseImplTest {
             listOf(eventProvider1, eventProvider2))
 
         val getEventsUseCase = GetDigidEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
-        val result = getEventsUseCase.getEvents(jwt, listOf(RemoteOriginType.Vaccination, RemoteOriginType.Recovery))
+        val result = getEventsUseCase.getEvents(jwt, listOf(RemoteOriginType.Vaccination, RemoteOriginType.Recovery), LoginType.Max)
 
         val protocols1 = listOf(signedModel1)
             .associate { it.model to it.rawResponse }
@@ -307,7 +307,7 @@ class GetDigidEventsUseCaseImplTest {
             listOf(eventProvider1, eventProvider2))
 
         val getEventsUseCase = GetDigidEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
-        val result = getEventsUseCase.getEvents(jwt, listOf(RemoteOriginType.Vaccination, RemoteOriginType.Recovery))
+        val result = getEventsUseCase.getEvents(jwt, listOf(RemoteOriginType.Vaccination, RemoteOriginType.Recovery), LoginType.Max)
 
         val protocols2 = listOf(signedModel2)
             .associate { it.model to it.rawResponse }

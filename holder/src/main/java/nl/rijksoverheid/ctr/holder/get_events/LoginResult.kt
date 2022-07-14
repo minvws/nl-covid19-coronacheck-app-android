@@ -13,6 +13,5 @@ sealed class LoginResult {
     data class Success(val jwt: String): LoginResult()
     data class Failed(val errorResult: ErrorResult): LoginResult()
     object Cancelled: LoginResult()
-    object TokenUnavailable: LoginResult()
     object NoBrowserFound: LoginResult()
 }

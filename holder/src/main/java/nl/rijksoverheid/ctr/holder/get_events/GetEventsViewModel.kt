@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetDigidEventsUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetMijnCnEventsUsecase
@@ -30,8 +31,9 @@ abstract class GetEventsViewModel : ViewModel() {
     val eventsResult: LiveData<Event<EventsResult>> = MutableLiveData()
 
     abstract fun getDigidEvents(
+        loginType: LoginType,
         jwt: String,
-        originType: RemoteOriginType,
+        originTypes: List<RemoteOriginType>,
         getPositiveTestWithVaccination: Boolean = false
     )
 
@@ -48,15 +50,14 @@ class GetEventsViewModelImpl(
 ) : GetEventsViewModel() {
 
     override fun getDigidEvents(
+        loginType: LoginType,
         jwt: String,
-        originType: RemoteOriginType,
+        originTypes: List<RemoteOriginType>,
         getPositiveTestWithVaccination: Boolean
     ) {
-        val originTypes =
-            listOf(originType) +
-                    if (getPositiveTestWithVaccination) listOf(RemoteOriginType.Recovery) else emptyList()
         getEvents {
             getDigidEventsUseCase.getEvents(
+                loginType = loginType,
                 jwt = jwt,
                 originTypes = originTypes,
             )
