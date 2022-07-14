@@ -567,7 +567,6 @@
   <string name="mijncn_error_missing_data_description"><![CDATA[Op dit moment kunnen we geen bewijs maken omdat er gegevens ontbreken.<br/><br/>Neem contact op met je openbaar lichaam en geef de foutcode door. Zij kunnen dan de gegevens controleren.<br/><br/><b>Foutcode:</b><br/>%1s<br/><br/><a href=“#”>Openbaar lichaam Sint Bonaire</a><br/><br/><a href=“#”>Openbaar lichaam Sint Eustatius</a><br/><br/><a href=“#”>Openbaar lichaam Sint Saba</a><br/><br/>]]></string>
   <string name="holder_qr_explanation_description_domestic_1G"><![CDATA[In jouw Nederlandse QR-code staat dat je een geldig bewijs hebt voor 1G-toegang en er zijn minimale gegevens zichtbaar.<br/><br/>De controleur ziet alleen de eerste letter van je voornaam en van je achternaam, je geboortedag en geboortemaand. Dit is om zeker te zijn dat de QR-code bij jou hoort.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>* Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (_).]]></string>
   <string name="your_negative_test_results_toolbar">Opgehaalde testuitslag</string>
-  <string name="dialog_no_browser_message_digid">Er is op deze telefoon geen internetbrowser gevonden waarmee DigiD geopend kan worden. Download een browser om de link te kunnen openen.</string>
   <string name="holder_negativetest_ggd_title">Testuitslag ophalen</string>
   <string name="holder_negativetest_ggd_message">Is je uitslag bekend? Log in met DigiD om je testuitslag bij de GGD op te halen.</string>
   <string name="recommended_update_card_description">Je kunt de app al naar een nieuwere versie updaten</string>
@@ -831,4 +830,6 @@ Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
   <string name="holder_authentication_popup_digid_message_testFlow">Wil je jouw testuitslag ophalen? Log dan opnieuw in met DigiD.</string>
   <string name="holder_authentication_popup_portal_message_vaccinationFlow">Het is niet gelukt om je vaccinatiegegevens op te halen. Probeer opnieuw je bewijs te regelen via de GGD.</string>
   <string name="holder_authentication_popup_portal_message_testFlow">Het is niet gelukt om je testuitslag op te halen. Probeer opnieuw je bewijs te krijgen via de GGD.</string>
+  <string name="holder_authentication_popup_digid">DigiD</string>
+  <string name="holder_authentication_popup_portal">deze pagina</string>
 </resources>

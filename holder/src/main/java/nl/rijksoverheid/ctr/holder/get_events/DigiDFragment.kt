@@ -201,8 +201,11 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                 LoginResult.NoBrowserFound -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
-                         title = R.string.dialog_no_browser_title,
-                        message = getString(R.string.dialog_no_browser_message, ""),
+                        title = R.string.dialog_no_browser_title,
+                        message = getString(
+                            R.string.dialog_no_browser_message,
+                            getString(loginTypeUtil.getNoBrowserDialogDescription(getLoginType()))
+                        ),
                         positiveButtonText = R.string.ok,
                         positiveButtonCallback = {},
                     )

@@ -17,6 +17,8 @@ interface LoginTypeUtil {
     fun getCanceledDialogTitle(loginType: LoginType): Int
     @StringRes
     fun getCanceledDialogDescription(loginType: LoginType, originType: RemoteOriginType): Int
+    @StringRes
+    fun getNoBrowserDialogDescription(loginType: LoginType): Int
 }
 
 class LoginTypeUtilImpl: LoginTypeUtil {
@@ -39,6 +41,13 @@ class LoginTypeUtilImpl: LoginTypeUtil {
             } else {
                 R.string.holder_authentication_popup_portal_message_testFlow
             }
+        }
+    }
+
+    override fun getNoBrowserDialogDescription(loginType: LoginType): Int {
+        return when (loginType) {
+            LoginType.Max -> R.string.holder_authentication_popup_digid
+            LoginType.Pap -> R.string.holder_authentication_popup_portal
         }
     }
 }

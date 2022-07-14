@@ -566,7 +566,6 @@
   <string name="mijncn_error_missing_data_description"><![CDATA[Op dit moment kunnen we geen bewijs maken omdat er gegevens ontbreken.<br/><br/>Neem contact op met je openbaar lichaam en geef de foutcode door. Zij kunnen dan de gegevens controleren.<br/><br/><b>Foutcode:</b><br/>%1s<br/><br/><a href=“#”>Openbaar lichaam Sint Bonaire</a><br/><br/><a href=“#”>Openbaar lichaam Sint Eustatius</a><br/><br/><a href=“#”>Openbaar lichaam Sint Saba</a><br/><br/>]]></string>
   <string name="holder_qr_explanation_description_domestic_1G"><![CDATA[Your Dutch QR code says you have a valid certificate for 1G access, and contains minimal data.<br/><br/>The scanner sees only the first letter of your first and last name, and your date and month of birth. This is to make sure the QR code belongs to you.<br/><br/>Your information*: <b>%1$s</b><br/><br/>* Information can sometimes disappear to protect your privacy. In that case, you will see a dash (_).]]></string>
   <string name="your_negative_test_results_toolbar">Retrieved test result</string>
-  <string name="dialog_no_browser_message_digid">No internet browser was found on this phone to open DigiD. Download a browser to open the link.</string>
   <string name="holder_negativetest_ggd_title">Retrieve test result</string>
   <string name="holder_negativetest_ggd_message">Is your result in? Log in with DigiD to retrieve your test result from the GGD.</string>
   <string name="recommended_update_card_description">You can update your app to a newer version now</string>
@@ -824,9 +823,11 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_contactProviderHelpdesk_testFlow_title">Request your certificate via the GGD</string>
   <string name="holder_contactProviderHelpdesk_testFlow_message"><![CDATA[Request your paper certificate by calling the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a>.<br /><br />Your certificate with QR code will be sent by post.]]></string>
   <string name="holder_contactProviderHelpdesk_vaccinationFlow_message"><![CDATA[Where you can request your certificate depends on where you were vaccinated.<br /><br /><ul><li>Was this at the GGD? Call the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a> to request your certificate. </li><br /><li>Was this somewhere else? For example with your GP or another healthcare provider? Contact them directly.</li></ul><br />You can request your certificate on paper or as a PDF file.]]></string>
-  <string name="holder_authentication_popup_portal_title">Retrieving was cancelled</string>
+  <string name="holder_authentication_popup_portal_title">Retrieval cancelled</string>
   <string name="holder_authentication_popup_digid_message_vaccinationFlow">Want to retrieve your vaccination details? Log in again with DigiD.</string>
   <string name="holder_authentication_popup_digid_message_testFlow">Want to retrieve your test result? Log in again with DigiD.</string>
-  <string name="holder_authentication_popup_portal_message_vaccinationFlow">You\'re redirected to the CoronaCheck app. Want to retrieve your details? That\'s only possible via the GGD.</string>
-  <string name="holder_authentication_popup_portal_message_testFlow">You\'re redirected to the CoronaCheck app. Want to retrieve your details? That\'s only possible via the GGD.</string>
+  <string name="holder_authentication_popup_portal_message_vaccinationFlow">Couldn’t retrieve your vaccination details. Please try again to arrange your certificate via the GGD.</string>
+  <string name="holder_authentication_popup_portal_message_testFlow">Couldn’t retrieve your test result. Please try again to receive your certificate via the GGD.</string>
+  <string name="holder_authentication_popup_digid">DigiD</string>
+  <string name="holder_authentication_popup_portal">this page</string>
 </resources>
