@@ -567,7 +567,6 @@
   <string name="mijncn_error_missing_data_description"><![CDATA[Op dit moment kunnen we geen bewijs maken omdat er gegevens ontbreken.<br/><br/>Neem contact op met je openbaar lichaam en geef de foutcode door. Zij kunnen dan de gegevens controleren.<br/><br/><b>Foutcode:</b><br/>%1s<br/><br/><a href=“#”>Openbaar lichaam Sint Bonaire</a><br/><br/><a href=“#”>Openbaar lichaam Sint Eustatius</a><br/><br/><a href=“#”>Openbaar lichaam Sint Saba</a><br/><br/>]]></string>
   <string name="holder_qr_explanation_description_domestic_1G"><![CDATA[In jouw Nederlandse QR-code staat dat je een geldig bewijs hebt voor 1G-toegang en er zijn minimale gegevens zichtbaar.<br/><br/>De controleur ziet alleen de eerste letter van je voornaam en van je achternaam, je geboortedag en geboortemaand. Dit is om zeker te zijn dat de QR-code bij jou hoort.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>* Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (_).]]></string>
   <string name="your_negative_test_results_toolbar">Opgehaalde testuitslag</string>
-  <string name="dialog_no_browser_message_digid">Er is op deze telefoon geen internetbrowser gevonden waarmee DigiD geopend kan worden. Download een browser om de link te kunnen openen.</string>
   <string name="holder_negativetest_ggd_title">Testuitslag ophalen</string>
   <string name="holder_negativetest_ggd_message">Is je uitslag bekend? Log in met DigiD om je testuitslag bij de GGD op te halen.</string>
   <string name="recommended_update_card_description">Je kunt de app al naar een nieuwere versie updaten</string>
@@ -798,7 +797,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_noDigiD_buttonTitle_requestDigiD">DigiD aanvragen</string>
   <string name="holder_noDigiD_buttonTitle_continueWithoutDigiD">Doorgaan zonder DigiD</string>
   <string name="holder_noDigiD_buttonSubTitle_continueWithoutDigiD">Als je geen DigiD kunt of wilt aanvragen</string>
-  <string name="holder_noDigiD_url">Heb je geen DigiD?</string>
+  <string name="holder_noDigiD_url">https://www.digid.nl/digid-aanvragen-activeren#hoe-vraag-ik-digid-aan</string>
   <string name="holder_checkForBSN_title">Heb je wel een Nederlands burgerservicenummer (BSN)?</string>
   <string name="holder_checkForBSN_message">Met je BSN kun je jouw bewijs aanvragen bij de CoronaCheck helpdesk. Heb je geen BSN? Dan kun je een bewijs krijgen via je test- of vaccinatielocatie.</string>
   <string name="holder_checkForBSN_buttonTitle_doesHaveBSN">Ja, ik heb een BSN</string>
@@ -826,7 +825,11 @@ Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
   <string name="holder_contactProviderHelpdesk_testFlow_title">Vraag je coronabewijs aan via de GGD</string>
   <string name="holder_contactProviderHelpdesk_testFlow_message"><![CDATA[Vraag een papieren coronabewijs aan door te bellen met de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a>.<br /><br />Je bewijs met QR-code wordt per post opgestuurd.]]></string>
   <string name="holder_contactProviderHelpdesk_vaccinationFlow_message"><![CDATA[Waar je jouw coronabewijs kunt aanvragen hangt af van waar je gevaccineerd bent. <br /><br /><ul><li>Was dit bij de GGD? Bel de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a> om je bewijs aan te vragen. </li><br /><li>Was dit ergens anders? Bijvoorbeeld bij je huisarts of een andere zorgverlener? Neem direct contact op met hen.</li></ul><br />Je kunt je coronabewijs aanvragen op papier of als pdf-bestand.]]></string>
-  <string name="holder_authentication_popup_digid_message">Wil je jouw gegevens ophalen? Log dan opnieuw in met DigiD.</string>
-  <string name="holder_authentication_popup_portal_message">Je gaat weer terug naar de CoronaCheck app. Wil je jouw gegevens ophalen? Dat kan alleen via de GGD.</string>
   <string name="holder_authentication_popup_portal_title">Ophalen geannuleerd</string>
+  <string name="holder_authentication_popup_digid_message_vaccinationFlow">Wil je jouw vaccinatiegegevens ophalen? Log dan opnieuw in met DigiD.</string>
+  <string name="holder_authentication_popup_digid_message_testFlow">Wil je jouw testuitslag ophalen? Log dan opnieuw in met DigiD.</string>
+  <string name="holder_authentication_popup_portal_message_vaccinationFlow">Het is niet gelukt om je vaccinatiegegevens op te halen. Probeer opnieuw je bewijs te regelen via de GGD.</string>
+  <string name="holder_authentication_popup_portal_message_testFlow">Het is niet gelukt om je testuitslag op te halen. Probeer opnieuw je bewijs te krijgen via de GGD.</string>
+  <string name="holder_authentication_popup_digid">DigiD</string>
+  <string name="holder_authentication_popup_portal">deze pagina</string>
 </resources>
