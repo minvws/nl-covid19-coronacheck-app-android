@@ -193,7 +193,7 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                     dialogUtil.presentDialog(
                         context = requireContext(),
                         title = loginTypeUtil.getCanceledDialogTitle(getLoginType()),
-                        message = getString(loginTypeUtil.getCanceledDialogDescription(getLoginType())),
+                        message = getString(loginTypeUtil.getCanceledDialogDescription(getLoginType(), getOriginTypes().first())),
                         positiveButtonText = R.string.dialog_close,
                         positiveButtonCallback = {}
                     )
@@ -201,8 +201,8 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                 LoginResult.NoBrowserFound -> {
                     dialogUtil.presentDialog(
                         context = requireContext(),
-                        title = R.string.dialog_no_browser_title,
-                        message = getString(R.string.dialog_no_browser_message_digid),
+                         title = R.string.dialog_no_browser_title,
+                        message = getString(R.string.dialog_no_browser_message, ""),
                         positiveButtonText = R.string.ok,
                         positiveButtonCallback = {},
                     )

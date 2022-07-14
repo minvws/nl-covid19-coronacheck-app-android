@@ -797,7 +797,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_noDigiD_buttonTitle_requestDigiD">Request a DigiD</string>
   <string name="holder_noDigiD_buttonTitle_continueWithoutDigiD">Continue without DigiD</string>
   <string name="holder_noDigiD_buttonSubTitle_continueWithoutDigiD">If you can’t or don’t want to request a DigiD</string>
-  <string name="holder_noDigiD_url">Don\'t have DigiD?</string>
+  <string name="holder_noDigiD_url">https://www.digid.nl/en/apply-or-activate-digid</string>
   <string name="holder_checkForBSN_title">Do you have a Dutch citizen service number (BSN)?</string>
   <string name="holder_checkForBSN_message">With your BSN, you can request your certificate at the CoronaCheck helpdesk. Don’t have a BSN? Then you can get a certificate from your test or vaccination location.</string>
   <string name="holder_checkForBSN_buttonTitle_doesHaveBSN">Yes, I have a BSN</string>
@@ -824,7 +824,9 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_contactProviderHelpdesk_testFlow_title">Request your certificate via the GGD</string>
   <string name="holder_contactProviderHelpdesk_testFlow_message"><![CDATA[Request your paper certificate by calling the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a>.<br /><br />Your certificate with QR code will be sent by post.]]></string>
   <string name="holder_contactProviderHelpdesk_vaccinationFlow_message"><![CDATA[Where you can request your certificate depends on where you were vaccinated.<br /><br /><ul><li>Was this at the GGD? Call the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a> to request your certificate. </li><br /><li>Was this somewhere else? For example with your GP or another healthcare provider? Contact them directly.</li></ul><br />You can request your certificate on paper or as a PDF file.]]></string>
-  <string name="holder_authentication_popup_digid_message">Want to retrieve your details? Log in again with DigiD.</string>
-  <string name="holder_authentication_popup_portal_message">You\'re redirected to the CoronaCheck app. Want to retrieve your details? That\'s only possible via the GGD.</string>
   <string name="holder_authentication_popup_portal_title">Retrieving was cancelled</string>
+  <string name="holder_authentication_popup_digid_message_vaccinationFlow">Want to retrieve your vaccination details? Log in again with DigiD.</string>
+  <string name="holder_authentication_popup_digid_message_testFlow">Want to retrieve your test result? Log in again with DigiD.</string>
+  <string name="holder_authentication_popup_portal_message_vaccinationFlow">You\'re redirected to the CoronaCheck app. Want to retrieve your details? That\'s only possible via the GGD.</string>
+  <string name="holder_authentication_popup_portal_message_testFlow">You\'re redirected to the CoronaCheck app. Want to retrieve your details? That\'s only possible via the GGD.</string>
 </resources>

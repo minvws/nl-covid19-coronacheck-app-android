@@ -798,7 +798,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_noDigiD_buttonTitle_requestDigiD">DigiD aanvragen</string>
   <string name="holder_noDigiD_buttonTitle_continueWithoutDigiD">Doorgaan zonder DigiD</string>
   <string name="holder_noDigiD_buttonSubTitle_continueWithoutDigiD">Als je geen DigiD kunt of wilt aanvragen</string>
-  <string name="holder_noDigiD_url">Heb je geen DigiD?</string>
+  <string name="holder_noDigiD_url">https://www.digid.nl/digid-aanvragen-activeren#hoe-vraag-ik-digid-aan</string>
   <string name="holder_checkForBSN_title">Heb je wel een Nederlands burgerservicenummer (BSN)?</string>
   <string name="holder_checkForBSN_message">Met je BSN kun je jouw bewijs aanvragen bij de CoronaCheck helpdesk. Heb je geen BSN? Dan kun je een bewijs krijgen via je test- of vaccinatielocatie.</string>
   <string name="holder_checkForBSN_buttonTitle_doesHaveBSN">Ja, ik heb een BSN</string>
@@ -826,7 +826,9 @@ Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
   <string name="holder_contactProviderHelpdesk_testFlow_title">Vraag je coronabewijs aan via de GGD</string>
   <string name="holder_contactProviderHelpdesk_testFlow_message"><![CDATA[Vraag een papieren coronabewijs aan door te bellen met de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a>.<br /><br />Je bewijs met QR-code wordt per post opgestuurd.]]></string>
   <string name="holder_contactProviderHelpdesk_vaccinationFlow_message"><![CDATA[Waar je jouw coronabewijs kunt aanvragen hangt af van waar je gevaccineerd bent. <br /><br /><ul><li>Was dit bij de GGD? Bel de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a> om je bewijs aan te vragen. </li><br /><li>Was dit ergens anders? Bijvoorbeeld bij je huisarts of een andere zorgverlener? Neem direct contact op met hen.</li></ul><br />Je kunt je coronabewijs aanvragen op papier of als pdf-bestand.]]></string>
-  <string name="holder_authentication_popup_digid_message">Wil je jouw gegevens ophalen? Log dan opnieuw in met DigiD.</string>
-  <string name="holder_authentication_popup_portal_message">Je gaat weer terug naar de CoronaCheck app. Wil je jouw gegevens ophalen? Dat kan alleen via de GGD.</string>
   <string name="holder_authentication_popup_portal_title">Ophalen geannuleerd</string>
+  <string name="holder_authentication_popup_digid_message_vaccinationFlow">Wil je jouw vaccinatiegegevens ophalen? Log dan opnieuw in met DigiD.</string>
+  <string name="holder_authentication_popup_digid_message_testFlow">Wil je jouw testuitslag ophalen? Log dan opnieuw in met DigiD.</string>
+  <string name="holder_authentication_popup_portal_message_vaccinationFlow">Het is niet gelukt om je vaccinatiegegevens op te halen. Probeer opnieuw je bewijs te regelen via de GGD.</string>
+  <string name="holder_authentication_popup_portal_message_testFlow">Het is niet gelukt om je testuitslag op te halen. Probeer opnieuw je bewijs te krijgen via de GGD.</string>
 </resources>
