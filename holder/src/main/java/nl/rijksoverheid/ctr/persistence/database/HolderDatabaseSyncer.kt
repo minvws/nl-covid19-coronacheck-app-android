@@ -81,7 +81,8 @@ class HolderDatabaseSyncerImpl(
                     // Sync with remote
                     val remoteGreenCardsResult = getRemoteGreenCardsUseCase.get(
                         events = events,
-                        secretKey = secretKey
+                        secretKey = secretKey,
+                        flow = flow
                     )
 
                     when (remoteGreenCardsResult) {
