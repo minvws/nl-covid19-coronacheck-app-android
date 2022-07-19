@@ -819,7 +819,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_showqr_animation_summerdcc_voiceover_label">Animation of travelers on a moving walkway</string>
   <string name="holder_showqr_animation_winterdcc_voiceover_label">Animation of travelers on a moving walkway</string>
   <string name="holder_showqr_animation_summerctb_voiceover_label">Animation of people on a bicycle and skateboard</string>
-  <string name="holder_showqr_animation_voiceover_hint">Reverses the movement</string>
   <string name="holder_contactProviderHelpdesk_testFlow_title">Request your certificate via the GGD</string>
   <string name="holder_contactProviderHelpdesk_testFlow_message"><![CDATA[Request your paper certificate by calling the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a>.<br /><br />Your certificate with QR code will be sent by post.]]></string>
   <string name="holder_contactProviderHelpdesk_vaccinationFlow_message"><![CDATA[Where you can request your certificate depends on where you were vaccinated.<br /><br /><ul><li>Was this at the GGD? Call the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a> to request your certificate. </li><br /><li>Was this somewhere else? For example with your GP or another healthcare provider? Contact them directly.</li></ul><br />You can request your certificate on paper or as a PDF file.]]></string>
@@ -830,4 +829,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_authentication_popup_portal_message_testFlow">Couldn’t retrieve your test result. Please try again to receive your certificate via the GGD.</string>
   <string name="holder_authentication_popup_digid">DigiD</string>
   <string name="holder_authentication_popup_portal">this page</string>
+  <string name="holder_showqr_animation_voiceover_hint">Reverse the movement</string>
 </resources>

@@ -821,7 +821,6 @@ Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
   <string name="holder_showqr_animation_summerdcc_voiceover_label">Animatie van reizigers op een loopband</string>
   <string name="holder_showqr_animation_winterdcc_voiceover_label">Animatie van reizigers op een loopband</string>
   <string name="holder_showqr_animation_summerctb_voiceover_label">Animatie van mensen op een fiets en skateboard</string>
-  <string name="holder_showqr_animation_voiceover_hint">Verandert de beweging van richting</string>
   <string name="holder_contactProviderHelpdesk_testFlow_title">Vraag je coronabewijs aan via de GGD</string>
   <string name="holder_contactProviderHelpdesk_testFlow_message"><![CDATA[Vraag een papieren coronabewijs aan door te bellen met de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a>.<br /><br />Je bewijs met QR-code wordt per post opgestuurd.]]></string>
   <string name="holder_contactProviderHelpdesk_vaccinationFlow_message"><![CDATA[Waar je jouw coronabewijs kunt aanvragen hangt af van waar je gevaccineerd bent. <br /><br /><ul><li>Was dit bij de GGD? Bel de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a> om je bewijs aan te vragen. </li><br /><li>Was dit ergens anders? Bijvoorbeeld bij je huisarts of een andere zorgverlener? Neem direct contact op met hen.</li></ul><br />Je kunt je coronabewijs aanvragen op papier of als pdf-bestand.]]></string>
@@ -832,4 +831,5 @@ Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
   <string name="holder_authentication_popup_portal_message_testFlow">Het is niet gelukt om je testuitslag op te halen. Probeer opnieuw je bewijs te krijgen via de GGD.</string>
   <string name="holder_authentication_popup_digid">DigiD</string>
   <string name="holder_authentication_popup_portal">deze pagina</string>
+  <string name="holder_showqr_animation_voiceover_hint">De beweging van richting laten veranderen.</string>
 </resources>
