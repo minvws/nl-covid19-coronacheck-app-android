@@ -64,14 +64,23 @@ data class RemoteConfigProviders(
         val cms: List<ByteArray>,
         val tls: List<ByteArray>,
         val usage: List<String>,
+        val auth: List<String>
     ) {
-        fun supports(originType: RemoteOriginType): Boolean {
+        fun supports(originType: RemoteOriginType, loginType: LoginType): Boolean {
             return when (originType) {
-                RemoteOriginType.Recovery -> usage.contains("r")
-                RemoteOriginType.Test -> usage.contains("nt") || usage.contains("pt")
-                RemoteOriginType.Vaccination -> usage.contains("v")
+                RemoteOriginType.Recovery -> usage.contains("r") && auth.contains(getAuthForLoginType(loginType))
+                RemoteOriginType.Test -> (usage.contains("nt") || usage.contains("pt")) && auth.contains(getAuthForLoginType(loginType))
+                RemoteOriginType.Vaccination -> usage.contains("v") && auth.contains(getAuthForLoginType(loginType))
             }
         }
+
+        private fun getAuthForLoginType(loginType: LoginType): String {
+            return when (loginType) {
+                is LoginType.Pap -> "pap"
+                is LoginType.Max -> "max"
+            }
+        }
+
         companion object {
             const val PROVIDER_IDENTIFIER_DCC = "dcc"
             const val PROVIDER_IDENTIFIER_DCC_SUFFIX = "dcc_[unique]"

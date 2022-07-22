@@ -91,7 +91,7 @@ class GetDigidEventsUseCaseImpl(
             mutableMapOf<RemoteOriginType, List<EventProviderWithTokenResult>>()
         originTypes.forEach { originType ->
             val targetProviderIds = eventProviders.filter {
-                it.supports(originType)
+                it.supports(originType, loginType)
             }.map { it.providerIdentifier.lowercase() }
 
             if (targetProviderIds.isEmpty()) {
@@ -114,7 +114,7 @@ class GetDigidEventsUseCaseImpl(
                 targetProviderIds = targetProviderIds
             )
         }
-
+        
         val eventProvidersWithTokensSuccessResults =
             eventProviderWithTokensResults.mapValues {
                 it.value.filterIsInstance<EventProviderWithTokenResult.Success>()
