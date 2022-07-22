@@ -76,7 +76,7 @@ class WorkManagerIntegrationTests : AutoCloseKoinTest() {
                                 flow = HolderFlow.SyncGreenCards,
                                 syncWithRemote = true,
                             )
-                        } returns DatabaseSyncerResult.Success(false, mockk())
+                        } returns DatabaseSyncerResult.Success(listOf())
                     }
                 }
 

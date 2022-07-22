@@ -89,7 +89,7 @@ class CredentialRefreshWorkerTest: AutoCloseKoinTest() {
 
     @Test
     fun `when sync succeeds, credentials refresh worker should succeed`() = runBlocking {
-        val worker = succesfullConfigFetchWithSync(DatabaseSyncerResult.Success(false, mockk()))
+        val worker = succesfullConfigFetchWithSync(DatabaseSyncerResult.Success(listOf()))
 
         assertTrue(worker.doWork() is Success)
     }

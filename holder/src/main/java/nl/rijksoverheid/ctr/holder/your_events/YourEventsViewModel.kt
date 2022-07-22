@@ -16,8 +16,6 @@ import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCase
@@ -56,10 +54,7 @@ data class RemoteEventInformation(
 
 class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
-    private val holderDatabaseSyncer: HolderDatabaseSyncer,
-    private val holderDatabase: HolderDatabase,
-    private val yourEventFragmentEndStateUtil: YourEventFragmentEndStateUtil,
-    private val remoteEventUtil: RemoteEventUtil
+    private val holderDatabaseSyncer: HolderDatabaseSyncer
 ) : YourEventsViewModel() {
 
     override fun checkForConflictingEvents(remoteProtocols: Map<RemoteProtocol, ByteArray>) {
@@ -99,11 +94,7 @@ class YourEventsViewModelImpl(
                     is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
                         // Send all events to database and create green cards, origins and credentials
                         val databaseSyncerResult = holderDatabaseSyncer.sync(
-                            flow = flow,
-                            expectedOriginType = getExpectedOriginType(
-                                remoteEvents.keys
-                                    .flatMap { it.events ?: emptyList() }
-                                    .map { remoteEventUtil.getOriginType(it) })
+                            flow = flow
                         )
 
                         (yourEventsResult as MutableLiveData).value = Event(
@@ -123,19 +114,5 @@ class YourEventsViewModelImpl(
                 loading.value = Event(false)
             }
         }
-    }
-
-    /**
-     * The expected origin for the green cards is the origin of which events were fetched.
-     * In the case of an expired recovery event to complete vaccination there should no expected origin
-     * since the the origins could be combined into a single vaccination.
-     *
-     * @param[originType] origin type of events fetched
-     * @return origin type to be expected from signer or null if it's not expected
-     */
-    private suspend fun getExpectedOriginType(originType: List<OriginType>): OriginType? {
-        if (originType.size > 1) return null
-        val events = holderDatabase.eventGroupDao().getAll()
-        return if (!yourEventFragmentEndStateUtil.hasVaccinationAndRecoveryEvents(events)) originType.firstOrNull() else null
     }
 }

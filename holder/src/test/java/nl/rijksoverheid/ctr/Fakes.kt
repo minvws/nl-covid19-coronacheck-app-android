@@ -379,10 +379,10 @@ fun fakeGreenCardUtil(
 
 fun fakeGetRemoteGreenCardUseCase(
     result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
-        RemoteGreenCards(null, null, listOf())
+        RemoteGreenCards(null, null, listOf(), listOf())
     )
 ) = object : GetRemoteGreenCardsUseCase {
-    override suspend fun get(events: List<EventGroupEntity>, secretKey: String): RemoteGreenCardsResult {
+    override suspend fun get(events: List<EventGroupEntity>, secretKey: String, flow: Flow): RemoteGreenCardsResult {
         return result
     }
 }
@@ -392,22 +392,6 @@ fun fakeSyncRemoteGreenCardUseCase(
 ) = object : SyncRemoteGreenCardsUseCase {
     override suspend fun execute(remoteGreenCards: RemoteGreenCards, secretKey: String): SyncRemoteGreenCardsResult {
         return result
-    }
-}
-
-fun fakeClockDevationUseCase(
-    hasDeviation: Boolean = false
-) = object : ClockDeviationUseCase() {
-    override fun store(serverTime: ServerTime) {
-
-    }
-
-    override fun hasDeviation(): Boolean {
-        return hasDeviation
-    }
-
-    override fun calculateServerTimeOffsetMillis(): Long {
-        return 0L
     }
 }
 
@@ -577,7 +561,7 @@ fun fakeEventGroupEntity(
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),
     euGreencards: List<RemoteGreenCards.EuGreenCard>? = listOf(fakeEuGreenCard())
-) = RemoteGreenCards(domesticGreencard, euGreencards, listOf())
+) = RemoteGreenCards(domesticGreencard, euGreencards, listOf(), listOf())
 
 fun fakeDomesticGreenCard(
     origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),
@@ -601,7 +585,7 @@ fun fakeOrigin(
         2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
     ),
     doseNumber: Int? = 1
-) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber)
+) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber, listOf())
 
 fun fakeOriginEntity(
     id: Int = 0,

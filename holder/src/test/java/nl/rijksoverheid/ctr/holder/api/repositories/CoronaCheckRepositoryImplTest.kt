@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingResponse
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.your_events.models.RemotePrepareIssue
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -92,7 +93,7 @@ class CoronaCheckRepositoryImplTest: AutoCloseKoinTest() {
         mockRequestResult<RemoteGreenCards>()
         val getCredentialsPostDataSlot = slot<GetCredentialsPostData>()
 
-        coronaCheckRepository.getGreenCards("stoken", listOf("event"), "issueCommitmentMessage")
+        coronaCheckRepository.getGreenCards("stoken", listOf("event"), "issueCommitmentMessage", Flow(0))
 
         coVerify(exactly = 1) { holderApiClient.getCredentials(capture(getCredentialsPostDataSlot)) }
         coVerify(exactly = 1) { holderApiClientUtil.client(capture(certSlot)) }

@@ -12,8 +12,6 @@ import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtil
 import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtilImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtilImpl
-import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
-import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtil
@@ -59,9 +57,6 @@ fun utilsModule(versionCode: Int) = module {
     factory<LocalDateUtil> { LocalDateUtilImpl(get(), get()) }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<DashboardPageInfoItemHandlerUtil> { DashboardPageInfoItemHandlerUtilImpl(get(), get(), get()) }
-    factory<YourEventFragmentEndStateUtil> {
-        YourEventFragmentEndStateUtilImpl(get(), get())
-    }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
