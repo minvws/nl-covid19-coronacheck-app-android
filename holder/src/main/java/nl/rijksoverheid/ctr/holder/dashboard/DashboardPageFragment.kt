@@ -65,6 +65,9 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         )
     })
     val section = Section()
+    val adapter = GroupAdapter<GroupieViewHolder>().also {
+        it.add(section)
+    }
     private val greenCardType: GreenCardType by lazy {
         arguments?.getParcelable<GreenCardType>(
             EXTRA_GREEN_CARD_TYPE
@@ -87,10 +90,17 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         }
     }
 
-    private fun initRecyclerView(binding: FragmentDashboardPageBinding) {
-        val adapter = GroupAdapter<GroupieViewHolder>().also {
-            it.add(section)
+    override fun onPause() {
+        super.onPause()
+        for (i in 0 until adapter.itemCount) {
+            val item = adapter.getItem(i)
+            if (item is DashboardGreenCardAdapterItem) {
+                item.onPause()
+            }
         }
+    }
+
+    private fun initRecyclerView(binding: FragmentDashboardPageBinding) {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = null
     }
@@ -176,6 +186,9 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
                     dashboardViewModel.refresh(
                         dashboardSync = DashboardSync.ForceSync
                     )
+                },
+                onCountDownFinished = {
+                    dashboardViewModel.refresh()
                 }
             )
         )

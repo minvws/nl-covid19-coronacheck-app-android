@@ -34,14 +34,43 @@ data class AdapterCard(
 class DashboardGreenCardAdapterItem(
     private val cards: List<DashboardItem.CardsItem.CardItem>,
     private val onButtonClick: (cardItem: DashboardItem.CardsItem.CardItem, credentials: List<Pair<ByteArray, OffsetDateTime>>) -> Unit,
-    private val onRetryClick: () -> Unit = {}
+    private val onRetryClick: () -> Unit = {},
+    private val onCountDownFinished: () -> Unit = {}
 ) :
     BindableItem<AdapterItemDashboardGreenCardBinding>(R.layout.adapter_item_dashboard_green_card.toLong()),
     KoinComponent {
 
     private val dashboardGreenCardAdapterItemUtil: DashboardGreenCardAdapterItemUtil by inject()
+    private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil by inject()
+
+    private lateinit var adapterItemDashboardGreenCardBinding: AdapterItemDashboardGreenCardBinding
+
+    private val runnable = Runnable {
+        setContent(adapterItemDashboardGreenCardBinding)
+        countDown()
+    }
+
+    private fun countDown() {
+        val (expireDate, type) = cards.flatMap { it.originStates }.map { Pair(it.origin.expirationTime, it.origin.type) }.sortedBy { it.first }.last()
+
+        val expireCountDown = dashboardGreenCardAdapterItemExpiryUtil.getExpireCountdown(expireDate, type)
+
+        if (expireCountDown is DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show) {
+            adapterItemDashboardGreenCardBinding.expiresIn.postDelayed(runnable, 1000)
+        } else {
+            onCountDownFinished()
+        }
+    }
+
+    fun onPause() {
+        // stop countdowning if fragment is paused and adapter is initialised
+        if (this::adapterItemDashboardGreenCardBinding.isInitialized) {
+            adapterItemDashboardGreenCardBinding.expiresIn.removeCallbacks(runnable)
+        }
+    }
 
     override fun bind(viewBinding: AdapterItemDashboardGreenCardBinding, position: Int) {
+        adapterItemDashboardGreenCardBinding = viewBinding
         applyStyling(viewBinding = viewBinding)
         setContent(viewBinding = viewBinding)
         initButton(
@@ -52,6 +81,7 @@ class DashboardGreenCardAdapterItem(
             viewBinding = viewBinding,
             greenCardType = cards.first().greenCard.greenCardEntity.type
         )
+        countDown()
     }
 
     private fun accessibility(viewBinding: AdapterItemDashboardGreenCardBinding, greenCardType: GreenCardType) {

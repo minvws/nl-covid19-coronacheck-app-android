@@ -185,7 +185,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         dashboardViewModel.refresh(dashboardSync)
         refreshHandler.postDelayed(
             refreshRunnable,
-            TimeUnit.SECONDS.toMillis(60)
+            TimeUnit.SECONDS.toMillis(1)
         )
     }
 

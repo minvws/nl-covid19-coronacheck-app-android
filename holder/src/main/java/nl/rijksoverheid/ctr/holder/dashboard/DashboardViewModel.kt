@@ -89,7 +89,7 @@ class DashboardViewModelImpl(
                 }
                 is DashboardSync.CheckSync -> {
                     // Load new credentials if no previous refresh has been executed and we should refresh because a credentials for a green card expired
-                    val shouldRefreshCredentials = greenCardRefreshUtil.shouldRefresh()
+                    val shouldRefreshCredentials = false//greenCardRefreshUtil.shouldRefresh()
 
                     // Load new credentials if we the previous request failed more than once and more than x minutes ago
                     val shouldRetryFailedRequest =
