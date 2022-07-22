@@ -31,7 +31,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
  * - getting events at event providers
  * - map result to success or error states
  */
-interface GetDigidEventsUseCase {
+interface GetEventsUseCase {
     suspend fun getEvents(
         jwt: String,
         originTypes: List<RemoteOriginType>,
@@ -39,13 +39,13 @@ interface GetDigidEventsUseCase {
     ): EventsResult
 }
 
-class GetDigidEventsUseCaseImpl(
+class GetEventsUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase,
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase,
     private val scopeUtil: ScopeUtil
-) : GetDigidEventsUseCase {
+) : GetEventsUseCase {
 
     override suspend fun getEvents(
         jwt: String,
