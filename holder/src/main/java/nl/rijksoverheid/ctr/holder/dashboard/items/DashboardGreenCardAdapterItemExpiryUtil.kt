@@ -30,7 +30,13 @@ interface DashboardGreenCardAdapterItemExpiryUtil {
         data class Show(val daysLeft: Long,
                         val hoursLeft: Long,
                         val minutesLeft: Long,
-                        val secondsLeft: Long) : ExpireCountDown()
+                        val secondsLeft: Long) : ExpireCountDown() {
+                            fun expired(): Boolean = arrayOf(
+                                daysLeft,
+                                hoursLeft,
+                                minutesLeft,
+                                secondsLeft).all { it == 0L }
+                        }
         object Hide : ExpireCountDown()
     }
 

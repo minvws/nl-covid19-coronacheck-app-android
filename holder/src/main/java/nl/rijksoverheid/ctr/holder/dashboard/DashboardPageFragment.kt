@@ -23,7 +23,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.util.CardItemUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtil
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
@@ -87,16 +86,6 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
             setItems(
                 myDashboardItems = it.firstOrNull { items -> items.greenCardType == greenCardType }?.items ?: listOf()
             )
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        for (i in 0 until adapter.itemCount) {
-            val item = adapter.getItem(i)
-            if (item is DashboardGreenCardAdapterItem) {
-                item.onPause()
-            }
         }
     }
 
