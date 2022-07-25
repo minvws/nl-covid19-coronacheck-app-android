@@ -32,6 +32,7 @@ import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getString
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -159,25 +160,41 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     private fun navigateToCertificateCreated(hints: List<String>) {
-        if (hints.isEmpty()) {
-            navigateSafety(
-                YourEventsFragmentDirections.actionMyOverview()
-            )
-        } else {
+        if (hints.contains("negativetest_without_vaccinationasssesment")) {
             infoFragmentUtil.presentFullScreen(
                 currentFragment = this,
-                toolbarTitle = args.toolbarTitle,
+                toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
                 data = InfoFragmentData.TitleDescriptionWithButton(
-                    title = getString(R.string.holder_eventHints_title),
+                    title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
                     descriptionData = DescriptionData(
-                        htmlTextString = hints.map { requireContext().getString(it) }.joinToString("<br/><br/>")
+                        htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
                     ),
                     primaryButtonData = ButtonData.NavigationButton(
-                        text = getString(R.string.general_toMyOverview),
-                        navigationActionId = R.id.action_my_overview
+                        text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
+                        navigationActionId = R.id.action_visitor_pass_input_token
                     )
                 )
             )
+        } else {
+            val hintsMappedToCopy = hints.map { requireContext().getString(it) }
+            if (hintsMappedToCopy.isEmpty()) {
+                findNavControllerSafety()?.navigate(YourEventsFragmentDirections.actionMyOverview())
+            } else {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    toolbarTitle = args.toolbarTitle,
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.holder_eventHints_title),
+                        descriptionData = DescriptionData(
+                            htmlTextString = hintsMappedToCopy.joinToString("<br/><br/>")
+                        ),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.general_toMyOverview),
+                            navigationActionId = R.id.action_my_overview
+                        )
+                    )
+                )
+            }
         }
     }
 
