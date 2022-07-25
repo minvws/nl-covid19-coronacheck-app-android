@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
 import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
-import nl.rijksoverheid.ctr.holder.get_events.usecases.GetDigidEventsUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventsUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetMijnCnEventsUsecase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
@@ -45,7 +45,7 @@ abstract class GetEventsViewModel : ViewModel() {
 }
 
 class GetEventsViewModelImpl(
-    private val getDigidEventsUseCase: GetDigidEventsUseCase,
+    private val getEventsUseCase: GetEventsUseCase,
     private val mijnCnEventsUsecase: GetMijnCnEventsUsecase
 ) : GetEventsViewModel() {
 
@@ -56,7 +56,7 @@ class GetEventsViewModelImpl(
         getPositiveTestWithVaccination: Boolean
     ) {
         getEvents {
-            getDigidEventsUseCase.getEvents(
+            getEventsUseCase.getEvents(
                 loginType = loginType,
                 jwt = jwt,
                 originTypes = originTypes,

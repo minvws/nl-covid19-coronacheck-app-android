@@ -42,6 +42,7 @@ val eventProvider1 = RemoteConfigProviders.EventProvider(
         "nt",
         "r",
         "v"),
+    auth = listOf("max")
 )
 
 val eventProvider2 = RemoteConfigProviders.EventProvider(
@@ -55,6 +56,7 @@ val eventProvider2 = RemoteConfigProviders.EventProvider(
         "nt",
         "r",
         "v"),
+    auth = listOf("max")
 )
 
 class GetEventProvidersWithTokensUseCaseImplTest {
