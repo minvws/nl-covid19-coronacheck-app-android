@@ -832,4 +832,5 @@ Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
   <string name="holder_authentication_popup_portal_message_testFlow">Het is niet gelukt om je testuitslag op te halen. Probeer opnieuw je bewijs te krijgen via de GGD.</string>
   <string name="holder_authentication_popup_digid">DigiD</string>
   <string name="holder_authentication_popup_portal">deze pagina</string>
+  <string name="holder_eventHints_title">Je bewijzen zijn gemaakt</string>
 </resources>

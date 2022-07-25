@@ -167,7 +167,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 currentFragment = this,
                 toolbarTitle = args.toolbarTitle,
                 data = InfoFragmentData.TitleDescriptionWithButton(
-                    title = "Je bewijzen zijn gemaakt",
+                    title = getString(R.string.holder_eventHints_title),
                     descriptionData = DescriptionData(
                         htmlTextString = hints.joinToString("<br/><br/>")
                     ),
