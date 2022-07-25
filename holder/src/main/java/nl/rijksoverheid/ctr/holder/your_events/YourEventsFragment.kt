@@ -160,7 +160,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     private fun navigateToCertificateCreated(hints: List<String>) {
-        if (hints.contains("negativetest_without_vaccinationasssesment")) {
+        if (hints.contains("negativetest_without_vaccinationassessment")) {
             infoFragmentUtil.presentFullScreen(
                 currentFragment = this,
                 toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
