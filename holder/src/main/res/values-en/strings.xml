@@ -830,5 +830,4 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_authentication_popup_portal_message_testFlow">Couldn’t retrieve your test result. Please try again to receive your certificate via the GGD.</string>
   <string name="holder_authentication_popup_digid">DigiD</string>
   <string name="holder_authentication_popup_portal">this page</string>
-  <string name="holder_eventHints_title">Je bewijzen zijn gemaakt</string>
 </resources>

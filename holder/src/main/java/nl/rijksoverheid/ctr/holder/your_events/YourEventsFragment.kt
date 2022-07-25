@@ -32,6 +32,7 @@ import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
+import nl.rijksoverheid.ctr.shared.ext.getString
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -169,7 +170,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 data = InfoFragmentData.TitleDescriptionWithButton(
                     title = getString(R.string.holder_eventHints_title),
                     descriptionData = DescriptionData(
-                        htmlTextString = hints.joinToString("<br/><br/>")
+                        htmlTextString = hints.map { requireContext().getString(it) }.joinToString("<br/><br/>")
                     ),
                     primaryButtonData = ButtonData.NavigationButton(
                         text = getString(R.string.general_toMyOverview),

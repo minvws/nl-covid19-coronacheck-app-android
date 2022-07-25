@@ -16,3 +16,12 @@ fun Context.locale(): Locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.
 } else {
     resources.configuration.locale
 }
+
+fun Context.getString(resourceName: String): String {
+    val packageName: String = packageName
+    val resId: Int = resources.getIdentifier(resourceName, "string", packageName)
+    if (resId == 0) {
+        return ""
+    }
+    return getString(resId)
+}
