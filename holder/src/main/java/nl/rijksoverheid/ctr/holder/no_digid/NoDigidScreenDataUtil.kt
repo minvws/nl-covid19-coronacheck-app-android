@@ -36,7 +36,7 @@ class NoDigidScreenDataUtilImpl(
         subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesHaveBSN),
         infoFragmentData = InfoFragmentData.TitleDescriptionWithButton(
             title = getString(R.string.holder_contactCoronaCheckHelpdesk_title),
-            descriptionData = DescriptionData(R.string.holder_contactCoronaCheckHelpdesk_message),
+            descriptionData = DescriptionData(R.string.holder_contactCoronaCheckHelpdesk_message, htmlLinksEnabled = true),
             primaryButtonData = ButtonData.NavigationButton(
                 text = getString(R.string.general_toMyOverview),
                 navigationActionId = R.id.action_my_overview
