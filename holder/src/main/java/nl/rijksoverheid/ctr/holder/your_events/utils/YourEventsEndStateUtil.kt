@@ -8,19 +8,21 @@
 package nl.rijksoverheid.ctr.holder.your_events.utils
 
 import android.content.Context
+import nl.rijksoverheid.ctr.holder.utils.StringUtil
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
-import nl.rijksoverheid.ctr.shared.ext.getString
 
 interface YourEventsEndStateUtil {
     fun getEndState(context: Context, hints: List<String>): YourEventsEndState
 }
 
-class YourEventsEndStateUtilImpl: YourEventsEndStateUtil {
+class YourEventsEndStateUtilImpl(
+    private val stringUtil: StringUtil
+): YourEventsEndStateUtil {
     override fun getEndState(context: Context, hints: List<String>): YourEventsEndState {
         return if (hints.contains("negativetest_without_vaccinationassessment")) {
             return YourEventsEndState.AddVaccinationAssessment
         } else {
-            val localisedHints = hints.map { context.getString(it) }
+            val localisedHints = hints.map { stringUtil.getStringFromResourceName(context, it) }.filterNot { it.isEmpty() }
             if (localisedHints.isEmpty()) {
                 YourEventsEndState.None
             } else {

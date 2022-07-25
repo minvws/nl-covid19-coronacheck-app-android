@@ -18,12 +18,9 @@ import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtilImpl
+import nl.rijksoverheid.ctr.holder.utils.*
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtilImpl
-import nl.rijksoverheid.ctr.holder.utils.CountryUtil
-import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
-import nl.rijksoverheid.ctr.holder.utils.LocalDateUtil
-import nl.rijksoverheid.ctr.holder.utils.LocalDateUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -70,5 +67,6 @@ fun utilsModule(versionCode: Int) = module {
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
     factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get()) }
-    factory<YourEventsEndStateUtil> { YourEventsEndStateUtilImpl() }
+    factory<StringUtil> { StringUtilImpl() }
+    factory<YourEventsEndStateUtil> { YourEventsEndStateUtilImpl(get()) }
 }
