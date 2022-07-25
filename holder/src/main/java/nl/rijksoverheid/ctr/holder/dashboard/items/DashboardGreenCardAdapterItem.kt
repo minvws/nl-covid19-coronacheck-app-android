@@ -48,7 +48,9 @@ class DashboardGreenCardAdapterItem(
     }
 
     private fun countDown(viewBinding: AdapterItemDashboardGreenCardBinding) {
-        val (expireDate, type) = cards.flatMap { it.originStates }.map { Pair(it.origin.expirationTime, it.origin.type) }.sortedBy { it.first }.last()
+        val (expireDate, type) = cards.flatMap { it.originStates }
+            .map { Pair(it.origin.expirationTime, it.origin.type) }
+            .maxByOrNull { it.first } ?: return
 
         val expireCountDown = dashboardGreenCardAdapterItemExpiryUtil.getExpireCountdown(expireDate, type)
 
