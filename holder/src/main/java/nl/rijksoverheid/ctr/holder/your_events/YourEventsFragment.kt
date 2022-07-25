@@ -24,12 +24,10 @@ import nl.rijksoverheid.ctr.holder.*
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.get_events.models.*
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
+import nl.rijksoverheid.ctr.holder.your_events.utils.*
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
-import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
-import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
-import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
@@ -53,6 +51,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val remoteEventUtil: RemoteEventUtil by inject()
     private val yourEventsFragmentUtil: YourEventsFragmentUtil by inject()
     private val yourEventWidgetUtil: YourEventWidgetUtil by inject()
+    private val yourEventsEndStateUtil: YourEventsEndStateUtil by inject()
 
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
@@ -122,7 +121,12 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             EventObserver { databaseSyncerResult ->
                 when (databaseSyncerResult) {
                     is DatabaseSyncerResult.Success -> {
-                        navigateToCertificateCreated(databaseSyncerResult.hints)
+                        handleEndState(
+                            endState = yourEventsEndStateUtil.getEndState(
+                                context = requireContext(),
+                                hints = databaseSyncerResult.hints
+                            )
+                        )
                     }
                     is DatabaseSyncerResult.Failed -> {
                         presentError(
@@ -159,34 +163,35 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         )
     }
 
-    private fun navigateToCertificateCreated(hints: List<String>) {
-        if (hints.contains("negativetest_without_vaccinationassessment")) {
-            infoFragmentUtil.presentFullScreen(
-                currentFragment = this,
-                toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
-                data = InfoFragmentData.TitleDescriptionWithButton(
-                    title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
-                    descriptionData = DescriptionData(
-                        htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
-                    ),
-                    primaryButtonData = ButtonData.NavigationButton(
-                        text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
-                        navigationActionId = R.id.action_visitor_pass_input_token
+    private fun handleEndState(endState: YourEventsEndState) {
+        when (endState) {
+            is YourEventsEndState.None -> {
+                findNavControllerSafety()?.navigate(YourEventsFragmentDirections.actionMyOverview())
+            }
+            is YourEventsEndState.AddVaccinationAssessment -> {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
+                        descriptionData = DescriptionData(
+                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
+                        ),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
+                            navigationActionId = R.id.action_visitor_pass_input_token
+                        )
                     )
                 )
-            )
-        } else {
-            val hintsMappedToCopy = hints.map { requireContext().getString(it) }
-            if (hintsMappedToCopy.isEmpty()) {
-                findNavControllerSafety()?.navigate(YourEventsFragmentDirections.actionMyOverview())
-            } else {
+            }
+            is YourEventsEndState.Hints -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
                     toolbarTitle = args.toolbarTitle,
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(R.string.holder_eventHints_title),
                         descriptionData = DescriptionData(
-                            htmlTextString = hintsMappedToCopy.joinToString("<br/><br/>")
+                            htmlTextString = endState.localisedHints.joinToString("<br/><br/>")
                         ),
                         primaryButtonData = ButtonData.NavigationButton(
                             text = getString(R.string.general_toMyOverview),
