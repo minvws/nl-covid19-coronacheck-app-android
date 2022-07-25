@@ -104,7 +104,7 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
                     toolbarTitle = getString(R.string.choose_provider_toolbar),
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(R.string.holder_contactCoronaCheckHelpdesk_title),
-                        descriptionData = DescriptionData(R.string.holder_contactCoronaCheckHelpdesk_message),
+                        descriptionData = DescriptionData(R.string.holder_contactCoronaCheckHelpdesk_message, htmlLinksEnabled = true),
                         primaryButtonData = ButtonData.NavigationButton(
                             text = getString(R.string.general_toMyOverview),
                             navigationActionId = R.id.action_my_overview
