@@ -85,6 +85,7 @@ open class CoronaCheckRepositoryImpl(
                         is HolderFlow.Recovery -> listOf("positivetest")
                         is HolderFlow.CommercialTest, is HolderFlow.DigidTest -> listOf("negativetest")
                         is HolderFlow.VaccinationAndPositiveTest -> listOf("vaccination", "positivetest")
+                        is HolderFlow.VaccinationAssessment -> listOf("vaccinationassessment")
                         else -> listOf()
                     }
                 )
