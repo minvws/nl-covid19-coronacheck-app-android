@@ -47,7 +47,7 @@ class NoDigidScreenDataUtilImpl(
     private fun doesNotHaveBSNButton(originType: RemoteOriginType): NoDigidNavigationButtonData {
         val title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN
         val subtitle = getString(if (originType == RemoteOriginType.Vaccination) {
-            R.string.holder_contactProviderHelpdesk_vaccinationFlow_title
+            R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_vaccinationFlow
         } else {
             R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow
         })
