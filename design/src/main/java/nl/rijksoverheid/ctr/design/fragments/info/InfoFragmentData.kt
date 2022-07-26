@@ -7,7 +7,7 @@ import androidx.annotation.IdRes
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class DescriptionData(
+data class DescriptionData(
     val htmlText: Int? = null,
     val htmlTextString: String? = null,
     val htmlLinksEnabled: Boolean = false,
@@ -29,13 +29,13 @@ sealed class ButtonData(open val text: String) : Parcelable {
 sealed class InfoFragmentData(open val title: String, open val descriptionData: DescriptionData) :
     Parcelable {
     @Parcelize
-    class TitleDescription(
+    data class TitleDescription(
         override val title: String,
         override val descriptionData: DescriptionData
     ) : InfoFragmentData(title, descriptionData)
 
     @Parcelize
-    class TitleDescriptionWithButton(
+    data class TitleDescriptionWithButton(
         override val title: String,
         override val descriptionData: DescriptionData,
         val secondaryButtonData: ButtonData? = null,
@@ -43,7 +43,7 @@ sealed class InfoFragmentData(open val title: String, open val descriptionData: 
     ) : InfoFragmentData(title, descriptionData)
 
     @Parcelize
-    class TitleDescriptionWithFooter(
+    data class TitleDescriptionWithFooter(
         override val title: String,
         override val descriptionData: DescriptionData,
         val footerText: String

@@ -30,6 +30,7 @@ import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
+import nl.rijksoverheid.ctr.holder.your_events.YourEventsViewModel
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
@@ -671,6 +672,28 @@ fun fakeQrCodeUtil() = object: QrCodeUtil {
         height,
         Bitmap.Config.RGB_565
     )
+}
+
+fun fakeYourEventsViewModel(
+    databaseSyncerResult: DatabaseSyncerResult
+): YourEventsViewModel {
+    return object: YourEventsViewModel() {
+        init {
+            (yourEventsResult as MutableLiveData).value = Event(databaseSyncerResult)
+        }
+
+        override fun saveRemoteProtocolEvents(
+            flow: Flow,
+            remoteProtocols: Map<RemoteProtocol, ByteArray>,
+            removePreviousEvents: Boolean
+        ) {
+
+        }
+
+        override fun checkForConflictingEvents(remoteProtocols: Map<RemoteProtocol, ByteArray>) {
+
+        }
+    }
 }
 
 
