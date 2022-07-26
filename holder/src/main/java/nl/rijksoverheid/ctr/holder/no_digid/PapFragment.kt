@@ -163,7 +163,7 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
     }
 
     override fun getOriginTypes(): List<RemoteOriginType> {
-        return listOf(RemoteOriginType.Vaccination)
+        return listOf(args.originType)
     }
 
     override fun onNavigateToYourEvents(
