@@ -20,7 +20,7 @@ import com.karumi.shot.ActivityScenarioUtils.waitForActivity
 import com.karumi.shot.FragmentScenarioUtils.waitForFragment
 import com.karumi.shot.ScreenshotTest
 import nl.rijksoverheid.ctr.fakeDashboardViewModel
-import nl.rijksoverheid.ctr.fakeOriginEntity
+import nl.rijksoverheid.ctr.holder.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.AndroidTestUtils
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
 import nl.rijksoverheid.ctr.holder.R
