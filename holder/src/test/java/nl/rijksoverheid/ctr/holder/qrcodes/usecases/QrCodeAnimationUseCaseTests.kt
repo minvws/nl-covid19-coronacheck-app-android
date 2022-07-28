@@ -3,11 +3,11 @@ package nl.rijksoverheid.ctr.holder.qrcodes.usecases
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
+import java.util.Calendar
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.util.Calendar
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

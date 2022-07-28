@@ -9,12 +9,12 @@ package nl.rijksoverheid.ctr.dashboard.util
 
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
-import nl.rijksoverheid.ctr.holder.dashboard.util.CardItemUtilImpl
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.fakeCardsItem
 import nl.rijksoverheid.ctr.fakeGreenCard
 import nl.rijksoverheid.ctr.fakeOriginEntity
+import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
+import nl.rijksoverheid.ctr.holder.dashboard.util.CardItemUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType

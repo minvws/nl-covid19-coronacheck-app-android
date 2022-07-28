@@ -8,9 +8,9 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.fakeAppConfigViewModel
 import nl.rijksoverheid.ctr.fakeSetupViewModel
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.fakeAppConfigViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
