@@ -12,6 +12,8 @@ jobs:
       - uses: actions/checkout@v2
       - id: setup
         uses: ./scripts
+      - name: Spotless
+        run: ./gradlew spotlessCheck
       - name: Test
         run: ./gradlew testDebug testAccDebug lint
       - name: Emulator Test
