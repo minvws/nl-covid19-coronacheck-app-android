@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
-  <string name="holder_listRemoteEvents_endStateRecoveryOnly_title">Er is alleen een herstelbewijs gemaakt</string>
   <string name="holder_fetchRemoteEvents_title">Gegevens ophalen</string>
-  <string name="holder_listRemoteEvents_endStateInternationalQROnly_title">Er is alleen een internationaal bewijs gemaakt</string>
   <string name="general_readmore">Lees meer</string>
   <string name="holder_authentication_popup_digid_title">Inloggen afgebroken</string>
   <string name="holder_dcc_alert_message">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
@@ -294,7 +291,7 @@
   <string name="your_test_result_explanation_description_test_location">Testlocatie:</string>
   <string name="your_test_result_explanation_description_test_manufacturer">Testproducent:</string>
   <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
-  <string name="your_vaccination_row_subtitle"><![CDATA[Naam: %1$s<br/>Vaccinatiedatum: %2$s<br/>Geboortedatum: %3$s<br/>Gegevens opgehaald bij: %4$s]]></string>
+  <string name="your_vaccination_row_subtitle"><![CDATA[Vaccinatiedatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s<br/>Gegevens opgehaald bij: %4$s]]></string>
   <string name="your_vaccination_explanation_toolbar_title">Details</string>
   <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is dit de laatste dosis van je vaccinatie? <b>%8$s</b><br/> Vaccinatiedatum: <b>%9$s</b><br/>Gevaccineerd in: <b>%10$s</b><br/>Uniek certificaatnummer: <b>%11$s</b>]]></string>
   <string name="your_vaccination_explanation_last_dose_yes">ja</string>
@@ -684,7 +681,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_addVaccine_alsoCollectPositiveTestResults_checkbox">Haal ook mijn positieve testuitslag op</string>
   <string name="holder_listRemoteEvents_vaccination_message">Als de gegevens kloppen kun je een bewijs maken.</string>
   <string name="holder_listRemoteEvents_paperflow_message">Als onderstaande gegevens kloppen kun je jouw bewijs toevoegen aan de app.</string>
-  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
   <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message"><![CDATA[Van je opgehaalde vaccinaties kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Van je positieve testuitslag kon ook een herstelbewijs gemaakt worden.]]></string>
   <string name="holder_listRemoteEvents_recovery_message">Als de gegevens van je test kloppen kun je een herstelbewijs maken.</string>
   <string name="holder_listRemoteEvents_negativeTest_message">Deze testuitslag is opgehaald bij de testlocatie. Als de gegevens kloppen kun je een bewijs maken.</string>
@@ -769,9 +765,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_scanner_error_title_ctb">Scan de internationale QR-code</string>
   <string name="holder_scanner_error_message_unknown">De QR-code die je probeert te scannen wordt niet herkend als die van een coronabewijs. Controleer of je de goede QR-code voor de camera houdt.</string>
   <string name="holder_scanner_error_title_unknown">Deze QR-code wordt niet herkend</string>
-  <string name="holder_dashboard_recoveryAlmostExpiredBanner_title">Je herstelbewijs verloopt bijna</string>
-  <string name="holder_recoveryAlmostExpiredModal_title">Herstelbewijs verloopt bijna</string>
-  <string name="holder_recoveryAlmostExpiredModal_message">Je herstelbewijs verloopt op %@. Daarna heb je geen coronabewijs meer. Heb je een nieuw coronabewijs nodig? Dan zijn er verschillende mogelijkheden. Lees meer op <a href="https://www.rijksoverheid.nl/onderwerpen/coronavirus-coronabewijs-en-coronatoegangsbewijs">Rijksoverheid.nl</a></string>
   <string name="holder_qr_code_hidden_explanation_button">Wat betekent dit?</string>
   <string name="holder_qr_code_hidden_explanation_title">Verborgen QR-code</string>
   <string name="holder_qr_code_hidden_explanation_description"><![CDATA[Als de QR-code van je vaccinatie verborgen is, dan heb je deze waarschijnlijk niet nodig. Dit komt omdat je ook QR-codes van nieuwere vaccinaties in de app hebt staan.<br/><br/>Verborgen QR-codes kun je gewoon nog laten zien en gebruiken als dat nodig is.]]></string>
@@ -789,7 +782,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   </plurals>
   <string name="general_seconds">seconden</string>
   <string name="holder_listRemoteEvents_listElement_title_vaccination">Vaccinatie</string>
-  <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccinatiedatum %s</string>
+  <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccinatiedatum: %s</string>
   <string name="holder_eventHints_title">Je bewijzen zijn gemaakt</string>
   <string name="holder_addVaccination_alsoCollectPositiveTestResults_message"><![CDATA[<b>Heb je corona gehad?</b><br/>Dan heb je soms een prik minder nodig om volledig gevaccineerd te zijn. Haal ook je oudste positieve testuitslag op om die mogelijk mee te laten tellen in je vaccinatiebewijs.]]></string>
   <string name="holder_noDigiD_title">Ik heb geen DigiD</string>
@@ -821,7 +814,6 @@ Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
   <string name="holder_showqr_animation_summerdcc_voiceover_label">Animatie van reizigers op een loopband</string>
   <string name="holder_showqr_animation_winterdcc_voiceover_label">Animatie van reizigers op een loopband</string>
   <string name="holder_showqr_animation_summerctb_voiceover_label">Animatie van mensen op een fiets en skateboard</string>
-  <string name="holder_showqr_animation_voiceover_hint">Verandert de beweging van richting</string>
   <string name="holder_contactProviderHelpdesk_testFlow_title">Vraag je coronabewijs aan via de GGD</string>
   <string name="holder_contactProviderHelpdesk_testFlow_message"><![CDATA[Vraag een papieren coronabewijs aan door te bellen met de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a>.<br /><br />Je bewijs met QR-code wordt per post opgestuurd.]]></string>
   <string name="holder_contactProviderHelpdesk_vaccinationFlow_message"><![CDATA[Waar je jouw coronabewijs kunt aanvragen hangt af van waar je gevaccineerd bent. <br /><br /><ul><li>Was dit bij de GGD? Bel de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a> om je bewijs aan te vragen. </li><br /><li>Was dit ergens anders? Bijvoorbeeld bij je huisarts of een andere zorgverlener? Neem direct contact op met hen.</li></ul><br />Je kunt je coronabewijs aanvragen op papier of als pdf-bestand.]]></string>
@@ -832,4 +824,17 @@ Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
   <string name="holder_authentication_popup_portal_message_testFlow">Het is niet gelukt om je testuitslag op te halen. Probeer opnieuw je bewijs te krijgen via de GGD.</string>
   <string name="holder_authentication_popup_digid">DigiD</string>
   <string name="holder_authentication_popup_portal">deze pagina</string>
+  <string name="holder_showqr_animation_voiceover_hint">De beweging van richting laten veranderen</string>
+  <string name="domestic_vaccination_created">Van je vaccinaties is een Nederlands vaccinatiebewijs gemaakt.</string>
+  <string name="domestic_vaccination_rejected">Met jouw vaccinatie(s) heb je helaas geen recht op een Nederlands vaccinatiebewijs</string>
+  <string name="domestic_recovery_created">Van je positieve testuitslag is een Nederlands herstelbewijs gemaakt.</string>
+  <string name="domestic_recovery_rejected">Van jouw positieve testuitslag kon geen Nederlands herstelbewijs worden gemaakt.</string>
+  <string name="international_vaccination_created">Van je vaccinatie(s) is een internationaal vaccinatiebewijs gemaakt.</string>
+  <string name="international_vaccination_rejected">Van de opgehaalde gegevens kon geen internationaal vaccinatiebewijs worden gemaakt.</string>
+  <string name="international_recovery_created">Van je positieve testuitslag is een internationaal herstelbewijs gemaakt.</string>
+  <string name="international_recovery_rejected">Van jouw positieve testuitslag kon geen internationaal herstelbewijs worden gemaakt.</string>
+  <string name="vaccination_dose_correction_applied">Je positieve testuitslag is meegerekend in je vaccinatiebewijs.</string>
+  <string name="vaccination_dose_correction_not_applied">Je positieve testuitslag had geen effect op je vaccinaties.</string>
+  <string name="vaccination_completed_by_under_12_recovery">Je positieve testuitslag is tot je 18e verjaardag meegerekend in je vaccinatiebewijs.</string>
+  <string name="vaccination_completed_by_previous_recovery">Je positieve testuitslag is meegerekend in je vaccinatiebewijs.</string>
 </resources>
