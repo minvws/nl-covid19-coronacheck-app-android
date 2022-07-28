@@ -8,7 +8,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtil
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtilImpl
-import nl.rijksoverheid.ctr.holder.fakeOriginEntity
+import nl.rijksoverheid.ctr.fakeOriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import org.junit.Assert.assertEquals
 import org.junit.Test

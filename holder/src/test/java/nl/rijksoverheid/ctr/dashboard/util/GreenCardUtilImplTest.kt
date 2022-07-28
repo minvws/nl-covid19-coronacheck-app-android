@@ -21,7 +21,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtilImpl
-import nl.rijksoverheid.ctr.holder.fakeOriginEntity
+import nl.rijksoverheid.ctr.fakeOriginEntity
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity

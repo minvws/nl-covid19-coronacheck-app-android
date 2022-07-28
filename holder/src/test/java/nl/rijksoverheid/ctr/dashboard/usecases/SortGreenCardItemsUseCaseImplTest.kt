@@ -11,10 +11,10 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.fakeCardsItem
 import nl.rijksoverheid.ctr.fakeCardsItems
+import nl.rijksoverheid.ctr.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.SortGreenCardItemsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
