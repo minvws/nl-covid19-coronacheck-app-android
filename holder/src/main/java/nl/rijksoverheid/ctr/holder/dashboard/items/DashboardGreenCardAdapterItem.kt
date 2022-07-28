@@ -47,7 +47,7 @@ class DashboardGreenCardAdapterItem(
         notifyChanged()
     }
 
-    private fun countDown(viewBinding: AdapterItemDashboardGreenCardBinding) {
+    private fun countdown(viewBinding: AdapterItemDashboardGreenCardBinding) {
         val (expireDate, type) = cards.flatMap { it.originStates }
             .map { Pair(it.origin.expirationTime, it.origin.type) }
             .maxByOrNull { it.first } ?: return
@@ -60,7 +60,6 @@ class DashboardGreenCardAdapterItem(
             } else {
                 viewBinding.expiresIn.postDelayed(runnable, 1000)
             }
-
         }
     }
 
@@ -75,7 +74,7 @@ class DashboardGreenCardAdapterItem(
             viewBinding = viewBinding,
             greenCardType = cards.first().greenCard.greenCardEntity.type
         )
-        countDown(viewBinding)
+        countdown(viewBinding)
     }
 
     private fun accessibility(viewBinding: AdapterItemDashboardGreenCardBinding, greenCardType: GreenCardType) {
