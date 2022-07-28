@@ -8,9 +8,9 @@
 package nl.rijksoverheid.ctr.holder.dashboard.usecases
 
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface SplitDomesticGreenCardsUseCase {

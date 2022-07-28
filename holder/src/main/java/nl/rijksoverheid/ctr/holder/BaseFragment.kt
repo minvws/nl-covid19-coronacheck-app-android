@@ -6,7 +6,11 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.models.MissingOriginErrorResult
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
-import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
+import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult
 import org.koin.android.ext.android.inject
 
 /**
@@ -63,7 +67,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                         urlData = ErrorResultFragmentData.UrlData(
                             urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
                             urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
-                        ),
+                        )
                     )
                 )
             }
@@ -77,7 +81,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                         title = getString(R.string.rule_engine_no_origin_title),
                         description = "$customerErrorDescription$errorCodeString",
                         buttonTitle = getString(R.string.back_to_overview),
-                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview),
+                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
                     )
                 )
             }

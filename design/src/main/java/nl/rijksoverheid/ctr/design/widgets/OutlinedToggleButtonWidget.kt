@@ -48,6 +48,4 @@ class OutlinedToggleButtonWidget @JvmOverloads constructor(
             contentDescription = "$text - ${context.getString(R.string.accessibility_label_not_selected)}"
         }
     }
-
-
 }

@@ -8,11 +8,11 @@
 
 package nl.rijksoverheid.ctr.appconfig.persistence
 
+import java.io.File
+import java.io.IOException
 import okio.BufferedSource
 import okio.buffer
 import okio.source
-import java.io.File
-import java.io.IOException
 
 interface AppConfigStorageManager {
     fun storageFile(file: File, fileContents: String): StorageResult
@@ -20,7 +20,7 @@ interface AppConfigStorageManager {
     fun getFileAsBufferedSource(file: File): BufferedSource?
 }
 
-class AppConfigStorageManagerImpl(private val filesDirPath: String,): AppConfigStorageManager {
+class AppConfigStorageManagerImpl(private val filesDirPath: String) : AppConfigStorageManager {
     override fun storageFile(file: File, fileContents: String): StorageResult {
         return try {
             file.parentFile?.mkdirs()
@@ -49,6 +49,6 @@ class AppConfigStorageManagerImpl(private val filesDirPath: String,): AppConfigS
 }
 
 sealed class StorageResult {
-    object Success: StorageResult()
-    data class Error(val message: String): StorageResult()
+    object Success : StorageResult()
+    data class Error(val message: String) : StorageResult()
 }

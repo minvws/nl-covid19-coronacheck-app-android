@@ -3,9 +3,12 @@ package nl.rijksoverheid.ctr.verifier.policy
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
-import android.view.View.*
+import android.view.View.FOCUS_DOWN
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import java.util.concurrent.TimeUnit
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
@@ -18,7 +21,6 @@ import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfig
 import nl.rijksoverheid.ctr.verifier.scanner.utils.ScannerUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

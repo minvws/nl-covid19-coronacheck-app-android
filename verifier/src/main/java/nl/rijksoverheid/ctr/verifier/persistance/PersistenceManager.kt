@@ -120,7 +120,6 @@ class SharedPreferencesPersistenceManager(
         return policies?.let { adapter.fromJson(policies) } ?: listOf("3G")
     }
 
-
     @SuppressLint("ApplySharedPref") // Should be done synchronously as it's done right before restart of app
     override fun setEnabledPolicies(policies: List<String>) {
         val type = Types.newParameterizedType(List::class.java, String::class.java)

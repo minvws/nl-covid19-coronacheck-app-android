@@ -4,17 +4,21 @@ import android.content.ActivityNotFoundException
 import android.database.sqlite.SQLiteConstraintException
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonEncodingException
-import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
-import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
-import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
-import nl.rijksoverheid.ctr.shared.models.*
-import retrofit2.HttpException
-import java.lang.StringBuilder
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import java.nio.charset.CharacterCodingException
-import javax.net.ssl.*
+import javax.net.ssl.SSLHandshakeException
+import javax.net.ssl.SSLKeyException
+import javax.net.ssl.SSLPeerUnverifiedException
+import javax.net.ssl.SSLProtocolException
+import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
+import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
+import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
+import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.shared.models.MissingOriginException
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import retrofit2.HttpException
 
 /**
  * Generates a String that we can show in the app to point out want went wrong where

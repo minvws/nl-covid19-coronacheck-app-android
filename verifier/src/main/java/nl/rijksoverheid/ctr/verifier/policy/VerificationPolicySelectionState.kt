@@ -25,8 +25,8 @@ sealed class VerificationPolicySelectionState : Parcelable {
     }
 
     @Parcelize
-    object Policy1G: VerificationPolicySelectionState()
+    object Policy1G : VerificationPolicySelectionState()
 
     @Parcelize
-    object Policy3G: VerificationPolicySelectionState()
+    object Policy3G : VerificationPolicySelectionState()
 }

@@ -9,12 +9,17 @@
 package nl.rijksoverheid.ctr.holder.workers
 
 import android.content.Context
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import java.util.concurrent.TimeUnit
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.RefreshState
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.Environment
-import java.util.concurrent.TimeUnit
 
 interface WorkerManagerUtil {
     suspend fun scheduleRefreshCredentialsJob(): PeriodicWorkRequest?
@@ -25,7 +30,7 @@ class WorkerManagerUtilImpl(
     private val context: Context,
     private val greenCardRefreshUtil: GreenCardRefreshUtil,
     private val appConfigUseCase: HolderCachedAppConfigUseCase,
-    private val environment: Environment = Environment.get(context),
+    private val environment: Environment = Environment.get(context)
 ) : WorkerManagerUtil {
 
     val acc: Boolean = environment == Environment.Acc
@@ -64,7 +69,7 @@ class WorkerManagerUtilImpl(
                 .enqueueUniquePeriodicWork(
                     CredentialRefreshWorker.uniqueWorkNameTag,
                     ExistingPeriodicWorkPolicy.REPLACE,
-                    request,
+                    request
                 )
             return request
         }

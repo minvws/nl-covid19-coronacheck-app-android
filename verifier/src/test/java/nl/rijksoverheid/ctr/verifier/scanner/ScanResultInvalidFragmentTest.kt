@@ -8,6 +8,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
+import com.adevinta.android.barista.assertion.BaristaAssertions.assertAny
 import com.adevinta.android.barista.assertion.BaristaBackgroundAssertions.assertHasBackground
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertContains
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
@@ -23,7 +24,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import com.adevinta.android.barista.assertion.BaristaAssertions.assertAny
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -71,7 +71,6 @@ class ScanResultInvalidFragmentTest : AutoCloseKoinTest() {
         clickOn(R.id.button)
         assertEquals(navController.currentDestination?.id, R.id.nav_qr_scanner)
     }
-
 
     private fun launchScanResultInvalidFragment(
         data: ScanResultInvalidData = ScanResultInvalidData.Invalid(

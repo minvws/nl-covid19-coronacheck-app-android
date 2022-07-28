@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.verifier.policy
 
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
-import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import java.time.Clock
 import java.time.Instant
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,7 +21,7 @@ class VerificationPolicySelectionUseCaseImpl(
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
     private val didScannerUsedRecentlyUseCase: ScannerUsedRecentlyUseCase
-): VerificationPolicySelectionUseCase {
+) : VerificationPolicySelectionUseCase {
 
     // use only when the policy is set already
     override fun get(): VerificationPolicy {

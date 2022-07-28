@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.verifier.databinding.ItemScanLogListHeaderBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanLogListHeaderAdapterItem(val item: ScanLogItem.ListHeaderItem): BindableItem<ItemScanLogListHeaderBinding>(
+class ScanLogListHeaderAdapterItem(val item: ScanLogItem.ListHeaderItem) : BindableItem<ItemScanLogListHeaderBinding>(
     R.layout.item_scan_log_list_header.toLong()) {
 
     override fun bind(viewBinding: ItemScanLogListHeaderBinding, position: Int) {

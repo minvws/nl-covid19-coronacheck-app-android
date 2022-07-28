@@ -23,7 +23,7 @@ interface NoDigidScreenDataUtil {
 
 class NoDigidScreenDataUtilImpl(
     private val context: Context,
-    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase,
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
 ) : NoDigidScreenDataUtil {
 
     private fun getString(@StringRes stringId: Int) = context.getString(stringId)
@@ -88,7 +88,7 @@ class NoDigidScreenDataUtilImpl(
     override fun requestDigidButton() = NoDigidNavigationButtonData.Link(
         title = R.string.holder_noDigiD_buttonTitle_requestDigiD,
         icon = R.drawable.ic_digid_logo,
-        externalUrl = getString(R.string.holder_noDigiD_url),
+        externalUrl = getString(R.string.holder_noDigiD_url)
     )
 
     override fun continueWithoutDigidButton(originType: RemoteOriginType) = NoDigidNavigationButtonData.NoDigid(

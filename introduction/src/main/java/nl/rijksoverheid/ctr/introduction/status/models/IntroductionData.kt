@@ -1,11 +1,11 @@
 package nl.rijksoverheid.ctr.introduction.status.models
 
 import android.os.Parcelable
+import java.io.Serializable
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
-import java.io.Serializable
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

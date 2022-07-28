@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.verifier.persistance.usecase
 
-import nl.rijksoverheid.ctr.shared.ext.toHex
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 
@@ -23,7 +22,8 @@ interface RandomKeyUseCase {
 
 class RandomKeyUseCaseImpl(
     private val persistenceManager: PersistenceManager,
-    private val androidUtil: AndroidUtil): RandomKeyUseCase {
+    private val androidUtil: AndroidUtil
+) : RandomKeyUseCase {
     override fun exists(): Boolean {
         return !persistenceManager.getRandomKey().isNullOrEmpty()
     }

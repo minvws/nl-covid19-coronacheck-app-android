@@ -9,12 +9,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
-abstract class HolderMainActivityViewModel: ViewModel() {
+abstract class HolderMainActivityViewModel : ViewModel() {
     val navigateLiveData: LiveData<Event<NavDirections>> = MutableLiveData()
     abstract fun navigate(navDirections: NavDirections, delayMillis: Long = 0)
 }
 
-class HolderMainActivityViewModelImpl: HolderMainActivityViewModel() {
+class HolderMainActivityViewModelImpl : HolderMainActivityViewModel() {
 
     override fun navigate(navDirections: NavDirections, delayMillis: Long) {
         viewModelScope.launch {

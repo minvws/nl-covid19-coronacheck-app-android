@@ -71,7 +71,7 @@ class NewPolicyRulesFragment : Fragment(R.layout.fragment_new_policy_rules) {
                             )
                         ),
                         toolbarTitle = getString(R.string.verifier_menu_risksetting),
-                        returnUri = arguments?.getString("returnUri"),
+                        returnUri = arguments?.getString("returnUri")
                     )
                 )
             }

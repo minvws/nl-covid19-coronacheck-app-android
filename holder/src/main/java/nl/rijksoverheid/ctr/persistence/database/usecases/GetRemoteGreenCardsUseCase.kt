@@ -1,10 +1,9 @@
 package nl.rijksoverheid.ctr.persistence.database.usecases
 
-import nl.rijksoverheid.ctr.holder.models.HolderStep
-import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
-import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.holder.models.HolderStep
+import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
@@ -46,7 +45,7 @@ class GetRemoteGreenCardsUseCaseImpl(
                 ))
             }
 
-            val remoteGreenCardsResult =  coronaCheckRepository.getGreenCards(
+            val remoteGreenCardsResult = coronaCheckRepository.getGreenCards(
                 stoken = prepareIssue.stoken,
                 events = events.map {
                     val jsonObject = JSONObject(it.jsonData.decodeToString())
@@ -71,6 +70,6 @@ class GetRemoteGreenCardsUseCaseImpl(
 }
 
 sealed class RemoteGreenCardsResult {
-    data class Success(val remoteGreenCards: RemoteGreenCards): RemoteGreenCardsResult()
-    data class Error(val errorResult: ErrorResult): RemoteGreenCardsResult()
+    data class Success(val remoteGreenCards: RemoteGreenCards) : RemoteGreenCardsResult()
+    data class Error(val errorResult: ErrorResult) : RemoteGreenCardsResult()
 }

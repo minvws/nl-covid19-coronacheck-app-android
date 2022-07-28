@@ -9,15 +9,15 @@ package nl.rijksoverheid.ctr.dashboard.usecases
 
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.holder.fakeCardsItem
-import nl.rijksoverheid.ctr.holder.fakeCardsItems
-import nl.rijksoverheid.ctr.holder.fakeOriginEntity
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.fakeCardsItem
+import nl.rijksoverheid.ctr.fakeCardsItems
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.SortGreenCardItemsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -27,7 +27,7 @@ import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
+class SortGreenCardItemsUseCaseImplTest : AutoCloseKoinTest() {
 
     private val greenCardUtil: GreenCardUtil by inject()
 
@@ -122,7 +122,7 @@ class SortGreenCardItemsUseCaseImplTest: AutoCloseKoinTest() {
             DashboardItem.PlaceholderCardItem(GreenCardType.Domestic),
             DashboardItem.InfoItem.VisitorPassIncompleteItem,
             DashboardItem.InfoItem.GreenCardExpiredItem(GreenCardType.Domestic, fakeOriginEntity()),
-            fakeCardsItem(),
+            fakeCardsItem()
         )
 
         val sortedItems = getUtil(DisclosurePolicy.OneG).sort(items)

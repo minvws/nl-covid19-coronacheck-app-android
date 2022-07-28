@@ -17,7 +17,7 @@ interface ValidatePaperProofDomesticInputCodeUseCase {
     fun validate(code: String): PaperProofDomesticCodeResult
 }
 
-class ValidatePaperProofDomesticInputCodeUseCaseImpl: ValidatePaperProofDomesticInputCodeUseCase {
+class ValidatePaperProofDomesticInputCodeUseCaseImpl : ValidatePaperProofDomesticInputCodeUseCase {
 
     override fun validate(code: String): PaperProofDomesticCodeResult {
         code.toCharArray().forEach {

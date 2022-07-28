@@ -1,10 +1,8 @@
 package nl.rijksoverheid.ctr.holder.api
 
-import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
 import nl.rijksoverheid.ctr.holder.api.post.GetCouplingData
 import nl.rijksoverheid.ctr.holder.api.post.GetCredentialsPostData
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteAccessTokens
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingResponse
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.your_events.models.RemotePrepareIssue

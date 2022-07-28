@@ -2,6 +2,10 @@ package nl.rijksoverheid.ctr.verifier.scanlog.items.util
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import java.time.Clock
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.verifier.R
 import org.junit.Assert
@@ -9,13 +13,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import java.time.Clock
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 @RunWith(RobolectricTestRunner::class)
-class ScanLogFirstInstallTimeAdapterItemUtilImplTest: AutoCloseKoinTest() {
+class ScanLogFirstInstallTimeAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getFirstInstallTimeString returns correct string when more than 30 days ago`() {

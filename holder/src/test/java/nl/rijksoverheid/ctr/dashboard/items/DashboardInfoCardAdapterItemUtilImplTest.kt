@@ -11,9 +11,9 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItemUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,7 +37,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
-            infoItem = infoItem,
+            infoItem = infoItem
         )
 
         val expectedCopy = context.getString(R.string.my_overview_not_valid_domestic_but_is_in_eu, context.getString(R.string.type_vaccination))
@@ -56,7 +56,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
-            infoItem = infoItem,
+            infoItem = infoItem
         )
 
         val expectedCopy = context.getString(R.string.my_overview_not_valid_domestic_but_is_in_eu, context.getString(R.string.type_recovery))
@@ -75,7 +75,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
-            infoItem = infoItem,
+            infoItem = infoItem
         )
 
         val expectedCopy = context.getString(R.string.my_overview_not_valid_domestic_but_is_in_eu, context.getString(R.string.type_test))
@@ -94,7 +94,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
-            infoItem = infoItem,
+            infoItem = infoItem
         )
 
         val expectedCopy = context.getString(R.string.my_overview_not_valid_eu_but_is_in_domestic, context.getString(R.string.type_vaccination))
@@ -113,7 +113,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
-            infoItem = infoItem,
+            infoItem = infoItem
         )
 
         val expectedCopy = context.getString(R.string.my_overview_not_valid_eu_but_is_in_domestic, context.getString(R.string.type_recovery))
@@ -132,7 +132,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
-            infoItem = infoItem,
+            infoItem = infoItem
         )
 
         val expectedCopy = context.getString(R.string.my_overview_not_valid_eu_but_is_in_domestic, context.getString(R.string.type_test))
@@ -151,7 +151,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val util = DashboardInfoCardAdapterItemUtilImpl()
         val copy = util.getOriginInfoText(
             context = context,
-            infoItem = infoItem,
+            infoItem = infoItem
         )
 
         val expectedCopy = context.getString(R.string.holder_dashboard_visitorPassInvalidOutsideNLBanner_title)

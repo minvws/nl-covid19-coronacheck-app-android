@@ -11,7 +11,7 @@ import com.google.mlkit.vision.common.InputImage
 import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
 import timber.log.Timber
 
-class QrCodeProcessorImpl: QrCodeProcessor {
+class QrCodeProcessorImpl : QrCodeProcessor {
     @SuppressLint("UnsafeOptInUsageError")
     override fun process(
         binding: FragmentScannerBinding,

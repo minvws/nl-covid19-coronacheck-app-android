@@ -3,7 +3,14 @@ package nl.rijksoverheid.ctr.persistence.database
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import java.time.OffsetDateTime
 import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.fakeGetRemoteGreenCardUseCase
+import nl.rijksoverheid.ctr.fakeGreenCardUtil
+import nl.rijksoverheid.ctr.fakeRemoveExpiredEventsUseCase
+import nl.rijksoverheid.ctr.fakeSyncRemoteGreenCardUseCase
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
@@ -11,12 +18,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.NotApplicable
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoteGreenCardsResult
 import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsResult
-import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
-import nl.rijksoverheid.ctr.holder.fakeGetRemoteGreenCardUseCase
-import nl.rijksoverheid.ctr.holder.fakeGreenCardUtil
-import nl.rijksoverheid.ctr.holder.fakeRemoveExpiredEventsUseCase
-import nl.rijksoverheid.ctr.holder.fakeSyncRemoteGreenCardUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -28,7 +29,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
-import java.time.OffsetDateTime
 
 class HolderDatabaseSyncerImplTest {
 
@@ -67,7 +67,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             featureFlagUseCase = mockk(),
-            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable},
+            yourEventFragmentEndStateUtil = mockk { every { getResult(any(), any(), any(), any()) } returns NotApplicable },
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -127,7 +127,7 @@ class HolderDatabaseSyncerImplTest {
                                 eventTime = OffsetDateTime.now(),
                                 expirationTime = OffsetDateTime.now(),
                                 validFrom = OffsetDateTime.now(),
-                                doseNumber = 1,
+                                doseNumber = 1
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
@@ -172,7 +172,7 @@ class HolderDatabaseSyncerImplTest {
                                 eventTime = OffsetDateTime.now(),
                                 expirationTime = OffsetDateTime.now(),
                                 validFrom = OffsetDateTime.now(),
-                                doseNumber = 1,
+                                doseNumber = 1
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
@@ -217,7 +217,7 @@ class HolderDatabaseSyncerImplTest {
                                 eventTime = OffsetDateTime.now(),
                                 expirationTime = OffsetDateTime.now(),
                                 validFrom = OffsetDateTime.now(),
-                                doseNumber = 1,
+                                doseNumber = 1
                             )),
                             createCredentialMessages = "".toByteArray()
                         ),
@@ -285,7 +285,7 @@ class HolderDatabaseSyncerImplTest {
                     NetworkRequestResult.Failed.CoronaCheckHttpError(
                         Step(1),
                         HttpException(Response.error<String>(400, "".toResponseBody())),
-                        null,
+                        null
                     )
                 )
             ),

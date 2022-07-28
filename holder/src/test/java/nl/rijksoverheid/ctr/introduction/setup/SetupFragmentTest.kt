@@ -23,7 +23,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-class SetupFragmentTest: AutoCloseKoinTest() {
+class SetupFragmentTest : AutoCloseKoinTest() {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()

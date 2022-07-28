@@ -10,11 +10,11 @@ package nl.rijksoverheid.ctr.holder.usecases
 
 import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
-import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.status.usecases.IntroductionStatusUseCase
+import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 class HolderIntroductionStatusUseCaseImpl(
@@ -83,7 +83,7 @@ class HolderIntroductionStatusUseCaseImpl(
             OnboardingItem(
                 R.drawable.illustration_onboarding_2,
                 R.string.onboarding_screen_2_title,
-                R.string.onboarding_screen_2_description,
+                R.string.onboarding_screen_2_description
             ),
             OnboardingItem(
                 R.drawable.illustration_onboarding_3,

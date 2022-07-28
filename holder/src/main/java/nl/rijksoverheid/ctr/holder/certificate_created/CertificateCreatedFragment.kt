@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentCertificateCreatedBinding
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 
-
 class CertificateCreatedFragment :
     Fragment(R.layout.fragment_certificate_created) {
 
@@ -30,7 +29,7 @@ class CertificateCreatedFragment :
             binding.title.text = title
             binding.description.setHtmlText(
                 htmlText = description,
-                htmlLinksEnabled = true,
+                htmlLinksEnabled = true
             )
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :

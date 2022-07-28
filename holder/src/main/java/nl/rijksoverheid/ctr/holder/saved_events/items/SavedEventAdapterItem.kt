@@ -12,7 +12,11 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemSavedEventBinding
-import nl.rijksoverheid.ctr.holder.get_events.models.*
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.saved_events.SavedEvents
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreen
 import nl.rijksoverheid.ctr.shared.ext.capitalize
@@ -20,7 +24,7 @@ import nl.rijksoverheid.ctr.shared.ext.capitalize
 class SavedEventAdapterItem(
     private val savedEvent: SavedEvents.SavedEvent,
     private val onClick: (toolbarTitle: String, infoScreen: InfoScreen) -> Unit
-): BindableItem<AdapterItemSavedEventBinding>() {
+) : BindableItem<AdapterItemSavedEventBinding>() {
 
     override fun bind(viewBinding: AdapterItemSavedEventBinding, position: Int) {
         val context = viewBinding.root.context

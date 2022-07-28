@@ -1,9 +1,14 @@
 package nl.rijksoverheid.ctr.shared
 
-import nl.rijksoverheid.ctr.shared.utils.*
+import java.time.Clock
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtilImpl
+import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
+import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtilImpl
+import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
+import nl.rijksoverheid.ctr.shared.utils.TestResultUtilImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
-import java.time.Clock
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

@@ -1,17 +1,17 @@
 package nl.rijksoverheid.ctr.verifier.scanlog.items.util
 
 import android.content.Context
-import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
-import nl.rijksoverheid.ctr.verifier.R
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
+import nl.rijksoverheid.ctr.verifier.R
 
 interface ScanLogFirstInstallTimeAdapterItemUtil {
     fun getFirstInstallTimeString(context: Context, firstInstallTime: OffsetDateTime): String
 }
 
-class ScanLogFirstInstallTimeAdapterItemUtilImpl(private val clock: Clock): ScanLogFirstInstallTimeAdapterItemUtil {
+class ScanLogFirstInstallTimeAdapterItemUtilImpl(private val clock: Clock) : ScanLogFirstInstallTimeAdapterItemUtil {
     override fun getFirstInstallTimeString(context: Context, firstInstallTime: OffsetDateTime): String {
         val daysAgo = TimeUnit.SECONDS.toDays(OffsetDateTime.now(clock).toEpochSecond() - firstInstallTime.toEpochSecond())
         val moreThanMonthAgo = daysAgo >= 30

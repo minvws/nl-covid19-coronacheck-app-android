@@ -7,11 +7,11 @@
 
 package nl.rijksoverheid.ctr.holder.get_events.usecases
 
+import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteAccessTokens
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
@@ -45,7 +45,7 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
                 scope = scope,
                 signingCertificateBytes = eventProvider.cms,
                 provider = eventProvider.providerIdentifier,
-                tlsCertificateBytes = eventProvider.tls,
+                tlsCertificateBytes = eventProvider.tls
             )) {
 
             is NetworkRequestResult.Success<SignedResponseWithModel<RemoteProtocol>> ->

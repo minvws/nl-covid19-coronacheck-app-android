@@ -1,10 +1,10 @@
 package nl.rijksoverheid.ctr.verifier.scanlog.datamapper
 
+import java.time.Instant
 import nl.rijksoverheid.ctr.design.ext.toOffsetDateTimeUtc
 import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
 import nl.rijksoverheid.ctr.verifier.scanlog.models.ScanLog
 import nl.rijksoverheid.ctr.verifier.scanlog.models.ScanLogBuilder
-import java.time.Instant
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,7 +17,7 @@ interface ScanLogDataMapper {
     fun transform(entities: List<ScanLogEntity>): List<ScanLog>
 }
 
-class ScanLogDataMapperImpl: ScanLogDataMapper {
+class ScanLogDataMapperImpl : ScanLogDataMapper {
     override fun transform(entities: List<ScanLogEntity>): List<ScanLog> {
         var currentTime: Instant? = null
         var currentScanLogBuilder: ScanLogBuilder? = null

@@ -11,7 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class YourEventExplanationFragmentScreenshotTest: ScreenshotTest {
+class YourEventExplanationFragmentScreenshotTest : ScreenshotTest {
     @Test
     fun yourEventExplanationFragment_Screenshot() {
         val fragmentScenario = launchFragmentInContainer<YourEventExplanationFragment>(
@@ -24,7 +24,7 @@ class YourEventExplanationFragmentScreenshotTest: ScreenshotTest {
                 ),
                 "toolbarTitle" to "Details"
             ),
-            themeResId = R.style.TestAppTheme,
+            themeResId = R.style.TestAppTheme
         )
 
         compareScreenshot(fragmentScenario.waitForFragment())

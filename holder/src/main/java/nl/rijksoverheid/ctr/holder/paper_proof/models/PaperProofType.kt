@@ -10,7 +10,7 @@ package nl.rijksoverheid.ctr.holder.paper_proof.models
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 
 sealed class PaperProofType {
-    sealed class DCC: PaperProofType() {
+    sealed class DCC : PaperProofType() {
         data class Foreign(
             val remoteProtocol: RemoteProtocol,
             val eventGroupJsonData: ByteArray
@@ -36,6 +36,6 @@ sealed class PaperProofType {
 
         data class Dutch(val qrContent: String) : DCC()
     }
-    object CTB: PaperProofType()
-    object Unknown: PaperProofType()
+    object CTB : PaperProofType()
+    object Unknown : PaperProofType()
 }

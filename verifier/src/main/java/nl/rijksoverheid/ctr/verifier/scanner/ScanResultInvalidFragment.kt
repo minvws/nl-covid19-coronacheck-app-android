@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
+import java.util.concurrent.TimeUnit
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
@@ -17,7 +18,6 @@ import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionState
 import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionStateUseCase
 import nl.rijksoverheid.ctr.verifier.scanner.models.ScanResultInvalidData
 import org.koin.android.ext.android.inject
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,11 +34,11 @@ class ScanResultInvalidFragment : AutoCloseFragment(R.layout.fragment_scan_resul
     private val args: ScanResultInvalidFragmentArgs by navArgs()
 
     override fun aliveForMilliseconds(): Long {
-       return if (BuildConfig.FLAVOR == "acc") {
-           TimeUnit.SECONDS.toMillis(20)
-       } else {
-           TimeUnit.MINUTES.toMillis(3)
-       }
+        return if (BuildConfig.FLAVOR == "acc") {
+            TimeUnit.SECONDS.toMillis(20)
+        } else {
+            TimeUnit.MINUTES.toMillis(3)
+        }
     }
 
     override fun navigateToCloseAt() {
@@ -59,7 +59,8 @@ class ScanResultInvalidFragment : AutoCloseFragment(R.layout.fragment_scan_resul
         binding.bottom.customiseButton {
             it.run {
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.surface)
+                backgroundTintList =
+                    ContextCompat.getColorStateList(requireContext(), R.color.surface)
             }
         }
         binding.bottom.customiseSecondaryButton {
@@ -78,7 +79,8 @@ class ScanResultInvalidFragment : AutoCloseFragment(R.layout.fragment_scan_resul
             }
             is ScanResultInvalidData.Error -> {
                 binding.bottom.setSecondaryButtonClick {
-                    infoFragmentUtil.presentAsBottomSheet(childFragmentManager,
+                    infoFragmentUtil.presentAsBottomSheet(
+                        childFragmentManager,
                         InfoFragmentData.TitleDescription(
                             title = getString(R.string.scan_result_invalid_reason_title),
                             descriptionData = DescriptionData(

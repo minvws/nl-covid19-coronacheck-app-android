@@ -2,6 +2,10 @@ package nl.rijksoverheid.ctr.dashboard.util
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import java.time.Clock
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtil
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtilImpl
 import nl.rijksoverheid.ctr.holder.fakeOriginEntity
@@ -12,10 +16,6 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.time.Clock
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -27,7 +27,7 @@ import java.time.ZoneId
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "en-land")
 class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
-    
+
     private val context: Context by lazy {
         ApplicationProvider.getApplicationContext()
     }
@@ -243,7 +243,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getExpiryText should return text of only minutes if it's less than an hour`() {
-        
+
         val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC")),
             context = context
@@ -263,7 +263,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
             context = context
         )
 
-        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(0,2, 15, 0)
+        val result = DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show(0, 2, 15, 0)
 
         val actual = util.getExpiryText(result)
 
@@ -363,7 +363,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `Get the last valid origin when it's the only valid one left`() {
-        
+
         val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-10T00:00:00.00Z"), ZoneId.of("UTC")),
             context = context
@@ -387,7 +387,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `Last valid origin should not return anything when more than 1 origins are valid`() {
-        
+
         val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-10T00:00:00.00Z"), ZoneId.of("UTC")),
             context = context
@@ -411,7 +411,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `Last valid origin should not return anything when none are valid`() {
-        
+
         val util = DashboardGreenCardAdapterItemExpiryUtilImpl(
             clock = Clock.fixed(Instant.parse("2021-01-10T00:00:00.00Z"), ZoneId.of("UTC")),
             context = context
@@ -433,4 +433,3 @@ class DashboardGreenCardAdapterItemExpiryUtilImplTest : AutoCloseKoinTest() {
         assertEquals(null, util.getLastValidOrigin(origins))
     }
 }
-

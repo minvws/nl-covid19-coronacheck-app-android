@@ -10,16 +10,16 @@ import org.json.JSONObject
  *
  */
 
-sealed class MobileCoreException(message: String): Exception(message) {
-    class MobileCoreException1(message: String): MobileCoreException(message)
-    class MobileCoreException2(message: String): MobileCoreException(message)
-    class MobileCoreException3(message: String): MobileCoreException(message)
-    class MobileCoreException4(message: String): MobileCoreException(message)
-    class MobileCoreException5(message: String): MobileCoreException(message)
-    class MobileCoreException6(message: String): MobileCoreException(message)
-    class MobileCoreException7(message: String): MobileCoreException(message)
-    class MobileCoreException8(message: String): MobileCoreException(message)
-    class MobileCoreException9(message: String): MobileCoreException(message)
+sealed class MobileCoreException(message: String) : Exception(message) {
+    class MobileCoreException1(message: String) : MobileCoreException(message)
+    class MobileCoreException2(message: String) : MobileCoreException(message)
+    class MobileCoreException3(message: String) : MobileCoreException(message)
+    class MobileCoreException4(message: String) : MobileCoreException(message)
+    class MobileCoreException5(message: String) : MobileCoreException(message)
+    class MobileCoreException6(message: String) : MobileCoreException(message)
+    class MobileCoreException7(message: String) : MobileCoreException(message)
+    class MobileCoreException8(message: String) : MobileCoreException(message)
+    class MobileCoreException9(message: String) : MobileCoreException(message)
 }
 
 fun mobilecore.Result.successString(): String {

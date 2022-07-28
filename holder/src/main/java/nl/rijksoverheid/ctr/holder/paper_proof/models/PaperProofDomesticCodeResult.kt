@@ -10,13 +10,13 @@ package nl.rijksoverheid.ctr.holder.paper_proof.models
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-sealed class PaperProofDomesticCodeResult: Parcelable {
+sealed class PaperProofDomesticCodeResult : Parcelable {
     @Parcelize
-    object Valid: PaperProofDomesticCodeResult(), Parcelable
+    object Valid : PaperProofDomesticCodeResult(), Parcelable
 
     @Parcelize
-    object Invalid: PaperProofDomesticCodeResult(), Parcelable
+    object Invalid : PaperProofDomesticCodeResult(), Parcelable
 
     @Parcelize
-    object Empty: PaperProofDomesticCodeResult(), Parcelable
+    object Empty : PaperProofDomesticCodeResult(), Parcelable
 }

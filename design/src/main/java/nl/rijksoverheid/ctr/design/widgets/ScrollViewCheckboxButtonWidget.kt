@@ -24,7 +24,6 @@ import androidx.core.view.isVisible
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewCheckboxButtonBinding
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -33,7 +32,9 @@ import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewCheckboxButtonBin
  *
  */
 class ScrollViewCheckboxButtonWidget @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : CardView(context, attrs, defStyleAttr) {
 
     val binding: WidgetScrollViewCheckboxButtonBinding

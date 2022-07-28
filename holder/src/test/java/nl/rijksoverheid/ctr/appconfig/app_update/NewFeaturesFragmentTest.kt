@@ -21,7 +21,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl-land")
-class NewFeaturesFragmentTest: AutoCloseKoinTest() {
+class NewFeaturesFragmentTest : AutoCloseKoinTest() {
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     ).also {
@@ -45,8 +45,8 @@ class NewFeaturesFragmentTest: AutoCloseKoinTest() {
                 ),
                 newTerms = NewTerms(1, false),
                 newFeatureVersion = 2,
-                hideConsent = false,
-            ),
+                hideConsent = false
+            )
         )
         return launchFragmentInContainer(
             fragmentArgs, themeResId = R.style.AppTheme

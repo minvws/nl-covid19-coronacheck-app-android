@@ -11,15 +11,22 @@
 package nl.rijksoverheid.ctr.persistence.database.util
 
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState
-import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.*
-import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.AddedNegativeTestInVaccinationAssessmentFlow
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.CombinedVaccinationRecovery
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.NoRecoveryWithStoredVaccination
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.NotApplicable
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.OnlyDomesticVaccination
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.OnlyInternationalVaccination
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.OnlyRecovery
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.VaccinationAndRecovery
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.Flow
 
@@ -68,7 +75,7 @@ class YourEventFragmentEndStateUtilImpl(
      *
      * @return whether the database contains a domestic green card with vaccination origin
      */
-    private  fun hasStoredDomesticVaccination(storedGreenCards: List<GreenCard>): Boolean {
+    private fun hasStoredDomesticVaccination(storedGreenCards: List<GreenCard>): Boolean {
         return storedGreenCards
             .filter { it.greenCardEntity.type == GreenCardType.Domestic }
             .any { greenCard ->
@@ -80,9 +87,9 @@ class YourEventFragmentEndStateUtilImpl(
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards
     ): Boolean {
-        return hasVaccinationAndRecoveryEvents(events)
-                && hasOnlyInternationalVaccinationCertificates(remoteGreenCards)
-                && remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Recovery } ?: false
+        return hasVaccinationAndRecoveryEvents(events) &&
+                hasOnlyInternationalVaccinationCertificates(remoteGreenCards) &&
+                remoteGreenCards.domesticGreencard?.origins?.any { it.type == OriginType.Recovery } ?: false
     }
 
     private fun isOnlyRecovery(
@@ -103,15 +110,14 @@ class YourEventFragmentEndStateUtilImpl(
                 remoteGreenCards.domesticGreencard?.origins?.none { it.type == OriginType.Recovery } ?: true
     }
 
-
     private fun isNoRecoveryWithStoredVaccination(
         events: List<EventGroupEntity>,
         remoteGreenCards: RemoteGreenCards,
         storedGreenCards: List<GreenCard>
     ): Boolean {
         return hasVaccinationAndRecoveryEvents(events) &&
-                remoteGreenCards.domesticGreencard?.origins?.none { it.type == OriginType.Recovery } ?: true
-                && hasStoredDomesticVaccination(storedGreenCards)
+                remoteGreenCards.domesticGreencard?.origins?.none { it.type == OriginType.Recovery } ?: true &&
+                hasStoredDomesticVaccination(storedGreenCards)
     }
 
     private fun isCombinedVaccinationRecovery(
@@ -141,7 +147,7 @@ class YourEventFragmentEndStateUtilImpl(
 
     private fun hasAddedNegativeTestInVaccinationAssessmentFlow(
         flow: Flow,
-        remoteGreenCards: RemoteGreenCards,
+        remoteGreenCards: RemoteGreenCards
     ): Boolean {
         return if (flow == HolderFlow.VaccinationAssessment) {
             val hasTest = remoteGreenCards.getAllOrigins().any { it is OriginType.Test }

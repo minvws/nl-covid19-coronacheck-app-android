@@ -23,7 +23,7 @@ val holderAppStatusModule = module {
                     imageResource = R.drawable.ic_paper_proof_international_qr,
                     subTitleColor = R.color.primary_blue,
                     titleResource = R.string.holder_newintheapp_foreignproofs_title,
-                    description = R.string.holder_newintheapp_foreignproofs_body,
+                    description = R.string.holder_newintheapp_foreignproofs_body
                 )
             ),
             newTerms = NewTerms(

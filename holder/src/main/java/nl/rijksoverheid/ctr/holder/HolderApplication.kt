@@ -3,17 +3,35 @@ package nl.rijksoverheid.ctr.holder
 import android.util.Log
 import androidx.work.Configuration
 import androidx.work.WorkerFactory
-import kotlinx.coroutines.*
-import net.sqlcipher.database.SQLiteDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.api.apiModule
-import nl.rijksoverheid.ctr.appconfig.*
+import nl.rijksoverheid.ctr.appconfig.appConfigModule
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.dashboard.dashboardModule
-import nl.rijksoverheid.ctr.holder.modules.*
-import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.holder.modules.appModule
+import nl.rijksoverheid.ctr.holder.modules.cardUtilsModule
+import nl.rijksoverheid.ctr.holder.modules.disclosurePolicyModule
+import nl.rijksoverheid.ctr.holder.modules.errorsModule
+import nl.rijksoverheid.ctr.holder.modules.eventsUseCasesModule
+import nl.rijksoverheid.ctr.holder.modules.greenCardUseCasesModule
+import nl.rijksoverheid.ctr.holder.modules.holderAppStatusModule
+import nl.rijksoverheid.ctr.holder.modules.holderIntroductionModule
+import nl.rijksoverheid.ctr.holder.modules.holderMobileCoreModule
+import nl.rijksoverheid.ctr.holder.modules.holderPreferenceModule
+import nl.rijksoverheid.ctr.holder.modules.qrsModule
+import nl.rijksoverheid.ctr.holder.modules.repositoriesModule
+import nl.rijksoverheid.ctr.holder.modules.responsesModule
+import nl.rijksoverheid.ctr.holder.modules.retrofitModule
+import nl.rijksoverheid.ctr.holder.modules.storageModule
+import nl.rijksoverheid.ctr.holder.modules.testProvidersUseCasesModule
+import nl.rijksoverheid.ctr.holder.modules.utilsModule
+import nl.rijksoverheid.ctr.holder.modules.viewModels
 import nl.rijksoverheid.ctr.introduction.introductionModule
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
@@ -75,10 +93,10 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
                     BuildConfig.BASE_API_URL.toHttpUrl(),
                     BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH,
                     BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS,
-                    BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS,
+                    BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS
                 ),
                 sharedModule,
-                appConfigModule(BuildConfig.CDN_API_URL,"holder", BuildConfig.VERSION_CODE),
+                appConfigModule(BuildConfig.CDN_API_URL, "holder", BuildConfig.VERSION_CODE),
                 introductionModule,
                 *getAdditionalModules().toTypedArray(),
                 designModule

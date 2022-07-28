@@ -48,7 +48,7 @@ class CommercialTestInputTokenFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Correct default values shown when entering without deeplink`() {
-        val inputTokenViewModel = object: FakeInputTokenViewModel() {}
+        val inputTokenViewModel = object : FakeInputTokenViewModel() {}
 
         launchInputFragment(inputTokenViewModel = inputTokenViewModel)
         assertDisplayed(R.id.description, R.string.commercial_test_code_description)
@@ -60,7 +60,7 @@ class CommercialTestInputTokenFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Error code is shown when unique code is empty`() {
-        val inputTokenViewModel = object: FakeInputTokenViewModel() {}
+        val inputTokenViewModel = object : FakeInputTokenViewModel() {}
         (inputTokenViewModel.testResult as MutableLiveData).postValue(Event(TestResult.EmptyToken))
         launchInputFragment(inputTokenViewModel = inputTokenViewModel)
 
@@ -69,7 +69,7 @@ class CommercialTestInputTokenFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Error code is shown when unique code is invalid`() {
-        val inputTokenViewModel = object: FakeInputTokenViewModel() {}
+        val inputTokenViewModel = object : FakeInputTokenViewModel() {}
         (inputTokenViewModel.testResult as MutableLiveData).postValue(Event(TestResult.InvalidToken))
         launchInputFragment(inputTokenViewModel = inputTokenViewModel)
 
@@ -78,7 +78,7 @@ class CommercialTestInputTokenFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Verification code is shown when verification required`() {
-        val inputTokenViewModel = object: FakeInputTokenViewModel() {}
+        val inputTokenViewModel = object : FakeInputTokenViewModel() {}
         (inputTokenViewModel.viewState as MutableLiveData).postValue(ViewState(verificationRequired = true))
         launchInputFragment(inputTokenViewModel = inputTokenViewModel)
 
@@ -87,7 +87,7 @@ class CommercialTestInputTokenFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Verification code error is shown when verification empty`() {
-        val inputTokenViewModel = object: FakeInputTokenViewModel() {}
+        val inputTokenViewModel = object : FakeInputTokenViewModel() {}
         (inputTokenViewModel.testResult as MutableLiveData).postValue(Event(TestResult.EmptyVerificationCode))
         (inputTokenViewModel.viewState as MutableLiveData).postValue(ViewState(verificationRequired = true))
         launchInputFragment(inputTokenViewModel = inputTokenViewModel)
@@ -97,7 +97,7 @@ class CommercialTestInputTokenFragmentTest : AutoCloseKoinTest() {
 
     @Test
     fun `Verification code error is shown when invalid verification code`() {
-        val inputTokenViewModel = object: FakeInputTokenViewModel() {}
+        val inputTokenViewModel = object : FakeInputTokenViewModel() {}
         (inputTokenViewModel.testResult as MutableLiveData).postValue(Event(TestResult.VerificationRequired))
         (inputTokenViewModel.viewState as MutableLiveData).postValue(ViewState(verificationRequired = true))
         launchInputFragment(inputTokenViewModel = inputTokenViewModel)
@@ -124,7 +124,7 @@ class CommercialTestInputTokenFragmentTest : AutoCloseKoinTest() {
             bundleOf(
                 "token" to token,
                 "toolbarTitle" to "",
-                "data" to InputTokenFragmentData.CommercialTest,
+                "data" to InputTokenFragmentData.CommercialTest
             ), themeResId = R.style.AppTheme
         ) {
             CommercialTestInputTokenFragment().also {
@@ -138,16 +138,13 @@ class CommercialTestInputTokenFragmentTest : AutoCloseKoinTest() {
     }
 }
 
-abstract class FakeInputTokenViewModel: InputTokenViewModel() {
+abstract class FakeInputTokenViewModel : InputTokenViewModel() {
     override fun updateViewState() {
-
     }
 
     override fun getTestResult(fromDeeplink: Boolean) {
-
     }
 
     override fun sendVerificationCode() {
-
     }
 }

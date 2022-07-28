@@ -1,10 +1,9 @@
 package nl.rijksoverheid.ctr.holder.models
 
-import nl.rijksoverheid.ctr.holder.models.HolderStep
+import java.lang.Exception
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.MissingOriginException
 import nl.rijksoverheid.ctr.shared.models.Step
-import java.lang.Exception
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -13,7 +12,7 @@ import java.lang.Exception
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-object MissingOriginErrorResult: ErrorResult {
+object MissingOriginErrorResult : ErrorResult {
     override fun getCurrentStep(): Step {
         return HolderStep.GetCredentialsNetworkRequest
     }

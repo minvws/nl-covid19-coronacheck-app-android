@@ -7,13 +7,13 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
@@ -35,12 +35,12 @@ interface CardItemUtil {
 class CardItemUtilImpl(
     private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val greenCardUtil: GreenCardUtil
-): CardItemUtil {
+) : CardItemUtil {
 
     override fun getDisclosurePolicy(
         greenCard: GreenCard,
         greenCardIndex: Int
-        ): GreenCardDisclosurePolicy {
+    ): GreenCardDisclosurePolicy {
             return when (greenCard.greenCardEntity.type) {
             is GreenCardType.Domestic -> {
                 val isGreenCardWithOnlyTestOrigin = greenCard.origins.all { it.type is OriginType.Test }
@@ -82,7 +82,7 @@ class CardItemUtilImpl(
         return when (greenCard.greenCardEntity.type) {
             is GreenCardType.Domestic -> {
                 if (featureFlagUseCase.getDisclosurePolicy() == DisclosurePolicy.OneG &&
-                    !greenCardUtil.hasOrigin(listOf(greenCard), OriginType.Test) ) {
+                    !greenCardUtil.hasOrigin(listOf(greenCard), OriginType.Test)) {
                     GreenCardEnabledState.Disabled()
                 } else {
                     GreenCardEnabledState.Enabled

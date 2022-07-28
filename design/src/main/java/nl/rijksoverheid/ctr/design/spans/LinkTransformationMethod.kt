@@ -8,7 +8,6 @@ import android.text.style.URLSpan
 import android.view.View
 import android.widget.TextView
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -70,7 +69,5 @@ class LinkTransformationMethod(private val method: Method) : TransformationMetho
         direction: Int,
         previouslyFocusedRect: Rect?
     ) {
-
     }
-
 }

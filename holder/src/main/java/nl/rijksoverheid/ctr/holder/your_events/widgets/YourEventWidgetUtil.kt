@@ -8,7 +8,6 @@
 package nl.rijksoverheid.ctr.holder.your_events.widgets
 
 import android.content.Context
-import nl.rijksoverheid.ctr.design.ext.formatMonth
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 
@@ -25,11 +24,11 @@ interface YourEventWidgetUtil {
         providerIdentifiers: String,
         vaccinationDate: String,
         fullName: String,
-        birthDate: String,
+        birthDate: String
     ): String
 }
 
-class YourEventWidgetUtilImpl: YourEventWidgetUtil {
+class YourEventWidgetUtilImpl : YourEventWidgetUtil {
     override fun getVaccinationEventTitle(
         context: Context,
         isDccEvent: Boolean,

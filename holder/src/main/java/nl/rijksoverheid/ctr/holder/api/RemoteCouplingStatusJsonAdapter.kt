@@ -6,7 +6,7 @@ import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingStatus
 
 class RemoteCouplingStatusJsonAdapter {
     @FromJson
-    fun fromJson(value: String?): RemoteCouplingStatus = when(value) {
+    fun fromJson(value: String?): RemoteCouplingStatus = when (value) {
         RemoteCouplingStatus.TYPE_EXPIRED -> RemoteCouplingStatus.Expired
         RemoteCouplingStatus.TYPE_BLOCKED -> RemoteCouplingStatus.Blocked
         RemoteCouplingStatus.TYPE_REJECTED -> RemoteCouplingStatus.Rejected

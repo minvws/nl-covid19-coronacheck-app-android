@@ -80,7 +80,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     fun `Given instructions seen and policy set, Clicking start scan opens scanner`() {
         launchScanQrFragment(
             scannerState = ScannerState.Unlocked(VerificationPolicySelectionState.Policy1G),
-            scannerNavigationState = ScannerNavigationState.Scanner(false),
+            scannerNavigationState = ScannerNavigationState.Scanner(false)
         )
         clickOn(R.id.button)
         verify { scannerUtil.launchScanner(any()) }
@@ -141,7 +141,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
     @Test
     fun `given instructions seen and policy not set, when clicking bottom button, then policy selection screen is opening`() {
         launchScanQrFragment(
-            scannerNavigationState = ScannerNavigationState.VerificationPolicySelection,
+            scannerNavigationState = ScannerNavigationState.VerificationPolicySelection
         )
 
         clickOn(R.id.button)

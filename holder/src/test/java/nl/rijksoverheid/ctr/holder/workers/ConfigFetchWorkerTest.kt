@@ -9,7 +9,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
-import org.junit.Assert.*
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
@@ -23,7 +23,7 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class ConfigFetchWorkerTest: AutoCloseKoinTest() {
+class ConfigFetchWorkerTest : AutoCloseKoinTest() {
     private val context: Context by lazy {
         ApplicationProvider.getApplicationContext()
     }

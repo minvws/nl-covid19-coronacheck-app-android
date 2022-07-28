@@ -36,5 +36,4 @@ class AccessibilityHeaderWidget @JvmOverloads constructor(
             }
         }
     }
-
 }

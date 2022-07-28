@@ -7,17 +7,17 @@
 
 package nl.rijksoverheid.ctr.holder.qrcodes.usecases
 
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtil
-import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
+import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtil
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import java.time.OffsetDateTime
 
 /**
  * Get all data needed to display QR codes based on data is send from the dashboard
@@ -36,7 +36,7 @@ class QrCodesResultUseCaseImpl(
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
     private val credentialUtil: CredentialUtil,
-    private val multipleQrCodesUtil: MultipleQrCodesUtil,
+    private val multipleQrCodesUtil: MultipleQrCodesUtil
 ) : QrCodesResultUseCase {
 
     override suspend fun getQrCodesResult(
@@ -102,7 +102,7 @@ class QrCodesResultUseCaseImpl(
         return QrCodesResult.SingleQrCode(
             QrCodeData.Domestic(
                 bitmap = qrCodeBitmap,
-                readDomesticCredential = mobileCoreWrapper.readDomesticCredential(credential),
+                readDomesticCredential = mobileCoreWrapper.readDomesticCredential(credential)
             )
         )
     }

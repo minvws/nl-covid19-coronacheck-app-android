@@ -4,17 +4,19 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
+import java.time.Clock
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtil
-import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
-import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtilImpl
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.VaccinationInfoScreenUtilImpl
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,10 +24,6 @@ import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.time.Clock
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -64,7 +62,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
                 euBrands = listOf(
                     AppConfig.Code(
                         code = "EU/1/20/1528",
-                        name = "Pfizer (Comirnaty)",
+                        name = "Pfizer (Comirnaty)"
                     )
                 ),
                 euManufacturers = listOf(
@@ -93,7 +91,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
                 doseNumber = "1",
                 totalDoses = "2",
                 country = "NLD",
-                manufacturer = "manufacturer",
+                manufacturer = "manufacturer"
             )
         )
 
@@ -118,7 +116,6 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
             "Deze gegevens van je vaccinatie zijn opgehaald bij GGD:<br/><br/>Naam: <b>Surname</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Ziekteverwekker: <b>COVID-19</b><br/>Vaccin: <b>Pfizer (Comirnaty)</b><br/>Type vaccin: <b>type</b><br/>Producent: <b>Biontech Manufacturing GmbH</b><br/>Dosis: <b>1 / 2</b><br/>Vaccinatiedatum: <b>1 augustus 2021</b><br/>Gevaccineerd in: <b>Nederland</b><br/>Uniek vaccinatienummer: <b>unique</b><br/>",
             infoScreen.description
         )
-
     }
 
     @Test
@@ -149,7 +146,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
                 euBrands = listOf(
                     AppConfig.Code(
                         code = "EU/1/20/1528",
-                        name = "Pfizer (Comirnaty)",
+                        name = "Pfizer (Comirnaty)"
                     )
                 ),
                 euManufacturers = listOf(
@@ -178,7 +175,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
                 doseNumber = "1",
                 totalDoses = "2",
                 country = "NLD",
-                manufacturer = "manufacturer",
+                manufacturer = "manufacturer"
             )
         )
 

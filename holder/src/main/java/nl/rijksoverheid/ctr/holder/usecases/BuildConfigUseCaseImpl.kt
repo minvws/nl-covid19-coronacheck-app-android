@@ -6,13 +6,12 @@
  *
  */
 
-
 package nl.rijksoverheid.ctr.holder.usecases
 
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 
-class BuildConfigUseCaseImpl: BuildConfigUseCase {
+class BuildConfigUseCaseImpl : BuildConfigUseCase {
     override fun getVersionCode(): Int {
         return BuildConfig.VERSION_CODE
     }

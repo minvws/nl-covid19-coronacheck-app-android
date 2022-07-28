@@ -10,18 +10,18 @@ package nl.rijksoverheid.ctr.usecases
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.Assert.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.usecases.HolderIntroductionStatusUseCaseImpl
-import nl.rijksoverheid.ctr.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
-import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyItem
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
+import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Test
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 class HolderIntroductionStatusUseCaseImplTest {
 
@@ -32,7 +32,6 @@ class HolderIntroductionStatusUseCaseImplTest {
     private val introductionStatusUseCase = HolderIntroductionStatusUseCaseImpl(
         introductionPersistenceManager, introductionData, persistenceManager, holderFeatureFlagUseCase
     )
-
 
     @Test
     fun `when introduction isn't finished, introduction is required`() {
@@ -222,7 +221,6 @@ class HolderIntroductionStatusUseCaseImplTest {
             )
         }
     }
-
 
     private fun getIntroductionData() = IntroductionData(
         onboardingItems = listOf(

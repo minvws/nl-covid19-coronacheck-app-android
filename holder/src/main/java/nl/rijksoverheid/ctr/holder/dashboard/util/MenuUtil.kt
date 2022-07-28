@@ -8,7 +8,6 @@
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import android.content.Context
-import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
@@ -30,7 +29,7 @@ class MenuUtilImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
     private val featureFlagUseCase: HolderFeatureFlagUseCase
-): MenuUtil {
+) : MenuUtil {
 
     override fun showMenu(dashboardFragment: DashboardFragment) {
         dashboardFragment.findNavControllerSafety()?.navigate(
@@ -155,15 +154,15 @@ class MenuUtilImpl(
                 items = mutableListOf(
                     AboutThisAppData.Url(
                         text = context.getString(R.string.privacy_statement),
-                        url = context.getString(R.string.url_privacy_statement),
+                        url = context.getString(R.string.url_privacy_statement)
                     ),
                     AboutThisAppData.Url(
                         text = context.getString(R.string.about_this_app_accessibility),
-                        url = context.getString(R.string.url_accessibility),
+                        url = context.getString(R.string.url_accessibility)
                     ),
                     AboutThisAppData.Url(
                         text = context.getString(R.string.about_this_app_colofon),
-                        url = context.getString(R.string.about_this_app_colofon_url),
+                        url = context.getString(R.string.about_this_app_colofon_url)
                     ),
                     AboutThisAppData.Destination(
                         text = context.getString(R.string.holder_menu_storedEvents),

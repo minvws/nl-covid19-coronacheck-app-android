@@ -1,10 +1,10 @@
 package nl.rijksoverheid.ctr.verifier.scanlog.usecase
 
+import java.time.Clock
+import java.time.Instant
 import nl.rijksoverheid.ctr.verifier.persistance.database.VerifierDatabase
 import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
 import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionUseCase
-import java.time.Clock
-import java.time.Instant
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,7 +21,7 @@ class LogScanUseCaseImpl(
     private val clock: Clock,
     private val verificationPolicySelectionUseCase: VerificationPolicySelectionUseCase,
     private val verifierDatabase: VerifierDatabase
-): LogScanUseCase {
+) : LogScanUseCase {
 
     override suspend fun log() {
         verifierDatabase.scanLogDao().insert(

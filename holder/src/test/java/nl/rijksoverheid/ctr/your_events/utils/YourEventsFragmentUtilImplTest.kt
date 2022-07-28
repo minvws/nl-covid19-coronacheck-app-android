@@ -10,14 +10,14 @@ package nl.rijksoverheid.ctr.your_events.utils
 import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtilImpl
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

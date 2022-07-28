@@ -5,7 +5,7 @@ import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import org.json.JSONObject
 
 sealed class QrCodeData(
-    open val bitmap: Bitmap,
+    open val bitmap: Bitmap
 ) {
 
     data class Domestic(
@@ -25,7 +25,7 @@ sealed class QrCodeData(
             val isExpired: Boolean,
             override val bitmap: Bitmap,
             override val readEuropeanCredential: JSONObject
-        ): European(bitmap, readEuropeanCredential)
+        ) : European(bitmap, readEuropeanCredential)
 
         data class NonVaccination(
             override val bitmap: Bitmap,

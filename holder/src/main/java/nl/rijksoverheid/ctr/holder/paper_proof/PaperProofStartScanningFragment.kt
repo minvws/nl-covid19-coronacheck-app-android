@@ -27,7 +27,7 @@ import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class PaperProofStartScanningFragment: Fragment(R.layout.fragment_paper_proof_start_scanning) {
+class PaperProofStartScanningFragment : Fragment(R.layout.fragment_paper_proof_start_scanning) {
 
     private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
     private val infoFragmentUtil: InfoFragmentUtil by inject()

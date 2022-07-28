@@ -2,13 +2,13 @@ package nl.rijksoverheid.ctr.holder.api.repositories
 
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
-import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtil
+import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteUnomi
-import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
+import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /*
@@ -45,7 +45,7 @@ interface EventProviderRepository {
         scope: String?,
         signingCertificateBytes: List<ByteArray>,
         provider: String,
-        tlsCertificateBytes: List<ByteArray>,
+        tlsCertificateBytes: List<ByteArray>
     ): NetworkRequestResult<RemoteUnomi>
 
     suspend fun getEvents(
@@ -55,13 +55,13 @@ interface EventProviderRepository {
         filter: String,
         scope: String?,
         provider: String,
-        tlsCertificateBytes: List<ByteArray>,
+        tlsCertificateBytes: List<ByteArray>
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>>
 }
 
 class EventProviderRepositoryImpl(
     private val testProviderApiClientUtil: TestProviderApiClientUtil,
-    private val networkRequestResultFactory: NetworkRequestResultFactory,
+    private val networkRequestResultFactory: NetworkRequestResultFactory
 ) : EventProviderRepository {
 
     private fun getTestProviderApiClient(tlsCertificateBytes: List<ByteArray>, cmsCertificateBytes: List<ByteArray>): TestProviderApiClient {
@@ -75,7 +75,7 @@ class EventProviderRepositoryImpl(
         scope: String?,
         signingCertificateBytes: List<ByteArray>,
         provider: String,
-        tlsCertificateBytes: List<ByteArray>,
+        tlsCertificateBytes: List<ByteArray>
     ): NetworkRequestResult<RemoteUnomi> {
         val params = mutableMapOf<String, String>()
         params["filter"] = filter
@@ -85,7 +85,7 @@ class EventProviderRepositoryImpl(
 
         return networkRequestResultFactory.createResult(
             step = HolderStep.UnomiNetworkRequest,
-            provider = provider,
+            provider = provider
         ) {
             getTestProviderApiClient(tlsCertificateBytes, signingCertificateBytes).getUnomi(
                 url = url,
@@ -103,7 +103,7 @@ class EventProviderRepositoryImpl(
         filter: String,
         scope: String?,
         provider: String,
-        tlsCertificateBytes: List<ByteArray>,
+        tlsCertificateBytes: List<ByteArray>
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
         val params = mutableMapOf<String, String>()
         params["filter"] = filter
@@ -113,7 +113,7 @@ class EventProviderRepositoryImpl(
 
         return networkRequestResultFactory.createResult(
             step = HolderStep.EventNetworkRequest,
-            provider = provider,
+            provider = provider
         ) {
             getTestProviderApiClient(tlsCertificateBytes, signingCertificateBytes).getEvents(
                 url = url,

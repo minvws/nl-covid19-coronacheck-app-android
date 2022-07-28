@@ -15,6 +15,3 @@ data class RemoteNonce(
     val nonce: String,
     @Json(name = "stoken") val sToken: String
 )
-
-
-

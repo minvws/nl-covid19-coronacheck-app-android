@@ -7,15 +7,15 @@
 
 package nl.rijksoverheid.ctr.holder.input_token.usecases
 
-import nl.rijksoverheid.ctr.holder.models.HolderStep
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
-import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.ConfigProvidersUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.TestProvidersResult
+import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
+import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtilImpl
+import nl.rijksoverheid.ctr.holder.models.HolderStep
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.ext.removeWhitespace
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
@@ -91,7 +91,7 @@ class TestResultUseCase(
                 verifierCode = verificationCode?.removeWhitespace() ?: "",
                 signingCertificateBytes = testProvider.cms,
                 provider = providerIdentifier,
-                tlsCertificateBytes = testProvider.tls,
+                tlsCertificateBytes = testProvider.tls
             )
 
             val signedResponseWithTestResult = when (signedResponseWithTestResultRequestResult) {
@@ -146,6 +146,6 @@ sealed class TestResult {
     object UnknownTestProvider : TestResult()
     object EmptyVerificationCode : TestResult()
     object VerificationRequired : TestResult()
-    object ResultBlocked: TestResult()
+    object ResultBlocked : TestResult()
     data class Error(val errorResult: ErrorResult) : TestResult()
 }

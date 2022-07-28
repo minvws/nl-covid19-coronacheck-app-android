@@ -1,7 +1,26 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.holder.dashboard.items.*
-import nl.rijksoverheid.ctr.holder.dashboard.util.*
+import java.time.Clock
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItemUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.CardItemUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.CardItemUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemEmptyStateUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemEmptyStateUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
@@ -12,24 +31,32 @@ import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtil
 import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtilImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtilImpl
-import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
-import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtilImpl
-import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
-import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.LocalDateUtil
 import nl.rijksoverheid.ctr.holder.utils.LocalDateUtilImpl
-import nl.rijksoverheid.ctr.holder.your_events.utils.*
+import nl.rijksoverheid.ctr.holder.your_events.utils.EventGroupEntityUtil
+import nl.rijksoverheid.ctr.holder.your_events.utils.EventGroupEntityUtilImpl
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtil
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtilImpl
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtilImpl
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3UtilImpl
+import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
+import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtilImpl
+import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
+import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtilImpl
+import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
+import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtilImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
-import java.time.Clock
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

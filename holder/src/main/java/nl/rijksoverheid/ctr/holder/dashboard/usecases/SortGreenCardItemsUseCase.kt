@@ -19,7 +19,7 @@ interface SortGreenCardItemsUseCase {
 class SortGreenCardItemsUseCaseImpl(
     private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val greenCardUtil: GreenCardUtil
-): SortGreenCardItemsUseCase {
+) : SortGreenCardItemsUseCase {
 
     override fun sort(items: List<DashboardItem>): List<DashboardItem> {
         if (items.size < 2) {

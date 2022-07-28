@@ -11,4 +11,4 @@ import kotlinx.parcelize.Parcelize
  *
  */
 @Parcelize
-data class EventProvider(val identifier: String, val name: String): Parcelable
+data class EventProvider(val identifier: String, val name: String) : Parcelable

@@ -30,7 +30,7 @@ class PersistConfigUseCaseImplTest {
 
         val usecase = PersistConfigUseCaseImpl(
             appConfigStorageManager = appConfigStorageManager,
-            filesDirPath = "",
+            filesDirPath = ""
         )
 
         usecase.persist(
@@ -40,5 +40,4 @@ class PersistConfigUseCaseImplTest {
 
         coVerify { appConfigStorageManager.storageFile(any(), any()) }
     }
-
 }

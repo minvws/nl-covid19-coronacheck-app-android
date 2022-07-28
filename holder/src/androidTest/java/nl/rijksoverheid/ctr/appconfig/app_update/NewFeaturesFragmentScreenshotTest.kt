@@ -13,7 +13,6 @@ import nl.rijksoverheid.ctr.holder.R
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -22,7 +21,7 @@ import org.junit.runner.RunWith
  *
  */
 @RunWith(AndroidJUnit4::class)
-class NewFeaturesFragmentScreenshotTest: ScreenshotTest {
+class NewFeaturesFragmentScreenshotTest : ScreenshotTest {
     @Test
     fun newFeaturesFragment_TwoPages_Screenshot() {
         val fragmentScenario = launchFragment(pagesSize = 2)
@@ -44,7 +43,7 @@ class NewFeaturesFragmentScreenshotTest: ScreenshotTest {
                     imageResource = R.drawable.ic_paper_proof_international_qr,
                     subTitleColor = R.color.primary_blue,
                     titleResource = R.string.holder_newintheapp_foreignproofs_title,
-                    description = R.string.holder_newintheapp_foreignproofs_body,
+                    description = R.string.holder_newintheapp_foreignproofs_body
                 ))
             }
         }

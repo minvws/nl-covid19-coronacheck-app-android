@@ -42,7 +42,7 @@ class EventProviderRepositoryImplTest {
                 step = any(),
                 provider = any(),
                 interceptHttpError = any<suspend (HttpException) -> R>(),
-                networkCall = any<suspend () -> NetworkRequestResult<R>>(),
+                networkCall = any<suspend () -> NetworkRequestResult<R>>()
             )
         } coAnswers {
             val fourthArg = args[3] as suspend () -> NetworkRequestResult<R>

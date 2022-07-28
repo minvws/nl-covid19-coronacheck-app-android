@@ -3,6 +3,8 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 import com.squareup.moshi.Moshi
 import io.mockk.every
 import io.mockk.mockk
+import java.io.File
+import java.nio.file.Paths
 import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
@@ -10,10 +12,10 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.BufferedSource
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.io.File
-import java.nio.file.Paths
 
 class CachedAppConfigUseCaseImplTest {
 
@@ -69,7 +71,6 @@ class CachedAppConfigUseCaseImplTest {
             assertTrue(this is VerifierConfig)
             assertEquals("test", informationURL)
         }
-
     }
 
     @Test

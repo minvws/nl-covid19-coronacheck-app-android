@@ -15,7 +15,7 @@ interface EventGroupEntityUtil {
 
 class EventGroupEntityUtilImpl(
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
-): EventGroupEntityUtil {
+) : EventGroupEntityUtil {
 
     override fun getProviderName(providerIdentifier: String): String {
         // Some provider identifiers have a unique appended to it, the first part is the actual provider identifier

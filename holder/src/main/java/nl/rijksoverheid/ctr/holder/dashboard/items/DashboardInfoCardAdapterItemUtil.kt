@@ -10,9 +10,9 @@ package nl.rijksoverheid.ctr.holder.dashboard.items
 import android.content.Context
 import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 
 interface DashboardInfoCardAdapterItemUtil {
     fun getOriginInfoText(

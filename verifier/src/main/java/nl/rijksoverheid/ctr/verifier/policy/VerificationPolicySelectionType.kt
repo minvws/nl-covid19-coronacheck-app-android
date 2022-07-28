@@ -11,7 +11,7 @@ import nl.rijksoverheid.ctr.verifier.models.ScannerState
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class VerificationPolicySelectionType(val state: ScannerState): Parcelable {
+sealed class VerificationPolicySelectionType(val state: ScannerState) : Parcelable {
     @Parcelize
     class FirstTimeUse(val scannerState: ScannerState) : VerificationPolicySelectionType(scannerState)
     @Parcelize

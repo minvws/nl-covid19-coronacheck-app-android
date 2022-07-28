@@ -11,10 +11,10 @@ package nl.rijksoverheid.ctr.holder.ui.device_secure
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Context.KEYGUARD_SERVICE
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 interface DeviceSecureUseCase {
     suspend fun isDeviceSecure(): Boolean

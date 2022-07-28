@@ -8,8 +8,11 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import nl.rijksoverheid.ctr.holder.get_events.models.*
-import nl.rijksoverheid.ctr.shared.models.PersonalDetails
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 
 interface InfoScreenUtil {
 
@@ -19,7 +22,7 @@ interface InfoScreenUtil {
         testDate: String,
         birthDate: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean = true,
+        addExplanation: Boolean = true
     ): InfoScreen
 
     fun getForVaccination(
@@ -28,7 +31,7 @@ interface InfoScreenUtil {
         birthDate: String,
         providerIdentifier: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean = true,
+        addExplanation: Boolean = true
     ): InfoScreen
 
     fun getForPositiveTest(
@@ -44,7 +47,7 @@ interface InfoScreenUtil {
         fullName: String,
         birthDate: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean = true,
+        addExplanation: Boolean = true
     ): InfoScreen
 
     fun getForVaccinationAssessment(
@@ -67,9 +70,8 @@ class InfoScreenUtilImpl(
         testDate: String,
         birthDate: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean,
+        addExplanation: Boolean
     ) = testInfoScreenUtil.getForNegativeTest(event, fullName, testDate, birthDate, europeanCredential, addExplanation)
-
 
     override fun getForVaccination(
         event: RemoteEventVaccination,
@@ -77,7 +79,7 @@ class InfoScreenUtilImpl(
         birthDate: String,
         providerIdentifier: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean,
+        addExplanation: Boolean
     ) = vaccinationInfoScreenUtil.getForVaccination(event, fullName, birthDate, providerIdentifier, europeanCredential, addExplanation)
 
     override fun getForPositiveTest(
@@ -93,7 +95,7 @@ class InfoScreenUtilImpl(
         fullName: String,
         birthDate: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean,
+        addExplanation: Boolean
     ) = recoveryInfoScreenUtil.getForRecovery(event, testDate, fullName, birthDate, europeanCredential, addExplanation)
 
     override fun getForVaccinationAssessment(

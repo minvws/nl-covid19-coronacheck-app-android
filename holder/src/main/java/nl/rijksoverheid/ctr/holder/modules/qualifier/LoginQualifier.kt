@@ -10,6 +10,6 @@
 
 package nl.rijksoverheid.ctr.holder.modules.qualifier
 
-enum class LoginQualifier{
+enum class LoginQualifier {
     DIGID, MIJN_CN
 }

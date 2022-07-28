@@ -1,24 +1,29 @@
 package nl.rijksoverheid.ctr.persistence.database
 
+import java.time.OffsetDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
-import nl.rijksoverheid.ctr.persistence.database.entities.*
-import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState
-import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.*
-import nl.rijksoverheid.ctr.persistence.database.usecases.*
-import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.NotApplicable
+import nl.rijksoverheid.ctr.persistence.database.usecases.GetRemoteGreenCardsUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoteGreenCardsResult
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsResult
+import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.UpdateEventExpirationUseCase
+import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

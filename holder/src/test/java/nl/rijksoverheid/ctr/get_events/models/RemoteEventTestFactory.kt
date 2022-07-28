@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.get_events.models
 
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import java.time.LocalDate
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 
 object RemoteEventTestFactory {
 
@@ -18,7 +18,7 @@ object RemoteEventTestFactory {
         doseNumber: String? = "doseNumber",
         totalDoses: String? = "totalDoses",
         country: String? = "country",
-        manufacturer: String? = "manufacturer",
+        manufacturer: String? = "manufacturer"
     ) = RemoteEventVaccination(
         type,
         unique,

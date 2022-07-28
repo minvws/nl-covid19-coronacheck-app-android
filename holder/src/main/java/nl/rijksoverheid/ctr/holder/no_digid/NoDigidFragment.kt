@@ -86,7 +86,7 @@ class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
             is NoDigidNavigationButtonData.Link -> {
                 intentUtil.openUrl(
                     context = requireContext(),
-                    url = data.externalUrl,
+                    url = data.externalUrl
                 )
             }
             is NoDigidNavigationButtonData.Ggd -> {

@@ -22,7 +22,7 @@ interface RecoveryInfoScreenUtil {
         fullName: String,
         birthDate: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean = true,
+        addExplanation: Boolean = true
     ): InfoScreen
 }
 
@@ -30,7 +30,7 @@ class RecoveryInfoScreenUtilImpl(
     val resources: Resources,
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val paperProofUtil: PaperProofUtil
-): RecoveryInfoScreenUtil {
+) : RecoveryInfoScreenUtil {
 
     override fun getForRecovery(
         event: RemoteEventRecovery,
@@ -38,7 +38,7 @@ class RecoveryInfoScreenUtilImpl(
         fullName: String,
         birthDate: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean,
+        addExplanation: Boolean
     ): InfoScreen {
 
         val validFromDate = event.recovery?.validFrom?.formatDayMonthYear() ?: ""
@@ -90,7 +90,7 @@ class RecoveryInfoScreenUtilImpl(
                 paperProofUtil.getInfoScreenFooterText(europeanCredential)
             } else {
                 ""
-            },
+            }
         ) as String)
 
         return InfoScreen(

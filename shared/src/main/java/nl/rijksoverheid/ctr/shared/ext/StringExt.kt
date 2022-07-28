@@ -4,12 +4,9 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import android.text.Html
-import android.text.Spanned
 import androidx.browser.customtabs.CustomTabsIntent
 import com.squareup.moshi.Moshi
-import java.util.*
+import java.util.Locale
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -38,7 +35,7 @@ fun String.launchUrl(context: Context, noBrowserBlock: () -> Unit = {}) {
     }
 }
 
-fun String.removeWhitespace() : String {
+fun String.removeWhitespace(): String {
     return this.replace("\\s+".toRegex(), "")
 }
 

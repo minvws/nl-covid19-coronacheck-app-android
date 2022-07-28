@@ -10,11 +10,10 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 import android.content.res.Resources
 import android.text.TextUtils
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
-import nl.rijksoverheid.ctr.shared.models.PersonalDetails
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 
 interface TestInfoScreenUtil {
 
@@ -24,7 +23,7 @@ interface TestInfoScreenUtil {
         testDate: String,
         birthDate: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean = true,
+        addExplanation: Boolean = true
     ): InfoScreen
 
     fun getForPositiveTest(
@@ -49,7 +48,7 @@ class TestInfoScreenUtilImpl(
         testDate: String,
         birthDate: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean,
+        addExplanation: Boolean
     ): InfoScreen {
         val testType = holderConfig.euTestTypes.firstOrNull {
             it.code == event.negativeTest?.type
@@ -132,7 +131,7 @@ class TestInfoScreenUtilImpl(
                 paperProofUtil.getInfoScreenFooterText(europeanCredential)
             } else {
                 ""
-            },
+            }
         ) as String)
 
         return InfoScreen(

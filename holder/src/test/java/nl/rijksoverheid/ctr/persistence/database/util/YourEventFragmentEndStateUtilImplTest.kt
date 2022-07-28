@@ -12,16 +12,21 @@ package nl.rijksoverheid.ctr.persistence.database.util
 
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.holder.*
+import kotlin.test.assertEquals
+import nl.rijksoverheid.ctr.fakeDomesticGreenCard
+import nl.rijksoverheid.ctr.fakeEuGreenCard
+import nl.rijksoverheid.ctr.fakeEventGroupEntity
+import nl.rijksoverheid.ctr.fakeGreenCard
+import nl.rijksoverheid.ctr.fakeOrigin
+import nl.rijksoverheid.ctr.fakeRemoteGreenCards
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState.*
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class YourEventFragmentEndStateUtilImplTest {
 
@@ -55,21 +60,23 @@ class YourEventFragmentEndStateUtilImplTest {
 
         assertEquals(
             util.getResult(HolderFlow.Startup, storedGreenCards, events, remoteGreenCards),
-            NotApplicable
+            YourEventFragmentEndState.NotApplicable
         )
     }
 
     @Test
     fun `combination is only international vaccination`() {
         val events = listOf(
-            fakeEventGroupEntity(type = OriginType.Vaccination),
+            fakeEventGroupEntity(type = OriginType.Vaccination)
         )
         val remoteGreenCards = fakeRemoteGreenCards(
             domesticGreencard = fakeDomesticGreenCard(origins = emptyList()),
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
-        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), OnlyInternationalVaccination)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards),
+            YourEventFragmentEndState.OnlyInternationalVaccination
+        )
     }
 
     @Test
@@ -88,7 +95,9 @@ class YourEventFragmentEndStateUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard())
         )
 
-        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), OnlyDomesticVaccination(365))
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards),
+            YourEventFragmentEndState.OnlyDomesticVaccination(365)
+        )
     }
 
     @Test
@@ -106,7 +115,9 @@ class YourEventFragmentEndStateUtilImplTest {
             euGreencards = listOf()
         )
 
-        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), OnlyRecovery)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards),
+            YourEventFragmentEndState.OnlyRecovery
+        )
     }
 
     @Test
@@ -120,7 +131,9 @@ class YourEventFragmentEndStateUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
-        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), VaccinationAndRecovery)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards),
+            YourEventFragmentEndState.VaccinationAndRecovery
+        )
     }
 
     @Test
@@ -142,7 +155,7 @@ class YourEventFragmentEndStateUtilImplTest {
 
         assertEquals(
             util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards),
-            CombinedVaccinationRecovery(365)
+            YourEventFragmentEndState.CombinedVaccinationRecovery(365)
         )
     }
 
@@ -159,7 +172,9 @@ class YourEventFragmentEndStateUtilImplTest {
             euGreencards = listOf(fakeEuGreenCard())
         )
 
-        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NotApplicable)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards),
+            YourEventFragmentEndState.NotApplicable
+        )
     }
 
     @Test
@@ -185,7 +200,7 @@ class YourEventFragmentEndStateUtilImplTest {
 
         assertEquals(
             util.getResult(HolderFlow.Recovery, storedGreenCards, events, remoteGreenCards),
-            NotApplicable
+            YourEventFragmentEndState.NotApplicable
         )
     }
 
@@ -194,13 +209,15 @@ class YourEventFragmentEndStateUtilImplTest {
         every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ZeroG
 
         val events = listOf(
-            fakeEventGroupEntity(type = OriginType.Vaccination),
+            fakeEventGroupEntity(type = OriginType.Vaccination)
         )
         val remoteGreenCards = fakeRemoteGreenCards(
             domesticGreencard = fakeDomesticGreenCard(origins = emptyList()),
             euGreencards = listOf(fakeEuGreenCard(origins = listOf(fakeOrigin(type = OriginType.Vaccination))))
         )
 
-        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards), NotApplicable)
+        assertEquals(util.getResult(HolderFlow.Startup, emptyList(), events, remoteGreenCards),
+            YourEventFragmentEndState.NotApplicable
+        )
     }
 }

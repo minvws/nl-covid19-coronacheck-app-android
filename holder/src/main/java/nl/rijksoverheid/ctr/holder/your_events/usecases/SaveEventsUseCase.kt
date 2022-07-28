@@ -7,15 +7,15 @@
 
 package nl.rijksoverheid.ctr.holder.your_events.usecases
 
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
-import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
-import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -32,7 +32,7 @@ interface SaveEventsUseCase {
     suspend fun saveRemoteProtocols3(
         remoteProtocols: Map<RemoteProtocol, ByteArray>,
         removePreviousEvents: Boolean,
-        flow: Flow,
+        flow: Flow
     ): SaveEventsUseCaseImpl.SaveEventResult
 
     suspend fun remoteProtocols3AreConflicting(remoteProtocols: Map<RemoteProtocol, ByteArray>): Boolean
@@ -58,7 +58,7 @@ class SaveEventsUseCaseImpl(
     override suspend fun saveRemoteProtocols3(
         remoteProtocols: Map<RemoteProtocol, ByteArray>,
         removePreviousEvents: Boolean,
-        flow: Flow,
+        flow: Flow
     ): SaveEventResult {
         try {
             if (removePreviousEvents) {

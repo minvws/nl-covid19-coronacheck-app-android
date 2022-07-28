@@ -2,7 +2,9 @@ package nl.rijksoverheid.ctr.persistence.database.models
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -24,5 +26,5 @@ data class GreenCard(
         parentColumn = "id",
         entityColumn = "green_card_id"
     )
-    val credentialEntities: List<CredentialEntity>,
+    val credentialEntities: List<CredentialEntity>
 )

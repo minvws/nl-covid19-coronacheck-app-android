@@ -25,7 +25,11 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.get_events.models.*
+import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
+import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -106,7 +110,7 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                                 urlData = ErrorResultFragmentData.UrlData(
                                     urlButtonTitle = getString(R.string.error_something_went_wrong_outage_button),
                                     urlButtonUrl = getString(R.string.error_something_went_wrong_outage_button_url)
-                                ),
+                                )
                             )
                         )
                     } else {
@@ -207,7 +211,7 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                             getString(loginTypeUtil.getNoBrowserDialogDescription(getLoginType()))
                         ),
                         positiveButtonText = R.string.ok,
-                        positiveButtonCallback = {},
+                        positiveButtonCallback = {}
                     )
                 }
             }

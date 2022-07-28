@@ -11,24 +11,27 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.holder.fakeGreenCard
-import nl.rijksoverheid.ctr.holder.fakeOriginEntity
-import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.*
-import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtilImpl
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import org.junit.Assert
-import org.junit.Assert.assertEquals
-import org.junit.Test
 import java.time.Clock
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlinx.coroutines.runBlocking
+import nl.rijksoverheid.ctr.fakeGreenCard
+import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtilImpl
+import nl.rijksoverheid.ctr.holder.fakeOriginEntity
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class GreenCardUtilImplTest {
 

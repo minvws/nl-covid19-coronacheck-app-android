@@ -7,17 +7,17 @@
 
 package nl.rijksoverheid.ctr.holder.your_events.utils
 
-import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
-import nl.rijksoverheid.ctr.holder.models.HolderFlow
-import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.shared.models.Flow
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.shared.models.Flow
 
 interface YourEventsFragmentUtil {
     fun getHeaderCopy(type: YourEventsFragmentType): Int

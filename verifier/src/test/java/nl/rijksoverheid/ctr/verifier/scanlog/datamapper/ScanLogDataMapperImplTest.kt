@@ -1,13 +1,13 @@
 package nl.rijksoverheid.ctr.verifier.scanlog.datamapper
 
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
 import nl.rijksoverheid.ctr.verifier.scanlog.models.ScanLog
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 class ScanLogDataMapperImplTest {
 
@@ -39,7 +39,7 @@ class ScanLogDataMapperImplTest {
             ScanLogEntity(
                 policy = VerificationPolicy.VerificationPolicy1G,
                 date = Instant.parse("2021-01-01T00:20:00.00Z")
-            ),
+            )
         )
 
         val expectedModels = listOf(

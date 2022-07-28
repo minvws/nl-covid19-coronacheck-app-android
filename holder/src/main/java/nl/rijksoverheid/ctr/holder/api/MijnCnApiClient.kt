@@ -9,7 +9,11 @@
 package nl.rijksoverheid.ctr.holder.api
 
 import nl.rijksoverheid.ctr.holder.get_events.models.MijnCNTokenResponse
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Headers
+import retrofit2.http.POST
+import retrofit2.http.Url
 
 interface MijnCnApiClient {
 
@@ -22,7 +26,6 @@ interface MijnCnApiClient {
         @Field("grant_type") grantType: String,
         @Field("redirect_uri") redirectUri: String,
         @Field("code_verifier") codeVerifier: String,
-        @Field("client_id") clientId: String,
+        @Field("client_id") clientId: String
     ): MijnCNTokenResponse
-
 }

@@ -1,11 +1,11 @@
 package nl.rijksoverheid.ctr.persistence.database.converters
 
 import androidx.room.TypeConverter
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

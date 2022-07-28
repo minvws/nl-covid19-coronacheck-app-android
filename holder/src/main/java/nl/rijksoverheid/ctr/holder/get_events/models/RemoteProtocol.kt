@@ -24,7 +24,8 @@ data class RemoteProtocol(
     val protocolVersion: String,
     val status: Status,
     val holder: Holder?,
-    val events: List<RemoteEvent>?): Parcelable {
+    val events: List<RemoteEvent>?
+) : Parcelable {
 
     @Parcelize
     @JsonClass(generateAdapter = true)

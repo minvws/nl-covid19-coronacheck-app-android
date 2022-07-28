@@ -7,6 +7,10 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
+import java.time.Clock
+import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
@@ -15,10 +19,6 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONArray
 import org.json.JSONObject
-import java.time.Clock
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 interface CredentialUtil {
     fun getActiveCredential(greenCardType: GreenCardType, entities: List<CredentialEntity>): CredentialEntity?
@@ -31,7 +31,8 @@ interface CredentialUtil {
     ): String
 
     fun vaccinationShouldBeHidden(
-        readEuropeanCredentials: List<JSONObject>, indexOfVaccination: Int
+        readEuropeanCredentials: List<JSONObject>,
+        indexOfVaccination: Int
     ): Boolean
 
     fun europeanCredentialHasExpired(credentialExpirationTimeSeconds: Long): Boolean
@@ -126,9 +127,9 @@ class CredentialUtilImpl(
         }
         val (dose, totalDoses) = getDoses(vaccinations[indexOfVaccination])
         return getDateWhenRelevant(vaccinations[indexOfVaccination])?.let {
-            it < OffsetDateTime.now(clock)
-                    && dose < totalDoses
-                    && !hasCompletedButNotRelevantVaccination(vaccinations, dose)
+            it < OffsetDateTime.now(clock) &&
+                    dose < totalDoses &&
+                    !hasCompletedButNotRelevantVaccination(vaccinations, dose)
         } ?: false
     }
 
@@ -143,9 +144,9 @@ class CredentialUtilImpl(
         return vaccinations.any { vaccination ->
             val (dose, totalDoses) = getDoses(vaccination)
             getDateWhenRelevant(vaccination)?.let {
-                it > OffsetDateTime.now(clock)
-                        && dose == totalDoses
-                        && dose == doseOfHiddenVaccination + 1
+                it > OffsetDateTime.now(clock) &&
+                        dose == totalDoses &&
+                        dose == doseOfHiddenVaccination + 1
             } ?: false
         }
     }

@@ -8,6 +8,10 @@
 package nl.rijksoverheid.ctr.api
 
 import com.squareup.moshi.Moshi
+import java.net.InetAddress
+import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLHandshakeException
+import kotlin.test.assertEquals
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.api.json.JsonObjectJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
@@ -32,11 +36,6 @@ import org.koin.test.get
 import org.robolectric.RobolectricTestRunner
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.net.InetAddress
-import java.util.concurrent.TimeUnit
-import javax.net.ssl.SSLHandshakeException
-import kotlin.test.assertEquals
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -46,7 +45,7 @@ import kotlin.test.assertEquals
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class CertificatePinTest: AutoCloseKoinTest() {
+class CertificatePinTest : AutoCloseKoinTest() {
 
     private val localhost = InetAddress.getByName("localhost").canonicalHostName
     private val localhostCertificate: HeldCertificate = HeldCertificate.Builder()

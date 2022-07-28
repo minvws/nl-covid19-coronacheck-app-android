@@ -27,5 +27,5 @@ import kotlinx.parcelize.Parcelize
 data class GreenCardEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "wallet_id", index = true) val walletId: Int,
-    val type: GreenCardType,
-): Parcelable
+    val type: GreenCardType
+) : Parcelable

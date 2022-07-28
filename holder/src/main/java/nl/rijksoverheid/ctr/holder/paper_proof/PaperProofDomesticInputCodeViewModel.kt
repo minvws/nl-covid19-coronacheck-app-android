@@ -30,7 +30,8 @@ abstract class PaperProofDomesticInputCodeViewModel : ViewModel() {
 
 class PaperProofDomesticInputCodeViewModelImpl(
     private val validatePaperProofDomesticInputCodeUseCase: ValidatePaperProofDomesticInputCodeUseCase,
-    private val validatePaperProofDomesticUseCase: ValidatePaperProofDomesticUseCase): PaperProofDomesticInputCodeViewModel() {
+    private val validatePaperProofDomesticUseCase: ValidatePaperProofDomesticUseCase
+) : PaperProofDomesticInputCodeViewModel() {
 
     override fun validateCode(code: String) {
         val result = validatePaperProofDomesticInputCodeUseCase.validate(code)

@@ -41,7 +41,6 @@ class PersonalDetailItemWidget @JvmOverloads constructor(
                     ?.let(this@PersonalDetailItemWidget::setHeader)
                 getText(R.styleable.PersonalDetailsItemWidget_textContent)?.toString()
                     ?.let(this@PersonalDetailItemWidget::setContent)
-
             } finally {
                 recycle()
             }

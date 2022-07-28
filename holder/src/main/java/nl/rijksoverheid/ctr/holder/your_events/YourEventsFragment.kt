@@ -14,28 +14,38 @@ import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.design.ext.*
+import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.design.ext.formatDayMonth
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
-import nl.rijksoverheid.ctr.holder.*
+import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
-import nl.rijksoverheid.ctr.holder.get_events.models.*
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.MissingOriginErrorResult
-import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -79,7 +89,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             is YourEventsFragmentType.DCC -> {
                 yourEventsViewModel.checkForConflictingEvents(
-                    remoteProtocols = type.getRemoteEvents(),
+                    remoteProtocols = type.getRemoteEvents()
                 )
             }
         }
@@ -278,7 +288,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             ),
                             primaryButtonData = ButtonData.NavigationButton(
                                 text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
-                                navigationActionId = InfoFragmentDirections.actionVisitorPassInputToken().actionId,
+                                navigationActionId = InfoFragmentDirections.actionVisitorPassInputToken().actionId
                             )
                         )
                     )
@@ -300,7 +310,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         getFlow() == HolderFlow.VaccinationAndPositiveTest
 
     private fun replaceCertificateDialog(
-        remoteEvents: Map<RemoteProtocol, ByteArray>,
+        remoteEvents: Map<RemoteProtocol, ByteArray>
     ) {
         dialogUtil.presentDialog(
             context = requireContext(),
@@ -421,7 +431,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         birthDate: String,
         currentEvent: RemoteEventVaccination,
         allEventsInformation: List<RemoteEventInformation>,
-        isDccEvent: Boolean,
+        isDccEvent: Boolean
     ) {
         val type = args.type
         val infoScreen = infoScreenUtil.getForVaccination(
@@ -470,7 +480,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                         JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
                                     } else {
                                         null
-                                    },
+                                    }
                                 )
                             }.toTypedArray()
                         )
@@ -690,7 +700,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             } else {
                                 R.string.dialog_negative_test_result_something_wrong_description
                             },
-                            htmlLinksEnabled = true,
+                            htmlLinksEnabled = true
                         )
                     )
                 )

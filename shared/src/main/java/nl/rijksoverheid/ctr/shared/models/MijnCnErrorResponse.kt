@@ -19,12 +19,11 @@ import kotlinx.parcelize.Parcelize
 data class MijnCnErrorResponse(
     val rawResponse: String,
     val model: MijnCnErrorResponseModel
-): Parcelable
-
+) : Parcelable
 
 @JsonClass(generateAdapter = true)
 @Parcelize
 data class MijnCnErrorResponseModel(
     val error: String,
     val code: Int
-): Parcelable
+) : Parcelable

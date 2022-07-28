@@ -10,10 +10,28 @@ package nl.rijksoverheid.ctr.appconfig
 
 import android.content.Context
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
-import nl.rijksoverheid.ctr.appconfig.persistence.*
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManagerImpl
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManagerImpl
+import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
+import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManagerImpl
+import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
+import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManagerImpl
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
-import nl.rijksoverheid.ctr.appconfig.usecases.*
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCaseImpl
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCaseImpl
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCaseImpl
+import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCaseImpl
+import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCaseImpl
+import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.PersistConfigUseCaseImpl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -48,7 +66,7 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
         )
     }
     single<ClockDeviationUseCase> { ClockDeviationUseCaseImpl(get(), get()) }
-    single<AppConfigFreshnessUseCase> { AppConfigFreshnessUseCaseImpl(get(), get(), get())}
+    single<AppConfigFreshnessUseCase> { AppConfigFreshnessUseCaseImpl(get(), get(), get()) }
     factory<RecommendedUpdatePersistenceManager> { RecommendedUpdatePersistenceManagerImpl(get()) }
 
     single {

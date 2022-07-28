@@ -3,11 +3,19 @@ package nl.rijksoverheid.ctr.persistence.database.usecases
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.*
-import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
+import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
 import org.json.JSONObject
@@ -17,12 +25,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 @RunWith(RobolectricTestRunner::class)
-class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
+class CreateDomesticGreenCardUseCaseImplTest : AutoCloseKoinTest() {
 
     private lateinit var db: HolderDatabase
 
@@ -37,7 +42,7 @@ class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
     @Test
     fun `Remote domestic green card creates correct database models`() = runBlocking {
         val usecase = CreateDomesticGreenCardUseCaseImpl(
-            holderDatabase = db,
+            holderDatabase = db
         )
 
         val remoteGreenCard = RemoteGreenCards.DomesticGreenCard(
@@ -125,7 +130,7 @@ class CreateDomesticGreenCardUseCaseImplTest: AutoCloseKoinTest() {
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
                     validFrom = firstJanuaryDate
-                ),
+                )
             ),
             credentialEntities = listOf(
                 CredentialEntity(

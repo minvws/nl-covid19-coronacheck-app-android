@@ -4,17 +4,24 @@ import com.squareup.moshi.Moshi
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.appconfig.models.*
+import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
+import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
+import nl.rijksoverheid.ctr.appconfig.models.NewTerms
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
+import nl.rijksoverheid.ctr.fakeAppConfig
+import nl.rijksoverheid.ctr.fakeAppConfigPersistenceManager
+import nl.rijksoverheid.ctr.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.fakeAppConfig
-import nl.rijksoverheid.ctr.holder.fakeAppConfigPersistenceManager
-import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.usecases.HolderAppStatusUseCaseImpl
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.usecases.ShowNewDisclosurePolicyUseCase
@@ -23,11 +30,10 @@ import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -49,7 +55,7 @@ class HolderAppStatusUseCaseImplTest {
     private fun getHolderConfig(
         minimumVersion: Int = 1,
         appDeactivated: Boolean = false,
-        recommendedVersion: Int = 1,
+        recommendedVersion: Int = 1
     ): String =
         HolderConfig.default(
             holderMinimumVersion = minimumVersion,
@@ -313,7 +319,7 @@ class HolderAppStatusUseCaseImplTest {
             introductionPersistenceManager, showNewDisclosurePolicyUseCase,
             persistenceManager = persistenceManager
         )
-        
+
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneG
@@ -327,7 +333,7 @@ class HolderAppStatusUseCaseImplTest {
             ),
             currentVersionCode = 1
         )
-        
+
         assertTrue(
             appStatus is AppStatus.NewFeatures
         )
@@ -343,7 +349,7 @@ class HolderAppStatusUseCaseImplTest {
             false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
             introductionPersistenceManager, showNewDisclosurePolicyUseCase
         )
-        
+
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns true
         every { appUpdatePersistenceManager.getNewTermsSeen(1) } returns false
@@ -375,7 +381,7 @@ class HolderAppStatusUseCaseImplTest {
             introductionPersistenceManager, showNewDisclosurePolicyUseCase,
             persistenceManager = persistenceManager
         )
-        
+
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneAndThreeG
@@ -389,7 +395,7 @@ class HolderAppStatusUseCaseImplTest {
             ),
             currentVersionCode = 1
         )
-        
+
         with(appStatus as AppStatus.NewFeatures) {
             assertEquals(
                 R.string.holder_newintheapp_content_3Gand1G_title,
@@ -423,7 +429,7 @@ class HolderAppStatusUseCaseImplTest {
             introductionPersistenceManager, showNewDisclosurePolicyUseCase,
             persistenceManager = persistenceManager
         )
-        
+
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.OneG
@@ -470,7 +476,7 @@ class HolderAppStatusUseCaseImplTest {
             introductionPersistenceManager, showNewDisclosurePolicyUseCase,
             persistenceManager = persistenceManager
         )
-        
+
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
@@ -484,7 +490,7 @@ class HolderAppStatusUseCaseImplTest {
             ),
             currentVersionCode = 1
         )
-        
+
         with(appStatus as AppStatus.NewFeatures) {
             assertEquals(
                 R.string.holder_newintheapp_content_only3G_title,
@@ -518,7 +524,7 @@ class HolderAppStatusUseCaseImplTest {
             introductionPersistenceManager, showNewDisclosurePolicyUseCase,
             persistenceManager = persistenceManager
         )
-        
+
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ZeroG
@@ -532,7 +538,7 @@ class HolderAppStatusUseCaseImplTest {
             ),
             currentVersionCode = 1
         )
-        
+
         with(appStatus as AppStatus.NewFeatures) {
             assertEquals(
                 R.string.holder_newintheapp_content_onlyInternationalCertificates_0G_title,
@@ -555,7 +561,7 @@ class HolderAppStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when there are no new feature but there is a policy change, there should be a new feature item`() = runBlocking{
+    fun `when there are no new feature but there is a policy change, there should be a new feature item`() = runBlocking {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
@@ -566,7 +572,7 @@ class HolderAppStatusUseCaseImplTest {
             introductionPersistenceManager, showNewDisclosurePolicyUseCase,
             persistenceManager = persistenceManager
         )
-        
+
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns true
         every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
@@ -580,7 +586,7 @@ class HolderAppStatusUseCaseImplTest {
             ),
             currentVersionCode = 1
         )
-        
+
         with(appStatus as AppStatus.NewFeatures) {
             assertEquals(
                 R.string.holder_newintheapp_content_only3G_title,
@@ -609,7 +615,7 @@ class HolderAppStatusUseCaseImplTest {
             false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
             introductionPersistenceManager, showNewDisclosurePolicyUseCase
         )
-        
+
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
         every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
         every { showNewDisclosurePolicyUseCase.get() } returns null
@@ -622,7 +628,7 @@ class HolderAppStatusUseCaseImplTest {
             ),
             currentVersionCode = 1
         )
-        
+
         with(appStatus as AppStatus.NewFeatures) {
             assertEquals(1, appUpdateData.newFeatures.size)
             assertEquals(2, appUpdateData.newFeatureVersion)
@@ -654,7 +660,7 @@ class HolderAppStatusUseCaseImplTest {
             appUpdatePersistenceManager = mockk {
                 every { getNewFeaturesSeen(any()) } returns true
                 every { getNewTermsSeen(any()) } returns true
-            },
+            }
         )
 
         val appStatus = appStatusUseCase.get(
@@ -671,7 +677,7 @@ class HolderAppStatusUseCaseImplTest {
             appDeactivated = false,
             minimumVersion = 1000,
             configLastFetchedSeconds = 1000,
-            configTtlSeconds = 1000,
+            configTtlSeconds = 1000
         )
 
         val appStatus = appStatusUseCase.get(

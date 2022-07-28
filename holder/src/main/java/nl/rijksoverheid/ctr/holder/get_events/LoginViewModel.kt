@@ -19,9 +19,9 @@ import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
-import nl.rijksoverheid.ctr.holder.models.HolderStep.DigidNetworkRequest
 import nl.rijksoverheid.ctr.holder.api.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
+import nl.rijksoverheid.ctr.holder.models.HolderStep.DigidNetworkRequest
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -38,7 +38,8 @@ import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
  */
 class LoginViewModel(
     private val digidAuthenticationRepository: AuthenticationRepository,
-    private val androidUtil: AndroidUtil) : ViewModel() {
+    private val androidUtil: AndroidUtil
+) : ViewModel() {
 
     private companion object {
         const val USER_CANCELLED_FLOW_CODE = 1
@@ -122,8 +123,8 @@ class LoginViewModel(
         )
 
     private fun isUserCancelled(authError: AuthorizationException) =
-        (authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE)
-                || authError.error == SAML_AUTHN_FAILED_ERROR
+        (authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE) ||
+                authError.error == SAML_AUTHN_FAILED_ERROR
 
     private suspend fun postAuthResponseResult(
         loginType: LoginType,
