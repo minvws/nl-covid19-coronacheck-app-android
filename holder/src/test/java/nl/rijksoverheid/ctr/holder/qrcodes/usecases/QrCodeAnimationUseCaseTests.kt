@@ -7,7 +7,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.util.*
+import java.util.Calendar
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
