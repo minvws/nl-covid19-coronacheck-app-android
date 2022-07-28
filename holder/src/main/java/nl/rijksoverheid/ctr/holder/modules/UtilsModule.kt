@@ -67,6 +67,6 @@ fun utilsModule(versionCode: Int) = module {
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
     factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get()) }
-    factory<StringUtil> { StringUtilImpl() }
+    factory<StringUtil> { StringUtilImpl(get()) }
     factory<YourEventsEndStateUtil> { YourEventsEndStateUtilImpl(get()) }
 }

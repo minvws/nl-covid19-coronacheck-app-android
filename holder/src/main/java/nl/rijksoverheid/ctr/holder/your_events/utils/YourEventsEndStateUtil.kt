@@ -22,7 +22,7 @@ class YourEventsEndStateUtilImpl(
         return if (hints.contains("negativetest_without_vaccinationassessment")) {
             return YourEventsEndState.AddVaccinationAssessment
         } else {
-            val localisedHints = hints.map { stringUtil.getStringFromResourceName(context, it) }.filterNot { it.isEmpty() }
+            val localisedHints = hints.map { stringUtil.getStringFromResourceName(it) }.filterNot { it.isEmpty() }
             if (localisedHints.isEmpty()) {
                 YourEventsEndState.None
             } else {
