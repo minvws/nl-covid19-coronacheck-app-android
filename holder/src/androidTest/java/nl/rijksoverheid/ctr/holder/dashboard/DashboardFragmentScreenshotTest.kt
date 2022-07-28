@@ -19,8 +19,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.karumi.shot.ActivityScenarioUtils.waitForActivity
 import com.karumi.shot.FragmentScenarioUtils.waitForFragment
 import com.karumi.shot.ScreenshotTest
-import nl.rijksoverheid.ctr.fakeDashboardViewModel
-import nl.rijksoverheid.ctr.holder.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.AndroidTestUtils
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
 import nl.rijksoverheid.ctr.holder.R
@@ -29,7 +27,9 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.holder.fakeCredentialEntity
+import nl.rijksoverheid.ctr.holder.fakeDashboardViewModel
 import nl.rijksoverheid.ctr.holder.fakeMobileCoreWrapper
+import nl.rijksoverheid.ctr.holder.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
