@@ -46,6 +46,7 @@ class LoginViewModel(
         const val NETWORK_ERROR = 3
         const val LOGIN_REQUIRED_ERROR = "login_required"
         const val SAML_AUTHN_FAILED_ERROR = "saml_authn_failed"
+        const val CANCELLED = "cancelled"
     }
 
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
@@ -123,8 +124,9 @@ class LoginViewModel(
         )
 
     private fun isUserCancelled(authError: AuthorizationException) =
-        (authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE) ||
-                authError.error == SAML_AUTHN_FAILED_ERROR
+        (authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE)
+                || authError.error == SAML_AUTHN_FAILED_ERROR
+                || authError.error == CANCELLED
 
     private suspend fun postAuthResponseResult(
         loginType: LoginType,
