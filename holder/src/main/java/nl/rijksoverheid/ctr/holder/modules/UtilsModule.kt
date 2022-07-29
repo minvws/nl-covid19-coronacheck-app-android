@@ -12,20 +12,15 @@ import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtil
 import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtilImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtilImpl
-import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
-import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtilImpl
+import nl.rijksoverheid.ctr.holder.utils.*
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtilImpl
-import nl.rijksoverheid.ctr.holder.utils.CountryUtil
-import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
-import nl.rijksoverheid.ctr.holder.utils.LocalDateUtil
-import nl.rijksoverheid.ctr.holder.utils.LocalDateUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -59,9 +54,6 @@ fun utilsModule(versionCode: Int) = module {
     factory<LocalDateUtil> { LocalDateUtilImpl(get(), get()) }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<DashboardPageInfoItemHandlerUtil> { DashboardPageInfoItemHandlerUtilImpl(get(), get(), get()) }
-    factory<YourEventFragmentEndStateUtil> {
-        YourEventFragmentEndStateUtilImpl(get(), get())
-    }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
@@ -75,4 +67,6 @@ fun utilsModule(versionCode: Int) = module {
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
     factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get()) }
+    factory<StringUtil> { StringUtilImpl(get()) }
+    factory<YourEventsEndStateUtil> { YourEventsEndStateUtilImpl(get()) }
 }

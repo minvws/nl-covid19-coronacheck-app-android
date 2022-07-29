@@ -4,9 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import android.text.Html
-import android.text.Spanned
 import androidx.browser.customtabs.CustomTabsIntent
 import com.squareup.moshi.Moshi
 import java.util.*
