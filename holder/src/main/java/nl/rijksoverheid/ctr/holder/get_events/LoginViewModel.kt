@@ -124,9 +124,9 @@ class LoginViewModel(
         )
 
     private fun isUserCancelled(authError: AuthorizationException) =
-        (authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE)
-                || authError.error == SAML_AUTHN_FAILED_ERROR
-                || authError.error == CANCELLED
+        (authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE) ||
+                authError.error == SAML_AUTHN_FAILED_ERROR ||
+                authError.error == CANCELLED
 
     private suspend fun postAuthResponseResult(
         loginType: LoginType,
