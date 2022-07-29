@@ -23,8 +23,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.fakeYourEventsViewModel
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.fakeYourEventsViewModel
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragment
