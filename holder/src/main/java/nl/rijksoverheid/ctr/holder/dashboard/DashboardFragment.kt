@@ -9,8 +9,6 @@ package nl.rijksoverheid.ctr.holder.dashboard
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
@@ -37,7 +35,6 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -57,11 +54,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
     private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
     private val menuUtil: MenuUtil by inject()
-
-    private val refreshHandler = Handler(Looper.getMainLooper())
-    private val refreshRunnable = Runnable {
-        refresh()
-    }
 
     /** count of amount of tabs visible. When tab amount changes on policy change the adapter items need to be reset */
     private var tabItemsCount = 0
@@ -183,10 +175,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync) {
         dashboardViewModel.refresh(dashboardSync)
-        refreshHandler.postDelayed(
-            refreshRunnable,
-            TimeUnit.SECONDS.toMillis(60)
-        )
     }
 
     private fun setupTabs(binding: FragmentDashboardBinding,
@@ -232,8 +220,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     override fun onPause() {
         super.onPause()
-        refreshHandler.removeCallbacks(refreshRunnable)
-        
+
         // Do this check because our screenshot fragment tests run in it's own test activity
         if (parentFragment != null && requireParentFragment().parentFragment != null) {
             (requireParentFragment().requireParentFragment() as HolderMainFragment).getToolbar().menu.clear()

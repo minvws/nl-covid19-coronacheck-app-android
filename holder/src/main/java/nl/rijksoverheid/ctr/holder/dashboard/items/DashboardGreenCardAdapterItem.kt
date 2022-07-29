@@ -34,12 +34,34 @@ data class AdapterCard(
 class DashboardGreenCardAdapterItem(
     private val cards: List<DashboardItem.CardsItem.CardItem>,
     private val onButtonClick: (cardItem: DashboardItem.CardsItem.CardItem, credentials: List<Pair<ByteArray, OffsetDateTime>>) -> Unit,
-    private val onRetryClick: () -> Unit = {}
+    private val onRetryClick: () -> Unit = {},
+    private val onCountDownFinished: () -> Unit = {}
 ) :
     BindableItem<AdapterItemDashboardGreenCardBinding>(R.layout.adapter_item_dashboard_green_card.toLong()),
     KoinComponent {
 
     private val dashboardGreenCardAdapterItemUtil: DashboardGreenCardAdapterItemUtil by inject()
+    private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil by inject()
+
+    private val runnable = Runnable {
+        notifyChanged()
+    }
+
+    private fun countdown(viewBinding: AdapterItemDashboardGreenCardBinding) {
+        val (expireDate, type) = cards.flatMap { it.originStates }
+            .map { Pair(it.origin.expirationTime, it.origin.type) }
+            .maxByOrNull { it.first } ?: return
+
+        val expireCountDown = dashboardGreenCardAdapterItemExpiryUtil.getExpireCountdown(expireDate, type)
+
+        if (expireCountDown is DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show) {
+            if (expireCountDown.expired()) {
+                onCountDownFinished()
+            } else {
+                viewBinding.expiresIn.postDelayed(runnable, 1000)
+            }
+        }
+    }
 
     override fun bind(viewBinding: AdapterItemDashboardGreenCardBinding, position: Int) {
         applyStyling(viewBinding = viewBinding)
@@ -52,6 +74,7 @@ class DashboardGreenCardAdapterItem(
             viewBinding = viewBinding,
             greenCardType = cards.first().greenCard.greenCardEntity.type
         )
+        countdown(viewBinding)
     }
 
     private fun accessibility(viewBinding: AdapterItemDashboardGreenCardBinding, greenCardType: GreenCardType) {
