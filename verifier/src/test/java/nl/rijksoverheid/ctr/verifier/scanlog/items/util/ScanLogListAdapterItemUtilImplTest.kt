@@ -2,18 +2,18 @@ package nl.rijksoverheid.ctr.verifier.scanlog.items.util
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import nl.rijksoverheid.ctr.verifier.R
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 @RunWith(RobolectricTestRunner::class)
-class ScanLogListAdapterItemUtilImplTest: AutoCloseKoinTest() {
+class ScanLogListAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getTimeString return correct string when first item`() {

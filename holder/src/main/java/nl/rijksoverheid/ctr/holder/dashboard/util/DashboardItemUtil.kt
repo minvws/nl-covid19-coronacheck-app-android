@@ -37,7 +37,7 @@ interface DashboardItemUtil {
     fun getConfigFreshnessMaxValidity(): Long
     fun shouldShowMissingDutchVaccinationItem(
         domesticGreenCards: List<GreenCard>,
-        euGreenCards: List<GreenCard>,
+        euGreenCards: List<GreenCard>
     ): Boolean
     fun shouldShowVisitorPassIncompleteItem(
         events: List<EventGroupEntity>,
@@ -49,10 +49,14 @@ interface DashboardItemUtil {
         greenCardType: GreenCardType,
         originType: OriginType
     ): Boolean
-    fun shouldShowAddQrCardItem(hasVisitorPassIncompleteItem: Boolean,
-                                emptyState: Boolean): Boolean
-    fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
-                                 tabType: GreenCardType): Boolean
+    fun shouldShowAddQrCardItem(
+        hasVisitorPassIncompleteItem: Boolean,
+        emptyState: Boolean
+    ): Boolean
+    fun shouldShowPolicyInfoItem(
+        disclosurePolicy: DisclosurePolicy,
+        tabType: GreenCardType
+    ): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -61,7 +65,7 @@ class DashboardItemUtilImpl(
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
     private val appConfigUseCase: HolderCachedAppConfigUseCase,
     private val buildConfigUseCase: BuildConfigUseCase,
-    private val greenCardUtil: GreenCardUtil,
+    private val greenCardUtil: GreenCardUtil
 ) : DashboardItemUtil {
 
     override fun shouldShowClockDeviationItem(emptyState: Boolean, allGreenCards: List<GreenCard>) =
@@ -101,7 +105,7 @@ class DashboardItemUtilImpl(
 
     override fun shouldShowConfigFreshnessWarning(): Boolean {
         // return true if config is older than 10 days && less than 28 days
-       return appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning()
+        return appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning()
     }
 
     override fun getConfigFreshnessMaxValidity(): Long {
@@ -110,18 +114,19 @@ class DashboardItemUtilImpl(
 
     override fun shouldShowMissingDutchVaccinationItem(
         domesticGreenCards: List<GreenCard>,
-        euGreenCards: List<GreenCard>,
+        euGreenCards: List<GreenCard>
     ): Boolean {
         // if a user has a european vaccination certificate but not dutch one,
         // we inform him that he can get a dutch one by either retrieving a
         // second vaccination result or a positive test result
-        return domesticGreenCards.none { it.origins.any { it.type == OriginType.Vaccination } }
-                && euGreenCards.any { it.origins.any { it.type == OriginType.Vaccination } }
+        return domesticGreenCards.none { it.origins.any { it.type == OriginType.Vaccination } } &&
+                euGreenCards.any { it.origins.any { it.type == OriginType.Vaccination } }
     }
 
     override fun shouldShowVisitorPassIncompleteItem(
         events: List<EventGroupEntity>,
-        domesticGreenCards: List<GreenCard>): Boolean {
+        domesticGreenCards: List<GreenCard>
+    ): Boolean {
         val hasVaccinationAssessmentEvent = events.map { it.type }.contains(OriginType.VaccinationAssessment)
         val hasVaccinationAssessmentOrigin = domesticGreenCards.map { it.origins.map { origin -> origin.type } }.flatten().contains(OriginType.VaccinationAssessment)
         return hasVaccinationAssessmentEvent && !hasVaccinationAssessmentOrigin
@@ -151,10 +156,13 @@ class DashboardItemUtilImpl(
 
     override fun shouldShowAddQrCardItem(
         hasVisitorPassIncompleteItem: Boolean,
-        emptyState: Boolean) = !emptyState && !hasVisitorPassIncompleteItem
+        emptyState: Boolean
+    ) = !emptyState && !hasVisitorPassIncompleteItem
 
-    override fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
-                                          tabType: GreenCardType): Boolean {
+    override fun shouldShowPolicyInfoItem(
+        disclosurePolicy: DisclosurePolicy,
+        tabType: GreenCardType
+    ): Boolean {
         return if (persistenceManager.getPolicyBannerDismissed() != disclosurePolicy) {
             when (tabType) {
                 is GreenCardType.Domestic -> {

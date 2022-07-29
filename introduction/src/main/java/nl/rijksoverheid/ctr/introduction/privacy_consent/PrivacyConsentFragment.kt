@@ -46,7 +46,7 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
             val viewBinding =
                 ItemPrivacyConsentBinding.inflate(layoutInflater, binding.items, true)
             viewBinding.icon.setImageResource(item.iconResource)
-            viewBinding.description.setHtmlText(item.textResource,htmlLinksEnabled = false)
+            viewBinding.description.setHtmlText(item.textResource, htmlLinksEnabled = false)
         }
 
         val checkboxButtonBinding = WidgetScrollViewCheckboxButtonBinding.bind(binding.root)

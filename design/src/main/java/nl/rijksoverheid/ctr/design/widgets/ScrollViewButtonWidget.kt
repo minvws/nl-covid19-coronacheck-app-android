@@ -26,7 +26,9 @@ import nl.rijksoverheid.ctr.design.databinding.WidgetScrollViewButtonBinding
  * A button that automatically adds a top elevation if given scrollview is scrollable
  */
 class ScrollViewButtonWidget @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : CardView(context, attrs, defStyleAttr) {
 
     private val binding: WidgetScrollViewButtonBinding
@@ -81,7 +83,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
                 paddingLeft,
                 resources.getDimensionPixelSize(R.dimen.deeplink_button_padding_vertical),
                 resources.getDimensionPixelSize(R.dimen.deeplink_button_padding_end),
-                resources.getDimensionPixelSize(R.dimen.deeplink_button_padding_vertical),
+                resources.getDimensionPixelSize(R.dimen.deeplink_button_padding_vertical)
             )
         }
     }
@@ -146,5 +148,4 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
     fun customiseSecondaryButton(block: (MaterialButton) -> Unit) {
         binding.secondaryButton.run(block)
     }
-
 }

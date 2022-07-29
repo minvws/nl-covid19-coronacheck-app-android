@@ -23,9 +23,9 @@ import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
-import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
+import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.disableSplashscreenExitAnimation
@@ -184,7 +184,6 @@ class HolderMainActivity : AppCompatActivity() {
         androidUtil.getConnectivityManager().registerNetworkCallback(
             networkChangeFilter, connectivityChangeCallback
         )
-
     }
 
     override fun onPause() {

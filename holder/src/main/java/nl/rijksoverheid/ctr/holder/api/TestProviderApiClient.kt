@@ -10,11 +10,15 @@ package nl.rijksoverheid.ctr.holder.api
 
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.api.post.GetTestResultPostData
-import retrofit2.http.*
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteUnomi
+import retrofit2.http.Body
+import retrofit2.http.Header
+import retrofit2.http.POST
+import retrofit2.http.Tag
+import retrofit2.http.Url
 
 interface TestProviderApiClient {
     @POST
@@ -34,7 +38,7 @@ interface TestProviderApiClient {
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
         @Body params: Map<String, String>,
-        @Tag certificate: SigningCertificate,
+        @Tag certificate: SigningCertificate
     ): SignedResponseWithModel<RemoteUnomi>
 
     @POST
@@ -44,6 +48,6 @@ interface TestProviderApiClient {
         @Header("Authorization") authorization: String,
         @Header("CoronaCheck-Protocol-Version") protocolVersion: String = "3.0",
         @Body params: Map<String, String>,
-        @Tag certificate: SigningCertificate,
+        @Tag certificate: SigningCertificate
     ): SignedResponseWithModel<RemoteProtocol>
 }

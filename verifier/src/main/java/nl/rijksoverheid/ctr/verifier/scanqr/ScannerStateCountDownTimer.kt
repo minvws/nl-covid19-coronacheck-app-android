@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.verifier.scanqr.util.ScannerStateCountdownUtil
 class ScannerStateCountDownTimer(
     private val scannerStateCountdownUtil: ScannerStateCountdownUtil,
     private val onTick: (String) -> Unit,
-    private val onFinished: () -> Unit,
+    private val onFinished: () -> Unit
 ) : CountDownTimer(
     scannerStateCountdownUtil.getRemainingSecondsLocked() * timerIntervalMs,
     timerIntervalMs

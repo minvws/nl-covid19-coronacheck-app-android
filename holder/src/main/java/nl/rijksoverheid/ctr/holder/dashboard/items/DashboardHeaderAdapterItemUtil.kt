@@ -8,9 +8,9 @@
 package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface DashboardHeaderAdapterItemUtil {
@@ -44,7 +44,7 @@ class DashboardHeaderAdapterItemUtilImpl(
 
     private fun getHeaderText(
         tabType: GreenCardType,
-        emptyState: Boolean,
+        emptyState: Boolean
     ) = when (tabType) {
         is GreenCardType.Domestic -> {
             when (featureFlagUseCase.getDisclosurePolicy()) {

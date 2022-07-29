@@ -9,11 +9,11 @@ package nl.rijksoverheid.ctr.holder.input_token
 
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResult
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.shared.models.Flow
 
 class CommercialTestInputTokenFragment : InputTokenFragment() {
@@ -46,7 +46,7 @@ class CommercialTestInputTokenFragment : InputTokenFragment() {
                             remoteEvents = mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse)
                         ),
                         flow = HolderFlow.CommercialTest,
-                        toolbarTitle = getString(getYourEventsToolbarTitle(result.remoteTestResult)),
+                        toolbarTitle = getString(getYourEventsToolbarTitle(result.remoteTestResult))
                     )
                 )
             }

@@ -6,12 +6,10 @@
  *
  */
 
-
 package nl.rijksoverheid.ctr.verifier.usecases
 
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

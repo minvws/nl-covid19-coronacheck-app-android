@@ -11,12 +11,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.dashboard.datamappers.DashboardTabsItemDataMapper
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
@@ -24,18 +31,9 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
-import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import java.time.Clock
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.util.concurrent.TimeUnit
 
 abstract class DashboardViewModel : ViewModel() {
     val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()

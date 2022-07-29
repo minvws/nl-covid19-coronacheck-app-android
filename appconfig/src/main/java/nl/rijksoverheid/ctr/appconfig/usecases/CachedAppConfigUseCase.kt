@@ -1,14 +1,14 @@
 package nl.rijksoverheid.ctr.appconfig.usecases
 
 import com.squareup.moshi.Moshi
+import java.io.File
+import java.security.MessageDigest
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import org.json.JSONObject
-import java.io.File
-import java.security.MessageDigest
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -22,7 +22,7 @@ interface CachedAppConfigUseCase {
     fun isCachedAppConfigValid(): Boolean
     fun getCachedAppConfig(): AppConfig
     fun getCachedAppConfigOrNull(): AppConfig?
-    fun getCachedAppConfigHash() : String
+    fun getCachedAppConfigHash(): String
 }
 
 class CachedAppConfigUseCaseImpl constructor(
@@ -86,6 +86,6 @@ class CachedAppConfigUseCaseImpl constructor(
         val md = MessageDigest.getInstance("SHA-256")
         val digest = md.digest(bytes)
         // Return first 7 characters of hash
-        return digest.fold("") { str, it -> str + "%02x".format(it) }.subSequence(0,7).toString()
+        return digest.fold("") { str, it -> str + "%02x".format(it) }.subSequence(0, 7).toString()
     }
 }

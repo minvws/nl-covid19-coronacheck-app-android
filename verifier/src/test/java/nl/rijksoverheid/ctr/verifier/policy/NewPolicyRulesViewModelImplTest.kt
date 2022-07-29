@@ -14,12 +14,12 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlin.test.assertEquals
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.scanqr.ScannerNavigationState
 import nl.rijksoverheid.ctr.verifier.scanqr.ScannerNavigationStateUseCase
 import org.junit.Rule
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class NewPolicyRulesViewModelImplTest {
 

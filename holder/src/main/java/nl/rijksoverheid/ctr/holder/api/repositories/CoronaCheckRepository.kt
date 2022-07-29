@@ -99,8 +99,10 @@ open class CoronaCheckRepositoryImpl(
         }
     }
 
-    override suspend fun getCoupling(credential: String,
-                                     couplingCode: String): NetworkRequestResult<RemoteCouplingResponse> {
+    override suspend fun getCoupling(
+        credential: String,
+        couplingCode: String
+    ): NetworkRequestResult<RemoteCouplingResponse> {
         return networkRequestResultFactory.createResult(HolderStep.CouplingNetworkRequest) {
             getHolderApiClient().getCoupling(
                 data = GetCouplingData(

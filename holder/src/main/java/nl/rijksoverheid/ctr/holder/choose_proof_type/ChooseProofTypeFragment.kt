@@ -13,9 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProofTypeBinding
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import org.koin.android.ext.android.inject
 

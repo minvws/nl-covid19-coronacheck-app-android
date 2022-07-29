@@ -16,7 +16,7 @@ interface GetDccFromEuropeanCredentialUseCase {
 
 class GetDccFromEuropeanCredentialUseCaseImpl(
     private val mobileCoreWrapper: MobileCoreWrapper
-): GetDccFromEuropeanCredentialUseCase {
+) : GetDccFromEuropeanCredentialUseCase {
 
     override fun get(europeanCredential: ByteArray): JSONObject {
         val credentials = mobileCoreWrapper.readEuropeanCredential(europeanCredential)

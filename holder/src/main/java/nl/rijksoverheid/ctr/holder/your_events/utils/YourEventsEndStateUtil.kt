@@ -17,7 +17,7 @@ interface YourEventsEndStateUtil {
 
 class YourEventsEndStateUtilImpl(
     private val stringUtil: StringUtil
-): YourEventsEndStateUtil {
+) : YourEventsEndStateUtil {
     override fun getEndState(context: Context, hints: List<String>): YourEventsEndState {
         return if (hints.contains("negativetest_without_vaccinationassessment")) {
             return YourEventsEndState.AddVaccinationAssessment

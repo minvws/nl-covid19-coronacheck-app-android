@@ -127,7 +127,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
     private fun launchVerifierMainActivity(
         introductionViewModel: IntroductionViewModel,
         appStatus: AppStatus = AppStatus.NoActionRequired,
-        verifierMainActivityViewModel: VerifierMainActivityViewModel,
+        verifierMainActivityViewModel: VerifierMainActivityViewModel
     ): ActivityScenario<VerifierMainActivity> {
         loadKoinModules(
             module(override = true) {

@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.holder.workers
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 
@@ -17,8 +16,8 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 open class ConfigFetchWorker(
     context: Context,
     params: WorkerParameters,
-    private val configResultUseCase: ConfigResultUseCase,
-): CoroutineWorker(context, params) {
+    private val configResultUseCase: ConfigResultUseCase
+) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
         return when (configResultUseCase.fetch()) {

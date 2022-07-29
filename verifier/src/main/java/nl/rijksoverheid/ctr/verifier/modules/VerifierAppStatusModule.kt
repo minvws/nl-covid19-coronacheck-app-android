@@ -32,7 +32,7 @@ val verifierAppStatusModule = module {
                     lastButtonResource = R.string.onboarding_next
                 )
             ),
-            newFeatureVersion = 1,
+            newFeatureVersion = 1
         )
     }
     factory<AppStatusUseCase> {

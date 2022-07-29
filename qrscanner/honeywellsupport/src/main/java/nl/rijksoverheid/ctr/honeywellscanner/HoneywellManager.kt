@@ -14,16 +14,14 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_DATA_COLLECTION_SERVICE
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_DATA_PROCESSOR_SYMBOLOGY_ID_NONE
-
+import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_INTENT_ACTION_BARCODE_DATA_FILTER_ACTION
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_INTENT_ACTION_CLAIM_SCANNER
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_INTENT_ACTION_RELEASE_SCANNER
-import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_INTENT_EXTRA_SCANNER
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_INTENT_EXTRA_PROFILE
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_INTENT_EXTRA_PROPERTIES
-import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_INTENT_ACTION_BARCODE_DATA_FILTER_ACTION
+import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_INTENT_EXTRA_SCANNER
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_PROPERTY_DATA_PROCESSOR_DATA_INTENT
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_PROPERTY_DATA_PROCESSOR_DATA_INTENT_ACTION
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_PROPERTY_DATA_PROCESSOR_EDIT_DATA_PLUGIN
@@ -34,13 +32,12 @@ import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_PROPER
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_PROPERTY_QR_CODE_ENABLED
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellConstants.HONEYWELL_PROPERTY_WEDGE_ENABLED
 
-
 interface HoneywellManager {
     fun suspendScanner()
     fun resumeScanner()
     fun setupHoneywellScanner(onDatawedgeResultListener: (data: String) -> Unit)
     fun teardownHoneywellScanner()
-    fun isHoneywellDevice() : Boolean
+    fun isHoneywellDevice(): Boolean
 }
 
 class HoneywellManagerImpl(
@@ -79,7 +76,6 @@ class HoneywellManagerImpl(
         val resultFilter = IntentFilter()
         resultFilter.addAction(HONEYWELL_INTENT_ACTION_BARCODE_DATA_FILTER_ACTION)
         context.registerReceiver(dataWedgeResultBroadcastReceiver, resultFilter)
-
 
         val properties = Bundle()
         properties.putBoolean(HONEYWELL_PROPERTY_DATA_PROCESSOR_DATA_INTENT, true)

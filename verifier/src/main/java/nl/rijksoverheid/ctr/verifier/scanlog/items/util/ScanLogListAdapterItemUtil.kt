@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.verifier.scanlog.items.util
 
 import android.content.Context
+import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.design.ext.formatTime
 import nl.rijksoverheid.ctr.verifier.R
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,7 +17,7 @@ interface ScanLogListAdapterItemUtil {
     fun getAmountString(context: Context, count: Int): String
 }
 
-class ScanLogListAdapterItemUtilImpl: ScanLogListAdapterItemUtil {
+class ScanLogListAdapterItemUtilImpl : ScanLogListAdapterItemUtil {
     override fun getTimeString(
         context: Context,
         from: OffsetDateTime,
@@ -34,6 +34,6 @@ class ScanLogListAdapterItemUtilImpl: ScanLogListAdapterItemUtil {
     override fun getAmountString(context: Context, count: Int): String {
         val low = 1.coerceAtLeast(count - (count % 10))
         val high = count + 10 - (count % 10)
-        return context.getString(R.string.scan_log_list_entry, low , high)
+        return context.getString(R.string.scan_log_list_entry, low, high)
     }
 }

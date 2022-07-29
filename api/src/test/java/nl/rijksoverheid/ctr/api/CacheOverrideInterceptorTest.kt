@@ -7,6 +7,7 @@
  */
 package nl.rijksoverheid.ctr.api
 
+import java.io.File
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.api.interceptors.CacheOverrideInterceptor
 import okhttp3.Cache
@@ -19,7 +20,6 @@ import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Retrofit
-import java.io.File
 
 private const val RESPONSE = "Server response"
 
@@ -68,6 +68,4 @@ class CacheOverrideInterceptorTest {
         assertEquals("public,max-age=0", cacheOverrideResponse.headers()["cache-control"])
         assertNull(cacheOverrideResponse.headers()["pragma"])
     }
-
 }
-

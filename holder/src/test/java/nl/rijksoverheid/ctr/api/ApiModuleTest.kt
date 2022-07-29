@@ -9,11 +9,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
 import org.koin.test.AutoCloseKoinTest
-import org.robolectric.RobolectricTestRunner
 import org.koin.test.inject
+import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class ApiModuleTest: AutoCloseKoinTest() {
+class ApiModuleTest : AutoCloseKoinTest() {
 
     @Test
     fun `given our http client, when doing a network request, then ssl is using only our certificate`() {
@@ -21,7 +21,7 @@ class ApiModuleTest: AutoCloseKoinTest() {
             baseUrl = "https://holder-api.acc.coronacheck.nl/v4/".toHttpUrl(),
             signatureCertificateCnMatch = "",
             coronaCheckApiChecks = true,
-            testProviderApiChecks = true,
+            testProviderApiChecks = true
         ))
         val okHttpClient: OkHttpClient by inject()
         val acceptedIssuers = okHttpClient.x509TrustManager!!.acceptedIssuers

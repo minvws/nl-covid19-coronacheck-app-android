@@ -9,15 +9,15 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
+import kotlin.test.assertEquals
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreen
 import nl.rijksoverheid.ctr.holder.your_events.YourEventExplanationFragment
+import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreen
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import kotlin.test.assertEquals
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -43,7 +43,7 @@ class YourEventExplanationFragmentTest : AutoCloseKoinTest() {
             arrayOf(
                 InfoScreen(
                     title = "title",
-                    description = "description",
+                    description = "description"
                 )
             )
         )

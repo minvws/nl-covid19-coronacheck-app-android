@@ -8,8 +8,8 @@
 package nl.rijksoverheid.ctr.holder.your_events.models
 
 import com.squareup.moshi.JsonClass
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import java.time.OffsetDateTime
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

@@ -33,7 +33,7 @@ class PaperProofUtilImpl(
     private val context: Context,
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val getDccFromEuropeanCredentialUseCase: GetDccFromEuropeanCredentialUseCase
-): PaperProofUtil {
+) : PaperProofUtil {
 
     override fun getEventGroupJsonData(
         qrContent: String,

@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.verifier.scanlog.models
 
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import java.time.OffsetDateTime
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

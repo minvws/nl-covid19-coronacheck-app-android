@@ -2,6 +2,9 @@ package nl.rijksoverheid.ctr.verifier.scanlog.usecase
 
 import io.mockk.coEvery
 import io.mockk.mockk
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
@@ -12,9 +15,6 @@ import nl.rijksoverheid.ctr.verifier.scanlog.models.ScanLog
 import nl.rijksoverheid.ctr.verifier.scanlog.repositories.ScanLogRepository
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 class GetScanLogItemsUseCaseImplTest {
 

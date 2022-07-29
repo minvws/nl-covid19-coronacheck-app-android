@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.verifier.scanqr.util
 
-import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
-import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import java.time.Clock
 import java.time.OffsetDateTime
+import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
+import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,8 +19,8 @@ interface ScannerStateCountdownUtil {
 class ScannerStateCountdownUtilImpl(
     private val persistenceManager: PersistenceManager,
     private val clock: Clock,
-    private val cachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
-): ScannerStateCountdownUtil {
+    private val cachedAppConfigUseCase: VerifierCachedAppConfigUseCase
+) : ScannerStateCountdownUtil {
     override fun getRemainingSecondsLocked(): Long {
         val now = OffsetDateTime.now(clock).toEpochSecond()
         val lockSeconds = cachedAppConfigUseCase.getCachedAppConfig().scanLockSeconds.toLong()

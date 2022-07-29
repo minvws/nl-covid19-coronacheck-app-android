@@ -9,15 +9,15 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 
 import android.content.res.Resources
 import android.text.TextUtils
+import java.util.Locale
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
-import java.util.*
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,7 +34,7 @@ interface VaccinationInfoScreenUtil {
         birthDate: String,
         providerIdentifier: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean = true,
+        addExplanation: Boolean = true
     ): InfoScreen
 }
 
@@ -54,7 +54,7 @@ class VaccinationInfoScreenUtilImpl(
         birthDate: String,
         providerIdentifier: String,
         europeanCredential: ByteArray?,
-        addExplanation: Boolean,
+        addExplanation: Boolean
     ): InfoScreen {
         val title = if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
 
@@ -133,7 +133,7 @@ class VaccinationInfoScreenUtilImpl(
                     paperProofUtil.getInfoScreenFooterText(europeanCredential)
                 } else {
                     ""
-                },
+                }
             ) as String)
         )
     }
@@ -168,7 +168,7 @@ class VaccinationInfoScreenUtilImpl(
 
     private fun getVaccineAnswer(
         hpkCode: AppConfig.HpkCode?,
-        event: RemoteEventVaccination,
+        event: RemoteEventVaccination
     ): String {
         val hpkCodeName = hpkCode?.name ?: ""
         val brand =

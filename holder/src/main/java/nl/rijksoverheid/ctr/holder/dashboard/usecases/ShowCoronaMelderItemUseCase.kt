@@ -20,7 +20,7 @@ interface ShowCoronaMelderItemUseCase {
 
 class ShowCoronaMelderItemUseCaseImpl(
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
-    private val greenCardUtil: GreenCardUtil,
+    private val greenCardUtil: GreenCardUtil
 ) : ShowCoronaMelderItemUseCase {
     override fun shouldShowCoronaMelderItem(
         greenCards: List<GreenCard>,

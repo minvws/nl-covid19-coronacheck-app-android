@@ -1,17 +1,29 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.holder.get_events.usecases.*
-import nl.rijksoverheid.ctr.holder.paper_proof.usecases.*
-import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
-import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
+import java.time.Clock
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithTokensUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithTokensUseCaseImpl
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventsUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetMijnCnEventsUsecase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetMijnCnEventsUsecaseImpl
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteEventsUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteEventsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetEventsFromPaperProofQrUseCase
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetEventsFromPaperProofQrUseCaseImpl
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofDomesticInputCodeUseCase
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofDomesticInputCodeUseCaseImpl
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofDomesticUseCase
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofDomesticUseCaseImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCaseImpl
 import nl.rijksoverheid.ctr.holder.saved_events.usecases.GetSavedEventsUseCase
 import nl.rijksoverheid.ctr.holder.saved_events.usecases.GetSavedEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCaseImpl
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
 import org.koin.dsl.module
-import java.time.Clock
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

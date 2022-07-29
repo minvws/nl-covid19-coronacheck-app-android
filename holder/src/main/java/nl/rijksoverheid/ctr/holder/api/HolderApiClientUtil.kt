@@ -5,15 +5,15 @@ import com.appmattus.certificatetransparency.CTLogger
 import com.appmattus.certificatetransparency.VerificationResult
 import com.appmattus.certificatetransparency.certificateTransparencyTrustManager
 import com.appmattus.certificatetransparency.loglist.LogListDataSourceFactory
+import java.io.ByteArrayInputStream
+import java.security.cert.CertificateFactory
+import java.security.cert.X509Certificate
+import javax.net.ssl.X509TrustManager
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.tls.HandshakeCertificates
 import retrofit2.Retrofit
 import timber.log.Timber
-import java.io.ByteArrayInputStream
-import java.security.cert.CertificateFactory
-import java.security.cert.X509Certificate
-import javax.net.ssl.X509TrustManager
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,7 +28,7 @@ interface HolderApiClientUtil {
 
 class HolderApiClientUtilImpl(
     private val okHttpClient: OkHttpClient,
-    private val retrofit: Retrofit,
+    private val retrofit: Retrofit
 ) : HolderApiClientUtil {
 
     private fun transparentTrustManager(trustManager: X509TrustManager) =

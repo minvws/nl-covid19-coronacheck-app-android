@@ -9,8 +9,12 @@
 package nl.rijksoverheid.ctr.qrcodes.utils
 
 import androidx.test.core.app.ApplicationProvider
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
+import java.util.TimeZone
 import junit.framework.Assert.assertEquals
-import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrInfoScreenUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
@@ -21,10 +25,6 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneId
-import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl")
@@ -38,7 +38,7 @@ class QrInfoScreenUtilImplTest : AutoCloseKoinTest() {
             ),
             CountryUtilImpl(),
             LocalDateUtilImpl(Clock.fixed(Instant.parse("2022-01-01T00:00:00.00Z"), ZoneId.of("UTC")), ApplicationProvider.getApplicationContext()),
-            fakeCachedAppConfigUseCase(),
+            fakeCachedAppConfigUseCase()
         )
 
     @Test

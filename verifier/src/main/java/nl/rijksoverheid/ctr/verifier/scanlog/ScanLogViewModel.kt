@@ -23,7 +23,7 @@ abstract class ScanLogViewModel : ViewModel() {
 
 class ScanLogViewModelImpl(
     private val getScanLogItemsUseCase: GetScanLogItemsUseCase
-): ScanLogViewModel() {
+) : ScanLogViewModel() {
 
     override fun getItems() {
         viewModelScope.launch {

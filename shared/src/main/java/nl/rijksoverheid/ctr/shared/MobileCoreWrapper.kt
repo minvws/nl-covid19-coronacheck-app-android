@@ -11,15 +11,20 @@ package nl.rijksoverheid.ctr.shared
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import java.lang.reflect.Type
 import mobilecore.Mobilecore
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
 import nl.rijksoverheid.ctr.shared.ext.successJsonObject
 import nl.rijksoverheid.ctr.shared.ext.successString
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.ext.verify
-import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.ctr.shared.models.DomesticCredential
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.shared.models.VerificationResult
+import nl.rijksoverheid.ctr.shared.models.VerificationResultDetails
 import org.json.JSONObject
-import java.lang.reflect.Type
 
 interface MobileCoreWrapper {
     fun createCredentials(body: ByteArray): String
@@ -87,7 +92,7 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
             secretKey,
             credential,
             disclosurePolicyString,
-            currentTimeMillis / 1000L,
+            currentTimeMillis / 1000L
         ).successString()
     }
 
@@ -142,7 +147,7 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
                 lastNameInitial = result.details?.lastNameInitial ?: "",
                 isSpecimen = result.details?.isSpecimen ?: "",
                 credentialVersion = result.details?.credentialVersion ?: "",
-                issuerCountryCode = result.details?.issuerCountryCode ?: "",
+                issuerCountryCode = result.details?.issuerCountryCode ?: ""
             ),
             error = result.error
         )

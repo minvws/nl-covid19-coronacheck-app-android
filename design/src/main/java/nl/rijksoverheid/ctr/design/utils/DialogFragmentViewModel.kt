@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-abstract class DialogFragmentViewModel: ViewModel() {
+abstract class DialogFragmentViewModel : ViewModel() {
 
     abstract var title: String
     abstract var message: String
@@ -29,7 +29,6 @@ abstract class DialogFragmentViewModel: ViewModel() {
         negativeButtonCallback: (() -> Unit)? = null,
         onDismissCallback: (() -> Unit)? = null
     )
-
 }
 
 /**
@@ -39,8 +38,8 @@ abstract class DialogFragmentViewModel: ViewModel() {
  * Instead we save here our data and the dialog listener methods (which cannot be serialised), so
  * they can be used on the fragment recreation after a screen rotation.
  */
-class DialogFragmentViewModelImpl: DialogFragmentViewModel() {
-    
+class DialogFragmentViewModelImpl : DialogFragmentViewModel() {
+
     override lateinit var title: String
     override lateinit var message: String
     override lateinit var positiveButtonText: String
@@ -58,7 +57,7 @@ class DialogFragmentViewModelImpl: DialogFragmentViewModel() {
         negativeButtonCallback: (() -> Unit)?,
         onDismissCallback: (() -> Unit)?
     ) {
-        negativeButtonCallback?.run {  }
+        negativeButtonCallback?.run { }
         this.title = title
         this.message = message
         this.positiveButtonText = positiveButtonText

@@ -16,16 +16,16 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
  * The difference with [OriginType] is that this is used for sending
  * and [OriginType] for retrieving from backend and database
  */
-sealed class RemoteOriginType: Parcelable {
+sealed class RemoteOriginType : Parcelable {
 
     @Parcelize
-    object Vaccination: RemoteOriginType(), Parcelable
+    object Vaccination : RemoteOriginType(), Parcelable
 
     @Parcelize
-    object Recovery: RemoteOriginType(), Parcelable
+    object Recovery : RemoteOriginType(), Parcelable
 
     @Parcelize
-    object Test: RemoteOriginType(), Parcelable
+    object Test : RemoteOriginType(), Parcelable
 
     fun toOriginType(): OriginType {
         return when (this) {

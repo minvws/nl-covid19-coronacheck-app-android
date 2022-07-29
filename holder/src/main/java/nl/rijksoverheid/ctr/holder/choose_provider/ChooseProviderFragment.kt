@@ -18,8 +18,8 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProviderBinding
-import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
+import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import org.koin.android.ext.android.inject
@@ -66,13 +66,12 @@ class ChooseProviderFragment : Fragment(R.layout.fragment_choose_provider) {
                     secondaryButtonData = ButtonData.LinkButton(
                         getString(R.string.not_yet_tested_button),
                         getString(R.string.url_make_appointment)
-                    ),
+                    )
                 )
             )
         }
 
         binding.providerCommercial.root.setAsAccessibilityButton()
-
     }
 
     override fun onDestroyView() {

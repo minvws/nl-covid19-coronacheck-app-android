@@ -1,10 +1,10 @@
 package nl.rijksoverheid.ctr.verifier.scanlog.usecase
 
+import java.util.concurrent.TimeUnit
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.scanlog.items.ScanLogItem
 import nl.rijksoverheid.ctr.verifier.scanlog.repositories.ScanLogRepository
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -20,8 +20,8 @@ interface GetScanLogItemsUseCase {
 class GetScanLogItemsUseCaseImpl(
     private val androidUtil: AndroidUtil,
     private val scanLogRepository: ScanLogRepository,
-    private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
-): GetScanLogItemsUseCase {
+    private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase
+) : GetScanLogItemsUseCase {
     override suspend fun getItems(): List<ScanLogItem> {
         val scanLogs = scanLogRepository.getAll()
         val firstInstallTime = androidUtil.getFirstInstallTime()

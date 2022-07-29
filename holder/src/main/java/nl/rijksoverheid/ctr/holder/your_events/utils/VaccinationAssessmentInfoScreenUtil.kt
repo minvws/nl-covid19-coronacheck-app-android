@@ -9,24 +9,24 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 
 import android.content.Context
 import android.text.TextUtils
+import java.util.Locale
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
-import java.util.*
 
 interface VaccinationAssessmentInfoScreenUtil {
     fun getForVaccinationAssessment(
         event: RemoteEventVaccinationAssessment,
         fullName: String,
-        birthDate: String,
+        birthDate: String
     ): InfoScreen
 }
 
 class VaccinationAssessmentInfoScreenUtilImpl(
     private val context: Context,
     private val countryUtil: CountryUtil
-): VaccinationAssessmentInfoScreenUtil {
+) : VaccinationAssessmentInfoScreenUtil {
     override fun getForVaccinationAssessment(
         event: RemoteEventVaccinationAssessment,
         fullName: String,
@@ -47,12 +47,12 @@ class VaccinationAssessmentInfoScreenUtilImpl(
                 ),
                 createLine(
                     name = context.resources.getString(R.string.holder_event_vaccination_assessment_about_date_of_birth),
-                    nameAnswer = birthDate,
+                    nameAnswer = birthDate
                 ),
                 "<br/>",
                 createLine(
                     name = context.resources.getString(R.string.holder_event_vaccination_assessment_about_date),
-                    nameAnswer = event.vaccinationAssessment.assessmentDate?.formatDateTime(context) ?: "",
+                    nameAnswer = event.vaccinationAssessment.assessmentDate?.formatDateTime(context) ?: ""
                 ),
                 createLine(
                     name = context.resources.getString(R.string.holder_event_vaccination_assessment_about_country),
@@ -75,5 +75,4 @@ class VaccinationAssessmentInfoScreenUtilImpl(
     ): String {
         return if (isOptional && nameAnswer.isEmpty()) "" else "$name <b>$nameAnswer</b><br/>"
     }
-
 }

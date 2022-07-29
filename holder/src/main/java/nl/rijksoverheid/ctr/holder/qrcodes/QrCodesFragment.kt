@@ -19,6 +19,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
+import java.util.concurrent.TimeUnit
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
@@ -31,19 +32,18 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodesBinding
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeAnimation
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrInfoScreenUtil
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.addAccessibilityAction
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -378,7 +378,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         checkShouldAutomaticallyClose()
         qrCodeViewModel.generateQrCodes(
             qrCodeFragmentData = args.data,
-            size = resources.displayMetrics.widthPixels,
+            size = resources.displayMetrics.widthPixels
         )
         val refreshMillis =
             if (BuildConfig.FLAVOR == "tst") TimeUnit.SECONDS.toMillis(10) else TimeUnit.SECONDS.toMillis(

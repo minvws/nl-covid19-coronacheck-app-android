@@ -20,9 +20,11 @@ sealed class ButtonData(open val text: String) : Parcelable {
         Parcelable
 
     @Parcelize
-    data class NavigationButton(override val text: String,
-                                @IdRes val navigationActionId: Int,
-                                val navigationArguments: Bundle? = null) :
+    data class NavigationButton(
+        override val text: String,
+        @IdRes val navigationActionId: Int,
+        val navigationArguments: Bundle? = null
+    ) :
         ButtonData(text), Parcelable
 }
 

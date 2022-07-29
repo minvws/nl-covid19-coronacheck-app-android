@@ -96,7 +96,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
         )
 
         loadKoinModules(
-            apiModule(mockWebServer.url("/"), "", false, false, )
+            apiModule(mockWebServer.url("/"), "", false, false)
         )
 
         val testProviderRepository: TestProviderRepository = get()
@@ -107,7 +107,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             verifierCode = "",
             provider = "",
             signingCertificateBytes = listOf(certificate.toByteArray()),
-            tlsCertificateBytes = listOf(certificate.toByteArray()),
+            tlsCertificateBytes = listOf(certificate.toByteArray())
         )
 
         assertTrue(model is NetworkRequestResult.Success)
@@ -125,7 +125,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
         )
 
         loadKoinModules(
-            apiModule(mockWebServer.url("/"),"", false, false, )
+            apiModule(mockWebServer.url("/"), "", false, false)
         )
 
         val testProviderRepository: TestProviderRepository = get()
@@ -136,7 +136,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             verifierCode = "",
             provider = "",
             signingCertificateBytes = listOf(certificate.toByteArray()),
-            tlsCertificateBytes = listOf(certificate.toByteArray()),
+            tlsCertificateBytes = listOf(certificate.toByteArray())
         )
 
         assertTrue(model is NetworkRequestResult.Success)
@@ -152,7 +152,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             )
 
             loadKoinModules(
-                apiModule(mockWebServer.url("/"), "", false, false, )
+                apiModule(mockWebServer.url("/"), "", false, false)
             )
 
             val testProviderRepository: TestProviderRepository = get()
@@ -163,7 +163,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
                 verifierCode = "",
                 provider = "",
                 signingCertificateBytes = listOf(certificate.toByteArray()),
-                tlsCertificateBytes = listOf(certificate.toByteArray()),
+                tlsCertificateBytes = listOf(certificate.toByteArray())
             )
 
             assertTrue(model is NetworkRequestResult.Failed)
@@ -183,7 +183,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             )
 
             loadKoinModules(
-                apiModule(mockWebServer.url("/"), "", false, false, )
+                apiModule(mockWebServer.url("/"), "", false, false)
             )
 
             val testProviderRepository: TestProviderRepository = get()
@@ -194,11 +194,10 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
                 verifierCode = "",
                 provider = "",
                 signingCertificateBytes = listOf(certificate.toByteArray()),
-                tlsCertificateBytes = listOf(certificate.toByteArray()),
+                tlsCertificateBytes = listOf(certificate.toByteArray())
             )
 
             assertTrue(model is NetworkRequestResult.Failed)
         }
     }
 }
-

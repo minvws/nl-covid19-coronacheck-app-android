@@ -20,7 +20,7 @@ import nl.rijksoverheid.ctr.design.ext.setEnabledButtonColor
 /**
  * A widget with a button and progress indicator, for loading state support
  */
-class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0):
+class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     FrameLayout(context, attrs, defStyleAttr) {
 
     private var buttonText = ""
@@ -81,4 +81,3 @@ class ButtonWithProgressWidget @JvmOverloads constructor(context: Context, attrs
         }
     }
 }
-

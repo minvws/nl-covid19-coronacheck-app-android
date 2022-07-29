@@ -7,7 +7,11 @@
 
 package nl.rijksoverheid.ctr.holder.input_token
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResult
 import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResultUseCase
@@ -68,7 +72,6 @@ class InputTokenViewModelImpl(
             savedStateHandle["from_deeplink"] = value
             updateViewState()
         }
-
 
     private val currentViewState: ViewState
         get() = viewState.value!!

@@ -105,7 +105,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
     private fun initViewPager(
         binding: FragmentOnboardingBinding,
         adapter: OnboardingPagerAdapter,
-        startingItem: Int? = null,
+        startingItem: Int? = null
     ) {
         binding.viewPager.offscreenPageLimit = args.introductionData.onboardingItems.size
         binding.viewPager.adapter = adapter

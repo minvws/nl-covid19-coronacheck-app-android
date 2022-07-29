@@ -9,5 +9,6 @@ interface QrCodeProcessor {
         binding: FragmentScannerBinding,
         cameraProvider: ProcessCameraProvider,
         cameraFrame: ImageProxy,
-        qrCodeProcessed: (content: String) -> Unit)
+        qrCodeProcessed: (content: String) -> Unit
+    )
 }

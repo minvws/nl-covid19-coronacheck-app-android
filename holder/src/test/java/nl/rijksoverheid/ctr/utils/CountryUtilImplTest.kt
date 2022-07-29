@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.utils
 
+import java.util.Locale
 import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.util.*
 
 class CountryUtilImplTest {
     private val util = CountryUtilImpl()

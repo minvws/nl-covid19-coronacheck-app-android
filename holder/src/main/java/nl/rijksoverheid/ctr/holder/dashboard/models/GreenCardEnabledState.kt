@@ -10,6 +10,6 @@ package nl.rijksoverheid.ctr.holder.dashboard.models
 import nl.rijksoverheid.ctr.holder.R
 
 sealed class GreenCardEnabledState {
-    object Enabled: GreenCardEnabledState()
-    data class Disabled(val text: Int = R.string.holder_dashboard_domesticQRCard_3G_inactive_label): GreenCardEnabledState()
+    object Enabled : GreenCardEnabledState()
+    data class Disabled(val text: Int = R.string.holder_dashboard_domesticQRCard_3G_inactive_label) : GreenCardEnabledState()
 }

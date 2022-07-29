@@ -1,6 +1,13 @@
 package nl.rijksoverheid.ctr.design
 
-import nl.rijksoverheid.ctr.design.utils.*
+import nl.rijksoverheid.ctr.design.utils.DialogFragmentViewModel
+import nl.rijksoverheid.ctr.design.utils.DialogFragmentViewModelImpl
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.DialogUtilImpl
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtilImpl
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtilImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

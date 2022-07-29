@@ -8,7 +8,6 @@ import nl.rijksoverheid.ctr.design.databinding.FragmentInfoBinding
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import org.koin.android.ext.android.inject
 
 class InfoFragment : Fragment(R.layout.fragment_info) {

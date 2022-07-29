@@ -11,10 +11,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.BaseFragment
-import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentSyncGreenCardsBinding
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -28,7 +28,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class SyncGreenCardsFragment: BaseFragment(R.layout.fragment_sync_green_cards) {
+class SyncGreenCardsFragment : BaseFragment(R.layout.fragment_sync_green_cards) {
 
     private val args: SyncGreenCardsFragmentArgs by navArgs()
     private val syncGreenCardsViewModel: SyncGreenCardsViewModel by viewModel()

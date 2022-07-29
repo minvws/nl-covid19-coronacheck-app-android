@@ -8,7 +8,7 @@
 package nl.rijksoverheid.ctr.holder.your_events.models
 
 sealed class YourEventsEndState {
-    object None: YourEventsEndState()
-    object AddVaccinationAssessment: YourEventsEndState()
-    data class Hints(val localisedHints: List<String>): YourEventsEndState()
+    object None : YourEventsEndState()
+    object AddVaccinationAssessment : YourEventsEndState()
+    data class Hints(val localisedHints: List<String>) : YourEventsEndState()
 }

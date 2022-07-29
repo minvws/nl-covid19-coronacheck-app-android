@@ -16,8 +16,8 @@ sealed class RemoteCouplingStatus(val typeString: String) {
         const val TYPE_EXPIRED = "expired"
     }
 
-    object Accepted: RemoteCouplingStatus(TYPE_ACCEPTED)
-    object Rejected: RemoteCouplingStatus(TYPE_REJECTED)
-    object Blocked: RemoteCouplingStatus(TYPE_BLOCKED)
-    object Expired: RemoteCouplingStatus(TYPE_EXPIRED)
+    object Accepted : RemoteCouplingStatus(TYPE_ACCEPTED)
+    object Rejected : RemoteCouplingStatus(TYPE_REJECTED)
+    object Blocked : RemoteCouplingStatus(TYPE_BLOCKED)
+    object Expired : RemoteCouplingStatus(TYPE_EXPIRED)
 }

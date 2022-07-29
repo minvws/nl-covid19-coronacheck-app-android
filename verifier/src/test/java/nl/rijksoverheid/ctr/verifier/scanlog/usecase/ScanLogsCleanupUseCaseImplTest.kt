@@ -3,13 +3,15 @@ package nl.rijksoverheid.ctr.verifier.scanlog.usecase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.persistance.database.VerifierDatabase
 import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import org.junit.Test
-import java.time.*
 
 class ScanLogsCleanupUseCaseImplTest {
 

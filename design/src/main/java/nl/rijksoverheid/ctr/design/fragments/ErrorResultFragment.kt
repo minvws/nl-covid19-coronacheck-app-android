@@ -5,14 +5,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.FragmentErrorResultBinding
-import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 
 /**
  * Fragment to show errors
  */
-class ErrorResultFragment: Fragment(R.layout.fragment_error_result) {
+class ErrorResultFragment : Fragment(R.layout.fragment_error_result) {
 
     companion object {
 

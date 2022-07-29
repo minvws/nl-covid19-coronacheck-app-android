@@ -19,7 +19,6 @@ import nl.rijksoverheid.ctr.verifier.managers.DeeplinkManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -103,7 +102,6 @@ class VerifierMainActivity : AppCompatActivity() {
                 isFreshStart = false
             }
         }
-
     }
 
     private fun navigateToIntroduction(

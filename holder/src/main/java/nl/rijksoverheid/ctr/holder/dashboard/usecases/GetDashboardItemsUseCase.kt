@@ -8,23 +8,29 @@
 package nl.rijksoverheid.ctr.holder.dashboard.usecases
 
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtil
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItems
+import nl.rijksoverheid.ctr.holder.dashboard.util.CardItemUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemEmptyStateUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
+import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtil
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItems
-import nl.rijksoverheid.ctr.holder.dashboard.util.*
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 
 interface GetDashboardItemsUseCase {
     suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult = DatabaseSyncerResult.Success(),
-        isLoadingNewCredentials: Boolean,
+        isLoadingNewCredentials: Boolean
     ): DashboardItems
 }
 
@@ -39,7 +45,7 @@ class GetDashboardItemsUseCaseImpl(
     private val splitDomesticGreenCardsUseCase: SplitDomesticGreenCardsUseCase,
     private val sortGreenCardItemsUseCase: SortGreenCardItemsUseCase,
     private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase,
-    private val showCoronaMelderItemUseCase: ShowCoronaMelderItemUseCase,
+    private val showCoronaMelderItemUseCase: ShowCoronaMelderItemUseCase
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -67,7 +73,7 @@ class GetDashboardItemsUseCaseImpl(
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
-        isLoadingNewCredentials: Boolean,
+        isLoadingNewCredentials: Boolean
     ): List<DashboardItem> {
         val dashboardItems = mutableListOf<DashboardItem>()
 
@@ -94,7 +100,7 @@ class GetDashboardItemsUseCaseImpl(
         val headerItem = dashboardHeaderAdapterItemUtil.getHeaderItem(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Domestic,
-            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
+            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem
         )
 
         dashboardItems.add(headerItem)
@@ -178,7 +184,7 @@ class GetDashboardItemsUseCaseImpl(
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
-        isLoadingNewCredentials: Boolean,
+        isLoadingNewCredentials: Boolean
     ): List<DashboardItem> {
         val dashboardItems = mutableListOf<DashboardItem>()
         val domesticGreenCards =
@@ -201,7 +207,7 @@ class GetDashboardItemsUseCaseImpl(
         val headerItem = dashboardHeaderAdapterItemUtil.getHeaderItem(
             emptyState = hasEmptyState,
             greenCardType = GreenCardType.Eu,
-            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem,
+            hasVisitorPassIncompleteItem = hasVisitorPassIncompleteItem
         )
 
         dashboardItems.add(headerItem)
@@ -337,8 +343,8 @@ class GetDashboardItemsUseCaseImpl(
                         originType = originForUnselectedType.type
                     )) {
                     items.add(
-                        if (greenCardType == GreenCardType.Domestic
-                            && dashboardItemUtil.shouldShowMissingDutchVaccinationItem(
+                        if (greenCardType == GreenCardType.Domestic &&
+                            dashboardItemUtil.shouldShowMissingDutchVaccinationItem(
                                 greenCardsForSelectedType,
                                 greenCardsForUnselectedType
                             )
@@ -359,7 +365,7 @@ class GetDashboardItemsUseCaseImpl(
     }
 
     private fun getExpiredBannerItem(
-        greenCard: GreenCard,
+        greenCard: GreenCard
     ): DashboardItem {
         val origin = greenCard.origins.last()
         return when {

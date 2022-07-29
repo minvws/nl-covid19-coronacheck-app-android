@@ -7,10 +7,14 @@
 
 package nl.rijksoverheid.ctr.holder.get_events.usecases
 
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepository
-import nl.rijksoverheid.ctr.holder.get_events.models.*
+import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
+import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteAccessTokens
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 
 /*
@@ -142,7 +146,5 @@ class GetMijnCnEventsUsecaseImpl(
                 EventsResult.Error((eventProvidersResult as EventProvidersResult.Error).errorResult)
             }
         }
-
     }
 }
-

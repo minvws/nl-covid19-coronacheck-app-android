@@ -16,21 +16,15 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.RootMatchers.isDialog
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.fakeYourEventsViewModel
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.fakeAppConfigViewModel
-import nl.rijksoverheid.ctr.holder.fakeDashboardViewModel
-import nl.rijksoverheid.ctr.holder.fakeYourEventsViewModel
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragment
@@ -47,7 +41,7 @@ import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class YourEventsFragmentTest: AutoCloseKoinTest() {
+class YourEventsFragmentTest : AutoCloseKoinTest() {
 
     private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()

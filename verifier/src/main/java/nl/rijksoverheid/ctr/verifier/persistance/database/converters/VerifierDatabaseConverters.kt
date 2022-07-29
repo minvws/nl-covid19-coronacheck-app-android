@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.verifier.persistance.database.converters
 
 import androidx.room.TypeConverter
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import java.time.Instant
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

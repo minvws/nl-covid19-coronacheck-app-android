@@ -19,4 +19,4 @@ import kotlinx.parcelize.Parcelize
 data class CoronaCheckErrorResponse(
     val status: String,
     val code: Int
-): Parcelable
+) : Parcelable

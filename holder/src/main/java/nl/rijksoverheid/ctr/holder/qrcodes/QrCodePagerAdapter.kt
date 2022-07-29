@@ -90,7 +90,6 @@ class QrCodePagerAdapter(private val onOverlayExplanationClick: (QrCodeViewHolde
     override fun getItemCount(): Int {
         return qrCodeDataList.size
     }
-
 }
 
 class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -102,7 +101,7 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         isCurrentlyDisplayed: Boolean,
         qrCodeVisibility: QrCodeVisibility,
         onOverlayExplanationClick: (QrCodeVisibility) -> Unit,
-        onOverlayButtonClick: () -> Unit,
+        onOverlayButtonClick: () -> Unit
     ) {
         val showOverlay = qrCodeVisibility != QrCodeVisibility.VISIBLE
 
@@ -139,8 +138,7 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
         binding.overlayText.text = itemView.context.getString(
             if (qrCodeVisibility == QrCodeVisibility.HIDDEN) {
-                R.string.qr_code_hidden_title }
-            else {
+                R.string.qr_code_hidden_title } else {
                 R.string.holder_qr_code_expired_overlay_title
             }
         )

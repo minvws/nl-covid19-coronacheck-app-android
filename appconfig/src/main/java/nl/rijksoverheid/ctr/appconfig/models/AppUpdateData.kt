@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.appconfig.models
 
 import android.os.Parcelable
+import java.io.Serializable
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
-import java.io.Serializable
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

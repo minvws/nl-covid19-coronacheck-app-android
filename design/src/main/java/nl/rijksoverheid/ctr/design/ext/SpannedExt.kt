@@ -64,5 +64,5 @@ val Spanned.isHeading: Boolean
 val Spanned.isListItem: Boolean
     get() {
         return getSpans<BulletSpan>().isNotEmpty() ||
-               getSpans<BulletPointSpan>().isNotEmpty()
+            getSpans<BulletPointSpan>().isNotEmpty()
     }

@@ -11,12 +11,23 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.get_events.usecases.*
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
-import nl.rijksoverheid.ctr.holder.get_events.models.*
+import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
+import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteAccessTokens
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.get_events.usecases.ConfigProvidersUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.EventProviderWithTokenResult
+import nl.rijksoverheid.ctr.holder.get_events.usecases.EventProvidersResult
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithTokensUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetMijnCnEventsUsecaseImpl
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteEventsUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.RemoteEventsResult
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
+import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -70,7 +81,6 @@ class GetMijnCnEventsUseCaseImplTest {
 
             assertTrue(eventsResult is EventsResult.Error)
         }
-
 
     @Test
     fun `given getRemoteEvents call returns two events then getEvents returns EventsResultSuccess`() =
@@ -248,7 +258,6 @@ class GetMijnCnEventsUseCaseImplTest {
             val exception = (eventsResult as EventsResult.Error).errorResults.first().getException()
             assertTrue(exception is NoProvidersException.Test)
         }
-
 
     @Test
     fun `given getRemoteEvents call returns MijnCnMissingData error then returns EventsResultError`() =

@@ -13,9 +13,6 @@ import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
-import nl.rijksoverheid.ctr.holder.models.HolderFlow
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.shared.models.Flow
 
 @Parcelize
 data class NoDigidFragmentData(
@@ -26,34 +23,40 @@ data class NoDigidFragmentData(
     val originType: RemoteOriginType
 ) : Parcelable
 
-
 sealed class NoDigidNavigationButtonData(
     @StringRes open val title: Int,
     open val subtitle: String? = null,
-    @DrawableRes open val icon: Int? = null,
+    @DrawableRes open val icon: Int? = null
 ) : Parcelable {
-    
-    @Parcelize
-    data class NoDigid(@StringRes override val title: Int,
-                       override val subtitle: String? = null,
-                       @DrawableRes override val icon: Int? = null,
-                       val noDigidFragmentData: NoDigidFragmentData): NoDigidNavigationButtonData(title, subtitle, icon)
 
     @Parcelize
-    data class Info(@StringRes override val title: Int,
-                    override val subtitle: String? = null,
-                    @DrawableRes override val icon: Int? = null, 
-                    val infoFragmentData: InfoFragmentData.TitleDescriptionWithButton): NoDigidNavigationButtonData(title, subtitle, icon)
+    data class NoDigid(
+        @StringRes override val title: Int,
+        override val subtitle: String? = null,
+        @DrawableRes override val icon: Int? = null,
+        val noDigidFragmentData: NoDigidFragmentData
+    ) : NoDigidNavigationButtonData(title, subtitle, icon)
 
     @Parcelize
-    data class Link(@StringRes override val title: Int,
-                    override val subtitle: String? = null,
-                    @DrawableRes override val icon: Int? = null,
-                    val externalUrl: String): NoDigidNavigationButtonData(title, subtitle, icon)
+    data class Info(
+        @StringRes override val title: Int,
+        override val subtitle: String? = null,
+        @DrawableRes override val icon: Int? = null,
+        val infoFragmentData: InfoFragmentData.TitleDescriptionWithButton
+    ) : NoDigidNavigationButtonData(title, subtitle, icon)
 
     @Parcelize
-    data class Ggd(@StringRes override val title: Int,
-                    override val subtitle: String? = null,
-                    @DrawableRes override val icon: Int? = null): NoDigidNavigationButtonData(title, subtitle, icon)
+    data class Link(
+        @StringRes override val title: Int,
+        override val subtitle: String? = null,
+        @DrawableRes override val icon: Int? = null,
+        val externalUrl: String
+    ) : NoDigidNavigationButtonData(title, subtitle, icon)
+
+    @Parcelize
+    data class Ggd(
+        @StringRes override val title: Int,
+        override val subtitle: String? = null,
+        @DrawableRes override val icon: Int? = null
+    ) : NoDigidNavigationButtonData(title, subtitle, icon)
 }
-

@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 class SavedEventsClearDataAdapterItem(
     private val eventGroupEntity: EventGroupEntity,
     private val onClick: (eventGroupEntity: EventGroupEntity) -> Unit
-): BindableItem<AdapterItemSavedEventsClearDataBinding>() {
+) : BindableItem<AdapterItemSavedEventsClearDataBinding>() {
 
     override fun bind(viewBinding: AdapterItemSavedEventsClearDataBinding, position: Int) {
         viewBinding.root.setOnClickListener {

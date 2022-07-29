@@ -6,23 +6,23 @@
  */
 package nl.rijksoverheid.ctr.api
 
-import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
-import nl.rijksoverheid.ctr.api.signing.SignatureValidationException
-import nl.rijksoverheid.ctr.api.signing.SignatureValidator
-import org.bouncycastle.jce.provider.BouncyCastleProvider
-import org.bouncycastle.util.encoders.Base64
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThrows
-import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
+import nl.rijksoverheid.ctr.api.signing.SignatureValidationException
+import nl.rijksoverheid.ctr.api.signing.SignatureValidator
+import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.bouncycastle.util.encoders.Base64
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
+import org.junit.Test
 
 private val TEST_SIGNATURE = Base64.decode(
-    "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",
+    "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"
 )
 
 private val TEST_PAYLOAD = "TEST CONTENT".toByteArray()
@@ -68,7 +68,7 @@ class SignatureValidatorTest {
 
     @Test
     fun `validates with certificate with RND coronatester nl`() {
-        //SubjectDN: C=NL,O=Ministerie van Volksgezondheid\, Welzijn en Sport,OU=Corona Alerters,CN=.coronatester.nl
+        // SubjectDN: C=NL,O=Ministerie van Volksgezondheid\, Welzijn en Sport,OU=Corona Alerters,CN=.coronatester.nl
 //        Validity
 //          Not Before: Aug 24 15:21:19 2021 GMT
 //          Not After : Aug 22 15:21:19 2031 GMT
@@ -166,7 +166,6 @@ V+fduXP4fIM0
 
         assertEquals("Signing certificate does not match expected CN", exception.message)
     }
-
 
     @Test
     fun `given a cert with www coronatester nl example com RND then it fails`() {
@@ -267,7 +266,7 @@ LhA3gg89xrq8bA3XlMOXEpHzX29xu1ODoCZ+GNqlqK/UrWb3TdFGtwI+/Q==
                 Base64.decode(
                     signature
                 ),
-                Clock.fixed(Instant.parse("2021-08-25T00:00:00.00Z"), ZoneId.of("UTC")),
+                Clock.fixed(Instant.parse("2021-08-25T00:00:00.00Z"), ZoneId.of("UTC"))
             )
         }
 

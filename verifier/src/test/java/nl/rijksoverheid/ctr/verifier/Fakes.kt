@@ -8,12 +8,17 @@ import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.ctr.shared.models.DomesticCredential
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.shared.models.VerificationResult
+import nl.rijksoverheid.ctr.shared.models.VerificationResultDetails
 import nl.rijksoverheid.ctr.verifier.scanner.models.VerifiedQrResultState
 import nl.rijksoverheid.ctr.verifier.scanner.usecases.TestResultValidUseCase
 import nl.rijksoverheid.ctr.verifier.scanner.usecases.VerifyQrUseCase
@@ -36,11 +41,9 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
         }
 
         override fun saveNewFeaturesFinished() {
-
         }
 
         override fun saveNewTerms() {
-
         }
     }
 
@@ -61,7 +64,6 @@ fun fakeIntroductionViewModel(
         }
 
         override fun saveIntroductionFinished(introductionData: IntroductionData) {
-
         }
     }
 }
@@ -69,7 +71,6 @@ fun fakeIntroductionViewModel(
 fun fakeSetupViewModel(): SetupViewModel {
     return object : SetupViewModel() {
         override fun onConfigUpdated() {
-
         }
     }
 }
@@ -91,7 +92,7 @@ fun fakeVerifiedQr(
     birthDay: String = "dummy",
     birthMonth: String = "dummy",
     firstNameInitial: String = "dummy",
-    lastNameInitial: String = "dummy",
+    lastNameInitial: String = "dummy"
 ) = VerificationResult(
     status = when {
         error -> Mobilecore.VERIFICATION_FAILED_ERROR
@@ -120,7 +121,7 @@ fun fakeVerifyQrUseCase(
 }
 
 fun fakeCachedAppConfigUseCase(
-    appConfig: AppConfig = VerifierConfig.default(),
+    appConfig: AppConfig = VerifierConfig.default()
 ): CachedAppConfigUseCase = object : CachedAppConfigUseCase {
     override fun isCachedAppConfigValid(): Boolean {
         TODO("Not yet implemented")
@@ -215,7 +216,6 @@ fun fakeAppConfigPersistenceManager(
     }
 
     override fun saveAppConfigLastFetchedSeconds(seconds: Long) {
-
     }
 }
 

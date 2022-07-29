@@ -22,7 +22,7 @@ interface DashboardTabsItemDataMapper {
 
 class DashboardTabsItemDataMapperImpl(
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
-): DashboardTabsItemDataMapper {
+) : DashboardTabsItemDataMapper {
 
     override suspend fun transform(dashboardItems: DashboardItems): List<DashboardTabItem> {
         return withContext(Dispatchers.IO) {

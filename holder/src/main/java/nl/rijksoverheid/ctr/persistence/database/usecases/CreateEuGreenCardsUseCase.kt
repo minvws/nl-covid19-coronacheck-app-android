@@ -1,12 +1,15 @@
 package nl.rijksoverheid.ctr.persistence.database.usecases
 
-import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.*
-import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 
 interface CreateEuGreenCardUseCase {
     suspend fun create(greenCard: RemoteGreenCards.EuGreenCard)
@@ -15,7 +18,7 @@ interface CreateEuGreenCardUseCase {
 class CreateEuGreenCardUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val mobileCoreWrapper: MobileCoreWrapper
-): CreateEuGreenCardUseCase {
+) : CreateEuGreenCardUseCase {
     override suspend fun create(greenCard: RemoteGreenCards.EuGreenCard) {
         // Create green card
         val localEuropeanGreenCardId = holderDatabase.greenCardDao().insert(
@@ -60,4 +63,3 @@ class CreateEuGreenCardUseCaseImpl(
         holderDatabase.credentialDao().insert(entity)
     }
 }
-

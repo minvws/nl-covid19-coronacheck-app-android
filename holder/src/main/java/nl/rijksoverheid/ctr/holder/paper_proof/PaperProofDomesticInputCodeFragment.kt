@@ -42,7 +42,7 @@ class PaperProofDomesticInputCodeFragment : BaseFragment(R.layout.fragment_paper
     private val infoFragmentUtil: InfoFragmentUtil by inject()
 
     private val viewModel: PaperProofDomesticInputCodeViewModel by stateViewModel(
-        state = emptyState(),
+        state = emptyState()
     )
 
     override fun onButtonClickWithRetryAction() {
@@ -147,7 +147,7 @@ class PaperProofDomesticInputCodeFragment : BaseFragment(R.layout.fragment_paper
                     descriptionData = DescriptionData(R.string.no_letter_combination_dialog_description),
                     secondaryButtonData = ButtonData.NavigationButton(
                         text = getString(R.string.add_paper_proof_self_printed_goto_add_proof_button),
-                        navigationActionId = R.id.action_choose_proof_type,
+                        navigationActionId = R.id.action_choose_proof_type
                     )
                 )
             )

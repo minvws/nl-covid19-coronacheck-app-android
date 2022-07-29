@@ -9,15 +9,14 @@ package nl.rijksoverheid.ctr.holder.qrcodes.usecases
 
 import android.graphics.Bitmap
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import java.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
-import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import java.time.Clock
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

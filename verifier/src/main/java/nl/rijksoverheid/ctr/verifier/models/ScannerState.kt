@@ -11,14 +11,16 @@ import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionState
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-sealed class ScannerState(open val verificationPolicySelectionState: VerificationPolicySelectionState): Parcelable {
+sealed class ScannerState(open val verificationPolicySelectionState: VerificationPolicySelectionState) : Parcelable {
 
     @Parcelize
-    data class Locked(val lastScanLockTimeSeconds: Long,
-                      override val verificationPolicySelectionState: VerificationPolicySelectionState
-    ): ScannerState(verificationPolicySelectionState)
+    data class Locked(
+        val lastScanLockTimeSeconds: Long,
+        override val verificationPolicySelectionState: VerificationPolicySelectionState
+    ) : ScannerState(verificationPolicySelectionState)
 
     @Parcelize
-    data class Unlocked(override val verificationPolicySelectionState: VerificationPolicySelectionState
-    ): ScannerState(verificationPolicySelectionState)
+    data class Unlocked(
+        override val verificationPolicySelectionState: VerificationPolicySelectionState
+    ) : ScannerState(verificationPolicySelectionState)
 }

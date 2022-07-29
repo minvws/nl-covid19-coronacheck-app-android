@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppLockedBinding
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
-import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
@@ -92,7 +91,6 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
                 /* nothing */
             }
         }
-
     }
 }
 

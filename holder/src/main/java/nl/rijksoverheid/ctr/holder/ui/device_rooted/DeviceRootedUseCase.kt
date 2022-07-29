@@ -2,11 +2,10 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 
 import android.content.Context
 import com.scottyab.rootbeer.RootBeer
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

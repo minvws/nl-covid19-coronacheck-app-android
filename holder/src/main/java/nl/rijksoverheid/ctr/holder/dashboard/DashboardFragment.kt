@@ -23,13 +23,13 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardBinding
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -146,7 +146,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                                     dashboardSync = DashboardSync.ForceSync
                                 )
                             },
-                            negativeButtonText = R.string.dialog_close,
+                            negativeButtonText = R.string.dialog_close
                         )
                     } else if (it !is DatabaseSyncerResult.Failed.ServerError) {
                         dialogUtil.presentDialog(
@@ -159,7 +159,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                                     dashboardSync = DashboardSync.ForceSync
                                 )
                             },
-                            negativeButtonText = R.string.dialog_close,
+                            negativeButtonText = R.string.dialog_close
                         )
                     }
                 }
@@ -177,9 +177,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         dashboardViewModel.refresh(dashboardSync)
     }
 
-    private fun setupTabs(binding: FragmentDashboardBinding,
-                          items: List<DashboardTabItem>,
-                          init: Boolean) {
+    private fun setupTabs(
+        binding: FragmentDashboardBinding,
+        items: List<DashboardTabItem>,
+        init: Boolean
+    ) {
         if (items.size == 1) {
             binding.tabs.visibility = View.GONE
             binding.tabsSeparator.visibility = View.GONE

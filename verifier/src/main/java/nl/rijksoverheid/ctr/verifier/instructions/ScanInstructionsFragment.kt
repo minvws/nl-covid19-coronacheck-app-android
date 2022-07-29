@@ -16,9 +16,9 @@ import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanInstructionsBinding
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
-import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionType
 import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionState
 import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionStateUseCase
+import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionType
 import nl.rijksoverheid.ctr.verifier.scanner.utils.ScannerUtil
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.scanqr.ScannerNavigationState
@@ -43,7 +43,6 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
 
     private val onboardingItems by lazy { onboardingItemList(verificationPolicySelectionStateUseCase.get()) }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -64,7 +63,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
         setBackPressListener(binding)
         setBindings(binding, adapter)
 
-        scanQrViewModel.scannerNavigationStateEvent.observe(viewLifecycleOwner, EventObserver{
+        scanQrViewModel.scannerNavigationStateEvent.observe(viewLifecycleOwner, EventObserver {
             closeInstructionsAndOpenNextScreen(it)
         })
     }
@@ -110,7 +109,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
                     ScanInstructionsFragmentDirections.actionPolicySelection(
                         selectionType = VerificationPolicySelectionType.FirstTimeUse(ScannerState.Unlocked(VerificationPolicySelectionState.Selection.None)),
                         toolbarTitle = getString(R.string.verifier_menu_risksetting),
-                        returnUri = arguments?.getString("returnUri"),
+                        returnUri = arguments?.getString("returnUri")
                     )
                 )
             }
@@ -142,7 +141,7 @@ class ScanInstructionsFragment : Fragment(R.layout.fragment_scan_instructions) {
     private fun initViewPager(
         binding: FragmentScanInstructionsBinding,
         adapter: OnboardingPagerAdapter,
-        startingItem: Int? = null,
+        startingItem: Int? = null
     ) {
         binding.viewPager.offscreenPageLimit = onboardingItems.size
         binding.viewPager.adapter = adapter

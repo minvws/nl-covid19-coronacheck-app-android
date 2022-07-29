@@ -4,7 +4,6 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -46,7 +45,7 @@ data class HolderConfig(
     @Json(name = "luhnCheckEnabled") val luhnCheckEnabled: Boolean,
     @Json(name = "internationalQRRelevancyDays") val internationalQRRelevancyDays: Int,
     @Json(name = "recoveryGreencardRevisedValidityLaunchDate") val recoveryGreenCardRevisedValidityLaunchDate: String,
-    @Json(name = "configAlmostOutOfDateWarningSeconds") val holderConfigAlmostOutOfDateWarningSeconds : Int,
+    @Json(name = "configAlmostOutOfDateWarningSeconds") val holderConfigAlmostOutOfDateWarningSeconds: Int,
     @Json(name = "showNewValidityInfoCard") val showNewValidityInfoCard: Boolean,
     @Json(name = "androidEnableVerificationPolicyVersion") val holderEnableVerificationPolicyVersion: Int,
     @Json(name = "visitorPassEnabled") val visitorPassEnabled: Boolean,
@@ -55,7 +54,7 @@ data class HolderConfig(
     @Json(name = "disclosurePolicies") val disclosurePolicy: DisclosurePolicy,
     @Json(name = "backendTLSCertificates") val backendTLSCertificates: List<String>,
     @Json(name = "shouldShowCoronaMelderRecommendation") val shouldShowCoronaMelderRecommendation: Boolean?,
-    @Json(name = "papEnabled") val papEnabled: Boolean,
+    @Json(name = "papEnabled") val papEnabled: Boolean
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -151,8 +150,7 @@ data class HolderConfig(
             disclosurePolicy = disclosurePolicy,
             backendTLSCertificates = emptyList(),
             shouldShowCoronaMelderRecommendation = false,
-            papEnabled = false,
+            papEnabled = false
         )
     }
 }
-

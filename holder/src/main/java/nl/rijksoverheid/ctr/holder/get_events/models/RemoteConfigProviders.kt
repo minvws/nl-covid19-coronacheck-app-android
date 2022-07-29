@@ -31,7 +31,7 @@ data class RemoteConfigProviders(
         @Json(name = "url") val resultUrl: String,
         @Json(name = "cms") val cms: List<ByteArray>,
         @Json(name = "tls") val tls: List<ByteArray>,
-        @Json(name = "usage") val usage: List<String>,
+        @Json(name = "usage") val usage: List<String>
     ) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

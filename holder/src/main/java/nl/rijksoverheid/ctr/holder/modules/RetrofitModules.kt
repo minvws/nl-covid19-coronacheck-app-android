@@ -1,8 +1,10 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.api.signing.certificates.*
+import nl.rijksoverheid.ctr.api.signing.certificates.BEARINGPOINT_ROOT_CA
+import nl.rijksoverheid.ctr.api.signing.certificates.EMAX_ROOT_CA
 import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.api.*
+import nl.rijksoverheid.ctr.holder.api.MijnCnApiClient
+import nl.rijksoverheid.ctr.holder.api.RemoteConfigApiClient
 import okhttp3.OkHttpClient
 import okhttp3.tls.HandshakeCertificates
 import okhttp3.tls.decodeCertificatePem

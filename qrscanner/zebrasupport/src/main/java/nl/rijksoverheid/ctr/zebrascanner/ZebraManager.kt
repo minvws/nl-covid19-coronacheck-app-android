@@ -41,7 +41,6 @@ import nl.rijksoverheid.ctr.zebrascanner.ZebraConstants.PROFILE_BUNDLE_SCANNER_I
 import nl.rijksoverheid.ctr.zebrascanner.ZebraConstants.ZEBRA_INTENT_DATAWEDGE_ACTION
 import nl.rijksoverheid.ctr.zebrascanner.ZebraConstants.ZEBRA_INTENT_FILTER_ACTION
 
-
 interface ZebraManager {
     fun setupDataWedgeProfile()
     fun createDataWedgeProfile()
@@ -49,7 +48,7 @@ interface ZebraManager {
     fun resumeScanner()
     fun setupZebraScanner(onDatawedgeResultListener: (data: String) -> Unit)
     fun teardownZebraScanner()
-    fun isZebraDevice() : Boolean
+    fun isZebraDevice(): Boolean
 }
 
 class ZebraManagerImpl(
@@ -162,7 +161,7 @@ class ZebraManagerImpl(
         i.action = ZEBRA_INTENT_DATAWEDGE_ACTION
         i.putExtra(DATAWEDGE_SCANNER_INPUT_PLUGIN, "SUSPEND_PLUGIN")
         i.putExtra(DATAWEDGE_SEND_RESULT, "true")
-        i.putExtra(DATAWEDGE_COMMAND_IDENTIFIER, "MY_SUSPEND_SCANNER") //Unique identifier
+        i.putExtra(DATAWEDGE_COMMAND_IDENTIFIER, "MY_SUSPEND_SCANNER") // Unique identifier
         context.sendBroadcast(i)
     }
 
@@ -171,7 +170,7 @@ class ZebraManagerImpl(
         i.action = "com.symbol.datawedge.api.ACTION"
         i.putExtra(DATAWEDGE_SCANNER_INPUT_PLUGIN, "RESUME_PLUGIN")
         i.putExtra(DATAWEDGE_SEND_RESULT, "true")
-        i.putExtra(DATAWEDGE_COMMAND_IDENTIFIER, "MY_RESUME_SCANNER") //Unique identifier
+        i.putExtra(DATAWEDGE_COMMAND_IDENTIFIER, "MY_RESUME_SCANNER") // Unique identifier
         context.sendBroadcast(i)
     }
 
@@ -201,5 +200,4 @@ class ZebraManagerImpl(
             zebraIntentSet = false
         }
     }
-
 }

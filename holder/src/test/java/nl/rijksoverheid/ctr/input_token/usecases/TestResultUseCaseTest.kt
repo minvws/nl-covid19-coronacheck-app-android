@@ -1,14 +1,16 @@
 package nl.rijksoverheid.ctr.input_token.usecases
 
 import io.mockk.mockk
+import java.io.IOException
+import kotlin.test.assertEquals
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
+import nl.rijksoverheid.ctr.fakeCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.fakeConfigProviderUseCase
+import nl.rijksoverheid.ctr.fakeTestProviderRepository
+import nl.rijksoverheid.ctr.fakeTokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepository
-import nl.rijksoverheid.ctr.holder.fakeCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.holder.fakeConfigProviderUseCase
-import nl.rijksoverheid.ctr.holder.fakeTestProviderRepository
-import nl.rijksoverheid.ctr.holder.fakeTokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResult
@@ -19,8 +21,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
-import java.io.IOException
-import kotlin.test.assertEquals
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -221,7 +221,7 @@ class TestResultUseCaseTest {
                         provider: String,
                         verifierCode: String?,
                         signingCertificateBytes: List<ByteArray>,
-                        tlsCertificateBytes: List<ByteArray>,
+                        tlsCertificateBytes: List<ByteArray>
                     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
                         throw IOException()
                     }
@@ -301,7 +301,7 @@ class TestResultUseCaseTest {
             resultUrl = "dummy",
             cms = listOf("dummy".toByteArray()),
             tls = listOf("dummy".toByteArray()),
-            usage = listOf("pt"),
+            usage = listOf("pt")
         )
     }
 

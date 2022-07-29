@@ -12,27 +12,27 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Space
 import android.widget.TextView
+import java.time.Clock
+import java.time.Instant
+import java.util.concurrent.TimeUnit
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.capitalize
 import nl.rijksoverheid.ctr.shared.ext.locale
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.time.Clock
-import java.time.Instant
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit
 interface DashboardGreenCardAdapterItemUtil {
     fun setContent(
         dashboardGreenCardAdapterItemBinding: DashboardGreenCardAdapterItemBindingWrapper,
-        cards: List<AdapterCard>,
+        cards: List<AdapterCard>
     )
 }
 
@@ -59,7 +59,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
 
     override fun setContent(
         dashboardGreenCardAdapterItemBinding: DashboardGreenCardAdapterItemBindingWrapper,
-        cards: List<AdapterCard>,
+        cards: List<AdapterCard>
     ) {
         cards.forEach { card ->
             val it = card.greenCard
@@ -175,7 +175,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
     ) {
         setOriginTitle(
             descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-            title = context.getString(R.string.qr_card_test_domestic),
+            title = context.getString(R.string.qr_card_test_domestic)
         )
 
         setOriginSubtitle(
@@ -196,7 +196,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
         if (origin.doseNumber == null) {
             setOriginTitle(
                 descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-                title = context.getString(R.string.qr_card_vaccination_title_domestic),
+                title = context.getString(R.string.qr_card_vaccination_title_domestic)
             )
         } else {
             when (origin.doseNumber) {
@@ -206,7 +206,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
                         title = context.getString(
                             R.string.qr_card_vaccination_title_domestic_with_dosis,
                             origin.doseNumber.toString()
-                        ),
+                        )
                     )
                 }
                 else -> {
@@ -215,12 +215,11 @@ class DashboardGreenCardAdapterItemUtilImpl(
                         title = context.getString(
                             R.string.qr_card_vaccination_title_domestic_with_doses,
                             origin.doseNumber.toString()
-                        ),
+                        )
                     )
                 }
             }
         }
-
 
         val subtitle = if (originExpirationTimeThreeYearsFromNow(originState.origin)) {
             context.getString(
@@ -261,7 +260,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
     ) {
         setOriginTitle(
             descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-            title = context.getString(R.string.qr_card_recovery_title_domestic),
+            title = context.getString(R.string.qr_card_recovery_title_domestic)
         )
 
         setOriginSubtitle(
@@ -271,7 +270,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
             subtitle = context.getString(
                 R.string.qr_card_validity_valid,
                 origin.expirationTime.toLocalDate().formatDayMonthYear()
-            ),
+            )
         )
     }
 
@@ -315,7 +314,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
             subtitle = context.getString(
                 R.string.qr_card_validity_valid,
                 origin.expirationTime.toLocalDate().formatDayMonthYear()
-            ),
+            )
         )
     }
 
@@ -343,7 +342,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
         )
         setOriginTitle(
             descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-            title = doses,
+            title = doses
         )
 
         setOriginSubtitle(
@@ -354,7 +353,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
             showTime = false,
             subtitle = "${context.getString(R.string.qr_card_vaccination_title_eu)} ${
                 origin.eventTime.toLocalDate().formatDayMonthYear()
-            }",
+            }"
         )
     }
 
@@ -370,7 +369,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
                 credentialUtil.getTestTypeForEuropeanCredentials(
                     greenCard.credentialEntities
                 )
-            }",
+            }"
         )
 
         setOriginSubtitle(
@@ -381,13 +380,13 @@ class DashboardGreenCardAdapterItemUtilImpl(
                 origin.eventTime.formatDateTime(
                     context
                 )
-            }",
+            }"
         )
     }
 
     private fun setOriginTitle(
         descriptionLayout: LinearLayout,
-        title: String,
+        title: String
     ) {
         descriptionLayout.addView(
             TextView(descriptionLayout.context).apply {
@@ -409,7 +408,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
         descriptionLayout: LinearLayout,
         originState: OriginState,
         showTime: Boolean,
-        subtitle: String,
+        subtitle: String
     ) {
         val textView = TextView(descriptionLayout.context).apply {
             setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)

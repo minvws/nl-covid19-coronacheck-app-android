@@ -18,9 +18,8 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
-
 @RunWith(RobolectricTestRunner::class)
-class YourEventsEndStateUtilImplTest: AutoCloseKoinTest() {
+class YourEventsEndStateUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `If no hints exists return correct end state`() {
@@ -44,7 +43,7 @@ class YourEventsEndStateUtilImplTest: AutoCloseKoinTest() {
 
     @Test
     fun `If hints exists but nothing can be mapped to string resource return correct end state`() {
-        val stringUtil = object: StringUtil {
+        val stringUtil = object : StringUtil {
             override fun getStringFromResourceName(resourceName: String): String {
                 return ""
             }
@@ -60,7 +59,7 @@ class YourEventsEndStateUtilImplTest: AutoCloseKoinTest() {
 
     @Test
     fun `If hints exists and can be mapped to string resource return correct end state`() {
-        val stringUtil = object: StringUtil {
+        val stringUtil = object : StringUtil {
             override fun getStringFromResourceName(resourceName: String): String {
                 return "Test hint"
             }

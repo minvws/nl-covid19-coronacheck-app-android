@@ -13,7 +13,7 @@ interface StringUtil {
     fun getStringFromResourceName(resourceName: String): String
 }
 
-class StringUtilImpl(private val context: Context): StringUtil {
+class StringUtilImpl(private val context: Context) : StringUtil {
     override fun getStringFromResourceName(resourceName: String): String {
         val packageName: String = context.packageName
         val resId: Int = context.resources.getIdentifier(resourceName, "string", packageName)

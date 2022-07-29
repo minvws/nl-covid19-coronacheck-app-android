@@ -6,7 +6,6 @@ import com.squareup.moshi.Moshi
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import nl.rijksoverheid.ctr.shared.ext.toHex
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
@@ -35,7 +34,7 @@ class RandomKeyUseCaseImplTest : AutoCloseKoinTest() {
         this.persistenceManager = SharedPreferencesPersistenceManager(
             InstrumentationRegistry.getInstrumentation().context.getSharedPreferences(
                 "test",
-                Context.MODE_PRIVATE,
+                Context.MODE_PRIVATE
             ), Moshi.Builder().build()
         )
     }

@@ -12,6 +12,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.coEvery
 import io.mockk.mockk
+import java.time.OffsetDateTime
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
@@ -22,7 +23,9 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,10 +34,9 @@ import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import java.time.OffsetDateTime
 
 @RunWith(RobolectricTestRunner::class)
-class SaveEventsUseCaseImplTest: AutoCloseKoinTest() {
+class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
 
     @Before
     fun setup() = runBlocking {

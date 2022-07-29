@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
  */
 class HolderWorkerFactory(
     private val configResultUseCase: ConfigResultUseCase,
-    private val holderDatabaseSyncer: HolderDatabaseSyncer,
+    private val holderDatabaseSyncer: HolderDatabaseSyncer
 ) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
@@ -27,13 +27,13 @@ class HolderWorkerFactory(
             ConfigFetchWorker::class.java.name -> ConfigFetchWorker(
                 appContext,
                 workerParameters,
-                configResultUseCase,
+                configResultUseCase
             )
             CredentialRefreshWorker::class.java.name -> CredentialRefreshWorker(
                 appContext,
                 workerParameters,
                 configResultUseCase,
-                holderDatabaseSyncer,
+                holderDatabaseSyncer
             )
             else -> null
         }

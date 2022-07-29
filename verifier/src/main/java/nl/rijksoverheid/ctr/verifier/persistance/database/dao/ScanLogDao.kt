@@ -1,6 +1,10 @@
 package nl.rijksoverheid.ctr.verifier.persistance.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
 
 /*

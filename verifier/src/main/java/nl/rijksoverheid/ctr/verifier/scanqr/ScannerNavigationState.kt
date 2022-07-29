@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.verifier.scanqr
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -9,8 +8,8 @@ package nl.rijksoverheid.ctr.verifier.scanqr
  *
  */
 sealed class ScannerNavigationState {
-    data class Scanner(val isLocked: Boolean): ScannerNavigationState()
-    object Instructions: ScannerNavigationState()
-    object VerificationPolicySelection: ScannerNavigationState()
-    object NewPolicyRules: ScannerNavigationState()
+    data class Scanner(val isLocked: Boolean) : ScannerNavigationState()
+    object Instructions : ScannerNavigationState()
+    object VerificationPolicySelection : ScannerNavigationState()
+    object NewPolicyRules : ScannerNavigationState()
 }

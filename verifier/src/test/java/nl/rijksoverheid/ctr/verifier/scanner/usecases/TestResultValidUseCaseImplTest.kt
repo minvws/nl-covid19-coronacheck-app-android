@@ -1,7 +1,8 @@
 package nl.rijksoverheid.ctr.verifier.scanner.usecases
 
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.verifier.*
+import nl.rijksoverheid.ctr.verifier.fakeVerifiedQr
+import nl.rijksoverheid.ctr.verifier.fakeVerifyQrUseCase
 import nl.rijksoverheid.ctr.verifier.scanner.models.VerifiedQrResultState
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -19,7 +20,7 @@ class TestResultValidUseCaseImplTest {
     fun `Validate returns Valid if code can be validated with valid test result and valid qr code`() =
         runBlocking {
             val usecase = TestResultValidUseCaseImpl(
-                verifyQrUseCase = fakeVerifyQrUseCase(),
+                verifyQrUseCase = fakeVerifyQrUseCase()
             )
             assertTrue(usecase.validate("") is VerifiedQrResultState.Valid)
         }
@@ -32,7 +33,7 @@ class TestResultValidUseCaseImplTest {
                     result = VerifyQrUseCase.VerifyQrResult.Success(
                         verifiedQr = fakeVerifiedQr(isSpecimen = "1")
                     )
-                ),
+                )
             )
             assertTrue(usecase.validate("") is VerifiedQrResultState.Demo)
         }
@@ -41,7 +42,7 @@ class TestResultValidUseCaseImplTest {
     fun `Validate returns Invalid if code has isNLDCC 1`() =
         runBlocking {
             val usecase = TestResultValidUseCaseImpl(
-                verifyQrUseCase = fakeVerifyQrUseCase(isNLDCC = true),
+                verifyQrUseCase = fakeVerifyQrUseCase(isNLDCC = true)
             )
             assertTrue(usecase.validate("") is VerifiedQrResultState.InvalidInNL)
         }
@@ -50,7 +51,7 @@ class TestResultValidUseCaseImplTest {
     fun `Validate returns Demo if code has Specimen 1`() =
         runBlocking {
             val usecase = TestResultValidUseCaseImpl(
-                verifyQrUseCase = fakeVerifyQrUseCase(isSpecimen = "1"),
+                verifyQrUseCase = fakeVerifyQrUseCase(isSpecimen = "1")
             )
             assertTrue(usecase.validate("") is VerifiedQrResultState.Demo)
         }
@@ -59,7 +60,7 @@ class TestResultValidUseCaseImplTest {
     fun `Validate returns Error if code cannot be validated`() = runBlocking {
 
         val usecase = TestResultValidUseCaseImpl(
-            verifyQrUseCase = fakeVerifyQrUseCase(error = true),
+            verifyQrUseCase = fakeVerifyQrUseCase(error = true)
         )
         assertTrue(usecase.validate("") is VerifiedQrResultState.Error)
     }

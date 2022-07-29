@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.paper_proof.usecases
 
+import kotlin.test.assertEquals
 import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofDomesticCodeResult
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofDomesticInputCodeUseCaseImpl
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class ValidatePaperProofDomesticInputCodeUseCaseImplTest {
 

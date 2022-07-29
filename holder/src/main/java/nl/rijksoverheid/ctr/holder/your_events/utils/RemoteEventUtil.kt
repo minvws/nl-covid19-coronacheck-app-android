@@ -9,14 +9,21 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 
 import android.util.Base64
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.holder.get_events.models.*
+import java.time.LocalDate
+import java.time.OffsetDateTime
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import org.json.JSONException
 import org.json.JSONObject
-import java.time.LocalDate
-import java.time.OffsetDateTime
 
 interface RemoteEventUtil {
     fun isDccEvent(providerIdentifier: String): Boolean
@@ -31,7 +38,8 @@ interface RemoteEventUtil {
 }
 
 class RemoteEventUtilImpl(
-    private val moshi: Moshi): RemoteEventUtil {
+    private val moshi: Moshi
+) : RemoteEventUtil {
 
     /**
      * Only remove duplicate events for vaccination events
@@ -73,7 +81,7 @@ class RemoteEventUtilImpl(
                 vaccination = RemoteEventVaccination.Vaccination(
                     doseNumber = it.getStringOrNull("dn"),
                     totalDoses = it.getStringOrNull("sd"),
-                    date = try { LocalDate.parse(it.getStringOrNull("dt")?.take(10)) } catch(e: Exception) { null },
+                    date = try { LocalDate.parse(it.getStringOrNull("dt")?.take(10)) } catch (e: Exception) { null },
                     country = it.getStringOrNull("co"),
                     type = it.getStringOrNull("vp"),
                     brand = it.getStringOrNull("mp"),
@@ -94,9 +102,9 @@ class RemoteEventUtilImpl(
                 unique = it.getStringOrNull("ci") ?: "",
                 isSpecimen = false,
                 recovery = RemoteEventRecovery.Recovery(
-                    sampleDate = try { LocalDate.parse(it.getStringOrNull("fr")?.take(10)) } catch(e: Exception) { null },
-                    validFrom = try { LocalDate.parse(it.getStringOrNull("df")?.take(10)) } catch(e: Exception) { null },
-                    validUntil = try { LocalDate.parse(it.getStringOrNull("du")?.take(10)) } catch(e: Exception) { null },
+                    sampleDate = try { LocalDate.parse(it.getStringOrNull("fr")?.take(10)) } catch (e: Exception) { null },
+                    validFrom = try { LocalDate.parse(it.getStringOrNull("df")?.take(10)) } catch (e: Exception) { null },
+                    validUntil = try { LocalDate.parse(it.getStringOrNull("du")?.take(10)) } catch (e: Exception) { null }
                 )
             )
         }

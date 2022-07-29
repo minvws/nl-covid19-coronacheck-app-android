@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class DialogFragment: DialogFragment() {
+class DialogFragment : DialogFragment() {
 
     private val viewModel: DialogFragmentViewModel by viewModel()
 

@@ -3,6 +3,8 @@ package nl.rijksoverheid.ctr.api.factory
 import android.net.ConnectivityManager
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
+import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.MijnCnErrorResponse
@@ -21,8 +23,6 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
-import java.time.OffsetDateTime
-import java.util.concurrent.TimeUnit
 
 class NetworkRequestResultFactoryTest {
 
@@ -192,7 +192,7 @@ class NetworkRequestResultFactoryTest {
     data class TestObject(val hello: String)
 
     private fun getAndroidUtil(isNetworkAvailable: Boolean): AndroidUtil {
-        return object: AndroidUtil {
+        return object : AndroidUtil {
             override fun isSmallScreen(): Boolean {
                 return false
             }

@@ -2,9 +2,28 @@ package nl.rijksoverheid.ctr.holder.modules
 
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCaseImpl
-import nl.rijksoverheid.ctr.holder.dashboard.usecases.*
-import nl.rijksoverheid.ctr.holder.paper_proof.usecases.*
-import nl.rijksoverheid.ctr.persistence.database.usecases.*
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowCoronaMelderItemUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowCoronaMelderItemUseCaseImpl
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.SortGreenCardItemsUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.SortGreenCardItemsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.SplitDomesticGreenCardsUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.SplitDomesticGreenCardsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCase
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCaseImpl
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetPaperProofTypeUseCase
+import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetPaperProofTypeUseCaseImpl
+import nl.rijksoverheid.ctr.persistence.database.usecases.CreateDomesticGreenCardUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.CreateDomesticGreenCardUseCaseImpl
+import nl.rijksoverheid.ctr.persistence.database.usecases.CreateEuGreenCardUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.CreateEuGreenCardUseCaseImpl
+import nl.rijksoverheid.ctr.persistence.database.usecases.GetRemoteGreenCardsUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.GetRemoteGreenCardsUseCaseImpl
+import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsUseCaseImpl
+import nl.rijksoverheid.ctr.persistence.database.usecases.UpdateEventExpirationUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.UpdateEventExpirationUseCaseImpl
 import org.koin.dsl.module
 
 /*

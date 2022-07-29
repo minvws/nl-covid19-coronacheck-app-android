@@ -7,7 +7,8 @@ import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
