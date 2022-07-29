@@ -113,7 +113,7 @@ class DashboardViewModelImpl(
             refreshDashboardTabItems(
                 allGreenCards = allGreenCards,
                 databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent()
-                    ?: DatabaseSyncerResult.Success(),
+                    ?: DatabaseSyncerResult.Success(listOf()),
                 isLoadingNewCredentials = shouldLoadNewCredentials,
                 allEventGroupEntities = allEventGroupEntities
             )

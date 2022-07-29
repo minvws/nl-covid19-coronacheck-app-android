@@ -37,6 +37,7 @@ import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
+import nl.rijksoverheid.ctr.holder.your_events.YourEventsViewModel
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
@@ -60,6 +61,7 @@ import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
@@ -393,10 +395,10 @@ fun fakeGreenCardUtil(
 
 fun fakeGetRemoteGreenCardUseCase(
     result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
-        RemoteGreenCards(null, null, listOf())
+        RemoteGreenCards(null, null, listOf(), listOf())
     )
 ) = object : GetRemoteGreenCardsUseCase {
-    override suspend fun get(events: List<EventGroupEntity>, secretKey: String): RemoteGreenCardsResult {
+    override suspend fun get(events: List<EventGroupEntity>, secretKey: String, flow: Flow): RemoteGreenCardsResult {
         return result
     }
 }
@@ -590,7 +592,7 @@ fun fakeEventGroupEntity(
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),
     euGreencards: List<RemoteGreenCards.EuGreenCard>? = listOf(fakeEuGreenCard())
-) = RemoteGreenCards(domesticGreencard, euGreencards, listOf())
+) = RemoteGreenCards(domesticGreencard, euGreencards, listOf(), listOf())
 
 fun fakeDomesticGreenCard(
     origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),
@@ -614,7 +616,7 @@ fun fakeOrigin(
         2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
     ),
     doseNumber: Int? = 1
-) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber)
+) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber, listOf())
 
 fun fakeOriginEntity(
     id: Int = 0,
@@ -699,4 +701,24 @@ fun fakeQrCodeUtil() = object : QrCodeUtil {
         height,
         Bitmap.Config.RGB_565
     )
+}
+
+fun fakeYourEventsViewModel(
+    databaseSyncerResult: DatabaseSyncerResult
+): YourEventsViewModel {
+    return object : YourEventsViewModel() {
+        init {
+            (yourEventsResult as MutableLiveData).value = Event(databaseSyncerResult)
+        }
+
+        override fun saveRemoteProtocolEvents(
+            flow: Flow,
+            remoteProtocols: Map<RemoteProtocol, ByteArray>,
+            removePreviousEvents: Boolean
+        ) {
+        }
+
+        override fun checkForConflictingEvents(remoteProtocols: Map<RemoteProtocol, ByteArray>) {
+        }
+    }
 }

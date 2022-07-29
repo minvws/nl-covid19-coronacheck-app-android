@@ -22,7 +22,8 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 data class RemoteGreenCards(
     val domesticGreencard: DomesticGreenCard?,
     val euGreencards: List<EuGreenCard>?,
-    val blobExpireDates: List<BlobExpiry>?
+    val blobExpireDates: List<BlobExpiry>?,
+    val hints: List<String>? = listOf()
 ) {
     data class DomesticGreenCard(
         val origins: List<Origin>,
@@ -57,7 +58,8 @@ data class RemoteGreenCards(
         val eventTime: OffsetDateTime,
         val expirationTime: OffsetDateTime,
         val validFrom: OffsetDateTime,
-        val doseNumber: Int?
+        val doseNumber: Int?,
+        val hints: List<String>? = listOf()
     )
 
     data class BlobExpiry(

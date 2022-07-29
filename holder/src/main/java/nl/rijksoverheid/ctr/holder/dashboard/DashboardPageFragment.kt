@@ -179,6 +179,9 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
                     dashboardViewModel.refresh(
                         dashboardSync = DashboardSync.ForceSync
                     )
+                },
+                onCountDownFinished = {
+                    dashboardViewModel.refresh()
                 }
             )
         )

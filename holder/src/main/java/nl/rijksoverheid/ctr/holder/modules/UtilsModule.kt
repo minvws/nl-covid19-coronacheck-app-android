@@ -41,6 +41,8 @@ import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.LocalDateUtil
 import nl.rijksoverheid.ctr.holder.utils.LocalDateUtilImpl
+import nl.rijksoverheid.ctr.holder.utils.StringUtil
+import nl.rijksoverheid.ctr.holder.utils.StringUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.EventGroupEntityUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.EventGroupEntityUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtil
@@ -49,12 +51,12 @@ import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3UtilImpl
+import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsEndStateUtil
+import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsEndStateUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtilImpl
-import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtil
-import nl.rijksoverheid.ctr.persistence.database.util.YourEventFragmentEndStateUtilImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -86,9 +88,6 @@ fun utilsModule(versionCode: Int) = module {
     factory<LocalDateUtil> { LocalDateUtilImpl(get(), get()) }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
     factory<DashboardPageInfoItemHandlerUtil> { DashboardPageInfoItemHandlerUtilImpl(get(), get(), get()) }
-    factory<YourEventFragmentEndStateUtil> {
-        YourEventFragmentEndStateUtilImpl(get(), get())
-    }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
@@ -102,4 +101,6 @@ fun utilsModule(versionCode: Int) = module {
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
     factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get()) }
+    factory<StringUtil> { StringUtilImpl(get()) }
+    factory<YourEventsEndStateUtil> { YourEventsEndStateUtilImpl(get()) }
 }

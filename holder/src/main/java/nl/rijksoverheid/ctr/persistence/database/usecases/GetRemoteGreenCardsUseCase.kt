@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import org.json.JSONObject
 
@@ -14,7 +15,7 @@ import org.json.JSONObject
  * Get green cards from remote
  */
 interface GetRemoteGreenCardsUseCase {
-    suspend fun get(events: List<EventGroupEntity>, secretKey: String): RemoteGreenCardsResult
+    suspend fun get(events: List<EventGroupEntity>, secretKey: String, flow: Flow): RemoteGreenCardsResult
 }
 
 class GetRemoteGreenCardsUseCaseImpl(
@@ -22,7 +23,7 @@ class GetRemoteGreenCardsUseCaseImpl(
     private val mobileCoreWrapper: MobileCoreWrapper
 ) : GetRemoteGreenCardsUseCase {
 
-    override suspend fun get(events: List<EventGroupEntity>, secretKey: String): RemoteGreenCardsResult {
+    override suspend fun get(events: List<EventGroupEntity>, secretKey: String, flow: Flow): RemoteGreenCardsResult {
         return try {
             val prepareIssue = when (val prepareIssueResult = coronaCheckRepository.getPrepareIssue()) {
                 is NetworkRequestResult.Success -> {
@@ -52,7 +53,8 @@ class GetRemoteGreenCardsUseCaseImpl(
                     jsonObject.put("id", it.id.toString())
                     jsonObject.toString()
                 },
-                issueCommitmentMessage = commitmentMessage
+                issueCommitmentMessage = commitmentMessage,
+                flow = flow
             )
 
             when (remoteGreenCardsResult) {

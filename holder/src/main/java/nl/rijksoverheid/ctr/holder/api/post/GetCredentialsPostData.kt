@@ -10,5 +10,6 @@ package nl.rijksoverheid.ctr.holder.api.post
 data class GetCredentialsPostData(
     val stoken: String,
     val events: List<String>,
-    val issueCommitmentMessage: String
+    val issueCommitmentMessage: String,
+    val flows: List<String>
 )

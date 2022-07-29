@@ -9,8 +9,6 @@ package nl.rijksoverheid.ctr.holder.dashboard
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
@@ -20,7 +18,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import java.util.concurrent.TimeUnit
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
@@ -57,11 +54,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
     private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
     private val menuUtil: MenuUtil by inject()
-
-    private val refreshHandler = Handler(Looper.getMainLooper())
-    private val refreshRunnable = Runnable {
-        refresh()
-    }
 
     /** count of amount of tabs visible. When tab amount changes on policy change the adapter items need to be reset */
     private var tabItemsCount = 0
@@ -183,10 +175,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync) {
         dashboardViewModel.refresh(dashboardSync)
-        refreshHandler.postDelayed(
-            refreshRunnable,
-            TimeUnit.SECONDS.toMillis(60)
-        )
     }
 
     private fun setupTabs(
@@ -234,7 +222,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     override fun onPause() {
         super.onPause()
-        refreshHandler.removeCallbacks(refreshRunnable)
 
         // Do this check because our screenshot fragment tests run in it's own test activity
         if (parentFragment != null && requireParentFragment().parentFragment != null) {
