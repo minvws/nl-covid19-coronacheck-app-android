@@ -7,7 +7,6 @@
 
 package nl.rijksoverheid.ctr.get_events.utils
 
-import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.utils.StringUtil
@@ -46,7 +45,7 @@ class YourEventsEndStateUtilImplTest: AutoCloseKoinTest() {
     @Test
     fun `If hints exists but nothing can be mapped to string resource return correct end state`() {
         val stringUtil = object: StringUtil {
-            override fun getStringFromResourceName(context: Context, resourceName: String): String {
+            override fun getStringFromResourceName(resourceName: String): String {
                 return ""
             }
         }
@@ -62,7 +61,7 @@ class YourEventsEndStateUtilImplTest: AutoCloseKoinTest() {
     @Test
     fun `If hints exists and can be mapped to string resource return correct end state`() {
         val stringUtil = object: StringUtil {
-            override fun getStringFromResourceName(context: Context, resourceName: String): String {
+            override fun getStringFromResourceName(resourceName: String): String {
                 return "Test hint"
             }
         }
