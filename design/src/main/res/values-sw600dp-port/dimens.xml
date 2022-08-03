@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="horizontal_padding">140dp</dimen>
+    <dimen name="divider_padding">140dp</dimen>
     <dimen name="button_horizontal_margin">132dp</dimen>
 </resources>

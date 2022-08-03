@@ -68,6 +68,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="@dimen/divider_padding"
         android:background="@color/grey_4"
         android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
