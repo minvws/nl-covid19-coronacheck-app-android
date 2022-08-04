@@ -21,6 +21,7 @@ import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import nl.rijksoverheid.ctr.holder.models.HolderStep.DigidNetworkRequest
 import nl.rijksoverheid.ctr.holder.api.repositories.AuthenticationRepository
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -44,19 +45,21 @@ class LoginViewModel(
         const val NETWORK_ERROR = 3
         const val LOGIN_REQUIRED_ERROR = "login_required"
         const val SAML_AUTHN_FAILED_ERROR = "saml_authn_failed"
+        const val CANCELLED = "cancelled"
     }
 
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val loginResultLiveData = MutableLiveData<Event<LoginResult>>()
 
     fun login(
+        loginType: LoginType,
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
     ) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
             try {
-                digidAuthenticationRepository.authResponse(activityResultLauncher, authService)
+                digidAuthenticationRepository.authResponse(loginType, activityResultLauncher, authService)
             } catch (e: Exception) {
                 postExceptionResult(e)
             }
@@ -64,7 +67,7 @@ class LoginViewModel(
         }
     }
 
-    fun handleActivityResult(activityResult: ActivityResult, authService: AuthorizationService) {
+    fun handleActivityResult(loginType: LoginType, activityResult: ActivityResult, authService: AuthorizationService) {
         viewModelScope.launch {
             val intent = activityResult.data
             if (intent != null) {
@@ -72,7 +75,7 @@ class LoginViewModel(
                 val authError = AuthorizationException.fromIntent(intent)
                 when {
                     authError != null -> postAuthErrorResult(authError)
-                    authResponse != null -> postAuthResponseResult(authService, authResponse)
+                    authResponse != null -> postAuthResponseResult(loginType, authService, authResponse)
                     else -> postAuthNullResult()
                 }
             } else {
@@ -122,14 +125,16 @@ class LoginViewModel(
     private fun isUserCancelled(authError: AuthorizationException) =
         (authError.type == AuthorizationException.TYPE_GENERAL_ERROR && authError.code == USER_CANCELLED_FLOW_CODE)
                 || authError.error == SAML_AUTHN_FAILED_ERROR
+                || authError.error == CANCELLED
 
     private suspend fun postAuthResponseResult(
+        loginType: LoginType,
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
     ) {
         try {
             val jwt =
-                digidAuthenticationRepository.jwt(authService, authResponse)
+                digidAuthenticationRepository.jwt(loginType, authService, authResponse)
             loginResultLiveData.postValue(Event(LoginResult.Success(jwt)))
         } catch (e: Exception) {
             postExceptionResult(e)

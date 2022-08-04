@@ -22,7 +22,7 @@ val storageModule = module {
             androidContext(),
             get(),
             get(),
-            Environment.get(androidContext()) is Environment.Prod
+            Environment.get(androidContext())
         )
     }
 

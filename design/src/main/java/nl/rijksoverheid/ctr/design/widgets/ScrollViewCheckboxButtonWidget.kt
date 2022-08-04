@@ -36,7 +36,7 @@ class ScrollViewCheckboxButtonWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : CardView(context, attrs, defStyleAttr) {
 
-    private val binding: WidgetScrollViewCheckboxButtonBinding
+    val binding: WidgetScrollViewCheckboxButtonBinding
 
     private val attachToScrollViewId: Int
     private var scrollViewGlobalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
@@ -65,6 +65,9 @@ class ScrollViewCheckboxButtonWidget @JvmOverloads constructor(
                     ?.let { binding.checkboxButton.text = it }
                 binding.checkboxButton.isVisible =
                     !getBoolean(R.styleable.ScrollViewCheckboxButtonWidget_buttonHidden, false)
+                setOnClickListener {
+                    binding.checkbox.isChecked = !binding.checkbox.isChecked
+                }
             } finally {
                 recycle()
             }

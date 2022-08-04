@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentNoDigidBinding
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
@@ -32,6 +33,11 @@ class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
     private val intentUtil: IntentUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -39,7 +45,11 @@ class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
 
         with(args.data) {
             binding.title.text = title
-            binding.description.text = description
+            if (description.isNotEmpty()) {
+                binding.description.text = description
+            } else {
+                binding.description.visibility = View.GONE
+            }
 
             binding.firstButton.bind(
                 title = firstNavigationButtonData.title,
@@ -58,7 +68,7 @@ class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
             }
         }
     }
-    
+
     private fun onButtonClick(data: NoDigidNavigationButtonData) {
         when (data) {
             is NoDigidNavigationButtonData.NoDigid -> {
@@ -77,6 +87,11 @@ class NoDigidFragment : Fragment(R.layout.fragment_no_digid) {
                 intentUtil.openUrl(
                     context = requireContext(),
                     url = data.externalUrl,
+                )
+            }
+            is NoDigidNavigationButtonData.Ggd -> {
+                navigateSafety(
+                    NoDigidFragmentDirections.actionPap(args.data.originType)
                 )
             }
         }

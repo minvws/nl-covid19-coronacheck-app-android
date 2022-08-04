@@ -8,11 +8,9 @@
 package nl.rijksoverheid.ctr.holder.get_events.usecases
 
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
-import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepository
+import nl.rijksoverheid.ctr.holder.get_events.models.*
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -33,36 +31,57 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
  * - getting events at event providers
  * - map result to success or error states
  */
-interface GetDigidEventsUseCase {
+interface GetEventsUseCase {
     suspend fun getEvents(
         jwt: String,
-        originTypes: List<RemoteOriginType>
+        originTypes: List<RemoteOriginType>,
+        loginType: LoginType
     ): EventsResult
 }
 
-class GetDigidEventsUseCaseImpl(
+class GetEventsUseCaseImpl(
     private val configProvidersUseCase: ConfigProvidersUseCase,
     private val coronaCheckRepository: CoronaCheckRepository,
     private val getEventProvidersWithTokensUseCase: GetEventProvidersWithTokensUseCase,
     private val getRemoteEventsUseCase: GetRemoteEventsUseCase,
     private val scopeUtil: ScopeUtil
-) : GetDigidEventsUseCase {
+) : GetEventsUseCase {
 
     override suspend fun getEvents(
         jwt: String,
-        originTypes: List<RemoteOriginType>
+        originTypes: List<RemoteOriginType>,
+        loginType: LoginType
     ): EventsResult {
         // Fetch event providers
         val eventProvidersResult = configProvidersUseCase.eventProviders()
         val (tokens, remoteEventProviders) = when (eventProvidersResult) {
             is EventProvidersResult.Error -> return EventsResult.Error(eventProvidersResult.errorResult)
             is EventProvidersResult.Success -> {
-                when (val tokensResult = coronaCheckRepository.accessTokens(jwt)) {
-                    is NetworkRequestResult.Failed -> return EventsResult.Error(tokensResult)
-                    is NetworkRequestResult.Success -> Pair(
-                        tokensResult.response,
-                        eventProvidersResult.eventProviders
-                    )
+                when (loginType) {
+                    is LoginType.Pap -> {
+                        val fakeRemoteAccessTokens = RemoteAccessTokens(
+                            tokens = eventProvidersResult.eventProviders.map {
+                                RemoteAccessTokens.Token(
+                                    providerIdentifier = it.providerIdentifier,
+                                    unomi = jwt,
+                                    event = jwt
+                                )
+                            }
+                        )
+                        Pair(
+                            fakeRemoteAccessTokens,
+                            eventProvidersResult.eventProviders
+                        )
+                    }
+                    is LoginType.Max -> {
+                        when (val tokensResult = coronaCheckRepository.accessTokens(jwt)) {
+                            is NetworkRequestResult.Failed -> return EventsResult.Error(tokensResult)
+                            is NetworkRequestResult.Success -> Pair(
+                                tokensResult.response,
+                                eventProvidersResult.eventProviders
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -72,7 +91,7 @@ class GetDigidEventsUseCaseImpl(
             mutableMapOf<RemoteOriginType, List<EventProviderWithTokenResult>>()
         originTypes.forEach { originType ->
             val targetProviderIds = eventProviders.filter {
-                it.supports(originType)
+                it.supports(originType, loginType)
             }.map { it.providerIdentifier.lowercase() }
 
             if (targetProviderIds.isEmpty()) {
@@ -95,7 +114,7 @@ class GetDigidEventsUseCaseImpl(
                 targetProviderIds = targetProviderIds
             )
         }
-
+        
         val eventProvidersWithTokensSuccessResults =
             eventProviderWithTokensResults.mapValues {
                 it.value.filterIsInstance<EventProviderWithTokenResult.Success>()

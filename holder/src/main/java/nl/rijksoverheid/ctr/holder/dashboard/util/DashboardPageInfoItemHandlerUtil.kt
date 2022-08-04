@@ -113,7 +113,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
         )
 
         infoFragmentUtil.presentAsBottomSheet(
-            dashboardPageFragment.childFragmentManager,
+            dashboardPageFragment.parentFragmentManager,
             InfoFragmentData.TitleDescriptionWithButton(
                 title = dashboardPageFragment.getString(R.string.holder_expiredDomesticVaccinationModal_title),
                 descriptionData = DescriptionData(
@@ -136,7 +136,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
             cachedAppConfigUseCase.getCachedAppConfig().vaccinationAssessmentEventValidityDays)
 
         infoFragmentUtil.presentAsBottomSheet(
-            dashboardPageFragment.childFragmentManager,
+            dashboardPageFragment.parentFragmentManager,
             InfoFragmentData.TitleDescriptionWithButton(
                 title = dashboardPageFragment.getString(R.string.holder_dashboard_visitorpassexpired_title),
                 descriptionData = DescriptionData(
@@ -153,7 +153,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
 
     private fun onMissingDutchVaccinationItemClicked(dashboardPageFragment: DashboardPageFragment) {
         infoFragmentUtil.presentAsBottomSheet(
-            dashboardPageFragment.childFragmentManager,
+            dashboardPageFragment.parentFragmentManager,
             InfoFragmentData.TitleDescription(
                 title = dashboardPageFragment.getString(R.string.missing_dutch_certificate_title),
                 descriptionData = DescriptionData(
@@ -169,7 +169,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
         infoItem: DashboardItem.InfoItem.ConfigFreshnessWarning
     ) {
         infoFragmentUtil.presentAsBottomSheet(
-            dashboardPageFragment.childFragmentManager,
+            dashboardPageFragment.parentFragmentManager,
             InfoFragmentData.TitleDescription(
                 title = dashboardPageFragment.getString(R.string.config_warning_page_title),
                 descriptionData = DescriptionData(
@@ -190,7 +190,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
         dashboardPageFragment: DashboardPageFragment
     ) {
         infoFragmentUtil.presentAsBottomSheet(
-            dashboardPageFragment.childFragmentManager, InfoFragmentData.TitleDescription(
+            dashboardPageFragment.parentFragmentManager, InfoFragmentData.TitleDescription(
                 title = dashboardPageFragment.getString(R.string.clock_deviation_explanation_title),
                 descriptionData = DescriptionData(
                     R.string.clock_deviation_explanation_description,
@@ -203,7 +203,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
 
     private fun onTestCertificate3GValidityClicked(dashboardPageFragment: DashboardPageFragment) {
         infoFragmentUtil.presentAsBottomSheet(
-            dashboardPageFragment.childFragmentManager,
+            dashboardPageFragment.parentFragmentManager,
             InfoFragmentData.TitleDescription(
                 title = dashboardPageFragment.getString(R.string.holder_my_overview_3g_test_validity_bottom_sheet_title),
                 descriptionData = DescriptionData(
@@ -254,7 +254,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
         dashboardPageFragment: DashboardPageFragment
     ) {
         infoFragmentUtil.presentAsBottomSheet(
-            dashboardPageFragment.childFragmentManager,
+            dashboardPageFragment.parentFragmentManager,
             data = when (originType) {
                 is OriginType.Test -> {
                     InfoFragmentData.TitleDescription(
@@ -313,7 +313,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
             )
         }
         infoFragmentUtil.presentAsBottomSheet(
-            dashboardPageFragment.childFragmentManager,
+            dashboardPageFragment.parentFragmentManager,
             InfoFragmentData.TitleDescription(
                 title = title,
                 descriptionData = DescriptionData(description, htmlLinksEnabled = true),

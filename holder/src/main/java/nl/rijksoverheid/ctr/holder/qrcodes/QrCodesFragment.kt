@@ -13,9 +13,9 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.transition.TransitionManager
 import android.view.View
 import android.view.WindowManager
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -39,6 +39,7 @@ import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrInfoScreenUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.addAccessibilityAction
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -185,6 +186,8 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
 
     private fun applyAnimation(qrCodeAnimation: QrCodeAnimation) {
         binding.animation.setWidget(qrCodeAnimation.animationResource)
+        binding.animation.contentDescription = getString(qrCodeAnimation.contentDescription)
+        binding.animation.addAccessibilityAction(AccessibilityNodeInfoCompat.ACTION_CLICK, getString(R.string.holder_showqr_animation_voiceover_hint))
     }
 
     private fun returnToApp(externalReturnAppData: ExternalReturnAppData) {

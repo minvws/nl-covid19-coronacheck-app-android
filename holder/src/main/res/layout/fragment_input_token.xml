@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 app:errorEnabled="false"
                 app:expandedHintEnabled="false"
+                app:endIconMode="clear_text"
                 app:layout_constraintBottom_toTopOf="@id/no_token_received_btn"
                 app:layout_constraintEnd_toEndOf="@+id/description"
                 app:layout_constraintStart_toStartOf="@+id/description">

@@ -43,6 +43,7 @@
 
             <nl.rijksoverheid.ctr.design.widgets.ScrollViewCheckboxButtonWidget
                 android:id="@+id/checkbox_with_header"
+                android:foreground="?attr/selectableItemBackground"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:checkboxText="@string/holder_addVaccine_alsoCollectPositiveTestResults_checkbox"
