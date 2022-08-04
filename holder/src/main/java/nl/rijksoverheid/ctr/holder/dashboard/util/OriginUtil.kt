@@ -7,12 +7,12 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItem
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 
 interface OriginUtil {
     fun getOriginState(origins: List<OriginEntity>): List<OriginState>
@@ -22,10 +22,10 @@ interface OriginUtil {
      */
     fun hideSubtitle(greenCardType: GreenCardType, originState: OriginState): Boolean
 
-    fun isValidWithinRenewalThreshold(credentialRenewalDays: Long, origin: OriginEntity) : Boolean
+    fun isValidWithinRenewalThreshold(credentialRenewalDays: Long, origin: OriginEntity): Boolean
 }
 
-class OriginUtilImpl(private val clock: Clock): OriginUtil {
+class OriginUtilImpl(private val clock: Clock) : OriginUtil {
 
     companion object {
         private const val PRESENT_SUBTITLE_WHEN_LESS_THEN_YEARS = 3
@@ -54,7 +54,8 @@ class OriginUtilImpl(private val clock: Clock): OriginUtil {
     }
 
     override fun isValidWithinRenewalThreshold(
-        credentialRenewalDays: Long, origin: OriginEntity
+        credentialRenewalDays: Long,
+        origin: OriginEntity
     ): Boolean {
         val now = OffsetDateTime.now(clock)
         val thresholdEndDate = now.plusDays(credentialRenewalDays)

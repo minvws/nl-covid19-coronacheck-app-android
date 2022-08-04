@@ -13,12 +13,11 @@ import nl.rijksoverheid.ctr.verifier.databinding.ItemScanLogEmptyListBinding
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanLogEmptyListAdapterItem: BindableItem<ItemScanLogEmptyListBinding>(
+class ScanLogEmptyListAdapterItem : BindableItem<ItemScanLogEmptyListBinding>(
     R.layout.item_scan_log_empty_list.toLong()) {
 
     @SuppressLint("SetTextI18n")
     override fun bind(viewBinding: ItemScanLogEmptyListBinding, position: Int) {
-
     }
 
     override fun getLayout(): Int {

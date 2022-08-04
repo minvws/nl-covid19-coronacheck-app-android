@@ -17,7 +17,7 @@ interface ScanInstructionsButtonUtil {
 
 class ScanInstructionsButtonUtilImpl(
     private val scannerNavigationStateUseCase: ScannerNavigationStateUseCase
-): ScanInstructionsButtonUtil {
+) : ScanInstructionsButtonUtil {
 
     override fun getButtonText(isFinalScreen: Boolean): Int {
         return if (isFinalScreen) {

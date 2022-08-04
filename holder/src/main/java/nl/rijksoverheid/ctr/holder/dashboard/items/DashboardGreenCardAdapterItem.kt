@@ -12,34 +12,57 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.xwray.groupie.viewbinding.BindableItem
+import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardGreenCardBinding
-import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem.CredentialState.HasCredential
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
+import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardGreenCardBinding
+import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.time.OffsetDateTime
 
 data class AdapterCard(
     val greenCard: GreenCard,
     val originStates: List<OriginState>,
-    val disclosurePolicy: GreenCardDisclosurePolicy)
+    val disclosurePolicy: GreenCardDisclosurePolicy
+)
 
 class DashboardGreenCardAdapterItem(
     private val cards: List<DashboardItem.CardsItem.CardItem>,
     private val onButtonClick: (cardItem: DashboardItem.CardsItem.CardItem, credentials: List<Pair<ByteArray, OffsetDateTime>>) -> Unit,
-    private val onRetryClick: () -> Unit = {}
+    private val onRetryClick: () -> Unit = {},
+    private val onCountDownFinished: () -> Unit = {}
 ) :
     BindableItem<AdapterItemDashboardGreenCardBinding>(R.layout.adapter_item_dashboard_green_card.toLong()),
     KoinComponent {
 
     private val dashboardGreenCardAdapterItemUtil: DashboardGreenCardAdapterItemUtil by inject()
+    private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil by inject()
+
+    private val runnable = Runnable {
+        notifyChanged()
+    }
+
+    private fun countdown(viewBinding: AdapterItemDashboardGreenCardBinding) {
+        val (expireDate, type) = cards.flatMap { it.originStates }
+            .map { Pair(it.origin.expirationTime, it.origin.type) }
+            .maxByOrNull { it.first } ?: return
+
+        val expireCountDown = dashboardGreenCardAdapterItemExpiryUtil.getExpireCountdown(expireDate, type)
+
+        if (expireCountDown is DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show) {
+            if (expireCountDown.expired()) {
+                onCountDownFinished()
+            } else {
+                viewBinding.expiresIn.postDelayed(runnable, 1000)
+            }
+        }
+    }
 
     override fun bind(viewBinding: AdapterItemDashboardGreenCardBinding, position: Int) {
         applyStyling(viewBinding = viewBinding)
@@ -52,6 +75,7 @@ class DashboardGreenCardAdapterItem(
             viewBinding = viewBinding,
             greenCardType = cards.first().greenCard.greenCardEntity.type
         )
+        countdown(viewBinding)
     }
 
     private fun accessibility(viewBinding: AdapterItemDashboardGreenCardBinding, greenCardType: GreenCardType) {
@@ -82,7 +106,7 @@ class DashboardGreenCardAdapterItem(
                         }
                         onButtonClick.invoke(
                             cards.first(),
-                            credentialEntities.map { Pair(it.data, it.expirationTime) },
+                            credentialEntities.map { Pair(it.data, it.expirationTime) }
                         )
                     }
                 }
@@ -138,7 +162,7 @@ class DashboardGreenCardAdapterItem(
         dashboardGreenCardAdapterItemUtil.setContent(
             DashboardGreenCardAdapterItemBindingWrapperImpl(viewBinding),
             cards.map { AdapterCard(it.greenCard, it.originStates, it.disclosurePolicy) }
-                .sortedByDescending { it.originStates.first().origin.eventTime },
+                .sortedByDescending { it.originStates.first().origin.eventTime }
         )
 
         stackAdditionalCards(viewBinding)
@@ -194,7 +218,6 @@ class DashboardGreenCardAdapterItem(
                     viewBinding.errorContainer.visibility = View.VISIBLE
                 }
                 else -> {
-
                 }
             }
         }

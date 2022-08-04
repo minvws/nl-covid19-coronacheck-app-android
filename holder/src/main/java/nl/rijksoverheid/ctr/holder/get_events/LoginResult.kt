@@ -10,8 +10,8 @@ package nl.rijksoverheid.ctr.holder.get_events
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 
 sealed class LoginResult {
-    data class Success(val jwt: String): LoginResult()
-    data class Failed(val errorResult: ErrorResult): LoginResult()
-    object Cancelled: LoginResult()
-    object NoBrowserFound: LoginResult()
+    data class Success(val jwt: String) : LoginResult()
+    data class Failed(val errorResult: ErrorResult) : LoginResult()
+    object Cancelled : LoginResult()
+    object NoBrowserFound : LoginResult()
 }

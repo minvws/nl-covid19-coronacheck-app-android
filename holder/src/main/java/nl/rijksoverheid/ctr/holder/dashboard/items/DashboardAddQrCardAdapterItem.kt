@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardAddQrBinding
 import org.koin.core.component.KoinComponent
 
 class DashboardAddQrCardAdapterItem(
-    private val onButtonClick: () -> Unit,
+    private val onButtonClick: () -> Unit
 ) : BindableItem<AdapterItemDashboardAddQrBinding>(R.layout.adapter_item_dashboard_add_qr.toLong()),
     KoinComponent {
 

@@ -2,7 +2,9 @@ package nl.rijksoverheid.ctr.holder.workers
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import androidx.work.ListenableWorker.Result.*
+import androidx.work.ListenableWorker.Result.Failure
+import androidx.work.ListenableWorker.Result.Retry
+import androidx.work.ListenableWorker.Result.Success
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -17,7 +19,6 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -26,7 +27,7 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class CredentialRefreshWorkerTest: AutoCloseKoinTest() {
+class CredentialRefreshWorkerTest : AutoCloseKoinTest() {
     private val context: Context by lazy {
         ApplicationProvider.getApplicationContext()
     }
@@ -54,7 +55,7 @@ class CredentialRefreshWorkerTest: AutoCloseKoinTest() {
         mockk<HolderDatabaseSyncer>().apply {
             coEvery { sync(
                 flow = HolderFlow.SyncGreenCards,
-                syncWithRemote = true,
+                syncWithRemote = true
             ) } returns holderDatabaseSyncerResult
         }
     )
@@ -89,7 +90,7 @@ class CredentialRefreshWorkerTest: AutoCloseKoinTest() {
 
     @Test
     fun `when sync succeeds, credentials refresh worker should succeed`() = runBlocking {
-        val worker = succesfullConfigFetchWithSync(DatabaseSyncerResult.Success(false, mockk()))
+        val worker = succesfullConfigFetchWithSync(DatabaseSyncerResult.Success(listOf()))
 
         assertTrue(worker.doWork() is Success)
     }

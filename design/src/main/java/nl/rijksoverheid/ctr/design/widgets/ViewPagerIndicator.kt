@@ -12,7 +12,9 @@ import nl.rijksoverheid.ctr.design.databinding.ViewPagerIndicatorBubbleBinding
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 class ViewPagerIndicator @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private var selectedIndex = 0
@@ -43,7 +45,9 @@ class ViewPagerIndicator @JvmOverloads constructor(
     }
 
     private class ViewPagerIndicatorBubble @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0
     ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
         val binding: ViewPagerIndicatorBubbleBinding =

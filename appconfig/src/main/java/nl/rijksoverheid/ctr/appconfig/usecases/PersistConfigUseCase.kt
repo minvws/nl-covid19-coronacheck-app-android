@@ -1,10 +1,10 @@
 package nl.rijksoverheid.ctr.appconfig.usecases
 
+import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.persistence.StorageResult
-import java.io.File
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -20,7 +20,7 @@ interface PersistConfigUseCase {
 
 class PersistConfigUseCaseImpl(
     private val appConfigStorageManager: AppConfigStorageManager,
-    private val filesDirPath: String,
+    private val filesDirPath: String
 ) : PersistConfigUseCase {
 
     override suspend fun persist(appConfigContents: String, publicKeyContents: String) =

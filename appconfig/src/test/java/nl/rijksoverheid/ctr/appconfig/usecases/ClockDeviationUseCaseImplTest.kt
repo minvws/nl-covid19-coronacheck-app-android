@@ -8,6 +8,8 @@
 
 package nl.rijksoverheid.ctr.appconfig.usecases
 
+import java.time.Clock
+import java.time.Duration
 import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.models.ServerTime
 import org.junit.Assert.assertFalse
@@ -15,8 +17,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import java.time.Clock
-import java.time.Duration
 
 @RunWith(RobolectricTestRunner::class)
 class ClockDeviationUseCaseImplTest {
@@ -24,7 +24,7 @@ class ClockDeviationUseCaseImplTest {
 
     @Test
     fun `Clock deviation usecase returns false if clock is correct`() {
-         val clockDeviationUseCase = ClockDeviationUseCaseImpl(
+        val clockDeviationUseCase = ClockDeviationUseCaseImpl(
             defaultClock, fakeCachedAppConfigUseCase()
         )
         clockDeviationUseCase.store(

@@ -8,6 +8,6 @@
 package nl.rijksoverheid.ctr.holder.get_events.models
 
 sealed class LoginType {
-    object Max: LoginType()
-    object Pap: LoginType()
+    object Max : LoginType()
+    object Pap : LoginType()
 }

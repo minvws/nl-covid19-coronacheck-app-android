@@ -8,13 +8,13 @@
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import java.time.Clock
+import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import java.time.Clock
-import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface GreenCardUtil {
@@ -54,7 +54,7 @@ class GreenCardUtilImpl(
     private val clock: Clock,
     private val credentialUtil: CredentialUtil,
     private val mobileCoreWrapper: MobileCoreWrapper
-): GreenCardUtil {
+) : GreenCardUtil {
 
     override fun getExpireDate(greenCard: GreenCard, type: OriginType?): OffsetDateTime {
         return greenCard.origins

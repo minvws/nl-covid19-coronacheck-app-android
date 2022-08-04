@@ -8,11 +8,11 @@
 package nl.rijksoverheid.ctr.holder.get_events.usecases
 
 import android.annotation.SuppressLint
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteAccessTokens
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteUnomi
-import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepository
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.filterNotNullValues
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -42,7 +42,7 @@ interface GetEventProvidersWithTokensUseCase {
         tokens: List<RemoteAccessTokens.Token>,
         filter: String,
         scope: String?,
-        targetProviderIds: List<String>? = null,
+        targetProviderIds: List<String>? = null
     ): List<EventProviderWithTokenResult>
 }
 
@@ -85,7 +85,7 @@ class GetEventProvidersWithTokensUseCaseImpl(
                 scope = scope,
                 signingCertificateBytes = eventProvider.cms,
                 provider = eventProvider.providerIdentifier,
-                tlsCertificateBytes = eventProvider.tls,
+                tlsCertificateBytes = eventProvider.tls
             )
 
             when (unomiResult) {
@@ -101,8 +101,6 @@ class GetEventProvidersWithTokensUseCaseImpl(
                 }
                 is NetworkRequestResult.Failed -> EventProviderWithTokenResult.Error(unomiResult)
             }
-
-
         }.filterNotNull()
     }
 }

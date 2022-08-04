@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.design.utils
 
 import android.os.Bundle
 import androidx.annotation.IdRes
-import androidx.annotation.NavigationRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -10,7 +9,6 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.fragments.info.InfoBottomSheetDialogFragment
-import nl.rijksoverheid.ctr.design.fragments.info.InfoFragment
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 
 /*
@@ -35,15 +33,16 @@ interface InfoFragmentUtil {
         currentFragment: Fragment,
         @IdRes infoFragmentNavigationId: Int = R.id.action_info_fragment,
         toolbarTitle: String,
-        data: InfoFragmentData)
+        data: InfoFragmentData
+    )
 
     fun presentAsBottomSheet(
         fragmentManager: FragmentManager,
-        data: InfoFragmentData,
+        data: InfoFragmentData
     )
 }
 
-class InfoFragmentUtilImpl: InfoFragmentUtil {
+class InfoFragmentUtilImpl : InfoFragmentUtil {
     override fun presentFullScreen(
         currentFragment: Fragment,
         infoFragmentDirections: NavDirections
@@ -53,10 +52,12 @@ class InfoFragmentUtilImpl: InfoFragmentUtil {
         )
     }
 
-    override fun presentFullScreen(currentFragment: Fragment,
-                                   @IdRes infoFragmentNavigationId: Int,
-                                   toolbarTitle: String,
-                                   data: InfoFragmentData) {
+    override fun presentFullScreen(
+        currentFragment: Fragment,
+        @IdRes infoFragmentNavigationId: Int,
+        toolbarTitle: String,
+        data: InfoFragmentData
+    ) {
         currentFragment.findNavController().navigate(
             infoFragmentNavigationId,
             bundleOf(
@@ -68,7 +69,7 @@ class InfoFragmentUtilImpl: InfoFragmentUtil {
 
     override fun presentAsBottomSheet(
         fragmentManager: FragmentManager,
-        data: InfoFragmentData,
+        data: InfoFragmentData
     ) {
         val bottomSheet = InfoBottomSheetDialogFragment().apply {
             arguments = Bundle().apply {

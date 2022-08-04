@@ -3,11 +3,9 @@ package nl.rijksoverheid.ctr.holder.ui.create_qr
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.IncludeContentButtonBinding
 import nl.rijksoverheid.ctr.holder.databinding.ItemPaperProofExplanationBinding
-import nl.rijksoverheid.ctr.holder.databinding.ItemYourEventBinding
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
 /*

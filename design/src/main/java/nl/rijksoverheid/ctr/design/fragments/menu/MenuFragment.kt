@@ -20,7 +20,7 @@ import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import org.koin.android.ext.android.inject
 
-class MenuFragment: Fragment(R.layout.fragment_menu) {
+class MenuFragment : Fragment(R.layout.fragment_menu) {
 
     private val intentUtil: IntentUtil by inject()
 

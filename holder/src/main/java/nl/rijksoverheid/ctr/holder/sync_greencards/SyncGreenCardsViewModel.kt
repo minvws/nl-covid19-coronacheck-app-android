@@ -35,7 +35,8 @@ abstract class SyncGreenCardsViewModel : ViewModel() {
 
 class SyncGreenCardsViewModelImpl(
     private val holderDatabaseSyncer: HolderDatabaseSyncer,
-    private val persistenceManager: PersistenceManager): SyncGreenCardsViewModel() {
+    private val persistenceManager: PersistenceManager
+) : SyncGreenCardsViewModel() {
     override fun refresh() {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {

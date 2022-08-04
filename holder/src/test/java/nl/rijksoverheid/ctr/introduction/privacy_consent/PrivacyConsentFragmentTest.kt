@@ -97,7 +97,7 @@ class PrivacyConsentFragmentTest : AutoCloseKoinTest() {
 
         performActionOnView(ViewMatchers.withId(R.id.checkbox_button), ViewActions.click())
 
-       assertDisplayed(R.id.error_container)
+        assertDisplayed(R.id.error_container)
     }
 
     private fun startFragment(introductionData: IntroductionData): FragmentScenario<PrivacyConsentFragment> {

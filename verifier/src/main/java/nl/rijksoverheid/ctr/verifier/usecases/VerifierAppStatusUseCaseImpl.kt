@@ -1,6 +1,9 @@
 package nl.rijksoverheid.ctr.verifier.usecases
 
 import com.squareup.moshi.Moshi
+import java.time.Clock
+import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -15,9 +18,6 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
-import java.time.Clock
-import java.time.OffsetDateTime
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -37,7 +37,7 @@ class VerifierAppStatusUseCaseImpl(
     private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
     private val introductionPersistenceManager: IntroductionPersistenceManager,
     private val featureFlagUseCase: VerifierFeatureFlagUseCase
-    ) : AppStatusUseCase {
+) : AppStatusUseCase {
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
         withContext(Dispatchers.IO) {
@@ -87,8 +87,8 @@ class VerifierAppStatusUseCaseImpl(
     }
 
     private fun newTermsAvailable() =
-        !appUpdatePersistenceManager.getNewTermsSeen(appUpdateData.newTerms.version)
-                && introductionPersistenceManager.getIntroductionFinished()
+        !appUpdatePersistenceManager.getNewTermsSeen(appUpdateData.newTerms.version) &&
+                introductionPersistenceManager.getIntroductionFinished()
 
     private fun getVerifierRecommendedUpdateStatus(appConfig: AppConfig): AppStatus {
         val localTime = TimeUnit.MILLISECONDS.toSeconds(clock.instant().toEpochMilli())

@@ -10,10 +10,10 @@ package nl.rijksoverheid.ctr.holder.get_events.models
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import kotlinx.parcelize.Parcelize
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

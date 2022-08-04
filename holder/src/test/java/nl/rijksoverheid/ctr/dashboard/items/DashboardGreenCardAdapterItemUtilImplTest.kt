@@ -14,13 +14,25 @@ import android.widget.TextView
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
+import java.time.Clock
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import nl.rijksoverheid.ctr.holder.HolderApplication
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.dashboard.items.*
+import nl.rijksoverheid.ctr.holder.dashboard.items.AdapterCard
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemBindingWrapper
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtil
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
-import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.ext.capitalize
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
@@ -31,10 +43,6 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.time.Clock
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -618,7 +626,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                     listOf(OriginState.Valid(greenCard.origins.first())),
                     GreenCardDisclosurePolicy.ThreeG
                 )
-            ),
+            )
         )
 
         assertEquals(
@@ -825,7 +833,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                     listOf(OriginState.Valid(greenCard.origins.first())),
                     GreenCardDisclosurePolicy.ThreeG
                 )
-            ),
+            )
         )
 
         assertEquals(
@@ -950,7 +958,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             data = "".toByteArray(),
             credentialVersion = 2,
             validFrom = validFrom,
-            expirationTime = expirationTime,
+            expirationTime = expirationTime
         )
 
         val originEntities = originTypes.map {
@@ -960,7 +968,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 type = it,
                 eventTime = eventTime,
                 expirationTime = expirationTime,
-                validFrom = validFrom,
+                validFrom = validFrom
             )
         }
 
@@ -971,7 +979,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 type = greenCardType
             ),
             origins = originEntities,
-            credentialEntities = listOf(credentialEntity),
+            credentialEntities = listOf(credentialEntity)
         )
     }
 }

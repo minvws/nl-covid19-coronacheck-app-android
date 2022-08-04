@@ -3,6 +3,8 @@ package nl.rijksoverheid.ctr.persistence.database
 import android.content.ContentValues
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import org.junit.Rule
 import org.junit.Test
@@ -10,11 +12,9 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
-class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
+class HolderDatabaseMigrationsTest : AutoCloseKoinTest() {
 
     private val persistenceManager: PersistenceManager by inject()
 

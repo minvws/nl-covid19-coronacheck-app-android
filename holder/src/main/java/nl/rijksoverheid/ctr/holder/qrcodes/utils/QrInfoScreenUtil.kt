@@ -8,7 +8,10 @@ package nl.rijksoverheid.ctr.holder.qrcodes.utils
 
 import android.app.Application
 import android.text.TextUtils
-import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import nl.rijksoverheid.ctr.design.ext.formatDateTimeWithTimeZone
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
 import nl.rijksoverheid.ctr.holder.R
@@ -21,11 +24,6 @@ import nl.rijksoverheid.ctr.shared.ext.locale
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import org.json.JSONObject
-import java.time.Clock
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 
 interface QrInfoScreenUtil {
     fun getForDomesticQr(
@@ -261,7 +259,7 @@ class QrInfoScreenUtilImpl(
                 application.getString(R.string.qr_explanation_description_eu_vaccination_certificate_issuer),
                 createQrAnswer(issuer ?: ""),
                 application.getString(R.string.qr_explanation_description_eu_vaccination_unique_certificate),
-                createQrAnswer(uniqueCode ?: ""),
+                createQrAnswer(uniqueCode ?: "")
             ) as String),
             footer = application.getString(R.string.qr_explanation_description_eu_vaccination_footer)
         )
@@ -342,7 +340,7 @@ class QrInfoScreenUtilImpl(
                 application.getString(R.string.qr_explanation_description_eu_recovery_valid_until_date),
                 createQrAnswer(validUntilDate),
                 application.getString(R.string.qr_explanation_description_eu_recovery_unique_code),
-                createQrAnswer(uniqueCode ?: ""),
+                createQrAnswer(uniqueCode ?: "")
             ) as String),
             footer = application.getString(R.string.qr_explanation_description_eu_recovery_footer)
         )

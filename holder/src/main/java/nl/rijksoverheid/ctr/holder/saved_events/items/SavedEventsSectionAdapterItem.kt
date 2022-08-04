@@ -25,7 +25,7 @@ class SavedEventsSectionAdapterItem(
     private val savedEvents: SavedEvents,
     private val onClickEvent: (toolbarTitle: String, infoScreen: InfoScreen) -> Unit,
     private val onClickClearData: (eventGroupEntity: EventGroupEntity) -> Unit
-): BindableItem<AdapterItemSavedEventsSectionBinding>(), KoinComponent {
+) : BindableItem<AdapterItemSavedEventsSectionBinding>(), KoinComponent {
 
     private val remoteEventUtil: RemoteEventUtil by inject()
 
@@ -42,7 +42,8 @@ class SavedEventsSectionAdapterItem(
 
     private fun initRecyclerView(
         viewBinding: AdapterItemSavedEventsSectionBinding,
-        savedEvents: SavedEvents) {
+        savedEvents: SavedEvents
+    ) {
 
         val section = Section()
         val adapter = GroupAdapter<GroupieViewHolder>().also {
@@ -69,7 +70,8 @@ class SavedEventsSectionAdapterItem(
 
     private fun setReceivedAt(
         viewBinding: AdapterItemSavedEventsSectionBinding,
-        providerName: String) {
+        providerName: String
+    ) {
 
         val context = viewBinding.root.context
 

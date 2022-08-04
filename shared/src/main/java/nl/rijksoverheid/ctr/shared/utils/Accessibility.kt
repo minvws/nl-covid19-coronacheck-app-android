@@ -113,8 +113,8 @@ object Accessibility {
                 view,
                 object : AccessibilityDelegateCompat() {
                     override fun onInitializeAccessibilityNodeInfo(
-                            host: View,
-                            info: AccessibilityNodeInfoCompat
+                        host: View,
+                        info: AccessibilityNodeInfoCompat
                     ) {
                         super.onInitializeAccessibilityNodeInfo(host, info)
                         callback(host, info)
@@ -229,7 +229,7 @@ object Accessibility {
             importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
             setAccessibilityFocus()
             announceForAccessibility(context.getString(R.string.general_loading_description))
-            accessibilityDelegate = object: View.AccessibilityDelegate() {
+            accessibilityDelegate = object : View.AccessibilityDelegate() {
                 override fun onInitializeAccessibilityEvent(
                     host: View?,
                     event: AccessibilityEvent?

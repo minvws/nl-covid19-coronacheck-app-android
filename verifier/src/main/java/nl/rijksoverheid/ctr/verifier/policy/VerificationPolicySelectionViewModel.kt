@@ -34,7 +34,7 @@ abstract class VerificationPolicySelectionViewModel : ViewModel() {
  */
 class VerificationPolicySelectionViewModelImpl(
     private val verificationPolicySelectionUseCase: VerificationPolicySelectionUseCase,
-    private val scannerUsedRecentlyUseCase: ScannerUsedRecentlyUseCase,
+    private val scannerUsedRecentlyUseCase: ScannerUsedRecentlyUseCase
 ) : VerificationPolicySelectionViewModel() {
 
     override fun storeSelection(verificationPolicy: VerificationPolicy) {

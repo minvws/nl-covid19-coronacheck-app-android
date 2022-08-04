@@ -1,9 +1,13 @@
 package nl.rijksoverheid.ctr.persistence.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.entities.SecretKeyEntity
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 
 /*

@@ -7,10 +7,10 @@
 
 package nl.rijksoverheid.ctr.holder.qrcodes.utils
 
-import nl.rijksoverheid.ctr.holder.qrcodes.QrCodesFragment
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import java.time.Clock
 import java.time.Instant
+import nl.rijksoverheid.ctr.holder.qrcodes.QrCodesFragment
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 
 interface QrCodesFragmentUtil {
     /**
@@ -21,7 +21,7 @@ interface QrCodesFragmentUtil {
 
 class QrCodesFragmentUtilImpl(
     private val utcClock: Clock
-): QrCodesFragmentUtil {
+) : QrCodesFragmentUtil {
 
     override fun shouldClose(credentialExpirationTimeSeconds: Long, type: GreenCardType): Boolean {
         if (type == GreenCardType.Eu) {

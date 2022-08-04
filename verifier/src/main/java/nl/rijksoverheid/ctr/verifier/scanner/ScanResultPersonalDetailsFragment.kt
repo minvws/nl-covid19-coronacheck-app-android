@@ -16,6 +16,8 @@ import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.view.View
 import androidx.navigation.fragment.navArgs
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.flagEmoji
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -25,8 +27,6 @@ import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanResultValidPersonalDetailsBinding
 import org.koin.android.ext.android.inject
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 class ScanResultPersonalDetailsFragment :
     AutoCloseFragment(R.layout.fragment_scan_result_valid_personal_details) {

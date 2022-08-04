@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_title">Vaccination and recovery certificates created</string>
-  <string name="holder_listRemoteEvents_endStateRecoveryOnly_title">Only a recovery certificate was created</string>
   <string name="holder_fetchRemoteEvents_title">Retrieve details</string>
-  <string name="holder_listRemoteEvents_endStateInternationalQROnly_title">Only an international certificate was created</string>
   <string name="general_readmore">Read more</string>
   <string name="holder_authentication_popup_digid_title">Login was cancelled</string>
   <string name="holder_dcc_alert_message">You can try to add a paper certificate again later.</string>
@@ -683,7 +680,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_addVaccine_alsoCollectPositiveTestResults_checkbox">Retrieve my positive test result too</string>
   <string name="holder_listRemoteEvents_vaccination_message">If the details are correct you can create a certificate.</string>
   <string name="holder_listRemoteEvents_paperflow_message">If the details below are correct, you can add your certificate to the app.</string>
-  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title">Vaccination and recovery certificates created</string>
   <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message"><![CDATA[Only an international vaccination certificate could be created from your retrieved vaccinations. Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/>A recovery certificate has also been created from your positive test result.]]></string>
   <string name="holder_listRemoteEvents_recovery_message">If the details about your test are correct, you can create a recovery certificate.</string>
   <string name="holder_listRemoteEvents_negativeTest_message">This test result is retrieved from the test location. If the details are correct, you can create a certificate.</string>
@@ -768,9 +764,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_scanner_error_title_ctb">Scan the international QR code</string>
   <string name="holder_scanner_error_message_unknown">The QR code you are trying to scan is not recognised as a coronavirus pass. Make sure you are holding the correct QR code in front of the camera.</string>
   <string name="holder_scanner_error_title_unknown">This QR code is not recognised</string>
-  <string name="holder_dashboard_recoveryAlmostExpiredBanner_title">Je herstelbewijs verloopt bijna</string>
-  <string name="holder_recoveryAlmostExpiredModal_title">Herstelbewijs verloopt bijna</string>
-  <string name="holder_recoveryAlmostExpiredModal_message">Je herstelbewijs verloopt op %@. Daarna heb je geen coronabewijs meer. Heb je een nieuw coronabewijs nodig? Dan zijn er verschillende mogelijkheden. Lees meer op <a href="https://www.rijksoverheid.nl/onderwerpen/coronavirus-coronabewijs-en-coronatoegangsbewijs">Rijksoverheid.nl</a></string>
   <string name="holder_qr_code_hidden_explanation_button">What does this mean?</string>
   <string name="holder_qr_code_hidden_explanation_title">Hidden QR code</string>
   <string name="holder_qr_code_hidden_explanation_description"><![CDATA[If the QR code of your vaccination is hidden, you probably don’t need it. This is because there are QR codes of your more recent vaccinations in the app too.<br/><br/>You can still show and use hidden QR codes if needed.]]></string>
@@ -788,8 +781,8 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   </plurals>
   <string name="general_seconds">seconds</string>
   <string name="holder_listRemoteEvents_listElement_title_vaccination">Vaccination</string>
-  <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccination date %s</string>
-  <string name="holder_eventHints_title">Je bewijzen zijn gemaakt</string>
+  <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccination date: %s</string>
+  <string name="holder_eventHints_title">Successfully created certificate</string>
   <string name="holder_addVaccination_alsoCollectPositiveTestResults_message"><![CDATA[<b>Did you have coronavirus?</b><br/>In some cases, you need one less vaccination to be fully vaccinated. Retrieve your oldest positive test result as well to possibly have it count for your vaccination certificate.]]></string>
   <string name="holder_noDigiD_title">I don’t have a DigiD</string>
   <string name="holder_noDigiD_message">Are you living in the Netherlands and do you have a Dutch proof of identity? Then you can request a DigiD to retrieve your test result or vaccination details.</string>
@@ -812,8 +805,9 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_chooseEventLocation_buttonTitle_GGD">GGD</string>
   <string name="holder_chooseEventLocation_buttonSubTitle_GGD">Arrange your certificate via the GGD</string>
   <string name="holder_chooseEventLocation_buttonTitle_other">Another healthcare provider</string>
-  <string name="holder_chooseEventLocation_buttonSubTitle_other">Arrange certificate via, for example, your GP or care facility</string>
-  <string name="general_unrecoverableError_sendCrashReport_message">A technical error has occurred. Please report the error. We will try to fix it as soon as possible.</string>
+  <string name="holder_chooseEventLocation_buttonSubTitle_other">Arrange your certificate via, for example, your GP or care facility</string>
+  <string name="general_unrecoverableError_sendCrashReport_title">App error</string>
+  <string name="general_unrecoverableError_sendCrashReport_message">A technical error occured in the last CoronaCheck app update. Please report the error. We will try to fix it as soon as possible.</string>
   <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_vaccinationFlow">Get your certificate from your healthcare provider</string>
   <string name="holder_showqr_animation_winterctb_voiceover_label">Animation of people on a sledge and ice skates</string>
   <string name="holder_showqr_animation_summerdcc_voiceover_label">Animation of travelers on a moving walkway</string>
@@ -830,4 +824,16 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_authentication_popup_digid">DigiD</string>
   <string name="holder_authentication_popup_portal">this page</string>
   <string name="holder_showqr_animation_voiceover_hint">Reverse the movement</string>
+  <string name="domestic_vaccination_created">A Dutch vaccination certificate is created.</string>
+  <string name="domestic_vaccination_rejected">No Dutch vaccination certificate can be created from your vaccination(s).</string>
+  <string name="domestic_recovery_created">A recovery certificate is created.</string>
+  <string name="international_vaccination_created">An international vaccination certificate is created.</string>
+  <string name="international_vaccination_rejected">No international vaccination certificate can be created from your vaccination(s).</string>
+  <string name="vaccination_dose_correction_applied">Your positive test result is recorded into your vaccination certificate.</string>
+  <string name="vaccination_dose_correction_not_applied">Your positive test result is not suited to have it count for your vaccination certificate.</string>
+  <string name="appstatus_diskfull_title">Your storage is full</string>
+  <string name="appstatus_diskfull_body">Because your phone’s storage is full, you can’t open CoronaCheck. Please free up space on your phone and reopen CoronaCheck.</string>
+  <string name="appstatus_diskfull_button">Close CoronaCheck</string>
+  <string name="general_diskFull_title">Your storage is full</string>
+  <string name="general_diskFull_body">It didn’t work because your phone’s storage is full. Please free up space on your phone and retry.</string>
 </resources>

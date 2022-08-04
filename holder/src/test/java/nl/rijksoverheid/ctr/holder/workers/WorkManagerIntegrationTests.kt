@@ -3,12 +3,18 @@ package nl.rijksoverheid.ctr.holder.workers
 import android.content.Context
 import android.util.Log
 import androidx.test.core.app.ApplicationProvider
-import androidx.work.*
+import androidx.work.BackoffPolicy
+import androidx.work.Configuration
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.WorkerFactory
 import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import java.util.concurrent.TimeUnit
+import kotlin.test.assertEquals
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
@@ -30,9 +36,6 @@ import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import java.util.concurrent.TimeUnit
-import kotlin.test.assertEquals
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -74,12 +77,11 @@ class WorkManagerIntegrationTests : AutoCloseKoinTest() {
                         coEvery {
                             sync(
                                 flow = HolderFlow.SyncGreenCards,
-                                syncWithRemote = true,
+                                syncWithRemote = true
                             )
-                        } returns DatabaseSyncerResult.Success(false, mockk())
+                        } returns DatabaseSyncerResult.Success(listOf())
                     }
                 }
-
             })
 
         val holderWorkerFactory: WorkerFactory by inject()

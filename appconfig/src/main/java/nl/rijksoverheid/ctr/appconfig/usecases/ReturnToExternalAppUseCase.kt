@@ -30,7 +30,6 @@ class ReturnToExternalAppUseCaseImpl(
     val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : ReturnToExternalAppUseCase {
 
-
     override fun get(uri: String): ExternalReturnAppData? {
         return cachedAppConfigUseCase.getCachedAppConfig().deeplinkDomains
             .firstOrNull { uri.contains("https://${it.url}") }

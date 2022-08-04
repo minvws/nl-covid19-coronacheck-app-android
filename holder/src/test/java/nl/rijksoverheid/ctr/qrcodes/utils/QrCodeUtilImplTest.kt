@@ -1,12 +1,12 @@
 package nl.rijksoverheid.ctr.qrcodes.utils
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import kotlin.test.assertEquals
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtilImpl
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 class QrCodeUtilImplTest : AutoCloseKoinTest() {
@@ -25,7 +25,7 @@ class QrCodeUtilImplTest : AutoCloseKoinTest() {
             randomQrContent(1343),
             randomQrContent(1446),
             randomQrContent(1543),
-            randomQrContent(1634),
+            randomQrContent(1634)
         )
 
         val qrCodeUtil = QrCodeUtilImpl()

@@ -54,5 +54,4 @@ class PersonalDetailsUtilImpl(private val passportMonths: List<String>) : Person
             birthMonth = if (birthMonthReadableString.isEmpty()) HIDDEN_PERSONAL_DETAIL else birthMonthReadableString
         )
     }
-
 }

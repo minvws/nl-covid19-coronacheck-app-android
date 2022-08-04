@@ -11,11 +11,11 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import nl.rijksoverheid.ctr.appconfig.models.ServerTime
-import nl.rijksoverheid.ctr.shared.livedata.Event
 import java.time.Clock
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
+import nl.rijksoverheid.ctr.appconfig.models.ServerTime
+import nl.rijksoverheid.ctr.shared.livedata.Event
 
 abstract class ClockDeviationUseCase {
     val serverTimeSyncedLiveData: LiveData<Event<Unit>> = MutableLiveData()

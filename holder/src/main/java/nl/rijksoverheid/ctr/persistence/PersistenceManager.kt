@@ -26,7 +26,7 @@ interface PersistenceManager {
     fun hasAppliedJune28Fix(): Boolean
     fun setJune28FixApplied(applied: Boolean)
     fun hasDismissedUnsecureDeviceDialog(): Boolean
-    fun setHasDismissedUnsecureDeviceDialog(value : Boolean)
+    fun setHasDismissedUnsecureDeviceDialog(value: Boolean)
     fun showSyncGreenCardsItem(): Boolean
     fun setShowSyncGreenCardsItem(show: Boolean)
     fun getCheckNewValidityInfoCard(): Boolean
@@ -121,7 +121,7 @@ class SharedPreferencesPersistenceManager(
         return sharedPreferences.getBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, false)
     }
 
-    override fun setHasDismissedUnsecureDeviceDialog(value : Boolean) {
+    override fun setHasDismissedUnsecureDeviceDialog(value: Boolean) {
         sharedPreferences.edit().putBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, value).commit()
     }
 

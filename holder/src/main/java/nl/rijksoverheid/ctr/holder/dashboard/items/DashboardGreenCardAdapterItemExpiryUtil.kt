@@ -8,14 +8,14 @@
 package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import android.content.Context
-import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import java.time.Clock
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
+import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -27,10 +27,18 @@ import java.util.concurrent.TimeUnit
 
 interface DashboardGreenCardAdapterItemExpiryUtil {
     sealed class ExpireCountDown {
-        data class Show(val daysLeft: Long,
-                        val hoursLeft: Long,
-                        val minutesLeft: Long,
-                        val secondsLeft: Long) : ExpireCountDown()
+        data class Show(
+            val daysLeft: Long,
+            val hoursLeft: Long,
+            val minutesLeft: Long,
+            val secondsLeft: Long
+        ) : ExpireCountDown() {
+                            fun expired(): Boolean = arrayOf(
+                                daysLeft,
+                                hoursLeft,
+                                minutesLeft,
+                                secondsLeft).all { it == 0L }
+                        }
         object Hide : ExpireCountDown()
     }
 
@@ -86,9 +94,9 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
     private fun getExpiryHoursForType(type: OriginType): Int {
         return if (type == OriginType.Test) {
             TimeUnit.HOURS.toHours(6).toInt()
-         } else {
+        } else {
             TimeUnit.DAYS.toHours(21).toInt()
-         }
+        }
     }
 
     override fun getExpiryText(
@@ -102,33 +110,68 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
             daysLeft >= 2 -> {
                 context.getString(
                     R.string.my_overview_test_result_expires_in,
-                    "$daysLeft ${context.resources.getQuantityString(R.plurals.general_days, daysLeft)}"
+                    "$daysLeft ${
+                        context.resources.getQuantityString(
+                            R.plurals.general_days,
+                            daysLeft
+                        )
+                    }"
                 )
             }
             daysLeft >= 1 -> {
                 context.getString(
                     R.string.my_overview_test_result_expires_in_hours_minutes,
-                    "$daysLeft ${context.resources.getQuantityString(R.plurals.general_days, daysLeft)}",
-                    "$hoursLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_hours, hoursLeft)}",
+                    "$daysLeft ${
+                        context.resources.getQuantityString(
+                            R.plurals.general_days,
+                            daysLeft
+                        )
+                    }",
+                    "$hoursLeft ${
+                        context.resources.getQuantityString(
+                            R.plurals.my_overview_test_result_expires_hours,
+                            hoursLeft
+                        )
+                    }"
                 )
             }
             hoursLeft >= 1 -> {
                 context.getString(
                     R.string.my_overview_test_result_expires_in_hours_minutes,
-                    "$hoursLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_hours, hoursLeft)}",
-                    "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}",
+                    "$hoursLeft ${
+                        context.resources.getQuantityString(
+                            R.plurals.my_overview_test_result_expires_hours,
+                            hoursLeft
+                        )
+                    }",
+                    "$minutesLeft ${
+                        context.resources.getQuantityString(
+                            R.plurals.my_overview_test_result_expires_minutes,
+                            minutesLeft
+                        )
+                    }"
                 )
             }
             minutesLeft >= 5 -> {
                 context.getString(
                     R.string.my_overview_test_result_expires_in,
-                    "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}"
+                    "$minutesLeft ${
+                        context.resources.getQuantityString(
+                            R.plurals.my_overview_test_result_expires_minutes,
+                            minutesLeft
+                        )
+                    }"
                 )
             }
             minutesLeft <= 5 && minutesLeft != 0 -> {
                 context.getString(
                     R.string.my_overview_test_result_expires_in_hours_minutes,
-                    "$minutesLeft ${context.resources.getQuantityString(R.plurals.my_overview_test_result_expires_minutes, minutesLeft)}",
+                    "$minutesLeft ${
+                        context.resources.getQuantityString(
+                            R.plurals.my_overview_test_result_expires_minutes,
+                            minutesLeft
+                        )
+                    }",
                     "$secondsLeft ${context.resources.getString(R.string.general_seconds)}"
                 )
             }

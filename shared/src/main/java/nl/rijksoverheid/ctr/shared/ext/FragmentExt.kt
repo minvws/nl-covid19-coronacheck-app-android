@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
@@ -41,7 +40,7 @@ fun Fragment.findNavControllerSafety(currentId: Int): NavController? {
 fun Fragment.findNavControllerSafety(): NavController? {
     return try {
         findNavController()
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         null
     }
 }
@@ -49,7 +48,7 @@ fun Fragment.findNavControllerSafety(): NavController? {
 fun Fragment.navigateSafety(directions: NavDirections) {
     try {
         findNavController().navigate(directions)
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         e.printStackTrace()
         // no op
     }
@@ -58,7 +57,7 @@ fun Fragment.navigateSafety(directions: NavDirections) {
 fun Fragment.navigateSafety(currentId: Int, directions: NavDirections) {
     try {
         findNavControllerSafety(currentId)?.navigate(directions)
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         // no op
     }
 }
@@ -66,7 +65,7 @@ fun Fragment.navigateSafety(currentId: Int, directions: NavDirections) {
 fun Fragment.navigateSafety(currentId: Int, directionId: Int) {
     try {
         findNavControllerSafety(currentId)?.navigate(directionId)
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         // no op
     }
 }
@@ -74,7 +73,7 @@ fun Fragment.navigateSafety(currentId: Int, directionId: Int) {
 fun Fragment.navigateSafety(destinationId: Int) {
     try {
         findNavControllerSafety()?.navigate(destinationId)
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         // no op
     }
 }
@@ -82,7 +81,7 @@ fun Fragment.navigateSafety(destinationId: Int) {
 fun Fragment.navigateSafety(destinationId: Int, args: Bundle) {
     try {
         findNavControllerSafety()?.navigate(destinationId, args)
-    } catch(e: Exception) {
+    } catch (e: Exception) {
         // no op
     }
 }

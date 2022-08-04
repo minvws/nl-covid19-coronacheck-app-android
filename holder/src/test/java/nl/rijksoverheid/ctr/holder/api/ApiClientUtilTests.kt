@@ -5,6 +5,9 @@ import com.squareup.moshi.Moshi
 import io.mockk.every
 import io.mockk.slot
 import io.mockk.spyk
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
+import kotlin.test.assertEquals
 import nl.rijksoverheid.ctr.api.signing.certificates.EMAX_ROOT_CA
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
@@ -15,10 +18,6 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import retrofit2.Retrofit
-import javax.net.ssl.SSLSocketFactory
-import javax.net.ssl.X509TrustManager
-import kotlin.test.assertEquals
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

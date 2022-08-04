@@ -72,5 +72,4 @@ class PersonalDetailsUtilImplTest {
         assertEquals(HIDDEN_PERSONAL_DETAIL, personalDetails.birthDay)
         assertEquals(HIDDEN_PERSONAL_DETAIL, personalDetails.birthMonth)
     }
-
 }

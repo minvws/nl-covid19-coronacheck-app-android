@@ -14,7 +14,7 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class NewPolicyRulesItemUseCaseImplTest {

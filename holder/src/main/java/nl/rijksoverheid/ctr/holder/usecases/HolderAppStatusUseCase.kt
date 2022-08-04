@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.holder.usecases
 
 import androidx.annotation.StringRes
 import com.squareup.moshi.Moshi
+import java.time.Clock
+import java.time.OffsetDateTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -20,8 +22,6 @@ import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import java.time.Clock
-import java.time.OffsetDateTime
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -119,7 +119,7 @@ class HolderAppStatusUseCaseImpl(
         return when {
             newFeaturesAvailable() && newPolicy != null -> AppStatus.NewFeatures(
                 appUpdateData.copy(
-                    newFeatures = appUpdateData.newFeatures + getPolicyChangeItems(newPolicy),
+                    newFeatures = appUpdateData.newFeatures + getPolicyChangeItems(newPolicy)
                 ).apply {
                     setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
                 })

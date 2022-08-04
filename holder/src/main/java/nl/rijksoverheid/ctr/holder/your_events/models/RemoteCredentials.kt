@@ -8,8 +8,8 @@
 package nl.rijksoverheid.ctr.holder.your_events.models
 
 import com.squareup.moshi.JsonClass
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import java.time.OffsetDateTime
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -22,7 +22,8 @@ import java.time.OffsetDateTime
 data class RemoteGreenCards(
     val domesticGreencard: DomesticGreenCard?,
     val euGreencards: List<EuGreenCard>?,
-    val blobExpireDates: List<BlobExpiry>?
+    val blobExpireDates: List<BlobExpiry>?,
+    val hints: List<String>? = listOf()
 ) {
     data class DomesticGreenCard(
         val origins: List<Origin>,
@@ -57,7 +58,8 @@ data class RemoteGreenCards(
         val eventTime: OffsetDateTime,
         val expirationTime: OffsetDateTime,
         val validFrom: OffsetDateTime,
-        val doseNumber: Int?
+        val doseNumber: Int?,
+        val hints: List<String>? = listOf()
     )
 
     data class BlobExpiry(

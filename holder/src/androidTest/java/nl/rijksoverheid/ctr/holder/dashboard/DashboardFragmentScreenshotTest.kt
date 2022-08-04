@@ -19,14 +19,22 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.karumi.shot.ActivityScenarioUtils.waitForActivity
 import com.karumi.shot.FragmentScenarioUtils.waitForFragment
 import com.karumi.shot.ScreenshotTest
-import nl.rijksoverheid.ctr.holder.*
+import nl.rijksoverheid.ctr.holder.AndroidTestUtils
+import nl.rijksoverheid.ctr.holder.HolderMainActivity
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
+import nl.rijksoverheid.ctr.holder.fakeCredentialEntity
+import nl.rijksoverheid.ctr.holder.fakeDashboardViewModel
+import nl.rijksoverheid.ctr.holder.fakeMobileCoreWrapper
+import nl.rijksoverheid.ctr.holder.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
@@ -36,10 +44,9 @@ import org.junit.runner.RunWith
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
-import java.lang.IllegalStateException
 
 @RunWith(AndroidJUnit4::class)
-class DashboardFragmentScreenshotTest: ScreenshotTest {
+class DashboardFragmentScreenshotTest : ScreenshotTest {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -76,10 +83,15 @@ class DashboardFragmentScreenshotTest: ScreenshotTest {
                 DashboardItem.CardsItem.CardItem(
                     greenCard = GreenCard(
                         greenCardEntity = greenCardEntity,
-                        origins = listOf(vaccinationOriginEntity, recoveryOriginEntity, testOriginEntity),
+                        origins = listOf(
+                            vaccinationOriginEntity,
+                            recoveryOriginEntity,
+                            testOriginEntity
+                        ),
                         credentialEntities = listOf(credentialEntity)
                     ),
-                    originStates = listOf(OriginState.Valid(vaccinationOriginEntity),
+                    originStates = listOf(
+                        OriginState.Valid(vaccinationOriginEntity),
                         OriginState.Valid(recoveryOriginEntity),
                         OriginState.Valid(testOriginEntity)
                     ),
@@ -130,7 +142,11 @@ class DashboardFragmentScreenshotTest: ScreenshotTest {
                 DashboardItem.CardsItem.CardItem(
                     greenCard = GreenCard(
                         greenCardEntity = greenCardEntity,
-                        origins = listOf(vaccinationOriginEntity, recoveryOriginEntity, testOriginEntity),
+                        origins = listOf(
+                            vaccinationOriginEntity,
+                            recoveryOriginEntity,
+                            testOriginEntity
+                        ),
                         credentialEntities = listOf(credentialEntity)
                     ),
                     originStates = listOf(
@@ -139,7 +155,12 @@ class DashboardFragmentScreenshotTest: ScreenshotTest {
                         OriginState.Valid(testOriginEntity)
                     ),
                     credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
-                    databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError.FirstTime(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException(""))),
+                    databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError.FirstTime(
+                        AppErrorResult(
+                            HolderStep.GetCredentialsNetworkRequest,
+                            IllegalStateException("")
+                        )
+                    ),
                     disclosurePolicy = GreenCardDisclosurePolicy.OneG,
                     greenCardEnabledState = GreenCardEnabledState.Enabled
                 )
@@ -185,7 +206,11 @@ class DashboardFragmentScreenshotTest: ScreenshotTest {
                 DashboardItem.CardsItem.CardItem(
                     greenCard = GreenCard(
                         greenCardEntity = greenCardEntity,
-                        origins = listOf(vaccinationOriginEntity, recoveryOriginEntity, testOriginEntity),
+                        origins = listOf(
+                            vaccinationOriginEntity,
+                            recoveryOriginEntity,
+                            testOriginEntity
+                        ),
                         credentialEntities = listOf(credentialEntity)
                     ),
                     originStates = listOf(
@@ -194,7 +219,12 @@ class DashboardFragmentScreenshotTest: ScreenshotTest {
                         OriginState.Valid(testOriginEntity)
                     ),
                     credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
-                    databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError.MultipleTimes(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException(""))),
+                    databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError.MultipleTimes(
+                        AppErrorResult(
+                            HolderStep.GetCredentialsNetworkRequest,
+                            IllegalStateException("")
+                        )
+                    ),
                     disclosurePolicy = GreenCardDisclosurePolicy.OneG,
                     greenCardEnabledState = GreenCardEnabledState.Enabled
                 )
@@ -238,13 +268,18 @@ class DashboardFragmentScreenshotTest: ScreenshotTest {
                         credentialEntities = listOf(credentialEntity)
                     ),
                     originStates = listOf(
-                        OriginState.Valid(vaccinationOriginEntity),
+                        OriginState.Valid(vaccinationOriginEntity)
                     ),
                     credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
-                    databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError.MultipleTimes(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException(""))),
+                    databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError.MultipleTimes(
+                        AppErrorResult(
+                            HolderStep.GetCredentialsNetworkRequest,
+                            IllegalStateException("")
+                        )
+                    ),
                     disclosurePolicy = GreenCardDisclosurePolicy.OneG,
                     greenCardEnabledState = GreenCardEnabledState.Enabled
-                ),
+                )
             )
         )
 
@@ -252,19 +287,26 @@ class DashboardFragmentScreenshotTest: ScreenshotTest {
             DashboardItem.CardsItem(
                 cards = listOf(
                     DashboardItem.CardsItem.CardItem(
-                greenCard = GreenCard(
-                    greenCardEntity = greenCardEntity,
-                    origins = listOf(recoveryOriginEntity),
-                    credentialEntities = listOf(credentialEntity)
-                ),
-                originStates = listOf(
-                    OriginState.Valid(recoveryOriginEntity),
-                ),
-                credentialState = DashboardItem.CardsItem.CredentialState.HasCredential(credentialEntity),
-                databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError.MultipleTimes(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, IllegalStateException(""))),
-                disclosurePolicy = GreenCardDisclosurePolicy.OneG,
-                greenCardEnabledState = GreenCardEnabledState.Enabled
-                    ),
+                        greenCard = GreenCard(
+                            greenCardEntity = greenCardEntity,
+                            origins = listOf(recoveryOriginEntity),
+                            credentialEntities = listOf(credentialEntity)
+                        ),
+                        originStates = listOf(
+                            OriginState.Valid(recoveryOriginEntity)
+                        ),
+                        credentialState = DashboardItem.CardsItem.CredentialState.HasCredential(
+                            credentialEntity
+                        ),
+                        databaseSyncerResult = DatabaseSyncerResult.Failed.ServerError.MultipleTimes(
+                            AppErrorResult(
+                                HolderStep.GetCredentialsNetworkRequest,
+                                IllegalStateException("")
+                            )
+                        ),
+                        disclosurePolicy = GreenCardDisclosurePolicy.OneG,
+                        greenCardEnabledState = GreenCardEnabledState.Enabled
+                    )
                 )
             )
 
@@ -315,7 +357,8 @@ class DashboardFragmentScreenshotTest: ScreenshotTest {
     }
 
     fun startActivity(args: Bundle = Bundle()): HolderMainActivity {
-        val intent = Intent(ApplicationProvider.getApplicationContext(), HolderMainActivity::class.java)
+        val intent =
+            Intent(ApplicationProvider.getApplicationContext(), HolderMainActivity::class.java)
         intent.putExtras(args)
         val scenario = ActivityScenario.launch<HolderMainActivity>(intent)
         return scenario!!.waitForActivity()

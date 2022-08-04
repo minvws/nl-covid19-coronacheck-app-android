@@ -12,7 +12,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager

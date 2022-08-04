@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.introduction.onboarding
 
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.navigation.Navigation
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.karumi.shot.FragmentScenarioUtils.waitForFragment
 import com.karumi.shot.ScreenshotTest
@@ -12,7 +11,6 @@ import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -21,7 +19,7 @@ import org.junit.runner.RunWith
  *
  */
 @RunWith(AndroidJUnit4::class)
-class OnboardingFragmentScreenshotTest: ScreenshotTest {
+class OnboardingFragmentScreenshotTest : ScreenshotTest {
 
     @Test
     fun onboardingFragment_Screenshot() {
@@ -31,8 +29,8 @@ class OnboardingFragmentScreenshotTest: ScreenshotTest {
                     OnboardingItem(
                         R.drawable.illustration_onboarding_1,
                         R.string.onboarding_screen_1_title,
-                        R.string.onboarding_screen_1_description,
-                    ),
+                        R.string.onboarding_screen_1_description
+                    )
                 )
             )
             ),

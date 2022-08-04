@@ -2,11 +2,11 @@ package nl.rijksoverheid.ctr.verifier.usecases
 
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
-import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
-import org.junit.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
+import org.junit.Test
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

@@ -9,33 +9,35 @@ package nl.rijksoverheid.ctr.dashboard.util
 
 import io.mockk.every
 import io.mockk.mockk
+import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
-import nl.rijksoverheid.ctr.holder.*
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.fakeEuropeanVaccinationGreenCard
+import nl.rijksoverheid.ctr.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem.CardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import java.time.OffsetDateTime
 
 @RunWith(RobolectricTestRunner::class)
 class DashboardItemUtilImplTest : AutoCloseKoinTest() {
@@ -148,7 +150,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
         val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
             domesticGreenCards = listOf(),
-            euGreenCards = listOf(fakeGreenCard(originType = OriginType.Vaccination)),
+            euGreenCards = listOf(fakeGreenCard(originType = OriginType.Vaccination))
         )
 
         assertTrue(shouldShowMissingDutchVaccinationItem)
@@ -160,7 +162,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
         val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
             domesticGreenCards = listOf(fakeGreenCard(originType = OriginType.Vaccination)),
-            euGreenCards = listOf(fakeEuropeanVaccinationGreenCard),
+            euGreenCards = listOf(fakeEuropeanVaccinationGreenCard)
         )
 
         assertFalse(shouldShowMissingDutchVaccinationItem)
@@ -172,7 +174,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
         val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
             domesticGreenCards = listOf(),
-            euGreenCards = listOf(),
+            euGreenCards = listOf()
         )
 
         assertFalse(shouldShowMissingDutchVaccinationItem)
@@ -400,7 +402,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     private fun createCardItem(originType: OriginType) = CardItem(
         greenCard = GreenCard(
-            greenCardEntity = fakeGreenCardEntity,
+            greenCardEntity = nl.rijksoverheid.ctr.fakeGreenCardEntity,
             origins = listOf(
                 OriginEntity(
                     greenCardId = 1L,
@@ -450,7 +452,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         appConfigFreshnessUseCase: AppConfigFreshnessUseCase = mockk(relaxed = true),
         appConfigUseCase: HolderCachedAppConfigUseCase = mockk(relaxed = true),
         buildConfigUseCase: BuildConfigUseCase = mockk(relaxed = true),
-        greenCardUtil: GreenCardUtil = mockk(relaxed = true),
+        greenCardUtil: GreenCardUtil = mockk(relaxed = true)
     ) = DashboardItemUtilImpl(
         clockDeviationUseCase = clockDeviationUseCase,
         persistenceManager = persistenceManager,

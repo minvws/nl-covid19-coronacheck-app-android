@@ -11,6 +11,10 @@ package nl.rijksoverheid.ctr.appconfig.usecases
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import java.io.IOException
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.AppConfigApi
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
@@ -21,15 +25,13 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.json.JSONObject
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import retrofit2.Response
-import java.io.IOException
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneId
 
 @RunWith(RobolectricTestRunner::class)
 class AppConfigUseCaseImplTest {

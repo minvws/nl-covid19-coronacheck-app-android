@@ -7,6 +7,10 @@
 
 package nl.rijksoverheid.ctr.saved_events.usecases
 
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import kotlin.test.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -22,10 +26,6 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
-import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 class GetSavedEventsUseCaseImplTest : AutoCloseKoinTest() {

@@ -12,13 +12,13 @@ package nl.rijksoverheid.ctr.usecases
 
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
-import nl.rijksoverheid.ctr.holder.usecases.ShowNewDisclosurePolicyUseCaseImpl
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.holder.usecases.ShowNewDisclosurePolicyUseCaseImpl
+import nl.rijksoverheid.ctr.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import org.junit.Test
 
 class ShowNewDisclosurePolicyUseCaseImplTest {
 

@@ -1,10 +1,9 @@
 package nl.rijksoverheid.ctr.holder.qrcodes.usecases
 
+import java.time.Clock
+import java.util.Calendar
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeAnimation
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import java.time.Clock
-import java.util.*
-
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

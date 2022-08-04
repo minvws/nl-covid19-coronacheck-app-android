@@ -19,6 +19,9 @@ import android.view.View
 import android.widget.Button
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import nl.rijksoverheid.ctr.design.BuildConfig
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
@@ -33,10 +36,6 @@ import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.Environment
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import org.koin.android.ext.android.inject
-import org.koin.android.ext.koin.androidContext
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 

@@ -3,6 +3,8 @@ package nl.rijksoverheid.ctr.verifier.persistence.database
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import java.io.IOException
+import java.time.Instant
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.persistance.database.VerifierDatabase
@@ -14,10 +16,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import java.io.IOException
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

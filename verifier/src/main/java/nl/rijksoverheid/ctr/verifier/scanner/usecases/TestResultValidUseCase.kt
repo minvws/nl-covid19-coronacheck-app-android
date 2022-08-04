@@ -2,7 +2,9 @@ package nl.rijksoverheid.ctr.verifier.scanner.usecases
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import mobilecore.Mobilecore.*
+import mobilecore.Mobilecore.VERIFICATION_FAILED_IS_NL_DCC
+import mobilecore.Mobilecore.VERIFICATION_FAILED_UNRECOGNIZED_PREFIX
+import mobilecore.Mobilecore.VERIFICATION_SUCCESS
 import nl.rijksoverheid.ctr.verifier.scanner.models.VerifiedQrResultState
 
 /*
@@ -17,7 +19,7 @@ interface TestResultValidUseCase {
 }
 
 class TestResultValidUseCaseImpl(
-    private val verifyQrUseCase: VerifyQrUseCase,
+    private val verifyQrUseCase: VerifyQrUseCase
 ) : TestResultValidUseCase {
 
     override suspend fun validate(qrContent: String): VerifiedQrResultState =

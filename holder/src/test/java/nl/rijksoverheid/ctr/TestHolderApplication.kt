@@ -8,14 +8,8 @@
 package nl.rijksoverheid.ctr
 
 import androidx.preference.PreferenceManager
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.HolderApplication
-import nl.rijksoverheid.ctr.holder.fakeMobileCoreWrapper
-import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
-import org.koin.android.ext.android.inject
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

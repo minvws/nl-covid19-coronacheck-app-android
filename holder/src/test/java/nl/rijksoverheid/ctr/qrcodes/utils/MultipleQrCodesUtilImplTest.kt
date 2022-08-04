@@ -9,10 +9,10 @@
 package nl.rijksoverheid.ctr.qrcodes.utils
 
 import io.mockk.mockk
+import kotlin.test.assertEquals
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtilImpl
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class MultipleQrCodesUtilImplTest {
 

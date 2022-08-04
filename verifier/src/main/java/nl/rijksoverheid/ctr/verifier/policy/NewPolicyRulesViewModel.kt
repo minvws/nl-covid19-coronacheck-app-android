@@ -29,7 +29,7 @@ abstract class NewPolicyRulesViewModel : ViewModel() {
 class NewPolicyRulesViewModelImpl(
     private val persistenceManager: PersistenceManager,
     private val newPolicyRulesItemUseCase: NewPolicyRulesItemUseCase,
-    private val scannerNavigationStateUseCase: ScannerNavigationStateUseCase,
+    private val scannerNavigationStateUseCase: ScannerNavigationStateUseCase
 ) : NewPolicyRulesViewModel() {
 
     override fun init() {

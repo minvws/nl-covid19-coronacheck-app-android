@@ -5,19 +5,19 @@ import android.os.Handler
 import android.os.Looper
 import androidx.camera.core.ImageProxy
 import androidx.camera.lifecycle.ProcessCameraProvider
-import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
 import timber.log.Timber
 
-class QrCodeProcessorImpl: QrCodeProcessor {
+class QrCodeProcessorImpl : QrCodeProcessor {
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun process(
         binding: FragmentScannerBinding,
         cameraProvider: ProcessCameraProvider,
         cameraFrame: ImageProxy,
-        qrCodeProcessed: (content: String) -> Unit) {
+        qrCodeProcessed: (content: String) -> Unit
+    ) {
         val reader = MultiFormatReader().apply {
             setHints(mapOf(DecodeHintType.POSSIBLE_FORMATS to arrayListOf(BarcodeFormat.QR_CODE)))
         }

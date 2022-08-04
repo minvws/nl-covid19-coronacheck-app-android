@@ -34,7 +34,6 @@ class MultiTapDetector(view: View, callback: (Int, Boolean) -> Unit) {
         }
     }
 
-
     init {
         view.setOnTouchListener { _, event ->
             when (event.action) {
@@ -47,9 +46,9 @@ class MultiTapDetector(view: View, callback: (Int, Boolean) -> Unit) {
                 }
                 MotionEvent.ACTION_MOVE -> {
                     // If a move greater than the allowed slop happens before timeout, then this is a scroll and not a tap
-                    if (event.eventTime - event.downTime < tapTimeout
-                        && abs(event.x - downEvent.x) > viewConfig.scaledTouchSlop
-                        && abs(event.y - downEvent.y) > viewConfig.scaledTouchSlop
+                    if (event.eventTime - event.downTime < tapTimeout &&
+                        abs(event.x - downEvent.x) > viewConfig.scaledTouchSlop &&
+                        abs(event.y - downEvent.y) > viewConfig.scaledTouchSlop
                     ) {
                         downEvent.clear()
                     }
@@ -60,10 +59,10 @@ class MultiTapDetector(view: View, callback: (Int, Boolean) -> Unit) {
 
                     if (downEvent.time > 0 && event.eventTime - event.downTime < longPressTimeout) {
                         // We have a tap
-                        if (lastTapUpEvent.time > 0
-                            && event.eventTime - lastTapUpEvent.time < doubleTapTimeout
-                            && abs(event.x - lastTapUpEvent.x) < viewConfig.scaledDoubleTapSlop
-                            && abs(event.y - lastTapUpEvent.y) < viewConfig.scaledDoubleTapSlop
+                        if (lastTapUpEvent.time > 0 &&
+                            event.eventTime - lastTapUpEvent.time < doubleTapTimeout &&
+                            abs(event.x - lastTapUpEvent.x) < viewConfig.scaledDoubleTapSlop &&
+                            abs(event.y - lastTapUpEvent.y) < viewConfig.scaledDoubleTapSlop
                         ) {
                             // Double tap
                             numberOfTaps++

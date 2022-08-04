@@ -22,7 +22,8 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 class DashboardPagerAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle,
-    private val returnToExternalAppUri: String?) :
+    private val returnToExternalAppUri: String?
+) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
     private val items: List<DashboardTabItem> = mutableListOf()

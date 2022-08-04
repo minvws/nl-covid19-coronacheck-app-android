@@ -61,7 +61,7 @@ class VerificationPolicyInfoFragment : Fragment(R.layout.fragment_verification_p
                 } else {
                     R.string.verifier_risksetting_changeselection_title
                 }
-            ),
+            )
         )
         navigateSafety(policySelectionAction)
     }

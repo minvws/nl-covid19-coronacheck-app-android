@@ -9,7 +9,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ChooseProviderFragmentTest: ScreenshotTest {
+class ChooseProviderFragmentTest : ScreenshotTest {
     @Test
     fun chooseProviderFragment_Screenshot() {
         val fragmentScenario = launchFragmentInContainer<ChooseProviderFragment>(

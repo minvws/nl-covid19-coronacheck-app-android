@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class PaperProofDomesticInputCodeFragmentScreenshotTest: ScreenshotTest {
+class PaperProofDomesticInputCodeFragmentScreenshotTest : ScreenshotTest {
     @Test
     fun paperProofDomesticInputCodeFragment_Screenshot() {
         val fragmentScenario = launchFragmentInContainer<PaperProofDomesticInputCodeFragment>(

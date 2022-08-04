@@ -1,14 +1,20 @@
 package nl.rijksoverheid.ctr.dashboard.util
 
+import java.time.Clock
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import nl.rijksoverheid.ctr.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtilImpl
-import nl.rijksoverheid.ctr.holder.fakeOriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.time.*
 
 class OriginUtilImplTest {
 

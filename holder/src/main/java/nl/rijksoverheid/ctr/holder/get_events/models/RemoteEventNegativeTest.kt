@@ -10,8 +10,8 @@ package nl.rijksoverheid.ctr.holder.get_events.models
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.parcelize.Parcelize
 import java.time.OffsetDateTime
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -31,7 +31,7 @@ data class RemoteEventNegativeTest(
         val type: String?,
         val name: String?,
         val manufacturer: String?
-    ): Parcelable
+    ) : Parcelable
 
     override fun getDate(): OffsetDateTime? {
         return negativeTest?.sampleDate

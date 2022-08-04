@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
-  <string name="holder_listRemoteEvents_endStateRecoveryOnly_title">Er is alleen een herstelbewijs gemaakt</string>
   <string name="holder_fetchRemoteEvents_title">Gegevens ophalen</string>
-  <string name="holder_listRemoteEvents_endStateInternationalQROnly_title">Er is alleen een internationaal bewijs gemaakt</string>
   <string name="general_readmore">Lees meer</string>
   <string name="holder_authentication_popup_digid_title">Inloggen afgebroken</string>
   <string name="holder_dcc_alert_message">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
@@ -684,7 +681,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_addVaccine_alsoCollectPositiveTestResults_checkbox">Haal ook mijn positieve testuitslag op</string>
   <string name="holder_listRemoteEvents_vaccination_message">Als de gegevens kloppen kun je een bewijs maken.</string>
   <string name="holder_listRemoteEvents_paperflow_message">Als onderstaande gegevens kloppen kun je jouw bewijs toevoegen aan de app.</string>
-  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
   <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message"><![CDATA[Van je opgehaalde vaccinaties kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Van je positieve testuitslag kon ook een herstelbewijs gemaakt worden.]]></string>
   <string name="holder_listRemoteEvents_recovery_message">Als de gegevens van je test kloppen kun je een herstelbewijs maken.</string>
   <string name="holder_listRemoteEvents_negativeTest_message">Deze testuitslag is opgehaald bij de testlocatie. Als de gegevens kloppen kun je een bewijs maken.</string>
@@ -769,9 +765,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_scanner_error_title_ctb">Scan de internationale QR-code</string>
   <string name="holder_scanner_error_message_unknown">De QR-code die je probeert te scannen wordt niet herkend als die van een coronabewijs. Controleer of je de goede QR-code voor de camera houdt.</string>
   <string name="holder_scanner_error_title_unknown">Deze QR-code wordt niet herkend</string>
-  <string name="holder_dashboard_recoveryAlmostExpiredBanner_title">Je herstelbewijs verloopt bijna</string>
-  <string name="holder_recoveryAlmostExpiredModal_title">Herstelbewijs verloopt bijna</string>
-  <string name="holder_recoveryAlmostExpiredModal_message">Je herstelbewijs verloopt op %@. Daarna heb je geen coronabewijs meer. Heb je een nieuw coronabewijs nodig? Dan zijn er verschillende mogelijkheden. Lees meer op <a href="https://www.rijksoverheid.nl/onderwerpen/coronavirus-coronabewijs-en-coronatoegangsbewijs">Rijksoverheid.nl</a></string>
   <string name="holder_qr_code_hidden_explanation_button">Wat betekent dit?</string>
   <string name="holder_qr_code_hidden_explanation_title">Verborgen QR-code</string>
   <string name="holder_qr_code_hidden_explanation_description"><![CDATA[Als de QR-code van je vaccinatie verborgen is, dan heb je deze waarschijnlijk niet nodig. Dit komt omdat je ook QR-codes van nieuwere vaccinaties in de app hebt staan.<br/><br/>Verborgen QR-codes kun je gewoon nog laten zien en gebruiken als dat nodig is.]]></string>
@@ -789,8 +782,8 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   </plurals>
   <string name="general_seconds">seconden</string>
   <string name="holder_listRemoteEvents_listElement_title_vaccination">Vaccinatie</string>
-  <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccinatiedatum %s</string>
-  <string name="holder_eventHints_title">Je bewijzen zijn gemaakt</string>
+  <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccinatiedatum: %s</string>
+  <string name="holder_eventHints_title">Bewijs maken gelukt</string>
   <string name="holder_addVaccination_alsoCollectPositiveTestResults_message"><![CDATA[<b>Heb je corona gehad?</b><br/>Dan heb je soms een prik minder nodig om volledig gevaccineerd te zijn. Haal ook je oudste positieve testuitslag op om die mogelijk mee te laten tellen in je vaccinatiebewijs.]]></string>
   <string name="holder_noDigiD_title">Ik heb geen DigiD</string>
   <string name="holder_noDigiD_message">Woon je in Nederland en heb je een Nederlands identiteitsbewijs? Dan kun je een DigiD aanvragen om je testuitslag of vaccinatiegegevens op te halen.</string>
@@ -814,8 +807,8 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_chooseEventLocation_buttonSubTitle_GGD">Regel je bewijs via de GGD</string>
   <string name="holder_chooseEventLocation_buttonTitle_other">Een andere zorgverlener</string>
   <string name="holder_chooseEventLocation_buttonSubTitle_other">Regel je bewijs via bijvoorbeeld je huisarts of zorginstelling</string>
-  <string name="general_unrecoverableError_sendCrashReport_message">Er is een technisch probleem opgetreden.
-Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
+  <string name="general_unrecoverableError_sendCrashReport_title">Probleem met de app</string>
+  <string name="general_unrecoverableError_sendCrashReport_message">Er is een technisch probleem met de laatste update van CoronaCheck. Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
   <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_vaccinationFlow">Krijg je bewijs via je zorgverlener</string>
   <string name="holder_showqr_animation_winterctb_voiceover_label">Animatie van mensen op een slee en schaatsen</string>
   <string name="holder_showqr_animation_summerdcc_voiceover_label">Animatie van reizigers op een loopband</string>
@@ -832,4 +825,16 @@ Rapporteer dit probleem zodat we het zo snel mogelijk kunnen oplossen.</string>
   <string name="holder_authentication_popup_digid">DigiD</string>
   <string name="holder_authentication_popup_portal">deze pagina</string>
   <string name="holder_showqr_animation_voiceover_hint">De beweging van richting laten veranderen</string>
+  <string name="domestic_vaccination_created">Er is een Nederlands vaccinatiebewijs gemaakt.</string>
+  <string name="domestic_vaccination_rejected">Van je vaccinatie(s) kan geen Nederlands vaccinatiebewijs gemaakt worden.</string>
+  <string name="domestic_recovery_created">Er is een herstelbewijs gemaakt.</string>
+  <string name="international_vaccination_created">Er is een internationaal vaccinatiebewijs gemaakt.</string>
+  <string name="international_vaccination_rejected">Van je vaccinatie(s) kan geen internationaal vaccinatiebewijs gemaakt worden.</string>
+  <string name="vaccination_dose_correction_applied">Je positieve testuitslag is meegeteld in je vaccinatiebewijs.</string>
+  <string name="vaccination_dose_correction_not_applied">Je positieve testuitslag is niet geschikt om mee te tellen in je vaccinatiebewijs.</string>
+  <string name="appstatus_diskfull_title">Je opslag zit vol</string>
+  <string name="appstatus_diskfull_body">Omdat de opslag van je telefoon vol zit kun je CoronaCheck niet openen. Maak ruimte vrij op je telefoon en open CoronaCheck opnieuw.</string>
+  <string name="appstatus_diskfull_button">Sluit CoronaCheck</string>
+  <string name="general_diskFull_title">Je opslag zit vol</string>
+  <string name="general_diskFull_body">Het is niet gelukt omdat de opslag van je telefoon vol zit. Maak ruimte vrij op je telefoon en probeer het opnieuw.</string>
 </resources>

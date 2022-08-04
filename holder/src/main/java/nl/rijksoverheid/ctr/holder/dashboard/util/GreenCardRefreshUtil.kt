@@ -7,15 +7,15 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit.DAYS
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 
 sealed class RefreshState {
-    class Refreshable(val days: Long): RefreshState()
-    object NoRefresh: RefreshState()
+    class Refreshable(val days: Long) : RefreshState()
+    object NoRefresh : RefreshState()
 }
 
 interface GreenCardRefreshUtil {

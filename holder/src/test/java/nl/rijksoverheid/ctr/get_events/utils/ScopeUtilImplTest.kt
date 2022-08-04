@@ -7,9 +7,9 @@
 
 package nl.rijksoverheid.ctr.get_events.utils
 
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtilImpl
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

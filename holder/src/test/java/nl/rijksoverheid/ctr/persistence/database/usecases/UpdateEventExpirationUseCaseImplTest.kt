@@ -10,6 +10,9 @@ package nl.rijksoverheid.ctr.persistence.database.usecases
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
@@ -22,12 +25,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 @RunWith(RobolectricTestRunner::class)
-class UpdateEventExpirationUseCaseImplTest: AutoCloseKoinTest() {
+class UpdateEventExpirationUseCaseImplTest : AutoCloseKoinTest() {
 
     private lateinit var db: HolderDatabase
 

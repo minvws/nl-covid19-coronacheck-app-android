@@ -9,6 +9,9 @@ package nl.rijksoverheid.ctr.your_events.utils
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.your_events.utils.VaccinationAssessmentInfoScreenUtil
 import org.junit.Assert.assertEquals
@@ -18,13 +21,10 @@ import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 @RunWith(RobolectricTestRunner::class)
 @Config(qualifiers = "nl-land")
-class VaccinationAssessmentInfoScreenUtilImplTest: AutoCloseKoinTest() {
+class VaccinationAssessmentInfoScreenUtilImplTest : AutoCloseKoinTest() {
 
     private val util: VaccinationAssessmentInfoScreenUtil by inject()
 

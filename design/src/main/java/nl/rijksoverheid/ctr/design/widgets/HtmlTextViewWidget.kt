@@ -17,7 +17,11 @@ import androidx.core.text.getSpans
 import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import nl.rijksoverheid.ctr.design.R
-import nl.rijksoverheid.ctr.design.ext.*
+import nl.rijksoverheid.ctr.design.ext.enableCustomLinks
+import nl.rijksoverheid.ctr.design.ext.enableHtmlLinks
+import nl.rijksoverheid.ctr.design.ext.getAttrColor
+import nl.rijksoverheid.ctr.design.ext.isHeading
+import nl.rijksoverheid.ctr.design.ext.separated
 import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
 
 /**
@@ -34,7 +38,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
-    defStyleRes: Int = 0,
+    defStyleRes: Int = 0
 ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
 
     private val HTML_LINKS_ENABLED = false
@@ -101,7 +105,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                         splitHtmlText = getBoolean(
                             R.styleable.HtmlTextViewWidget_splitHtmlText,
                             false
-                        ),
+                        )
                     )
                 }
             } finally {
@@ -138,7 +142,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         headingMarginMultiplier: Float = HEADING_MARGIN_MULTIPLIER,
         listItemMarginMultiplier: Float = LIST_ITEM_MARGIN_MULTIPLIER,
         textSize: Float = -1f,
-        splitHtmlText: Boolean = false,
+        splitHtmlText: Boolean = false
     ) {
         removeAllViews()
 

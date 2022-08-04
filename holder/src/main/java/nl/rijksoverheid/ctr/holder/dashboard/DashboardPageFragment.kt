@@ -15,15 +15,19 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.dashboard.items.*
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
-import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardPageBinding
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardAddQrCardAdapterItem
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardCoronaMelderAdapterItem
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItem
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardPlaceHolderAdapterItem
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItem
+import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.util.CardItemUtil
-import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtil
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardPageBinding
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
@@ -54,7 +58,6 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
             fragment.arguments = arguments
             return fragment
         }
-
     }
 
     private val dashboardPageInfoItemHandlerUtil: DashboardPageInfoItemHandlerUtil by inject()
@@ -176,6 +179,9 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
                     dashboardViewModel.refresh(
                         dashboardSync = DashboardSync.ForceSync
                     )
+                },
+                onCountDownFinished = {
+                    dashboardViewModel.refresh()
                 }
             )
         )

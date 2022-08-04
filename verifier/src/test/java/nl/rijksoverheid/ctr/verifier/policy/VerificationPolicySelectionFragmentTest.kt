@@ -12,7 +12,9 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotExist
@@ -101,7 +103,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
                 ScannerState.Unlocked(
                     VerificationPolicySelectionState.Policy1G
                 )
-            ),
+            )
         )
 
         clickOn(R.id.policy3G_container)
@@ -110,7 +112,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
 
         assertNotExist(
             context.getString(
-                R.string.verifier_risksetting_menu_scan_settings_unselected_title,
+                R.string.verifier_risksetting_menu_scan_settings_unselected_title
             )
         )
         assertEquals(navController.currentDestination?.id, R.id.nav_scan_qr)
@@ -131,7 +133,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
                 ScannerState.Unlocked(
                     VerificationPolicySelectionState.Policy1G
                 )
-            ),
+            )
         )
 
         clickOn(R.id.policy1G_container)
@@ -149,7 +151,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
                     VerificationPolicySelectionState.Policy1G
                 )
             ),
-            scannerUsedRecently = false,
+            scannerUsedRecently = false
         )
 
         assertDisplayed(
@@ -196,7 +198,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
                 VerificationPolicySelectionState.Policy1G,
                 VerificationPolicySelectionState.Selection.Policy1G -> R.id.policy1G
                 VerificationPolicySelectionState.Policy3G,
-                VerificationPolicySelectionState.Selection.Policy3G-> R.id.policy3G
+                VerificationPolicySelectionState.Selection.Policy3G -> R.id.policy3G
             }
             coEvery { updateRadioButton(any()) } returns Unit
             coEvery { storeSelection(any()) } answers {
@@ -225,7 +227,7 @@ class VerificationPolicySelectionFragmentTest : AutoCloseKoinTest() {
         launchFragmentInContainer(
             bundleOf(
                 "selectionType" to selectionType,
-                "toolbarTitle" to "Scan settings",
+                "toolbarTitle" to "Scan settings"
             ), themeResId = R.style.AppTheme
         ) {
             VerificationPolicySelectionFragment().also {

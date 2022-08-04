@@ -31,7 +31,7 @@ interface DeeplinkManager {
 class DeeplinkManagerImpl(
     private val introductionPersistenceManager: IntroductionPersistenceManager,
     private val buildConfigUseCase: BuildConfigUseCase,
-    private val appStatusUseCase: AppStatusUseCase,
+    private val appStatusUseCase: AppStatusUseCase
 ) : DeeplinkManager {
     private var returnUri: String? = null
 

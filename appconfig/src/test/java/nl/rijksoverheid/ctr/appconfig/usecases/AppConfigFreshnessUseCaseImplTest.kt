@@ -8,6 +8,10 @@
 
 package nl.rijksoverheid.ctr.appconfig.usecases
 
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
+import java.util.concurrent.TimeUnit
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfig
 import nl.rijksoverheid.ctr.appconfig.fakeAppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.fakeCachedAppConfigUseCase
@@ -16,10 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneId
-import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
 class AppConfigFreshnessUseCaseImplTest {

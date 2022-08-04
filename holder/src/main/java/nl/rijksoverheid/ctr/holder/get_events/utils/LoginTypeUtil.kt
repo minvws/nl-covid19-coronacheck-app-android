@@ -21,7 +21,7 @@ interface LoginTypeUtil {
     fun getNoBrowserDialogDescription(loginType: LoginType): Int
 }
 
-class LoginTypeUtilImpl: LoginTypeUtil {
+class LoginTypeUtilImpl : LoginTypeUtil {
     override fun getCanceledDialogTitle(loginType: LoginType): Int {
         return when (loginType) {
             LoginType.Max -> R.string.holder_authentication_popup_digid_title

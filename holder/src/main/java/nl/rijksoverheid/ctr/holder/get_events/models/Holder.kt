@@ -18,4 +18,4 @@ data class Holder(
     val lastNameInitial: String,
     val birthDay: String,
     val birthMonth: String
-): Parcelable
+) : Parcelable

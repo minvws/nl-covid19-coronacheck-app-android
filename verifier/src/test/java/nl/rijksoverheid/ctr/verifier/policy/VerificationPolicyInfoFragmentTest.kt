@@ -10,7 +10,8 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
-import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionState.*
+import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionState.Policy1G
+import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionState.Policy3G
 import nl.rijksoverheid.ctr.verifier.usecases.ScannerStateUseCase
 import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 import org.junit.Test
@@ -79,8 +80,8 @@ class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
     }
 
     private fun launchFragment(
-        verificationPolicySelectionState: VerificationPolicySelectionState = Selection.None,
-        isVerificationPolicySelectionEnabled: Boolean = true,
+        verificationPolicySelectionState: VerificationPolicySelectionState = VerificationPolicySelectionState.Selection.None,
+        isVerificationPolicySelectionEnabled: Boolean = true
     ) {
         loadKoinModules(
             module(override = true) {

@@ -5,16 +5,16 @@ import com.appmattus.certificatetransparency.VerificationResult
 import com.appmattus.certificatetransparency.certificateTransparencyTrustManager
 import com.appmattus.certificatetransparency.loglist.LogListDataSourceFactory
 import com.squareup.moshi.Moshi
+import java.io.ByteArrayInputStream
+import java.security.cert.CertificateFactory
+import java.security.cert.X509Certificate
+import javax.net.ssl.X509TrustManager
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.tls.HandshakeCertificates
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
-import java.io.ByteArrayInputStream
-import java.security.cert.CertificateFactory
-import java.security.cert.X509Certificate
-import javax.net.ssl.X509TrustManager
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -33,7 +33,7 @@ interface TestProviderApiClientUtil {
 class TestProviderApiClientUtilImpl(
     private val moshi: Moshi,
     private val okHttpClient: OkHttpClient,
-    private val retrofit: Retrofit,
+    private val retrofit: Retrofit
 ) : TestProviderApiClientUtil {
 
     private fun transparentTrustManager(trustManager: X509TrustManager) =

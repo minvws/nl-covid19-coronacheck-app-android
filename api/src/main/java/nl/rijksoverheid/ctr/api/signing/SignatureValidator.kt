@@ -6,6 +6,19 @@
  */
 package nl.rijksoverheid.ctr.api.signing
 
+import java.io.BufferedInputStream
+import java.io.ByteArrayInputStream
+import java.io.InputStream
+import java.security.cert.CertPathBuilder
+import java.security.cert.CertPathBuilderException
+import java.security.cert.CertStore
+import java.security.cert.CertificateFactory
+import java.security.cert.PKIXBuilderParameters
+import java.security.cert.PKIXCertPathBuilderResult
+import java.security.cert.TrustAnchor
+import java.security.cert.X509CertSelector
+import java.security.cert.X509Certificate
+import java.time.Clock
 import org.bouncycastle.asn1.x500.style.BCStyle
 import org.bouncycastle.asn1.x500.style.IETFUtils
 import org.bouncycastle.cert.jcajce.JcaCertStoreBuilder
@@ -16,17 +29,11 @@ import org.bouncycastle.cms.SignerId
 import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder
-import java.io.BufferedInputStream
-import java.io.ByteArrayInputStream
-import java.io.InputStream
-import java.security.cert.*
-import java.time.Clock
-
 
 class SignatureValidator private constructor(
     private val signingCertificates: List<X509Certificate>,
     private val trustAnchors: Set<TrustAnchor>,
-    private val matchingString: String?,
+    private val matchingString: String?
 ) {
 
     class Builder {

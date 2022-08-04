@@ -30,7 +30,6 @@ class LastVaccinationDoseUtilImpl(
             }
         } ?: ""
 
-
     private fun RemoteEventVaccination.Vaccination.completed() =
         completedByMedicalStatement == true || completedByPersonalStatement == true
 

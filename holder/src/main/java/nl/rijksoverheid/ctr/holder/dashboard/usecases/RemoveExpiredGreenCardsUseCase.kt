@@ -23,7 +23,7 @@ interface RemoveExpiredGreenCardsUseCase {
 
 class RemoveExpiredGreenCardsUseCaseImpl(
     private val holderDatabase: HolderDatabase
-): RemoveExpiredGreenCardsUseCase {
+) : RemoveExpiredGreenCardsUseCase {
 
     override suspend fun execute(allGreenCards: List<GreenCard>) {
         val greenCardsToRemove = allGreenCards

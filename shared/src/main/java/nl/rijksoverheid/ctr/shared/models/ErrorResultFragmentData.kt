@@ -10,19 +10,20 @@ data class ErrorResultFragmentData(
     val description: String,
     val buttonTitle: String,
     val buttonAction: ButtonAction,
-    val urlData: UrlData? = null): Parcelable {
+    val urlData: UrlData? = null
+) : Parcelable {
 
     @Parcelize
     data class UrlData(
         val urlButtonTitle: String,
         val urlButtonUrl: String
-    ): Parcelable
+    ) : Parcelable
 
-    sealed class ButtonAction: Parcelable {
+    sealed class ButtonAction : Parcelable {
         @Parcelize
-        data class Destination(@IdRes val buttonDestinationId: Int): ButtonAction(), Parcelable
+        data class Destination(@IdRes val buttonDestinationId: Int) : ButtonAction(), Parcelable
 
         @Parcelize
-        object PopBackStack: ButtonAction(), Parcelable
+        object PopBackStack : ButtonAction(), Parcelable
     }
 }

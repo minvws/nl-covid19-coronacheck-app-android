@@ -3,7 +3,11 @@ package nl.rijksoverheid.ctr.qrscanner
 import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.ViewTreeObserver
-import androidx.camera.core.*
+import androidx.camera.core.CameraControl
+import androidx.camera.core.CameraInfoUnavailableException
+import androidx.camera.core.FocusMeteringAction
+import androidx.camera.core.MeteringPointFactory
+import androidx.camera.core.SurfaceOrientedMeteringPointFactory
 import androidx.camera.view.PreviewView
 import timber.log.Timber
 

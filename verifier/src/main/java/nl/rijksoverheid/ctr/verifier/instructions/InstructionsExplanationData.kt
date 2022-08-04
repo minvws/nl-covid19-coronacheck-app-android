@@ -50,5 +50,5 @@ fun onboardingItemList(selectionState: VerificationPolicySelectionState): List<O
             titleResource = R.string.scan_instructions_5_title,
             description = R.string.scan_instructions_5_description,
             position = 5
-        ),
+        )
     )

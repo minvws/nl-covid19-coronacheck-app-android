@@ -8,16 +8,26 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import java.io.File
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SQLiteException
 import net.sqlcipher.database.SupportFactory
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.converters.HolderDatabaseConverter
-import nl.rijksoverheid.ctr.persistence.database.dao.*
-import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.persistence.database.dao.CredentialDao
+import nl.rijksoverheid.ctr.persistence.database.dao.EventGroupDao
+import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
+import nl.rijksoverheid.ctr.persistence.database.dao.OriginDao
+import nl.rijksoverheid.ctr.persistence.database.dao.SecretKeyDao
+import nl.rijksoverheid.ctr.persistence.database.dao.WalletDao
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.SecretKeyEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import nl.rijksoverheid.ctr.shared.models.Environment
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
-import java.io.File
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -89,7 +99,7 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
 /**
  * Remove [EventGroupEntity.maxIssuedAt] and replace it with [EventGroupEntity.expiryDate]
  */
-val MIGRATION_5_6 = object: Migration(5,6) {
+val MIGRATION_5_6 = object : Migration(5, 6) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE IF NOT EXISTS event_group_temp (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, wallet_id INTEGER NOT NULL, provider_identifier TEXT NOT NULL, type TEXT NOT NULL, scope TEXT NOT NULL, expiryDate INTEGER, jsonData BLOB NOT NULL, FOREIGN KEY(wallet_id) REFERENCES wallet(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
         database.execSQL("INSERT INTO event_group_temp (id, wallet_id, provider_identifier, type, scope, expiryDate, jsonData) SELECT id, wallet_id, provider_identifier, type, scope, null, jsonData FROM event_group")
@@ -102,7 +112,7 @@ val MIGRATION_5_6 = object: Migration(5,6) {
     }
 }
 
-fun MIGRATION_6_7(persistenceManager: PersistenceManager) = object: Migration(6, 7) {
+fun MIGRATION_6_7(persistenceManager: PersistenceManager) = object : Migration(6, 7) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE IF NOT EXISTS secret_key (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, green_card_id INTEGER NOT NULL, secret TEXT NOT NULL, FOREIGN KEY(green_card_id) REFERENCES green_card(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
         val domesticGreenCardCursor = database.query("SELECT * FROM green_card WHERE type = 'domestic'")

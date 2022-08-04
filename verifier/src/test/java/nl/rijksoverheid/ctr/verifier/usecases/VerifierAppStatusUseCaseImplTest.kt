@@ -4,10 +4,17 @@ import com.squareup.moshi.Moshi
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
-import nl.rijksoverheid.ctr.appconfig.models.*
+import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
+import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
+import nl.rijksoverheid.ctr.appconfig.models.NewTerms
 import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
@@ -19,11 +26,10 @@ import nl.rijksoverheid.ctr.verifier.fakeCachedAppConfigUseCase
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -46,13 +52,13 @@ class VerifierAppStatusUseCaseImplTest {
         recommendedVersion: Int = 1,
         recommendedInterval: Int = 1,
         appDeactivated: Boolean = false,
-        minimumVersion: Int = 1000,
+        minimumVersion: Int = 1000
     ): String =
         VerifierConfig.default(
             verifierRecommendedVersion = recommendedVersion,
             upgradeRecommendationIntervalHours = recommendedInterval,
             verifierAppDeactivated = appDeactivated,
-            verifierMinimumVersion = minimumVersion,
+            verifierMinimumVersion = minimumVersion
         ).toJson(moshi).toResponseBody("application/json".toMediaType()).source()
             .readUtf8()
 
@@ -311,7 +317,7 @@ class VerifierAppStatusUseCaseImplTest {
         val verifierMinimumVersion = 1001
         val configResult = ConfigResult.Success(
             getVerifierConfig(appDeactivated = true, minimumVersion = verifierMinimumVersion),
-            publicKeys,
+            publicKeys
         )
 
         val appStatus = appStatusUseCase(true, verifierMinimumVersion).get(configResult, currentVersionCode)
@@ -325,7 +331,7 @@ class VerifierAppStatusUseCaseImplTest {
         val verifierMinimumVersion = 1000
         val configResult = ConfigResult.Success(
             getVerifierConfig(appDeactivated = true, minimumVersion = verifierMinimumVersion),
-            publicKeys,
+            publicKeys
         )
 
         val appStatus = appStatusUseCase(true, verifierMinimumVersion).get(configResult, currentVersionCode)
@@ -341,7 +347,7 @@ class VerifierAppStatusUseCaseImplTest {
         val appUpdateData = getAppUpdateData()
         val configResult = ConfigResult.Success(
             getVerifierConfig(appDeactivated = false, minimumVersion = 1),
-            publicKeys,
+            publicKeys
         )
 
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
@@ -366,7 +372,7 @@ class VerifierAppStatusUseCaseImplTest {
         val appUpdateData = getAppUpdateData()
         val configResult = ConfigResult.Success(
             getVerifierConfig(appDeactivated = false, minimumVersion = 1),
-            publicKeys,
+            publicKeys
         )
 
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
@@ -392,7 +398,7 @@ class VerifierAppStatusUseCaseImplTest {
         val appUpdateData = getAppUpdateData()
         val configResult = ConfigResult.Success(
             getVerifierConfig(appDeactivated = false, minimumVersion = 1),
-            publicKeys,
+            publicKeys
         )
 
         every { introductionPersistenceManager.getIntroductionFinished() } returns true

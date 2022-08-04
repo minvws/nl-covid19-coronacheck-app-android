@@ -8,18 +8,26 @@
 package nl.rijksoverheid.ctr.holder
 
 import androidx.lifecycle.MutableLiveData
+import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
-import nl.rijksoverheid.ctr.persistence.database.entities.*
-import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.DomesticCredential
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import org.json.JSONArray
 import org.json.JSONObject
-import java.time.OffsetDateTime
 
 fun fakeGreenCardEntity(
     id: Int = 0,
@@ -54,11 +62,9 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
         }
 
         override fun saveNewFeaturesFinished() {
-
         }
 
         override fun saveNewTerms() {
-
         }
     }
 
@@ -70,11 +76,9 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
         }
 
         override fun removeOrigin(originEntity: OriginEntity) {
-
         }
 
         override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
-
         }
     }
 
@@ -84,7 +88,7 @@ val fakeDashboardTabItem = DashboardTabItem(
     items = listOf()
 )
 
-val fakeMobileCoreWrapper = object: MobileCoreWrapper {
+val fakeMobileCoreWrapper = object : MobileCoreWrapper {
     override fun createCredentials(body: ByteArray): String {
         TODO("Not yet implemented")
     }

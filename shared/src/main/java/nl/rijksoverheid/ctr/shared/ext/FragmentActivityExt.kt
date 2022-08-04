@@ -35,7 +35,7 @@ fun FragmentActivity.disableSplashscreenExitAnimation() {
             val anim = ObjectAnimator.ofFloat(
                 splashScreenView,
                 View.ALPHA,
-                0.99f,
+                0.99f
             )
             anim.duration = 100
             anim.doOnEnd {

@@ -52,7 +52,7 @@ class DialogUtilImpl : DialogUtil {
                     null
                 },
                 negativeButtonCallback = negativeButtonCallback,
-                onDismissCallback = onDismissCallback,
+                onDismissCallback = onDismissCallback
             )
         }
     }

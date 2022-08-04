@@ -4,6 +4,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlin.test.assertEquals
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
@@ -11,7 +12,6 @@ import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.database.VerifierDatabase
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class ConfigVerificationPolicyUseCaseImplTest {
     private val cachedAppConfigUseCase = mockk<VerifierCachedAppConfigUseCase>()

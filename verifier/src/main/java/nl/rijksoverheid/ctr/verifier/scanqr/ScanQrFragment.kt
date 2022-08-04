@@ -4,13 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
-import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieDrawable.INFINITE
+import java.util.concurrent.TimeUnit
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -22,11 +23,10 @@ import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy1
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy.VerificationPolicy3G
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
-import nl.rijksoverheid.ctr.verifier.managers.DeeplinkManager
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.VerifierMainActivity
 import nl.rijksoverheid.ctr.verifier.VerifierMainFragment
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanQrBinding
+import nl.rijksoverheid.ctr.verifier.managers.DeeplinkManager
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionState
@@ -37,7 +37,6 @@ import nl.rijksoverheid.ctr.verifier.scanqr.util.ScannerStateCountdownUtil
 import nl.rijksoverheid.ctr.verifier.usecases.ScannerStateUseCase
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -126,7 +125,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
                     descriptionData = DescriptionData(
                         R.string.clockdeviation_page_message,
                         customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)
-                    ),
+                    )
                 )
             )
         }
@@ -224,7 +223,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
                             scannerStateUseCase.get()
                         ),
                         toolbarTitle = getString(R.string.verifier_menu_risksetting),
-                        returnUri = deeplinkReturnUri(),
+                        returnUri = deeplinkReturnUri()
                     )
                 )
             is ScannerNavigationState.Scanner -> {

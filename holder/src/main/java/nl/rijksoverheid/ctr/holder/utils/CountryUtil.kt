@@ -7,7 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.utils
 
-import java.util.*
+import java.util.Locale
 
 interface CountryUtil {
     fun getCountryForInfoScreen(
@@ -21,7 +21,7 @@ interface CountryUtil {
     ): String
 }
 
-class CountryUtilImpl: CountryUtil {
+class CountryUtilImpl : CountryUtil {
     override fun getCountryForInfoScreen(deviceLanguage: String, countryCode: String): String {
         val countriesMap: MutableMap<String, String> = mutableMapOf()
         Locale.getISOCountries().forEach {

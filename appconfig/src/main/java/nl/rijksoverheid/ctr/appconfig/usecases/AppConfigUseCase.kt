@@ -8,17 +8,17 @@
 
 package nl.rijksoverheid.ctr.appconfig.usecases
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
-import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
-import nl.rijksoverheid.ctr.appconfig.models.ServerTime
-import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
-import retrofit2.HttpException
 import java.io.IOException
 import java.time.Clock
 import java.time.OffsetDateTime
 import kotlin.math.abs
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.models.ServerTime
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
+import retrofit2.HttpException
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

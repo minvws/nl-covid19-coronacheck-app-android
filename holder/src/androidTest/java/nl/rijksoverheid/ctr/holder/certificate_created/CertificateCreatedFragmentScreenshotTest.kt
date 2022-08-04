@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class CertificateCreatedFragmentScreenshotTest: ScreenshotTest {
+class CertificateCreatedFragmentScreenshotTest : ScreenshotTest {
     @Test
     fun certificateCreatedFragment_Screenshot() {
         val fragmentScenario = launchFragmentInContainer<CertificateCreatedFragment>(

@@ -12,7 +12,10 @@ import kotlinx.coroutines.test.setMain
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
-import nl.rijksoverheid.ctr.appconfig.usecases.*
+import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import okio.BufferedSource
 import org.junit.Assert

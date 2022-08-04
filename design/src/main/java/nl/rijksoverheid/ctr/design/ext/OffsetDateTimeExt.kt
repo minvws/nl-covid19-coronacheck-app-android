@@ -2,11 +2,10 @@ package nl.rijksoverheid.ctr.design.ext
 
 import android.content.Context
 import android.text.format.DateFormat
-import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Locale
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

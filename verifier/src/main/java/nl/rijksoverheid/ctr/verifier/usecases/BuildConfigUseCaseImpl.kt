@@ -11,7 +11,7 @@ package nl.rijksoverheid.ctr.verifier.usecases
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.verifier.BuildConfig
 
-class BuildConfigUseCaseImpl: BuildConfigUseCase {
+class BuildConfigUseCaseImpl : BuildConfigUseCase {
     override fun getVersionCode(): Int {
         return BuildConfig.VERSION_CODE
     }
