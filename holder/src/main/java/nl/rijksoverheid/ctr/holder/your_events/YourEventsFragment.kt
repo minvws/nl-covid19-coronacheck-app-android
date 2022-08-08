@@ -200,7 +200,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             is YourEventsEndState.Hints -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
-                    toolbarTitle = args.toolbarTitle,
+                    toolbarTitle = getString(R.string.holder_eventHints_toolbar),
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(R.string.holder_eventHints_title),
                         descriptionData = DescriptionData(
