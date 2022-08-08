@@ -65,7 +65,7 @@ class YourEventsFragmentTest : AutoCloseKoinTest() {
         assertEquals(navController.currentDestination?.id, R.id.nav_info_fragment)
         val arguments = navController.backStack.last().arguments
 
-        assertEquals("YourEventsFragmentTest", arguments?.getString("toolbarTitle"))
+        assertEquals("Certificate created", arguments?.getString("toolbarTitle"))
         val expectedData = InfoFragmentData.TitleDescriptionWithButton(
             title = context.getString(R.string.holder_eventHints_title),
             descriptionData = DescriptionData(

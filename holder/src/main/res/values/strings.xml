@@ -827,7 +827,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_showqr_animation_voiceover_hint">De beweging van richting laten veranderen</string>
   <string name="domestic_vaccination_created">Er is een Nederlands vaccinatiebewijs gemaakt.</string>
   <string name="domestic_vaccination_rejected">Van je vaccinatie(s) kan geen Nederlands vaccinatiebewijs gemaakt worden.</string>
-  <string name="domestic_recovery_created">Er is een herstelbewijs gemaakt.</string>
   <string name="international_vaccination_created">Er is een internationaal vaccinatiebewijs gemaakt.</string>
   <string name="international_vaccination_rejected">Van je vaccinatie(s) kan geen internationaal vaccinatiebewijs gemaakt worden.</string>
   <string name="vaccination_dose_correction_applied">Je positieve testuitslag is meegeteld in je vaccinatiebewijs.</string>
@@ -837,4 +836,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="appstatus_diskfull_button">Sluit CoronaCheck</string>
   <string name="general_diskFull_title">Je opslag zit vol</string>
   <string name="general_diskFull_body">Het is niet gelukt omdat de opslag van je telefoon vol zit. Maak ruimte vrij op je telefoon en probeer het opnieuw.</string>
+  <string name="international_recovery_created">Er is een herstelbewijs gemaakt.</string>
+  <string name="holder_eventHints_toolbar">Bewijs gemaakt</string>
 </resources>
