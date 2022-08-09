@@ -198,6 +198,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 )
             }
             is YourEventsEndState.Hints -> {
+
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
                     toolbarTitle = getString(R.string.holder_eventHints_toolbar),
@@ -210,7 +211,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             text = getString(R.string.general_toMyOverview),
                             navigationActionId = R.id.action_my_overview
                         )
-                    )
+                    ),
+                    closeIcon = true
                 )
             }
         }

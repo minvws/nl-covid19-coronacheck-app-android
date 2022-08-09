@@ -683,6 +683,11 @@
             app:argType="string" />
 
         <argument
+            android:name="closeIcon"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
+        <argument
             android:name="data"
             app:argType="nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData" />
 
