@@ -35,4 +35,5 @@
     <item name="holder_addVaccination_alsoCollectPositiveTestResults_message" type="string" />
     <item name="general_notification" type="string" />
     <item name="checkbox_padding" type="dimen" />
+    <item name="back_to_overview" type="string" />
 </resources>

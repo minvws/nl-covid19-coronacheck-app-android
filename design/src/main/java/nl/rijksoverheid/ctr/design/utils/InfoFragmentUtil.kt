@@ -22,6 +22,7 @@ interface InfoFragmentUtil {
 
     companion object {
         const val EXTRA_INFO_FRAGMENT_DATA = "data"
+        const val CLOSE_ICON = "closeIcon"
     }
 
     fun presentFullScreen(
@@ -33,7 +34,8 @@ interface InfoFragmentUtil {
         currentFragment: Fragment,
         @IdRes infoFragmentNavigationId: Int = R.id.action_info_fragment,
         toolbarTitle: String,
-        data: InfoFragmentData
+        data: InfoFragmentData,
+        closeIcon: Boolean = false
     )
 
     fun presentAsBottomSheet(
@@ -56,13 +58,15 @@ class InfoFragmentUtilImpl : InfoFragmentUtil {
         currentFragment: Fragment,
         @IdRes infoFragmentNavigationId: Int,
         toolbarTitle: String,
-        data: InfoFragmentData
+        data: InfoFragmentData,
+        closeIcon: Boolean
     ) {
         currentFragment.findNavController().navigate(
             infoFragmentNavigationId,
             bundleOf(
                 Pair("toolbarTitle", toolbarTitle),
-                Pair(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA, data)
+                Pair(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA, data),
+                Pair(InfoFragmentUtil.CLOSE_ICON, closeIcon)
             )
         )
     }
