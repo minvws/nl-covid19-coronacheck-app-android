@@ -52,7 +52,6 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
-import nl.rijksoverheid.ctr.shared.models.MissingOriginException
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -216,16 +215,18 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     closeIcon = true
                 )
             }
-            is YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate -> {
+            is YourEventsEndState.WeCouldntMakeACertificateError -> {
                 val errorCode = errorCodeStringFactory.get(
                     flow = getFlow(),
-                    errorResults = listOf(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, MissingOriginException()))
+                    errorResults = listOf(
+                        AppErrorResult(HolderStep.GetCredentialsNetworkRequest, endState.exception)
+                    )
                 )
                 presentError(
                     data = ErrorResultFragmentData(
-                        title = getString(endState.title),
+                        title = getString(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title),
                         description = getString(
-                            endState.description,
+                            R.string.holder_listRemoteEvents_endStateCantCreateCertificate_message,
                             getString(R.string.general_retrievedDetails),
                             errorCode
                         ),

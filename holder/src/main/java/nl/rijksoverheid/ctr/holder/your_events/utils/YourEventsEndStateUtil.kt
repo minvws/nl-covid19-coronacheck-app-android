@@ -11,6 +11,7 @@ import android.content.Context
 import nl.rijksoverheid.ctr.holder.utils.StringUtil
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndStateWithCustomTitle
+import nl.rijksoverheid.ctr.shared.models.WeCouldnCreateCertificateException
 
 interface YourEventsEndStateUtil {
     fun getEndState(context: Context, hints: List<String>): YourEventsEndState
@@ -76,7 +77,9 @@ class YourEventsEndStateUtilImpl(
             if (anyNegativeTestCreated) {
                 return YourEventsEndState.None
             } else if (anyNegativeTestRejected) {
-                return YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate
+                return YourEventsEndState.WeCouldntMakeACertificateError(
+                    WeCouldnCreateCertificateException("062")
+                )
             }
 
             return if (anyRecoveryCreated) {
@@ -86,7 +89,9 @@ class YourEventsEndStateUtilImpl(
             } else if (anyRecoveryRejected && hints.contains("vaccination_dose_correction_not_applied")) {
                 YourEventsEndStateWithCustomTitle.RecoveryTooOld
             } else if (anyRecoveryRejected) {
-                YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate
+                YourEventsEndState.WeCouldntMakeACertificateError(
+                    WeCouldnCreateCertificateException("061")
+                )
             } else {
                 YourEventsEndState.None
             }
@@ -113,11 +118,28 @@ class YourEventsEndStateUtilImpl(
         }
 
         if (hints.contains("domestic_vaccination_rejected") && hints.contains("international_vaccination_rejected")) {
-            return YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate
+            return YourEventsEndState.WeCouldntMakeACertificateError(
+                WeCouldnCreateCertificateException("059")
+            )
         }
 
         if (hints.contains("domestic_vaccination_rejected")) {
             return YourEventsEndStateWithCustomTitle.InternationalQROnly
+        }
+
+        if (hints.containsAll(
+                listOf(
+                    "domestic_recovery_rejected",
+                    "international_recovery_rejected",
+                    "domestic_vaccination_rejected",
+                    "international_vaccination_rejected",
+                    "vaccination_dose_correction_not_applied"
+                )
+            )
+        ) {
+            return YourEventsEndState.WeCouldntMakeACertificateError(
+                WeCouldnCreateCertificateException("060")
+            )
         }
 
         return YourEventsEndState.None
