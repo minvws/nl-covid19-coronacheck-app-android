@@ -80,7 +80,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         every { vaccination.remoteEvents } returns getRemoteProtocol3(remoteEvent)
         val copy = util.getNoOriginTypeCopy(vaccination, HolderFlow.VaccinationAndPositiveTest)
 
-        assertEquals(R.string.dynamic_property_retrievedDetails, copy)
+        assertEquals(R.string.general_retrievedDetails, copy)
     }
 
     @Test

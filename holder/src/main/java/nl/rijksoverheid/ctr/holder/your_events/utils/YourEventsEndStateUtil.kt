@@ -37,10 +37,14 @@ class YourEventsEndStateUtilImpl(
     private fun hintsToEndState(hints: List<String>): YourEventsEndState {
         val anyRecoveryCreated =
             hints.contains("domestic_recovery_created") || hints.contains("international_recovery_created")
+        val allRecoveriesCreated =
+            hints.contains("domestic_recovery_created") && hints.contains("international_recovery_created")
         val anyRecoveryRejected =
             hints.contains("domestic_recovery_rejected") || hints.contains("international_recovery_rejected")
         val anyVaccinationCreated =
             hints.contains("domestic_vaccination_created") || hints.contains("international_vaccination_created")
+        val allVaccinationsCreated =
+            hints.contains("domestic_vaccination_created") && hints.contains("international_vaccination_created")
         val anyVaccinationRejected =
             hints.contains("domestic_vaccination_rejected") || hints.contains("international_vaccination_rejected")
         val anyNegativeTestCreated =
@@ -52,9 +56,17 @@ class YourEventsEndStateUtilImpl(
             return YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate
         }
 
+        if (allRecoveriesCreated && hints.contains("vaccination_dose_correction_applied")) {
+            return if (allVaccinationsCreated) {
+                YourEventsEndStateWithCustomTitle.VaccinationsAndRecovery
+            } else {
+                YourEventsEndStateWithCustomTitle.RecoveryAndDosisCorrection
+            }
+        }
+
         if (!anyVaccinationCreated && !anyVaccinationRejected) {
             if (hints.contains("negativetest_without_vaccinationassessment")) {
-                return YourEventsEndState.NegativeTestResultAddedButNowAddVisitorAssessment
+                return YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment
             } else if (hints.contains("vaccinationassessment_missing_supporting_negative_test") ||
                 hints.contains("domestic_vaccinationassessment_created")
             ) {
@@ -70,9 +82,9 @@ class YourEventsEndStateUtilImpl(
             return if (anyRecoveryCreated) {
                 YourEventsEndState.None
             } else if (anyRecoveryRejected && hints.contains("vaccination_dose_correction_applied")) {
-                YourEventsEndStateWithCustomTitle.NoRecoveryButVaccineCertificateCreated
+                YourEventsEndStateWithCustomTitle.NoRecoveryButDosisCorrection
             } else if (anyRecoveryRejected && hints.contains("vaccination_dose_correction_not_applied")) {
-                YourEventsEndStateWithCustomTitle.PositiveTestNoLongerValid
+                YourEventsEndStateWithCustomTitle.RecoveryTooOld
             } else if (anyRecoveryRejected) {
                 YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate
             } else {
@@ -90,9 +102,13 @@ class YourEventsEndStateUtilImpl(
 
         if (anyRecoveryCreated) {
             return if (anyVaccinationCreated) {
-                YourEventsEndStateWithCustomTitle.VaccineAndRecoveryCertificateCreated
+                if (hints.contains("domestic_vaccination_created")) {
+                    YourEventsEndStateWithCustomTitle.VaccinationsAndRecovery
+                } else {
+                    YourEventsEndStateWithCustomTitle.InternationalVaccinationAndRecovery
+                }
             } else {
-                YourEventsEndStateWithCustomTitle.OnlyARecoveryCertificateCreated
+                YourEventsEndStateWithCustomTitle.RecoveryOnly
             }
         }
 
@@ -101,7 +117,7 @@ class YourEventsEndStateUtilImpl(
         }
 
         if (hints.contains("domestic_vaccination_rejected")) {
-            return YourEventsEndStateWithCustomTitle.OnlyAnInternationalCertificateCreated
+            return YourEventsEndStateWithCustomTitle.InternationalQROnly
         }
 
         return YourEventsEndState.None
