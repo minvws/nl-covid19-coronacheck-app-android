@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
+  <string name="holder_listRemoteEvents_endStateRecoveryOnly_title">Er is alleen een herstelbewijs gemaakt</string>
   <string name="holder_fetchRemoteEvents_title">Gegevens ophalen</string>
+  <string name="holder_listRemoteEvents_endStateInternationalQROnly_title">Er is alleen een internationaal bewijs gemaakt</string>
   <string name="general_readmore">Lees meer</string>
   <string name="holder_authentication_popup_digid_title">Inloggen afgebroken</string>
   <string name="holder_dcc_alert_message">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
@@ -321,8 +324,6 @@
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Dit kan komen doordat de geldigheidsduur in Nederland korter is dan in andere landen. Laat je opnieuw testen voor een bewijs dat ook in Nederland geldig is.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat je type test niet geaccepteerd wordt in andere landen. Laat je opnieuw testen voor een bewijs dat ook internationaal geldig is.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat jouw type vaccin niet geaccepteerd wordt in het buitenland.]]></string>
-  <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
-  <string name="rule_engine_no_test_origin_description"><![CDATA[Op dit moment kunnen we geen bewijs maken van je %1$s. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="back_to_overview">Naar mijn bewijzen</string>
   <string name="no_vaccinations_title">Geen vaccinaties beschikbaar</string>
   <string name="no_vaccinations_description"><![CDATA[Er zijn geen gegevens over je vaccinatie(s) beschikbaar. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Ben je kortgeleden gevaccineerd? Dan kan het even duren tot de gegevens beschikbaar zijn.]]></string>
@@ -511,8 +512,7 @@
   <string name="accessibility_flash_off">Zet de zaklamp uit.</string>
   <string name="accessibility_flash_on">Zet de zaklamp aan.</string>
   <string name="recover_domestic_recovery_green_card_button">Bewijs terugzetten</string>
-  <string name="cannot_create_recovery_proof_title">Positieve testuitslag niet meer geldig</string>
-  <string name="cannot_create_recovery_proof_description"><![CDATA[Het is te lang geleden dat je positief getest bent op corona. Daarom is je testuitslag niet meer geldig. Je kunt helaas geen herstelbewijs maken.<br/><br/>Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
+  <string name="holder_listRemoteEvents_endStateRecoveryTooOld_message"><![CDATA[Het is te lang geleden dat je positief getest bent op corona. Daarom is je testuitslag niet meer geldig. Je kunt helaas geen herstelbewijs maken.<br/><br/>Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Vaccinatiedatum: %1$s<br />Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
   <string name="qr_card_vaccination_title_domestic_with_doses">Vaccinatiebewijs (%1$s doses):</string>
   <string name="add_paper_proof_why_only_international_title">Waarom de internationale QR-code?</string>
@@ -530,7 +530,6 @@
   <string name="missing_dutch_certificate_retrieve_test_button">Haal mijn testuitslag op</string>
   <string name="missing_dutch_certificate_explanation_more"><![CDATA[<br/><b>Meer weten?</b><br/>Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/onderwerpen/coronavirus-coronabewijs-en-coronatoegangsbewijs/vaccinatiebewijs/eisen-en-geldigheid\">deze pagina over de eisen en geldigheid van het vaccinatiebewijs</a>.]]></string>
   <string name="certificate_created_toolbar_title">Bewijs gemaakt</string>
-  <string name="certificate_created_vaccination_recovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
   <string name="certificate_created_vaccination_recovery_description"><![CDATA[Er is een Nederlands vaccinatiebewijs gemaakt.<br><br>Van je positieve testuitslag kon ook een herstelbewijs gemaakt worden.]]></string>
   <string name="certificate_created_recovery_title">Alleen een herstelbewijs gemaakt</string>
   <string name="certificate_created_recovery_description"><![CDATA[Je bent positief getest ná je eerste vaccinatie. Daardoor is je testuitslag niet geschikt om een Nederlands vaccinatiebewijs van te maken. Er is wel een herstelbewijs gemaakt.<br><br>Kijk voor meer informatie bij de <a href=\"https://coronacheck.nl/nl/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/\">meestgestelde vragen</a>.]]></string>
@@ -540,13 +539,11 @@
   <string name="retrieve_test_result_title">Gegevens van je positieve test ophalen</string>
   <string name="retrieve_test_result_description">Log in met DigiD. De gegevens van je positieve test worden dan automatisch opgehaald.</string>
   <string name="dashboard_coronamelder_tip"><![CDATA[<b>Tip:</b> Voorkom verspreiding van het coronavirus, gebruik ook <a href=\"https://coronamelder.nl/app\">CoronaMelder</a>.]]></string>
-  <string name="certificate_created_vaccination_title">Geen herstelbewijs, wel een vaccinatiebewijs</string>
-  <string name="certificate_created_vaccination_description"><![CDATA[Het is te lang geleden dat je positief getest bent op corona. Daardoor is je testuitslag niet meer geldig om een herstelbewijs van te maken.<br><br>Omdat je positief getest bent vóór je eerste vaccinatie kon je test wel meegeteld worden in je vaccinatiebewijs.]]></string>
+  <string name="holder_listRemoteEvents_endStateNoRecoveryButDosisCorrection_title">We konden geen herstelbewijs maken</string>
+  <string name="holder_listRemoteEvents_endStateNoRecoveryButDosisCorrection_message"><![CDATA[Het is te lang geleden dat je positief getest bent op corona. Daardoor is je testuitslag niet meer geldig om een herstelbewijs van te maken.<br><br>Je positieve test kon wel meegeteld worden in je vaccinatiebewijs. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="no_certificate_created_toolbar_title">Geen bewijs gemaakt</string>
-  <string name="certificate_created_recovery_after_vaccination_description"><![CDATA[Van je opgehaalde gegevens kon een herstelbewijs worden gemaakt.<br><br>Omdat je positief getest bent vóór je eerste vaccinatie kon je test ook meegeteld worden in je vaccinatiebewijs.]]></string>
   <string name="paper_proof_event_explanation_header">Deze gegevens staan in je bewijs:</string>
   <string name="paper_proof_event_explanation_footer"><![CDATA[<br/><b>Kloppen er gegevens niet?</b><br/>Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een andere zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.]]></string>
-  <string name="certificate_created_recovery_after_vaccination_title">Herstelbewijs en vaccinatiebewijs gemaakt</string>
   <string name="rule_engine_no_test_origin_description_scanned_qr_code">gescande QR-code</string>
   <string name="rule_engine_no_test_origin_description_negative_test">negatieve testuitslag</string>
   <string name="rule_engine_no_test_origin_description_vaccination">vaccinatie</string>
@@ -618,7 +615,6 @@
 Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_dashboard_visitorpassexpired_title">Verlopen bezoekersbewijs</string>
   <string name="holder_dashboard_visitorpassexpired_body"><![CDATA[Een bezoekersbewijs is geldig tot %d dagen na de beoordeling van je vaccinatie. Blijf je langer in Nederland? Dan kun je opnieuw een bezoekersbewijs aanvragen. Ga voor meer informatie naar <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
-  <string name="general_vaccinationAssessment">vaccinatiebeoordeling</string>
   <string name="holder_dashboard_originExpiredBanner_domesticVaccine_title">Je Nederlandse vaccinatiebewijs is verlopen</string>
   <string name="holder_dashboard_originExpiredBanner_domesticRecovery_title">Je Nederlandse herstelbewijs is verlopen</string>
   <string name="holder_dashboard_originExpiredBanner_domesticTest_title">Je Nederlandse testbewijs is verlopen</string>
@@ -681,11 +677,12 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_addVaccine_alsoCollectPositiveTestResults_checkbox">Haal ook mijn positieve testuitslag op</string>
   <string name="holder_listRemoteEvents_vaccination_message">Als de gegevens kloppen kun je een bewijs maken.</string>
   <string name="holder_listRemoteEvents_paperflow_message">Als onderstaande gegevens kloppen kun je jouw bewijs toevoegen aan de app.</string>
+  <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title">Vaccinatiebewijs en herstelbewijs gemaakt</string>
   <string name="holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message"><![CDATA[Van je opgehaalde vaccinaties kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/>Van je positieve testuitslag kon ook een herstelbewijs gemaakt worden.]]></string>
   <string name="holder_listRemoteEvents_recovery_message">Als de gegevens van je test kloppen kun je een herstelbewijs maken.</string>
   <string name="holder_listRemoteEvents_negativeTest_message">Deze testuitslag is opgehaald bij de testlocatie. Als de gegevens kloppen kun je een bewijs maken.</string>
   <string name="holder_listRemoteEvents_vaccinationAssessment_message">Als de gegevens kloppen kun je jouw vaccinatiebeoordeling toevoegen aan de app.</string>
-  <string name="holder_listRemoteEvents_endStateCombinedFlowInternationalQROnly_message"><![CDATA[Van je opgehaalde gegevens kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
+  <string name="holder_listRemoteEvents_endStateRecoveryTooOld_title">Positieve testuitslag niet meer geldig</string>
   <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[Met jouw vaccinatie(s) heb je helaas geen recht op een Nederlands vaccinatiebewijs.<br/><br/>Voeg een nieuwe vaccinatie of test toe om een Nederlands bewijs te krijgen.<br/><br/>Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body">Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_message"><![CDATA[Van je opgehaalde gegevens kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
@@ -693,7 +690,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_listRemoteEvents_listElement_vaccination_title">Vaccinatie %s</string>
   <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_message"><![CDATA[Van je opgehaalde vaccinaties is een vaccinatiebewijs gemaakt.<br/><br/>Van je positieve testuitslag kon ook een herstelbewijs worden gemaakt.]]></string>
   <string name="holder_listRemoteEvents_endStateRecoveryOnly_message"><![CDATA[Van je opgehaalde gegevens kon alleen een herstelbewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
-  <string name="holder_listRemoteEvents_originMismatch_vaccinationAndPositiveTest_body" formatted="false"><![CDATA[Op dit moment kunnen we geen bewijs maken van je %1$s. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/><b>Foutcode:</b><br/>%1s]]></string>
+  <string name="holder_listRemoteEvents_endStateCantCreateCertificate_message" formatted="false"><![CDATA[Op dit moment kunnen we geen bewijs maken van je %1$s. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/><b>Foutcode:</b><br/>%1s]]></string>
   <string name="holder_onboarding_disclosurePolicyChanged_only3GAccess_title">3G-toegang in Nederland</string>
   <string name="holder_onboarding_disclosurePolicyChanged_only3GAccess_message">Bezoek je een plek in Nederland waar een coronabewijs nodig is? Op dit moment wordt overal 3G-toegang gegeven. Je kunt dan naar binnen met een bewijs van vaccinatie, herstel, of een negatieve test.</string>
   <string name="holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_title">Check vooraf de toegangsregels</string>
@@ -701,7 +698,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_title">Alleen 1G-toegang in Nederland</string>
   <string name="holder_onboarding_disclosurePolicyChanged_only1GAccess_message">Bezoek je een plek in Nederland waar een coronabewijs nodig is? Op dit moment wordt alleen 1G-toegang gegeven. Je kunt dan naar binnen met een bewijs van een negatieve test.</string>
   <string name="holder_inputRetrievalCode_error_blocked">Je hebt te vaak geprobeerd je code in te vullen. Probeer het over 5 minuten opnieuw.</string>
-  <string name="dynamic_property_retrievedDetails">opgehaalde gegevens</string>
   <string name="holder_dashboard_emptyState_international_0G_message">Ga je naar het buitenland? Controleer altijd voor vertrek of je een coronabewijs nodig hebt.</string>
   <string name="holder_dashboard_international_0G_action_certificateNeeded">Is een bewijs nodig op mijn bestemming?</string>
   <string name="holder_dashboard_filledState_international_0G_message">Ga je naar een land waar een coronabewijs nodig is? Controleer altijd voor vertrek of je het goede bewijs hebt.</string>
@@ -783,7 +779,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="general_seconds">seconden</string>
   <string name="holder_listRemoteEvents_listElement_title_vaccination">Vaccinatie</string>
   <string name="holder_listRemoteEvents_listElement_vaccinationDate">Vaccinatiedatum: %s</string>
-  <string name="holder_eventHints_title">Bewijs maken gelukt</string>
   <string name="holder_addVaccination_alsoCollectPositiveTestResults_message"><![CDATA[<b>Heb je corona gehad?</b><br/>Dan heb je soms een prik minder nodig om volledig gevaccineerd te zijn. Haal ook je oudste positieve testuitslag op om die mogelijk mee te laten tellen in je vaccinatiebewijs.]]></string>
   <string name="holder_noDigiD_title">Ik heb geen DigiD</string>
   <string name="holder_noDigiD_message">Woon je in Nederland en heb je een Nederlands identiteitsbewijs? Dan kun je een DigiD aanvragen om je testuitslag of vaccinatiegegevens op te halen.</string>
@@ -825,17 +820,15 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_authentication_popup_digid">DigiD</string>
   <string name="holder_authentication_popup_portal">deze pagina</string>
   <string name="holder_showqr_animation_voiceover_hint">De beweging van richting laten veranderen</string>
-  <string name="domestic_vaccination_created">Er is een Nederlands vaccinatiebewijs gemaakt.</string>
-  <string name="domestic_vaccination_rejected">Van je vaccinatie(s) kan geen Nederlands vaccinatiebewijs gemaakt worden.</string>
-  <string name="international_vaccination_created">Er is een internationaal vaccinatiebewijs gemaakt.</string>
-  <string name="international_vaccination_rejected">Van je vaccinatie(s) kan geen internationaal vaccinatiebewijs gemaakt worden.</string>
-  <string name="vaccination_dose_correction_applied">Je positieve testuitslag is meegeteld in je vaccinatiebewijs.</string>
-  <string name="vaccination_dose_correction_not_applied">Je positieve testuitslag is niet geschikt om mee te tellen in je vaccinatiebewijs.</string>
   <string name="appstatus_diskfull_title">Je opslag zit vol</string>
   <string name="appstatus_diskfull_body">Omdat de opslag van je telefoon vol zit kun je CoronaCheck niet openen. Maak ruimte vrij op je telefoon en open CoronaCheck opnieuw.</string>
   <string name="appstatus_diskfull_button">Sluit CoronaCheck</string>
   <string name="general_diskFull_title">Je opslag zit vol</string>
   <string name="general_diskFull_body">Het is niet gelukt omdat de opslag van je telefoon vol zit. Maak ruimte vrij op je telefoon en probeer het opnieuw.</string>
-  <string name="international_recovery_created">Er is een herstelbewijs gemaakt.</string>
-  <string name="holder_eventHints_toolbar">Bewijs gemaakt</string>
+  <string name="holder_listRemoteEvents_endStateCantCreateCertificate_title">We kunnen geen bewijs maken</string>
+  <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
+  <string name="holder_listRemoteEvents_endStateRecoveryAndDosisCorrection_title">Er is een herstelbewijs gemaakt</string>
+  <string name="holder_listRemoteEvents_endStateRecoveryAndDosisCorrection_message"><![CDATA[Van je opgehaalde gegevens kon een herstelbewijs worden gemaakt.<br><br>Je positieve test kon ook meegeteld worden in je vaccinatiebewijs. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
+  <string name="general_retrievedDetails">opgehaalde gegevens</string>
+  <string name="rule_engine_no_test_origin_description_retrieved_details">opgehaalde gegevens</string>
 </resources>

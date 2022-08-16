@@ -11,6 +11,7 @@ import androidx.test.core.app.ApplicationProvider
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.utils.StringUtil
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
+import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndStateWithCustomTitle
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsEndStateUtilImpl
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -85,36 +86,36 @@ class YourEventsEndStateUtilImplTest : AutoCloseKoinTest() {
     fun `additional endstates`() {
         // Vaccinations with/without positive tests
         /* 000 */ assertEquals(getEndState(listOf("domestic_vaccination_created", "international_vaccination_created")), YourEventsEndState.None)
-        /* 001 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_created")), YourEventsEndState.OnlyAnInternationalCertificateCreated)
-        /* 002 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_rejected")), YourEventsEndState.WeCouldntMakeACertificate)
+        /* 001 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_created")), YourEventsEndStateWithCustomTitle.OnlyAnInternationalCertificateCreated)
+        /* 002 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_rejected")), YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate)
         /* 003 */ assertEquals(getEndState(listOf("domestic_vaccination_created", "international_vaccination_created", "vaccination_dose_correction_applied", "domestic_recovery_rejected", "international_recovery_rejected")), YourEventsEndState.None)
         /* 004 */ assertEquals(getEndState(listOf("domestic_vaccination_created", "international_vaccination_created", "vaccination_dose_correction_not_applied", "domestic_recovery_rejected", "international_recovery_rejected")), YourEventsEndState.None)
-        /* 005 */ assertEquals(getEndState(listOf("domestic_vaccination_created", "international_vaccination_created", "vaccination_dose_correction_applied", "domestic_recovery_created", "international_recovery_created")), YourEventsEndState.VaccineAndRecoveryCertificateCreated)
-        /* 006 */ assertEquals(getEndState(listOf("domestic_vaccination_created", "international_vaccination_created", "vaccination_dose_correction_not_applied", "domestic_recovery_created", "international_recovery_created")), YourEventsEndState.VaccineAndRecoveryCertificateCreated)
-        /* 007 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_created", "vaccination_dose_correction_not_applied", "domestic_recovery_created", "international_recovery_created")), YourEventsEndState.VaccineAndRecoveryCertificateCreated)
-        /* 008 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_created", "vaccination_dose_correction_not_applied", "domestic_recovery_rejected", "international_recovery_rejected")), YourEventsEndState.OnlyAnInternationalCertificateCreated)
-        /* 009 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_rejected", "vaccination_dose_correction_not_applied", "domestic_recovery_created", "international_recovery_created")), YourEventsEndState.OnlyARecoveryCertificateCreated)
-        /* 010 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_rejected", "vaccination_dose_correction_not_applied", "domestic_recovery_rejected", "international_recovery_rejected")), YourEventsEndState.WeCouldntMakeACertificate)
+        /* 005 */ assertEquals(getEndState(listOf("domestic_vaccination_created", "international_vaccination_created", "vaccination_dose_correction_applied", "domestic_recovery_created", "international_recovery_created")), YourEventsEndStateWithCustomTitle.VaccineAndRecoveryCertificateCreated)
+        /* 006 */ assertEquals(getEndState(listOf("domestic_vaccination_created", "international_vaccination_created", "vaccination_dose_correction_not_applied", "domestic_recovery_created", "international_recovery_created")), YourEventsEndStateWithCustomTitle.VaccineAndRecoveryCertificateCreated)
+        /* 007 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_created", "vaccination_dose_correction_not_applied", "domestic_recovery_created", "international_recovery_created")), YourEventsEndStateWithCustomTitle.VaccineAndRecoveryCertificateCreated)
+        /* 008 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_created", "vaccination_dose_correction_not_applied", "domestic_recovery_rejected", "international_recovery_rejected")), YourEventsEndStateWithCustomTitle.OnlyAnInternationalCertificateCreated)
+        /* 009 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_rejected", "vaccination_dose_correction_not_applied", "domestic_recovery_created", "international_recovery_created")), YourEventsEndStateWithCustomTitle.OnlyARecoveryCertificateCreated)
+        /* 010 */ assertEquals(getEndState(listOf("domestic_vaccination_rejected", "international_vaccination_rejected", "vaccination_dose_correction_not_applied", "domestic_recovery_rejected", "international_recovery_rejected")), YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate)
 
         // Positive tests only
         /* 011 */ assertEquals(getEndState(listOf("domestic_recovery_created", "international_recovery_created")), YourEventsEndState.None)
         /* 012 */ assertEquals(getEndState(listOf("domestic_recovery_created", "international_recovery_rejected")), YourEventsEndState.None)
-        /* 013 */ assertEquals(getEndState(listOf("domestic_recovery_rejected", "international_recovery_rejected")), YourEventsEndState.WeCouldntMakeACertificate)
+        /* 013 */ assertEquals(getEndState(listOf("domestic_recovery_rejected", "international_recovery_rejected")), YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate)
         /* 014 */ assertEquals(getEndState(listOf("domestic_recovery_created", "international_recovery_created", "vaccination_dose_correction_not_applied")), YourEventsEndState.None)
-        /* 015 */ assertEquals(getEndState(listOf("domestic_recovery_created", "international_recovery_created", "vaccination_dose_correction_applied", "domestic_vaccination_created")), YourEventsEndState.VaccineAndRecoveryCertificateCreated)
-        /* 016 */ assertEquals(getEndState(listOf("domestic_recovery_rejected", "international_recovery_rejected", "vaccination_dose_correction_applied")), YourEventsEndState.NoRecoveryButVaccineCertificateCreated)
-        /* 017 */ assertEquals(getEndState(listOf("domestic_recovery_rejected", "international_recovery_rejected", "vaccination_dose_correction_not_applied")), YourEventsEndState.PositiveTestNoLongerValid)
+        /* 015 */ assertEquals(getEndState(listOf("domestic_recovery_created", "international_recovery_created", "vaccination_dose_correction_applied", "domestic_vaccination_created")), YourEventsEndStateWithCustomTitle.VaccineAndRecoveryCertificateCreated)
+        /* 016 */ assertEquals(getEndState(listOf("domestic_recovery_rejected", "international_recovery_rejected", "vaccination_dose_correction_applied")), YourEventsEndStateWithCustomTitle.NoRecoveryButVaccineCertificateCreated)
+        /* 017 */ assertEquals(getEndState(listOf("domestic_recovery_rejected", "international_recovery_rejected", "vaccination_dose_correction_not_applied")), YourEventsEndStateWithCustomTitle.PositiveTestNoLongerValid)
 
         // Negative tests
         /* 018 */ assertEquals(getEndState(listOf("domestic_negativetest_created", "international_negativetest_created")), YourEventsEndState.None)
         /* 019 */ assertEquals(getEndState(listOf("domestic_negativetest_rejected", "international_negativetest_created")), YourEventsEndState.None)
         /* 020 - skip?*/
-        /* 021 */ assertEquals(getEndState(listOf("domestic_negativetest_rejected", "international_negativetest_rejected")), YourEventsEndState.WeCouldntMakeACertificate)
+        /* 021 */ assertEquals(getEndState(listOf("domestic_negativetest_rejected", "international_negativetest_rejected")), YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate)
 
         // Visitor Flow
         /* 022 */ assertEquals(getEndState(listOf("negativetest_without_vaccinationassessment")), YourEventsEndState.NegativeTestResultAddedButNowAddVisitorAssessment)
         /* 023 */ assertEquals(getEndState(listOf("vaccinationassessment_missing_supporting_negative_test")), YourEventsEndState.None)
         /* 024 */ assertEquals(getEndState(listOf("domestic_vaccinationassessment_created")), YourEventsEndState.None)
-        /* 025 */ assertEquals(getEndState(listOf("domestic_vaccinationassessment_rejected")), YourEventsEndState.WeCouldntMakeACertificate)
+        /* 025 */ assertEquals(getEndState(listOf("domestic_vaccinationassessment_rejected")), YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate)
     }
 }

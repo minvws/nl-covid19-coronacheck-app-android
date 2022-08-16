@@ -7,41 +7,22 @@
 
 package nl.rijksoverheid.ctr.holder.your_events.models
 
+import androidx.annotation.StringRes
 import nl.rijksoverheid.ctr.holder.R
-
-interface EndStateTitleDescription {
-    val titleDescription: Pair<Int, Int>
-}
 
 sealed class YourEventsEndState {
     object None : YourEventsEndState()
     data class Hints(val localisedHints: List<String>) : YourEventsEndState()
-    object OnlyAnInternationalCertificateCreated : YourEventsEndState(), EndStateTitleDescription {
-        override val titleDescription: Pair<Int, Int>
-            get() = Pair(R.string.international_certificate_created_title, R.string.holder_listRemoteEvents_endStateCombinedFlowInternationalQROnly_message)
-    }
-    object OnlyARecoveryCertificateCreated : YourEventsEndState(), EndStateTitleDescription {
-        override val titleDescription: Pair<Int, Int>
-            get() = Pair(R.string.international_certificate_created_title, R.string.international_certificate_created_title) // fix me)
-    }
-    object WeCouldntMakeACertificate : YourEventsEndState(), EndStateTitleDescription {
-        override val titleDescription: Pair<Int, Int>
-            get() = Pair(R.string.rule_engine_no_origin_title, R.string.rule_engine_no_test_origin_description)
-    }
-    object VaccineAndRecoveryCertificateCreated : YourEventsEndState(), EndStateTitleDescription {
-        override val titleDescription: Pair<Int, Int>
-            get() = Pair(R.string.certificate_created_vaccination_recovery_title, R.string.certificate_created_vaccination_recovery_description)
-    }
-    object NoRecoveryButVaccineCertificateCreated : YourEventsEndState(), EndStateTitleDescription {
-        override val titleDescription: Pair<Int, Int>
-            get() = Pair(R.string.certificate_created_vaccination_title, R.string.certificate_created_vaccination_description)
-    }
-    object PositiveTestNoLongerValid : YourEventsEndState(), EndStateTitleDescription {
-        override val titleDescription: Pair<Int, Int>
-            get() = Pair(R.string.cannot_create_recovery_proof_title, R.string.cannot_create_recovery_proof_description)
-    }
-    object NegativeTestResultAddedButNowAddVisitorAssessment : YourEventsEndState(), EndStateTitleDescription {
-        override val titleDescription: Pair<Int, Int>
-            get() = Pair(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title, R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body)
-    }
+    object NegativeTestResultAddedButNowAddVisitorAssessment : YourEventsEndState()
+}
+
+sealed class YourEventsEndStateWithCustomTitle(@StringRes title: Int, @StringRes description: Int) : YourEventsEndState() {
+    object OnlyAnInternationalCertificateCreated : YourEventsEndStateWithCustomTitle(R.string.holder_listRemoteEvents_endStateInternationalQROnly_title, R.string.holder_listRemoteEvents_endStateInternationalQROnly_message)
+    object WeCouldntMakeACertificate : YourEventsEndStateWithCustomTitle(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title, R.string.holder_listRemoteEvents_endStateCantCreateCertificate_message)
+    object VaccineAndRecoveryCertificateCreated : YourEventsEndStateWithCustomTitle(R.string.holder_listRemoteEvents_endStateVaccinationsAndRecovery_title, R.string.holder_listRemoteEvents_endStateVaccinationsAndRecovery_message)
+    object OnlyARecoveryCertificateCreated : YourEventsEndStateWithCustomTitle(R.string.holder_listRemoteEvents_endStateRecoveryOnly_title, R.string.holder_listRemoteEvents_endStateRecoveryOnly_message)
+    object ARecoveryCertificateCreated : YourEventsEndStateWithCustomTitle(R.string.holder_listRemoteEvents_endStateRecoveryAndDosisCorrection_title, R.string.holder_listRemoteEvents_endStateRecoveryAndDosisCorrection_message)
+//    object WeCouldntMakeARecoveryCertificateCreate: YourEventsEndStateWithCustomTitle(R.string.holder_listRemoteEvents_endStateNoRecoveryButDosisCorrection_title, R.string.holder_listRemoteEvents_endStateNoRecoveryButDosisCorrection_message)
+    object NoRecoveryButVaccineCertificateCreated : YourEventsEndStateWithCustomTitle(R.string.holder_listRemoteEvents_endStateNoRecoveryButDosisCorrection_title, R.string.holder_listRemoteEvents_endStateNoRecoveryButDosisCorrection_message)
+    object PositiveTestNoLongerValid : YourEventsEndStateWithCustomTitle(R.string.holder_listRemoteEvents_endStateRecoveryTooOld_title, R.string.holder_listRemoteEvents_endStateRecoveryTooOld_message)
 }

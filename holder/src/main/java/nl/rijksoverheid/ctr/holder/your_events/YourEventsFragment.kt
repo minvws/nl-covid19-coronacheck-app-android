@@ -34,7 +34,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
-import nl.rijksoverheid.ctr.holder.your_events.models.EndStateTitleDescription
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil

@@ -58,13 +58,13 @@ class YourEventsFragmentUtilImpl(
                     }
                     is OriginType.Vaccination -> {
                         if (flow is HolderFlow.VaccinationAndPositiveTest) {
-                            R.string.dynamic_property_retrievedDetails
+                            R.string.about_this_app
                         } else {
                             R.string.rule_engine_no_test_origin_description_vaccination
                         }
                     }
                     is OriginType.VaccinationAssessment -> {
-                        R.string.general_vaccinationAssessment
+                        R.string.about_this_app
                     }
                 }
             }

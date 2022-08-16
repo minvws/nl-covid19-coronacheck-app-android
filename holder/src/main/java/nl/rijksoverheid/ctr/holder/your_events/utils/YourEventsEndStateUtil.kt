@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 import android.content.Context
 import nl.rijksoverheid.ctr.holder.utils.StringUtil
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
+import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndStateWithCustomTitle
 
 interface YourEventsEndStateUtil {
     fun getEndState(context: Context, hints: List<String>): YourEventsEndState
@@ -48,7 +49,7 @@ class YourEventsEndStateUtilImpl(
             hints.contains("domestic_negativetest_rejected") || hints.contains("international_negativetest_rejected")
 
         if (hints.contains("domestic_vaccinationassessment_rejected")) {
-            return YourEventsEndState.WeCouldntMakeACertificate
+            return YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate
         }
 
         if (!anyVaccinationCreated && !anyVaccinationRejected) {
@@ -63,17 +64,17 @@ class YourEventsEndStateUtilImpl(
             if (anyNegativeTestCreated) {
                 return YourEventsEndState.None
             } else if (anyNegativeTestRejected) {
-                return YourEventsEndState.WeCouldntMakeACertificate
+                return YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate
             }
 
             return if (anyRecoveryCreated) {
                 YourEventsEndState.None
             } else if (anyRecoveryRejected && hints.contains("vaccination_dose_correction_applied")) {
-                YourEventsEndState.NoRecoveryButVaccineCertificateCreated
+                YourEventsEndStateWithCustomTitle.NoRecoveryButVaccineCertificateCreated
             } else if (anyRecoveryRejected && hints.contains("vaccination_dose_correction_not_applied")) {
-                YourEventsEndState.PositiveTestNoLongerValid
+                YourEventsEndStateWithCustomTitle.PositiveTestNoLongerValid
             } else if (anyRecoveryRejected) {
-                YourEventsEndState.WeCouldntMakeACertificate
+                YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate
             } else {
                 YourEventsEndState.None
             }
@@ -89,18 +90,18 @@ class YourEventsEndStateUtilImpl(
 
         if (anyRecoveryCreated) {
             return if (anyVaccinationCreated) {
-                YourEventsEndState.VaccineAndRecoveryCertificateCreated
+                YourEventsEndStateWithCustomTitle.VaccineAndRecoveryCertificateCreated
             } else {
-                YourEventsEndState.OnlyARecoveryCertificateCreated
+                YourEventsEndStateWithCustomTitle.OnlyARecoveryCertificateCreated
             }
         }
 
         if (hints.contains("domestic_vaccination_rejected") && hints.contains("international_vaccination_rejected")) {
-            return YourEventsEndState.WeCouldntMakeACertificate
+            return YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate
         }
 
         if (hints.contains("domestic_vaccination_rejected")) {
-            return YourEventsEndState.OnlyAnInternationalCertificateCreated
+            return YourEventsEndStateWithCustomTitle.OnlyAnInternationalCertificateCreated
         }
 
         return YourEventsEndState.None
