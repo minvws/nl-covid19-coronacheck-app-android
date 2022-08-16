@@ -34,6 +34,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.your_events.models.EndStateTitleDescription
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
@@ -178,10 +179,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun handleEndState(endState: YourEventsEndState) {
         when (endState) {
-            is YourEventsEndState.None -> {
-                findNavControllerSafety()?.navigate(YourEventsFragmentDirections.actionMyOverview())
-            }
-            is YourEventsEndState.AddVaccinationAssessment -> {
+            is YourEventsEndState.NegativeTestResultAddedButNowAddVisitorAssessment -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
                     toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
@@ -198,7 +196,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 )
             }
             is YourEventsEndState.Hints -> {
-
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
                     toolbarTitle = getString(R.string.holder_eventHints_toolbar),
@@ -214,6 +211,26 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     ),
                     closeIcon = true
                 )
+            }
+            is EndStateTitleDescription -> {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    toolbarTitle = args.toolbarTitle,
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(endState.titleDescription.first),
+                        descriptionData = DescriptionData(
+                            htmlTextString = getString(endState.titleDescription.second)
+                        ),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.general_toMyOverview),
+                            navigationActionId = R.id.action_my_overview
+                        )
+                    ),
+                    closeIcon = true
+                )
+            }
+            else -> {
+                findNavControllerSafety()?.navigate(YourEventsFragmentDirections.actionMyOverview())
             }
         }
     }

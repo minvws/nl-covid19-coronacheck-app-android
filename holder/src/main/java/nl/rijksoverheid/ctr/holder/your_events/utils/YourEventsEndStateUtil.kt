@@ -19,15 +19,90 @@ class YourEventsEndStateUtilImpl(
     private val stringUtil: StringUtil
 ) : YourEventsEndStateUtil {
     override fun getEndState(context: Context, hints: List<String>): YourEventsEndState {
-        return if (hints.contains("negativetest_without_vaccinationassessment")) {
-            return YourEventsEndState.AddVaccinationAssessment
+        val endStateFromHints = hintsToEndState(hints)
+        return if (endStateFromHints != YourEventsEndState.None) {
+            endStateFromHints
         } else {
-            val localisedHints = hints.map { stringUtil.getStringFromResourceName(it) }.filterNot { it.isEmpty() }
+            val localisedHints =
+                hints.map { stringUtil.getStringFromResourceName(it) }.filterNot { it.isEmpty() }
             if (localisedHints.isEmpty()) {
                 YourEventsEndState.None
             } else {
                 YourEventsEndState.Hints(localisedHints)
             }
         }
+    }
+
+    private fun hintsToEndState(hints: List<String>): YourEventsEndState {
+        val anyRecoveryCreated =
+            hints.contains("domestic_recovery_created") || hints.contains("international_recovery_created")
+        val anyRecoveryRejected =
+            hints.contains("domestic_recovery_rejected") || hints.contains("international_recovery_rejected")
+        val anyVaccinationCreated =
+            hints.contains("domestic_vaccination_created") || hints.contains("international_vaccination_created")
+        val anyVaccinationRejected =
+            hints.contains("domestic_vaccination_rejected") || hints.contains("international_vaccination_rejected")
+        val anyNegativeTestCreated =
+            hints.contains("domestic_negativetest_created") || hints.contains("international_negativetest_created")
+        val anyNegativeTestRejected =
+            hints.contains("domestic_negativetest_rejected") || hints.contains("international_negativetest_rejected")
+
+        if (hints.contains("domestic_vaccinationassessment_rejected")) {
+            return YourEventsEndState.WeCouldntMakeACertificate
+        }
+
+        if (!anyVaccinationCreated && !anyVaccinationRejected) {
+            if (hints.contains("negativetest_without_vaccinationassessment")) {
+                return YourEventsEndState.NegativeTestResultAddedButNowAddVisitorAssessment
+            } else if (hints.contains("vaccinationassessment_missing_supporting_negative_test") ||
+                hints.contains("domestic_vaccinationassessment_created")
+            ) {
+                return YourEventsEndState.None
+            }
+
+            if (anyNegativeTestCreated) {
+                return YourEventsEndState.None
+            } else if (anyNegativeTestRejected) {
+                return YourEventsEndState.WeCouldntMakeACertificate
+            }
+
+            return if (anyRecoveryCreated) {
+                YourEventsEndState.None
+            } else if (anyRecoveryRejected && hints.contains("vaccination_dose_correction_applied")) {
+                YourEventsEndState.NoRecoveryButVaccineCertificateCreated
+            } else if (anyRecoveryRejected && hints.contains("vaccination_dose_correction_not_applied")) {
+                YourEventsEndState.PositiveTestNoLongerValid
+            } else if (anyRecoveryRejected) {
+                YourEventsEndState.WeCouldntMakeACertificate
+            } else {
+                YourEventsEndState.None
+            }
+        }
+
+        if (anyRecoveryCreated && !anyVaccinationCreated && !anyVaccinationRejected) {
+            return YourEventsEndState.None
+        }
+
+        if (!anyVaccinationRejected && !anyRecoveryCreated) {
+            return YourEventsEndState.None
+        }
+
+        if (anyRecoveryCreated) {
+            return if (anyVaccinationCreated) {
+                YourEventsEndState.VaccineAndRecoveryCertificateCreated
+            } else {
+                YourEventsEndState.OnlyARecoveryCertificateCreated
+            }
+        }
+
+        if (hints.contains("domestic_vaccination_rejected") && hints.contains("international_vaccination_rejected")) {
+            return YourEventsEndState.WeCouldntMakeACertificate
+        }
+
+        if (hints.contains("domestic_vaccination_rejected")) {
+            return YourEventsEndState.OnlyAnInternationalCertificateCreated
+        }
+
+        return YourEventsEndState.None
     }
 }
