@@ -8,13 +8,17 @@
 package nl.rijksoverheid.ctr.holder.your_events.utils
 
 import android.content.Context
+import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.utils.StringUtil
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndStateWithCustomTitle
+import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.WeCouldnCreateCertificateException
 
 interface YourEventsEndStateUtil {
     fun getEndState(context: Context, hints: List<String>): YourEventsEndState
+    fun getErrorStateSubstring(context: Context, flow: Flow): String
 }
 
 class YourEventsEndStateUtilImpl(
@@ -145,5 +149,18 @@ class YourEventsEndStateUtilImpl(
         }
 
         return YourEventsEndState.None
+    }
+
+    override fun getErrorStateSubstring(context: Context, flow: Flow): String {
+        return context.getString(
+            when (flow) {
+                HolderFlow.CommercialTest -> R.string.general_negativeTest
+                HolderFlow.DigidTest -> R.string.general_negativeTest
+                HolderFlow.Recovery -> R.string.general_positiveTest
+                HolderFlow.Vaccination -> R.string.general_vaccination
+                HolderFlow.VaccinationAssessment -> R.string.rule_engine_no_test_origin_description_vaccination_approval
+                else -> R.string.general_retrievedDetails
+            }
+        ).lowercase()
     }
 }

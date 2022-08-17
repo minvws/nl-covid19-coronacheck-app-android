@@ -237,7 +237,7 @@
   <string name="qr_explanation_title_domestic">Over mijn Nederlandse QR-code</string>
   <string name="qr_explanation_description_domestic"><![CDATA[In jouw Nederlandse QR-code staan minimale gegevens. Er staat wel dat je een geldig bewijs hebt, maar niet of je een test hebt gedaan, hersteld of gevaccineerd bent.<br/><br/>In de QR-code staat ook de eerste letter van je voornaam en van je achternaam, je geboortedag en geboortemaand. Dit is om zeker te zijn dat de QR-code bij jou hoort.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>* Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (_).]]></string>
   <string name="qr_explanation_title_eu">Over mijn internationale QR-code</string>
-  <string name="qr_explanation_title_eu_vaccination">Over je dosis %1s</string>
+  <string name="qr_explanation_title_eu_vaccination">Over mijn dosis %1s</string>
   <string name="qr_explanation_description_eu_vaccination_header">In jouw internationale QR-code staan de volgende gegevens:</string>
   <string name="qr_explanation_description_eu_vaccination_name">Naam / Name:</string>
   <string name="qr_explanation_description_eu_vaccination_birth_date">Geboortedatum / Date of birth*:</string>
@@ -319,8 +319,8 @@
   <string name="type_recovery">herstelbewijs</string>
   <string name="type_test">testbewijs</string>
   <string name="type_vaccination">vaccinatiebewijs</string>
-  <string name="my_overview_green_card_not_valid_title_vaccination">Over je vaccinatiebewijs</string>
-  <string name="my_overview_green_card_not_valid_title_test">Over je testbewijs</string>
+  <string name="my_overview_green_card_not_valid_title_vaccination">Geen internationaal vaccinatiebewijs</string>
+  <string name="my_overview_green_card_not_valid_title_test">Geen Nederlands testbewijs</string>
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.<br/><br/>Dit kan komen doordat de geldigheidsduur in Nederland korter is dan in andere landen. Laat je opnieuw testen voor een bewijs dat ook in Nederland geldig is.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test"><![CDATA[Jouw testbewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat je type test niet geaccepteerd wordt in andere landen. Laat je opnieuw testen voor een bewijs dat ook internationaal geldig is.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Jouw vaccinatiebewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat jouw type vaccin niet geaccepteerd wordt in het buitenland.]]></string>
@@ -379,7 +379,7 @@
   <string name="qr_explanation_description_eu_recovery_valid_until_date">Geldig tot / Valid to*:</string>
   <string name="qr_explanation_description_eu_recovery_unique_code">Uniek certificaatnummer / Unique certificate identifier:</string>
   <string name="qr_explanation_description_eu_recovery_footer">*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.</string>
-  <string name="my_overview_green_card_not_valid_title_recovery">Over je herstelbewijs</string>
+  <string name="my_overview_green_card_not_valid_title_recovery">Herstelbewijs niet internationaal geldig</string>
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Je herstelbewijs is niet geldig in Nederland. Je hebt wel een internationaal bewijs.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Je herstelbewijs is niet internationaal geldig. Je hebt wel een Nederlands bewijs.<br/><br/>Dit kan bijvoorbeeld komen doordat je type test niet voldoet, of doordat deze niet meer geldig is in het buitenland. Alleen van een PCR-test die minder dan 180 dagen oud is kan een internationaal herstelbewijs gemaakt worden. Lees meer over de mogelijke oorzaken op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="my_overview_green_card_server_error"><![CDATA[De app heeft af en toe verbinding met de server nodig om je QR-codes te vernieuwen. Dat is niet gelukt door een fout op de server. <a href=\"#\">Probeer opnieuw</a>]]></string>
@@ -561,7 +561,7 @@
   <string name="mijncn_error_missing_data_description"><![CDATA[Op dit moment kunnen we geen bewijs maken omdat er gegevens ontbreken.<br/><br/>Neem contact op met je openbaar lichaam en geef de foutcode door. Zij kunnen dan de gegevens controleren.<br/><br/><b>Foutcode:</b><br/>%1s<br/><br/><a href=“#”>Openbaar lichaam Sint Bonaire</a><br/><br/><a href=“#”>Openbaar lichaam Sint Eustatius</a><br/><br/><a href=“#”>Openbaar lichaam Sint Saba</a><br/><br/>]]></string>
   <string name="holder_qr_explanation_description_domestic_1G"><![CDATA[In jouw Nederlandse QR-code staat dat je een geldig bewijs hebt voor 1G-toegang en er zijn minimale gegevens zichtbaar.<br/><br/>De controleur ziet alleen de eerste letter van je voornaam en van je achternaam, je geboortedag en geboortemaand. Dit is om zeker te zijn dat de QR-code bij jou hoort.<br/><br/>Jouw gegevens*: <b>%1$s</b><br/><br/>* Soms vallen gegevens weg om je privacy te beschermen. Je ziet dan een streepje (_).]]></string>
   <string name="your_negative_test_results_toolbar">Opgehaalde testuitslag</string>
-  <string name="holder_negativetest_ggd_title">Testuitslag ophalen</string>
+  <string name="holder_negativetest_ggd_title">Gegevens van je test ophalen</string>
   <string name="holder_negativetest_ggd_message">Is je uitslag bekend? Log in met DigiD om je testuitslag bij de GGD op te halen.</string>
   <string name="recommended_update_card_description">Je kunt de app al naar een nieuwere versie updaten</string>
   <string name="recommended_update_card_action">Nu updaten</string>
@@ -683,14 +683,14 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_listRemoteEvents_negativeTest_message">Deze testuitslag is opgehaald bij de testlocatie. Als de gegevens kloppen kun je een bewijs maken.</string>
   <string name="holder_listRemoteEvents_vaccinationAssessment_message">Als de gegevens kloppen kun je jouw vaccinatiebeoordeling toevoegen aan de app.</string>
   <string name="holder_listRemoteEvents_endStateRecoveryTooOld_title">Positieve testuitslag niet meer geldig</string>
-  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[Met jouw vaccinatie(s) heb je helaas geen recht op een Nederlands vaccinatiebewijs.<br/><br/>Voeg een nieuwe vaccinatie of test toe om een Nederlands bewijs te krijgen.<br/><br/>Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
+  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[Met de vaccinatie(s) die je nu in de app hebt toegevoegd, krijg je geen Nederlands vaccinatiebewijs.<br/><br/>Voeg een nieuwe vaccinatie of test toe om een Nederlands bewijs te krijgen.<br/><br/>Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body">Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_message"><![CDATA[Van je opgehaalde gegevens kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="holder_listRemoteEvents_somethingWrong_vaccination_body">Neem contact op met de zorgverlener waar je bent gevaccineerd. Dat kan de GGD, je huisarts of arts van een zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.</string>
   <string name="holder_listRemoteEvents_listElement_vaccination_title">Vaccinatie %s</string>
   <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_message"><![CDATA[Van je opgehaalde vaccinaties is een vaccinatiebewijs gemaakt.<br/><br/>Van je positieve testuitslag kon ook een herstelbewijs worden gemaakt.]]></string>
   <string name="holder_listRemoteEvents_endStateRecoveryOnly_message"><![CDATA[Van je opgehaalde gegevens kon alleen een herstelbewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
-  <string name="holder_listRemoteEvents_endStateCantCreateCertificate_message" formatted="false"><![CDATA[Op dit moment kunnen we geen bewijs maken van je %1$s. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/><b>Foutcode:</b><br/>%2$s]]></string>
+  <string name="holder_listRemoteEvents_endStateCantCreateCertificate_message"><![CDATA[Op dit moment kunnen we geen bewijs maken van je %1$s. Dit kan verschillende oorzaken hebben. Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.<br/><br/><b>Foutcode:</b><br/>%2$s]]></string>
   <string name="holder_onboarding_disclosurePolicyChanged_only3GAccess_title">3G-toegang in Nederland</string>
   <string name="holder_onboarding_disclosurePolicyChanged_only3GAccess_message">Bezoek je een plek in Nederland waar een coronabewijs nodig is? Op dit moment wordt overal 3G-toegang gegeven. Je kunt dan naar binnen met een bewijs van vaccinatie, herstel, of een negatieve test.</string>
   <string name="holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_title">Check vooraf de toegangsregels</string>

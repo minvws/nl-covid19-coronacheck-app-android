@@ -189,7 +189,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
                         descriptionData = DescriptionData(
-                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
+                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body,
+                            htmlLinksEnabled = true
                         ),
                         primaryButtonData = ButtonData.NavigationButton(
                             text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
@@ -205,7 +206,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(R.string.certificate_created_toolbar_title),
                         descriptionData = DescriptionData(
-                            htmlTextString = endState.localisedHints.joinToString("<br/><br/>")
+                            htmlTextString = endState.localisedHints.joinToString("<br/><br/>"),
+                            htmlLinksEnabled = true
                         ),
                         primaryButtonData = ButtonData.NavigationButton(
                             text = getString(R.string.general_toMyOverview),
@@ -227,7 +229,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         title = getString(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title),
                         description = getString(
                             R.string.holder_listRemoteEvents_endStateCantCreateCertificate_message,
-                            getString(R.string.general_retrievedDetails),
+                            yourEventsEndStateUtil.getErrorStateSubstring(requireContext(), getFlow()),
                             errorCode
                         ),
                         buttonTitle = getString(R.string.general_toMyOverview),
@@ -242,7 +244,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(endState.title),
                         descriptionData = DescriptionData(
-                            htmlTextString = getString(endState.description)
+                            htmlTextString = getString(endState.description),
+                            htmlLinksEnabled = true
                         ),
                         primaryButtonData = ButtonData.NavigationButton(
                             text = getString(R.string.general_toMyOverview),
