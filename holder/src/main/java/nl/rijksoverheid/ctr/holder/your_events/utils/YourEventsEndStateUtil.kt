@@ -55,7 +55,7 @@ class YourEventsEndStateUtilImpl(
 
         if (hints.contains("domestic_vaccinationassessment_rejected")) {
             return YourEventsEndState.WeCouldntMakeACertificateError(
-                WeCouldnCreateCertificateException("063")
+                WeCouldnCreateCertificateException("0513")
             )
         }
 
@@ -70,7 +70,7 @@ class YourEventsEndStateUtilImpl(
         if (!anyVaccinationCreated && !anyVaccinationRejected) {
             if (hints.contains("negativetest_without_vaccinationassessment")) {
                 return YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment
-            } else if (hints.contains("vaccinationassessment_missing_supporting_negative_test") ||
+            } else if (hints.contains("vaccinationassessment_missing_supporting_negativetest") ||
                 hints.contains("domestic_vaccinationassessment_created")
             ) {
                 return YourEventsEndState.None
@@ -80,7 +80,7 @@ class YourEventsEndStateUtilImpl(
                 return YourEventsEndState.None
             } else if (anyNegativeTestRejected) {
                 return YourEventsEndState.WeCouldntMakeACertificateError(
-                    WeCouldnCreateCertificateException("062")
+                    WeCouldnCreateCertificateException("0512")
                 )
             }
 
@@ -92,7 +92,7 @@ class YourEventsEndStateUtilImpl(
                 YourEventsEndStateWithCustomTitle.RecoveryTooOld
             } else if (anyRecoveryRejected) {
                 YourEventsEndState.WeCouldntMakeACertificateError(
-                    WeCouldnCreateCertificateException("061")
+                    WeCouldnCreateCertificateException("0511")
                 )
             } else {
                 YourEventsEndState.None
@@ -140,7 +140,7 @@ class YourEventsEndStateUtilImpl(
             )
         ) {
             return YourEventsEndState.WeCouldntMakeACertificateError(
-                WeCouldnCreateCertificateException("060")
+                WeCouldnCreateCertificateException("0510")
             )
         }
 
