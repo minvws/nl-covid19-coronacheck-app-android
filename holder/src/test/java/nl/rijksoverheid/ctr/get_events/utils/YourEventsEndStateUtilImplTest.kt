@@ -310,9 +310,12 @@ class YourEventsEndStateUtilImplTest : AutoCloseKoinTest() {
             getEndState(listOf("domestic_vaccinationassessment_created")),
             YourEventsEndState.None
         )
-        /* 025 */ assertEquals(
-            getEndState(listOf("domestic_vaccinationassessment_rejected")),
-            YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate
+        /* 025 */ assertTrue(
+            getEndState(
+                listOf(
+                    "domestic_vaccinationassessment_rejected"
+                )
+            ) is YourEventsEndState.WeCouldntMakeACertificateError
         )
     }
 }

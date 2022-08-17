@@ -54,7 +54,9 @@ class YourEventsEndStateUtilImpl(
             hints.contains("domestic_negativetest_rejected") || hints.contains("international_negativetest_rejected")
 
         if (hints.contains("domestic_vaccinationassessment_rejected")) {
-            return YourEventsEndStateWithCustomTitle.WeCouldntMakeACertificate
+            return YourEventsEndState.WeCouldntMakeACertificateError(
+                WeCouldnCreateCertificateException("063")
+            )
         }
 
         if (allRecoveriesCreated && hints.contains("vaccination_dose_correction_applied")) {
