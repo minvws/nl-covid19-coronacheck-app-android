@@ -233,7 +233,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             errorCode
                         ),
                         buttonTitle = getString(R.string.general_toMyOverview),
-                        buttonAction = ErrorResultFragmentData.ButtonAction.PopBackStack
+                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
                     )
                 )
             }
