@@ -92,7 +92,10 @@ class YourEventsEndStateUtilImpl(
                 YourEventsEndState.None
             } else if (anyRecoveryRejected && hints.contains("vaccination_dose_correction_applied")) {
                 YourEventsEndStateWithCustomTitle.NoRecoveryButDosisCorrection
-            } else if (anyRecoveryRejected && hints.contains("vaccination_dose_correction_not_applied")) {
+            } else if (anyRecoveryRejected &&
+                (hints.contains("vaccination_dose_correction_not_applied") ||
+                        hints.contains("international_recovery_too_old"))
+            ) {
                 YourEventsEndStateWithCustomTitle.RecoveryTooOld
             } else if (anyRecoveryRejected) {
                 YourEventsEndState.WeCouldntMakeACertificateError(

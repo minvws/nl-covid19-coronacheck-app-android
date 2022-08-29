@@ -259,7 +259,7 @@ class YourEventsEndStateUtilImplTest : AutoCloseKoinTest() {
                 listOf(
                     "domestic_recovery_rejected",
                     "international_recovery_rejected",
-                    "vaccination_dose_correction_not_applied"
+                    "international_recovery_too_old"
                 )
             ), YourEventsEndStateWithCustomTitle.RecoveryTooOld
         )
