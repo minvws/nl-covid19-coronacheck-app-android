@@ -317,5 +317,23 @@ class YourEventsEndStateUtilImplTest : AutoCloseKoinTest() {
                 )
             ) is YourEventsEndState.WeCouldntMakeACertificateError
         )
+
+        // negative test without vaccination assessment
+        assertTrue(
+            getEndState(listOf(
+                "domestic_vaccinationassessment_rejected",
+                "international_vaccinationassessment_rejected",
+                "negativetest_without_vaccinationassessment"
+            )) is YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment
+        )
+
+        // vaccination assessment without negative test
+        assertTrue(
+            getEndState(listOf(
+                "domestic_vaccinationassessment_rejected",
+                "international_vaccinationassessment_rejected",
+                "vaccinationassessment_missing_supporting_negativetest"
+            )) is YourEventsEndState.None
+        )
     }
 }

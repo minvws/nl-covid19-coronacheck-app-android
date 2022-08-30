@@ -57,7 +57,9 @@ class YourEventsEndStateUtilImpl(
         val anyNegativeTestRejected =
             hints.contains("domestic_negativetest_rejected") || hints.contains("international_negativetest_rejected")
 
-        if (hints.contains("domestic_vaccinationassessment_rejected") && !hints.contains("vaccinationassessment_missing_supporting_negativetest")) {
+        if (hints.contains("domestic_vaccinationassessment_rejected") &&
+            !hints.contains("negativetest_without_vaccinationassessment") &&
+            !hints.contains("vaccinationassessment_missing_supporting_negativetest")) {
             return YourEventsEndState.WeCouldntMakeACertificateError(
                 WeCouldnCreateCertificateException("0513")
             )
