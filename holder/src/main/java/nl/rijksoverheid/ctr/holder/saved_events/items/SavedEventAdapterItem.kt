@@ -32,7 +32,7 @@ class SavedEventAdapterItem(
             is RemoteEventVaccination -> context.getString(R.string.general_vaccination).capitalize()
             is RemoteEventNegativeTest -> context.getString(R.string.general_negativeTest).capitalize()
             is RemoteEventPositiveTest -> context.getString(R.string.general_positiveTest).capitalize()
-            is RemoteEventVaccinationAssessment -> context.getString(R.string.general_vaccinationAssessment).capitalize()
+            is RemoteEventVaccinationAssessment -> context.getString(R.string.rule_engine_no_test_origin_description_vaccination_approval).capitalize()
             is RemoteEventRecovery -> context.getString(R.string.general_recoverycertificate).capitalize()
             else -> ""
         }

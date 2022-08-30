@@ -65,11 +65,12 @@ class YourEventsFragmentTest : AutoCloseKoinTest() {
         assertEquals(navController.currentDestination?.id, R.id.nav_info_fragment)
         val arguments = navController.backStack.last().arguments
 
-        assertEquals("Certificate created", arguments?.getString("toolbarTitle"))
+        assertEquals(context.getString(R.string.certificate_created_toolbar_title), arguments?.getString("toolbarTitle"))
         val expectedData = InfoFragmentData.TitleDescriptionWithButton(
-            title = context.getString(R.string.holder_eventHints_title),
+            title = context.getString(R.string.certificate_created_toolbar_title),
             descriptionData = DescriptionData(
-                htmlTextString = context.getString(R.string.app_name)
+                htmlTextString = context.getString(R.string.app_name),
+                htmlLinksEnabled = true
             ),
             primaryButtonData = ButtonData.NavigationButton(
                 text = context.getString(R.string.general_toMyOverview),
@@ -92,7 +93,8 @@ class YourEventsFragmentTest : AutoCloseKoinTest() {
         val expectedData = InfoFragmentData.TitleDescriptionWithButton(
             title = context.getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
             descriptionData = DescriptionData(
-                htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
+                htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body,
+                htmlLinksEnabled = true
             ),
             primaryButtonData = ButtonData.NavigationButton(
                 text = context.getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),

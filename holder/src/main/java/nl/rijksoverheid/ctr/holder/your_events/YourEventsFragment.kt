@@ -34,7 +34,9 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
+import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndStateWithCustomTitle
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
@@ -47,6 +49,8 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
@@ -178,17 +182,15 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun handleEndState(endState: YourEventsEndState) {
         when (endState) {
-            is YourEventsEndState.None -> {
-                findNavControllerSafety()?.navigate(YourEventsFragmentDirections.actionMyOverview())
-            }
-            is YourEventsEndState.AddVaccinationAssessment -> {
+            is YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
                     toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
                         descriptionData = DescriptionData(
-                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
+                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body,
+                            htmlLinksEnabled = true
                         ),
                         primaryButtonData = ButtonData.NavigationButton(
                             text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
@@ -198,14 +200,14 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 )
             }
             is YourEventsEndState.Hints -> {
-
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
-                    toolbarTitle = getString(R.string.holder_eventHints_toolbar),
+                    toolbarTitle = getString(R.string.certificate_created_toolbar_title),
                     data = InfoFragmentData.TitleDescriptionWithButton(
-                        title = getString(R.string.holder_eventHints_title),
+                        title = getString(R.string.certificate_created_toolbar_title),
                         descriptionData = DescriptionData(
-                            htmlTextString = endState.localisedHints.joinToString("<br/><br/>")
+                            htmlTextString = endState.localisedHints.joinToString("<br/><br/>"),
+                            htmlLinksEnabled = true
                         ),
                         primaryButtonData = ButtonData.NavigationButton(
                             text = getString(R.string.general_toMyOverview),
@@ -214,6 +216,47 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     ),
                     closeIcon = true
                 )
+            }
+            is YourEventsEndState.WeCouldntMakeACertificateError -> {
+                val errorCode = errorCodeStringFactory.get(
+                    flow = getFlow(),
+                    errorResults = listOf(
+                        AppErrorResult(HolderStep.GetCredentialsNetworkRequest, endState.exception)
+                    )
+                )
+                presentError(
+                    data = ErrorResultFragmentData(
+                        title = getString(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title),
+                        description = getString(
+                            R.string.holder_listRemoteEvents_endStateCantCreateCertificate_message,
+                            yourEventsEndStateUtil.getErrorStateSubstring(requireContext(), getFlow()),
+                            errorCode
+                        ),
+                        buttonTitle = getString(R.string.general_toMyOverview),
+                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                    )
+                )
+            }
+            is YourEventsEndStateWithCustomTitle -> {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    toolbarTitle = args.toolbarTitle,
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(endState.title),
+                        descriptionData = DescriptionData(
+                            htmlTextString = getString(endState.description),
+                            htmlLinksEnabled = true
+                        ),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.general_toMyOverview),
+                            navigationActionId = R.id.action_my_overview
+                        )
+                    ),
+                    closeIcon = true
+                )
+            }
+            else -> {
+                findNavControllerSafety()?.navigate(YourEventsFragmentDirections.actionMyOverview())
             }
         }
     }
