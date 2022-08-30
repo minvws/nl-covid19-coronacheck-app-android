@@ -9,4 +9,4 @@ import java.lang.Exception
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class WeCouldnCreateCertificateException(val errorCode: String) : Exception("We couldn't create certificate exception")
+class WeCouldntCreateCertificateException(val errorCode: String) : Exception("We couldn't create certificate exception")

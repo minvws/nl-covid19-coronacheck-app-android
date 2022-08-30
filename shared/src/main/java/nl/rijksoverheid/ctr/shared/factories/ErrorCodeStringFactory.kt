@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.MissingOriginException
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
-import nl.rijksoverheid.ctr.shared.models.WeCouldnCreateCertificateException
+import nl.rijksoverheid.ctr.shared.models.WeCouldntCreateCertificateException
 import retrofit2.HttpException
 
 /**
@@ -65,7 +65,7 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
                 is NoProvidersException -> exception.errorCode
                 is ActivityNotFoundException -> "070-14"
                 is MissingOriginException -> "058"
-                is WeCouldnCreateCertificateException -> exception.errorCode
+                is WeCouldntCreateCertificateException -> exception.errorCode
                 else -> throw it.getException()
             }
 
