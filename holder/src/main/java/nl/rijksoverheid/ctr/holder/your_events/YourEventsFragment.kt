@@ -240,7 +240,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             is YourEventsEndStateWithCustomTitle -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
-                    toolbarTitle = args.toolbarTitle,
+                    toolbarTitle = getString(R.string.certificate_created_toolbar_title),
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(endState.title),
                         descriptionData = DescriptionData(

@@ -14,7 +14,7 @@ import nl.rijksoverheid.ctr.holder.utils.StringUtil
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndStateWithCustomTitle
 import nl.rijksoverheid.ctr.shared.models.Flow
-import nl.rijksoverheid.ctr.shared.models.WeCouldnCreateCertificateException
+import nl.rijksoverheid.ctr.shared.models.WeCouldntCreateCertificateException
 
 interface YourEventsEndStateUtil {
     fun getEndState(context: Context, hints: List<String>): YourEventsEndState
@@ -61,7 +61,7 @@ class YourEventsEndStateUtilImpl(
             !hints.contains("negativetest_without_vaccinationassessment") &&
             !hints.contains("vaccinationassessment_missing_supporting_negativetest")) {
             return YourEventsEndState.WeCouldntMakeACertificateError(
-                WeCouldnCreateCertificateException("0513")
+                WeCouldntCreateCertificateException("0513")
             )
         }
 
@@ -86,7 +86,7 @@ class YourEventsEndStateUtilImpl(
                 return YourEventsEndState.None
             } else if (anyNegativeTestRejected) {
                 return YourEventsEndState.WeCouldntMakeACertificateError(
-                    WeCouldnCreateCertificateException("0512")
+                    WeCouldntCreateCertificateException("0512")
                 )
             }
 
@@ -101,7 +101,7 @@ class YourEventsEndStateUtilImpl(
                 YourEventsEndStateWithCustomTitle.RecoveryTooOld
             } else if (anyRecoveryRejected) {
                 YourEventsEndState.WeCouldntMakeACertificateError(
-                    WeCouldnCreateCertificateException("0511")
+                    WeCouldntCreateCertificateException("0511")
                 )
             } else {
                 YourEventsEndState.None
@@ -130,7 +130,7 @@ class YourEventsEndStateUtilImpl(
 
         if (hints.contains("domestic_vaccination_rejected") && hints.contains("international_vaccination_rejected")) {
             return YourEventsEndState.WeCouldntMakeACertificateError(
-                WeCouldnCreateCertificateException("059")
+                WeCouldntCreateCertificateException("059")
             )
         }
 
@@ -149,7 +149,7 @@ class YourEventsEndStateUtilImpl(
             )
         ) {
             return YourEventsEndState.WeCouldntMakeACertificateError(
-                WeCouldnCreateCertificateException("0510")
+                WeCouldntCreateCertificateException("0510")
             )
         }
 
