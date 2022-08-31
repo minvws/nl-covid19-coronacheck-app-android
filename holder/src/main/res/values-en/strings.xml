@@ -351,7 +351,7 @@
   <string name="new_in_app_subtitle">New in the app</string>
   <string name="new_in_app_screen_1_title">Recovery certificate</string>
   <string name="new_in_app_screen_1_description">From now on, you can create a certificate of recovery using this app. This is proof you have had a positive test result. You can use it to show you’ve had coronavirus. This way you gain access to certain locations and activities. You may also use it to travel internationally.</string>
-  <string name="your_positive_test_toolbar_title">Your positive test result</string>
+  <string name="your_positive_test_toolbar_title">Retrieved positive test</string>
   <string name="your_positive_test_description">Are the details correct? If the details about your test are correct, you can create a certificate.</string>
   <string name="positive_test_title">Positive test result</string>
   <string name="get_recovery_title">Retrieve your recovery details</string>
