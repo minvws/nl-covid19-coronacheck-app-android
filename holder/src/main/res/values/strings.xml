@@ -351,7 +351,7 @@
   <string name="new_in_app_subtitle">Nieuw in de app</string>
   <string name="new_in_app_screen_1_title">Bewijs van herstel</string>
   <string name="new_in_app_screen_1_description">Vanaf nu kun je via deze app ook een herstelbewijs maken. Dat is een bewijs van een positieve testuitslag. Daarmee laat je zien dat je corona hebt gehad. Zo krijg je toegang tot bepaalde locaties en activiteiten. Ook kun je er internationaal mee reizen.</string>
-  <string name="your_positive_test_toolbar_title">Jouw positieve testuitslag</string>
+  <string name="your_positive_test_toolbar_title">Opgehaalde positieve test</string>
   <string name="your_positive_test_description">Kloppen je gegevens? Als de gegevens van je test kloppen kun je een bewijs maken.</string>
   <string name="positive_test_title">Positieve testuitslag</string>
   <string name="get_recovery_title">Gegevens van je herstel ophalen</string>
