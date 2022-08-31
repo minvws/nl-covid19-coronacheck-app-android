@@ -241,6 +241,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
                     toolbarTitle = if (endState is YourEventsEndStateWithCustomTitle.RecoveryTooOld ||
+                                endState is YourEventsEndStateWithCustomTitle.NoRecoveryButDosisCorrection ||
                                 endState is YourEventsEndStateWithCustomTitle.RecoveryAndDosisCorrection
                 ) { getString(R.string.your_positive_test_toolbar_title) } else {
                     getString(R.string.certificate_created_toolbar_title)
