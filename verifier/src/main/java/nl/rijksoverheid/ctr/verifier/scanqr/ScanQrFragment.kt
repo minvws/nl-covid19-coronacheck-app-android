@@ -146,6 +146,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
                         menuUtil.showMenu(this@ScanQrFragment)
                     }
                 }
+                toolbar.visibility = VISIBLE
             }
         }
     }
