@@ -830,4 +830,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_listRemoteEvents_endStateRecoveryAndDosisCorrection_message"><![CDATA[A recovery certificate has been created from your retrieved details.<br><br>Your positive test could also be recorded into your vaccination certificate. Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="general_retrievedDetails">retrieved details</string>
   <string name="rule_engine_no_test_origin_description_retrieved_details">retrieved details</string>
+  <string name="holder_event_vaccination_assessment_action_title">Add</string>
 </resources>
