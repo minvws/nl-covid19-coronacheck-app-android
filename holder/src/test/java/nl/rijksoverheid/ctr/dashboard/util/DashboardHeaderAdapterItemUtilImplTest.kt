@@ -190,6 +190,27 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
     }
 
+    @Test
+    fun `Correct copy for domestic tab and with incomplete visitor pass`() {
+        listOf(
+            DisclosurePolicy.OneG,
+            DisclosurePolicy.OneAndThreeG,
+            DisclosurePolicy.ThreeG,
+            DisclosurePolicy.ZeroG).forEach {
+                val util = getUtil(
+                    policy = it
+                )
+
+                Assert.assertEquals(R.string.holder_dashboard_incompleteVisitorPass_message,
+                    util.getHeaderItem(
+                        tabType = GreenCardType.Domestic,
+                        emptyState = true,
+                        hasVisitorPassIncompleteItem = true
+                    ).text
+                )
+        }
+    }
+
     private fun getUtil(policy: DisclosurePolicy): DashboardHeaderAdapterItemUtilImpl {
         val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>()
         every { featureFlagUseCase.getDisclosurePolicy() } answers { policy }
