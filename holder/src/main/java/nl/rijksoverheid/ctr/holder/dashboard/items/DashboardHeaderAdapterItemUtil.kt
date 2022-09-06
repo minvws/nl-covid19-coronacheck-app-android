@@ -37,7 +37,11 @@ class DashboardHeaderAdapterItemUtilImpl(
         hasVisitorPassIncompleteItem: Boolean
     ): DashboardItem.HeaderItem {
         val empty = emptyState || hasVisitorPassIncompleteItem
-        val text = getHeaderText(tabType, empty)
+        val text = if (hasVisitorPassIncompleteItem) {
+            R.string.holder_dashboard_incompleteVisitorPass_message
+        } else {
+            getHeaderText(tabType, empty)
+        }
         val buttonInfo = getButtonInfo(tabType, empty)
         return DashboardItem.HeaderItem(text, buttonInfo)
     }
