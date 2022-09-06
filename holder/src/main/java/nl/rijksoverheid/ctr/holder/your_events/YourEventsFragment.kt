@@ -615,9 +615,16 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         binding.bottom.setButtonClick {
             retrieveGreenCards()
         }
-        if (getFlow() == HolderFlow.VaccinationAssessment) {
-            binding.bottom.setButtonText(getString(R.string.holder_event_vaccination_assessment_action_title))
-        }
+        binding.bottom.setButtonText(
+            getString(
+                when {
+                    getFlow() == HolderFlow.VaccinationAssessment -> {
+                        R.string.holder_event_vaccination_assessment_action_title
+                    }
+                    else -> R.string.your_negative_test_results_row_button
+                }
+            )
+        )
     }
 
     private fun presentHeader(binding: FragmentYourEventsBinding) {
