@@ -617,11 +617,13 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         }
         binding.bottom.setButtonText(
             getString(
-                when {
-                    getFlow() == HolderFlow.VaccinationAssessment -> {
+                when (getFlow()) {
+                    HolderFlow.VaccinationAssessment -> {
                         R.string.holder_event_vaccination_assessment_action_title
                     }
-                    else -> R.string.your_negative_test_results_row_button
+                    else -> {
+                        R.string.your_negative_test_results_row_button
+                    }
                 }
             )
         )
