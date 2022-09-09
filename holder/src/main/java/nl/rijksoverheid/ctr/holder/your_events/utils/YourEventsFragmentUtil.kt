@@ -33,14 +33,23 @@ class YourEventsFragmentUtilImpl(
     private val remoteEventUtil: RemoteEventUtil
 ) : YourEventsFragmentUtil {
     override fun getHeaderCopy(type: YourEventsFragmentType): Int {
-        return when (type) {
-            is YourEventsFragmentType.DCC -> {
+        return when {
+            type is YourEventsFragmentType.DCC -> {
                 R.string.holder_listRemoteEvents_paperflow_message
+            }
+            isVaccinationAssessment(type) -> {
+                R.string.holder_event_vaccination_assessment_list_message
             }
             else -> {
                 R.string.holder_listRemoteEvents_vaccination_message
             }
         }
+    }
+
+    private fun isVaccinationAssessment(yourEventsFragmentType: YourEventsFragmentType): Boolean {
+        val type = yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
+        val remoteEvent = type.remoteEvents.keys.firstOrNull()?.events?.first() ?: return false
+        return remoteEventUtil.getOriginType(remoteEvent) == OriginType.VaccinationAssessment
     }
 
     override fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int {
