@@ -9,6 +9,7 @@ package nl.rijksoverheid.ctr.holder.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.shared.models.Flow
 
 sealed class HolderFlow(code: Int) : Flow(code), Parcelable {
@@ -30,6 +31,9 @@ sealed class HolderFlow(code: Int) : Flow(code), Parcelable {
 
     @Parcelize
     object HkviScan : HolderFlow(5)
+
+    @Parcelize
+    data class HkviScanned(val remoteProtocol: RemoteProtocol) : HolderFlow(5)
 
     @Parcelize
     object SyncGreenCards : HolderFlow(7)

@@ -9,6 +9,10 @@ import nl.rijksoverheid.ctr.holder.api.post.GetCouplingData
 import nl.rijksoverheid.ctr.holder.api.post.GetCredentialsPostData
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteAccessTokens
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingResponse
@@ -86,6 +90,16 @@ open class CoronaCheckRepositoryImpl(
                         is HolderFlow.CommercialTest, is HolderFlow.DigidTest -> listOf("negativetest")
                         is HolderFlow.VaccinationAndPositiveTest -> listOf("vaccination", "positivetest")
                         is HolderFlow.VaccinationAssessment -> listOf("vaccinationassessment")
+                        is HolderFlow.HkviScanned -> {
+                            // Hkvi is a flow where you scanned a paper qr which holds one event. That event determines the backend flow.
+                            when (flow.remoteProtocol.events?.first()) {
+                                is RemoteEventVaccination -> listOf("vaccination")
+                                is RemoteEventNegativeTest -> listOf("negativetest")
+                                is RemoteEventPositiveTest -> listOf("positivetest")
+                                is RemoteEventVaccinationAssessment -> listOf("vaccinationassessment")
+                                else -> listOf("refresh")
+                            }
+                        }
                         else -> listOf()
                     }
                 )

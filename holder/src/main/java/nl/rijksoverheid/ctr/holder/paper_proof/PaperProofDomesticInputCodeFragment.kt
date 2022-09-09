@@ -97,7 +97,7 @@ class PaperProofDomesticInputCodeFragment : BaseFragment(R.layout.fragment_paper
                             eventGroupJsonData = it.eventGroupJsonData,
                             originType = OriginType.fromTypeString(it.remoteEvent.events!!.first().type!!)
                         ),
-                        flow = HolderFlow.HkviScan
+                        flow = HolderFlow.HkviScanned(it.remoteEvent)
                     ))
                 }
                 is PaperProofDomesticResult.Invalid.BlockedQr -> {
