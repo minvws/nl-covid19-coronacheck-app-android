@@ -104,4 +104,18 @@ class HolderDatabaseMigrationsTest : AutoCloseKoinTest() {
         val secretKeyCursor = dbV7.query("SELECT * FROM secret_key")
         assertEquals(0, secretKeyCursor.count)
     }
+
+    @Test
+    fun `Database v7 to v8 migrates successfully`() {
+        // Our database before the migration
+        val dbV7 = helper.createDatabase(DATABASE_NAME, 7)
+        dbV7.close()
+
+        // The database after the migration
+        val dbV8 = helper.runMigrationsAndValidate(DATABASE_NAME, 8, true, MIGRATION_7_8)
+
+        // Assert no errors
+        val cursor = dbV8.query("SELECT * FROM wallet")
+        assertNotNull(cursor)
+    }
 }
