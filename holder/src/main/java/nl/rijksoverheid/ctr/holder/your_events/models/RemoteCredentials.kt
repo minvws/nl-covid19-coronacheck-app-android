@@ -64,16 +64,7 @@ data class RemoteGreenCards(
 
     data class BlobExpiry(
         val id: Int,
-        val expiry: OffsetDateTime
+        val expiry: OffsetDateTime,
+        val reason: String = ""
     )
-
-    fun getEuOrigins(): List<OriginType> =
-        euGreencards?.map { it.origins.map { it.type } }?.flatten() ?: listOf()
-
-    fun getAllOrigins(): List<OriginType> {
-        val origins = mutableListOf<OriginType>()
-        origins.addAll(domesticGreencard?.origins?.map { it.type } ?: listOf())
-        origins.addAll(euGreencards?.map { it.origins.map { it.type } }?.flatten() ?: listOf())
-        return origins
-    }
 }

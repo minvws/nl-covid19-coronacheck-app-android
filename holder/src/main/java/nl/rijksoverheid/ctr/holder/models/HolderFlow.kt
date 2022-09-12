@@ -49,4 +49,7 @@ sealed class HolderFlow(code: Int) : Flow(code), Parcelable {
 
     @Parcelize
     object ClearEvents : HolderFlow(11)
+
+    @Parcelize
+    object Refresh : HolderFlow(12)
 }

@@ -24,6 +24,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
@@ -120,7 +121,8 @@ class DashboardViewModelImpl(
 
             val databaseSyncerResult = holderDatabaseSyncer.sync(
                 syncWithRemote = shouldLoadNewCredentials,
-                previousSyncResult = previousSyncResult
+                previousSyncResult = previousSyncResult,
+                flow = HolderFlow.Refresh
             )
 
             (databaseSyncerResultLiveData as MutableLiveData).value = Event(databaseSyncerResult)

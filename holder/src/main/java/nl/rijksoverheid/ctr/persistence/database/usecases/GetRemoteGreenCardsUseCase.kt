@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.persistence.database.usecases
 
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
@@ -15,24 +17,34 @@ import org.json.JSONObject
  * Get green cards from remote
  */
 interface GetRemoteGreenCardsUseCase {
-    suspend fun get(events: List<EventGroupEntity>, secretKey: String, flow: Flow): RemoteGreenCardsResult
+    suspend fun get(
+        events: List<EventGroupEntity>,
+        secretKey: String,
+        flow: Flow
+    ): RemoteGreenCardsResult
 }
 
 class GetRemoteGreenCardsUseCaseImpl(
     private val coronaCheckRepository: CoronaCheckRepository,
-    private val mobileCoreWrapper: MobileCoreWrapper
+    private val mobileCoreWrapper: MobileCoreWrapper,
+    private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase
 ) : GetRemoteGreenCardsUseCase {
 
-    override suspend fun get(events: List<EventGroupEntity>, secretKey: String, flow: Flow): RemoteGreenCardsResult {
+    override suspend fun get(
+        events: List<EventGroupEntity>,
+        secretKey: String,
+        flow: Flow
+    ): RemoteGreenCardsResult {
         return try {
-            val prepareIssue = when (val prepareIssueResult = coronaCheckRepository.getPrepareIssue()) {
-                is NetworkRequestResult.Success -> {
-                    prepareIssueResult.response
+            val prepareIssue =
+                when (val prepareIssueResult = coronaCheckRepository.getPrepareIssue()) {
+                    is NetworkRequestResult.Success -> {
+                        prepareIssueResult.response
+                    }
+                    is NetworkRequestResult.Failed -> {
+                        return RemoteGreenCardsResult.Error(prepareIssueResult)
+                    }
                 }
-                is NetworkRequestResult.Failed -> {
-                    return RemoteGreenCardsResult.Error(prepareIssueResult)
-                }
-            }
 
             val commitmentMessage = try {
                 mobileCoreWrapper.createCommitmentMessage(
@@ -40,10 +52,12 @@ class GetRemoteGreenCardsUseCaseImpl(
                     prepareIssueMessage = prepareIssue.prepareIssueMessage
                 )
             } catch (e: Exception) {
-                return RemoteGreenCardsResult.Error(AppErrorResult(
-                    step = HolderStep.PrepareIssueNetworkRequest,
-                    e = e
-                ))
+                return RemoteGreenCardsResult.Error(
+                    AppErrorResult(
+                        step = HolderStep.PrepareIssueNetworkRequest,
+                        e = e
+                    )
+                )
             }
 
             val remoteGreenCardsResult = coronaCheckRepository.getGreenCards(
@@ -59,7 +73,21 @@ class GetRemoteGreenCardsUseCaseImpl(
 
             when (remoteGreenCardsResult) {
                 is NetworkRequestResult.Success -> {
-                    RemoteGreenCardsResult.Success(remoteGreenCardsResult.response)
+                    val blockedEventIds =
+                        remoteGreenCardsResult.response.blobExpireDates?.filter { it.reason == "event_blocked" }
+                            ?: listOf()
+                    val blockedEvents = blockedEventIds.mapNotNull { blobExpiry ->
+                        val eventGroup = events.firstOrNull { event -> event.id == blobExpiry.id }
+                        val remoteProtocol =
+                            eventGroup?.let { getRemoteProtocolFromEventGroupUseCase.get(it) }
+                        remoteProtocol?.events?.mapNotNull { remoteEvent ->
+                            BlockedEvent(
+                                eventGroup.id,
+                                remoteEvent
+                            )
+                        }
+                    }.flatten()
+                    RemoteGreenCardsResult.Success(remoteGreenCardsResult.response, blockedEvents)
                 }
                 is NetworkRequestResult.Failed -> {
                     RemoteGreenCardsResult.Error(remoteGreenCardsResult)
@@ -72,6 +100,15 @@ class GetRemoteGreenCardsUseCaseImpl(
 }
 
 sealed class RemoteGreenCardsResult {
-    data class Success(val remoteGreenCards: RemoteGreenCards) : RemoteGreenCardsResult()
+    data class Success(
+        val remoteGreenCards: RemoteGreenCards,
+        val blockedEvents: List<BlockedEvent> = listOf()
+    ) : RemoteGreenCardsResult()
+
     data class Error(val errorResult: ErrorResult) : RemoteGreenCardsResult()
 }
+
+data class BlockedEvent(
+    val eventGroupId: Int,
+    val remoteEvent: RemoteEvent
+)

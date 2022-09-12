@@ -35,7 +35,7 @@ import org.koin.dsl.module
  */
 val greenCardUseCasesModule = module {
     factory<GetRemoteGreenCardsUseCase> {
-        GetRemoteGreenCardsUseCaseImpl(get(), get())
+        GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }
     factory<SyncRemoteGreenCardsUseCase> {
         SyncRemoteGreenCardsUseCaseImpl(get(), get(), get(), get())
