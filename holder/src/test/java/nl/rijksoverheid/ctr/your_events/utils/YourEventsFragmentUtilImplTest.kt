@@ -302,7 +302,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
             }), listOf())
         )
 
-        assertEquals(R.string.holder_event_vaccination_assessment_list_message, copy)
+        assertEquals(R.string.holder_listRemoteEvents_vaccinationAssessment_message, copy)
     }
 
     private fun getRemoteProtocol3(event: RemoteEvent) =
