@@ -35,6 +35,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAsses
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
+import nl.rijksoverheid.ctr.holder.your_events.models.ConflictingEventResult
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndStateWithCustomTitle
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
@@ -146,6 +147,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         )
                     }
                     is DatabaseSyncerResult.Failed -> {
+                        println("Present to error na oume")
                         presentError(
                             errorResult = databaseSyncerResult.errorResult
                         )
@@ -156,28 +158,36 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         yourEventsViewModel.conflictingEventsResult.observe(
             viewLifecycleOwner,
             EventObserver {
-                when (val type = args.type) {
-                    is YourEventsFragmentType.RemoteProtocol3Type -> {
-                        if (it) {
-                            replaceCertificateDialog(type.remoteEvents)
-                        } else {
-                            yourEventsViewModel.saveRemoteProtocolEvents(
-                                getFlow(), type.remoteEvents, false
-                            )
-                        }
+                when (it) {
+                    ConflictingEventResult.Existing -> {
+                        infoFragmentUtil.presentFullScreen(
+                            currentFragment = this,
+                            toolbarTitle = args.toolbarTitle,
+                            data = InfoFragmentData.TitleDescriptionWithButton(
+                                title = getString(R.string.holder_listRemoteEvents_endStateDuplicate_title),
+                                descriptionData = DescriptionData(
+                                    htmlText = R.string.holder_listRemoteEvents_endStateDuplicate_message
+                                ),
+                                primaryButtonData = ButtonData.NavigationButton(
+                                    text = getString(R.string.general_toMyOverview),
+                                    navigationActionId = R.id.action_my_overview
+                                )
+                            ),
+                            closeIcon = true
+                        )
                     }
-                    is YourEventsFragmentType.DCC -> {
-                        if (it) {
-                            replaceCertificateDialog(type.getRemoteEvents())
-                        } else {
-                            yourEventsViewModel.saveRemoteProtocolEvents(
-                                getFlow(), type.getRemoteEvents(), false
-                            )
-                        }
-                    }
+                    ConflictingEventResult.Holder -> replaceCertificateDialog(getEventsFromType())
+                    ConflictingEventResult.None -> yourEventsViewModel.saveRemoteProtocolEvents(
+                        getFlow(), getEventsFromType(), false
+                    )
                 }
             }
         )
+    }
+
+    private fun getEventsFromType() = when (val type = args.type) {
+        is YourEventsFragmentType.DCC -> type.getRemoteEvents()
+        is YourEventsFragmentType.RemoteProtocol3Type -> type.remoteEvents
     }
 
     private fun handleEndState(endState: YourEventsEndState) {

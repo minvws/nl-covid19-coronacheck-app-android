@@ -32,12 +32,12 @@ data class AdapterCard(
     val disclosurePolicy: GreenCardDisclosurePolicy
 )
 
-class DashboardGreenCardAdapterItem(
-    private val cards: List<DashboardItem.CardsItem.CardItem>,
-    private val onButtonClick: (cardItem: DashboardItem.CardsItem.CardItem, credentials: List<Pair<ByteArray, OffsetDateTime>>) -> Unit,
-    private val onRetryClick: () -> Unit = {},
-    private val onCountDownFinished: () -> Unit = {}
-) :
+    class DashboardGreenCardAdapterItem(
+        private val cards: List<DashboardItem.CardsItem.CardItem>,
+        private val onButtonClick: (cardItem: DashboardItem.CardsItem.CardItem, credentials: List<Pair<ByteArray, OffsetDateTime>>) -> Unit,
+        private val onRetryClick: () -> Unit = {},
+        private val onCountDownFinished: () -> Unit = {}
+    ) :
     BindableItem<AdapterItemDashboardGreenCardBinding>(R.layout.adapter_item_dashboard_green_card.toLong()),
     KoinComponent {
 

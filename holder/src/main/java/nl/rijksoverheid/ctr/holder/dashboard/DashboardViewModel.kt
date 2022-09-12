@@ -89,6 +89,9 @@ class DashboardViewModelImpl(
                     // Load new credentials if no previous refresh has been executed and we should refresh because a credentials for a green card expired
                     val shouldRefreshCredentials = greenCardRefreshUtil.shouldRefresh()
 
+                    println("Should refresh credentials --> $shouldRefreshCredentials")
+                    println("previousSyncResult --> $previousSyncResult")
+
                     // Load new credentials if we the previous request failed more than once and more than x minutes ago
                     val shouldRetryFailedRequest =
                         previousSyncResult is DatabaseSyncerResult.Failed.ServerError.MultipleTimes && OffsetDateTime.now()
@@ -105,6 +108,20 @@ class DashboardViewModelImpl(
 
             val allGreenCards = greenCardUtil.getAllGreenCards()
             val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
+
+            println("allEventGroupEntities")
+            allEventGroupEntities.forEach(::println)
+
+            println("============")
+
+            allGreenCards.forEach {
+                println("Greencard: ${it.greenCardEntity.id} ${it.greenCardEntity.type}")
+                it.origins.forEach {
+                    println("Origin expiration time: ${it.expirationTime}")
+                }
+                println("----")
+                it.credentialEntities.forEach { println("Credential expiration time ${it.expirationTime}") }
+            }
 
             removeExpiredGreenCardsUseCase.execute(
                 allGreenCards = allGreenCards
