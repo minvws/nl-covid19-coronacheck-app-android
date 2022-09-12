@@ -193,7 +193,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             is YourEventsEndState.BlockedEvent -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
-                    toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
+                    toolbarTitle = getString(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title),
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(R.string.holder_listRemoteEvents_endStateNoValidCertificate_title),
                         descriptionData = DescriptionData(
