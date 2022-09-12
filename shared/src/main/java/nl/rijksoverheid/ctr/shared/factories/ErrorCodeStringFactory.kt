@@ -14,6 +14,7 @@ import javax.net.ssl.SSLProtocolException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
 import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
+import nl.rijksoverheid.ctr.shared.models.BlockedEventException
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.MissingOriginException
@@ -66,6 +67,7 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
                 is ActivityNotFoundException -> "070-14"
                 is MissingOriginException -> "058"
                 is WeCouldntCreateCertificateException -> exception.errorCode
+                is BlockedEventException -> "059"
                 else -> throw it.getException()
             }
 

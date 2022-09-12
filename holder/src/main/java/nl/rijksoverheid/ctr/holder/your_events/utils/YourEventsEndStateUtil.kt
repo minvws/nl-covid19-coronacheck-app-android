@@ -9,6 +9,7 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 
 import android.content.Context
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.utils.StringUtil
 import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
@@ -17,24 +18,29 @@ import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.WeCouldntCreateCertificateException
 
 interface YourEventsEndStateUtil {
-    fun getEndState(context: Context, hints: List<String>): YourEventsEndState
+    fun getEndState(context: Context, newEvents: List<RemoteEvent> = listOf(), hints: List<String>, blockedEvents: List<RemoteEvent> = listOf()): YourEventsEndState
     fun getErrorStateSubstring(context: Context, flow: Flow): String
 }
 
 class YourEventsEndStateUtilImpl(
     private val stringUtil: StringUtil
 ) : YourEventsEndStateUtil {
-    override fun getEndState(context: Context, hints: List<String>): YourEventsEndState {
-        val endStateFromHints = hintsToEndState(hints)
-        return if (endStateFromHints != YourEventsEndState.None) {
-            endStateFromHints
+    override fun getEndState(context: Context, newEvents: List<RemoteEvent>, hints: List<String>, blockedEvents: List<RemoteEvent>): YourEventsEndState {
+        val newEventsContainBlockedEvent = newEvents.any { blockedEvents.contains(it) }
+        return if (newEventsContainBlockedEvent) {
+            YourEventsEndState.BlockedEvent
         } else {
-            val localisedHints =
-                hints.map { stringUtil.getStringFromResourceName(it) }.filterNot { it.isEmpty() }
-            if (localisedHints.isEmpty()) {
-                YourEventsEndState.None
+            val endStateFromHints = hintsToEndState(hints)
+            if (endStateFromHints != YourEventsEndState.None) {
+                endStateFromHints
             } else {
-                YourEventsEndState.Hints(localisedHints)
+                val localisedHints =
+                    hints.map { stringUtil.getStringFromResourceName(it) }.filterNot { it.isEmpty() }
+                if (localisedHints.isEmpty()) {
+                    YourEventsEndState.None
+                } else {
+                    YourEventsEndState.Hints(localisedHints)
+                }
             }
         }
     }

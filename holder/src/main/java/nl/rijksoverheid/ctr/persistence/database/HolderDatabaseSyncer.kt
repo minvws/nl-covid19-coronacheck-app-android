@@ -6,6 +6,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
@@ -106,7 +107,8 @@ class HolderDatabaseSyncerImpl(
                                 is SyncRemoteGreenCardsResult.Success -> {
                                     workerManagerUtil.scheduleRefreshCredentialsJob()
                                     return@withContext DatabaseSyncerResult.Success(
-                                        remoteGreenCards.hints ?: listOf()
+                                        hints = remoteGreenCards.hints ?: listOf(),
+                                        blockedEvents = remoteGreenCardsResult.blockedEvents
                                     )
                                 }
                                 is SyncRemoteGreenCardsResult.Failed -> {
@@ -154,7 +156,8 @@ class HolderDatabaseSyncerImpl(
 
 sealed class DatabaseSyncerResult {
     data class Success(
-        val hints: List<String> = listOf()
+        val hints: List<String> = listOf(),
+        val blockedEvents: List<RemoteEvent> = listOf()
     ) : DatabaseSyncerResult()
 
     sealed class Failed(open val errorResult: ErrorResult, open val failedAt: OffsetDateTime) :

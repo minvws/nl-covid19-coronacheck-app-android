@@ -81,10 +81,7 @@ class GetRemoteGreenCardsUseCaseImpl(
                         val remoteProtocol =
                             eventGroup?.let { getRemoteProtocolFromEventGroupUseCase.get(it) }
                         remoteProtocol?.events?.mapNotNull { remoteEvent ->
-                            BlockedEvent(
-                                eventGroup.id,
-                                remoteEvent
-                            )
+                            remoteEvent
                         }
                     }.flatten()
                     RemoteGreenCardsResult.Success(remoteGreenCardsResult.response, blockedEvents)
@@ -102,13 +99,8 @@ class GetRemoteGreenCardsUseCaseImpl(
 sealed class RemoteGreenCardsResult {
     data class Success(
         val remoteGreenCards: RemoteGreenCards,
-        val blockedEvents: List<BlockedEvent> = listOf()
+        val blockedEvents: List<RemoteEvent> = listOf()
     ) : RemoteGreenCardsResult()
 
     data class Error(val errorResult: ErrorResult) : RemoteGreenCardsResult()
 }
-
-data class BlockedEvent(
-    val eventGroupId: Int,
-    val remoteEvent: RemoteEvent
-)
