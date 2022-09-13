@@ -43,6 +43,7 @@ abstract class DashboardViewModel : ViewModel() {
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
     abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
+    abstract fun dismissBlockedEventsInfo()
 
     companion object {
         val RETRY_FAILED_REQUEST_AFTER_SECONDS = if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(10)
@@ -176,5 +177,12 @@ class DashboardViewModelImpl(
 
     override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
         persistenceManager.setPolicyBannerDismissed(disclosurePolicy)
+    }
+
+    override fun dismissBlockedEventsInfo() {
+        viewModelScope.launch {
+            persistenceManager.setShowEventsBlockedItem(false)
+            holderDatabase.blockedEventDao().deleteAll()
+        }
     }
 }

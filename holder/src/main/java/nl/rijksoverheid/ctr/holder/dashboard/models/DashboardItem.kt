@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.ButtonInfo
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
@@ -47,7 +48,10 @@ sealed class DashboardItem {
 
         object ClockDeviationItem : InfoItem(isDismissible = false, hasButton = true)
 
-        data class GreenCardExpiredItem(val greenCardType: GreenCardType, val originEntity: OriginEntity) : InfoItem(
+        data class GreenCardExpiredItem(
+            val greenCardType: GreenCardType,
+            val originEntity: OriginEntity
+        ) : InfoItem(
             isDismissible = true,
             hasButton = false
         )
@@ -57,10 +61,11 @@ sealed class DashboardItem {
             hasButton = true
         )
 
-        data class DomesticVaccinationAssessmentExpiredItem(val originEntity: OriginEntity) : InfoItem(
-            isDismissible = true,
-            hasButton = true
-        )
+        data class DomesticVaccinationAssessmentExpiredItem(val originEntity: OriginEntity) :
+            InfoItem(
+                isDismissible = true,
+                hasButton = true
+            )
 
         object AppUpdate : InfoItem(
             isDismissible = false,
@@ -82,6 +87,11 @@ sealed class DashboardItem {
                 isDismissible = true,
                 hasButton = true
             )
+
+        data class BlockedEvents(
+            val blockedEvents: List<BlockedEventEntity>,
+            @StringRes override val buttonText: Int = R.string.general_readmore
+        ) : InfoItem(isDismissible = true, hasButton = true)
     }
 
     object CoronaMelderItem : DashboardItem()

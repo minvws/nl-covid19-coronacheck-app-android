@@ -106,6 +106,11 @@ class DashboardInfoCardAdapterItem(
                     }
                 )
             }
+            is DashboardItem.InfoItem.BlockedEvents -> {
+                viewBinding.text.setText(
+                    R.string.holder_invaliddetailsremoved_alert_body
+                )
+            }
         }
 
         viewBinding.button.setOnClickListener {

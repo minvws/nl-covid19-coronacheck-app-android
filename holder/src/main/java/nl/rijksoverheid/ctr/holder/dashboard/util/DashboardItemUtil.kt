@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
@@ -24,6 +25,7 @@ interface DashboardItemUtil {
     fun shouldShowPlaceholderItem(emptyState: Boolean): Boolean
     fun shouldAddQrButtonItem(emptyState: Boolean): Boolean
     fun isAppUpdateAvailable(): Boolean
+    suspend fun shouldShowBlockedEventsItem(): Boolean
 
     /**
      * Multiple EU vaccination green card items will be combined into 1.
@@ -65,7 +67,8 @@ class DashboardItemUtilImpl(
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
     private val appConfigUseCase: HolderCachedAppConfigUseCase,
     private val buildConfigUseCase: BuildConfigUseCase,
-    private val greenCardUtil: GreenCardUtil
+    private val greenCardUtil: GreenCardUtil,
+    private val holderDatabase: HolderDatabase
 ) : DashboardItemUtil {
 
     override fun shouldShowClockDeviationItem(emptyState: Boolean, allGreenCards: List<GreenCard>) =
@@ -79,6 +82,10 @@ class DashboardItemUtilImpl(
 
     override fun isAppUpdateAvailable(): Boolean {
         return buildConfigUseCase.getVersionCode() < appConfigUseCase.getCachedAppConfig().recommendedVersion
+    }
+
+    override suspend fun shouldShowBlockedEventsItem(): Boolean {
+        return holderDatabase.blockedEventDao().getAll().isNotEmpty()
     }
 
     override fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {

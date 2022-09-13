@@ -343,6 +343,9 @@ class DashboardPageInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
                 dashboardPageFragment.dashboardViewModel.dismissPolicyInfo(infoItem.disclosurePolicy)
             }
+            is DashboardItem.InfoItem.BlockedEvents -> {
+                dashboardPageFragment.dashboardViewModel.dismissBlockedEventsInfo()
+            }
             else -> {
             }
         }
