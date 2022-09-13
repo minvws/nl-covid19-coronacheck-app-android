@@ -134,7 +134,7 @@ class HolderAppStatusUseCaseImpl(
     }
 
     private fun getPolicyChangeItems(newPolicy: DisclosurePolicy) =
-        listOfNotNull(getNewPolicyFeatureItem(newPolicy), getCtbActiveItem(newPolicy))
+        listOfNotNull(getCtbActiveItem(newPolicy), getNewPolicyFeatureItem(newPolicy))
 
     private fun getCtbActiveItem(newPolicy: DisclosurePolicy): NewFeatureItem? {
         return if (persistenceManager.getPolicyScreenSeen() == DisclosurePolicy.ZeroG && newPolicy != DisclosurePolicy.ZeroG) {

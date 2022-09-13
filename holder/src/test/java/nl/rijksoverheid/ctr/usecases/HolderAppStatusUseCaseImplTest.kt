@@ -728,23 +728,23 @@ class HolderAppStatusUseCaseImplTest {
         with(appStatus as AppStatus.NewFeatures) {
             assertEquals(
                 R.string.holder_newintheapp_content_dutchAndInternationalCertificates_title,
-                appUpdateData.newFeatures.last().titleResource
+                appUpdateData.newFeatures.first().titleResource
             )
             assertEquals(
                 R.string.holder_newintheapp_content_dutchAndInternationalCertificates_body,
-                appUpdateData.newFeatures.last().description
+                appUpdateData.newFeatures.first().description
             )
             assertEquals(
                 R.drawable.illustration_new_dutch_and_international_certificate,
-                appUpdateData.newFeatures.last().imageResource
+                appUpdateData.newFeatures.first().imageResource
             )
             assertEquals(
                 R.string.holder_newintheapp_content_dutchAndInternationalCertificates_button_toMyCertificates,
-                appUpdateData.newFeatures.last().buttonResource
+                appUpdateData.newFeatures.first().buttonResource
             )
             assertEquals(
                 R.string.new_in_app_subtitle,
-                appUpdateData.newFeatures.last().subtitleResource
+                appUpdateData.newFeatures.first().subtitleResource
             )
             assertEquals(2, appUpdateData.newFeatures.size)
         }
