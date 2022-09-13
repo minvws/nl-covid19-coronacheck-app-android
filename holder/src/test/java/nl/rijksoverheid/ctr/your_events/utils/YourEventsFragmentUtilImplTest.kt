@@ -11,6 +11,7 @@ import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
@@ -275,24 +276,43 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getHeaderCopy returns correct copy when type not dcc`() {
-        val util = YourEventsFragmentUtilImpl(mockk())
+    fun `getHeaderCopy returns correct copy when type is RemoteProtocol3Type recovery`() {
+        val util = YourEventsFragmentUtilImpl(mockk<RemoteEventUtil>().apply {
+            every { getOriginType(any()) } returns OriginType.Recovery
+        })
 
         val copy = util.getHeaderCopy(
-            type = YourEventsFragmentType.RemoteProtocol3Type(mockk(), listOf())
+            type = YourEventsFragmentType.RemoteProtocol3Type(getRemoteProtocol3(mockk<RemoteEvent>().apply {
+                every { type } returns "recovery"
+            }), listOf())
         )
 
         assertEquals(R.string.holder_listRemoteEvents_vaccination_message, copy)
     }
 
-    private fun getRemoteProtocol3(element: RemoteEventNegativeTest) =
+    @Test
+    fun `getHeaderCopy returns correct copy when type is RemoteProtocol3Type vaccinationassessment`() {
+        val util = YourEventsFragmentUtilImpl(mockk<RemoteEventUtil>().apply {
+            every { getOriginType(any()) } returns OriginType.VaccinationAssessment
+        })
+
+        val copy = util.getHeaderCopy(
+            type = YourEventsFragmentType.RemoteProtocol3Type(getRemoteProtocol3(mockk<RemoteEvent>().apply {
+                every { type } returns "vaccinationassessment"
+            }), listOf())
+        )
+
+        assertEquals(R.string.holder_event_vaccination_assessment_list_message, copy)
+    }
+
+    private fun getRemoteProtocol3(event: RemoteEvent) =
         mapOf(
             RemoteProtocol(
                 "",
                 "",
                 RemoteProtocol.Status.UNKNOWN,
                 null,
-                listOf(element)
+                listOf(event)
             ) to ByteArray(1)
         )
 }
