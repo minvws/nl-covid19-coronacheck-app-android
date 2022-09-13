@@ -462,19 +462,23 @@ val fakeGreenCardEntity = GreenCardEntity(
     type = GreenCardType.Domestic
 )
 
-fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) =
-    RemoteEventVaccination.Vaccination(
-        date = date,
-        hpkCode = "",
+fun fakeRemoteEventVaccination(unique: String = "", date: LocalDate) =
+    RemoteEventVaccination(
         type = "",
-        brand = "",
-        completedByMedicalStatement = false,
-        completedByPersonalStatement = false,
-        completionReason = "",
-        doseNumber = "",
-        totalDoses = "",
-        country = "",
-        manufacturer = ""
+        unique = unique,
+        vaccination = RemoteEventVaccination.Vaccination(
+            date = date,
+            hpkCode = "",
+            type = "",
+            brand = "",
+            completedByMedicalStatement = false,
+            completedByPersonalStatement = false,
+            completionReason = "",
+            doseNumber = "",
+            totalDoses = "",
+            country = "",
+            manufacturer = ""
+        )
     )
 
 fun fakeGreenCard(

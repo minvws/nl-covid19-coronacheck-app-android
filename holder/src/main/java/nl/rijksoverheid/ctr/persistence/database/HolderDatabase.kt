@@ -138,7 +138,7 @@ fun MIGRATION_6_7(persistenceManager: PersistenceManager) = object : Migration(6
 
 val MIGRATION_7_8 = object : Migration(7, 8) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("CREATE TABLE IF NOT EXISTS blocked_event (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, wallet_id INTEGER NOT NULL, type TEXT NOT NULL, event_time INTEGER NOT NULL, FOREIGN KEY(wallet_id) REFERENCES wallet(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
+        database.execSQL("CREATE TABLE IF NOT EXISTS blocked_event (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, wallet_id INTEGER NOT NULL, type TEXT NOT NULL, event_time INTEGER, FOREIGN KEY(wallet_id) REFERENCES wallet(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
         database.execSQL("CREATE INDEX index_blocked_event_wallet_id ON blocked_event(wallet_id)")
     }
 }

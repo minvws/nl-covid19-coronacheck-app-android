@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.persistence.database
 
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import java.time.OffsetDateTime
 import kotlinx.coroutines.runBlocking
@@ -9,7 +8,6 @@ import nl.rijksoverheid.ctr.fakeGetRemoteGreenCardUseCase
 import nl.rijksoverheid.ctr.fakeGreenCardUtil
 import nl.rijksoverheid.ctr.fakeRemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.fakeSyncRemoteGreenCardUseCase
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
@@ -19,7 +17,6 @@ import nl.rijksoverheid.ctr.persistence.database.usecases.RemoteGreenCardsResult
 import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsResult
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.Step
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -65,9 +62,9 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            featureFlagUseCase = mockk(),
             updateEventExpirationUseCase = mockk(relaxed = true),
-            mobileCoreWrapper = mobileCoreWrapper
+            mobileCoreWrapper = mobileCoreWrapper,
+            persistBlockedEventsUseCase = mockk(relaxed = true)
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -92,9 +89,9 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            featureFlagUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
-            mobileCoreWrapper = mobileCoreWrapper
+            mobileCoreWrapper = mobileCoreWrapper,
+            persistBlockedEventsUseCase = mockk(relaxed = true)
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -133,9 +130,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
-                every { getDisclosurePolicy() } answers { DisclosurePolicy.ThreeG }
-            },
+            persistBlockedEventsUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -176,9 +171,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
-                every { getDisclosurePolicy() } answers { DisclosurePolicy.ZeroG }
-            },
+            persistBlockedEventsUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -219,7 +212,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            featureFlagUseCase = mockk(relaxed = true),
+            persistBlockedEventsUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -246,7 +239,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Success
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            featureFlagUseCase = mockk(relaxed = true),
+            persistBlockedEventsUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -280,7 +273,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Success
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            featureFlagUseCase = mockk(relaxed = true),
+            persistBlockedEventsUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -307,7 +300,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Success
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            featureFlagUseCase = mockk(relaxed = true),
+            persistBlockedEventsUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -350,7 +343,7 @@ class HolderDatabaseSyncerImplTest {
                 result = SyncRemoteGreenCardsResult.Failed(AppErrorResult(Step(1), IllegalStateException("Some error")))
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            featureFlagUseCase = mockk(relaxed = true),
+            persistBlockedEventsUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -384,7 +377,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            featureFlagUseCase = mockk(relaxed = true),
+            persistBlockedEventsUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )

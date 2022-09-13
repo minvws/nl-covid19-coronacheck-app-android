@@ -92,7 +92,8 @@ class YourEventsViewModelImpl(
                     is SaveEventsUseCaseImpl.SaveEventResult.Success -> {
                         // Send all events to database and create green cards, origins and credentials
                         val databaseSyncerResult = holderDatabaseSyncer.sync(
-                            flow = flow
+                            flow = flow,
+                            newEvents = remoteEvents.keys.flatMap { it.events ?: listOf() }
                         )
 
                         (yourEventsResult as MutableLiveData).value = Event(

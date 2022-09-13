@@ -11,6 +11,8 @@ import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteEventsUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCaseImpl
+import nl.rijksoverheid.ctr.holder.get_events.usecases.PersistBlockedEventsUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.PersistBlockedEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetEventsFromPaperProofQrUseCase
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetEventsFromPaperProofQrUseCaseImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofDomesticInputCodeUseCase
@@ -74,4 +76,5 @@ val eventsUseCasesModule = module {
     factory<GetRemoteProtocolFromEventGroupUseCase> {
         GetRemoteProtocolFromEventGroupUseCaseImpl(get(), get())
     }
+    factory<PersistBlockedEventsUseCase> { PersistBlockedEventsUseCaseImpl(get()) }
 }
