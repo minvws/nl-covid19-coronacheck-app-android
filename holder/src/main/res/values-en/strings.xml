@@ -832,4 +832,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="rule_engine_no_test_origin_description_retrieved_details">retrieved details</string>
   <string name="holder_event_vaccination_assessment_action_title">Add</string>
   <string name="holder_dashboard_incompleteVisitorPass_message">You can add a certificate if you\'re vaccinated, if you\'ve had coronavirus or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app.html">affiliated test location</a>.</string>
+  <string name="holder_qr_1g_toolbar_title">1G-toegang</string>
+  <string name="holder_qr_1g3g_toolbar_title">3G-toegang</string>
 </resources>

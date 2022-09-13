@@ -7,6 +7,8 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
+import androidx.annotation.StringRes
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
@@ -30,6 +32,9 @@ interface CardItemUtil {
     fun shouldDisclose(
         cardItem: DashboardItem.CardsItem.CardItem
     ): QrCodeFragmentData.ShouldDisclose
+
+    @StringRes
+    fun getToolbarTitle(): Int
 }
 
 class CardItemUtilImpl(
@@ -105,6 +110,14 @@ class CardItemUtilImpl(
             is GreenCardType.Eu -> {
                 QrCodeFragmentData.ShouldDisclose.DoNotDisclose
             }
+        }
+    }
+
+    override fun getToolbarTitle(): Int {
+        return when (featureFlagUseCase.getDisclosurePolicy()) {
+            DisclosurePolicy.OneAndThreeG -> R.string.holder_qr_1g3g_toolbar_title
+            DisclosurePolicy.OneG -> R.string.holder_qr_1g_toolbar_title
+            else -> R.string.domestic_qr_code_title
         }
     }
 }
