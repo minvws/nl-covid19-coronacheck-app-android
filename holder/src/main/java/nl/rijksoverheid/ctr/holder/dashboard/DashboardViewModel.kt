@@ -89,8 +89,8 @@ class DashboardViewModelImpl(
                     // Load new credentials if no previous refresh has been executed and we should refresh because a credentials for a green card expired
                     val shouldRefreshCredentials = greenCardRefreshUtil.shouldRefresh()
 
-                    println("Should refresh credentials --> $shouldRefreshCredentials")
-                    println("previousSyncResult --> $previousSyncResult")
+                    println("Dashboard Should refresh credentials --> $shouldRefreshCredentials")
+                    println("Dashboard previousSyncResult --> $previousSyncResult")
 
                     // Load new credentials if we the previous request failed more than once and more than x minutes ago
                     val shouldRetryFailedRequest =
@@ -101,6 +101,7 @@ class DashboardViewModelImpl(
                                 )
                             )
 
+                    println("Dashboard shouldRetryFailedRequest --> $shouldRetryFailedRequest")
                     // Do the actual checks
                     shouldRefreshCredentials || shouldRetryFailedRequest
                 }
@@ -114,13 +115,14 @@ class DashboardViewModelImpl(
 
             println("============")
 
+            println("GIO allGreenCards are ${allGreenCards.size}")
             allGreenCards.forEach {
-                println("Greencard: ${it.greenCardEntity.id} ${it.greenCardEntity.type}")
+                println("GIO Greencard: ${it.greenCardEntity}")
                 it.origins.forEach {
-                    println("Origin expiration time: ${it.expirationTime}")
+                    println("GIO Origin $it")
                 }
                 println("----")
-                it.credentialEntities.forEach { println("Credential expiration time ${it.expirationTime}") }
+                it.credentialEntities.sortedByDescending { it.expirationTime }.first().let { println("GIO credentials ${it.category} ${it.validFrom} ${it.expirationTime}") }
             }
 
             removeExpiredGreenCardsUseCase.execute(

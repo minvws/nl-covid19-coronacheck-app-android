@@ -41,6 +41,19 @@ class GreenCardRefreshUtilImpl(
         val greenCardsToRefresh = holderDatabase.greenCardDao().getAll()
             .filter { !greenCardUtil.isForeignDcc(it) }
 
+        greenCardsToRefresh?.forEach { greenCard ->
+            val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(
+                greenCard.credentialEntities.lastOrNull()?.expirationTime
+                    ?: OffsetDateTime.now(clock)
+            )
+            val latestCredential = greenCard.credentialEntities.maxByOrNull { it.expirationTime }
+            val latestCredentialExpiring = latestCredential?.let {
+                credentialUtil.isExpiring(credentialRenewalDays, latestCredential)
+            } ?: false
+
+            println("CHECK -> greencard ${greenCard.greenCardEntity.type} $hasNewCredentials $latestCredentialExpiring")
+        }
+
         val greenCardExpiring = greenCardsToRefresh.firstOrNull { greenCard ->
             val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(
                 greenCard.credentialEntities.lastOrNull()?.expirationTime
