@@ -282,11 +282,11 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
     fun `title in OneThreeG indicates if card is 1G or 3G`() {
         val util = getUtil(DisclosurePolicy.OneAndThreeG)
 
-        val actualFor1GCard = util.getToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+        val actualFor1GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
             every { disclosurePolicy } returns GreenCardDisclosurePolicy.OneG
         })
 
-        val actualFor3GCard = util.getToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+        val actualFor3GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
             every { disclosurePolicy } returns GreenCardDisclosurePolicy.ThreeG
         })
 
@@ -298,11 +298,11 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
     fun `title in OneG indicates if card is 1G or 3G`() {
         val util = getUtil(DisclosurePolicy.OneG)
 
-        val actualFor1GCard = util.getToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+        val actualFor1GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
             every { disclosurePolicy } returns GreenCardDisclosurePolicy.OneG
         })
 
-        val actualFor3GCard = util.getToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+        val actualFor3GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
             every { disclosurePolicy } returns GreenCardDisclosurePolicy.ThreeG
         })
 
@@ -311,14 +311,14 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `title in 0G indicates is always the default one`() {
+    fun `title in 0G is always the default one`() {
         val util = getUtil(DisclosurePolicy.ZeroG)
 
-        val actualFor1GCard = util.getToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+        val actualFor1GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
             every { disclosurePolicy } returns GreenCardDisclosurePolicy.OneG
         })
 
-        val actualFor3GCard = util.getToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+        val actualFor3GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
             every { disclosurePolicy } returns GreenCardDisclosurePolicy.ThreeG
         })
 
@@ -327,14 +327,14 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `title in 3G indicates is always the default one`() {
+    fun `title in 3G is always the default one`() {
         val util = getUtil(DisclosurePolicy.ThreeG)
 
-        val actualFor1GCard = util.getToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+        val actualFor1GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
             every { disclosurePolicy } returns GreenCardDisclosurePolicy.OneG
         })
 
-        val actualFor3GCard = util.getToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+        val actualFor3GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
             every { disclosurePolicy } returns GreenCardDisclosurePolicy.ThreeG
         })
 

@@ -45,7 +45,6 @@ class SignedResponseInterceptor(
 ) : Interceptor {
     private val defaultValidator = SignatureValidator.Builder()
         .addTrustedCertificate(EV_ROOT_CA)
-        .addTrustedCertificate(PRIVATE_ROOT_CA)
         .cnMatching(signatureCertificateCnMatch)
         .build()
 

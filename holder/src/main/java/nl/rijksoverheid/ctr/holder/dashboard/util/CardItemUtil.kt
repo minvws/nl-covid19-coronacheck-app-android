@@ -34,7 +34,7 @@ interface CardItemUtil {
     ): QrCodeFragmentData.ShouldDisclose
 
     @StringRes
-    fun getToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int
+    fun getQrCodesFragmentToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int
 }
 
 class CardItemUtilImpl(
@@ -113,7 +113,7 @@ class CardItemUtilImpl(
         }
     }
 
-    override fun getToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int {
+    override fun getQrCodesFragmentToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int {
         return when (featureFlagUseCase.getDisclosurePolicy()) {
             DisclosurePolicy.OneAndThreeG -> {
                 getTitleFromCardDisclosurePolicy(cardItem.disclosurePolicy)
