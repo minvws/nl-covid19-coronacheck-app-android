@@ -35,7 +35,6 @@ sealed class PaperProofDomesticResult {
     }
 
     sealed class Invalid : PaperProofDomesticResult() {
-        object ExpiredQr : Invalid()
         object RejectedQr : Invalid()
         object BlockedQr : Invalid()
         data class Error(val errorResult: ErrorResult) : Invalid()

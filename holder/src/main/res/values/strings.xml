@@ -424,8 +424,6 @@
   <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_description">Scan de QR-code op je internationale bewijs. Je hoeft de Nederlandse QR-code niet te scannen.</string>
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Ongeldige QR-code</string>
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">Deze QR-code is niet geldig. Scan de QR-code op je internationale bewijs.</string>
-  <string name="add_paper_proof_expired_paper_proof_title">Dit papieren bewijs is verlopen</string>
-  <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[Dit papieren bewijs is niet meer geldig. Dit kan verschillende oorzaken hebben:<ul><li>Je vaccinatie of herstel is nog geldig, maar het papieren bewijs niet. Vraag dan opnieuw je papieren bewijs aan.</li><li>Je vaccinatie of herstel is verlopen.</li></ul>]]></string>
   <string name="add_paper_proof_limit_reached_paper_proof_title">Te vaak geprobeerd</string>
   <string name="add_paper_proof_limit_reached_paper_proof_description"><![CDATA[Voor de veiligheid kun je deze QR-code tijdelijk niet meer in de app zetten.<br/><br/>Je kunt het over 24 uur weer proberen.]]></string>
   <string name="add_paper_proof_invalid_combination_title">Geen geldige combinatie</string>

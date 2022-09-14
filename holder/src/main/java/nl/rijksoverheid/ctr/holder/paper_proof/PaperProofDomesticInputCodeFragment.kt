@@ -110,16 +110,6 @@ class PaperProofDomesticInputCodeFragment : BaseFragment(R.layout.fragment_paper
                         )
                     )
                 }
-                is PaperProofDomesticResult.Invalid.ExpiredQr -> {
-                    presentError(
-                        data = ErrorResultFragmentData(
-                            title = getString(R.string.add_paper_proof_expired_paper_proof_title),
-                            description = getString(R.string.add_paper_proof_expired_paper_proof_description),
-                            buttonTitle = getString(R.string.back_to_overview),
-                            ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
-                        )
-                    )
-                }
                 is PaperProofDomesticResult.Invalid.RejectedQr -> {
                     presentError(
                         data = ErrorResultFragmentData(
