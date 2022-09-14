@@ -115,8 +115,8 @@ class CardItemUtilImpl(
 
     override fun getToolbarTitle(): Int {
         return when (featureFlagUseCase.getDisclosurePolicy()) {
-            DisclosurePolicy.OneAndThreeG -> R.string.holder_qr_1g3g_toolbar_title
-            DisclosurePolicy.OneG -> R.string.holder_qr_1g_toolbar_title
+            DisclosurePolicy.OneAndThreeG -> R.string.holder_showQR_domestic_title_3g
+            DisclosurePolicy.OneG -> R.string.holder_showQR_domestic_title_1g
             else -> R.string.domestic_qr_code_title
         }
     }

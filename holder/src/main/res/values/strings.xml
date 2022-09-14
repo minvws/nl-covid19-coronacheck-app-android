@@ -683,7 +683,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_listRemoteEvents_negativeTest_message">Deze testuitslag is opgehaald bij de testlocatie. Als de gegevens kloppen kun je een bewijs maken.</string>
   <string name="holder_listRemoteEvents_vaccinationAssessment_message">Als de gegevens kloppen kun je jouw vaccinatiebeoordeling toevoegen aan de app.</string>
   <string name="holder_listRemoteEvents_endStateRecoveryTooOld_title">Positieve testuitslag niet meer geldig</string>
-  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[Met de vaccinatie(s) die je nu in de app hebt toegevoegd, krijg je geen Nederlands vaccinatiebewijs.<br/><br/>Voeg een nieuwe vaccinatie of test toe om een Nederlands bewijs te krijgen.<br/><br/>Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
+  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[Met de vaccinatie(s) die je nu in de app hebt toegevoegd, krijg je geen Nederlands vaccinatiebewijs.<br/><br/>Voeg een nieuwe (booster)vaccinatie of test toe om een Nederlands bewijs te krijgen.<br/><br/>Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body">Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_message"><![CDATA[Van je opgehaalde gegevens kon alleen een internationaal vaccinatiebewijs worden gemaakt. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="holder_listRemoteEvents_somethingWrong_vaccination_body">Neem contact op met de zorgverlener waar je bent gevaccineerd. Dat kan de GGD, je huisarts of arts van een zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.</string>
@@ -833,6 +833,18 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="rule_engine_no_test_origin_description_retrieved_details">opgehaalde gegevens</string>
   <string name="holder_event_vaccination_assessment_action_title">Toevoegen</string>
   <string name="holder_dashboard_incompleteVisitorPass_message">Je kunt een bewijs toevoegen als je bent gevaccineerd of hersteld. Of als je bent getest bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>.</string>
-  <string name="holder_qr_1g_toolbar_title">1G-toegang</string>
-  <string name="holder_qr_1g3g_toolbar_title">3G-toegang</string>
+  <string name="holder_listRemoteEvents_endStateDuplicate_title">Dit bewijs staat al in de app</string>
+  <string name="holder_listRemoteEvents_endStateDuplicate_message">Het bewijs dat je probeert toe te voegen staat al in de app. Je hoeft het niet nog een keer te scannen.</string>
+  <string name="holder_invaliddetailsremoved_alert_title">Ongeldige gegevens verwijderd</string>
+  <string name="holder_invaliddetailsremoved_alert_body">Er zijn ongeldige vaccinatie- of testgegevens van jou gevonden. Deze zijn uit de app verwijderd. Mogelijk zijn hierdoor ook bewijzen weggehaald.</string>
+  <string name="holder_invaliddetailsremoved_alert_button_moreinfo">Meer informatie</string>
+  <string name="holder_invaliddetailsremoved_alert_button_close">Sluiten</string>
+  <string name="holder_invaliddetailsremoved_banner_title">Er zijn gegevens uit de app verwijderd.</string>
+  <string name="holder_invaliddetailsremoved_banner_button_readmore">Lees meer</string>
+  <string name="holder_invaliddetailsremoved_moreinfo_title">Verwijderde gegevens</string>
+  <string name="holder_listRemoteEvents_endStateNoValidCertificate_title">Geen geldig bewijs</string>
+  <string name="holder_invaliddetailsremoved_moreinfo_body"><![CDATA[Er zijn gegevens van jou ongeldig verklaard. Daarom zijn deze uit de app verwijderd. Het gaat om de volgende gegevens:<br /><br />%1$s<br /><br />Mogelijk zijn hierdoor ook bewijzen uit de app verwijderd. Voeg een geldige vaccinatie of test toe om bewijzen weer terug te halen.<br/><br/>Heb je vragen? Bel de CoronaCheck helpdesk op <a href=\"tel:08001421\">0800-1421</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br/>%2$s]]></string>
+  <string name="holder_listRemoteEvents_endStateNoValidCertificate_body"><![CDATA[Dit bewijs is ongeldig verklaard. Daarom kun je het niet aan de app toevoegen.<br/><br/>Probeer een geldig bewijs toe te voegen, of bel de CoronaCheck helpdesk op <a href=\"tel:08001421\">0800-1421</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br/>%1$s]]></string>
+  <string name="holder_showQR_domestic_title_3g">3G-toegang</string>
+  <string name="holder_showQR_domestic_title_1g">1G-toegang</string>
 </resources>

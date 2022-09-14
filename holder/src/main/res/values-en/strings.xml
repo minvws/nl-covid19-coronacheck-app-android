@@ -383,7 +383,7 @@
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands. You’ve only got an international certificate.]]></string>
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason could be that the type of test is not accepted, or that the test is no longer valid abroad. An international recovery certificate can only be made with a PCR-test that is less than 180 days old. Read more about the possible causes on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost</a>.]]></string>
   <string name="my_overview_green_card_server_error"><![CDATA[The app periodically needs a connection to the server to refresh your QR codes. We failed to reach the server because of an error. <a href=\"#\">Try again</a>]]></string>
-  <string name="my_overview_green_card_server_error_after_retry"><![CDATA[Sorry, we weren’t able to refresh your QR code. Open the app again in 10 minutes.<br/><br/>Still not working? Please call the help desk at 0800-1421 (free) and provide the following error code: A 075]]></string>
+  <string name="my_overview_green_card_server_error_after_retry"><![CDATA[Sorry, we weren’t able to refresh your QR code. Open the app again in 10 minutes.<br/><br/>Still not working? Please call the helpdesk at 0800-1421 (free) and provide the following error code: A 075]]></string>
   <string name="my_overview_green_card_internet_error"><![CDATA[Connect to the internet to make sure your QR code works again.<br/><a href=\"#\">Try again</a>]]></string>
   <string name="dialog_faultyvaccination28June_title">Vaccination certificate corrected</string>
   <string name="dialog_faultyvaccination28June_message">You’ve wrongly received a Dutch vaccination certificate due to a technical error. This was corrected.</string>
@@ -682,7 +682,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_listRemoteEvents_negativeTest_message">This test result is retrieved from the test location. If the details are correct, you can create a certificate.</string>
   <string name="holder_listRemoteEvents_vaccinationAssessment_message">If the details are correct, you can add your vaccination approval to the app.</string>
   <string name="holder_listRemoteEvents_endStateRecoveryTooOld_title">Positive test result no longer valid</string>
-  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[The vaccination(s) you\'ve added to the app unfortunately don’t entitle you to a Dutch vaccination certificate.<br/><br/>Add a new vaccination or test to get a Dutch vaccination certificate.<br/><br/>Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
+  <string name="holder_incompletedutchvaccination_paragraph_secondvaccine"><![CDATA[The vaccination(s) you\'ve added to the app unfortunately don’t entitle you to a Dutch vaccination certificate.<br/><br/>Add a new (booster) vaccination or test to get a Dutch vaccination certificate.<br/><br/>Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="holder_listRemoteEvents_somethingWrong_vaccinationAndPositiveTest_body">Please contact the care provider who vaccinated or tested you. This can be the GGD, your general practitioner, or a doctor belonging to a healthcare facility. They can help you change these details.</string>
   <string name="holder_listRemoteEvents_endStateInternationalQROnly_message"><![CDATA[Only an international vaccination certificate could be created from your retrieved details. Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="holder_listRemoteEvents_somethingWrong_vaccination_body">Please contact the care provider who vaccinated you. This can be the GGD, your general practitioner, or a doctor belonging to a healthcare facility. They can help you change these details.</string>
@@ -832,6 +832,18 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="rule_engine_no_test_origin_description_retrieved_details">retrieved details</string>
   <string name="holder_event_vaccination_assessment_action_title">Add</string>
   <string name="holder_dashboard_incompleteVisitorPass_message">You can add a certificate if you\'re vaccinated, if you\'ve had coronavirus or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app.html">affiliated test location</a>.</string>
-  <string name="holder_qr_1g_toolbar_title">1G-toegang</string>
-  <string name="holder_qr_1g3g_toolbar_title">3G-toegang</string>
+  <string name="holder_listRemoteEvents_endStateDuplicate_title">This certificate is already in the app</string>
+  <string name="holder_listRemoteEvents_endStateDuplicate_message">The certificate you are trying to add is already in the app. You don’t have to scan it again.</string>
+  <string name="holder_invaliddetailsremoved_alert_title">Invalid details removed</string>
+  <string name="holder_invaliddetailsremoved_alert_body">Invalid vaccination or test details were found for you. These have been removed from the app. Certificates may also have been removed as a result.</string>
+  <string name="holder_invaliddetailsremoved_alert_button_moreinfo">More information</string>
+  <string name="holder_invaliddetailsremoved_alert_button_close">Close</string>
+  <string name="holder_invaliddetailsremoved_banner_title">Details have been removed from the app.</string>
+  <string name="holder_invaliddetailsremoved_banner_button_readmore">Read more</string>
+  <string name="holder_invaliddetailsremoved_moreinfo_title">Removed details</string>
+  <string name="holder_listRemoteEvents_endStateNoValidCertificate_title">Invalid certificate</string>
+  <string name="holder_invaliddetailsremoved_moreinfo_body"><![CDATA[Some of your details were declared invalid. They have therefore been removed from the app. It concerns the following details:<br /><br />%1$s<br /><br />Certificates may have been removed from the app as well. Please add a valid vaccination or test to retrieve certificates again.<br/><br/>Do you have questions about this? Please contact the CoronaCheck helpdesk via <a href=\"tel:08001421\">0800-1421</a> and pass on the below error code.<br/><br/><b>Error code:</b><br/>%2$s]]></string>
+  <string name="holder_listRemoteEvents_endStateNoValidCertificate_body"><![CDATA[This certificate has been declared invalid. For that reason, you cannot add it to the app.<br/><br/>Try to add a valid certificate, or contact the CoronaCheck helpdesk via <a href=\"tel:08001421\">0800-1421</a> and pass on the error code below.<br/><br/><b>Error code:</b><br/>%1$s]]></string>
+  <string name="holder_showQR_domestic_title_3g">3G-toegang</string>
+  <string name="holder_showQR_domestic_title_1g">1G-toegang</string>
 </resources>
