@@ -14,14 +14,12 @@ import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.api.json.JsonObjectJsonAdapter
 import nl.rijksoverheid.ctr.api.json.LocalDateJsonAdapter
 import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
-import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.shared.models.Environment
 import okhttp3.ConnectionSpec
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.tls.HandshakeCertificates
-import okhttp3.tls.decodeCertificatePem
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -55,7 +53,7 @@ fun apiModule(
                 }
                 if (coronaCheckApiChecks) {
                     val handshakeCertificates = HandshakeCertificates.Builder()
-                        .addTrustedCertificate(EV_ROOT_CA.decodeCertificatePem())
+                        .addPlatformTrustedCertificates()
                         .build()
                     sslSocketFactory(
                         handshakeCertificates.sslSocketFactory(),
