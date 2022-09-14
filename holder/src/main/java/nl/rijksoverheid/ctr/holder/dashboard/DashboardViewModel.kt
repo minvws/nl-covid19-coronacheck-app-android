@@ -22,6 +22,8 @@ import nl.rijksoverheid.ctr.holder.dashboard.datamappers.DashboardTabsItemDataMa
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogResult
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
@@ -39,6 +41,7 @@ import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 abstract class DashboardViewModel : ViewModel() {
     val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
     val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
+    val showBlockedEventsDialogLiveData: LiveData<Event<ShowBlockedEventsDialogResult>> = MutableLiveData()
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
@@ -59,7 +62,8 @@ class DashboardViewModelImpl(
     private val persistenceManager: PersistenceManager,
     private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
     private val dashboardTabsItemDataMapper: DashboardTabsItemDataMapper,
-    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase
+    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
+    private val showBlockedEventsDialogUseCase: ShowBlockedEventsDialogUseCase
 ) : DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -126,6 +130,11 @@ class DashboardViewModelImpl(
                 flow = HolderFlow.Refresh
             )
 
+            if (databaseSyncerResult is DatabaseSyncerResult.Success) {
+                val result = showBlockedEventsDialogUseCase.execute()
+                (showBlockedEventsDialogLiveData as MutableLiveData).postValue(Event(result))
+            }
+
             (databaseSyncerResultLiveData as MutableLiveData).value = Event(databaseSyncerResult)
 
             // If we loaded new credentials, we want to update our items again
@@ -181,7 +190,7 @@ class DashboardViewModelImpl(
 
     override fun dismissBlockedEventsInfo() {
         viewModelScope.launch {
-            persistenceManager.setShowEventsBlockedItem(false)
+            persistenceManager.setCanShowBlockedEventsDialog(true)
             holderDatabase.blockedEventDao().deleteAll()
         }
     }

@@ -14,6 +14,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardAddQrCardAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardCoronaMelderAdapterItem
@@ -23,14 +24,17 @@ import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogResult
 import nl.rijksoverheid.ctr.holder.dashboard.util.CardItemUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.ShowBlockedEventsBottomSheetUtil
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardPageBinding
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ViewModelOwner
 
@@ -61,7 +65,9 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
     }
 
     private val dashboardPageInfoItemHandlerUtil: DashboardPageInfoItemHandlerUtil by inject()
+    private val showBlockedEventsBottomSheetUtil: ShowBlockedEventsBottomSheetUtil by inject()
     private val cardItemUtil: CardItemUtil by inject()
+    private val dialogUtil: DialogUtil by inject()
     val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
         ViewModelOwner.from(
             requireParentFragment()
@@ -80,14 +86,37 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         val binding = FragmentDashboardPageBinding.bind(view)
         initRecyclerView(binding)
         observeItem()
+        observeShowBlockedEventsDialog()
     }
 
     private fun observeItem() {
         dashboardViewModel.dashboardTabItemsLiveData.observe(viewLifecycleOwner) {
             setItems(
-                myDashboardItems = it.firstOrNull { items -> items.greenCardType == greenCardType }?.items ?: listOf()
+                myDashboardItems = it.firstOrNull { items -> items.greenCardType == greenCardType }?.items
+                    ?: listOf()
             )
         }
+    }
+
+    private fun observeShowBlockedEventsDialog() {
+        dashboardViewModel.showBlockedEventsDialogLiveData.observe(
+            viewLifecycleOwner,
+            EventObserver { result ->
+                when (result) {
+                    is ShowBlockedEventsDialogResult.Show -> {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.holder_invaliddetailsremoved_alert_title,
+                            message = getString(R.string.holder_invaliddetailsremoved_alert_body),
+                            positiveButtonText = R.string.holder_invaliddetailsremoved_alert_button_close,
+                            positiveButtonCallback = { },
+                            negativeButtonText = R.string.holder_invaliddetailsremoved_alert_button_moreinfo,
+                            negativeButtonCallback = { showBlockedEventsBottomSheetUtil.show(this, result.blockedEvents) }
+                        )
+                    }
+                }
+            }
+        )
     }
 
     private fun initRecyclerView(binding: FragmentDashboardPageBinding) {

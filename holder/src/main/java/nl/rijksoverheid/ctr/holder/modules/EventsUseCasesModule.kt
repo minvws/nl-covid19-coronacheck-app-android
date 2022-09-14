@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder.modules
 
 import java.time.Clock
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUseCaseImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithTokensUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithTokensUseCaseImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventsUseCase
@@ -77,4 +79,5 @@ val eventsUseCasesModule = module {
         GetRemoteProtocolFromEventGroupUseCaseImpl(get(), get())
     }
     factory<PersistBlockedEventsUseCase> { PersistBlockedEventsUseCaseImpl(get()) }
+    factory<ShowBlockedEventsDialogUseCase> { ShowBlockedEventsDialogUseCaseImpl(get(), get()) }
 }

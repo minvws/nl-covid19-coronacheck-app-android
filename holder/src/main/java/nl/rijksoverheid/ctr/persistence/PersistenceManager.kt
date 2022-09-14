@@ -38,8 +38,8 @@ interface PersistenceManager {
     fun setPolicyScreenSeen(policy: DisclosurePolicy)
     fun setCheckCanOpenDatabase(check: Boolean)
     fun getCheckCanOpenDatabase(): Boolean
-    fun getShowEventsBlockedItem(): Boolean
-    fun setShowEventsBlockedItem(show: Boolean)
+    fun getCanShowBlockedEventsDialog(): Boolean
+    fun setCanShowBlockedEventsDialog(show: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -61,7 +61,7 @@ class SharedPreferencesPersistenceManager(
         const val POLICY_BANNER_DISMISSED = "POLICY_BANNER_DISMISSED"
         const val POLICY_SCREEN_SEEN = "POLICY_SCREEN_SEEN"
         const val CHECK_CAN_OPEN_DATABASE = "CHECK_CAN_OPEN_DATABASE"
-        const val SHOW_EVENTS_BLOCKED_ITEM = "SHOW_EVENTS_BLOCKED_ITEM"
+        const val CAN_SHOW_BLOCKED_EVENTS_DIALOG = "CAN_SHOW_BLOCKED_EVENTS_DIALOG"
     }
 
     override fun saveDatabasePassPhrase(passPhrase: String) {
@@ -174,11 +174,11 @@ class SharedPreferencesPersistenceManager(
         return sharedPreferences.getBoolean(CHECK_CAN_OPEN_DATABASE, true)
     }
 
-    override fun getShowEventsBlockedItem(): Boolean {
-        return sharedPreferences.getBoolean(SHOW_EVENTS_BLOCKED_ITEM, false)
+    override fun getCanShowBlockedEventsDialog(): Boolean {
+        return sharedPreferences.getBoolean(CAN_SHOW_BLOCKED_EVENTS_DIALOG, true)
     }
 
-    override fun setShowEventsBlockedItem(show: Boolean) {
-        sharedPreferences.edit().putBoolean(SHOW_EVENTS_BLOCKED_ITEM, show).commit()
+    override fun setCanShowBlockedEventsDialog(show: Boolean) {
+        sharedPreferences.edit().putBoolean(CAN_SHOW_BLOCKED_EVENTS_DIALOG, show).commit()
     }
 }
