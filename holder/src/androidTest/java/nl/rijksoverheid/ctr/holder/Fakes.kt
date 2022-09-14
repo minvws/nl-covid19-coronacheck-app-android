@@ -80,6 +80,9 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
         }
+
+        override fun dismissBlockedEventsInfo() {
+        }
     }
 
 val fakeDashboardTabItem = DashboardTabItem(
