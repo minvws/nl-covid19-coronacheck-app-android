@@ -65,7 +65,6 @@ class YourEventsViewModelImpl(
 
                 (conflictingEventsResult as MutableLiveData).postValue(Event(conflictingEvents))
             } catch (e: Exception) {
-                println("pame to exceptionaki")
                 (yourEventsResult as MutableLiveData).value = Event(
                     DatabaseSyncerResult.Failed.Error(AppErrorResult(HolderStep.StoringEvents, e))
                 )

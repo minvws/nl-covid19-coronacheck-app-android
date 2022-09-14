@@ -147,7 +147,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         )
                     }
                     is DatabaseSyncerResult.Failed -> {
-                        println("Present to error na oume")
                         presentError(
                             errorResult = databaseSyncerResult.errorResult
                         )
