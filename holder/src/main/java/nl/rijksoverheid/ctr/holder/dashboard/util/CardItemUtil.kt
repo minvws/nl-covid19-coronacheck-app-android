@@ -34,7 +34,7 @@ interface CardItemUtil {
     ): QrCodeFragmentData.ShouldDisclose
 
     @StringRes
-    fun getToolbarTitle(): Int
+    fun getToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int
 }
 
 class CardItemUtilImpl(
@@ -113,11 +113,18 @@ class CardItemUtilImpl(
         }
     }
 
-    override fun getToolbarTitle(): Int {
+    override fun getToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int {
         return when (featureFlagUseCase.getDisclosurePolicy()) {
-            DisclosurePolicy.OneAndThreeG -> R.string.holder_showQR_domestic_title_3g
-            DisclosurePolicy.OneG -> R.string.holder_showQR_domestic_title_1g
+            DisclosurePolicy.OneAndThreeG -> {
+                getTitleFromCardDisclosurePolicy(cardItem.disclosurePolicy)
+            }
+            DisclosurePolicy.OneG -> getTitleFromCardDisclosurePolicy(cardItem.disclosurePolicy)
             else -> R.string.domestic_qr_code_title
         }
+    }
+
+    private fun getTitleFromCardDisclosurePolicy(policy: GreenCardDisclosurePolicy) = when (policy) {
+        GreenCardDisclosurePolicy.OneG -> R.string.holder_showQR_domestic_title_1g
+        GreenCardDisclosurePolicy.ThreeG -> R.string.holder_showQR_domestic_title_3g
     }
 }

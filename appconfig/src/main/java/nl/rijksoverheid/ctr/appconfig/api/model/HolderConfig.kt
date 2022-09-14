@@ -51,7 +51,7 @@ data class HolderConfig(
     @Json(name = "visitorPassEnabled") val visitorPassEnabled: Boolean,
     @Json(name = "vaccinationAssessmentEventValidityDays") val vaccinationAssessmentEventValidityDays: Int,
     @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean,
-    @Json(name = "disclosurePolicies1") val disclosurePolicy: DisclosurePolicy = DisclosurePolicy.OneAndThreeG,
+    @Json(name = "disclosurePolicies") val disclosurePolicy: DisclosurePolicy,
     @Json(name = "backendTLSCertificates") val backendTLSCertificates: List<String>,
     @Json(name = "shouldShowCoronaMelderRecommendation") val shouldShowCoronaMelderRecommendation: Boolean?,
     @Json(name = "papEnabled") val papEnabled: Boolean
