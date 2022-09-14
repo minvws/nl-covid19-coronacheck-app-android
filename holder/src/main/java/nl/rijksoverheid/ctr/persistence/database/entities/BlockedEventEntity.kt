@@ -25,6 +25,6 @@ import java.time.OffsetDateTime
 data class BlockedEventEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "wallet_id", index = true) val walletId: Int,
-    val type: OriginType,
+    val type: String,
     @ColumnInfo(name = "event_time") val eventTime: OffsetDateTime?
 )

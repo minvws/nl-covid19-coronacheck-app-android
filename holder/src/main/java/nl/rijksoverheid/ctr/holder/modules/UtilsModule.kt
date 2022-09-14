@@ -87,7 +87,7 @@ fun utilsModule(versionCode: Int) = module {
     factory<CountryUtil> { CountryUtilImpl() }
     factory<LocalDateUtil> { LocalDateUtilImpl(get(), get()) }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
-    factory<DashboardPageInfoItemHandlerUtil> { DashboardPageInfoItemHandlerUtilImpl(get(), get(), get()) }
+    factory<DashboardPageInfoItemHandlerUtil> { DashboardPageInfoItemHandlerUtilImpl(get(), get(), get(), get(), get()) }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
