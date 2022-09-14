@@ -38,7 +38,7 @@ class YourEventsFragmentUtilImpl(
                 R.string.holder_listRemoteEvents_paperflow_message
             }
             isVaccinationAssessment(type) -> {
-                R.string.holder_event_vaccination_assessment_list_message
+                R.string.holder_listRemoteEvents_vaccinationAssessment_message
             }
             else -> {
                 R.string.holder_listRemoteEvents_vaccination_message

@@ -599,7 +599,6 @@
   <string name="holder_event_vaccination_assessment_wrong_body"><![CDATA[Please go back to the desk that reviewed your vaccination. They can re-enter your details. You will also receive a new approval code. For more information, please visit <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.government.nl/entry-pass-visitors</a>.]]></string>
   <string name="holder_event_vaccination_assessment_alert_message">Doing so will stop the addition of your vaccination approval and you will have to retrieve your details again later.</string>
   <string name="visitorpass_token_error_invalid_code">This code is invalid. A valid code looks like this: VAC-YYYYYYYYY1-F2.</string>
-  <string name="holder_event_vaccination_assessment_list_message">Are the details correct? If the details are correct, you can add your vaccination approval to the app.</string>
   <string name="holder_completecertificate_title">Complete your visitor pass</string>
   <string name="holder_completecertificate_body"><![CDATA[Retrieve a negative test result to complete your visitor pass.<br/><br/>Didn\'t do a test yet? Make an appointment at <a href=\"https://www.testenvoortoegang.org/?lang=en\">www.testenvoortoegang.org</a>.]]></string>
   <string name="holder_completecertificate_button_fetchnegativetest">Retrieve test result</string>
