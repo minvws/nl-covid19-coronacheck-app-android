@@ -416,7 +416,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
             holderDatabase = holderDatabase
         )
 
-        assertEquals(false, util.shouldShowBlockedEventsItem())
+        assertFalse(util.shouldShowBlockedEventsItem())
     }
 
     private fun createCardItem(originType: OriginType) = CardItem(
