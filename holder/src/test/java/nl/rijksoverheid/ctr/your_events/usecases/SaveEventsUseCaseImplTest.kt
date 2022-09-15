@@ -198,7 +198,7 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `remoteProtocols3AreConflicting returns ConflictingEventResultNone if holders are not conflicting`() = runBlocking {
+    fun `remoteProtocols3AreConflicting returns ConflictingEventResultNone if remote protocols are not conflicting`() = runBlocking {
         // Mock remoteEventHolderUtil because of signed json blob
         val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
         coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { false }
@@ -240,7 +240,7 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `remoteProtocols3AreConflicting returns ConflictingEventResultExisting if holders are not conflicting`() = runBlocking {
+    fun `remoteProtocols3AreConflicting returns ConflictingEventResultExisting if remote protocols are conflicting`() = runBlocking {
         // Mock remoteEventHolderUtil because of signed json blob
         val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
         coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { false }
