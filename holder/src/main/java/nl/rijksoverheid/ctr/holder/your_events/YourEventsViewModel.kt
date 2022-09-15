@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderStep
+import nl.rijksoverheid.ctr.holder.your_events.models.ConflictingEventResult
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCaseImpl
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
@@ -33,7 +34,7 @@ import nl.rijksoverheid.ctr.shared.models.Flow
 abstract class YourEventsViewModel : ViewModel() {
     val loading: LiveData<Event<Boolean>> = MutableLiveData()
     val yourEventsResult: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
-    val conflictingEventsResult: LiveData<Event<Boolean>> = MutableLiveData()
+    val conflictingEventsResult: LiveData<Event<ConflictingEventResult>> = MutableLiveData()
 
     abstract fun saveRemoteProtocolEvents(
         flow: Flow,
@@ -75,7 +76,7 @@ class YourEventsViewModelImpl(
 
     override fun saveRemoteProtocolEvents(
         flow: Flow,
-        remoteEvents: Map<RemoteProtocol, ByteArray>,
+        remoteProtocols: Map<RemoteProtocol, ByteArray>,
         removePreviousEvents: Boolean
     ) {
         (loading as MutableLiveData).value = Event(true)
@@ -83,7 +84,7 @@ class YourEventsViewModelImpl(
             try {
                 // Save the events in the database
                 val result = saveEventsUseCase.saveRemoteProtocols3(
-                    remoteProtocols = remoteEvents,
+                    remoteProtocols = remoteProtocols,
                     removePreviousEvents = removePreviousEvents,
                     flow = flow
                 )

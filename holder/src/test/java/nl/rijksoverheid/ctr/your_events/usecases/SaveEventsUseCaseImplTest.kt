@@ -17,6 +17,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.your_events.models.ConflictingEventResult
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
@@ -24,8 +25,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -157,7 +156,7 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `remoteProtocols3AreConflicting returns false if holders are conflicting`() = runBlocking {
+    fun `remoteProtocols3AreConflicting returns ConflictingEventResultHolder if holders are conflicting`() = runBlocking {
         // Mock remoteEventHolderUtil because of signed json blob
         val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
         coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { true }
@@ -195,11 +194,11 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
                 ) to "".toByteArray()
             )
         )
-        assertTrue(conflicting)
+        assertEquals(ConflictingEventResult.Holder, conflicting)
     }
 
     @Test
-    fun `remoteProtocols3AreConflicting returns false if holders are not conflicting`() = runBlocking {
+    fun `remoteProtocols3AreConflicting returns ConflictingEventResultNone if remote protocols are not conflicting`() = runBlocking {
         // Mock remoteEventHolderUtil because of signed json blob
         val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
         coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { false }
@@ -237,6 +236,53 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
                 ) to "".toByteArray()
             )
         )
-        assertFalse(conflicting)
+        assertEquals(ConflictingEventResult.None, conflicting)
+    }
+
+    @Test
+    fun `remoteProtocols3AreConflicting returns ConflictingEventResultExisting if remote protocols are conflicting`() = runBlocking {
+        // Mock remoteEventHolderUtil because of signed json blob
+        val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
+        coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { false }
+        loadKoinModules(
+            module(override = true) {
+                factory {
+                    remoteEventHolderUtil
+                }
+            }
+        )
+
+        // Insert event into database
+        val db: HolderDatabase by inject()
+        val eventGroupEntity1 = EventGroupEntity(
+            id = 0,
+            walletId = 1,
+            providerIdentifier = "dcc_unique",
+            type = OriginType.Vaccination,
+            scope = "",
+            expiryDate = OffsetDateTime.now(),
+            jsonData = "".toByteArray()
+        )
+        db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
+
+        // Check with remote protocol
+        val usecase: SaveEventsUseCase by inject()
+        val conflicting = usecase.remoteProtocols3AreConflicting(
+            remoteProtocols = mapOf(
+                RemoteProtocol(
+                    providerIdentifier = "dcc",
+                    protocolVersion = "1",
+                    status = RemoteProtocol.Status.COMPLETE,
+                    holder = null,
+                    events = listOf(
+                        RemoteEventVaccination(
+                            "vaccination", "unique",
+                            vaccination = null
+                        )
+                    )
+                ) to "".toByteArray()
+            )
+        )
+        assertEquals(ConflictingEventResult.Existing, conflicting)
     }
 }
