@@ -67,7 +67,7 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
                 is ActivityNotFoundException -> "070-14"
                 is MissingOriginException -> "058"
                 is WeCouldntCreateCertificateException -> exception.errorCode
-                is BlockedEventException -> "059"
+                is BlockedEventException -> "0514"
                 else -> throw it.getException()
             }
 
