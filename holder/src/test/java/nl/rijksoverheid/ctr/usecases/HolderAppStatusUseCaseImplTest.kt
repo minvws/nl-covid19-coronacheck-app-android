@@ -739,7 +739,7 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdateData.newFeatures.first().imageResource
             )
             assertEquals(
-                R.string.holder_newintheapp_content_dutchAndInternationalCertificates_button_toMyCertificates,
+                R.string.onboarding_next,
                 appUpdateData.newFeatures.first().buttonResource
             )
             assertEquals(
