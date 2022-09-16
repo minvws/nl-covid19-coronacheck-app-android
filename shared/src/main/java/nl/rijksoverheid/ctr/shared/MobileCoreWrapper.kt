@@ -45,6 +45,7 @@ interface MobileCoreWrapper {
     fun isDcc(credential: ByteArray): Boolean
     fun isForeignDcc(credential: ByteArray): Boolean
     fun hasDomesticPrefix(credential: ByteArray): Boolean
+    fun isPaperBasedDCC(credential: ByteArray): Boolean
 }
 
 class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
@@ -163,5 +164,9 @@ class MobileCoreWrapperImpl(private val moshi: Moshi) : MobileCoreWrapper {
 
     override fun hasDomesticPrefix(credential: ByteArray): Boolean {
         return Mobilecore.hasDomesticPrefix(credential)
+    }
+
+    override fun isPaperBasedDCC(credential: ByteArray): Boolean {
+        return Mobilecore.isPaperBasedDCC(credential)
     }
 }
