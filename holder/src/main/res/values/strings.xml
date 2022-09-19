@@ -424,8 +424,6 @@
   <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_description">Scan de QR-code op je internationale bewijs. Je hoeft de Nederlandse QR-code niet te scannen.</string>
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Ongeldige QR-code</string>
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">Deze QR-code is niet geldig. Scan de QR-code op je internationale bewijs.</string>
-  <string name="add_paper_proof_expired_paper_proof_title">Dit papieren bewijs is verlopen</string>
-  <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[Dit papieren bewijs is niet meer geldig. Dit kan verschillende oorzaken hebben:<ul><li>Je vaccinatie of herstel is nog geldig, maar het papieren bewijs niet. Vraag dan opnieuw je papieren bewijs aan.</li><li>Je vaccinatie of herstel is verlopen.</li></ul>]]></string>
   <string name="add_paper_proof_limit_reached_paper_proof_title">Te vaak geprobeerd</string>
   <string name="add_paper_proof_limit_reached_paper_proof_description"><![CDATA[Voor de veiligheid kun je deze QR-code tijdelijk niet meer in de app zetten.<br/><br/>Je kunt het over 24 uur weer proberen.]]></string>
   <string name="add_paper_proof_invalid_combination_title">Geen geldige combinatie</string>
@@ -832,7 +830,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="general_retrievedDetails">opgehaalde gegevens</string>
   <string name="rule_engine_no_test_origin_description_retrieved_details">opgehaalde gegevens</string>
   <string name="holder_event_vaccination_assessment_action_title">Toevoegen</string>
-  <string name="holder_dashboard_incompleteVisitorPass_message">Je kunt een bewijs toevoegen als je bent gevaccineerd of hersteld. Of als je bent getest bij een <a href="https://coronacheck.nl/nl/testafspraak-in-app">aangesloten testlocatie</a>.</string>
+  <string name="holder_dashboard_incompleteVisitorPass_message"><![CDATA[Je kunt een bewijs toevoegen als je bent gevaccineerd of hersteld. Of als je bent getest bij een <a href=\"https://coronacheck.nl/nl/testafspraak-in-app\">aangesloten testlocatie</a>.]]></string>
   <string name="holder_listRemoteEvents_endStateDuplicate_title">Dit bewijs staat al in de app</string>
   <string name="holder_listRemoteEvents_endStateDuplicate_message">Het bewijs dat je probeert toe te voegen staat al in de app. Je hoeft het niet nog een keer te scannen.</string>
   <string name="holder_invaliddetailsremoved_alert_title">Ongeldige gegevens verwijderd</string>
