@@ -41,7 +41,7 @@ class ValidatePaperProofDomesticUseCaseImpl(
                         RemoteCouplingStatus.Accepted -> validateSuccess(qrContent, couplingCode)
                         RemoteCouplingStatus.Rejected -> PaperProofDomesticResult.Invalid.RejectedQr
                         RemoteCouplingStatus.Blocked -> PaperProofDomesticResult.Invalid.BlockedQr
-                        RemoteCouplingStatus.Expired -> PaperProofDomesticResult.Invalid.ExpiredQr
+                        RemoteCouplingStatus.Expired -> validateSuccess(qrContent, couplingCode)
                     }
                 }
                 is NetworkRequestResult.Failed -> {

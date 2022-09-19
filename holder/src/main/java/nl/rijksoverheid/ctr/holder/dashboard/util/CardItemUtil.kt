@@ -7,6 +7,8 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
+import androidx.annotation.StringRes
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
@@ -30,6 +32,9 @@ interface CardItemUtil {
     fun shouldDisclose(
         cardItem: DashboardItem.CardsItem.CardItem
     ): QrCodeFragmentData.ShouldDisclose
+
+    @StringRes
+    fun getQrCodesFragmentToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int
 }
 
 class CardItemUtilImpl(
@@ -106,5 +111,20 @@ class CardItemUtilImpl(
                 QrCodeFragmentData.ShouldDisclose.DoNotDisclose
             }
         }
+    }
+
+    override fun getQrCodesFragmentToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int {
+        return when (featureFlagUseCase.getDisclosurePolicy()) {
+            DisclosurePolicy.OneAndThreeG -> {
+                getTitleFromCardDisclosurePolicy(cardItem.disclosurePolicy)
+            }
+            DisclosurePolicy.OneG -> getTitleFromCardDisclosurePolicy(cardItem.disclosurePolicy)
+            else -> R.string.domestic_qr_code_title
+        }
+    }
+
+    private fun getTitleFromCardDisclosurePolicy(policy: GreenCardDisclosurePolicy) = when (policy) {
+        GreenCardDisclosurePolicy.OneG -> R.string.holder_showQR_domestic_title_1g
+        GreenCardDisclosurePolicy.ThreeG -> R.string.holder_showQR_domestic_title_3g
     }
 }

@@ -307,6 +307,10 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 "2"
             )
         }
+
+        override fun isPaperBasedDCC(credential: ByteArray): Boolean {
+            return false
+        }
     }
 }
 
@@ -392,6 +396,10 @@ fun fakeGreenCardUtil(
     }
 
     override fun isForeignDcc(greenCard: GreenCard): Boolean {
+        return false
+    }
+
+    override fun isPaperBasedDcc(greenCard: GreenCard): Boolean {
         return false
     }
 }

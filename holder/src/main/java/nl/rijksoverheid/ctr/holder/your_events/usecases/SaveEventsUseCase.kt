@@ -7,10 +7,12 @@
 
 package nl.rijksoverheid.ctr.holder.your_events.usecases
 
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
+import nl.rijksoverheid.ctr.holder.your_events.models.ConflictingEventResult
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
@@ -35,7 +37,7 @@ interface SaveEventsUseCase {
         flow: Flow
     ): SaveEventsUseCaseImpl.SaveEventResult
 
-    suspend fun remoteProtocols3AreConflicting(remoteProtocols: Map<RemoteProtocol, ByteArray>): Boolean
+    suspend fun remoteProtocols3AreConflicting(remoteProtocols: Map<RemoteProtocol, ByteArray>): ConflictingEventResult
 }
 
 class SaveEventsUseCaseImpl(
@@ -46,13 +48,29 @@ class SaveEventsUseCaseImpl(
     private val remoteProtocol3Util: RemoteProtocol3Util
 ) : SaveEventsUseCase {
 
-    override suspend fun remoteProtocols3AreConflicting(remoteProtocols: Map<RemoteProtocol, ByteArray>): Boolean {
+    private suspend fun remoteEventExistsAlready(remoteEvents: List<RemoteEvent>): Boolean {
+        val remoteEventUniques = remoteEvents.mapNotNull { it.unique }
+        val storedEventIdentifiers = holderDatabase.eventGroupDao().getAll().map { it.providerIdentifier }
+        return storedEventIdentifiers.any { identifier ->
+            remoteEventUniques.any { identifier.contains(it) }
+        }
+    }
+
+    override suspend fun remoteProtocols3AreConflicting(remoteProtocols: Map<RemoteProtocol, ByteArray>): ConflictingEventResult {
+        if (remoteEventExistsAlready(remoteProtocols.map { it.key }.flatMap { it.events ?: emptyList() })) {
+            return ConflictingEventResult.Existing
+        }
+
         val storedEventHolders = holderDatabase.eventGroupDao().getAll()
             .mapNotNull { remoteEventHolderUtil.holder(it.jsonData, it.providerIdentifier) }
             .distinct()
         val incomingEventHolders = remoteProtocols.mapNotNull { it.key.holder }.distinct()
 
-        return remoteEventHolderUtil.conflicting(storedEventHolders, incomingEventHolders)
+        return if (remoteEventHolderUtil.conflicting(storedEventHolders, incomingEventHolders)) {
+            ConflictingEventResult.Holder
+        } else {
+            ConflictingEventResult.None
+        }
     }
 
     override suspend fun saveRemoteProtocols3(

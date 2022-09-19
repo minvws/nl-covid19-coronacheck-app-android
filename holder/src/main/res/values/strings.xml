@@ -600,6 +600,7 @@
   <string name="holder_event_vaccination_assessment_wrong_body"><![CDATA[Ga terug naar de balie waar jouw vaccinatie is beoordeeld. Zij kunnen opnieuw je gegevens invoeren. Je krijgt dan ook een nieuwe beoordelingscode. Kijk voor meer informatie op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijksoverheid.nl/ctb-bezoekers</a>.]]></string>
   <string name="holder_event_vaccination_assessment_alert_message">Hierdoor stop je het toevoegen van je vaccinatiebeoordeling en moet je later opnieuw je gegevens ophalen.</string>
   <string name="visitorpass_token_error_invalid_code">Deze code is niet geldig. Een code ziet er bijvoorbeeld zo uit: VAC-YYYYYYYYY1-F2.</string>
+  <string name="holder_event_vaccination_assessment_list_message">Kloppen de gegevens? Als de gegevens kloppen kun je jouw vaccinatiebeoordeling toevoegen aan de app.</string>
   <string name="holder_completecertificate_title">Maak je bezoekersbewijs compleet</string>
   <string name="holder_completecertificate_body"><![CDATA[Haal een negatieve testuitslag op om je bezoekersbewijs compleet te maken.<br/><br/>Heb je nog geen coronatest gedaan? Maak een afspraak op <a href=\"https://www.testenvoortoegang.org\">www.testenvoortoegang.org</a>.]]></string>
   <string name="holder_completecertificate_button_fetchnegativetest">Testuitslag ophalen</string>
@@ -827,7 +828,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_listRemoteEvents_endStateCantCreateCertificate_title">We kunnen geen bewijs maken</string>
   <string name="rule_engine_no_origin_title">We kunnen geen bewijs maken</string>
   <string name="holder_listRemoteEvents_endStateRecoveryAndDosisCorrection_title">Er is een herstelbewijs gemaakt</string>
-  <string name="holder_listRemoteEvents_endStateRecoveryAndDosisCorrection_message"><![CDATA[Van je opgehaalde gegevens kon een herstelbewijs worden gemaakt.<br><br>Je positieve test kon ook meegeteld worden in je vaccinatiebewijs. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
+  <string name="holder_listRemoteEvents_endStateRecoveryAndDosisCorrection_message"><![CDATA[Van je opgehaalde gegevens is een herstelbewijs gemaakt.<br><br>Je positieve test kon ook meegeteld worden in je vaccinatiebewijs. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="general_retrievedDetails">opgehaalde gegevens</string>
   <string name="rule_engine_no_test_origin_description_retrieved_details">opgehaalde gegevens</string>
   <string name="holder_event_vaccination_assessment_action_title">Toevoegen</string>
@@ -844,4 +845,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_listRemoteEvents_endStateNoValidCertificate_title">Geen geldig bewijs</string>
   <string name="holder_invaliddetailsremoved_moreinfo_body"><![CDATA[Er zijn gegevens van jou ongeldig verklaard. Daarom zijn deze uit de app verwijderd. Het gaat om de volgende gegevens:<br /><br />%1$s<br /><br />Mogelijk zijn hierdoor ook bewijzen uit de app verwijderd. Voeg een geldige vaccinatie of test toe om bewijzen weer terug te halen.<br/><br/>Heb je vragen? Bel de CoronaCheck helpdesk op <a href=\"tel:08001421\">0800-1421</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br/>%2$s]]></string>
   <string name="holder_listRemoteEvents_endStateNoValidCertificate_body"><![CDATA[Dit bewijs is ongeldig verklaard. Daarom kun je het niet aan de app toevoegen.<br/><br/>Probeer een geldig bewijs toe te voegen, of bel de CoronaCheck helpdesk op <a href=\"tel:08001421\">0800-1421</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br/>%1$s]]></string>
+  <string name="holder_showQR_domestic_title_3g">3G-toegang</string>
+  <string name="holder_showQR_domestic_title_1g">1G-toegang</string>
 </resources>
