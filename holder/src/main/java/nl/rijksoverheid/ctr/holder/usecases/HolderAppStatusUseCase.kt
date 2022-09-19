@@ -144,7 +144,7 @@ class HolderAppStatusUseCaseImpl(
                 description = R.string.holder_newintheapp_content_dutchAndInternationalCertificates_body,
                 subTitleColor = R.color.primary_blue,
                 subtitleResource = R.string.new_in_app_subtitle,
-                buttonResource = R.string.holder_newintheapp_content_dutchAndInternationalCertificates_button_toMyCertificates
+                buttonResource = R.string.onboarding_next
             )
         } else null
     }

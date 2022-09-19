@@ -47,6 +47,8 @@ interface GreenCardUtil {
     fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean
 
     fun isForeignDcc(greenCard: GreenCard): Boolean
+
+    fun isPaperBasedDcc(greenCard: GreenCard): Boolean
 }
 
 class GreenCardUtilImpl(
@@ -113,5 +115,12 @@ class GreenCardUtilImpl(
                 } ?: false
             }
         }
+    }
+
+    override fun isPaperBasedDcc(greenCard: GreenCard): Boolean {
+        val activeCredential = credentialUtil.getActiveCredential(greenCard.greenCardEntity.type, greenCard.credentialEntities)
+        return activeCredential?.let {
+            mobileCoreWrapper.isPaperBasedDCC(activeCredential.data)
+        } ?: false
     }
 }
