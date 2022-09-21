@@ -66,7 +66,7 @@ class PaperProofQrScannerFragment : QrCodeScannerFragment() {
                                 eventGroupJsonData = paperProofType.eventGroupJsonData,
                                 originType = OriginType.fromTypeString(paperProofType.remoteProtocol.events!!.first().type!!)
                             ),
-                            flow = HolderFlow.HkviScan
+                            flow = HolderFlow.HkviScanned(paperProofType.remoteProtocol)
                         )
                     )
                 }
