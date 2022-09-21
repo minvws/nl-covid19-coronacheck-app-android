@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginHintEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.SecretKeyEntity
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 
@@ -40,7 +41,7 @@ class CreateDomesticGreenCardUseCaseImpl(
 
         // Create origins
         greenCard.origins.forEach { remoteOrigin ->
-            holderDatabase.originDao().insert(
+            val localOriginId = holderDatabase.originDao().insert(
                 OriginEntity(
                     greenCardId = localDomesticGreenCardId,
                     type = remoteOrigin.type,
@@ -50,6 +51,15 @@ class CreateDomesticGreenCardUseCaseImpl(
                     doseNumber = remoteOrigin.doseNumber
                 )
             )
+
+            remoteOrigin.hints?.forEach { hint ->
+                holderDatabase.originHintDao().insert(
+                    OriginHintEntity(
+                        originId = localOriginId,
+                        hint = hint
+                    )
+                )
+            }
         }
 
         val entities = domesticCredentials.map { domesticCredential ->

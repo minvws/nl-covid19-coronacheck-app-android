@@ -12,6 +12,7 @@ import java.time.Clock
 import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginHintEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -49,6 +50,8 @@ interface GreenCardUtil {
     fun isForeignDcc(greenCard: GreenCard): Boolean
 
     fun isPaperBasedDcc(greenCard: GreenCard): Boolean
+
+    fun isEventFromDcc(greenCard: GreenCard, hints: List<OriginHintEntity>): Boolean
 }
 
 class GreenCardUtilImpl(
@@ -122,5 +125,11 @@ class GreenCardUtilImpl(
         return activeCredential?.let {
             mobileCoreWrapper.isPaperBasedDCC(activeCredential.data)
         } ?: false
+    }
+
+    override fun isEventFromDcc(greenCard: GreenCard, hints: List<OriginHintEntity>): Boolean {
+        val eventFromDccHintOriginIds = hints.map { it.originId }
+        val greenCardOriginIds = greenCard.origins.map { it.id.toLong() }
+        return greenCardOriginIds.intersect(eventFromDccHintOriginIds.toSet()).isNotEmpty()
     }
 }

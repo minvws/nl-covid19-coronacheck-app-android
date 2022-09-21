@@ -39,9 +39,9 @@ class GreenCardRefreshUtilImpl(
 
         // Foreign dccs and dutch paper based dccs should not be refreshed
         // so exclude them from the refresh logic
+        val eventFromDccHints = holderDatabase.originHintDao().get("event_from_dcc")
         val greenCardsToRefresh = holderDatabase.greenCardDao().getAll()
-            .filter { !greenCardUtil.isForeignDcc(it) }
-            .filter { !greenCardUtil.isPaperBasedDcc(it) }
+            .filter { !greenCardUtil.isEventFromDcc(it, eventFromDccHints) }
 
         val greenCardExpiring = greenCardsToRefresh.firstOrNull { greenCard ->
             val hasNewCredentials = !greenCardUtil.getExpireDate(greenCard).isEqual(
@@ -76,9 +76,9 @@ class GreenCardRefreshUtilImpl(
 
         // Foreign dccs and dutch paper based dccs should not be refreshed
         // so exclude them from the refresh logic
+        val eventFromDccHints = holderDatabase.originHintDao().get("event_from_dcc")
         val greenCardsToRefresh = holderDatabase.greenCardDao().getAll()
-            .filter { !greenCardUtil.isForeignDcc(it) }
-            .filter { !greenCardUtil.isPaperBasedDcc(it) }
+            .filter { !greenCardUtil.isEventFromDcc(it, eventFromDccHints) }
 
         // find the furthest in the future credentials that
         // can be renewed, if any

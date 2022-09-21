@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginHintEntity
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 
 interface CreateEuGreenCardUseCase {
@@ -30,7 +31,7 @@ class CreateEuGreenCardUseCaseImpl(
 
         // Create origins for european green card
         greenCard.origins.map { remoteOrigin ->
-            holderDatabase.originDao().insert(
+            val localOriginId = holderDatabase.originDao().insert(
                 OriginEntity(
                     greenCardId = localEuropeanGreenCardId,
                     type = remoteOrigin.type,
@@ -39,6 +40,15 @@ class CreateEuGreenCardUseCaseImpl(
                     validFrom = remoteOrigin.validFrom
                 )
             )
+
+            remoteOrigin.hints?.forEach { hint ->
+                holderDatabase.originHintDao().insert(
+                    OriginHintEntity(
+                        originId = localOriginId,
+                        hint = hint
+                    )
+                )
+            }
         }
 
         // Create credential

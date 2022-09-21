@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginHintEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -321,6 +322,58 @@ class GreenCardUtilImplTest {
 
         assertEquals(true, greenCardUtil.isForeignDcc(greenCard))
     }
+
+    @Test
+    fun `isEventFromDcc returns true if green card origin has event_from_dcc hint`() {
+        val greenCard = getGreenCard(
+            origins = listOf(
+                getOriginEntity(id = 1),
+                getOriginEntity(id = 2)
+            )
+        )
+
+        val hints = listOf(
+            OriginHintEntity(id = 1, originId = 1, hint = "event_from_dcc")
+        )
+
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, mockk(), credentialUtil, mockk())
+
+        assertTrue(greenCardUtil.isEventFromDcc(greenCard, hints))
+    }
+
+    @Test
+    fun `isEventFromDcc returns false if green card origin does not have event_from_dcc hint`() {
+        val greenCard1 = getGreenCard(
+            origins = listOf(
+                getOriginEntity(id = 1),
+                getOriginEntity(id = 2)
+            )
+        )
+        val greenCard2 = getGreenCard(
+            origins = listOf(
+                getOriginEntity(id = 5),
+                getOriginEntity(id = 6)
+            )
+        )
+
+        val hints = listOf(
+            OriginHintEntity(id = 1, originId = 3, hint = "event_from_dcc")
+        )
+
+        val greenCardUtil = GreenCardUtilImpl(holderDatabase, mockk(), credentialUtil, mockk())
+
+        assertFalse(greenCardUtil.isEventFromDcc(greenCard1, hints))
+        assertFalse(greenCardUtil.isEventFromDcc(greenCard2, hints))
+    }
+
+    private fun getOriginEntity(id: Int) = OriginEntity(
+        id = id,
+        greenCardId = 1,
+        expirationTime = OffsetDateTime.now(),
+        type = OriginType.Vaccination,
+        eventTime = OffsetDateTime.now(),
+        validFrom = OffsetDateTime.now()
+    )
 
     private fun getGreenCard(
         type: GreenCardType = GreenCardType.Domestic,
