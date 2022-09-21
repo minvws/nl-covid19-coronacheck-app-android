@@ -424,8 +424,6 @@
   <string name="add_paper_proof_qr_error_dutch_qr_code_dialog_description">Scan the QR code on your international certificate. You don\'t have to scan the Dutch QR code.</string>
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_title">Invalid QR code</string>
   <string name="add_paper_proof_qr_error_invalid_qr_dialog_description">This QR code isn\'t valid. Scan the QR code on your international certificate.</string>
-  <string name="add_paper_proof_expired_paper_proof_title">This paper certificate has expired</string>
-  <string name="add_paper_proof_expired_paper_proof_description"><![CDATA[This paper certificate is no longer valid. This may have various causes:<ul><li>Your vaccination or recovery is still valid, but the paper certificate isn’t. In that case, please request a new paper certificate.</li><li>Your vaccination or recovery has expired.</li></ul>]]></string>
   <string name="add_paper_proof_limit_reached_paper_proof_title">Too many attempts</string>
   <string name="add_paper_proof_limit_reached_paper_proof_description"><![CDATA[For safety reasons, you won\'t be able to add this QR code to the app temporarily.<br/><br/>You can try again after 24 hours.]]></string>
   <string name="add_paper_proof_invalid_combination_title">No valid combination</string>
@@ -831,7 +829,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="general_retrievedDetails">retrieved details</string>
   <string name="rule_engine_no_test_origin_description_retrieved_details">retrieved details</string>
   <string name="holder_event_vaccination_assessment_action_title">Add</string>
-  <string name="holder_dashboard_incompleteVisitorPass_message">You can add a certificate if you\'re vaccinated, if you\'ve had coronavirus or by taking a test at an <a href="https://coronacheck.nl/en/testafspraak-in-app.html">affiliated test location</a>.</string>
+  <string name="holder_dashboard_incompleteVisitorPass_message"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had coronavirus or by taking a test at an <a href=\"https://coronacheck.nl/en/testafspraak-in-app.html\">affiliated test location</a>.]]></string>
   <string name="holder_listRemoteEvents_endStateDuplicate_title">This certificate is already in the app</string>
   <string name="holder_listRemoteEvents_endStateDuplicate_message">The certificate you are trying to add is already in the app. You don’t have to scan it again.</string>
   <string name="holder_invaliddetailsremoved_alert_title">Invalid details removed</string>
