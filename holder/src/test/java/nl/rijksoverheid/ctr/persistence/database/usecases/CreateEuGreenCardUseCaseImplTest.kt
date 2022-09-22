@@ -68,7 +68,8 @@ class CreateEuGreenCardUseCaseImplTest : AutoCloseKoinTest() {
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
                     validFrom = firstJanuaryDate,
-                    doseNumber = 1
+                    doseNumber = 1,
+                    hints = listOf("event_from_dcc")
                 )
             ),
             credential = credentialJson.toString()
@@ -116,7 +117,10 @@ class CreateEuGreenCardUseCaseImplTest : AutoCloseKoinTest() {
             )
         )
         val greenCards = db.greenCardDao().getAll()
+        val originHints = db.originHintDao().get("event_from_dcc")
 
+        assertEquals(1L, originHints[0].originId)
+        assertEquals("event_from_dcc", originHints[0].hint)
         assertEquals(euVaccinationGreenCard, greenCards[0])
     }
 }
