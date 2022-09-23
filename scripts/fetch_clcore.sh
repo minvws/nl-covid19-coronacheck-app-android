@@ -2,7 +2,7 @@ set -eux
 cd ../
 git clone git@github.com:minvws/nl-covid19-coronacheck-mobile-core-private.git tmp-mobilecore
 cd tmp-mobilecore
-git checkout v0.4.5-paper-based-dcc-hack
+git checkout v0.4.5
 git submodule init
 git submodule update
 go get -d golang.org/x/mobile/cmd/gobind@latest

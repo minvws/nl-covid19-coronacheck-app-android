@@ -204,10 +204,6 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 "2"
             )
         }
-
-        override fun isPaperBasedDCC(credential: ByteArray): Boolean {
-            return false
-        }
     }
 }
 

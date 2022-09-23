@@ -47,10 +47,6 @@ interface GreenCardUtil {
      */
     fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean
 
-    fun isForeignDcc(greenCard: GreenCard): Boolean
-
-    fun isPaperBasedDcc(greenCard: GreenCard): Boolean
-
     fun isEventFromDcc(greenCard: GreenCard, hints: List<OriginHintEntity>): Boolean
 }
 
@@ -106,30 +102,16 @@ class GreenCardUtilImpl(
                 greenCard.origins.size == 1 && hasOrigin(listOf(greenCard), OriginType.Test)
     }
 
-    override fun isForeignDcc(greenCard: GreenCard): Boolean {
+    override fun isEventFromDcc(greenCard: GreenCard, hints: List<OriginHintEntity>): Boolean {
         return when (greenCard.greenCardEntity.type) {
             is GreenCardType.Domestic -> {
                 false
             }
             is GreenCardType.Eu -> {
-                val activeCredential = credentialUtil.getActiveCredential(greenCard.greenCardEntity.type, greenCard.credentialEntities)
-                activeCredential?.let {
-                    mobileCoreWrapper.isForeignDcc(activeCredential.data)
-                } ?: false
+                val eventFromDccHintOriginIds = hints.map { it.originId }
+                val greenCardOriginIds = greenCard.origins.map { it.id.toLong() }
+                greenCardOriginIds.intersect(eventFromDccHintOriginIds.toSet()).isNotEmpty()
             }
         }
-    }
-
-    override fun isPaperBasedDcc(greenCard: GreenCard): Boolean {
-        val activeCredential = credentialUtil.getActiveCredential(greenCard.greenCardEntity.type, greenCard.credentialEntities)
-        return activeCredential?.let {
-            mobileCoreWrapper.isPaperBasedDCC(activeCredential.data)
-        } ?: false
-    }
-
-    override fun isEventFromDcc(greenCard: GreenCard, hints: List<OriginHintEntity>): Boolean {
-        val eventFromDccHintOriginIds = hints.map { it.originId }
-        val greenCardOriginIds = greenCard.origins.map { it.id.toLong() }
-        return greenCardOriginIds.intersect(eventFromDccHintOriginIds.toSet()).isNotEmpty()
     }
 }
