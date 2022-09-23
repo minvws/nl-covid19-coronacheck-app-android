@@ -6,8 +6,9 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
+import nl.rijksoverheid.ctr.holder.get_events.usecases.PersistBlockedEventsUseCase
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
 import nl.rijksoverheid.ctr.persistence.database.usecases.GetRemoteGreenCardsUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoteGreenCardsResult
@@ -38,7 +39,8 @@ interface HolderDatabaseSyncer {
     suspend fun sync(
         flow: Flow = HolderFlow.Startup,
         syncWithRemote: Boolean = true,
-        previousSyncResult: DatabaseSyncerResult? = null
+        previousSyncResult: DatabaseSyncerResult? = null,
+        newEvents: List<RemoteEvent> = listOf()
     ): DatabaseSyncerResult
 }
 
@@ -50,8 +52,8 @@ class HolderDatabaseSyncerImpl(
     private val getRemoteGreenCardsUseCase: GetRemoteGreenCardsUseCase,
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
-    private val featureFlagUseCase: HolderFeatureFlagUseCase,
-    private val updateEventExpirationUseCase: UpdateEventExpirationUseCase
+    private val updateEventExpirationUseCase: UpdateEventExpirationUseCase,
+    private val persistBlockedEventsUseCase: PersistBlockedEventsUseCase
 ) : HolderDatabaseSyncer {
 
     private val mutex = Mutex()
@@ -59,7 +61,8 @@ class HolderDatabaseSyncerImpl(
     override suspend fun sync(
         flow: Flow,
         syncWithRemote: Boolean,
-        previousSyncResult: DatabaseSyncerResult?
+        previousSyncResult: DatabaseSyncerResult?,
+        newEvents: List<RemoteEvent>
     ): DatabaseSyncerResult {
         return withContext(Dispatchers.IO) {
             mutex.withLock {
@@ -89,6 +92,12 @@ class HolderDatabaseSyncerImpl(
                                 blobExpireDates = remoteGreenCardsResult.remoteGreenCards.blobExpireDates ?: listOf()
                             )
 
+                            // Persist blocked events for communication to the user on the dashboard
+                            persistBlockedEventsUseCase.persist(
+                                newEvents = newEvents,
+                                blockedEvents = remoteGreenCardsResult.blockedEvents
+                            )
+
                             val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
 
                             // Insert green cards in database
@@ -106,7 +115,8 @@ class HolderDatabaseSyncerImpl(
                                 is SyncRemoteGreenCardsResult.Success -> {
                                     workerManagerUtil.scheduleRefreshCredentialsJob()
                                     return@withContext DatabaseSyncerResult.Success(
-                                        remoteGreenCards.hints ?: listOf()
+                                        hints = remoteGreenCards.hints ?: listOf(),
+                                        blockedEvents = remoteGreenCardsResult.blockedEvents
                                     )
                                 }
                                 is SyncRemoteGreenCardsResult.Failed -> {
@@ -154,7 +164,8 @@ class HolderDatabaseSyncerImpl(
 
 sealed class DatabaseSyncerResult {
     data class Success(
-        val hints: List<String> = listOf()
+        val hints: List<String> = listOf(),
+        val blockedEvents: List<RemoteEvent> = listOf()
     ) : DatabaseSyncerResult()
 
     sealed class Failed(open val errorResult: ErrorResult, open val failedAt: OffsetDateTime) :

@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder.modules
 
 import java.time.Clock
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUseCaseImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithTokensUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithTokensUseCaseImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventsUseCase
@@ -9,6 +11,10 @@ import nl.rijksoverheid.ctr.holder.get_events.usecases.GetMijnCnEventsUsecase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetMijnCnEventsUsecaseImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteEventsUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteEventsUseCaseImpl
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCaseImpl
+import nl.rijksoverheid.ctr.holder.get_events.usecases.PersistBlockedEventsUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.PersistBlockedEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetEventsFromPaperProofQrUseCase
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetEventsFromPaperProofQrUseCaseImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofDomesticInputCodeUseCase
@@ -69,4 +75,9 @@ val eventsUseCasesModule = module {
     factory<GetSavedEventsUseCase> {
         GetSavedEventsUseCaseImpl(get(), get(), get(), get(), get(), get(), get())
     }
+    factory<GetRemoteProtocolFromEventGroupUseCase> {
+        GetRemoteProtocolFromEventGroupUseCaseImpl(get(), get())
+    }
+    factory<PersistBlockedEventsUseCase> { PersistBlockedEventsUseCaseImpl(get()) }
+    factory<ShowBlockedEventsDialogUseCase> { ShowBlockedEventsDialogUseCaseImpl(get(), get()) }
 }

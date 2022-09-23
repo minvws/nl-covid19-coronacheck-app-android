@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
-import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetEventsFromPaperProofQrUseCase
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
 import nl.rijksoverheid.ctr.holder.saved_events.SavedEvents
 import nl.rijksoverheid.ctr.holder.your_events.utils.EventGroupEntityUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
@@ -34,7 +34,7 @@ class GetSavedEventsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val remoteEventUtil: RemoteEventUtil,
     private val eventGroupEntityUtil: EventGroupEntityUtil,
-    private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase,
+    private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase,
     private val infoScreenUtil: InfoScreenUtil,
     private val yourEventsFragmentUtil: YourEventsFragmentUtil
 ) : GetSavedEventsUseCase {
@@ -46,15 +46,7 @@ class GetSavedEventsUseCaseImpl(
             val isDccEvent = remoteEventUtil.isDccEvent(
                 providerIdentifier = eventGroupEntity.providerIdentifier
             )
-            val remoteProtocol = if (isDccEvent) {
-                val credential =
-                    JSONObject(eventGroupEntity.jsonData.decodeToString()).getString("credential")
-                getEventsFromPaperProofQrUseCase.get(credential)
-            } else {
-                remoteEventUtil.getRemoteProtocol3FromNonDcc(
-                    eventGroupEntity = eventGroupEntity
-                )
-            }
+            val remoteProtocol = getRemoteProtocolFromEventGroupUseCase.get(eventGroupEntity)
 
             val fullName = yourEventsFragmentUtil.getFullName(remoteProtocol?.holder)
             val birthDate = yourEventsFragmentUtil.getBirthDate(remoteProtocol?.holder)

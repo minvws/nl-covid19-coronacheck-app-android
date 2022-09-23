@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
@@ -45,7 +46,8 @@ class GetDashboardItemsUseCaseImpl(
     private val splitDomesticGreenCardsUseCase: SplitDomesticGreenCardsUseCase,
     private val sortGreenCardItemsUseCase: SortGreenCardItemsUseCase,
     private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase,
-    private val showCoronaMelderItemUseCase: ShowCoronaMelderItemUseCase
+    private val showCoronaMelderItemUseCase: ShowCoronaMelderItemUseCase,
+    private val holderDatabase: HolderDatabase
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
         allEventGroupEntities: List<EventGroupEntity>,
@@ -69,7 +71,7 @@ class GetDashboardItemsUseCaseImpl(
         )
     }
 
-    private fun getDomesticItems(
+    private suspend fun getDomesticItems(
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
@@ -107,6 +109,12 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.isAppUpdateAvailable()) {
             dashboardItems.add(DashboardItem.InfoItem.AppUpdate)
+        }
+
+        if (dashboardItemUtil.shouldShowBlockedEventsItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.BlockedEvents(
+                blockedEvents = holderDatabase.blockedEventDao().getAll()
+            ))
         }
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(hasEmptyState, allGreenCards)) {
@@ -180,7 +188,7 @@ class GetDashboardItemsUseCaseImpl(
         return sortGreenCardItemsUseCase.sort(dashboardItems)
     }
 
-    private fun getInternationalItems(
+    private suspend fun getInternationalItems(
         allEventGroupEntities: List<EventGroupEntity>,
         allGreenCards: List<GreenCard>,
         databaseSyncerResult: DatabaseSyncerResult,
@@ -214,6 +222,12 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.isAppUpdateAvailable()) {
             dashboardItems.add(DashboardItem.InfoItem.AppUpdate)
+        }
+
+        if (dashboardItemUtil.shouldShowBlockedEventsItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.BlockedEvents(
+                blockedEvents = holderDatabase.blockedEventDao().getAll()
+            ))
         }
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(hasEmptyState, allGreenCards)) {

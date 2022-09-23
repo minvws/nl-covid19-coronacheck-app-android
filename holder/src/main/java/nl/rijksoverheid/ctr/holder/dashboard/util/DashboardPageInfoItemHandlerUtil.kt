@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
@@ -51,7 +52,8 @@ interface DashboardPageInfoItemHandlerUtil {
 class DashboardPageInfoItemHandlerUtilImpl(
     private val infoFragmentUtil: InfoFragmentUtil,
     private val intentUtil: IntentUtil,
-    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
+    private val showBlockedEventsBottomSheetUtil: ShowBlockedEventsBottomSheetUtil
 ) : DashboardPageInfoItemHandlerUtil {
 
     /**
@@ -86,6 +88,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
                     infoItem.disclosurePolicy
                 )
             }
+            is DashboardItem.InfoItem.BlockedEvents -> onBlockedEventsClick(dashboardPageFragment, infoItem.blockedEvents)
         }
     }
 
@@ -232,6 +235,10 @@ class DashboardPageInfoItemHandlerUtilImpl(
         )
     }
 
+    private fun onBlockedEventsClick(dashboardPageFragment: DashboardPageFragment, blockedEvents: List<BlockedEventEntity>) {
+        showBlockedEventsBottomSheetUtil.show(dashboardPageFragment, blockedEvents)
+    }
+
     private fun onOriginInfoClicked(
         dashboardPageFragment: DashboardPageFragment,
         item: DashboardItem.InfoItem.OriginInfoItem
@@ -342,6 +349,9 @@ class DashboardPageInfoItemHandlerUtilImpl(
             }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
                 dashboardPageFragment.dashboardViewModel.dismissPolicyInfo(infoItem.disclosurePolicy)
+            }
+            is DashboardItem.InfoItem.BlockedEvents -> {
+                dashboardPageFragment.dashboardViewModel.dismissBlockedEventsInfo()
             }
             else -> {
             }

@@ -90,6 +90,7 @@ open class CoronaCheckRepositoryImpl(
                         is HolderFlow.CommercialTest, is HolderFlow.DigidTest -> listOf("negativetest")
                         is HolderFlow.VaccinationAndPositiveTest -> listOf("vaccination", "positivetest")
                         is HolderFlow.VaccinationAssessment -> listOf("vaccinationassessment")
+                        is HolderFlow.Refresh -> listOf("refresh")
                         is HolderFlow.HkviScanned -> {
                             // Hkvi is a flow where you scanned a paper qr which holds one event. That event determines the backend flow.
                             when (flow.remoteProtocol.events?.first()) {

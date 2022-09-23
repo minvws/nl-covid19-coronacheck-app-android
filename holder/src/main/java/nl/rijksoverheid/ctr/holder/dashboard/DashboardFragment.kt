@@ -61,7 +61,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDashboardBinding.bind(view)
-        val adapter = DashboardPagerAdapter(childFragmentManager, viewLifecycleOwner.lifecycle, args.returnUri)
+        val adapter = DashboardPagerAdapter(
+            childFragmentManager,
+            viewLifecycleOwner.lifecycle,
+            args.returnUri
+        )
 
         setupViewPager(adapter)
         observeServerTimeSynced()

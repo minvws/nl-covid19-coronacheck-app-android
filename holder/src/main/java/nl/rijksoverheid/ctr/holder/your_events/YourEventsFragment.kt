@@ -51,6 +51,7 @@ import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.BlockedEventException
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.json.JSONObject
@@ -137,12 +138,19 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         yourEventsViewModel.yourEventsResult.observe(
             viewLifecycleOwner,
             EventObserver { databaseSyncerResult ->
+                val fragmentType = args.type
+
                 when (databaseSyncerResult) {
                     is DatabaseSyncerResult.Success -> {
                         handleEndState(
                             endState = yourEventsEndStateUtil.getEndState(
                                 context = requireContext(),
-                                hints = databaseSyncerResult.hints
+                                hints = databaseSyncerResult.hints,
+                                blockedEvents = databaseSyncerResult.blockedEvents,
+                                newEvents = when (fragmentType) {
+                                    is YourEventsFragmentType.DCC -> fragmentType.remoteEvent.events ?: listOf()
+                                    is YourEventsFragmentType.RemoteProtocol3Type -> fragmentType.remoteEvents.keys.toList().map { it.events ?: listOf() }.flatten()
+                                }
                             )
                         )
                     }
@@ -191,6 +199,23 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun handleEndState(endState: YourEventsEndState) {
         when (endState) {
+            is YourEventsEndState.BlockedEvent -> {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    toolbarTitle = getString(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title),
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.holder_listRemoteEvents_endStateNoValidCertificate_title),
+                        descriptionData = DescriptionData(
+                            htmlTextString = getString(R.string.holder_listRemoteEvents_endStateNoValidCertificate_body, errorCodeStringFactory.get(getFlow(), listOf(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, BlockedEventException())))),
+                            htmlLinksEnabled = true
+                        ),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.general_toMyOverview),
+                            navigationActionId = R.id.action_my_overview
+                        )
+                    )
+                )
+            }
             is YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
