@@ -30,7 +30,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginHintEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -291,41 +290,9 @@ class GreenCardUtilImplTest {
     }
 
     @Test
-    fun `isForeignDcc returns false if green card type is domestic`() {
-        val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
-        assertEquals(false, greenCardUtil.isForeignDcc(getGreenCard()))
-    }
-
-    @Test
-    fun `isForeignDcc returns false if green card type is eu but not foreign`() {
-        val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
-        val mobileCoreWrapper: MobileCoreWrapper = mockk()
-        every { mobileCoreWrapper.isForeignDcc(any()) } answers { false }
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mobileCoreWrapper)
-        val greenCard = getGreenCard(
-            type = GreenCardType.Eu
-        )
-
-        assertEquals(false, greenCardUtil.isForeignDcc(greenCard))
-    }
-
-    @Test
-    fun `isForeignDcc returns true if green card type is eu and foreign`() {
-        val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
-        val mobileCoreWrapper: MobileCoreWrapper = mockk()
-        every { mobileCoreWrapper.isForeignDcc(any()) } answers { true }
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mobileCoreWrapper)
-        val greenCard = getGreenCard(
-            type = GreenCardType.Eu
-        )
-
-        assertEquals(true, greenCardUtil.isForeignDcc(greenCard))
-    }
-
-    @Test
     fun `isEventFromDcc returns true if green card origin has event_from_dcc hint`() {
         val greenCard = getGreenCard(
+            type = GreenCardType.Eu,
             origins = listOf(
                 getOriginEntity(id = 1),
                 getOriginEntity(id = 2)
@@ -344,12 +311,14 @@ class GreenCardUtilImplTest {
     @Test
     fun `isEventFromDcc returns false if green card origin does not have event_from_dcc hint`() {
         val greenCard1 = getGreenCard(
+            type = GreenCardType.Eu,
             origins = listOf(
                 getOriginEntity(id = 1),
                 getOriginEntity(id = 2)
             )
         )
         val greenCard2 = getGreenCard(
+            type = GreenCardType.Eu,
             origins = listOf(
                 getOriginEntity(id = 5),
                 getOriginEntity(id = 6)

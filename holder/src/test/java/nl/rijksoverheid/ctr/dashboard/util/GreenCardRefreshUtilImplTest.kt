@@ -170,7 +170,7 @@ class GreenCardRefreshUtilImplTest {
         val foreignDccGreenCard = expiringGreenCard()
         val otherGreenCard = validGreenCard()
 
-        coEvery { greenCardUtil.isForeignDcc(foreignDccGreenCard) } answers { true }
+        coEvery { greenCardUtil.isEventFromDcc(foreignDccGreenCard, listOf()) } answers { true }
         coEvery { greenCardDao.getAll() } returns listOf(foreignDccGreenCard, otherGreenCard)
 
         assertFalse(greenCardRefreshUtil.shouldRefresh())
@@ -286,5 +286,13 @@ class GreenCardRefreshUtilImplTest {
         coEvery { originUtil.getOriginState(any()) } returns listOf(OriginState.Future(greenCard.origins.first()))
 
         assertEquals(1, (greenCardRefreshUtil.refreshState() as RefreshState.Refreshable).days)
+    }
+
+    @Test
+    fun `refresh state is NoRefresh for event_from_dcc`() = runBlocking {
+        greenCardWithExpiringCredentials(3)
+        coEvery { greenCardUtil.isEventFromDcc(any(), any()) } returns true
+
+        assertEquals(RefreshState.NoRefresh, greenCardRefreshUtil.refreshState())
     }
 }
