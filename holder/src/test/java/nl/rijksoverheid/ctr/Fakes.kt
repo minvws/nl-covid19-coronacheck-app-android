@@ -49,6 +49,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginHintEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.persistence.database.usecases.GetRemoteGreenCardsUseCase
@@ -307,10 +308,6 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                 "2"
             )
         }
-
-        override fun isPaperBasedDCC(credential: ByteArray): Boolean {
-            return false
-        }
     }
 }
 
@@ -395,11 +392,7 @@ fun fakeGreenCardUtil(
         return true
     }
 
-    override fun isForeignDcc(greenCard: GreenCard): Boolean {
-        return false
-    }
-
-    override fun isPaperBasedDcc(greenCard: GreenCard): Boolean {
+    override fun isEventFromDcc(greenCard: GreenCard, hints: List<OriginHintEntity>): Boolean {
         return false
     }
 }

@@ -24,7 +24,7 @@ interface OriginDao {
     suspend fun insertAll(entity: List<OriginEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(entity: OriginEntity)
+    suspend fun insert(entity: OriginEntity): Long
 
     @Delete
     suspend fun delete(entity: OriginEntity)

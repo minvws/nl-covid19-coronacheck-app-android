@@ -34,6 +34,7 @@ class SyncRemoteGreenCardsUseCaseImpl(
             holderDatabase.greenCardDao().deleteAll()
             holderDatabase.originDao().deleteAll()
             holderDatabase.credentialDao().deleteAll()
+            holderDatabase.originHintDao().deleteAll()
 
             domesticCredentials?.let { it ->
                 remoteGreenCards.domesticGreencard?.let { domesticGreenCard ->

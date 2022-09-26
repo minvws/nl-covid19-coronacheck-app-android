@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.persistence.database.dao.CredentialDao
 import nl.rijksoverheid.ctr.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.persistence.database.dao.OriginDao
+import nl.rijksoverheid.ctr.persistence.database.dao.OriginHintDao
 import nl.rijksoverheid.ctr.persistence.database.dao.SecretKeyDao
 import nl.rijksoverheid.ctr.persistence.database.dao.WalletDao
 import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
@@ -26,6 +27,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginHintEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.SecretKeyEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import nl.rijksoverheid.ctr.shared.models.Environment
@@ -140,11 +142,13 @@ val MIGRATION_7_8 = object : Migration(7, 8) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE IF NOT EXISTS blocked_event (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, wallet_id INTEGER NOT NULL, type TEXT NOT NULL, event_time INTEGER, FOREIGN KEY(wallet_id) REFERENCES wallet(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
         database.execSQL("CREATE INDEX index_blocked_event_wallet_id ON blocked_event(wallet_id)")
+        database.execSQL("CREATE TABLE IF NOT EXISTS origin_hint (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, origin_id INTEGER NOT NULL, hint TEXT NOT NULL, FOREIGN KEY(origin_id) REFERENCES origin(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
+        database.execSQL("CREATE INDEX index_origin_hint_hint ON origin_hint(hint)")
     }
 }
 
 @Database(
-    entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class, OriginEntity::class, SecretKeyEntity::class, BlockedEventEntity::class],
+    entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class, OriginEntity::class, SecretKeyEntity::class, BlockedEventEntity::class, OriginHintEntity::class],
     version = 8
 )
 @TypeConverters(HolderDatabaseConverter::class)
@@ -156,6 +160,7 @@ abstract class HolderDatabase : RoomDatabase() {
     abstract fun originDao(): OriginDao
     abstract fun secretKeyDao(): SecretKeyDao
     abstract fun blockedEventDao(): BlockedEventDao
+    abstract fun originHintDao(): OriginHintDao
 
     companion object {
         fun createInstance(

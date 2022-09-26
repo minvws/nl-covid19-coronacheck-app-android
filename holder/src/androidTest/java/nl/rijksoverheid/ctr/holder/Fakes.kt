@@ -167,8 +167,4 @@ val fakeMobileCoreWrapper = object : MobileCoreWrapper {
     override fun hasDomesticPrefix(credential: ByteArray): Boolean {
         TODO("Not yet implemented")
     }
-
-    override fun isPaperBasedDCC(credential: ByteArray): Boolean {
-        return false
-    }
 }
