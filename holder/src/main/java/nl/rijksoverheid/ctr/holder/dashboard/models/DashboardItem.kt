@@ -94,8 +94,6 @@ sealed class DashboardItem {
         ) : InfoItem(isDismissible = true, hasButton = true)
     }
 
-    object CoronaMelderItem : DashboardItem()
-
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {
 
         sealed class CredentialState {
