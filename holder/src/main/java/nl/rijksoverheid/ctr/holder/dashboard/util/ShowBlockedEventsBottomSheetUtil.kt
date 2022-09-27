@@ -88,7 +88,7 @@ class ShowBlockedEventsBottomSheetUtilImpl(
 
             val finalEvent = index == blockedEvents.size - 1
             if (!finalEvent) {
-                removedEventsHtml.append("<br/>")
+                removedEventsHtml.append("<br/><br/>")
             }
         }
 
