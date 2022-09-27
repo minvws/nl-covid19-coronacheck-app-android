@@ -88,31 +88,31 @@ class ShowBlockedEventsBottomSheetUtilImpl(
 
             val finalEvent = index == blockedEvents.size - 1
             if (!finalEvent) {
-                removedEventsHtml.append("<br/>")
+                removedEventsHtml.append("<br/><br/>")
             }
-
-            val errorCode = errorCodeStringFactory.get(
-                HolderFlow.Refresh, listOf(
-                    AppErrorResult(
-                        HolderStep.GetCredentialsNetworkRequest, BlockedEventException()
-                    )
-                )
-            )
-
-            infoFragmentUtil.presentAsBottomSheet(
-                dashboardPageFragment.parentFragmentManager,
-                InfoFragmentData.TitleDescription(
-                    title = context.getString(R.string.holder_invaliddetailsremoved_moreinfo_title),
-                    descriptionData = DescriptionData(
-                        htmlTextString = context.getString(
-                            R.string.holder_invaliddetailsremoved_moreinfo_body,
-                            removedEventsHtml,
-                            errorCode
-                        ),
-                        htmlLinksEnabled = true
-                    )
-                )
-            )
         }
+
+        val errorCode = errorCodeStringFactory.get(
+            HolderFlow.Refresh, listOf(
+                AppErrorResult(
+                    HolderStep.GetCredentialsNetworkRequest, BlockedEventException()
+                )
+            )
+        )
+
+        infoFragmentUtil.presentAsBottomSheet(
+            dashboardPageFragment.parentFragmentManager,
+            InfoFragmentData.TitleDescription(
+                title = context.getString(R.string.holder_invaliddetailsremoved_moreinfo_title),
+                descriptionData = DescriptionData(
+                    htmlTextString = context.getString(
+                        R.string.holder_invaliddetailsremoved_moreinfo_body,
+                        removedEventsHtml,
+                        errorCode
+                    ),
+                    htmlLinksEnabled = true
+                )
+            )
+        )
     }
 }

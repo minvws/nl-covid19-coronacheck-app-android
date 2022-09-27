@@ -108,7 +108,7 @@ class DashboardInfoCardAdapterItem(
             }
             is DashboardItem.InfoItem.BlockedEvents -> {
                 viewBinding.text.setText(
-                    R.string.holder_invaliddetailsremoved_alert_body
+                    R.string.holder_invaliddetailsremoved_banner_title
                 )
             }
         }
