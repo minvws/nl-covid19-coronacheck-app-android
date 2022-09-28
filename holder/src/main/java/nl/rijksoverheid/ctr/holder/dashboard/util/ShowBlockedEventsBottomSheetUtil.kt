@@ -48,15 +48,11 @@ class ShowBlockedEventsBottomSheetUtilImpl(
 
             val name = when (remoteEventClass) {
                 RemoteEventVaccination::class.java -> context.getString(R.string.general_vaccination)
-                    .capitalize()
                 RemoteEventNegativeTest::class.java -> context.getString(R.string.general_negativeTest)
-                    .capitalize()
                 RemoteEventPositiveTest::class.java -> context.getString(R.string.general_positiveTest)
-                    .capitalize()
                 RemoteEventRecovery::class.java -> context.getString(R.string.general_recoverycertificate)
-                RemoteEventVaccinationAssessment::class.java -> context.getString(R.string.general_visitorPass)
                 else -> ""
-            }
+            }.capitalize()
             val date = when (remoteEventClass) {
                 RemoteEventVaccination::class.java -> "${context.getString(R.string.qr_card_vaccination_title_eu)} ${
                     blockedEvent.eventTime?.toLocalDate()?.formatDayMonthYear()
