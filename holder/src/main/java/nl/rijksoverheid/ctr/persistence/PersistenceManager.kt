@@ -38,8 +38,6 @@ interface PersistenceManager {
     fun setPolicyScreenSeen(policy: DisclosurePolicy)
     fun setCheckCanOpenDatabase(check: Boolean)
     fun getCheckCanOpenDatabase(): Boolean
-    fun getCanShowBlockedEventsDialog(): Boolean
-    fun setCanShowBlockedEventsDialog(show: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -172,13 +170,5 @@ class SharedPreferencesPersistenceManager(
 
     override fun getCheckCanOpenDatabase(): Boolean {
         return sharedPreferences.getBoolean(CHECK_CAN_OPEN_DATABASE, true)
-    }
-
-    override fun getCanShowBlockedEventsDialog(): Boolean {
-        return sharedPreferences.getBoolean(CAN_SHOW_BLOCKED_EVENTS_DIALOG, true)
-    }
-
-    override fun setCanShowBlockedEventsDialog(show: Boolean) {
-        sharedPreferences.edit().putBoolean(CAN_SHOW_BLOCKED_EVENTS_DIALOG, show).commit()
     }
 }

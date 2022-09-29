@@ -7,9 +7,9 @@
 
 package nl.rijksoverheid.ctr.dashboard.usecases
 
-import android.content.Context.MODE_PRIVATE
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -17,8 +17,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.holder.HolderApplication
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogResult
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUseCaseImpl
-import nl.rijksoverheid.ctr.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.persistence.SharedPreferencesPersistenceManager
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
@@ -32,7 +31,6 @@ import org.robolectric.RobolectricTestRunner
 class ShowBlockedEventsDialogUseCaseImplTest : AutoCloseKoinTest() {
 
     private lateinit var db: HolderDatabase
-    private lateinit var persistenceManager: PersistenceManager
 
     @Before
     fun setup() = runBlocking {
@@ -44,64 +42,51 @@ class ShowBlockedEventsDialogUseCaseImplTest : AutoCloseKoinTest() {
                 label = "Wallet"
             )
         )
-
-        val sharedPreferences = context.getSharedPreferences(
-            "prefs",
-            MODE_PRIVATE
-        )
-
-        persistenceManager = SharedPreferencesPersistenceManager(sharedPreferences)
     }
 
     @Test
-    fun `Show dialog if there are blocked events and local stored boolean is set to true`() = runBlocking {
+    fun `Show dialog if there are remote blocked events`() = runBlocking {
         val blockedEventEntity = BlockedEventEntity(
             walletId = 1,
             type = "vaccination",
             eventTime = OffsetDateTime.now()
         )
         db.blockedEventDao().insert(blockedEventEntity)
-        persistenceManager.setCanShowBlockedEventsDialog(true)
 
-        val usecase = ShowBlockedEventsDialogUseCaseImpl(
-            holderDatabase = db,
-            persistenceManager = persistenceManager
-        )
+        val usecase = ShowBlockedEventsDialogUseCaseImpl(db)
 
-        val result = usecase.execute()
+        val result = usecase.execute(listOf(remoteEventVaccination()))
         assertTrue { result is ShowBlockedEventsDialogResult.Show }
         assertEquals(1, (result as ShowBlockedEventsDialogResult.Show).blockedEvents.size)
     }
 
     @Test
-    fun `Do not show dialog if there are blocked events and local stored boolean is set to false`() = runBlocking {
-        val blockedEventEntity = BlockedEventEntity(
-            walletId = 1,
-            type = "vaccination",
-            eventTime = OffsetDateTime.now()
-        )
-        db.blockedEventDao().insert(blockedEventEntity)
-        persistenceManager.setCanShowBlockedEventsDialog(false)
-
+    fun `Do not show dialog if there are no remote blocked events`() = runBlocking {
         val usecase = ShowBlockedEventsDialogUseCaseImpl(
-            holderDatabase = db,
-            persistenceManager = persistenceManager
+            holderDatabase = db
         )
 
-        val result = usecase.execute()
+        val result = usecase.execute(listOf())
         assertTrue { result is ShowBlockedEventsDialogResult.None }
     }
 
-    @Test
-    fun `Do not show dialog if there are no blocked events`() = runBlocking {
-        persistenceManager.setCanShowBlockedEventsDialog(true)
-
-        val usecase = ShowBlockedEventsDialogUseCaseImpl(
-            holderDatabase = db,
-            persistenceManager = persistenceManager
+    private fun remoteEventVaccination(): RemoteEventVaccination {
+        return RemoteEventVaccination(
+            type = "vaccination",
+            unique = "3ca0c918-5a20-4033-8fc3-8334cd5c63af",
+            vaccination = RemoteEventVaccination.Vaccination(
+                date = LocalDate.parse("2022-03-16"),
+                hpkCode = "2924528",
+                type = "",
+                brand = "",
+                completedByMedicalStatement = false,
+                completedByPersonalStatement = false,
+                completionReason = null,
+                doseNumber = null,
+                totalDoses = null,
+                manufacturer = "",
+                country = "NL"
+            )
         )
-
-        val result = usecase.execute()
-        assertTrue { result is ShowBlockedEventsDialogResult.None }
     }
 }
