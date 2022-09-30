@@ -131,7 +131,9 @@ class DashboardViewModelImpl(
             )
 
             if (databaseSyncerResult is DatabaseSyncerResult.Success) {
-                val result = showBlockedEventsDialogUseCase.execute()
+                val result = showBlockedEventsDialogUseCase.execute(
+                    blockedRemoteEvents = databaseSyncerResult.blockedEvents
+                )
                 (showBlockedEventsDialogLiveData as MutableLiveData).postValue(Event(result))
             }
 
@@ -190,7 +192,6 @@ class DashboardViewModelImpl(
 
     override fun dismissBlockedEventsInfo() {
         viewModelScope.launch {
-            persistenceManager.setCanShowBlockedEventsDialog(true)
             holderDatabase.blockedEventDao().deleteAll()
         }
     }

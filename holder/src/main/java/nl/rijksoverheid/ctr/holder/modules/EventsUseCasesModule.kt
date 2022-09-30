@@ -79,5 +79,5 @@ val eventsUseCasesModule = module {
         GetRemoteProtocolFromEventGroupUseCaseImpl(get(), get())
     }
     factory<PersistBlockedEventsUseCase> { PersistBlockedEventsUseCaseImpl(get()) }
-    factory<ShowBlockedEventsDialogUseCase> { ShowBlockedEventsDialogUseCaseImpl(get(), get()) }
+    factory<ShowBlockedEventsDialogUseCase> { ShowBlockedEventsDialogUseCaseImpl(get()) }
 }

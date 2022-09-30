@@ -7,29 +7,25 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.usecases
 
-import nl.rijksoverheid.ctr.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
 
 interface ShowBlockedEventsDialogUseCase {
-    suspend fun execute(): ShowBlockedEventsDialogResult
+    suspend fun execute(blockedRemoteEvents: List<RemoteEvent>): ShowBlockedEventsDialogResult
 }
 
 class ShowBlockedEventsDialogUseCaseImpl(
-    private val holderDatabase: HolderDatabase,
-    private val persistenceManager: PersistenceManager
+    private val holderDatabase: HolderDatabase
 ) : ShowBlockedEventsDialogUseCase {
 
-    override suspend fun execute(): ShowBlockedEventsDialogResult {
-        val blockedEvents = holderDatabase.blockedEventDao().getAll()
-        val show = persistenceManager.getCanShowBlockedEventsDialog() && blockedEvents.isNotEmpty()
-        if (show) {
-            persistenceManager.setCanShowBlockedEventsDialog(false)
-        }
-        return if (show) {
-            ShowBlockedEventsDialogResult.Show(blockedEvents)
-        } else {
+    override suspend fun execute(blockedRemoteEvents: List<RemoteEvent>): ShowBlockedEventsDialogResult {
+        return if (blockedRemoteEvents.isEmpty()) {
             ShowBlockedEventsDialogResult.None
+        } else {
+            ShowBlockedEventsDialogResult.Show(
+                blockedEvents = holderDatabase.blockedEventDao().getAll()
+            )
         }
     }
 }
