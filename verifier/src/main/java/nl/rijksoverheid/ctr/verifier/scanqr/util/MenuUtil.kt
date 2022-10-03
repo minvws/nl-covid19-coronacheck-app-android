@@ -28,7 +28,7 @@ class MenuUtilImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
     private val featureFlagUseCase: VerifierFeatureFlagUseCase
-): MenuUtil {
+) : MenuUtil {
 
     override fun showMenu(scanQrFragment: ScanQrFragment) {
         scanQrFragment.navigateSafety(
@@ -105,15 +105,15 @@ class MenuUtilImpl(
                 items = mutableListOf<AboutThisAppData.AboutThisAppItem>(
                     AboutThisAppData.Url(
                         text = context.getString(R.string.privacy_statement),
-                        url = context.getString(R.string.url_terms_of_use),
+                        url = context.getString(R.string.url_terms_of_use)
                     ),
                     AboutThisAppData.Url(
                         text = context.getString(R.string.about_this_app_accessibility),
-                        url = context.getString(R.string.url_accessibility),
+                        url = context.getString(R.string.url_accessibility)
                     ),
                     AboutThisAppData.Url(
                         text = context.getString(R.string.about_this_app_colofon),
-                        url = context.getString(R.string.about_this_app_colofon_url),
+                        url = context.getString(R.string.about_this_app_colofon_url)
                     )
                 ).apply {
                     if (!BuildConfig.FLAVOR.lowercase().contains("prod")) {

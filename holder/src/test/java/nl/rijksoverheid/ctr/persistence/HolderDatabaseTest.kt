@@ -3,24 +3,32 @@ package nl.rijksoverheid.ctr.persistence
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import java.io.IOException
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.SecretKeyEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.persistence.database.models.Wallet
 import org.junit.After
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import java.io.IOException
-import java.time.*
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -208,7 +216,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 greenCardEntity = GreenCardEntity(
                     id = 1,
                     walletId = 1,
-                    type = GreenCardType.Eu,
+                    type = GreenCardType.Eu
                 ),
                 credentialEntities = listOf(
                     CredentialEntity(
@@ -250,7 +258,7 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 greenCardEntity = GreenCardEntity(
                     id = 2,
                     walletId = 1,
-                    type = GreenCardType.Eu,
+                    type = GreenCardType.Eu
                 ),
                 credentialEntities = listOf(
                     CredentialEntity(

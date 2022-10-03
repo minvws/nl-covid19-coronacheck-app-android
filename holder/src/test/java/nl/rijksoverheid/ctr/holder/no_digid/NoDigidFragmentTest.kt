@@ -14,13 +14,13 @@ import io.mockk.verify
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.test.AutoCloseKoinTest
-import org.robolectric.RobolectricTestRunner
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
+import org.koin.test.AutoCloseKoinTest
+import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class NoDigidFragmentTest : AutoCloseKoinTest() {
@@ -65,7 +65,7 @@ class NoDigidFragmentTest : AutoCloseKoinTest() {
             "data" to NoDigidFragmentData(
                 title = "screen title",
                 description = "screen description",
-                firstNavigationButtonData =  NoDigidNavigationButtonData.Link(R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD, "button subtitle", null, "url"),
+                firstNavigationButtonData = NoDigidNavigationButtonData.Link(R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD, "button subtitle", null, "url"),
                 secondNavigationButtonData = NoDigidNavigationButtonData.NoDigid(R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD, null, R.drawable.ic_digid_logo, mockk()),
                 originType = RemoteOriginType.Vaccination
             ),

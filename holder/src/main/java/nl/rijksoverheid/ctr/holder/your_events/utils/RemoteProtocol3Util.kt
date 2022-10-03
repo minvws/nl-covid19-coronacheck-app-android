@@ -7,10 +7,10 @@
 
 package nl.rijksoverheid.ctr.holder.your_events.utils
 
-import nl.rijksoverheid.ctr.holder.your_events.RemoteEventInformation
+import java.lang.StringBuilder
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
-import java.lang.StringBuilder
+import nl.rijksoverheid.ctr.holder.your_events.RemoteEventInformation
 
 interface RemoteProtocol3Util {
     fun areGGDEvents(providerIdentifier: String): Boolean
@@ -19,7 +19,7 @@ interface RemoteProtocol3Util {
     fun groupEvents(remoteEvents: List<RemoteProtocol>): Map<RemoteEvent, List<RemoteEventInformation>>
 }
 
-class RemoteProtocol3UtilImpl: RemoteProtocol3Util {
+class RemoteProtocol3UtilImpl : RemoteProtocol3Util {
 
     override fun getProviderIdentifier(remoteProtocol: RemoteProtocol): String {
         return if (!areGGDEvents(remoteProtocol.providerIdentifier) && !areRIVMEvents(remoteProtocol.providerIdentifier)) {

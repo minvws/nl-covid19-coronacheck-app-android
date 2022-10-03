@@ -16,7 +16,7 @@ interface UpdateEventExpirationUseCase {
 
 class UpdateEventExpirationUseCaseImpl(
     private val holderDatabase: HolderDatabase
-): UpdateEventExpirationUseCase {
+) : UpdateEventExpirationUseCase {
 
     override suspend fun update(blobExpireDates: List<RemoteGreenCards.BlobExpiry>) {
         blobExpireDates.forEach {

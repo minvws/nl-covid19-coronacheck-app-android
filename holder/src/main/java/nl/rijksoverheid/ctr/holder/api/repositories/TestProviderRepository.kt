@@ -4,12 +4,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
-import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtil
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.api.post.GetTestResultPostData
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -28,14 +28,14 @@ interface TestProviderRepository {
         provider: String,
         verifierCode: String?,
         signingCertificateBytes: List<ByteArray>,
-        tlsCertificateBytes: List<ByteArray>,
+        tlsCertificateBytes: List<ByteArray>
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>>
 }
 
 class TestProviderRepositoryImpl(
     private val testProviderApiClientUtil: TestProviderApiClientUtil,
     private val networkRequestResultFactory: NetworkRequestResultFactory,
-    private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteProtocol>>,
+    private val responseConverter: Converter<ResponseBody, SignedResponseWithModel<RemoteProtocol>>
 ) : TestProviderRepository {
 
     private fun getTestProviderApiClient(tlsCertificateBytes: List<ByteArray>, cmsCertificateBytes: List<ByteArray>): TestProviderApiClient {
@@ -49,7 +49,7 @@ class TestProviderRepositoryImpl(
         provider: String,
         verifierCode: String?,
         signingCertificateBytes: List<ByteArray>,
-        tlsCertificateBytes: List<ByteArray>,
+        tlsCertificateBytes: List<ByteArray>
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
         return networkRequestResultFactory.createResult(
             step = HolderStep.TestResultNetworkRequest,

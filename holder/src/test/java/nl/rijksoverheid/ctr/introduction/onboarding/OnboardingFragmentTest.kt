@@ -42,7 +42,7 @@ class OnboardingFragmentTest : AutoCloseKoinTest() {
                     OnboardingItem(
                         R.drawable.illustration_onboarding_2,
                         R.string.onboarding_screen_1_title,
-                        R.string.onboarding_screen_1_description,
+                        R.string.onboarding_screen_1_description
                     )
                 )
             )
@@ -60,7 +60,7 @@ class OnboardingFragmentTest : AutoCloseKoinTest() {
                     OnboardingItem(
                         R.drawable.illustration_onboarding_2,
                         R.string.onboarding_screen_2_title,
-                        R.string.onboarding_screen_2_description,
+                        R.string.onboarding_screen_2_description
                     ),
                     OnboardingItem(
                         R.drawable.illustration_onboarding_4,

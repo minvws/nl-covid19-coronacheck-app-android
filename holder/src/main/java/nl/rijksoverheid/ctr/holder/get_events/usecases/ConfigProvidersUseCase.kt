@@ -7,8 +7,8 @@
 
 package nl.rijksoverheid.ctr.holder.get_events.usecases
 
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 

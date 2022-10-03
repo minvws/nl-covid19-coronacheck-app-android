@@ -7,9 +7,9 @@
 
 package nl.rijksoverheid.ctr.holder.input_token
 
+import android.os.Parcelable
 import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
-import android.os.Parcelable
 import nl.rijksoverheid.ctr.holder.R
 
 /*
@@ -33,10 +33,10 @@ sealed class InputTokenFragmentData(
     @StringRes val noResultScreenTitle: Int,
     @StringRes val noResultScreenDescription: Int,
     @StringRes val invalidTokenText: Int,
-    @StringRes val buttonText: Int,
-): Parcelable {
+    @StringRes val buttonText: Int
+) : Parcelable {
     @Parcelize
-    object CommercialTest: InputTokenFragmentData(
+    object CommercialTest : InputTokenFragmentData(
         description = R.string.commercial_test_code_description,
         descriptionDeeplink = R.string.commercial_test_verification_code_description_deeplink,
         uniqueCodeInputHeader = R.string.commercial_test_unique_code_header,
@@ -50,11 +50,11 @@ sealed class InputTokenFragmentData(
         noResultScreenTitle = R.string.no_negative_test_result_title,
         noResultScreenDescription = R.string.no_negative_test_result_description,
         invalidTokenText = R.string.commercial_test_error_invalid_code,
-        buttonText = R.string.commercial_test_button,
+        buttonText = R.string.commercial_test_button
     )
 
     @Parcelize
-    object VisitorPass: InputTokenFragmentData(
+    object VisitorPass : InputTokenFragmentData(
         description = R.string.visitorpass_code_description,
         descriptionDeeplink = R.string.visitorpass_code_description_deeplink,
         uniqueCodeInputHeader = R.string.visitorpass_code_review_input,
@@ -68,6 +68,6 @@ sealed class InputTokenFragmentData(
         noResultScreenTitle = R.string.holder_event_vaccination_assessment_nolist_title,
         noResultScreenDescription = R.string.holder_event_vaccination_assessment_nolist_message,
         invalidTokenText = R.string.visitorpass_token_error_invalid_code,
-        buttonText = R.string.onboarding_next,
+        buttonText = R.string.onboarding_next
     )
 }

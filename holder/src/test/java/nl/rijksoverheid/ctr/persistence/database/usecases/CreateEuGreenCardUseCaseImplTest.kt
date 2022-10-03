@@ -5,11 +5,19 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.coEvery
 import io.mockk.mockk
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.*
-import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
+import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
@@ -18,9 +26,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneId
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -63,7 +68,8 @@ class CreateEuGreenCardUseCaseImplTest : AutoCloseKoinTest() {
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
                     validFrom = firstJanuaryDate,
-                    doseNumber = 1
+                    doseNumber = 1,
+                    hints = listOf("event_from_dcc")
                 )
             ),
             credential = credentialJson.toString()
@@ -97,7 +103,7 @@ class CreateEuGreenCardUseCaseImplTest : AutoCloseKoinTest() {
                     eventTime = firstJanuaryDate,
                     expirationTime = firstJanuaryDate,
                     validFrom = firstJanuaryDate
-                ),
+                )
             ),
             credentialEntities = listOf(
                 CredentialEntity(
@@ -111,7 +117,10 @@ class CreateEuGreenCardUseCaseImplTest : AutoCloseKoinTest() {
             )
         )
         val greenCards = db.greenCardDao().getAll()
+        val originHints = db.originHintDao().get("event_from_dcc")
 
+        assertEquals(1L, originHints[0].originId)
+        assertEquals("event_from_dcc", originHints[0].hint)
         assertEquals(euVaccinationGreenCard, greenCards[0])
     }
 }

@@ -2,8 +2,8 @@ package nl.rijksoverheid.ctr.verifier.persistance.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import java.time.Instant
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -13,7 +13,7 @@ import java.time.Instant
  *
  */
 @Entity(
-    tableName = "scan_log",
+    tableName = "scan_log"
 )
 data class ScanLogEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,

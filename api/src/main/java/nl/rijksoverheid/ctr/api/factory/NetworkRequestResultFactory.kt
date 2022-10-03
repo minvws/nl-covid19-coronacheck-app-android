@@ -1,5 +1,9 @@
 package nl.rijksoverheid.ctr.api.factory
 
+import java.io.IOException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.MijnCnErrorResponse
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
@@ -8,10 +12,6 @@ import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.HttpException
-import java.io.IOException
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 /**
  * This class should be used for every network request
@@ -19,7 +19,7 @@ import java.net.UnknownHostException
 class NetworkRequestResultFactory(
     private val errorResponseBodyConverter: Converter<ResponseBody, CoronaCheckErrorResponse>,
     private val androidUtil: AndroidUtil,
-    private val mijnCnErrorResponseBodyConverter: Converter<ResponseBody, MijnCnErrorResponse>,
+    private val mijnCnErrorResponseBodyConverter: Converter<ResponseBody, MijnCnErrorResponse>
 ) {
 
     private companion object {

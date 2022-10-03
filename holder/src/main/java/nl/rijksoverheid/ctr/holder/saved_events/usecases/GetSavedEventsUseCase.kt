@@ -8,19 +8,21 @@
 package nl.rijksoverheid.ctr.holder.saved_events.usecases
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
-import nl.rijksoverheid.ctr.holder.get_events.models.*
-import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetEventsFromPaperProofQrUseCase
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
 import nl.rijksoverheid.ctr.holder.saved_events.SavedEvents
 import nl.rijksoverheid.ctr.holder.your_events.utils.EventGroupEntityUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.shared.livedata.Event
 import org.json.JSONObject
 
 interface GetSavedEventsUseCase {
@@ -32,10 +34,10 @@ class GetSavedEventsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
     private val remoteEventUtil: RemoteEventUtil,
     private val eventGroupEntityUtil: EventGroupEntityUtil,
-    private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase,
+    private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase,
     private val infoScreenUtil: InfoScreenUtil,
     private val yourEventsFragmentUtil: YourEventsFragmentUtil
-    ): GetSavedEventsUseCase {
+) : GetSavedEventsUseCase {
 
     override suspend fun getSavedEvents(): List<SavedEvents> {
         val eventGroups = holderDatabase.eventGroupDao().getAll().asReversed()
@@ -44,15 +46,7 @@ class GetSavedEventsUseCaseImpl(
             val isDccEvent = remoteEventUtil.isDccEvent(
                 providerIdentifier = eventGroupEntity.providerIdentifier
             )
-            val remoteProtocol = if (isDccEvent) {
-                val credential =
-                    JSONObject(eventGroupEntity.jsonData.decodeToString()).getString("credential")
-                getEventsFromPaperProofQrUseCase.get(credential)
-            } else {
-                remoteEventUtil.getRemoteProtocol3FromNonDcc(
-                    eventGroupEntity = eventGroupEntity
-                )
-            }
+            val remoteProtocol = getRemoteProtocolFromEventGroupUseCase.get(eventGroupEntity)
 
             val fullName = yourEventsFragmentUtil.getFullName(remoteProtocol?.holder)
             val birthDate = yourEventsFragmentUtil.getBirthDate(remoteProtocol?.holder)
@@ -75,7 +69,7 @@ class GetSavedEventsUseCaseImpl(
                                 birthDate = birthDate,
                                 providerIdentifier = eventGroupEntity.providerIdentifier,
                                 europeanCredential = europeanCredential,
-                                addExplanation = false,
+                                addExplanation = false
                             )
                         }
                         is RemoteEventRecovery -> {
@@ -86,7 +80,7 @@ class GetSavedEventsUseCaseImpl(
                                 fullName = fullName,
                                 birthDate = birthDate,
                                 europeanCredential = europeanCredential,
-                                addExplanation = false,
+                                addExplanation = false
                             )
                         }
                         is RemoteEventPositiveTest -> {
@@ -108,7 +102,7 @@ class GetSavedEventsUseCaseImpl(
                                 ) ?: "",
                                 birthDate = birthDate,
                                 europeanCredential = europeanCredential,
-                                addExplanation = false,
+                                addExplanation = false
                             )
                         }
                         is RemoteEventVaccinationAssessment -> {

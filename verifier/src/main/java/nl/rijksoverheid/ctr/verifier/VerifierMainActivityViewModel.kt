@@ -26,7 +26,7 @@ abstract class VerifierMainActivityViewModel : ViewModel() {
 class VerifierMainActivityViewModelImpl(
     private val scanLogsCleanupUseCase: ScanLogsCleanupUseCase,
     private val configVerificationPolicyUseCase: ConfigVerificationPolicyUseCase,
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : VerifierMainActivityViewModel() {
 
     override fun cleanup() {

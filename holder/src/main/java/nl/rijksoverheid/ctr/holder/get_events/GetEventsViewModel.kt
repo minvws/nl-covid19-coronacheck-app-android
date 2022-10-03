@@ -59,7 +59,7 @@ class GetEventsViewModelImpl(
             getEventsUseCase.getEvents(
                 loginType = loginType,
                 jwt = jwt,
-                originTypes = originTypes,
+                originTypes = originTypes
             )
         }
     }

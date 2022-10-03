@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.persistence
 
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 
 interface HolderCachedAppConfigUseCase {
     fun getCachedAppConfig(): HolderConfig

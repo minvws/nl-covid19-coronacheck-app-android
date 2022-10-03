@@ -21,7 +21,7 @@ import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class MenuUtilImplTest: AutoCloseKoinTest() {
+class MenuUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `When verification policy selection is enabled return correct menu items`() {

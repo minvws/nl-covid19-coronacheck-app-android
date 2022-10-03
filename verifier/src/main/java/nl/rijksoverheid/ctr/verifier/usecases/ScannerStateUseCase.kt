@@ -1,11 +1,11 @@
 package nl.rijksoverheid.ctr.verifier.usecases
 
+import java.time.Clock
+import java.time.Instant
 import nl.rijksoverheid.ctr.verifier.models.ScannerState
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionStateUseCase
-import java.time.Clock
-import java.time.Instant
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -23,7 +23,7 @@ class ScannerStateUseCaseImpl(
     private val verificationPolicySelectionStateUseCase: VerificationPolicySelectionStateUseCase,
     private val verifierCachedAppConfigUseCase: VerifierCachedAppConfigUseCase,
     private val persistenceManager: PersistenceManager,
-    private val featureFlagUseCase: VerifierFeatureFlagUseCase,
+    private val featureFlagUseCase: VerifierFeatureFlagUseCase
 ) : ScannerStateUseCase {
 
     override fun get(): ScannerState {

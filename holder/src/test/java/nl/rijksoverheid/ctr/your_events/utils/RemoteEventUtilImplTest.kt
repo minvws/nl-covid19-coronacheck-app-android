@@ -2,14 +2,14 @@ package nl.rijksoverheid.ctr.your_events.utils
 
 import com.squareup.moshi.Moshi
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtilImpl
-import org.junit.Assert.assertEquals
-import org.junit.Test
 import java.time.Clock
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtilImpl
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class RemoteEventUtilImplTest {
 
@@ -18,7 +18,7 @@ class RemoteEventUtilImplTest {
     @Test
     fun `removeDuplicateEvents removes duplicate vaccination events`() {
         val util = RemoteEventUtilImpl(
-            moshi = moshi,
+            moshi = moshi
         )
 
         val events = util.removeDuplicateEvents(listOf(vaccination(), vaccination()))
@@ -30,7 +30,7 @@ class RemoteEventUtilImplTest {
         totalDoses: String = "1",
         hpkCode: String? = "hpkCode",
         manufacturer: String? = null,
-        clock: Clock = Clock.fixed(Instant.parse("2021-06-01T00:00:00.00Z"), ZoneId.of("UTC")),
+        clock: Clock = Clock.fixed(Instant.parse("2021-06-01T00:00:00.00Z"), ZoneId.of("UTC"))
     ) = RemoteEventVaccination(
         type = "vaccination",
         unique = null,
@@ -45,7 +45,7 @@ class RemoteEventUtilImplTest {
             completedByMedicalStatement = null,
             completedByPersonalStatement = null,
             country = null,
-            completionReason = null,
+            completionReason = null
         )
     )
 }

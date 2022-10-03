@@ -22,7 +22,7 @@ data class AboutThisAppData(
 ) : Parcelable {
 
     @Parcelize
-    data class AboutThisAppSection(@StringRes val header: Int, val items: List<AboutThisAppItem>): Parcelable
+    data class AboutThisAppSection(@StringRes val header: Int, val items: List<AboutThisAppItem>) : Parcelable
 
     sealed class AboutThisAppItem(open val text: String) : Parcelable
 

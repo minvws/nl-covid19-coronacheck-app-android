@@ -9,14 +9,14 @@ package nl.rijksoverheid.ctr.holder.input_token
 
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResult
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.shared.models.Flow
 
-class VisitorPassInputTokenFragment: InputTokenFragment() {
+class VisitorPassInputTokenFragment : InputTokenFragment() {
 
     private val args: VisitorPassInputTokenFragmentArgs by navArgs()
 

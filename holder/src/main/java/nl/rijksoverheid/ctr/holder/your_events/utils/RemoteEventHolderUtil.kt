@@ -34,7 +34,7 @@ class RemoteEventHolderUtilImpl(
     private val moshi: Moshi,
     private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase,
     private val remoteEventUtil: RemoteEventUtil,
-    private val yourEventsFragmentUtil: YourEventsFragmentUtil,
+    private val yourEventsFragmentUtil: YourEventsFragmentUtil
 ) : RemoteEventHolderUtil {
     override fun holder(data: ByteArray, providerIdentifier: String): RemoteProtocol.Holder? {
         val remoteEvent =
@@ -89,7 +89,6 @@ class RemoteEventHolderUtilImpl(
         if (!latinCharactersRegex.matches(input)) return false
 
         return storedNameInitial != incomingNameInitial
-
     }
 
     private fun birthDateIsNotMatching(stored: String, incoming: String): Boolean {

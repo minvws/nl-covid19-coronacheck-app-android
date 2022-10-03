@@ -3,6 +3,8 @@ package nl.rijksoverheid.ctr.persistence.database
 import android.content.ContentValues
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import org.junit.Rule
 import org.junit.Test
@@ -10,11 +12,9 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
-class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
+class HolderDatabaseMigrationsTest : AutoCloseKoinTest() {
 
     private val persistenceManager: PersistenceManager by inject()
 
@@ -103,5 +103,19 @@ class HolderDatabaseMigrationsTest: AutoCloseKoinTest() {
         // Assert that the secret key from shared preferences is migrated to secret key table
         val secretKeyCursor = dbV7.query("SELECT * FROM secret_key")
         assertEquals(0, secretKeyCursor.count)
+    }
+
+    @Test
+    fun `Database v7 to v8 migrates successfully`() {
+        // Our database before the migration
+        val dbV7 = helper.createDatabase(DATABASE_NAME, 7)
+        dbV7.close()
+
+        // The database after the migration
+        val dbV8 = helper.runMigrationsAndValidate(DATABASE_NAME, 8, true, MIGRATION_7_8)
+
+        // Assert no errors
+        val cursor = dbV8.query("SELECT * FROM wallet")
+        assertNotNull(cursor)
     }
 }

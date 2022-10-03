@@ -26,7 +26,7 @@ interface VerifyQrUseCase {
 
 class VerifyQrUseCaseImpl(
     private val mobileCoreWrapper: MobileCoreWrapper,
-    private val verificationPolicySelectionUseCase: VerificationPolicySelectionUseCase,
+    private val verificationPolicySelectionUseCase: VerificationPolicySelectionUseCase
 ) : VerifyQrUseCase {
 
     override suspend fun get(

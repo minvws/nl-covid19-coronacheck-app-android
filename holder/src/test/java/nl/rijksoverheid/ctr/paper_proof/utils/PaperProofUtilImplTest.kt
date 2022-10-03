@@ -21,7 +21,7 @@ import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class PaperProofUtilImplTest: AutoCloseKoinTest() {
+class PaperProofUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getInfoScreenFooterText returns correct copy if foreign dcc`() {

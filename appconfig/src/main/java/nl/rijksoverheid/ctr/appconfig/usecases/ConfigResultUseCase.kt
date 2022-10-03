@@ -4,7 +4,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -18,8 +17,8 @@ interface ConfigResultUseCase {
 
 class ConfigResultUseCaseImpl(
     private val appConfigUseCase: AppConfigUseCase,
-    private val persistConfigUseCase: PersistConfigUseCase,
-): ConfigResultUseCase {
+    private val persistConfigUseCase: PersistConfigUseCase
+) : ConfigResultUseCase {
 
     private val mutex = Mutex()
 

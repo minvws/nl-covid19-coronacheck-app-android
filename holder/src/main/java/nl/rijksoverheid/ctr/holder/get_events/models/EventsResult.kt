@@ -21,16 +21,16 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
  */
 
 sealed class EventsResult {
-    data class Success (
+    data class Success(
         val remoteEvents: Map<RemoteProtocol, ByteArray>,
         val missingEvents: Boolean,
-        val eventProviders: List<EventProvider>,
+        val eventProviders: List<EventProvider>
     ) : EventsResult()
 
     data class HasNoEvents(val missingEvents: Boolean, val errorResults: List<ErrorResult> = emptyList()) : EventsResult()
-        
-    data class Error constructor(val errorResults: List<ErrorResult>): EventsResult() {
-        constructor(errorResult: ErrorResult): this(listOf(errorResult))
+
+    data class Error constructor(val errorResults: List<ErrorResult>) : EventsResult() {
+        constructor(errorResult: ErrorResult) : this(listOf(errorResult))
 
         fun accessTokenSessionExpiredError(): Boolean {
             val accessTokenCallError = errorResults.find { it.getCurrentStep() == HolderStep.AccessTokensNetworkRequest }
@@ -61,16 +61,16 @@ sealed class EventsResult {
             return unomiOrEventErrors != null
         }
 
-        fun isMijnCnMissingDataErrors() : Boolean {
-            val returnedError  = errorResults.find { it.getCurrentStep() == HolderStep.EventNetworkRequest }
-            returnedError?.let{ errorResult ->
+        fun isMijnCnMissingDataErrors(): Boolean {
+            val returnedError = errorResults.find { it.getCurrentStep() == HolderStep.EventNetworkRequest }
+            returnedError?.let { errorResult ->
                 return errorResult is NetworkRequestResult.Failed.CoronaCheckWithErrorResponseHttpError && errorResult.getCode() in 777706..777716
             }
             return false
         }
 
         companion object {
-            fun noProvidersError(originType: RemoteOriginType) = Error(object: ErrorResult {
+            fun noProvidersError(originType: RemoteOriginType) = Error(object : ErrorResult {
                 override fun getCurrentStep() = HolderStep.ConfigProvidersNetworkRequest
 
                 override fun getException() = when (originType) {

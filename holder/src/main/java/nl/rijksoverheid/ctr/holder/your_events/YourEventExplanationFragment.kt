@@ -28,7 +28,6 @@ class YourEventExplanationAdapter(private val dataSet: Array<InfoScreen>) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.subheader)
         val htmlTextViewWidget: HtmlTextViewWidget = view.findViewById(R.id.description)
-
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -45,7 +44,6 @@ class YourEventExplanationAdapter(private val dataSet: Array<InfoScreen>) :
     }
 
     override fun getItemCount() = dataSet.size
-
 }
 
 class YourEventExplanationFragment : Fragment(R.layout.fragment_your_event_explanation) {

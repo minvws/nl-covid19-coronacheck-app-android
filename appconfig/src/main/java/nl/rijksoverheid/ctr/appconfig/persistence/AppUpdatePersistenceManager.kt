@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.appconfig.persistence
 
 import android.content.SharedPreferences
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -54,7 +53,7 @@ class AppUpdatePersistenceManagerImpl(private val sharedPreferences: SharedPrefe
             .putBoolean(
                 type.replace(
                     "[VERSION]",
-                    version.toString(),
+                    version.toString()
                 ), true
             ).commit()
     }

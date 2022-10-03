@@ -12,14 +12,14 @@ import android.content.Context
 import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import androidx.test.core.app.ApplicationProvider
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
 class HtmlTextViewWidgetTest : AutoCloseKoinTest() {

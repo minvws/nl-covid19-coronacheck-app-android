@@ -27,5 +27,4 @@ class OnboardingPagerAdapter(
         val item = items[position]
         return OnboardingItemFragment.getInstance(item)
     }
-
 }

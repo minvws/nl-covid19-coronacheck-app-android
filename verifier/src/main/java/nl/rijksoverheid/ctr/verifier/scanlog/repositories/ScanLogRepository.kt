@@ -20,7 +20,7 @@ interface ScanLogRepository {
 class ScanLogRepositoryImpl(
     private val verifierDatabase: VerifierDatabase,
     private val scanLogDataMapper: ScanLogDataMapper
-): ScanLogRepository {
+) : ScanLogRepository {
     override suspend fun insert(entity: ScanLogEntity) {
         verifierDatabase.scanLogDao().insert(entity)
     }

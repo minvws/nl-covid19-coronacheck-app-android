@@ -14,31 +14,45 @@ import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.design.ext.*
+import nl.rijksoverheid.ctr.design.ext.formatDateTime
+import nl.rijksoverheid.ctr.design.ext.formatDayMonth
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
-import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
-import nl.rijksoverheid.ctr.holder.*
+import nl.rijksoverheid.ctr.holder.BaseFragment
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
-import nl.rijksoverheid.ctr.holder.get_events.models.*
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
-import nl.rijksoverheid.ctr.holder.models.MissingOriginErrorResult
-import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.persistence.database.models.YourEventFragmentEndState
+import nl.rijksoverheid.ctr.holder.models.HolderStep
+import nl.rijksoverheid.ctr.holder.your_events.models.ConflictingEventResult
+import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndState
+import nl.rijksoverheid.ctr.holder.your_events.models.YourEventsEndStateWithCustomTitle
 import nl.rijksoverheid.ctr.holder.your_events.utils.InfoScreenUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
+import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsEndStateUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.BlockedEventException
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.json.JSONObject
 import org.koin.android.ext.android.inject
@@ -56,7 +70,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val remoteEventUtil: RemoteEventUtil by inject()
     private val yourEventsFragmentUtil: YourEventsFragmentUtil by inject()
     private val yourEventWidgetUtil: YourEventWidgetUtil by inject()
-    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase by inject()
+    private val yourEventsEndStateUtil: YourEventsEndStateUtil by inject()
 
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
@@ -79,7 +93,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             }
             is YourEventsFragmentType.DCC -> {
                 yourEventsViewModel.checkForConflictingEvents(
-                    remoteProtocols = type.getRemoteEvents(),
+                    remoteProtocols = type.getRemoteEvents()
                 )
             }
         }
@@ -124,28 +138,21 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         yourEventsViewModel.yourEventsResult.observe(
             viewLifecycleOwner,
             EventObserver { databaseSyncerResult ->
+                val fragmentType = args.type
+
                 when (databaseSyncerResult) {
                     is DatabaseSyncerResult.Success -> {
-                        when {
-                            databaseSyncerResult.missingOrigin -> {
-                                val noOriginTypeCopy =
-                                    getString(yourEventsFragmentUtil.getNoOriginTypeCopy(args.type, getFlow()))
-                                presentError(
-                                    errorResult = MissingOriginErrorResult,
-                                    customerErrorDescription = getString(
-                                        R.string.rule_engine_no_test_origin_description,
-                                        noOriginTypeCopy
-                                    )
-                                )
-                            }
-                            else -> {
-                                if (args.type is YourEventsFragmentType.DCC) {
-                                    navigateSafety(YourEventsFragmentDirections.actionMyOverview())
-                                } else {
-                                    navigateToCertificateCreated(databaseSyncerResult)
+                        handleEndState(
+                            endState = yourEventsEndStateUtil.getEndState(
+                                context = requireContext(),
+                                hints = databaseSyncerResult.hints,
+                                blockedEvents = databaseSyncerResult.blockedEvents,
+                                newEvents = when (fragmentType) {
+                                    is YourEventsFragmentType.DCC -> fragmentType.remoteEvent.events ?: listOf()
+                                    is YourEventsFragmentType.RemoteProtocol3Type -> fragmentType.remoteEvents.keys.toList().map { it.events ?: listOf() }.flatten()
                                 }
-                            }
-                        }
+                            )
+                        )
                     }
                     is DatabaseSyncerResult.Failed -> {
                         presentError(
@@ -158,149 +165,143 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         yourEventsViewModel.conflictingEventsResult.observe(
             viewLifecycleOwner,
             EventObserver {
-                when (val type = args.type) {
-                    is YourEventsFragmentType.RemoteProtocol3Type -> {
-                        if (it) {
-                            replaceCertificateDialog(type.remoteEvents)
-                        } else {
-                            yourEventsViewModel.saveRemoteProtocolEvents(
-                                getFlow(), type.remoteEvents, false
-                            )
-                        }
+                when (it) {
+                    ConflictingEventResult.Existing -> {
+                        infoFragmentUtil.presentFullScreen(
+                            currentFragment = this,
+                            toolbarTitle = args.toolbarTitle,
+                            data = InfoFragmentData.TitleDescriptionWithButton(
+                                title = getString(R.string.holder_listRemoteEvents_endStateDuplicate_title),
+                                descriptionData = DescriptionData(
+                                    htmlText = R.string.holder_listRemoteEvents_endStateDuplicate_message
+                                ),
+                                primaryButtonData = ButtonData.NavigationButton(
+                                    text = getString(R.string.general_toMyOverview),
+                                    navigationActionId = R.id.action_my_overview
+                                )
+                            ),
+                            closeIcon = true
+                        )
                     }
-                    is YourEventsFragmentType.DCC -> {
-                        if (it) {
-                            replaceCertificateDialog(type.getRemoteEvents())
-                        } else {
-                            yourEventsViewModel.saveRemoteProtocolEvents(
-                                getFlow(), type.getRemoteEvents(), false
-                            )
-                        }
-                    }
+                    ConflictingEventResult.Holder -> replaceCertificateDialog(getEventsFromType())
+                    ConflictingEventResult.None -> yourEventsViewModel.saveRemoteProtocolEvents(
+                        getFlow(), getEventsFromType(), false
+                    )
                 }
             }
         )
     }
 
-    private fun navigateToCertificateCreated(databaseSyncerResult: DatabaseSyncerResult.Success) {
-        when (databaseSyncerResult.yourEventFragmentEndState) {
-            is YourEventFragmentEndState.CombinedVaccinationRecovery -> {
-                navigateSafety(
-                    YourEventsFragmentDirections.actionCertificateCreated(
-                        toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                        title = if (isVaccinationWithPositiveTestFlow()) {
-                            getString(R.string.holder_listRemoteEvents_endStateVaccinationsAndRecovery_title)
-                        } else {
-                            getString(R.string.certificate_created_recovery_after_vaccination_title)
-                        },
-                        description = if (isVaccinationWithPositiveTestFlow()) {
-                            getString(
-                                R.string.holder_listRemoteEvents_endStateVaccinationsAndRecovery_message
-                            )
-                        } else {
-                            getString(R.string.certificate_created_recovery_after_vaccination_description)
-                        }
-                    )
-                )
-            }
-            YourEventFragmentEndState.OnlyInternationalVaccination -> {
-                navigateSafety(
-                    YourEventsFragmentDirections.actionCertificateCreated(
-                        toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                        title = getString(R.string.holder_listRemoteEvents_endStateInternationalQROnly_title),
-                        description = getString(R.string.holder_listRemoteEvents_endStateInternationalQROnly_message),
-                        shouldShowRetrieveTestButton = true
-                    )
-                )
-            }
-            YourEventFragmentEndState.VaccinationAndRecovery -> {
-                navigateSafety(
-                    if (isVaccinationWithPositiveTestFlow()) {
-                        YourEventsFragmentDirections.actionCertificateCreated(
-                            toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                            title = getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_title),
-                            description = if (holderFeatureFlagUseCase.getDisclosurePolicy() != DisclosurePolicy.ZeroG) {
-                                getString(R.string.holder_listRemoteEvents_endStateInternationalVaccinationAndRecovery_message)
-                            } else {
-                                getString(R.string.holder_listRemoteEvents_endStateVaccinationsAndRecovery_message)
-                            }
-                        )
-                    } else {
-                        YourEventsFragmentDirections.actionMyOverview()
-                    }
-                )
-            }
-            YourEventFragmentEndState.OnlyRecovery -> {
-                navigateSafety(
-                    if (isVaccinationWithPositiveTestFlow()) {
-                        YourEventsFragmentDirections.actionCertificateCreated(
-                            toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                            title = getString(R.string.holder_listRemoteEvents_endStateRecoveryOnly_title),
-                            description = getString(R.string.holder_listRemoteEvents_endStateRecoveryOnly_message)
-                        )
-                    } else {
-                        // When not coming from a vaccination completion flow, navigate directly to dashboard
-                        YourEventsFragmentDirections.actionMyOverview()
-                    }
-                )
-            }
-            is YourEventFragmentEndState.OnlyDomesticVaccination -> {
-                navigateSafety(
-                    if (isVaccinationWithPositiveTestFlow()) {
-                        // When coming from a vaccination completion flow, navigate directly to dashboard
-                        YourEventsFragmentDirections.actionMyOverview()
-                    } else {
-                        YourEventsFragmentDirections.actionCertificateCreated(
-                            toolbarTitle = getString(R.string.international_certificate_created_toolbar_title),
-                            title = getString(R.string.certificate_created_vaccination_title),
-                            description = getString(
-                                R.string.certificate_created_vaccination_description
-                            )
-                        )
-                    }
-                )
-            }
-            YourEventFragmentEndState.NotApplicable -> {
-                // We have a origin in the database that we expect, so success
-                navigateSafety(
-                    YourEventsFragmentDirections.actionMyOverview()
-                )
-            }
-            YourEventFragmentEndState.AddedNegativeTestInVaccinationAssessmentFlow -> {
+    private fun getEventsFromType() = when (val type = args.type) {
+        is YourEventsFragmentType.DCC -> type.getRemoteEvents()
+        is YourEventsFragmentType.RemoteProtocol3Type -> type.remoteEvents
+    }
+
+    private fun handleEndState(endState: YourEventsEndState) {
+        when (endState) {
+            is YourEventsEndState.BlockedEvent -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
-                    infoFragmentDirections = YourEventsFragmentDirections.actionInfoFragment(
-                        toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
-                        data = InfoFragmentData.TitleDescriptionWithButton(
-                            title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
-                            descriptionData = DescriptionData(
-                                htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body
-                            ),
-                            primaryButtonData = ButtonData.NavigationButton(
-                                text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
-                                navigationActionId = InfoFragmentDirections.actionVisitorPassInputToken().actionId,
-                            )
+                    toolbarTitle = getString(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title),
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.holder_listRemoteEvents_endStateNoValidCertificate_title),
+                        descriptionData = DescriptionData(
+                            htmlTextString = getString(R.string.holder_listRemoteEvents_endStateNoValidCertificate_body, errorCodeStringFactory.get(getFlow(), listOf(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, BlockedEventException())))),
+                            htmlLinksEnabled = true
+                        ),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.general_toMyOverview),
+                            navigationActionId = R.id.action_my_overview
                         )
                     )
                 )
             }
-            YourEventFragmentEndState.NoRecoveryWithStoredVaccination -> {
-                navigateSafety(
-                    YourEventsFragmentDirections.actionCertificateCreated(
-                        toolbarTitle = getString(R.string.no_certificate_created_toolbar_title),
-                        title = getString(R.string.cannot_create_recovery_proof_title),
-                        description = getString(R.string.cannot_create_recovery_proof_description)
+            is YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment -> {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
+                        descriptionData = DescriptionData(
+                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body,
+                            htmlLinksEnabled = true
+                        ),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
+                            navigationActionId = R.id.action_visitor_pass_input_token
+                        )
                     )
                 )
+            }
+            is YourEventsEndState.Hints -> {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    toolbarTitle = getString(R.string.certificate_created_toolbar_title),
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(R.string.certificate_created_toolbar_title),
+                        descriptionData = DescriptionData(
+                            htmlTextString = endState.localisedHints.joinToString("<br/><br/>"),
+                            htmlLinksEnabled = true
+                        ),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.general_toMyOverview),
+                            navigationActionId = R.id.action_my_overview
+                        )
+                    ),
+                    closeIcon = true
+                )
+            }
+            is YourEventsEndState.WeCouldntMakeACertificateError -> {
+                val errorCode = errorCodeStringFactory.get(
+                    flow = getFlow(),
+                    errorResults = listOf(
+                        AppErrorResult(HolderStep.GetCredentialsNetworkRequest, endState.exception)
+                    )
+                )
+                presentError(
+                    data = ErrorResultFragmentData(
+                        title = getString(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title),
+                        description = getString(
+                            R.string.holder_listRemoteEvents_endStateCantCreateCertificate_message,
+                            yourEventsEndStateUtil.getErrorStateSubstring(requireContext(), getFlow()),
+                            errorCode
+                        ),
+                        buttonTitle = getString(R.string.general_toMyOverview),
+                        buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                    )
+                )
+            }
+            is YourEventsEndStateWithCustomTitle -> {
+                infoFragmentUtil.presentFullScreen(
+                    currentFragment = this,
+                    toolbarTitle = if (endState is YourEventsEndStateWithCustomTitle.RecoveryTooOld ||
+                                endState is YourEventsEndStateWithCustomTitle.NoRecoveryButDosisCorrection ||
+                                endState is YourEventsEndStateWithCustomTitle.RecoveryAndDosisCorrection
+                ) { getString(R.string.your_positive_test_toolbar_title) } else {
+                    getString(R.string.certificate_created_toolbar_title)
+                },
+                    data = InfoFragmentData.TitleDescriptionWithButton(
+                        title = getString(endState.title),
+                        descriptionData = DescriptionData(
+                            htmlTextString = getString(endState.description),
+                            htmlLinksEnabled = true
+                        ),
+                        primaryButtonData = ButtonData.NavigationButton(
+                            text = getString(R.string.general_toMyOverview),
+                            navigationActionId = R.id.action_my_overview
+                        )
+                    ),
+                    closeIcon = true
+                )
+            }
+            else -> {
+                findNavControllerSafety()?.navigate(YourEventsFragmentDirections.actionMyOverview())
             }
         }
     }
 
-    private fun isVaccinationWithPositiveTestFlow() =
-        getFlow() == HolderFlow.VaccinationAndPositiveTest
-
     private fun replaceCertificateDialog(
-        remoteEvents: Map<RemoteProtocol, ByteArray>,
+        remoteEvents: Map<RemoteProtocol, ByteArray>
     ) {
         dialogUtil.presentDialog(
             context = requireContext(),
@@ -421,7 +422,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         birthDate: String,
         currentEvent: RemoteEventVaccination,
         allEventsInformation: List<RemoteEventInformation>,
-        isDccEvent: Boolean,
+        isDccEvent: Boolean
     ) {
         val type = args.type
         val infoScreen = infoScreenUtil.getForVaccination(
@@ -470,7 +471,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                         JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
                                     } else {
                                         null
-                                    },
+                                    }
                                 )
                             }.toTypedArray()
                         )
@@ -648,6 +649,18 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         binding.bottom.setButtonClick {
             retrieveGreenCards()
         }
+        binding.bottom.setButtonText(
+            getString(
+                when (getFlow()) {
+                    HolderFlow.VaccinationAssessment -> {
+                        R.string.holder_event_vaccination_assessment_action_title
+                    }
+                    else -> {
+                        R.string.your_negative_test_results_row_button
+                    }
+                }
+            )
+        )
     }
 
     private fun presentHeader(binding: FragmentYourEventsBinding) {
@@ -690,7 +703,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             } else {
                                 R.string.dialog_negative_test_result_something_wrong_description
                             },
-                            htmlLinksEnabled = true,
+                            htmlLinksEnabled = true
                         )
                     )
                 )

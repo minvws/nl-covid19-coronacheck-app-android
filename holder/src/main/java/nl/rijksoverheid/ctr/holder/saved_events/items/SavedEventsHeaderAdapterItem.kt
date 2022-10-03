@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.holder.databinding.AdapterItemSavedEventsHeaderBindi
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class SavedEventsHeaderAdapterItem: BindableItem<AdapterItemSavedEventsHeaderBinding>(), KoinComponent {
+class SavedEventsHeaderAdapterItem : BindableItem<AdapterItemSavedEventsHeaderBinding>(), KoinComponent {
 
     private val intentUtil: IntentUtil by inject()
 

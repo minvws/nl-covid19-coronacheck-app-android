@@ -8,7 +8,7 @@
 package nl.rijksoverheid.ctr.holder.dashboard.models
 
 sealed class DashboardSync {
-    object ForceSync: DashboardSync()
-    object DisableSync: DashboardSync()
-    object CheckSync: DashboardSync()
+    object ForceSync : DashboardSync()
+    object DisableSync : DashboardSync()
+    object CheckSync : DashboardSync()
 }

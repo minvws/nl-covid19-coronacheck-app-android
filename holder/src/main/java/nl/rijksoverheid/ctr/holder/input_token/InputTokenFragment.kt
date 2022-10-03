@@ -22,10 +22,10 @@ import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentInputTokenBinding
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResult
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -46,7 +46,7 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
     private var _binding: FragmentInputTokenBinding? = null
     private val binding get() = _binding!!
     private val viewModel: InputTokenViewModel by stateViewModel(
-        state = emptyState(),
+        state = emptyState()
     )
 
     private val dialogUtil: DialogUtil by inject()
@@ -193,8 +193,8 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
                 title = getString(getFragmentData().noCodeDialogTitle),
                 descriptionData = DescriptionData(
                     htmlText = getFragmentData().noCodeDialogDescription,
-                    htmlLinksEnabled = true,
-                ),
+                    htmlLinksEnabled = true
+                )
             ))
         }
     }

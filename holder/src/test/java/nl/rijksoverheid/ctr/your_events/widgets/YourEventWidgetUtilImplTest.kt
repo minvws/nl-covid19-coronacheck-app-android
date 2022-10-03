@@ -11,6 +11,8 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import io.mockk.every
 import io.mockk.mockk
+import java.time.LocalDate
+import kotlin.test.assertEquals
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtilImpl
@@ -18,11 +20,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import java.time.LocalDate
-import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
-class YourEventWidgetUtilImplTest: AutoCloseKoinTest() {
+class YourEventWidgetUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getVaccinationEventTitle returns correct title if dcc`() {

@@ -8,11 +8,11 @@
 
 package nl.rijksoverheid.ctr.appconfig.usecases
 
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import java.time.Clock
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 
 interface AppConfigFreshnessUseCase {
     fun getAppConfigLastFetchedSeconds(): Long
@@ -44,7 +44,5 @@ class AppConfigFreshnessUseCaseImpl(
         val configAlmostExpired = lastFetched <= now.minusSeconds(config.configTtlSeconds.toLong())
             .plusSeconds(config.configAlmostOutOfDateWarningSeconds.toLong()).toEpochSecond()
         return lastFetched > 0 && configAlmostExpired
-
     }
-
 }

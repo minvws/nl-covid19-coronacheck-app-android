@@ -21,7 +21,7 @@ class GetPaperProofTypeUseCaseImpl(
     private val getEventsFromPaperProofQrUseCase: GetEventsFromPaperProofQrUseCase,
     private val paperProofUtil: PaperProofUtil,
     private val mobileCoreWrapper: MobileCoreWrapper
-): GetPaperProofTypeUseCase {
+) : GetPaperProofTypeUseCase {
     override suspend fun get(qrContent: String): PaperProofType {
         return withContext(Dispatchers.IO) {
             if (mobileCoreWrapper.isDcc(qrContent.toByteArray())) {

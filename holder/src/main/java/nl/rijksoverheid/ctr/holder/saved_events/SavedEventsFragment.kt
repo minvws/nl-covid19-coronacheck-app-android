@@ -25,7 +25,7 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SavedEventsFragment: Fragment(R.layout.fragment_saved_events) {
+class SavedEventsFragment : Fragment(R.layout.fragment_saved_events) {
 
     private val section = Section()
     private val savedEventsViewModel: SavedEventsViewModel by viewModel()

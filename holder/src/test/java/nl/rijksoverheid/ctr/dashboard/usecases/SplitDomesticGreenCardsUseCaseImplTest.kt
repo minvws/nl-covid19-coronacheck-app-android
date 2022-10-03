@@ -9,11 +9,11 @@ package nl.rijksoverheid.ctr.dashboard.usecases
 
 import io.mockk.every
 import io.mockk.mockk
-import nl.rijksoverheid.ctr.holder.fakeGreenCardWithOrigins
-import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.fakeGreenCardWithOrigins
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.SplitDomesticGreenCardsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -23,7 +23,7 @@ import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class SplitDomesticGreenCardsUseCaseImplTest: AutoCloseKoinTest() {
+class SplitDomesticGreenCardsUseCaseImplTest : AutoCloseKoinTest() {
 
     private val greenCardUtil: GreenCardUtil by inject()
 

@@ -1,11 +1,11 @@
 package nl.rijksoverheid.ctr.holder.utils
 
 import android.app.Application
-import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
-import nl.rijksoverheid.ctr.holder.R
 import java.time.Clock
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
+import nl.rijksoverheid.ctr.holder.R
 
 /*
  * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,8 +19,8 @@ interface LocalDateUtil {
 
 class LocalDateUtilImpl(
     private val clock: Clock,
-    private val application : Application,
-): LocalDateUtil {
+    private val application: Application
+) : LocalDateUtil {
     override fun dateAndDaysSince(localDate: String): Pair<String, String> {
         return try {
             val parsedLocalDate = LocalDate.parse(localDate, DateTimeFormatter.ISO_DATE)

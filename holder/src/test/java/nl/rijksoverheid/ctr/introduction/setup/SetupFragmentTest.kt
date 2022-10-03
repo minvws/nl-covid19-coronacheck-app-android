@@ -7,11 +7,11 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
-import junit.framework.Assert.assertEquals
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.fakeAppConfigViewModel
+import nl.rijksoverheid.ctr.fakeSetupViewModel
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.fakeAppConfigViewModel
-import nl.rijksoverheid.ctr.holder.fakeSetupViewModel
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,7 +23,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-class SetupFragmentTest: AutoCloseKoinTest() {
+class SetupFragmentTest : AutoCloseKoinTest() {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()

@@ -3,9 +3,9 @@ package nl.rijksoverheid.ctr.qrcodes.utils
 import android.content.res.Resources
 import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.get_events.models.RemoteEventTestFactory
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.LastVaccinationDoseUtilImpl
-import nl.rijksoverheid.ctr.get_events.models.RemoteEventTestFactory
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -85,7 +85,7 @@ class LastVaccinationDoseUtilImplTest {
     fun `when statement is not completed and, answer is empty`() {
         val vaccination = RemoteEventTestFactory.createRemoteVaccination(
             completedByPersonalStatement = false,
-            completedByMedicalStatement = false,
+            completedByMedicalStatement = false
         )
 
         assertEquals(util.getIsLastDoseAnswer(vaccination), "")
@@ -95,7 +95,7 @@ class LastVaccinationDoseUtilImplTest {
     fun `when it's unknown, answer is empty`() {
         val vaccination = RemoteEventTestFactory.createRemoteVaccination(
             completedByPersonalStatement = null,
-            completedByMedicalStatement = null,
+            completedByMedicalStatement = null
         )
 
         assertEquals(util.getIsLastDoseAnswer(vaccination), "")

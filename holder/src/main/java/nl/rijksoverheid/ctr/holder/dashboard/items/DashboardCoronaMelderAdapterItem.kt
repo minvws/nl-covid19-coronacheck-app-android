@@ -19,9 +19,8 @@ import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardCoronaMelderB
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class DashboardCoronaMelderAdapterItem: BindableItem<AdapterItemDashboardCoronaMelderBinding>(R.layout.adapter_item_dashboard_corona_melder.toLong()) {
+class DashboardCoronaMelderAdapterItem : BindableItem<AdapterItemDashboardCoronaMelderBinding>(R.layout.adapter_item_dashboard_corona_melder.toLong()) {
     override fun bind(viewBinding: AdapterItemDashboardCoronaMelderBinding, position: Int) {
-
     }
 
     override fun getLayout(): Int {

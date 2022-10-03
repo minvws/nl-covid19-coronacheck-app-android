@@ -3,9 +3,11 @@ package nl.rijksoverheid.ctr.verifier.instructions
 import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.scanqr.ScannerNavigationState.*
+import nl.rijksoverheid.ctr.verifier.scanqr.ScannerNavigationState.NewPolicyRules
+import nl.rijksoverheid.ctr.verifier.scanqr.ScannerNavigationState.Scanner
+import nl.rijksoverheid.ctr.verifier.scanqr.ScannerNavigationState.VerificationPolicySelection
 import nl.rijksoverheid.ctr.verifier.scanqr.ScannerNavigationStateUseCase
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ScanInstructionsButtonUtilImplTest {

@@ -4,7 +4,15 @@ import nl.rijksoverheid.ctr.holder.api.HolderApiClientUtil
 import nl.rijksoverheid.ctr.holder.api.HolderApiClientUtilImpl
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtil
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtilImpl
-import nl.rijksoverheid.ctr.holder.api.repositories.*
+import nl.rijksoverheid.ctr.holder.api.repositories.AuthenticationRepository
+import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepositoryImpl
+import nl.rijksoverheid.ctr.holder.api.repositories.DigidAuthenticationRepository
+import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepository
+import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepositoryImpl
+import nl.rijksoverheid.ctr.holder.api.repositories.MijnCNAuthenticationRepository
+import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepository
+import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepositoryImpl
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -39,20 +47,20 @@ val repositoriesModule = module {
         TestProviderRepositoryImpl(
             get(),
             get(),
-            get(named("SignedResponseWithModel")),
+            get(named("SignedResponseWithModel"))
         )
     }
     factory<TestProviderApiClientUtil> {
         TestProviderApiClientUtilImpl(
             get(),
             get(),
-            get(),
+            get()
         )
     }
     factory<EventProviderRepository> {
         EventProviderRepositoryImpl(
             get(),
-            get(),
+            get()
         )
     }
 }

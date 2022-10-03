@@ -8,16 +8,30 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import java.io.File
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SQLiteException
 import net.sqlcipher.database.SupportFactory
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.converters.HolderDatabaseConverter
-import nl.rijksoverheid.ctr.persistence.database.dao.*
-import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.persistence.database.dao.BlockedEventDao
+import nl.rijksoverheid.ctr.persistence.database.dao.CredentialDao
+import nl.rijksoverheid.ctr.persistence.database.dao.EventGroupDao
+import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
+import nl.rijksoverheid.ctr.persistence.database.dao.OriginDao
+import nl.rijksoverheid.ctr.persistence.database.dao.OriginHintDao
+import nl.rijksoverheid.ctr.persistence.database.dao.SecretKeyDao
+import nl.rijksoverheid.ctr.persistence.database.dao.WalletDao
+import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginHintEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.SecretKeyEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import nl.rijksoverheid.ctr.shared.models.Environment
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
-import java.io.File
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -89,7 +103,7 @@ val MIGRATION_4_5 = object : Migration(4, 5) {
 /**
  * Remove [EventGroupEntity.maxIssuedAt] and replace it with [EventGroupEntity.expiryDate]
  */
-val MIGRATION_5_6 = object: Migration(5,6) {
+val MIGRATION_5_6 = object : Migration(5, 6) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE IF NOT EXISTS event_group_temp (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, wallet_id INTEGER NOT NULL, provider_identifier TEXT NOT NULL, type TEXT NOT NULL, scope TEXT NOT NULL, expiryDate INTEGER, jsonData BLOB NOT NULL, FOREIGN KEY(wallet_id) REFERENCES wallet(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
         database.execSQL("INSERT INTO event_group_temp (id, wallet_id, provider_identifier, type, scope, expiryDate, jsonData) SELECT id, wallet_id, provider_identifier, type, scope, null, jsonData FROM event_group")
@@ -102,10 +116,11 @@ val MIGRATION_5_6 = object: Migration(5,6) {
     }
 }
 
-fun MIGRATION_6_7(persistenceManager: PersistenceManager) = object: Migration(6, 7) {
+fun MIGRATION_6_7(persistenceManager: PersistenceManager) = object : Migration(6, 7) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE IF NOT EXISTS secret_key (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, green_card_id INTEGER NOT NULL, secret TEXT NOT NULL, FOREIGN KEY(green_card_id) REFERENCES green_card(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
-        val domesticGreenCardCursor = database.query("SELECT * FROM green_card WHERE type = 'domestic'")
+        val domesticGreenCardCursor =
+            database.query("SELECT * FROM green_card WHERE type = 'domestic'")
 
         // If we have a domestic green card migrate old secret key
         if (domesticGreenCardCursor.count == 1 && persistenceManager.getDatabasePassPhrase() != null) {
@@ -114,15 +129,27 @@ fun MIGRATION_6_7(persistenceManager: PersistenceManager) = object: Migration(6,
             val domesticGreenCardId = domesticGreenCardCursor.getInt(greenCardIdIndex)
             val insertValues = ContentValues()
             insertValues.put("green_card_id", domesticGreenCardId)
-            insertValues.put("secret", persistenceManager.getDatabasePassPhrase()) // The old database pass phrase is the new secret key
+            insertValues.put(
+                "secret",
+                persistenceManager.getDatabasePassPhrase()
+            ) // The old database pass phrase is the new secret key
             database.insert("secret_key", 0, insertValues)
         }
     }
 }
 
+val MIGRATION_7_8 = object : Migration(7, 8) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("CREATE TABLE IF NOT EXISTS blocked_event (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, wallet_id INTEGER NOT NULL, type TEXT NOT NULL, event_time INTEGER, FOREIGN KEY(wallet_id) REFERENCES wallet(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
+        database.execSQL("CREATE INDEX index_blocked_event_wallet_id ON blocked_event(wallet_id)")
+        database.execSQL("CREATE TABLE IF NOT EXISTS origin_hint (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, origin_id INTEGER NOT NULL, hint TEXT NOT NULL, FOREIGN KEY(origin_id) REFERENCES origin(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
+        database.execSQL("CREATE INDEX index_origin_hint_hint ON origin_hint(hint)")
+    }
+}
+
 @Database(
-    entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class, OriginEntity::class, SecretKeyEntity::class],
-    version = 7
+    entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class, OriginEntity::class, SecretKeyEntity::class, BlockedEventEntity::class, OriginHintEntity::class],
+    version = 8
 )
 @TypeConverters(HolderDatabaseConverter::class)
 abstract class HolderDatabase : RoomDatabase() {
@@ -132,6 +159,8 @@ abstract class HolderDatabase : RoomDatabase() {
     abstract fun eventGroupDao(): EventGroupDao
     abstract fun originDao(): OriginDao
     abstract fun secretKeyDao(): SecretKeyDao
+    abstract fun blockedEventDao(): BlockedEventDao
+    abstract fun originHintDao(): OriginHintDao
 
     companion object {
         fun createInstance(
@@ -151,7 +180,12 @@ abstract class HolderDatabase : RoomDatabase() {
                     val file = File(context.filesDir.parentFile, "databases/holder-database")
                     try {
                         SQLiteDatabase.loadLibs(context)
-                        SQLiteDatabase.openDatabase(file.absolutePath, persistenceManager.getDatabasePassPhrase(), null, SQLiteDatabase.OPEN_READONLY)
+                        SQLiteDatabase.openDatabase(
+                            file.absolutePath,
+                            persistenceManager.getDatabasePassPhrase(),
+                            null,
+                            SQLiteDatabase.OPEN_READONLY
+                        )
                     } catch (e: SQLiteException) {
                         file.delete()
                     } finally {
@@ -166,10 +200,22 @@ abstract class HolderDatabase : RoomDatabase() {
 
             return Room
                 .databaseBuilder(context, HolderDatabase::class.java, "holder-database")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7(persistenceManager))
+                .addMigrations(
+                    MIGRATION_1_2,
+                    MIGRATION_2_3,
+                    MIGRATION_3_4,
+                    MIGRATION_4_5,
+                    MIGRATION_5_6,
+                    MIGRATION_6_7(persistenceManager),
+                    MIGRATION_7_8
+                )
                 .apply {
                     if (environment !is Environment.InstrumentationTests) {
-                        val supportFactory = SupportFactory(SQLiteDatabase.getBytes(persistenceManager.getDatabasePassPhrase()?.toCharArray()))
+                        val supportFactory = SupportFactory(
+                            SQLiteDatabase.getBytes(
+                                persistenceManager.getDatabasePassPhrase()?.toCharArray()
+                            )
+                        )
                         openHelperFactory(supportFactory)
                     }
                 }.build()

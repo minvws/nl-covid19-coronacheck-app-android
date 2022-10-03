@@ -26,7 +26,7 @@ interface PersistenceManager {
     fun hasAppliedJune28Fix(): Boolean
     fun setJune28FixApplied(applied: Boolean)
     fun hasDismissedUnsecureDeviceDialog(): Boolean
-    fun setHasDismissedUnsecureDeviceDialog(value : Boolean)
+    fun setHasDismissedUnsecureDeviceDialog(value: Boolean)
     fun showSyncGreenCardsItem(): Boolean
     fun setShowSyncGreenCardsItem(show: Boolean)
     fun getCheckNewValidityInfoCard(): Boolean
@@ -59,6 +59,7 @@ class SharedPreferencesPersistenceManager(
         const val POLICY_BANNER_DISMISSED = "POLICY_BANNER_DISMISSED"
         const val POLICY_SCREEN_SEEN = "POLICY_SCREEN_SEEN"
         const val CHECK_CAN_OPEN_DATABASE = "CHECK_CAN_OPEN_DATABASE"
+        const val CAN_SHOW_BLOCKED_EVENTS_DIALOG = "CAN_SHOW_BLOCKED_EVENTS_DIALOG"
     }
 
     override fun saveDatabasePassPhrase(passPhrase: String) {
@@ -121,7 +122,7 @@ class SharedPreferencesPersistenceManager(
         return sharedPreferences.getBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, false)
     }
 
-    override fun setHasDismissedUnsecureDeviceDialog(value : Boolean) {
+    override fun setHasDismissedUnsecureDeviceDialog(value: Boolean) {
         sharedPreferences.edit().putBoolean(HAS_SEEN_SECURE_DEVICE_DIALOG, value).commit()
     }
 

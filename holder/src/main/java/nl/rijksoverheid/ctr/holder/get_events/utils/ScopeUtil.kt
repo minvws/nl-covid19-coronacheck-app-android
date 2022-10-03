@@ -7,19 +7,23 @@
 
 package nl.rijksoverheid.ctr.holder.get_events.utils
 
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 
 interface ScopeUtil {
 
-    fun getScopeForRemoteOriginType(remoteOriginType: RemoteOriginType,
-                                    getPositiveTestWithVaccination: Boolean): String
+    fun getScopeForRemoteOriginType(
+        remoteOriginType: RemoteOriginType,
+        getPositiveTestWithVaccination: Boolean
+    ): String
 
-    fun getScopeForOriginType(originType: OriginType,
-                              getPositiveTestWithVaccination: Boolean): String
+    fun getScopeForOriginType(
+        originType: OriginType,
+        getPositiveTestWithVaccination: Boolean
+    ): String
 }
 
-class ScopeUtilImpl: ScopeUtil {
+class ScopeUtilImpl : ScopeUtil {
 
     override fun getScopeForRemoteOriginType(
         remoteOriginType: RemoteOriginType,

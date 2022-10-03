@@ -11,7 +11,6 @@ import nl.rijksoverheid.ctr.holder.R
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -20,7 +19,7 @@ import org.junit.runner.RunWith
  *
  */
 @RunWith(AndroidJUnit4::class)
-class AboutThisAppFragmentScreenshotTest: ScreenshotTest {
+class AboutThisAppFragmentScreenshotTest : ScreenshotTest {
     @Test
     fun aboutThisAppFragment_Screenshot() {
         val context = ApplicationProvider.getApplicationContext<Context>()
@@ -34,15 +33,15 @@ class AboutThisAppFragmentScreenshotTest: ScreenshotTest {
                         items = mutableListOf(
                             AboutThisAppData.Url(
                                 text = context.getString(R.string.privacy_statement),
-                                url = context.getString(R.string.url_privacy_statement),
+                                url = context.getString(R.string.url_privacy_statement)
                             ),
                             AboutThisAppData.Url(
                                 text = context.getString(R.string.about_this_app_accessibility),
-                                url = context.getString(R.string.url_accessibility),
+                                url = context.getString(R.string.url_accessibility)
                             ),
                             AboutThisAppData.Url(
                                 text = context.getString(R.string.about_this_app_colofon),
-                                url = context.getString(R.string.about_this_app_colofon_url),
+                                url = context.getString(R.string.about_this_app_colofon_url)
                             ),
                             AboutThisAppData.Destination(
                                 text = context.getString(R.string.holder_menu_storedEvents),

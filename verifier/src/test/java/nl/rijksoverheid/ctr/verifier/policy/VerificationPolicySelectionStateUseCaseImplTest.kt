@@ -12,11 +12,11 @@ package nl.rijksoverheid.ctr.verifier.policy
 
 import io.mockk.every
 import io.mockk.mockk
+import kotlin.test.assertEquals
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class VerificationPolicySelectionStateUseCaseImplTest {
 

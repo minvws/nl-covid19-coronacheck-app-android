@@ -15,17 +15,19 @@ interface DashboardItemEmptyStateUtil {
         disclosurePolicy: DisclosurePolicy,
         hasVisitorPassIncompleteItem: Boolean,
         allGreenCards: List<GreenCard>,
-        greenCardsForTab: List<GreenCard>): Boolean
+        greenCardsForTab: List<GreenCard>
+    ): Boolean
 }
 
-class DashboardItemEmptyStateUtilImpl(private val greenCardUtil: GreenCardUtil):
+class DashboardItemEmptyStateUtilImpl(private val greenCardUtil: GreenCardUtil) :
     DashboardItemEmptyStateUtil {
 
     override fun hasEmptyState(
         disclosurePolicy: DisclosurePolicy,
         hasVisitorPassIncompleteItem: Boolean,
         allGreenCards: List<GreenCard>,
-        greenCardsForTab: List<GreenCard>): Boolean {
+        greenCardsForTab: List<GreenCard>
+    ): Boolean {
 
         return when (disclosurePolicy) {
             is DisclosurePolicy.ZeroG -> {

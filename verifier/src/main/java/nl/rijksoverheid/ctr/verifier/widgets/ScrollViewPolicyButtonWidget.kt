@@ -21,7 +21,9 @@ import nl.rijksoverheid.ctr.verifier.databinding.WidgetScrollViewPolicyButtonBin
  *
  */
 class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : CardView(context, attrs, defStyleAttr) {
 
     private val binding: WidgetScrollViewPolicyButtonBinding
@@ -31,7 +33,6 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
 
     var policyText = ""
         private set
-
 
     init {
         elevation = 0f
@@ -120,5 +121,4 @@ class ScrollViewPolicyButtonWidget @JvmOverloads constructor(
     fun unlock() {
         binding.button.visibility = VISIBLE
     }
-
 }

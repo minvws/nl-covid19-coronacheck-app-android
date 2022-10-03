@@ -26,7 +26,7 @@ abstract class QrCodesViewModel : ViewModel() {
     val animationLiveData = MutableLiveData<QrCodeAnimation>()
     abstract fun generateQrCodes(
         qrCodeFragmentData: QrCodeFragmentData,
-        size: Int,
+        size: Int
     )
 
     abstract fun onReturnUriGiven(uri: String, type: GreenCardType)
@@ -36,12 +36,12 @@ abstract class QrCodesViewModel : ViewModel() {
 class QrCodesViewModelImpl(
     private val qrCodesResultUseCase: QrCodesResultUseCase,
     private val returnToExternalAppUseCase: ReturnToExternalAppUseCase,
-    private val qrCodeAnimationUseCase: QrCodeAnimationUseCase,
+    private val qrCodeAnimationUseCase: QrCodeAnimationUseCase
 ) : QrCodesViewModel() {
 
     override fun generateQrCodes(
         qrCodeFragmentData: QrCodeFragmentData,
-        size: Int,
+        size: Int
     ) {
         viewModelScope.launch {
             val result = qrCodesResultUseCase.getQrCodesResult(

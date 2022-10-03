@@ -151,6 +151,7 @@
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textStyle="bold"
                     android:visibility="gone"
+                    android:focusable="true"
                     android:layout_marginEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"

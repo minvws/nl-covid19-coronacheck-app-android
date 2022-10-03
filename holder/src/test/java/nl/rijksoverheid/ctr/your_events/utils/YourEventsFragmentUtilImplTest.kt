@@ -10,14 +10,15 @@ package nl.rijksoverheid.ctr.your_events.utils
 import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
-import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtilImpl
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -80,7 +81,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         every { vaccination.remoteEvents } returns getRemoteProtocol3(remoteEvent)
         val copy = util.getNoOriginTypeCopy(vaccination, HolderFlow.VaccinationAndPositiveTest)
 
-        assertEquals(R.string.dynamic_property_retrievedDetails, copy)
+        assertEquals(R.string.general_retrievedDetails, copy)
     }
 
     @Test
@@ -275,24 +276,43 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getHeaderCopy returns correct copy when type not dcc`() {
-        val util = YourEventsFragmentUtilImpl(mockk())
+    fun `getHeaderCopy returns correct copy when type is RemoteProtocol3Type recovery`() {
+        val util = YourEventsFragmentUtilImpl(mockk<RemoteEventUtil>().apply {
+            every { getOriginType(any()) } returns OriginType.Recovery
+        })
 
         val copy = util.getHeaderCopy(
-            type = YourEventsFragmentType.RemoteProtocol3Type(mockk(), listOf())
+            type = YourEventsFragmentType.RemoteProtocol3Type(getRemoteProtocol3(mockk<RemoteEvent>().apply {
+                every { type } returns "recovery"
+            }), listOf())
         )
 
         assertEquals(R.string.holder_listRemoteEvents_vaccination_message, copy)
     }
 
-    private fun getRemoteProtocol3(element: RemoteEventNegativeTest) =
+    @Test
+    fun `getHeaderCopy returns correct copy when type is RemoteProtocol3Type vaccinationassessment`() {
+        val util = YourEventsFragmentUtilImpl(mockk<RemoteEventUtil>().apply {
+            every { getOriginType(any()) } returns OriginType.VaccinationAssessment
+        })
+
+        val copy = util.getHeaderCopy(
+            type = YourEventsFragmentType.RemoteProtocol3Type(getRemoteProtocol3(mockk<RemoteEvent>().apply {
+                every { type } returns "vaccinationassessment"
+            }), listOf())
+        )
+
+        assertEquals(R.string.holder_listRemoteEvents_vaccinationAssessment_message, copy)
+    }
+
+    private fun getRemoteProtocol3(event: RemoteEvent) =
         mapOf(
             RemoteProtocol(
                 "",
                 "",
                 RemoteProtocol.Status.UNKNOWN,
                 null,
-                listOf(element)
+                listOf(event)
             ) to ByteArray(1)
         )
 }

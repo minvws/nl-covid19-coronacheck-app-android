@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -25,12 +24,12 @@ class VerifierConfig(
     @Json(name = "upgradeRecommendationInterval") val upgradeRecommendationIntervalHours: Int,
     @Json(name = "universalLinkDomains") val verifierDeeplinkDomains: List<Url>,
     @Json(name = "clockDeviationThresholdSeconds") val verifierClockDeviationThresholdSeconds: Int,
-    @Json(name = "configAlmostOutOfDateWarningSeconds") val verifierConfigAlmostOutOfDateWarningSeconds : Int,
+    @Json(name = "configAlmostOutOfDateWarningSeconds") val verifierConfigAlmostOutOfDateWarningSeconds: Int,
     @Json(name = "scanLockWarningSeconds") val scanLockWarningSeconds: Int,
     @Json(name = "scanLockSeconds") val scanLockSeconds: Int,
     @Json(name = "scanLogStorageSeconds") val scanLogStorageSeconds: Int,
     @Json(name = "androidEnableVerificationPolicyVersion") val verifierEnableVerificationPolicyVersion: Int = 0,
-    @Json(name = "verificationPolicies") val verificationPolicies: List<String>,
+    @Json(name = "verificationPolicies") val verificationPolicies: List<String>
 ) : AppConfig(
     verifierAppDeactivated,
     verifierInformationURL,
@@ -63,7 +62,7 @@ class VerifierConfig(
             scanLockSeconds: Int = 300,
             scanLogStorageSeconds: Int = 3600,
             verifierEnableVerificationPolicyVersion: Int = 0,
-            policiesEnabled: List<String> = listOf("3G"),
+            policiesEnabled: List<String> = listOf("3G")
         ) = VerifierConfig(
             verifierMinimumVersion = verifierMinimumVersion,
             verifierMinimumVersionMessage = verifierMinimumVersionMessage,
@@ -82,8 +81,7 @@ class VerifierConfig(
             scanLockSeconds = scanLockSeconds,
             scanLogStorageSeconds = scanLogStorageSeconds,
             verifierEnableVerificationPolicyVersion = verifierEnableVerificationPolicyVersion,
-            verificationPolicies = policiesEnabled,
+            verificationPolicies = policiesEnabled
         )
     }
 }
-

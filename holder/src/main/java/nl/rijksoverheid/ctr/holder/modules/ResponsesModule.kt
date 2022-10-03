@@ -4,12 +4,13 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import nl.rijksoverheid.ctr.holder.modules.qualifier.ErrorResponseQualifier
 import nl.rijksoverheid.ctr.holder.api.OriginTypeJsonAdapter
 import nl.rijksoverheid.ctr.holder.api.RemoteCouplingStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.api.RemoteTestStatusJsonAdapter
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
-import nl.rijksoverheid.ctr.holder.get_events.models.*
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.modules.qualifier.ErrorResponseQualifier
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.MijnCnErrorResponse
 import okhttp3.ResponseBody
@@ -56,11 +57,11 @@ val responsesModule = module {
                 PolymorphicJsonAdapterFactory.of(
                     RemoteEvent::class.java, "type"
                 )
-                    .withSubtype(RemoteEventVaccinationAssessment::class.java, "vaccinationassessment")
-                    .withSubtype(RemoteEventPositiveTest::class.java, "positivetest")
-                    .withSubtype(RemoteEventRecovery::class.java, "recovery")
-                    .withSubtype(RemoteEventNegativeTest::class.java, "negativetest")
-                    .withSubtype(RemoteEventVaccination::class.java, "vaccination")
+                    .withSubtype(RemoteEvent.getRemoteEventClassFromType(RemoteEvent.TYPE_VACCINATION_ASSESSMENT), RemoteEvent.TYPE_VACCINATION_ASSESSMENT)
+                    .withSubtype(RemoteEvent.getRemoteEventClassFromType(RemoteEvent.TYPE_POSITIVE_TEST), RemoteEvent.TYPE_POSITIVE_TEST)
+                    .withSubtype(RemoteEvent.getRemoteEventClassFromType(RemoteEvent.TYPE_RECOVERY), RemoteEvent.TYPE_RECOVERY)
+                    .withSubtype(RemoteEvent.getRemoteEventClassFromType(RemoteEvent.TYPE_NEGATIVE_TEST), RemoteEvent.TYPE_NEGATIVE_TEST)
+                    .withSubtype(RemoteEvent.getRemoteEventClassFromType(RemoteEvent.TYPE_VACCINATION), RemoteEvent.TYPE_VACCINATION)
             )
             .add(KotlinJsonAdapterFactory())
             .build()

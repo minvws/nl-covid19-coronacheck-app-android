@@ -7,13 +7,15 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
+import androidx.annotation.StringRes
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
@@ -30,17 +32,20 @@ interface CardItemUtil {
     fun shouldDisclose(
         cardItem: DashboardItem.CardsItem.CardItem
     ): QrCodeFragmentData.ShouldDisclose
+
+    @StringRes
+    fun getQrCodesFragmentToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int
 }
 
 class CardItemUtilImpl(
     private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val greenCardUtil: GreenCardUtil
-): CardItemUtil {
+) : CardItemUtil {
 
     override fun getDisclosurePolicy(
         greenCard: GreenCard,
         greenCardIndex: Int
-        ): GreenCardDisclosurePolicy {
+    ): GreenCardDisclosurePolicy {
             return when (greenCard.greenCardEntity.type) {
             is GreenCardType.Domestic -> {
                 val isGreenCardWithOnlyTestOrigin = greenCard.origins.all { it.type is OriginType.Test }
@@ -82,7 +87,7 @@ class CardItemUtilImpl(
         return when (greenCard.greenCardEntity.type) {
             is GreenCardType.Domestic -> {
                 if (featureFlagUseCase.getDisclosurePolicy() == DisclosurePolicy.OneG &&
-                    !greenCardUtil.hasOrigin(listOf(greenCard), OriginType.Test) ) {
+                    !greenCardUtil.hasOrigin(listOf(greenCard), OriginType.Test)) {
                     GreenCardEnabledState.Disabled()
                 } else {
                     GreenCardEnabledState.Enabled
@@ -106,5 +111,20 @@ class CardItemUtilImpl(
                 QrCodeFragmentData.ShouldDisclose.DoNotDisclose
             }
         }
+    }
+
+    override fun getQrCodesFragmentToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int {
+        return when (featureFlagUseCase.getDisclosurePolicy()) {
+            DisclosurePolicy.OneAndThreeG -> {
+                getTitleFromCardDisclosurePolicy(cardItem.disclosurePolicy)
+            }
+            DisclosurePolicy.OneG -> getTitleFromCardDisclosurePolicy(cardItem.disclosurePolicy)
+            else -> R.string.domestic_qr_code_title
+        }
+    }
+
+    private fun getTitleFromCardDisclosurePolicy(policy: GreenCardDisclosurePolicy) = when (policy) {
+        GreenCardDisclosurePolicy.OneG -> R.string.holder_showQR_domestic_title_1g
+        GreenCardDisclosurePolicy.ThreeG -> R.string.holder_showQR_domestic_title_3g
     }
 }

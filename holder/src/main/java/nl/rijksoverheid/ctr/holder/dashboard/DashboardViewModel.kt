@@ -11,12 +11,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.dashboard.datamappers.DashboardTabsItemDataMapper
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogResult
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUseCase
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
@@ -24,26 +34,19 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
-import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import java.time.Clock
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.util.concurrent.TimeUnit
 
 abstract class DashboardViewModel : ViewModel() {
     val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
     val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
+    val showBlockedEventsDialogLiveData: LiveData<Event<ShowBlockedEventsDialogResult>> = MutableLiveData()
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
     abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
+    abstract fun dismissBlockedEventsInfo()
 
     companion object {
         val RETRY_FAILED_REQUEST_AFTER_SECONDS = if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(10)
@@ -59,7 +62,8 @@ class DashboardViewModelImpl(
     private val persistenceManager: PersistenceManager,
     private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
     private val dashboardTabsItemDataMapper: DashboardTabsItemDataMapper,
-    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase
+    private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
+    private val showBlockedEventsDialogUseCase: ShowBlockedEventsDialogUseCase
 ) : DashboardViewModel() {
 
     private val mutex = Mutex()
@@ -115,15 +119,23 @@ class DashboardViewModelImpl(
             refreshDashboardTabItems(
                 allGreenCards = allGreenCards,
                 databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent()
-                    ?: DatabaseSyncerResult.Success(),
+                    ?: DatabaseSyncerResult.Success(listOf()),
                 isLoadingNewCredentials = shouldLoadNewCredentials,
                 allEventGroupEntities = allEventGroupEntities
             )
 
             val databaseSyncerResult = holderDatabaseSyncer.sync(
                 syncWithRemote = shouldLoadNewCredentials,
-                previousSyncResult = previousSyncResult
+                previousSyncResult = previousSyncResult,
+                flow = HolderFlow.Refresh
             )
+
+            if (databaseSyncerResult is DatabaseSyncerResult.Success) {
+                val result = showBlockedEventsDialogUseCase.execute(
+                    blockedRemoteEvents = databaseSyncerResult.blockedEvents
+                )
+                (showBlockedEventsDialogLiveData as MutableLiveData).postValue(Event(result))
+            }
 
             (databaseSyncerResultLiveData as MutableLiveData).value = Event(databaseSyncerResult)
 
@@ -176,5 +188,11 @@ class DashboardViewModelImpl(
 
     override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
         persistenceManager.setPolicyBannerDismissed(disclosurePolicy)
+    }
+
+    override fun dismissBlockedEventsInfo() {
+        viewModelScope.launch {
+            holderDatabase.blockedEventDao().deleteAll()
+        }
     }
 }

@@ -9,16 +9,18 @@ package nl.rijksoverheid.ctr.dashboard.util
 
 import io.mockk.every
 import io.mockk.mockk
+import nl.rijksoverheid.ctr.fakeCardsItem
+import nl.rijksoverheid.ctr.fakeGreenCard
+import nl.rijksoverheid.ctr.fakeOriginEntity
+import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.util.CardItemUtilImpl
-import nl.rijksoverheid.ctr.holder.fakeCardsItem
-import nl.rijksoverheid.ctr.holder.fakeGreenCard
-import nl.rijksoverheid.ctr.holder.fakeOriginEntity
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.assertEquals
@@ -274,6 +276,70 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
         )
 
         assertTrue(util.shouldDisclose(cardItem) is QrCodeFragmentData.ShouldDisclose.DoNotDisclose)
+    }
+
+    @Test
+    fun `title in OneThreeG indicates if card is 1G or 3G`() {
+        val util = getUtil(DisclosurePolicy.OneAndThreeG)
+
+        val actualFor1GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+            every { disclosurePolicy } returns GreenCardDisclosurePolicy.OneG
+        })
+
+        val actualFor3GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+            every { disclosurePolicy } returns GreenCardDisclosurePolicy.ThreeG
+        })
+
+        assertEquals(R.string.holder_showQR_domestic_title_1g, actualFor1GCard)
+        assertEquals(R.string.holder_showQR_domestic_title_3g, actualFor3GCard)
+    }
+
+    @Test
+    fun `title in OneG indicates if card is 1G or 3G`() {
+        val util = getUtil(DisclosurePolicy.OneG)
+
+        val actualFor1GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+            every { disclosurePolicy } returns GreenCardDisclosurePolicy.OneG
+        })
+
+        val actualFor3GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+            every { disclosurePolicy } returns GreenCardDisclosurePolicy.ThreeG
+        })
+
+        assertEquals(R.string.holder_showQR_domestic_title_1g, actualFor1GCard)
+        assertEquals(R.string.holder_showQR_domestic_title_3g, actualFor3GCard)
+    }
+
+    @Test
+    fun `title in 0G is always the default one`() {
+        val util = getUtil(DisclosurePolicy.ZeroG)
+
+        val actualFor1GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+            every { disclosurePolicy } returns GreenCardDisclosurePolicy.OneG
+        })
+
+        val actualFor3GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+            every { disclosurePolicy } returns GreenCardDisclosurePolicy.ThreeG
+        })
+
+        assertEquals(R.string.domestic_qr_code_title, actualFor1GCard)
+        assertEquals(R.string.domestic_qr_code_title, actualFor3GCard)
+    }
+
+    @Test
+    fun `title in 3G is always the default one`() {
+        val util = getUtil(DisclosurePolicy.ThreeG)
+
+        val actualFor1GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+            every { disclosurePolicy } returns GreenCardDisclosurePolicy.OneG
+        })
+
+        val actualFor3GCard = util.getQrCodesFragmentToolbarTitle(mockk<DashboardItem.CardsItem.CardItem>().apply {
+            every { disclosurePolicy } returns GreenCardDisclosurePolicy.ThreeG
+        })
+
+        assertEquals(R.string.domestic_qr_code_title, actualFor1GCard)
+        assertEquals(R.string.domestic_qr_code_title, actualFor3GCard)
     }
 
     private fun getUtil(

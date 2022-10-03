@@ -3,17 +3,22 @@ package nl.rijksoverheid.ctr.holder.api.repositories
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
-import net.openid.appauth.*
-import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
-import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.models.HolderStep
-import nl.rijksoverheid.ctr.holder.api.MijnCnApiClient
-import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
-import nl.rijksoverheid.ctr.holder.get_events.models.MijnCNTokenResponse
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import net.openid.appauth.AuthorizationRequest
+import net.openid.appauth.AuthorizationResponse
+import net.openid.appauth.AuthorizationService
+import net.openid.appauth.AuthorizationServiceConfiguration
+import net.openid.appauth.ResponseTypeValues
+import net.openid.appauth.TokenRequest
+import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
+import nl.rijksoverheid.ctr.holder.BuildConfig
+import nl.rijksoverheid.ctr.holder.api.MijnCnApiClient
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
+import nl.rijksoverheid.ctr.holder.get_events.models.MijnCNTokenResponse
+import nl.rijksoverheid.ctr.holder.models.HolderStep
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -88,5 +93,4 @@ class MijnCNAuthenticationRepository(
             }
         return result
     }
-
 }

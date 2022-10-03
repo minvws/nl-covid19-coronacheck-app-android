@@ -6,6 +6,7 @@
  *
  */
 
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.kotlin_version = '1.6.10'
@@ -69,10 +70,13 @@ buildscript {
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
         classpath "com.project.starter:easylauncher:5.0.1"
         classpath "com.karumi:shot:5.14.1"
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:5.10.1'
     }
 }
 
 allprojects {
+    apply from: "$project.rootDir/spotless.gradle"
+
     repositories {
         google()
         mavenCentral()
@@ -101,8 +105,4 @@ allprojects {
             }
         }
     }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

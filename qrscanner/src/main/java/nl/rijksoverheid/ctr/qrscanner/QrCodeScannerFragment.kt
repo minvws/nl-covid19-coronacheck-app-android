@@ -19,7 +19,11 @@ import android.util.DisplayMetrics
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorRes
-import androidx.camera.core.*
+import androidx.camera.core.AspectRatio
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.Preview
+import androidx.camera.core.TorchState
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.constraintlayout.widget.ConstraintSet
@@ -28,7 +32,10 @@ import androidx.core.view.MenuItemCompat
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.util.concurrent.Executors
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.honeywellscanner.HoneywellManager
 import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
@@ -37,10 +44,6 @@ import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
 import org.koin.core.error.NoBeanDefFoundException
 import timber.log.Timber
-import java.util.concurrent.Executors
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
 
 abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
 
@@ -91,8 +94,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             })
 
             binding.zebraContrainer.visibility = View.VISIBLE
-        }
-        else if(honeywellManager?.isHoneywellDevice() == true){
+        } else if (honeywellManager?.isHoneywellDevice() == true) {
             // Setup Honeywell scanner
             honeywellManager.setupHoneywellScanner(onDatawedgeResultListener = {
                 onQrScanned(it)
@@ -201,7 +203,6 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                 requestPermission()
             }
         }, ContextCompat.getMainExecutor(requireContext()))
-
     }
 
     private fun requestPermission() {
@@ -375,7 +376,6 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         super.onPause()
     }
 
-
     /**
      *  [androidx.camera.core.ImageAnalysis], [androidx.camera.core.Preview] requires enum value of
      *  [androidx.camera.core.AspectRatio]. Currently it has values of 4:3 & 16:9.
@@ -424,7 +424,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         val message: String,
         val rationaleDialog: RationaleDialog? = null,
         val onMessageClicked: (() -> Unit)? = null,
-        val verificationPolicy: VerificationPolicy? = null,
+        val verificationPolicy: VerificationPolicy? = null
     ) {
         data class RationaleDialog(
             val title: Int,

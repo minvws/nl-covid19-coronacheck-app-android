@@ -16,8 +16,8 @@ interface VerifierFeatureFlagUseCase {
 }
 
 class VerifierFeatureFlagUseCaseImpl(
-    private val appConfigUseCase: VerifierCachedAppConfigUseCase,
-): VerifierFeatureFlagUseCase {
+    private val appConfigUseCase: VerifierCachedAppConfigUseCase
+) : VerifierFeatureFlagUseCase {
 
     override fun isVerificationPolicySelectionEnabled(): Boolean {
         val verificationPoliciesEnabled = appConfigUseCase.getCachedAppConfig().verificationPolicies

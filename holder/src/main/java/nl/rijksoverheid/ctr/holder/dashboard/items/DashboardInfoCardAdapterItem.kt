@@ -10,10 +10,11 @@ package nl.rijksoverheid.ctr.holder.dashboard.items
 import android.view.View
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardInfoCardBinding
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType.*
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType.*
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardInfoCardBinding
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType.Domestic
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType.Vaccination
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType.VaccinationAssessment
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -103,6 +104,11 @@ class DashboardInfoCardAdapterItem(
                         DisclosurePolicy.OneAndThreeG -> R.string.holder_dashboard_3Gand1GaccessBanner_title
                         DisclosurePolicy.ZeroG -> R.string.holder_dashboard_noDomesticCertificatesBanner_0G_title
                     }
+                )
+            }
+            is DashboardItem.InfoItem.BlockedEvents -> {
+                viewBinding.text.setText(
+                    R.string.holder_invaliddetailsremoved_banner_title
                 )
             }
         }

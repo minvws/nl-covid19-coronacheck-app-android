@@ -2,13 +2,14 @@ package nl.rijksoverheid.ctr.design.fragments.info
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.FragmentInfoBinding
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import org.koin.android.ext.android.inject
 
 class InfoFragment : Fragment(R.layout.fragment_info) {
@@ -74,6 +75,13 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
             }
             is InfoFragmentData.TitleDescriptionWithFooter -> {
                 binding.footer.text = infoFragmentData.footerText
+            }
+        }
+
+        if (arguments?.getBoolean(InfoFragmentUtil.CLOSE_ICON) == true) {
+            activity?.findViewById<Toolbar>(R.id.toolbar)?.let { toolbar ->
+                toolbar.navigationIcon = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close)
+                toolbar.navigationContentDescription = getString(R.string.back_to_overview)
             }
         }
     }

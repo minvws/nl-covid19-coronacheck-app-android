@@ -67,7 +67,7 @@ class ValidatePaperProofDomesticUseCaseImplTest {
     }
 
     @Test
-    fun `validate returns expired when server returns expired status`() = runBlocking {
+    fun `validate returns valid when server returns expired status`() = runBlocking {
         val usecase = createUseCase(
             remoteCouplingStatus = { RemoteCouplingStatus.Expired }
         )
@@ -77,7 +77,7 @@ class ValidatePaperProofDomesticUseCaseImplTest {
             couplingCode = ""
         )
 
-        assertTrue(result is PaperProofDomesticResult.Invalid.ExpiredQr)
+        assertTrue(result is PaperProofDomesticResult.Valid)
     }
 
     @Test

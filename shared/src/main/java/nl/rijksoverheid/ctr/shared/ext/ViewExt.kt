@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.forEach
 
 fun View.setVisible(isVisible: Boolean) {
-    visibility =  if (isVisible) {
+    visibility = if (isVisible) {
         View.VISIBLE
     } else {
         View.INVISIBLE
@@ -25,7 +25,6 @@ fun View.setVisible(isVisible: Boolean) {
 
 fun View.getDimensionPixelSize(@DimenRes dimenRes: Int) =
     context.resources.getDimensionPixelSize(dimenRes)
-
 
 /**
  * Helper method to retrieve all children of a view

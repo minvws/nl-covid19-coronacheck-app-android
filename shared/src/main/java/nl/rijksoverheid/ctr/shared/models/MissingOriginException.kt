@@ -9,4 +9,4 @@ import java.lang.Exception
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class MissingOriginException: Exception("missing origin exception")
+class MissingOriginException : Exception("missing origin exception")

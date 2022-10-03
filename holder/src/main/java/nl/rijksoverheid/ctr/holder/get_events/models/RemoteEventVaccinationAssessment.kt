@@ -10,8 +10,8 @@ package nl.rijksoverheid.ctr.holder.get_events.models
 import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlinx.parcelize.Parcelize
 import java.time.OffsetDateTime
+import kotlinx.parcelize.Parcelize
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -33,7 +33,7 @@ data class RemoteEventVaccinationAssessment(
     data class VaccinationAssessment(
         val assessmentDate: OffsetDateTime?,
         val digitallyVerified: Boolean?,
-        val country: String?,
+        val country: String?
     ) : Parcelable
 
     override fun getDate(): OffsetDateTime? {

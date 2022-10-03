@@ -19,8 +19,13 @@ import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assert
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertNotDisplayed
 import com.adevinta.android.barista.internal.performActionOnView
 import com.google.android.material.card.MaterialCardView
+import kotlin.test.assertTrue
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
-import nl.rijksoverheid.ctr.holder.*
+import nl.rijksoverheid.ctr.fakeAppConfigViewModel
+import nl.rijksoverheid.ctr.fakeDashboardViewModel
+import nl.rijksoverheid.ctr.fakeGreenCard
+import nl.rijksoverheid.ctr.fakeOriginEntity
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
@@ -39,7 +44,6 @@ import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import kotlin.test.assertTrue
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -554,7 +558,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
         assertDisplayed(R.id.tabs)
         assertDisplayed(R.id.tabs_separator)
     }
-    
+
     private fun startFragment(tabItems: List<DashboardTabItem>): FragmentScenario<DashboardFragment> {
         loadKoinModules(
             module(override = true) {
@@ -562,7 +566,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                 viewModel { fakeDashboardViewModel(tabItems) }
             })
         val fragmentArgs = bundleOf(
-            "returnUri" to "test",
+            "returnUri" to "test"
         )
         return launchFragmentInContainer(
             fragmentArgs, themeResId = R.style.AppTheme

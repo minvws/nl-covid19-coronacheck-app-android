@@ -40,7 +40,7 @@ class IntentUtilImpl(private val dialogUtil: DialogUtil) : IntentUtil {
                     ""
                 ),
                 positiveButtonText = R.string.ok,
-                positiveButtonCallback = {},
+                positiveButtonCallback = {}
             )
         }
     }
@@ -63,4 +63,3 @@ class IntentUtilImpl(private val dialogUtil: DialogUtil) : IntentUtil {
         }
     }
 }
-

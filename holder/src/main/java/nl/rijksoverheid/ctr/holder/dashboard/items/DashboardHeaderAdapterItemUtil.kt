@@ -8,9 +8,9 @@
 package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface DashboardHeaderAdapterItemUtil {
@@ -37,14 +37,18 @@ class DashboardHeaderAdapterItemUtilImpl(
         hasVisitorPassIncompleteItem: Boolean
     ): DashboardItem.HeaderItem {
         val empty = emptyState || hasVisitorPassIncompleteItem
-        val text = getHeaderText(tabType, empty)
+        val text = if (hasVisitorPassIncompleteItem) {
+            R.string.holder_dashboard_incompleteVisitorPass_message
+        } else {
+            getHeaderText(tabType, empty)
+        }
         val buttonInfo = getButtonInfo(tabType, empty)
         return DashboardItem.HeaderItem(text, buttonInfo)
     }
 
     private fun getHeaderText(
         tabType: GreenCardType,
-        emptyState: Boolean,
+        emptyState: Boolean
     ) = when (tabType) {
         is GreenCardType.Domestic -> {
             when (featureFlagUseCase.getDisclosurePolicy()) {

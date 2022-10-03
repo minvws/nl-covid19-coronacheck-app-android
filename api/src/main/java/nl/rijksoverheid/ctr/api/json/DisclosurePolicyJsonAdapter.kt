@@ -7,7 +7,11 @@
 
 package nl.rijksoverheid.ctr.api.json
 
-import com.squareup.moshi.*
+import com.squareup.moshi.FromJson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.JsonWriter
+import com.squareup.moshi.ToJson
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 class DisclosurePolicyJsonAdapter : JsonAdapter<DisclosurePolicy>() {
@@ -16,7 +20,7 @@ class DisclosurePolicyJsonAdapter : JsonAdapter<DisclosurePolicy>() {
     override fun fromJson(reader: JsonReader): DisclosurePolicy {
         try {
             val results = mutableListOf<String>()
-            reader.beginArray();
+            reader.beginArray()
             while (reader.hasNext()) {
                 results.add(reader.nextString())
             }

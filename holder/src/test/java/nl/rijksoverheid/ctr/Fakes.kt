@@ -1,9 +1,12 @@
-package nl.rijksoverheid.ctr.holder
+package nl.rijksoverheid.ctr
 
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import io.mockk.mockk
+import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
@@ -11,6 +14,7 @@ import nl.rijksoverheid.ctr.appconfig.models.ServerTime
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepository
@@ -21,7 +25,10 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
-import nl.rijksoverheid.ctr.holder.get_events.models.*
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.get_events.usecases.ConfigProvidersUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.EventProvidersResult
 import nl.rijksoverheid.ctr.holder.get_events.usecases.TestProvidersResult
@@ -30,23 +37,39 @@ import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodeUtil
+import nl.rijksoverheid.ctr.holder.your_events.YourEventsViewModel
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.persistence.database.entities.*
+import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginHintEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.persistence.database.usecases.*
+import nl.rijksoverheid.ctr.persistence.database.usecases.GetRemoteGreenCardsUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoteGreenCardsResult
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsResult
+import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.*
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.DomesticCredential
+import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
+import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
+import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
+import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import org.json.JSONArray
 import org.json.JSONObject
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -63,11 +86,9 @@ fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
         }
 
         override fun saveNewFeaturesFinished() {
-
         }
 
         override fun saveNewTerms() {
-
         }
     }
 
@@ -79,17 +100,17 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
         }
 
         override fun removeOrigin(originEntity: OriginEntity) {
-
         }
 
         override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
+        }
 
+        override fun dismissBlockedEventsInfo() {
         }
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {
     override suspend fun execute(events: List<EventGroupEntity>) {
-
     }
 }
 
@@ -102,7 +123,7 @@ fun fakeTokenValidatorUtil(
 }
 
 fun fakeCachedAppConfigUseCase(
-    appConfig: HolderConfig = HolderConfig.default(),
+    appConfig: HolderConfig = HolderConfig.default()
 ): HolderCachedAppConfigUseCase = object : HolderCachedAppConfigUseCase {
     override fun getCachedAppConfig(): HolderConfig {
         return appConfig
@@ -130,7 +151,6 @@ fun fakeIntroductionViewModel(
         }
 
         override fun saveIntroductionFinished(introductionData: IntroductionData) {
-
         }
     }
 }
@@ -154,9 +174,9 @@ fun fakeTestProviderRepository(
             status = RemoteProtocol.Status.COMPLETE,
             holder = null,
             events = null
-        ),
+        )
     ),
-    remoteTestResultExceptionCallback: (() -> Unit)? = null,
+    remoteTestResultExceptionCallback: (() -> Unit)? = null
 ): TestProviderRepository {
     return object : TestProviderRepository {
         override suspend fun remoteTestResult(
@@ -165,7 +185,7 @@ fun fakeTestProviderRepository(
             provider: String,
             verifierCode: String?,
             signingCertificateBytes: List<ByteArray>,
-            tlsCertificateBytes: List<ByteArray>,
+            tlsCertificateBytes: List<ByteArray>
         ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
             remoteTestResultExceptionCallback?.invoke()
             return NetworkRequestResult.Success(model)
@@ -234,7 +254,7 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
                         validForHours = 24,
                         validFrom = 1622731645L,
                         category = "2"
-                    ),
+                    )
                 )
             )
         }
@@ -303,10 +323,10 @@ fun fakeEventProviderRepository(
                 "".toByteArray(),
                 RemoteProtocol(
                     "", "", RemoteProtocol.Status.COMPLETE, null, listOf()
-                ),
+                )
             )
         )
-    },
+    }
 ) = object : EventProviderRepository {
     override suspend fun getUnomi(
         url: String,
@@ -315,7 +335,7 @@ fun fakeEventProviderRepository(
         scope: String?,
         signingCertificateBytes: List<ByteArray>,
         provider: String,
-        tlsCertificateBytes: List<ByteArray>,
+        tlsCertificateBytes: List<ByteArray>
     ): NetworkRequestResult<RemoteUnomi> {
         return unomi.invoke(url)
     }
@@ -327,7 +347,7 @@ fun fakeEventProviderRepository(
         filter: String,
         scope: String?,
         provider: String,
-        tlsCertificateBytes: List<ByteArray>,
+        tlsCertificateBytes: List<ByteArray>
     ): NetworkRequestResult<SignedResponseWithModel<RemoteProtocol>> {
         return events.invoke(url)
     }
@@ -372,23 +392,23 @@ fun fakeGreenCardUtil(
         return true
     }
 
-    override fun isForeignDcc(greenCard: GreenCard): Boolean {
+    override fun isEventFromDcc(greenCard: GreenCard, hints: List<OriginHintEntity>): Boolean {
         return false
     }
 }
 
 fun fakeGetRemoteGreenCardUseCase(
     result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
-        RemoteGreenCards(null, null, listOf())
+        RemoteGreenCards(null, null, listOf(), listOf())
     )
 ) = object : GetRemoteGreenCardsUseCase {
-    override suspend fun get(events: List<EventGroupEntity>, secretKey: String): RemoteGreenCardsResult {
+    override suspend fun get(events: List<EventGroupEntity>, secretKey: String, flow: Flow): RemoteGreenCardsResult {
         return result
     }
 }
 
 fun fakeSyncRemoteGreenCardUseCase(
-    result: SyncRemoteGreenCardsResult = SyncRemoteGreenCardsResult.Success,
+    result: SyncRemoteGreenCardsResult = SyncRemoteGreenCardsResult.Success
 ) = object : SyncRemoteGreenCardsUseCase {
     override suspend fun execute(remoteGreenCards: RemoteGreenCards, secretKey: String): SyncRemoteGreenCardsResult {
         return result
@@ -399,7 +419,6 @@ fun fakeClockDevationUseCase(
     hasDeviation: Boolean = false
 ) = object : ClockDeviationUseCase() {
     override fun store(serverTime: ServerTime) {
-
     }
 
     override fun hasDeviation(): Boolean {
@@ -447,19 +466,23 @@ val fakeGreenCardEntity = GreenCardEntity(
     type = GreenCardType.Domestic
 )
 
-fun fakeRemoteEventVaccination(date: LocalDate = LocalDate.now()) =
-    RemoteEventVaccination.Vaccination(
-        date = date,
-        hpkCode = "",
+fun fakeRemoteEventVaccination(unique: String = "", date: LocalDate) =
+    RemoteEventVaccination(
         type = "",
-        brand = "",
-        completedByMedicalStatement = false,
-        completedByPersonalStatement = false,
-        completionReason = "",
-        doseNumber = "",
-        totalDoses = "",
-        country = "",
-        manufacturer = ""
+        unique = unique,
+        vaccination = RemoteEventVaccination.Vaccination(
+            date = date,
+            hpkCode = "",
+            type = "",
+            brand = "",
+            completedByMedicalStatement = false,
+            completedByPersonalStatement = false,
+            completionReason = "",
+            doseNumber = "",
+            totalDoses = "",
+            country = "",
+            manufacturer = ""
+        )
     )
 
 fun fakeGreenCard(
@@ -479,7 +502,7 @@ fun fakeGreenCard(
             expirationTime = expirationTime,
             category = category
         )
-    ),
+    )
 ) = GreenCard(
     greenCardEntity = GreenCardEntity(
         id = 0,
@@ -577,7 +600,7 @@ fun fakeEventGroupEntity(
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),
     euGreencards: List<RemoteGreenCards.EuGreenCard>? = listOf(fakeEuGreenCard())
-) = RemoteGreenCards(domesticGreencard, euGreencards, listOf())
+) = RemoteGreenCards(domesticGreencard, euGreencards, listOf(), listOf())
 
 fun fakeDomesticGreenCard(
     origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),
@@ -601,7 +624,7 @@ fun fakeOrigin(
         2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
     ),
     doseNumber: Int? = 1
-) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber)
+) = RemoteGreenCards.Origin(type, eventTime, expirationTime, validFrom, doseNumber, listOf())
 
 fun fakeOriginEntity(
     id: Int = 0,
@@ -648,7 +671,6 @@ fun fakeAppConfigPersistenceManager(
     }
 
     override fun saveAppConfigLastFetchedSeconds(seconds: Long) {
-
     }
 }
 
@@ -676,7 +698,7 @@ fun fakeAppConfig(
     ggdEnabled = true
 )
 
-fun fakeQrCodeUtil() = object: QrCodeUtil {
+fun fakeQrCodeUtil() = object : QrCodeUtil {
     override fun createQrCode(
         qrCodeContent: String,
         width: Int,
@@ -689,4 +711,22 @@ fun fakeQrCodeUtil() = object: QrCodeUtil {
     )
 }
 
+fun fakeYourEventsViewModel(
+    databaseSyncerResult: DatabaseSyncerResult
+): YourEventsViewModel {
+    return object : YourEventsViewModel() {
+        init {
+            (yourEventsResult as MutableLiveData).value = Event(databaseSyncerResult)
+        }
 
+        override fun saveRemoteProtocolEvents(
+            flow: Flow,
+            remoteProtocols: Map<RemoteProtocol, ByteArray>,
+            removePreviousEvents: Boolean
+        ) {
+        }
+
+        override fun checkForConflictingEvents(remoteProtocols: Map<RemoteProtocol, ByteArray>) {
+        }
+    }
+}

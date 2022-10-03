@@ -7,13 +7,13 @@
 
 package nl.rijksoverheid.ctr.holder.paper_proof.usecases
 
-import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
-import nl.rijksoverheid.ctr.holder.models.HolderStep
-import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingStatus
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
+import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.paper_proof.models.PaperProofDomesticResult
+import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingStatus
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 interface ValidatePaperProofDomesticUseCase {
     suspend fun validate(qrContent: String, couplingCode: String): PaperProofDomesticResult
@@ -41,7 +41,7 @@ class ValidatePaperProofDomesticUseCaseImpl(
                         RemoteCouplingStatus.Accepted -> validateSuccess(qrContent, couplingCode)
                         RemoteCouplingStatus.Rejected -> PaperProofDomesticResult.Invalid.RejectedQr
                         RemoteCouplingStatus.Blocked -> PaperProofDomesticResult.Invalid.BlockedQr
-                        RemoteCouplingStatus.Expired -> PaperProofDomesticResult.Invalid.ExpiredQr
+                        RemoteCouplingStatus.Expired -> validateSuccess(qrContent, couplingCode)
                     }
                 }
                 is NetworkRequestResult.Failed -> {

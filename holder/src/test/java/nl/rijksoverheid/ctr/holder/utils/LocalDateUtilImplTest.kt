@@ -1,14 +1,14 @@
 package nl.rijksoverheid.ctr.holder.utils
 
 import androidx.test.core.app.ApplicationProvider
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneId
 
 @RunWith(RobolectricTestRunner::class)
 class LocalDateUtilImplTest : AutoCloseKoinTest() {

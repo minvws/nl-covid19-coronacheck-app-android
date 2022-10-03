@@ -1,5 +1,10 @@
 package nl.rijksoverheid.ctr.your_events.utils
 
+import java.time.Clock
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import kotlin.test.assertEquals
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
@@ -7,11 +12,6 @@ import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3UtilImpl
 import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.time.Clock
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
-import kotlin.test.assertEquals
 
 class RemoteProtocolUtilImplTest {
 
@@ -57,12 +57,12 @@ class RemoteProtocolUtilImplTest {
             holder = holder(),
             events = listOf(vaccination(
                 doseNumber = "1",
-                totalDoses = "2",
+                totalDoses = "2"
             ),
                 vaccination(
                     doseNumber = "2",
                     totalDoses = "2",
-                    clock = clock2,
+                    clock = clock2
                 ))
         )
 
@@ -74,11 +74,11 @@ class RemoteProtocolUtilImplTest {
             events = listOf(vaccination(
                 doseNumber = "1",
                 totalDoses = "2",
-                clock = clock2,
+                clock = clock2
             ),
                 vaccination(
                     doseNumber = "2",
-                    totalDoses = "2",
+                    totalDoses = "2"
                 ))
         )
 
@@ -118,9 +118,9 @@ class RemoteProtocolUtilImplTest {
             status = RemoteProtocol.Status.COMPLETE,
             holder = holder(),
             events = listOf(vaccination(
-                hpkCode = "hpkCode2",
+                hpkCode = "hpkCode2"
             ), vaccination(
-                hpkCode = "hpkCode1",
+                hpkCode = "hpkCode1"
             ))
         )
 
@@ -276,7 +276,7 @@ class RemoteProtocolUtilImplTest {
             infix = null,
             firstName = "First",
             lastName = "Last",
-            birthDate = "01-08-1980",
+            birthDate = "01-08-1980"
         )
     }
 
@@ -286,7 +286,7 @@ class RemoteProtocolUtilImplTest {
         totalDoses: String = "1",
         hpkCode: String? = "hpkCode",
         manufacturer: String? = null,
-        clock: Clock = clock1,
+        clock: Clock = clock1
     ) = RemoteEventVaccination(
         type = "vaccination",
         unique = unique,
@@ -301,7 +301,7 @@ class RemoteProtocolUtilImplTest {
             completedByMedicalStatement = null,
             completedByPersonalStatement = null,
             country = null,
-            completionReason = null,
+            completionReason = null
         )
     )
 

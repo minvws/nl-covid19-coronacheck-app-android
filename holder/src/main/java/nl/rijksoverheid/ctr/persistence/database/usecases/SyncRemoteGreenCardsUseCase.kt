@@ -1,8 +1,8 @@
 package nl.rijksoverheid.ctr.persistence.database.usecases
 
 import nl.rijksoverheid.ctr.holder.models.HolderStep
-import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
@@ -19,7 +19,7 @@ class SyncRemoteGreenCardsUseCaseImpl(
     private val createDomesticGreenCardUseCase: CreateDomesticGreenCardUseCase,
     private val createEuGreenCardsUseCase: CreateEuGreenCardUseCase,
     private val mobileCoreWrapper: MobileCoreWrapper
-    ): SyncRemoteGreenCardsUseCase {
+) : SyncRemoteGreenCardsUseCase {
 
     override suspend fun execute(remoteGreenCards: RemoteGreenCards, secretKey: String): SyncRemoteGreenCardsResult {
         try {
@@ -34,6 +34,7 @@ class SyncRemoteGreenCardsUseCaseImpl(
             holderDatabase.greenCardDao().deleteAll()
             holderDatabase.originDao().deleteAll()
             holderDatabase.credentialDao().deleteAll()
+            holderDatabase.originHintDao().deleteAll()
 
             domesticCredentials?.let { it ->
                 remoteGreenCards.domesticGreencard?.let { domesticGreenCard ->
@@ -65,6 +66,6 @@ class SyncRemoteGreenCardsUseCaseImpl(
 }
 
 sealed class SyncRemoteGreenCardsResult {
-    object Success: SyncRemoteGreenCardsResult()
-    data class Failed(val errorResult: ErrorResult): SyncRemoteGreenCardsResult()
+    object Success : SyncRemoteGreenCardsResult()
+    data class Failed(val errorResult: ErrorResult) : SyncRemoteGreenCardsResult()
 }

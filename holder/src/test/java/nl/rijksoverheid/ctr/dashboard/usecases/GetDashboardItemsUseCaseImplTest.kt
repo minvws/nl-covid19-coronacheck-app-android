@@ -9,16 +9,17 @@ package nl.rijksoverheid.ctr.dashboard.usecases
 
 import io.mockk.every
 import io.mockk.mockk
+import java.time.OffsetDateTime
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.holder.fakeEventGroupEntity
-import nl.rijksoverheid.ctr.holder.fakeGreenCard
+import nl.rijksoverheid.ctr.fakeEventGroupEntity
+import nl.rijksoverheid.ctr.fakeGreenCard
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert.assertEquals
@@ -31,7 +32,6 @@ import org.koin.dsl.module
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import java.time.OffsetDateTime
 
 @RunWith(RobolectricTestRunner::class)
 class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
@@ -74,7 +74,7 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.PlaceholderCardItem)
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrButtonItem)
 
-        assertEquals( 3, dashboardItems.internationalItems.size)
+        assertEquals(3, dashboardItems.internationalItems.size)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.PlaceholderCardItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
@@ -126,7 +126,7 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             allEventGroupEntities = listOf()
         )
 
-        assertEquals( 3, dashboardItems.domesticItems.size)
+        assertEquals(3, dashboardItems.domesticItems.size)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.InfoItem.MissingDutchVaccinationItem)
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrCardItem)
@@ -169,7 +169,7 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrCardItem)
         assertTrue(dashboardItems.domesticItems[3] is DashboardItem.CoronaMelderItem)
 
-        assertEquals( 4, dashboardItems.internationalItems.size)
+        assertEquals(4, dashboardItems.internationalItems.size)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.CardsItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrCardItem)
@@ -199,7 +199,7 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.PlaceholderCardItem)
         assertTrue(dashboardItems.domesticItems[3] is DashboardItem.AddQrButtonItem)
 
-        assertEquals( 3, dashboardItems.internationalItems.size)
+        assertEquals(3, dashboardItems.internationalItems.size)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.PlaceholderCardItem)
         assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrButtonItem)
@@ -222,7 +222,7 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             allEventGroupEntities = listOf()
         )
 
-        assertEquals(3, dashboardItems.domesticItems.size, )
+        assertEquals(3, dashboardItems.domesticItems.size)
         assertTrue(dashboardItems.domesticItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.domesticItems[1] is DashboardItem.PlaceholderCardItem)
         assertTrue(dashboardItems.domesticItems[2] is DashboardItem.AddQrButtonItem)

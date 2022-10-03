@@ -19,7 +19,7 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SavedEventsSyncGreenCardsFragment: BaseFragment(R.layout.fragment_saved_events_sync_green_cards) {
+class SavedEventsSyncGreenCardsFragment : BaseFragment(R.layout.fragment_saved_events_sync_green_cards) {
 
     private val syncGreenCardsViewModel: SyncGreenCardsViewModel by viewModel()
 
@@ -28,7 +28,7 @@ class SavedEventsSyncGreenCardsFragment: BaseFragment(R.layout.fragment_saved_ev
     }
 
     override fun getFlow(): Flow {
-       return HolderFlow.ClearEvents
+        return HolderFlow.ClearEvents
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

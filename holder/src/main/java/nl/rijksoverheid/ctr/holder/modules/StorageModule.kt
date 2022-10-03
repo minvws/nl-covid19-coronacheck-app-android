@@ -27,7 +27,7 @@ val storageModule = module {
     }
 
     factory<HolderDatabaseSyncer> {
-        HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
+        HolderDatabaseSyncerImpl(get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     single<PersistenceManager> {

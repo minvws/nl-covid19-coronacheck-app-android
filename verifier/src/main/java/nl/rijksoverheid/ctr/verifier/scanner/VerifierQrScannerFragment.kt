@@ -34,12 +34,12 @@ class VerifierQrScannerFragment : QrCodeScannerFragment() {
         scannerViewModel.log()
         scannerViewModel.validate(
             qrContent = content,
-            returnUri = arguments?.getString("returnUri"),
+            returnUri = arguments?.getString("returnUri")
         )
     }
 
     override fun getCopy(): Copy {
-        val verificationPolicyCopy = when(verificationPolicySelectionStateUseCase.get()) {
+        val verificationPolicyCopy = when (verificationPolicySelectionStateUseCase.get()) {
             VerificationPolicySelectionState.Selection.None,
             VerificationPolicySelectionState.Policy3G -> null
             VerificationPolicySelectionState.Policy1G,

@@ -2,6 +2,11 @@ package nl.rijksoverheid.ctr.dashboard.util
 
 import io.mockk.every
 import io.mockk.mockk
+import java.time.Clock
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
@@ -11,12 +16,14 @@ import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.json.JSONObject
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
-import java.time.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -34,7 +41,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         data = "".toByteArray(),
         credentialVersion = 2,
         validFrom = OffsetDateTime.now(),
-        expirationTime = expirationTime,
+        expirationTime = expirationTime
     )
 
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)

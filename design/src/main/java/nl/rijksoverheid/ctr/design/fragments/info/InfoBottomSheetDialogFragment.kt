@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
-import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -66,14 +65,14 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     setHtmlText(
                         htmlText = it,
                         htmlLinksEnabled = htmlLinksEnabled,
-                        splitHtmlText = Accessibility.screenReader(requireContext()),
+                        splitHtmlText = Accessibility.screenReader(requireContext())
                     )
                 }
                 htmlTextString?.let {
                     setHtmlText(
                         htmlText = it,
                         htmlLinksEnabled = htmlLinksEnabled,
-                        splitHtmlText = Accessibility.screenReader(requireContext()),
+                        splitHtmlText = Accessibility.screenReader(requireContext())
                     )
                 }
                 customLinkIntent?.let { enableCustomLinks { context.startActivity(it) } }

@@ -7,14 +7,14 @@
 
 package nl.rijksoverheid.ctr.qrcodes.utils
 
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtilImpl
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneId
 
 class QrCodesFragmentUtilImplTest {
 

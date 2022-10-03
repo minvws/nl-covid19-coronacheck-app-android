@@ -12,10 +12,9 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemSavedEventsNoSavedEventsBinding
 
-class SavedEventsNoSavedEventsItem: BindableItem<AdapterItemSavedEventsNoSavedEventsBinding>() {
+class SavedEventsNoSavedEventsItem : BindableItem<AdapterItemSavedEventsNoSavedEventsBinding>() {
 
     override fun bind(viewBinding: AdapterItemSavedEventsNoSavedEventsBinding, position: Int) {
-
     }
 
     override fun getLayout(): Int {

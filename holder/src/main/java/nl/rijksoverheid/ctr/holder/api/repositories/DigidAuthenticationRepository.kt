@@ -3,12 +3,16 @@ package nl.rijksoverheid.ctr.holder.api.repositories
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
-import net.openid.appauth.*
-import nl.rijksoverheid.ctr.holder.BuildConfig
-import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import net.openid.appauth.AuthorizationRequest
+import net.openid.appauth.AuthorizationResponse
+import net.openid.appauth.AuthorizationService
+import net.openid.appauth.AuthorizationServiceConfiguration
+import net.openid.appauth.ResponseTypeValues
+import nl.rijksoverheid.ctr.holder.BuildConfig
+import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -17,7 +21,7 @@ import kotlin.coroutines.suspendCoroutine
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class DigidAuthenticationRepository: AuthenticationRepository {
+class DigidAuthenticationRepository : AuthenticationRepository {
 
     override suspend fun authResponse(
         loginType: LoginType,

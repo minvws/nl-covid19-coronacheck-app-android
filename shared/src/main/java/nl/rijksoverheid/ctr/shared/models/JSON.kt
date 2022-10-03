@@ -6,5 +6,4 @@ abstract class JSON {
     fun toJson(moshi: Moshi): String {
         return moshi.adapter(javaClass).toJson(this)
     }
-
 }

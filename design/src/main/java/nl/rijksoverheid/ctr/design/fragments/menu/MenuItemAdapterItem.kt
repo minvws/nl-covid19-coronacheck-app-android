@@ -17,7 +17,7 @@ class MenuItemAdapterItem(
     private val menuItem: MenuSection.MenuItem,
     private val lastItemInSection: Boolean,
     private val onClick: (onClick: MenuSection.MenuItem.OnClick) -> Unit
-): BindableItem<ItemMenuBinding>() {
+) : BindableItem<ItemMenuBinding>() {
 
     override fun bind(viewBinding: ItemMenuBinding, position: Int) {
         val context = viewBinding.root.context

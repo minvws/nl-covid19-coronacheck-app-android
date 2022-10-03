@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.design.utils
 
 import android.os.Bundle
 import androidx.annotation.IdRes
-import androidx.annotation.NavigationRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -10,7 +9,6 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.fragments.info.InfoBottomSheetDialogFragment
-import nl.rijksoverheid.ctr.design.fragments.info.InfoFragment
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 
 /*
@@ -24,6 +22,7 @@ interface InfoFragmentUtil {
 
     companion object {
         const val EXTRA_INFO_FRAGMENT_DATA = "data"
+        const val CLOSE_ICON = "closeIcon"
     }
 
     fun presentFullScreen(
@@ -35,15 +34,17 @@ interface InfoFragmentUtil {
         currentFragment: Fragment,
         @IdRes infoFragmentNavigationId: Int = R.id.action_info_fragment,
         toolbarTitle: String,
-        data: InfoFragmentData)
+        data: InfoFragmentData,
+        closeIcon: Boolean = false
+    )
 
     fun presentAsBottomSheet(
         fragmentManager: FragmentManager,
-        data: InfoFragmentData,
+        data: InfoFragmentData
     )
 }
 
-class InfoFragmentUtilImpl: InfoFragmentUtil {
+class InfoFragmentUtilImpl : InfoFragmentUtil {
     override fun presentFullScreen(
         currentFragment: Fragment,
         infoFragmentDirections: NavDirections
@@ -53,22 +54,26 @@ class InfoFragmentUtilImpl: InfoFragmentUtil {
         )
     }
 
-    override fun presentFullScreen(currentFragment: Fragment,
-                                   @IdRes infoFragmentNavigationId: Int,
-                                   toolbarTitle: String,
-                                   data: InfoFragmentData) {
+    override fun presentFullScreen(
+        currentFragment: Fragment,
+        @IdRes infoFragmentNavigationId: Int,
+        toolbarTitle: String,
+        data: InfoFragmentData,
+        closeIcon: Boolean
+    ) {
         currentFragment.findNavController().navigate(
             infoFragmentNavigationId,
             bundleOf(
                 Pair("toolbarTitle", toolbarTitle),
-                Pair(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA, data)
+                Pair(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA, data),
+                Pair(InfoFragmentUtil.CLOSE_ICON, closeIcon)
             )
         )
     }
 
     override fun presentAsBottomSheet(
         fragmentManager: FragmentManager,
-        data: InfoFragmentData,
+        data: InfoFragmentData
     ) {
         val bottomSheet = InfoBottomSheetDialogFragment().apply {
             arguments = Bundle().apply {

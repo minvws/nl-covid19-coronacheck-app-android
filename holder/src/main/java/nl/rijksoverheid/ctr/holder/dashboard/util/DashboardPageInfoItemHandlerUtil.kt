@@ -10,6 +10,9 @@ package nl.rijksoverheid.ctr.holder.dashboard.util
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthTime
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -19,20 +22,16 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.MainNavDirections
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragmentDirections
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardPageFragment
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItem
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
+import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
+import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 
 /**
  * Handles [DashboardInfoCardAdapterItem] actions
@@ -53,7 +52,8 @@ interface DashboardPageInfoItemHandlerUtil {
 class DashboardPageInfoItemHandlerUtilImpl(
     private val infoFragmentUtil: InfoFragmentUtil,
     private val intentUtil: IntentUtil,
-    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
+    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
+    private val showBlockedEventsBottomSheetUtil: ShowBlockedEventsBottomSheetUtil
 ) : DashboardPageInfoItemHandlerUtil {
 
     /**
@@ -88,6 +88,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
                     infoItem.disclosurePolicy
                 )
             }
+            is DashboardItem.InfoItem.BlockedEvents -> onBlockedEventsClick(dashboardPageFragment, infoItem.blockedEvents)
         }
     }
 
@@ -105,7 +106,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
     }
 
     private fun onDomesticVaccinationExpiredItemClicked(
-        dashboardPageFragment: DashboardPageFragment,
+        dashboardPageFragment: DashboardPageFragment
     ) {
         val navigationDirection = MainNavDirections.actionGetEvents(
             toolbarTitle = dashboardPageFragment.getString(R.string.holder_addVaccination_title),
@@ -130,7 +131,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
     }
 
     private fun onDomesticVaccinationAssessmentExpiredClicked(
-        dashboardPageFragment: DashboardPageFragment,
+        dashboardPageFragment: DashboardPageFragment
     ) {
         val descriptionText = dashboardPageFragment.getString(R.string.holder_dashboard_visitorpassexpired_body,
             cachedAppConfigUseCase.getCachedAppConfig().vaccinationAssessmentEventValidityDays)
@@ -195,11 +196,10 @@ class DashboardPageInfoItemHandlerUtilImpl(
                 descriptionData = DescriptionData(
                     R.string.clock_deviation_explanation_description,
                     customLinkIntent = Intent(Settings.ACTION_DATE_SETTINGS)
-                ),
+                )
             )
         )
     }
-
 
     private fun onTestCertificate3GValidityClicked(dashboardPageFragment: DashboardPageFragment) {
         infoFragmentUtil.presentAsBottomSheet(
@@ -209,7 +209,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
                 descriptionData = DescriptionData(
                     R.string.holder_my_overview_3g_test_validity_bottom_sheet_body,
                     htmlLinksEnabled = true
-                ),
+                )
             )
         )
     }
@@ -224,7 +224,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
                 title = dashboardPageFragment.getString(R.string.holder_completecertificate_title),
                 descriptionData = DescriptionData(
                     htmlText = R.string.holder_completecertificate_body,
-                    htmlLinksEnabled = true,
+                    htmlLinksEnabled = true
                 ),
                 primaryButtonData = ButtonData.NavigationButton(
                     text = dashboardPageFragment.getString(R.string.holder_completecertificate_button_fetchnegativetest),
@@ -233,6 +233,10 @@ class DashboardPageInfoItemHandlerUtilImpl(
                 )
             )
         )
+    }
+
+    private fun onBlockedEventsClick(dashboardPageFragment: DashboardPageFragment, blockedEvents: List<BlockedEventEntity>) {
+        showBlockedEventsBottomSheetUtil.show(dashboardPageFragment, blockedEvents)
     }
 
     private fun onOriginInfoClicked(
@@ -259,13 +263,13 @@ class DashboardPageInfoItemHandlerUtilImpl(
                 is OriginType.Test -> {
                     InfoFragmentData.TitleDescription(
                         title = dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_test),
-                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test),
+                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_test)
                     )
                 }
                 is OriginType.Vaccination -> {
                     InfoFragmentData.TitleDescription(
                         title = dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_vaccination),
-                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination),
+                        descriptionData = DescriptionData(R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination)
                     )
                 }
                 is OriginType.Recovery -> {
@@ -273,16 +277,16 @@ class DashboardPageInfoItemHandlerUtilImpl(
                         title = dashboardPageFragment.getString(R.string.my_overview_green_card_not_valid_title_recovery),
                         descriptionData = DescriptionData(
                             htmlText = R.string.my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery,
-                            htmlLinksEnabled = true,
-                        ),
+                            htmlLinksEnabled = true
+                        )
                     )
                 }
                 is OriginType.VaccinationAssessment -> {
                     InfoFragmentData.TitleDescription(
-                        title =  dashboardPageFragment.getString(R.string.holder_notvalidinthisregionmodal_visitorpass_international_title),
+                        title = dashboardPageFragment.getString(R.string.holder_notvalidinthisregionmodal_visitorpass_international_title),
                         descriptionData = DescriptionData(
                             htmlText = R.string.holder_notvalidinthisregionmodal_visitorpass_international_body,
-                            htmlLinksEnabled = true),
+                            htmlLinksEnabled = true)
                     )
                 }
             }
@@ -316,7 +320,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
             dashboardPageFragment.parentFragmentManager,
             InfoFragmentData.TitleDescription(
                 title = title,
-                descriptionData = DescriptionData(description, htmlLinksEnabled = true),
+                descriptionData = DescriptionData(description, htmlLinksEnabled = true)
             )
         )
     }
@@ -346,8 +350,10 @@ class DashboardPageInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {
                 dashboardPageFragment.dashboardViewModel.dismissPolicyInfo(infoItem.disclosurePolicy)
             }
+            is DashboardItem.InfoItem.BlockedEvents -> {
+                dashboardPageFragment.dashboardViewModel.dismissBlockedEventsInfo()
+            }
             else -> {
-
             }
         }
     }

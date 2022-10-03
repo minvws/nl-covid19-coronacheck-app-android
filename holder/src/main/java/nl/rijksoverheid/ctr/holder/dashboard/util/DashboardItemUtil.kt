@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
@@ -24,6 +25,7 @@ interface DashboardItemUtil {
     fun shouldShowPlaceholderItem(emptyState: Boolean): Boolean
     fun shouldAddQrButtonItem(emptyState: Boolean): Boolean
     fun isAppUpdateAvailable(): Boolean
+    suspend fun shouldShowBlockedEventsItem(): Boolean
 
     /**
      * Multiple EU vaccination green card items will be combined into 1.
@@ -37,7 +39,7 @@ interface DashboardItemUtil {
     fun getConfigFreshnessMaxValidity(): Long
     fun shouldShowMissingDutchVaccinationItem(
         domesticGreenCards: List<GreenCard>,
-        euGreenCards: List<GreenCard>,
+        euGreenCards: List<GreenCard>
     ): Boolean
     fun shouldShowVisitorPassIncompleteItem(
         events: List<EventGroupEntity>,
@@ -49,10 +51,14 @@ interface DashboardItemUtil {
         greenCardType: GreenCardType,
         originType: OriginType
     ): Boolean
-    fun shouldShowAddQrCardItem(hasVisitorPassIncompleteItem: Boolean,
-                                emptyState: Boolean): Boolean
-    fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
-                                 tabType: GreenCardType): Boolean
+    fun shouldShowAddQrCardItem(
+        hasVisitorPassIncompleteItem: Boolean,
+        emptyState: Boolean
+    ): Boolean
+    fun shouldShowPolicyInfoItem(
+        disclosurePolicy: DisclosurePolicy,
+        tabType: GreenCardType
+    ): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -62,6 +68,7 @@ class DashboardItemUtilImpl(
     private val appConfigUseCase: HolderCachedAppConfigUseCase,
     private val buildConfigUseCase: BuildConfigUseCase,
     private val greenCardUtil: GreenCardUtil,
+    private val holderDatabase: HolderDatabase
 ) : DashboardItemUtil {
 
     override fun shouldShowClockDeviationItem(emptyState: Boolean, allGreenCards: List<GreenCard>) =
@@ -75,6 +82,10 @@ class DashboardItemUtilImpl(
 
     override fun isAppUpdateAvailable(): Boolean {
         return buildConfigUseCase.getVersionCode() < appConfigUseCase.getCachedAppConfig().recommendedVersion
+    }
+
+    override suspend fun shouldShowBlockedEventsItem(): Boolean {
+        return holderDatabase.blockedEventDao().getAll().isNotEmpty()
     }
 
     override fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {
@@ -101,7 +112,7 @@ class DashboardItemUtilImpl(
 
     override fun shouldShowConfigFreshnessWarning(): Boolean {
         // return true if config is older than 10 days && less than 28 days
-       return appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning()
+        return appConfigFreshnessUseCase.shouldShowConfigFreshnessWarning()
     }
 
     override fun getConfigFreshnessMaxValidity(): Long {
@@ -110,18 +121,19 @@ class DashboardItemUtilImpl(
 
     override fun shouldShowMissingDutchVaccinationItem(
         domesticGreenCards: List<GreenCard>,
-        euGreenCards: List<GreenCard>,
+        euGreenCards: List<GreenCard>
     ): Boolean {
         // if a user has a european vaccination certificate but not dutch one,
         // we inform him that he can get a dutch one by either retrieving a
         // second vaccination result or a positive test result
-        return domesticGreenCards.none { it.origins.any { it.type == OriginType.Vaccination } }
-                && euGreenCards.any { it.origins.any { it.type == OriginType.Vaccination } }
+        return domesticGreenCards.none { it.origins.any { it.type == OriginType.Vaccination } } &&
+                euGreenCards.any { it.origins.any { it.type == OriginType.Vaccination } }
     }
 
     override fun shouldShowVisitorPassIncompleteItem(
         events: List<EventGroupEntity>,
-        domesticGreenCards: List<GreenCard>): Boolean {
+        domesticGreenCards: List<GreenCard>
+    ): Boolean {
         val hasVaccinationAssessmentEvent = events.map { it.type }.contains(OriginType.VaccinationAssessment)
         val hasVaccinationAssessmentOrigin = domesticGreenCards.map { it.origins.map { origin -> origin.type } }.flatten().contains(OriginType.VaccinationAssessment)
         return hasVaccinationAssessmentEvent && !hasVaccinationAssessmentOrigin
@@ -151,10 +163,13 @@ class DashboardItemUtilImpl(
 
     override fun shouldShowAddQrCardItem(
         hasVisitorPassIncompleteItem: Boolean,
-        emptyState: Boolean) = !emptyState && !hasVisitorPassIncompleteItem
+        emptyState: Boolean
+    ) = !emptyState && !hasVisitorPassIncompleteItem
 
-    override fun shouldShowPolicyInfoItem(disclosurePolicy: DisclosurePolicy,
-                                          tabType: GreenCardType): Boolean {
+    override fun shouldShowPolicyInfoItem(
+        disclosurePolicy: DisclosurePolicy,
+        tabType: GreenCardType
+    ): Boolean {
         return if (persistenceManager.getPolicyBannerDismissed() != disclosurePolicy) {
             when (tabType) {
                 is GreenCardType.Domestic -> {

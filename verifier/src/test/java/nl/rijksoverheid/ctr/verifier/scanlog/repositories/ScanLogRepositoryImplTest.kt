@@ -3,13 +3,13 @@ package nl.rijksoverheid.ctr.verifier.scanlog.repositories
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import java.time.Instant
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.verifier.persistance.database.VerifierDatabase
 import nl.rijksoverheid.ctr.verifier.persistance.database.entities.ScanLogEntity
 import nl.rijksoverheid.ctr.verifier.scanlog.datamapper.ScanLogDataMapper
 import org.junit.Test
-import java.time.Instant
 
 class ScanLogRepositoryImplTest {
 

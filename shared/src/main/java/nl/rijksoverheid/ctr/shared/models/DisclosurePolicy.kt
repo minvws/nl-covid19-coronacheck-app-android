@@ -10,10 +10,10 @@ package nl.rijksoverheid.ctr.shared.models
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-sealed class DisclosurePolicy(open val stringValue: String): Parcelable {
-    @Parcelize object ZeroG: DisclosurePolicy("0G")
-    @Parcelize object OneG: DisclosurePolicy("1G")
-    @Parcelize object ThreeG: DisclosurePolicy("3G")
+sealed class DisclosurePolicy(open val stringValue: String) : Parcelable {
+    @Parcelize object ZeroG : DisclosurePolicy("0G")
+    @Parcelize object OneG : DisclosurePolicy("1G")
+    @Parcelize object ThreeG : DisclosurePolicy("3G")
     @Parcelize object OneAndThreeG : DisclosurePolicy("1G,3G")
 
     companion object {

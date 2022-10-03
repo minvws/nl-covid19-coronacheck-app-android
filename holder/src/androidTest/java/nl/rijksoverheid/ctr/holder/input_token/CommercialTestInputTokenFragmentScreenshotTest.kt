@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class CommercialTestInputTokenFragmentScreenshotTest: ScreenshotTest {
+class CommercialTestInputTokenFragmentScreenshotTest : ScreenshotTest {
     @Test
     fun commercialTestInputTokenFragment_Screenshot() {
         val fragmentScenario = launchFragmentInContainer<CommercialTestInputTokenFragment>(

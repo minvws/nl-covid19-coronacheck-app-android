@@ -9,7 +9,12 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.databinding.FragmentScanLogBinding
-import nl.rijksoverheid.ctr.verifier.scanlog.items.*
+import nl.rijksoverheid.ctr.verifier.scanlog.items.ScanLogEmptyListAdapterItem
+import nl.rijksoverheid.ctr.verifier.scanlog.items.ScanLogFirstInstallTimeAdapterItem
+import nl.rijksoverheid.ctr.verifier.scanlog.items.ScanLogHeaderAdapterItem
+import nl.rijksoverheid.ctr.verifier.scanlog.items.ScanLogItem
+import nl.rijksoverheid.ctr.verifier.scanlog.items.ScanLogListAdapterItem
+import nl.rijksoverheid.ctr.verifier.scanlog.items.ScanLogListHeaderAdapterItem
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -19,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanLogFragment: Fragment(R.layout.fragment_scan_log) {
+class ScanLogFragment : Fragment(R.layout.fragment_scan_log) {
 
     private val scanLogViewModel: ScanLogViewModel by viewModel()
     private val section = Section()

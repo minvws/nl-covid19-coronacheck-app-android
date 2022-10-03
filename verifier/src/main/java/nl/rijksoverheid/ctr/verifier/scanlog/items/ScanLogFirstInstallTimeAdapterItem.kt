@@ -16,14 +16,14 @@ import org.koin.core.component.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class ScanLogFirstInstallTimeAdapterItem(private val item: ScanLogItem.FirstInstallTimeItem): BindableItem<ItemScanLogFirstInstallTimeBinding>(
+class ScanLogFirstInstallTimeAdapterItem(private val item: ScanLogItem.FirstInstallTimeItem) : BindableItem<ItemScanLogFirstInstallTimeBinding>(
     R.layout.item_scan_log_first_install_time.toLong()), KoinComponent {
 
     private val util: ScanLogFirstInstallTimeAdapterItemUtil by inject()
 
     @SuppressLint("SetTextI18n")
     override fun bind(viewBinding: ItemScanLogFirstInstallTimeBinding, position: Int) {
-        viewBinding.text.text =  util.getFirstInstallTimeString(
+        viewBinding.text.text = util.getFirstInstallTimeString(
             context = viewBinding.root.context,
             firstInstallTime = item.firstInstallTime
         )

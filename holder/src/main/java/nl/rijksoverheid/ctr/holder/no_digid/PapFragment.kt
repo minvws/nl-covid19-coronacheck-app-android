@@ -26,7 +26,6 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.android.ext.android.inject
 
-
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
@@ -69,14 +68,14 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
             binding.description.visibility = View.GONE
             binding.firstButton.bind(
                 title = R.string.holder_chooseEventLocation_buttonTitle_GGD,
-                subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_GGD),
+                subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_GGD)
             ) {
                 loginWithDigiD()
             }
 
             binding.secondButton.bind(
                 title = R.string.holder_chooseEventLocation_buttonTitle_other,
-                subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_other),
+                subtitle = getString(R.string.holder_chooseEventLocation_buttonSubTitle_other)
             ) {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this@PapFragment,
@@ -97,7 +96,7 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
             binding.description.visibility = View.VISIBLE
             binding.firstButton.bind(
                 title = R.string.holder_checkForBSN_buttonTitle_doesHaveBSN,
-                subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesHaveBSN),
+                subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesHaveBSN)
             ) {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this@PapFragment,
@@ -115,7 +114,7 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
 
             binding.secondButton.bind(
                 title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN,
-                subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow),
+                subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow)
             ) {
                 if (holderFeatureFlagUseCase.getPapEnabled()) {
                     loginWithDigiD()

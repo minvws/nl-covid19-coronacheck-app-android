@@ -22,7 +22,7 @@ abstract class AutoCloseFragment(contentLayoutId: Int) : Fragment(contentLayoutI
     }
 
     private val autoCloseHandler = Handler(Looper.getMainLooper())
-    private val autoCloseRunnable = object: Runnable {
+    private val autoCloseRunnable = object : Runnable {
         override fun run() {
             checkShouldClose()
             autoCloseHandler.postDelayed(this, 1000)

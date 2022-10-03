@@ -10,9 +10,19 @@ package nl.rijksoverheid.ctr.dashboard.util
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
+import java.time.Clock
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
-import nl.rijksoverheid.ctr.holder.dashboard.util.*
+import nl.rijksoverheid.ctr.fakeGreenCard
+import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
+import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.RefreshState
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
@@ -20,11 +30,11 @@ import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.holder.fakeGreenCard
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.time.*
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -61,7 +71,8 @@ class GreenCardRefreshUtilImplTest {
 
     private fun greenCard(
         originEntities: List<OriginEntity>? = null,
-        credentials: List<CredentialEntity>? = null) = mockk<GreenCard>(relaxed = true).apply {
+        credentials: List<CredentialEntity>? = null
+    ) = mockk<GreenCard>(relaxed = true).apply {
         if (originEntities != null) {
             coEvery { origins } returns originEntities
         }
@@ -78,15 +89,19 @@ class GreenCardRefreshUtilImplTest {
 
     private fun validOriginEntity() = OriginEntity(1, 1L, OriginType.Test, OffsetDateTime.now(), OffsetDateTime.now(), OffsetDateTime.now())
 
-    private fun validGreenCard(expireDateTime1: String = "2021-01-06T07:00:00.00Z",
-                               expireDateTime2: String = "2021-01-06T07:00:00.00Z") = greenCard(
+    private fun validGreenCard(
+        expireDateTime1: String = "2021-01-06T07:00:00.00Z",
+        expireDateTime2: String = "2021-01-06T07:00:00.00Z"
+    ) = greenCard(
         originEntities = listOf(validOriginEntity()),
         credentials = listOf(credentialEntity(expireDateTime = expireDateTime1),
             credentialEntity(expireDateTime = expireDateTime2))
     )
 
-    private fun expiringGreenCard(expireDateTime1: String = "2021-01-02T07:00:00.00Z",
-                                  expireDateTime2: String = "2021-01-03T07:00:00.00Z") = greenCard(
+    private fun expiringGreenCard(
+        expireDateTime1: String = "2021-01-02T07:00:00.00Z",
+        expireDateTime2: String = "2021-01-03T07:00:00.00Z"
+    ) = greenCard(
         originEntities = listOf(validOriginEntity()),
         credentials = listOf(credentialEntity(expireDateTime = expireDateTime1),
             credentialEntity(expireDateTime = expireDateTime2))
@@ -147,7 +162,7 @@ class GreenCardRefreshUtilImplTest {
 
         greenCardRefreshUtil.shouldRefresh()
 
-        verify(inverse = true) { originUtil.isValidWithinRenewalThreshold(any(), any())}
+        verify(inverse = true) { originUtil.isValidWithinRenewalThreshold(any(), any()) }
     }
 
     @Test
@@ -155,7 +170,7 @@ class GreenCardRefreshUtilImplTest {
         val foreignDccGreenCard = expiringGreenCard()
         val otherGreenCard = validGreenCard()
 
-        coEvery { greenCardUtil.isForeignDcc(foreignDccGreenCard) } answers { true }
+        coEvery { greenCardUtil.isEventFromDcc(foreignDccGreenCard, listOf()) } answers { true }
         coEvery { greenCardDao.getAll() } returns listOf(foreignDccGreenCard, otherGreenCard)
 
         assertFalse(greenCardRefreshUtil.shouldRefresh())
@@ -167,7 +182,7 @@ class GreenCardRefreshUtilImplTest {
         val greenCard = fakeGreenCard(
             expirationTime = expirationTime,
             eventTime = OffsetDateTime.now(firstJanuaryClock).minusDays(15),
-            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1),
+            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1)
         )
         coEvery { greenCardUtil.getExpireDate(greenCard) } returns OffsetDateTime.now(firstJanuaryClock).plusDays(30)
         coEvery { greenCardDao.getAll() } returns listOf(greenCard)
@@ -179,7 +194,7 @@ class GreenCardRefreshUtilImplTest {
     fun `greencard with nearly valid credentials should refresh`() = runBlocking {
         val greenCard = fakeGreenCard(
             validFrom = OffsetDateTime.now(firstJanuaryClock).plusDays(2),
-            credentialEntities = emptyList(),
+            credentialEntities = emptyList()
         )
         coEvery { greenCardDao.getAll() } returns listOf(greenCard)
         coEvery { originUtil.isValidWithinRenewalThreshold(any(), any()) } returns true
@@ -191,7 +206,7 @@ class GreenCardRefreshUtilImplTest {
     fun `greencard with distant future credentials should not refresh`() = runBlocking {
         val greenCard = fakeGreenCard(
             validFrom = OffsetDateTime.now(firstJanuaryClock).plusDays(10),
-            credentialEntities = emptyList(),
+            credentialEntities = emptyList()
         )
         coEvery { greenCardDao.getAll() } returns listOf(greenCard)
         coEvery { originUtil.isValidWithinRenewalThreshold(any(), any()) } returns false
@@ -205,7 +220,7 @@ class GreenCardRefreshUtilImplTest {
         val greenCard = fakeGreenCard(
             expirationTime = expirationTime,
             eventTime = OffsetDateTime.now(firstJanuaryClock).minusDays(15),
-            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1),
+            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1)
         )
         coEvery { greenCardDao.getAll() } returns listOf(greenCard)
         coEvery { greenCardUtil.getExpireDate(greenCard) } returns expirationTime
@@ -219,7 +234,7 @@ class GreenCardRefreshUtilImplTest {
         val greenCard = fakeGreenCard(
             expirationTime = expirationTime,
             eventTime = OffsetDateTime.now(firstJanuaryClock).minusDays(15),
-            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1),
+            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1)
         )
         coEvery { greenCardDao.getAll() } returns listOf(greenCard)
 
@@ -231,7 +246,7 @@ class GreenCardRefreshUtilImplTest {
         val greenCard = fakeGreenCard(
             expirationTime = expirationTime,
             eventTime = OffsetDateTime.now(firstJanuaryClock).minusDays(15),
-            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1),
+            validFrom = OffsetDateTime.now(firstJanuaryClock).minusDays(1)
         )
         coEvery { greenCardUtil.getExpireDate(greenCard) } returns OffsetDateTime.now(firstJanuaryClock).plusDays(30)
         coEvery { greenCardDao.getAll() } returns listOf(greenCard)
@@ -264,7 +279,7 @@ class GreenCardRefreshUtilImplTest {
         val greenCard = fakeGreenCard(
             expirationTime = OffsetDateTime.now(firstJanuaryClock).plusYears(1),
             eventTime = OffsetDateTime.now(firstJanuaryClock).minusDays(15),
-            validFrom = OffsetDateTime.now(firstJanuaryClock).plusDays(1),
+            validFrom = OffsetDateTime.now(firstJanuaryClock).plusDays(1)
         )
         val noCredentialsGreenCard = greenCard.copy(credentialEntities = emptyList())
         coEvery { greenCardDao.getAll() } returns listOf(noCredentialsGreenCard)
@@ -273,4 +288,11 @@ class GreenCardRefreshUtilImplTest {
         assertEquals(1, (greenCardRefreshUtil.refreshState() as RefreshState.Refreshable).days)
     }
 
+    @Test
+    fun `refresh state is NoRefresh for event_from_dcc`() = runBlocking {
+        greenCardWithExpiringCredentials(3)
+        coEvery { greenCardUtil.isEventFromDcc(any(), any()) } returns true
+
+        assertEquals(RefreshState.NoRefresh, greenCardRefreshUtil.refreshState())
+    }
 }

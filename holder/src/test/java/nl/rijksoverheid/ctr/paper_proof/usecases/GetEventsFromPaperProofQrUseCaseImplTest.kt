@@ -2,6 +2,10 @@ package nl.rijksoverheid.ctr.paper_proof.usecases
 
 import io.mockk.every
 import io.mockk.mockk
+import java.time.LocalDate
+import java.time.OffsetDateTime
+import kotlin.test.assertEquals
+import kotlin.test.assertFails
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
@@ -15,10 +19,6 @@ import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import kotlin.test.assertEquals
-import kotlin.test.assertFails
 
 @RunWith(RobolectricTestRunner::class)
 class GetEventsFromPaperProofQrUseCaseImplTest : AutoCloseKoinTest() {
