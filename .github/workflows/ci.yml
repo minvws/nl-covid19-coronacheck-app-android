@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - 'release/*'
   pull_request:
 
 jobs:
@@ -40,7 +41,7 @@ jobs:
           path: test-results
 
   distribute:
-    if: ${{ (github.ref == 'refs/heads/main' && github.event.repository.name != 'nl-covid19-coronacheck-app-android') || (github.event.repository.name != 'nl-covid19-coronacheck-app-android' && contains(github.event.pull_request.labels.*.name, 'generate-builds')) }}
+    if: ${{ github.event.repository.name != 'nl-covid19-coronacheck-app-android' && ( github.ref == 'refs/heads/main' || contains(github.event.ref, 'release/') || contains(github.event.pull_request.labels.*.name, 'generate-builds')) }}
     env:
       SLACK_WEBHOOK: ${{ secrets.SLACK_URL }}
       SLACK_MESSAGE: 'New apps available for android :green_heart:'
