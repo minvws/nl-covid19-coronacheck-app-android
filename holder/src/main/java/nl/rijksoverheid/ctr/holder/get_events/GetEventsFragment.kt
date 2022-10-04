@@ -24,6 +24,7 @@ import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtil
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.makeIndeterminateAccessible
 import org.koin.android.ext.android.inject
 
 /*
@@ -105,6 +106,11 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     }
 
     override fun onGetEventsLoading(loading: Boolean) {
+        binding.loadingOverlay.progressBar.makeIndeterminateAccessible(
+            context = requireContext(),
+            isLoading = loading,
+            message = R.string.holder_fetchevents_loading
+        )
         binding.loadingOverlay.root.isVisible = loading
     }
 

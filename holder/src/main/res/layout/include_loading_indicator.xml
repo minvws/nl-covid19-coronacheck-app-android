@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/progress_bar"
         android:layout_marginBottom="16dp"
-        android:text="@string/general_loading_description" />
+        android:text="@string/holder_fetchevents_loading" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:indeterminate="true"
