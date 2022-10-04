@@ -12,11 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - id: setup
-        uses: ./scripts
+        uses: ./.github/actions/setup
       - name: Spotless
         run: ./gradlew spotlessCheck
       - name: Test
-        run: ./gradlew testDebug testAccDebug lint
+        run: ./gradlew testDebug testAccDebug holder:lintAccDebug verifier:lintAccDebug
       - name: Emulator Test
         if: "!contains(github.event.pull_request.labels.*.name, 'skip-screenshot-tests')"
         uses: reactivecircus/android-emulator-runner@v2
@@ -56,7 +56,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - id: setup
-        uses: ./scripts
+        uses: ./.github/actions/setup
       - name: Build mobilecore.aar
         if: github.repository_owner != 'minvws'
         run: |
