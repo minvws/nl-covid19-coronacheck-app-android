@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.no_digid
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -156,9 +157,7 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
     }
 
     override fun onGetEventsLoading(loading: Boolean) {
-        binding.firstButton.setEnabled(!loading)
-        binding.secondButton.setEnabled(!loading)
-        setEnabled(!loading)
+        binding.loadingOverlay.root.isVisible = loading
     }
 
     override fun getOriginTypes(): List<RemoteOriginType> {
