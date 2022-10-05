@@ -7,10 +7,10 @@
  */
 
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id "kotlin-parcelize"
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -37,12 +37,11 @@ android {
 
 dependencies {
     implementation project(":shared")
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.fragment:fragment-ktx:$fragment_ktx_version"
-    implementation "androidx.appcompat:appcompat:${appcompat_version}"
-    implementation "com.google.android.material:material:${material_version}"
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "com.github.lisawray.groupie:groupie:${groupie_version}"
-    implementation "com.github.lisawray.groupie:groupie-viewbinding:${groupie_version}"
+    implementation libs.navigation.fragment
+    implementation libs.fragment
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.koin.android
+    implementation libs.androidx.core
+    implementation libs.bundles.groupie
 }

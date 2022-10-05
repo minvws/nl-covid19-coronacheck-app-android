@@ -7,11 +7,11 @@
  */
 
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'kotlin-parcelize'
-    id "androidx.navigation.safeargs.kotlin"
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.navigation.safeargs.kotlin)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -41,31 +41,31 @@ dependencies {
     implementation(project(":shared"))
     implementation(project(':mobilecore'))
     implementation(project(":api"))
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    api "com.squareup.retrofit2:retrofit:$retrofit_version"
-    api "com.squareup.moshi:moshi-kotlin:$moshi_version"
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "com.jakewharton.timber:timber:$timber_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
-    implementation "androidx.preference:preference-ktx:$preference_version"
-    implementation "com.google.android.material:material:${material_version}"
-    implementation "androidx.navigation:navigation-fragment-ktx:${navigation_version}"
-    implementation "androidx.navigation:navigation-ui-ktx:${navigation_version}"
+    api libs.lifecycle.viewmodel
+    api libs.lifecycle.livedata
+    api libs.retrofit
+    api libs.moshi.kotlin
+    implementation libs.koin.android
+    implementation libs.timber
+    implementation libs.constraintlayout
+    implementation libs.androidx.preference
+    implementation libs.material
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
 
 
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+    kapt libs.moshi.codegen
 
-    testImplementation "io.mockk:mockk:$mock_version"
-    testImplementation "com.squareup.okhttp3:mockwebserver"
-    testImplementation "junit:junit:$junit_version"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-    testImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
-    testImplementation("org.robolectric:robolectric:$robolectric_version") {
+    testImplementation libs.mockk
+    testImplementation libs.okhttp.mockWebServer
+    testImplementation libs.junit
+    testImplementation libs.coroutines.test
+    testImplementation libs.androidx.core.testing
+    testImplementation(libs.robolectric) {
         exclude group: 'org.bouncycastle'
     }
-    testImplementation "androidx.test:runner:$androix_test_version"
-    testImplementation("com.adevinta.android:barista:$barista_version") {
+    testImplementation libs.androidx.test.runner
+    testImplementation(libs.barista) {
         exclude group: "org.jetbrains.kotlin"
     }
 }
