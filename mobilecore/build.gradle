@@ -1,2 +1,35 @@
 configurations.maybeCreate("default")
 artifacts.add("default", file('mobilecore.aar'))
+
+tasks.register("buildCore") {
+    doLast {
+        exec {
+            workingDir rootProject.file("mobilecore-src")
+            commandLine "go", "install", "golang.org/x/mobile/cmd/gomobile@latest"
+        }
+        exec {
+            workingDir rootProject.file("mobilecore-src")
+            commandLine "go", "install", "golang.org/x/mobile/cmd/gobind@latest"
+        }
+        exec {
+            workingDir rootProject.file("mobilecore-src")
+            commandLine "go", "get", "golang.org/x/mobile/cmd/gomobile@latest"
+        }
+        exec {
+            workingDir rootProject.file("mobilecore-src")
+            commandLine "go", "get", "golang.org/x/mobile/cmd/gobind@latest"
+        }
+        exec {
+            workingDir rootProject.file("mobilecore-src")
+            commandLine "gomobile", "init"
+        }
+        exec {
+            workingDir rootProject.file("mobilecore-src")
+            commandLine "gomobile", "bind", "-target", "android", "-o", "../mobilecore/mobilecore.aar", "github.com/minvws/nl-covid19-coronacheck-mobile-core"
+        }
+        exec {
+            workingDir rootProject.file("mobilecore-src")
+            commandLine "git", "checkout", "-f"
+        }
+    }
+}
