@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring libs.desugar
     implementation(project(":design"))
     implementation(project(":shared"))
     implementation(project(':mobilecore'))

@@ -26,6 +26,7 @@ android {
 
 dependencies {
     implementation project(':mobilecore')
+    coreLibraryDesugaring libs.desugar
 
     implementation libs.koin.android
     implementation libs.moshi.kotlin
