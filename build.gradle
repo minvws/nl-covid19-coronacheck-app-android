@@ -47,7 +47,7 @@ buildscript {
     ext.security_crypto_version = '1.0.0'
     ext.rootbeer_version = '0.0.9'
     ext.room_version = '2.4.2'
-    ext.sqlcypher_version = '4.4.0'
+    ext.sqlcypher_version = '4.4.3'
     ext.sqlite_jdbc = '3.34.0'
     ext.work_manager_version = '2.7.1'
     ext.espresso_version = '3.4.0'
