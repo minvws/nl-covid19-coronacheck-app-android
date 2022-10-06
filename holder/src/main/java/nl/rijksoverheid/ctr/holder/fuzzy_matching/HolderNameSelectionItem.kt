@@ -10,5 +10,12 @@ package nl.rijksoverheid.ctr.holder.fuzzy_matching
 sealed class HolderNameSelectionItem {
     object HeaderItem : HolderNameSelectionItem()
 
-    data class ListItem(val name: String, val events: String, val isSelected: Boolean = false, val willBeRemoved: Boolean = true) : HolderNameSelectionItem()
+    data class ListItem(
+        val name: String,
+        val events: String,
+        val isSelected: Boolean = false,
+        val willBeRemoved: Boolean = true
+    ) : HolderNameSelectionItem()
+
+    object FooterItem : HolderNameSelectionItem()
 }

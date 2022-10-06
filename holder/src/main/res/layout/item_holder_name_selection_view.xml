@@ -39,7 +39,7 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="van Geer, Caroline Johanna Helena" />
+        tools:text="van Geer, Caroline Johanna Helena Estudiantes Dolora" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/eventsTextView"
@@ -51,7 +51,7 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@id/nameTextView"
         app:layout_constraintTop_toBottomOf="@id/nameTextView"
-        tools:text="3 vaccinaties en 1 testuitslag" />
+        tools:text="3 vaccinaties en 1 testuitslag en 1 vaccinatiebeoordeling" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/detailsButton"

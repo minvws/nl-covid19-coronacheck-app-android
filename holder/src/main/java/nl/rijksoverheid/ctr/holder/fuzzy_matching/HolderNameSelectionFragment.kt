@@ -9,6 +9,7 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentHolderNameSelectionBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -19,12 +20,13 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentHolderNameSelectionBindin
  */
 class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selection) {
     private val section = Section()
+    private val viewModel: HolderNameSelectionViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHolderNameSelectionBinding.bind(view)
         initRecyclerView(binding)
-        setItems()
+        viewModel.itemsLiveData.observe(viewLifecycleOwner, ::setItems)
     }
 
     private fun initRecyclerView(binding: FragmentHolderNameSelectionBinding) {
@@ -35,13 +37,15 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         binding.recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
-    private fun setItems() {
-        section.update(listOf(
-            HolderNameSelectionHeaderAdapterItem(),
-            HolderNameSelectionViewAdapterItem(HolderNameSelectionItem.ListItem("van Geer, Caroline Johanna Helena", "3 vaccinaties en 1 testuitslag")),
-            HolderNameSelectionViewAdapterItem(HolderNameSelectionItem.ListItem("van Geer, Caroline Johanna Helena", "3 vaccinaties en 1 testuitslag")),
-            HolderNameSelectionViewAdapterItem(HolderNameSelectionItem.ListItem("van Geer, Caroline Johanna Helena", "3 vaccinaties en 1 testuitslag")),
-            HolderNameSelectionFooterAdapterItem()
-        ))
+    private fun setItems(items: List<HolderNameSelectionItem>) {
+        section.update(
+            items.map {
+                when (it) {
+                    HolderNameSelectionItem.FooterItem -> HolderNameSelectionFooterAdapterItem()
+                    HolderNameSelectionItem.HeaderItem -> HolderNameSelectionHeaderAdapterItem()
+                    is HolderNameSelectionItem.ListItem -> HolderNameSelectionViewAdapterItem(it)
+                }
+            }
+        )
     }
 }

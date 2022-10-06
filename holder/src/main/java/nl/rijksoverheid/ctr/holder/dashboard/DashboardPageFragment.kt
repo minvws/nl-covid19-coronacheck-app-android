@@ -15,6 +15,7 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.holder.NavGraphOverviewDirections
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardAddQrCardAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardCoronaMelderAdapterItem
@@ -31,7 +32,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.ShowBlockedEventsBottomSheetUt
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardPageBinding
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -154,7 +154,8 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         adapterItems.add(
             DashboardAddQrCardAdapterItem(
                 onButtonClick = {
-                    findNavControllerSafety()?.navigate(DashboardPageFragmentDirections.actionChooseProofType())
+                    navigateSafety(NavGraphOverviewDirections.actionFuzzyMatching())
+//                    findNavControllerSafety()?.navigate(DashboardPageFragmentDirections.actionChooseProofType())
                 })
         )
     }
