@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~
+  ~   SPDX-License-Identifier: EUPL-1.2
+  ~
+  -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_holder_fuzzy_matching"
+    app:startDestination="@+id/nav_fuzzy_matching_onboarding">
+
+    <fragment
+        android:id="@+id/nav_fuzzy_matching_onboarding"
+        android:name="nl.rijksoverheid.ctr.holder.fuzzy_matching.FuzzyMatchingOnboardingFragment"
+        android:label=""
+        tools:layout="@layout/fragment_fuzzy_matching_onboarding">
+
+        <action
+            android:id="@+id/action_holder_name_selection"
+            app:destination="@id/nav_holder_name_selection"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_holder_name_selection"
+        android:name="nl.rijksoverheid.ctr.holder.fuzzy_matching.HolderNameSelectionFragment"
+        android:label=""
+        tools:layout="@layout/fragment_holder_name_selection" />
+
+</navigation>
