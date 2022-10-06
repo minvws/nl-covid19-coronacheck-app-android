@@ -32,7 +32,7 @@ class HolderNameSelectionViewModelImpl : HolderNameSelectionViewModel() {
     init {
         val item = HolderNameSelectionItem.ListItem(
             name = "van Geer, Caroline Johanna Helena",
-            events = "3 vaccinaties en 1 testuitslag")
+            events = "3 vaccinaties, 1 testuitslag, 1 Vaccinatiebeoordeling")
         (itemsLiveData as MutableLiveData).postValue(
             listOf(
                 HolderNameSelectionItem.HeaderItem,

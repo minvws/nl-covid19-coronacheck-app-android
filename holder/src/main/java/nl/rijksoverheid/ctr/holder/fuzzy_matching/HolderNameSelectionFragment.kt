@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentHolderNameSelectionBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,7 +27,34 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHolderNameSelectionBinding.bind(view)
         initRecyclerView(binding)
+        addToolbarButton()
         viewModel.itemsLiveData.observe(viewLifecycleOwner, ::setItems)
+    }
+
+    private fun addToolbarButton() {
+        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+            if (toolbar?.menu?.size() == 0) {
+                toolbar.apply {
+                    inflateMenu(R.menu.fuzzy_matching_toolbar)
+
+                    setOnMenuItemClickListener {
+                        if (it.itemId == R.id.skip) {
+                            // TODO
+                        }
+                        true
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (parentFragment?.parentFragment as HolderMainFragment).let {
+            it.getToolbar().menu.clear()
+            // Reset menu item listener to default
+            it.resetMenuItemListener()
+        }
     }
 
     private fun initRecyclerView(binding: FragmentHolderNameSelectionBinding) {
