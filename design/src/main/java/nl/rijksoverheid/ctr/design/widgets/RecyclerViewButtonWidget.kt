@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.WidgetRecyclerViewButtonBinding
@@ -77,6 +78,20 @@ class RecyclerViewButtonWidget @JvmOverloads constructor(
             recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(
                 recyclerViewGlobalLayoutListener
             )
+        }
+    }
+
+    fun showError() {
+        binding.errorContainer.isVisible = true
+    }
+
+    fun hideError() {
+        binding.errorContainer.isVisible = false
+    }
+
+    fun setButtonClick(onClick: () -> Unit) {
+        binding.button.setOnClickListener {
+            onClick.invoke()
         }
     }
 }

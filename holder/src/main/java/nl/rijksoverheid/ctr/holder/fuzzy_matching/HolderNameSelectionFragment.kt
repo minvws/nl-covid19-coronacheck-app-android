@@ -10,6 +10,7 @@ import com.xwray.groupie.Section
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentHolderNameSelectionBinding
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
@@ -28,7 +29,17 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         val binding = FragmentHolderNameSelectionBinding.bind(view)
         initRecyclerView(binding)
         addToolbarButton()
-        viewModel.itemsLiveData.observe(viewLifecycleOwner, ::setItems)
+        viewModel.itemsLiveData.observe(viewLifecycleOwner) {
+            setItems(it, binding)
+        }
+        binding.bottom.setButtonClick {
+            if (viewModel.noSelectionYet()) {
+                binding.bottom.showError()
+            } else {
+                // TODO store selected name and discard the others
+                findNavControllerSafety()?.popBackStack()
+            }
+        }
     }
 
     private fun addToolbarButton() {
@@ -39,7 +50,9 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
 
                     setOnMenuItemClickListener {
                         if (it.itemId == R.id.skip) {
-                            // TODO
+                            // close fuzzy matching
+                            findNavControllerSafety()?.navigateUp()
+                            findNavControllerSafety()?.navigateUp()
                         }
                         true
                     }
@@ -65,13 +78,16 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         binding.recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
     }
 
-    private fun setItems(items: List<HolderNameSelectionItem>) {
+    private fun setItems(items: List<HolderNameSelectionItem>, binding: FragmentHolderNameSelectionBinding) {
         section.update(
             items.map {
                 when (it) {
                     HolderNameSelectionItem.FooterItem -> HolderNameSelectionFooterAdapterItem()
                     HolderNameSelectionItem.HeaderItem -> HolderNameSelectionHeaderAdapterItem()
-                    is HolderNameSelectionItem.ListItem -> HolderNameSelectionViewAdapterItem(it, viewModel::onItemSelected)
+                    is HolderNameSelectionItem.ListItem -> HolderNameSelectionViewAdapterItem(it) { index ->
+                        binding.bottom.hideError()
+                        viewModel.onItemSelected(index)
+                    }
                 }
             }
         )

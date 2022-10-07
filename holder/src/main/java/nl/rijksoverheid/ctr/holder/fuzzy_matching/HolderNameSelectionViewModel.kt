@@ -15,6 +15,7 @@ abstract class HolderNameSelectionViewModel : ViewModel() {
     val itemsLiveData: LiveData<List<HolderNameSelectionItem>> = MutableLiveData()
 
     abstract fun onItemSelected(index: Int)
+    abstract fun noSelectionYet(): Boolean
 }
 
 class HolderNameSelectionViewModelImpl : HolderNameSelectionViewModel() {
@@ -28,11 +29,17 @@ class HolderNameSelectionViewModelImpl : HolderNameSelectionViewModel() {
         )
     }
 
+    override fun noSelectionYet(): Boolean {
+        return itemsLiveData.value?.filterIsInstance<HolderNameSelectionItem.ListItem>()
+            ?.any { it.isSelected } == false
+    }
+
     // TODO will be removed in next task and will be populated from a usecase
     init {
         val item = HolderNameSelectionItem.ListItem(
             name = "van Geer, Caroline Johanna Helena",
-            events = "3 vaccinaties, 1 testuitslag, 1 Vaccinatiebeoordeling")
+            events = "3 vaccinaties, 1 testuitslag, 1 Vaccinatiebeoordeling"
+        )
         (itemsLiveData as MutableLiveData).postValue(
             listOf(
                 HolderNameSelectionItem.HeaderItem,
@@ -41,6 +48,7 @@ class HolderNameSelectionViewModelImpl : HolderNameSelectionViewModel() {
             )
         )
     }
+
     private fun getListItems(selectedIndex: Int): Array<HolderNameSelectionItem.ListItem> {
         val listItems = arrayOf(0, 1, 2)
         return listItems.mapIndexed { index, i ->
