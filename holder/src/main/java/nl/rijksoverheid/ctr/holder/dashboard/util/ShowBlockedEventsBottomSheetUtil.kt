@@ -22,8 +22,8 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventStringUtil
 import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
-import nl.rijksoverheid.ctr.shared.ext.capitalize
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.BlockedEventException
@@ -34,6 +34,7 @@ interface ShowBlockedEventsBottomSheetUtil {
 
 class ShowBlockedEventsBottomSheetUtilImpl(
     private val errorCodeStringFactory: ErrorCodeStringFactory,
+    private val remoteEventStringUtil: RemoteEventStringUtil,
     private val infoFragmentUtil: InfoFragmentUtil
 ) : ShowBlockedEventsBottomSheetUtil {
 
@@ -46,13 +47,7 @@ class ShowBlockedEventsBottomSheetUtilImpl(
         blockedEvents.forEachIndexed { index, blockedEvent ->
             val remoteEventClass = RemoteEvent.getRemoteEventClassFromType(blockedEvent.type)
 
-            val name = when (remoteEventClass) {
-                RemoteEventVaccination::class.java -> context.getString(R.string.general_vaccination)
-                RemoteEventNegativeTest::class.java -> context.getString(R.string.general_negativeTest)
-                RemoteEventPositiveTest::class.java -> context.getString(R.string.general_positiveTest)
-                RemoteEventRecovery::class.java -> context.getString(R.string.general_recoverycertificate)
-                else -> ""
-            }.capitalize()
+            val title = remoteEventStringUtil.remoteEventTitle(remoteEventClass)
             val date = when (remoteEventClass) {
                 RemoteEventVaccination::class.java -> "${context.getString(R.string.qr_card_vaccination_title_eu)} ${
                     blockedEvent.eventTime?.toLocalDate()?.formatDayMonthYear()
@@ -78,7 +73,7 @@ class ShowBlockedEventsBottomSheetUtilImpl(
                 else -> ""
             }
 
-            removedEventsHtml.append("<b>$name</b>")
+            removedEventsHtml.append("<b>$title</b>")
             removedEventsHtml.append("<br/>")
             removedEventsHtml.append("<b>$date</b>")
 

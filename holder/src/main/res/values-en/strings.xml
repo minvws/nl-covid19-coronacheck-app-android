@@ -869,4 +869,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_identitySelection_skipAlert_action">Ja, overslaan</string>
   <string name="general_and">and</string>
   <string name="holder_identitySelection_details_body"><![CDATA[Deze gegevens horen bij de naam <b>%s</b>]]></string>
+  <string name="holder_identitySelection_details_scannedPaperProof">Scanned certificate</string>
 </resources>

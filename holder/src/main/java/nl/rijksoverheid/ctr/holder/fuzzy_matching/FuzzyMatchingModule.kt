@@ -11,5 +11,11 @@ import org.koin.dsl.module
  *
  */
 val fuzzyMatchingModule = module {
-    viewModel<HolderNameSelectionViewModel> { HolderNameSelectionViewModelImpl() }
+    viewModel<HolderNameSelectionViewModel> { HolderNameSelectionViewModelImpl(get(), get()) }
+
+    factory<SelectionDetailDataUtil> { SelectionDetailDataUtilImpl(get(), get(), get(), get()) }
+
+    factory<SelectionDetailBottomSheetDescriptionUtil> {
+        SelectionDetailBottomSheetDescriptionUtilImpl()
+    }
 }

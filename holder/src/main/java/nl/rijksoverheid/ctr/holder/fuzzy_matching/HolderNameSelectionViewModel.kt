@@ -3,6 +3,9 @@ package nl.rijksoverheid.ctr.holder.fuzzy_matching
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -18,7 +21,10 @@ abstract class HolderNameSelectionViewModel : ViewModel() {
     abstract fun noSelectionYet(): Boolean
 }
 
-class HolderNameSelectionViewModelImpl : HolderNameSelectionViewModel() {
+class HolderNameSelectionViewModelImpl(
+    private val selectionDetailDataUtil: SelectionDetailDataUtil,
+    private val holderDatabase: HolderDatabase
+) : HolderNameSelectionViewModel() {
     override fun onItemSelected(index: Int) {
         (itemsLiveData as MutableLiveData).postValue(
             listOf(
@@ -36,17 +42,23 @@ class HolderNameSelectionViewModelImpl : HolderNameSelectionViewModel() {
 
     // TODO will be removed in next task and will be populated from a usecase
     init {
-        val item = HolderNameSelectionItem.ListItem(
-            name = "van Geer, Caroline Johanna Helena",
-            events = "3 vaccinaties, 1 testuitslag, 1 Vaccinatiebeoordeling"
-        )
-        (itemsLiveData as MutableLiveData).postValue(
-            listOf(
-                HolderNameSelectionItem.HeaderItem,
-                *Array(2) { item },
-                HolderNameSelectionItem.FooterItem
+        viewModelScope.launch {
+            val eventGroupEntities = holderDatabase.eventGroupDao().getAll()
+            val data = selectionDetailDataUtil.get(eventGroupEntities.first())
+
+            val item = HolderNameSelectionItem.ListItem(
+                name = "van Geer, Caroline Johanna Helena",
+                events = "3 vaccinaties, 1 testuitslag, 1 Vaccinatiebeoordeling",
+                detailData = data
             )
-        )
+            (itemsLiveData as MutableLiveData).postValue(
+                listOf(
+                    HolderNameSelectionItem.HeaderItem,
+                    *Array(2) { item },
+                    HolderNameSelectionItem.FooterItem
+                )
+            )
+        }
     }
 
     private fun getListItems(selectedIndex: Int): Array<HolderNameSelectionItem.ListItem> {
