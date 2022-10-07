@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.fuzzy_matching
 
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -11,9 +12,24 @@ import org.koin.dsl.module
  *
  */
 val fuzzyMatchingModule = module {
-    viewModel<HolderNameSelectionViewModel> { HolderNameSelectionViewModelImpl(get(), get()) }
+    viewModel<HolderNameSelectionViewModel> {
+        HolderNameSelectionViewModelImpl(
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
 
-    factory<SelectionDetailDataUtil> { SelectionDetailDataUtilImpl(get(), get(), get(), get()) }
+    factory<SelectionDataUtil> {
+        SelectionDataUtilImpl(
+            get(),
+            get(),
+            get(),
+            androidContext().resources::getQuantityString,
+            androidContext()::getString
+        )
+    }
 
     factory<SelectionDetailBottomSheetDescriptionUtil> {
         SelectionDetailBottomSheetDescriptionUtilImpl()

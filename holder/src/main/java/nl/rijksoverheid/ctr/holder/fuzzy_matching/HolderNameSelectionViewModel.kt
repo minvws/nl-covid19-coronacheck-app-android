@@ -5,6 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
+import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 
 /*
@@ -22,17 +26,13 @@ abstract class HolderNameSelectionViewModel : ViewModel() {
 }
 
 class HolderNameSelectionViewModelImpl(
-    private val selectionDetailDataUtil: SelectionDetailDataUtil,
-    private val holderDatabase: HolderDatabase
+    private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase,
+    private val selectionDataUtil: SelectionDataUtil,
+    private val holderDatabase: HolderDatabase,
+    private val yourEventsFragmentUtil: YourEventsFragmentUtil
 ) : HolderNameSelectionViewModel() {
     override fun onItemSelected(index: Int) {
-        (itemsLiveData as MutableLiveData).postValue(
-            listOf(
-                HolderNameSelectionItem.HeaderItem,
-                *getListItems(index - 1),
-                HolderNameSelectionItem.FooterItem
-            )
-        )
+        postItems(index - 1)
     }
 
     override fun noSelectionYet(): Boolean {
@@ -42,34 +42,37 @@ class HolderNameSelectionViewModelImpl(
 
     // TODO will be removed in next task and will be populated from a usecase
     init {
+        postItems()
+    }
+
+    private fun postItems(selectedIndex: Int? = null) {
         viewModelScope.launch {
             val eventGroupEntities = holderDatabase.eventGroupDao().getAll()
-            val data = selectionDetailDataUtil.get(eventGroupEntities.first())
+            val remoteProtocols = eventGroupEntities.mapNotNull(getRemoteProtocolFromEventGroupUseCase::get)
+            val holderEvents = mutableListOf<Triple<String, RemoteProtocol.Holder, List<RemoteEvent>>>()
+            remoteProtocols.forEach {
+                if (it.holder != null && it.events != null) {
+                    holderEvents.add(Triple(it.providerIdentifier, it.holder, it.events))
+                }
+            }
 
-            val item = HolderNameSelectionItem.ListItem(
-                name = "van Geer, Caroline Johanna Helena",
-                events = "3 vaccinaties, 1 testuitslag, 1 Vaccinatiebeoordeling",
-                detailData = data
-            )
+            val items = holderEvents.mapIndexed() { index, (providerIdentifier, holder, events) ->
+                HolderNameSelectionItem.ListItem(
+                    name = yourEventsFragmentUtil.getFullName(holder),
+                    events = selectionDataUtil.events(events),
+                    detailData = selectionDataUtil.details(providerIdentifier, events),
+                    isSelected = index == selectedIndex,
+                    willBeRemoved = selectedIndex != null && index != selectedIndex
+                )
+            }.toTypedArray()
+
             (itemsLiveData as MutableLiveData).postValue(
                 listOf(
                     HolderNameSelectionItem.HeaderItem,
-                    *Array(2) { item },
+                    *items,
                     HolderNameSelectionItem.FooterItem
                 )
             )
         }
-    }
-
-    private fun getListItems(selectedIndex: Int): Array<HolderNameSelectionItem.ListItem> {
-        val listItems = arrayOf(0, 1, 2)
-        return listItems.mapIndexed { index, i ->
-            HolderNameSelectionItem.ListItem(
-                name = "van Geer, Caroline Johanna Helena",
-                events = "3 vaccinaties en 1 testuitslag",
-                isSelected = index == selectedIndex,
-                willBeRemoved = index != selectedIndex
-            )
-        }.toTypedArray()
     }
 }

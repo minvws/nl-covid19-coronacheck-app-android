@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
+import nl.rijksoverheid.ctr.design.widgets.Toolbar
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentHolderNameSelectionBinding
@@ -43,7 +44,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
     }
 
     private fun addToolbarButton() {
-        (parentFragment?.parentFragment as HolderMainFragment?)?.getToolbar().let { toolbar ->
+        activity?.findViewById<Toolbar>(R.id.toolbar).let { toolbar ->
             if (toolbar?.menu?.size() == 0) {
                 toolbar.apply {
                     inflateMenu(R.menu.fuzzy_matching_toolbar)
@@ -63,7 +64,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
 
     override fun onDestroy() {
         super.onDestroy()
-        (parentFragment?.parentFragment as HolderMainFragment).let {
+        (parentFragment?.parentFragment as? HolderMainFragment)?.let {
             it.getToolbar().menu.clear()
             // Reset menu item listener to default
             it.resetMenuItemListener()

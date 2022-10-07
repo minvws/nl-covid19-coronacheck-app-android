@@ -37,7 +37,7 @@ class HolderNameSelectionFooterAdapterItem :
                 data = InfoFragmentData.TitleDescription(
                     title = activity.getString(R.string.holder_fuzzyMatching_why_title),
                     descriptionData = DescriptionData(
-                        htmlText = R.string.holder_fuzzyMatching_onboarding_firstPage_body,
+                        htmlText = R.string.holder_fuzzyMatching_why_body,
                         htmlLinksEnabled = true
                     )
                 )
