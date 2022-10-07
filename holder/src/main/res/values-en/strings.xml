@@ -844,4 +844,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_listRemoteEvents_endStateNoValidCertificate_body"><![CDATA[This certificate has been declared invalid. For that reason, you cannot add it to the app.<br/><br/>Try to add a valid certificate, or contact the CoronaCheck helpdesk via <a href=\"tel:08001421\">0800-1421</a> and pass on the error code below.<br/><br/><b>Error code:</b><br/>%1$s]]></string>
   <string name="holder_showQR_domestic_title_3g">3G access</string>
   <string name="holder_showQR_domestic_title_1g">1G access</string>
+  <string name="holder_fetchevents_loading">Retrieving details...</string>
 </resources>

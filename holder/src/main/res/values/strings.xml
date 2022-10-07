@@ -845,4 +845,5 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_listRemoteEvents_endStateNoValidCertificate_body"><![CDATA[Dit bewijs is ongeldig verklaard. Daarom kun je het niet aan de app toevoegen.<br/><br/>Probeer een geldig bewijs toe te voegen, of bel de CoronaCheck helpdesk op <a href=\"tel:08001421\">0800-1421</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br/>%1$s]]></string>
   <string name="holder_showQR_domestic_title_3g">3G-toegang</string>
   <string name="holder_showQR_domestic_title_1g">1G-toegang</string>
+  <string name="holder_fetchevents_loading">Gegevens ophalen...</string>
 </resources>
