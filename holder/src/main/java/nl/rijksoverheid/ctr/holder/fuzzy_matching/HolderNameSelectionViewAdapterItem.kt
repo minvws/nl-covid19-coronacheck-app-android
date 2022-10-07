@@ -13,14 +13,17 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemHolderNameSelectionViewBindin
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class HolderNameSelectionViewAdapterItem(val item: HolderNameSelectionItem.ListItem) : BindableItem<ItemHolderNameSelectionViewBinding>(
+class HolderNameSelectionViewAdapterItem(val item: HolderNameSelectionItem.ListItem, val onSelected: (Int) -> Unit) : BindableItem<ItemHolderNameSelectionViewBinding>(
     R.layout.item_holder_name_selection_view.toLong()) {
 
     override fun bind(viewBinding: ItemHolderNameSelectionViewBinding, position: Int) {
-        viewBinding.radioButton.isSelected = item.isSelected
+        viewBinding.radioButton.isChecked = item.isSelected
         viewBinding.nameTextView.text = item.name
         viewBinding.eventsTextView.text = item.events
-        viewBinding.removedEventTextView.isVisible = !item.willBeRemoved
+        viewBinding.removedEventTextView.isVisible = item.willBeRemoved
+        viewBinding.root.setOnClickListener {
+            onSelected(position)
+        }
     }
 
     override fun getLayout(): Int {

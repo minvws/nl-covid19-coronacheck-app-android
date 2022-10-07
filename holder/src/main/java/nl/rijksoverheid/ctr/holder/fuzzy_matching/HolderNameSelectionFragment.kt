@@ -71,7 +71,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
                 when (it) {
                     HolderNameSelectionItem.FooterItem -> HolderNameSelectionFooterAdapterItem()
                     HolderNameSelectionItem.HeaderItem -> HolderNameSelectionHeaderAdapterItem()
-                    is HolderNameSelectionItem.ListItem -> HolderNameSelectionViewAdapterItem(it)
+                    is HolderNameSelectionItem.ListItem -> HolderNameSelectionViewAdapterItem(it, viewModel::onItemSelected)
                 }
             }
         )
