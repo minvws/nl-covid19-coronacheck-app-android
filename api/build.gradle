@@ -15,6 +15,7 @@ plugins {
 }
 
 android {
+    namespace 'nl.rijksoverheid.ctr.api'
     flavorDimensions "default"
     buildFeatures {
         viewBinding true
