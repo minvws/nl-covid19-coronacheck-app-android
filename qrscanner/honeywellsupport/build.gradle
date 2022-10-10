@@ -12,6 +12,7 @@ plugins {
 }
 
 android {
+    namespace 'nl.rijksoverheid.ctr.honeywellsupport'
     defaultConfig {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

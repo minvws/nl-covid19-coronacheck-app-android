@@ -16,6 +16,7 @@ version = "4.8"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
+    namespace 'nl.rijksoverheid.ctr.holder'
     testOptions {
         unitTests {
             includeAndroidResources = true

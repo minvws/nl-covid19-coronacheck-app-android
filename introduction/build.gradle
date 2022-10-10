@@ -15,6 +15,7 @@ plugins {
 }
 
 android {
+    namespace 'nl.rijksoverheid.ctr.introduction'
     buildFeatures {
         viewBinding true
     }
