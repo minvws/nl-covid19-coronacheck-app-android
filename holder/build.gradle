@@ -26,6 +26,13 @@ android {
         }
     }
 
+    sourceSets {
+        debug {
+            // for testing Room migrations, see https://github.com/robolectric/robolectric/issues/3928#issuecomment-395309991
+            assets.srcDirs += files("$projectDir/schemas".toString())
+        }
+    }
+
     buildFeatures {
         viewBinding true
     }
