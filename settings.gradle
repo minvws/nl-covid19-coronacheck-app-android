@@ -5,6 +5,31 @@
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroup "com.google"
+                includeGroup "com.android"
+                includeGroupByRegex "com.google\\..*"
+                includeGroupByRegex "com.android\\..*"
+                includeGroupByRegex "androidx\\..*"
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+
+    resolutionStrategy {
+        eachPlugin {
+            // shot does not publish a Gradle plugin descriptor ;(
+            if (requested.id.id == "shot") {
+                useModule("com.karumi:shot:${requested.version}")
+            }
+        }
+    }
+}
+
 include ':qrscanner'
 include ':api'
 include ':introduction'

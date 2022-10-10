@@ -1,8 +1,8 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'kotlin-parcelize'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -26,25 +26,26 @@ android {
 
 dependencies {
     implementation project(':mobilecore')
+    coreLibraryDesugaring libs.desugar
 
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
-    implementation "com.jakewharton.timber:timber:${timber_version}"
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
-    implementation "androidx.browser:browser:$browser_version"
-    implementation "androidx.appcompat:appcompat:${appcompat_version}"
-    implementation "com.google.android.material:material:${material_version}"
-    implementation "androidx.security:security-crypto:$security_crypto_version"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-    implementation "androidx.fragment:fragment-ktx:$fragment_ktx_version"
-    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation libs.koin.android
+    implementation libs.moshi.kotlin
+    implementation libs.timber
+    implementation(platform(libs.okhttp.bom))
+    implementation libs.androidx.browser
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.androidx.security.crypto
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+    implementation libs.fragment
+    implementation libs.androidx.core
 
-    api "com.squareup.retrofit2:retrofit:$retrofit_version"
+    api libs.retrofit
 
-    testImplementation "junit:junit:${junit_version}"
-    testImplementation "io.mockk:mockk:$mock_version"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    testImplementation libs.junit
+    testImplementation libs.mockk
+    testImplementation libs.coroutines.android
 
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+    kapt libs.moshi.codegen
 }
