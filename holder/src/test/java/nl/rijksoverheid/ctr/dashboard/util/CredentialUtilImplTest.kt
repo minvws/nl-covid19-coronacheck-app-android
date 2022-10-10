@@ -182,15 +182,15 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         }
         val util = CredentialUtilImpl(clock, mockk(), appConfigUseCase, countryUtil, mockk(relaxed = true))
 
-        val hidden = listOf(getVaccinationJson("2020-12-01", dose = 1, ofTotalDoses = 2))
+        val oneVaccination = listOf(getVaccinationJson("2020-12-01", dose = 1, ofTotalDoses = 2))
         val notHiddenBecauseOfDate =
             listOf(getVaccinationJson("2021-01-01", dose = 1, ofTotalDoses = 2))
         val notHiddenBecauseOfDose =
             listOf(getVaccinationJson("2020-12-01", dose = 2, ofTotalDoses = 2))
 
-        kotlin.test.assertTrue(util.vaccinationShouldBeHidden(hidden, 0))
-        kotlin.test.assertFalse(util.vaccinationShouldBeHidden(notHiddenBecauseOfDate, 0))
-        kotlin.test.assertFalse(util.vaccinationShouldBeHidden(notHiddenBecauseOfDose, 0))
+        assertFalse(util.vaccinationShouldBeHidden(oneVaccination, 0))
+        assertFalse(util.vaccinationShouldBeHidden(notHiddenBecauseOfDate, 0))
+        assertFalse(util.vaccinationShouldBeHidden(notHiddenBecauseOfDose, 0))
     }
 
     @Test
