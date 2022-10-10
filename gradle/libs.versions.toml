@@ -78,7 +78,7 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "android
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-room" }
 room-testing = { module = "androidx.room:room-testing", version.ref = "androidx-room" }
 rootbeer = "com.scottyab:rootbeer-lib:0.0.9"
-sqlcipher = "net.zetetic:android-database-sqlcipher:4.4.0"
+sqlcipher = "net.zetetic:android-database-sqlcipher:4.4.3"
 sqliteJdbc = "org.xerial:sqlite-jdbc:3.34.0"
 timber = "com.jakewharton.timber:timber:5.0.1"
 viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
