@@ -7,14 +7,15 @@
  */
 
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id "androidx.navigation.safeargs.kotlin"
-    id "kotlin-parcelize"
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.navigation.safeargs.kotlin)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
+    namespace 'nl.rijksoverheid.ctr.introduction'
     buildFeatures {
         viewBinding true
     }
@@ -43,21 +44,20 @@ dependencies {
     implementation(project(":design"))
     implementation project(":appconfig")
 
-    implementation "androidx.core:core-ktx:${androidx_version}"
-    implementation "androidx.appcompat:appcompat:${appcompat_version}"
-    implementation "com.google.android.material:material:${material_version}"
-    implementation "androidx.constraintlayout:constraintlayout:${constraintlayout_version}"
-    implementation "androidx.fragment:fragment-ktx:${fragment_version}"
-    implementation "androidx.navigation:navigation-fragment-ktx:${navigation_version}"
-    implementation "androidx.navigation:navigation-ui-ktx:${navigation_version}"
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "androidx.preference:preference-ktx:$preference_version"
-    implementation "androidx.viewpager2:viewpager2:${viewpager2_version}"
-    implementation "com.github.lisawray.groupie:groupie:${groupie_version}"
-    implementation "com.github.lisawray.groupie:groupie-viewbinding:${groupie_version}"
-    implementation "com.airbnb.android:lottie:$lottie_version"
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
+    implementation libs.androidx.core
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.constraintlayout
+    implementation libs.fragment
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+    implementation libs.koin.android
+    implementation libs.androidx.preference
+    implementation libs.viewpager2
+    implementation libs.bundles.groupie
+    implementation libs.lottie
+    coreLibraryDesugaring libs.desugar
 
-    testImplementation "io.mockk:mockk:$mock_version"
-    testImplementation "junit:junit:$junit_version"
+    testImplementation libs.mockk
+    testImplementation libs.junit
 }

@@ -853,7 +853,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_fuzzyMatching_onboarding_thirdPage_action">Bekijk gegevens</string>
   <string name="holder_fuzzyMatching_why_title">Waarom moet ik gegevens kiezen?</string>
   <string name="holder_fuzzyMatching_why_body"><![CDATA[Om veiligheidsredenen, moet je naam bij alle vaccinaties, testuitslagen en bewijzen die je aan de app hebt toegevoegd op precies dezelfde manier zijn geschreven. Anders ziet CoronaCheck het als van verschillende personen.<br/><br/>Alle andere gegevens worden uit de app verwijderd. Je kunt je naam waarop deze gegevens staan laten laten aanpassen door de locatie waar je bent gevaccineerd of getest. Zorg dat je naam dan precies hetzelfde wordt geschreven als die je kiest om in de app te houden.<br/><br/>Als je naam is aangepast kun je de bijbehorende vaccinaties en testuitslagen zelf weer toevoegen aan de app.]]></string>
-  <string name="holder_fetchevents_loading">Retrieving details...</string>
   <string name="holder_identitySelection_title">Welke gegevens wil je houden?</string>
   <string name="holder_identitySelection_message">Bekijk goed in de details welke vaccinaties of testuitslagen bij je keuze horen.</string>
   <string name="holder_identitySelection_why">Waarom moet ik kiezen?</string>
@@ -867,4 +866,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_identitySelection_skipAlert_title">Weet je zeker dat je wilt overslaan?</string>
   <string name="holder_identitySelection_skipAlert_body">Je kunt je QR-codes dan mogelijk niet gebruiken. De volgende keer dat je de app opstart vragen we opnieuw om een keuze te maken.</string>
   <string name="holder_identitySelection_skipAlert_action">Ja, overslaan</string>
+  <string name="holder_fetchevents_loading">Retrieving details...</string>
 </resources>

@@ -7,14 +7,15 @@
  */
 
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id "androidx.navigation.safeargs.kotlin"
-    id "kotlin-parcelize"
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.navigation.safeargs.kotlin)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
+    namespace 'nl.rijksoverheid.ctr.api'
     flavorDimensions "default"
     buildFeatures {
         viewBinding true
@@ -41,24 +42,24 @@ android {
 dependencies {
     implementation(project(":shared"))
 
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "com.jakewharton.timber:timber:${timber_version}"
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.okhttp3:okhttp-tls")
-    implementation("com.squareup.okhttp3:logging-interceptor")
-    implementation "org.bouncycastle:bcprov-jdk15to18:$bouncycastle_version"
-    api "org.bouncycastle:bcpkix-jdk15to18:$bouncycastle_version"
-    api "com.appmattus.certificatetransparency:certificatetransparency-android:$certificatetransparency_version"
+    implementation libs.retrofit.moshi
+    implementation libs.moshi.kotlin
+    implementation libs.koin.android
+    implementation libs.timber
+    implementation(platform(libs.okhttp.bom))
+    implementation libs.okhttp
+    implementation libs.okhttp.tls
+    implementation libs.okhttp.logging.interceptor
+    implementation libs.bouncycastle.bcprov.jdk15to18
+    api libs.bouncycastle.bcpkix.jdk15to18
+    api libs.certificatetransparency.android
 
 
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
+    kapt libs.moshi.codegen
+    coreLibraryDesugaring libs.desugar
 
-    kaptTest "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
-    testImplementation "junit:junit:${junit_version}"
-    testImplementation "com.squareup.okhttp3:mockwebserver"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    kaptTest libs.moshi.codegen
+    testImplementation libs.junit
+    testImplementation libs.okhttp.mockWebServer
+    testImplementation libs.coroutines.android
 }
