@@ -122,6 +122,9 @@ class CredentialUtilImpl(
         readEuropeanCredentials: List<JSONObject>,
         indexOfVaccination: Int
     ): Boolean {
+        if (readEuropeanCredentials.size == 1) {
+            return false
+        }
         val vaccinations = readEuropeanCredentials.map {
             it.optJSONObject("dcc")?.getJSONArray("v")?.optJSONObject(0)
         }

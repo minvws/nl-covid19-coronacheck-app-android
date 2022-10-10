@@ -14,8 +14,8 @@
             android:id="@+id/root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
             android:layout_marginHorizontal="@dimen/horizontal_padding"
+            android:clipToPadding="false"
             android:paddingBottom="32dp">
 
             <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
@@ -43,13 +43,13 @@
 
             <nl.rijksoverheid.ctr.design.widgets.ScrollViewCheckboxButtonWidget
                 android:id="@+id/checkbox_with_header"
-                android:foreground="?attr/selectableItemBackground"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:checkboxText="@string/holder_addVaccine_alsoCollectPositiveTestResults_checkbox"
-                app:buttonHidden="true"
                 android:layout_marginTop="24dp"
+                android:foreground="?attr/selectableItemBackground"
                 android:visibility="gone"
+                app:buttonHidden="true"
+                app:checkboxText="@string/holder_addVaccine_alsoCollectPositiveTestResults_checkbox"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description" />
@@ -88,5 +88,9 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <include
+        android:id="@+id/loading_overlay"
+        layout="@layout/include_loading_indicator" />
 
 </FrameLayout>

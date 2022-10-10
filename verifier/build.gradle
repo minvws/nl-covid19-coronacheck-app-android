@@ -1,10 +1,10 @@
 plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    id "kotlin-kapt"
-    id 'kotlin-parcelize'
-    id "androidx.navigation.safeargs.kotlin"
-    id "com.starter.easylauncher"
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.navigation.safeargs.kotlin)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.easylauncher)
 }
 
 def appVersionCode =  1000000
@@ -15,6 +15,7 @@ version = "3.0.2"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
+    namespace 'nl.rijksoverheid.ctr.verifier'
     testOptions {
         unitTests {
             includeAndroidResources = true
@@ -120,47 +121,46 @@ dependencies {
     implementation project(':mobilecore')
     implementation project(":qrscanner")
 
-    implementation "com.github.lisawray.groupie:groupie:${groupie_version}"
-    implementation "com.github.lisawray.groupie:groupie-viewbinding:${groupie_version}"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "androidx.preference:preference-ktx:$preference_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
-    implementation "com.jakewharton.timber:timber:${timber_version}"
-    implementation "androidx.security:security-crypto:$security_crypto_version"
-    implementation "com.google.mlkit:barcode-scanning:${mlkit_barcode_version}"
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    implementation "net.zetetic:android-database-sqlcipher:$sqlcypher_version"
-    implementation "com.airbnb.android:lottie:$lottie_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    testImplementation "androidx.room:room-testing:$room_version"
+    implementation libs.bundles.groupie
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+    implementation libs.koin.android
+    implementation libs.androidx.preference
+    implementation libs.constraintlayout
+    implementation libs.timber
+    implementation libs.androidx.security.crypto
+    implementation libs.mlkit.barcode
+    implementation(platform(libs.okhttp.bom))
+    implementation libs.room.runtime
+    implementation libs.room
+    implementation libs.sqlcipher
+    implementation libs.lottie
+    kapt libs.room.compiler
+    testImplementation libs.room.testing
 
 
-    testImplementation "androidx.test:runner:$androix_test_version"
-    testImplementation "junit:junit:$junit_version"
-    testImplementation "io.mockk:mockk:$mock_version"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-    testImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
-    testImplementation("org.robolectric:robolectric:$robolectric_version") {
+    testImplementation libs.androidx.test.runner
+    testImplementation libs.junit
+    testImplementation libs.mockk
+    testImplementation libs.coroutines.test
+    testImplementation libs.androidx.core.testing
+    testImplementation(libs.robolectric) {
         exclude group: 'org.bouncycastle'
     }
-    testImplementation("com.adevinta.android:barista:$barista_version") {
+    testImplementation(libs.barista) {
         exclude group: "org.jetbrains.kotlin"
     }
-    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
-    testImplementation "androidx.navigation:navigation-testing:$navigation_version"
+    testImplementation libs.koin.test.junit4
+    testImplementation libs.navigation.testing
 
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
+    coreLibraryDesugaring libs.desugar
 
-    accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
+    accImplementation libs.crashlytics
 
-    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    debugImplementation libs.fragment.testing
 
     // Needed in order for room to work with Apple Sillicon M1
-    kapt "org.xerial:sqlite-jdbc:$sqlite_jdbc"
+    kapt libs.sqliteJdbc
 }
 
 easylauncher {

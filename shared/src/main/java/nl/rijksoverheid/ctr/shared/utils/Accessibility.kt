@@ -6,6 +6,7 @@ import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
 import android.widget.Button
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
@@ -224,7 +225,11 @@ object Accessibility {
      * - Unfocusing on the progressbar when no longer loading
      * - Override the default talkback. A indeterminate progress bar reads "0% progress" by default.
      */
-    fun LinearProgressIndicator.makeIndeterminateAccessible(context: Context, isLoading: Boolean) {
+    fun LinearProgressIndicator.makeIndeterminateAccessible(
+        context: Context,
+        isLoading: Boolean,
+        @StringRes message: Int = R.string.general_loading_description
+    ) {
         if (isLoading) {
             importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
             setAccessibilityFocus()
@@ -237,7 +242,7 @@ object Accessibility {
                     if (event?.eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
                         announce(
                             context = context,
-                            message = context.getString(R.string.general_loading_description)
+                            message = context.getString(message)
                         )
                     } else {
                         super.onInitializeAccessibilityEvent(host, event)

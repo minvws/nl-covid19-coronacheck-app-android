@@ -14,6 +14,7 @@ plugins {
 }
 
 android {
+    namespace 'nl.rijksoverheid.ctr.qrscanner'
     buildFeatures {
         viewBinding true
     }
@@ -52,24 +53,25 @@ android {
 
 dependencies {
     implementation project(":design")
+    coreLibraryDesugaring libs.desugar
+
     api project(":qrscanner:zebrasupport")
     api project(":qrscanner:honeywellsupport")
 
-    implementation "androidx.appcompat:appcompat:${appcompat_version}"
-    implementation "androidx.core:core-ktx:${androidx_version}"
-    implementation "androidx.appcompat:appcompat:${appcompat_version}"
-    implementation "androidx.constraintlayout:constraintlayout:${constraintlayout_version}"
-    implementation "androidx.fragment:fragment-ktx:${fragment_version}"
-    implementation "com.jakewharton.timber:timber:${timber_version}"
-    implementation "com.google.android.material:material:${material_version}"
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation libs.appcompat
+    implementation libs.androidx.core
+    implementation libs.constraintlayout
+    implementation libs.fragment
+    implementation libs.timber
+    implementation libs.material
+    implementation libs.koin.android
+    implementation libs.navigation.fragment
 
     // CameraX
-    implementation "androidx.camera:camera-camera2:${camerax_version}"
-    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
-    implementation "androidx.camera:camera-view:${camerax_view_version}"
+    implementation libs.camera.camera2
+    implementation libs.camera.lifecycle
+    implementation libs.camera.view
 
-    mlkitImplementation "com.google.mlkit:barcode-scanning:${mlkit_barcode_version}"
-    zxingImplementation "com.google.zxing:core:$zxing_core_version"
+    mlkitImplementation libs.mlkit.barcode
+    zxingImplementation libs.zxing.core
 }
