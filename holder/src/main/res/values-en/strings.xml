@@ -818,7 +818,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_authentication_popup_portal">this page</string>
   <string name="holder_showqr_animation_voiceover_hint">Reverse the movement</string>
   <string name="appstatus_diskfull_title">Your storage is full</string>
-  <string name="appstatus_diskfull_body">Because your phone’s storage is full, you can’t open CoronaCheck. Please free up space on your phone and reopen CoronaCheck.</string>
+  <string name="appstatus_diskfull_body">Because your phone’s storage is full, CoronaCheck doesn\'t work. Please free up space on your phone and reopen CoronaCheck.</string>
   <string name="appstatus_diskfull_button">Close CoronaCheck</string>
   <string name="general_diskFull_title">Your storage is full</string>
   <string name="general_diskFull_body">It didn’t work because your phone’s storage is full. Please free up space on your phone and retry.</string>
@@ -844,4 +844,27 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_listRemoteEvents_endStateNoValidCertificate_body"><![CDATA[This certificate has been declared invalid. For that reason, you cannot add it to the app.<br/><br/>Try to add a valid certificate, or contact the CoronaCheck helpdesk via <a href=\"tel:08001421\">0800-1421</a> and pass on the error code below.<br/><br/><b>Error code:</b><br/>%1$s]]></string>
   <string name="holder_showQR_domestic_title_3g">3G access</string>
   <string name="holder_showQR_domestic_title_1g">1G access</string>
+  <string name="holder_fuzzyMatching_onboarding_firstPage_title">Je naam is verschillend geschreven</string>
+  <string name="holder_fuzzyMatching_onboarding_firstPage_body">Voor een betere veiligheid, moet je naam bij alle testen en vaccinaties op precies dezelfde manier zijn geschreven.  Helaas is dit bij jou niet het geval. </string>
+  <string name="holder_fuzzyMatching_onboarding_secondPage_title">Er kunnen bewijzen verdwijnen</string>
+  <string name="holder_fuzzyMatching_onboarding_secondPage_body">Kies straks één manier van schrijven voor je naam. Bij die naam horen vaccinatie- of testgegevens. Alle andere gegevens worden uit de app verwijderd. Mogelijk verdwijnen hiermee ook coronabewijzen.</string>
+  <string name="holder_fuzzyMatching_onboarding_thirdPage_title">Laat je gegevens aanpassen</string>
+  <string name="holder_fuzzyMatching_onboarding_thirdPage_body">Zijn er bewijzen verdwenen? Laat je namen aanpassen door de plek waar je die vaccinatie of test hebt gehad. Zorg dat je naam altijd precies hetzelfde wordt geschreven.</string>
+  <string name="holder_fuzzyMatching_onboarding_thirdPage_action">Bekijk gegevens</string>
+  <string name="holder_fuzzyMatching_why_title">Waarom moet ik gegevens kiezen?</string>
+  <string name="holder_fuzzyMatching_why_body"><![CDATA[Om veiligheidsredenen, moet je naam bij alle vaccinaties, testuitslagen en bewijzen die je aan de app hebt toegevoegd op precies dezelfde manier zijn geschreven. Anders ziet CoronaCheck het als van verschillende personen.<br/><br/>Alle andere gegevens worden uit de app verwijderd. Je kunt je naam waarop deze gegevens staan laten laten aanpassen door de locatie waar je bent gevaccineerd of getest. Zorg dat je naam dan precies hetzelfde wordt geschreven als die je kiest om in de app te houden.<br/><br/>Als je naam is aangepast kun je de bijbehorende vaccinaties en testuitslagen zelf weer toevoegen aan de app.]]></string>
+  <string name="holder_fetchevents_loading">Retrieving details...</string>
+  <string name="holder_identitySelection_title">Welke gegevens wil je houden?</string>
+  <string name="holder_identitySelection_message">Bekijk goed in de details welke vaccinaties of testuitslagen bij je keuze horen.</string>
+  <string name="holder_identitySelection_why">Waarom moet ik kiezen?</string>
+  <string name="holder_identitySelection_actionTitle">Opslaan</string>
+  <string name="holder_identitySelection_error_makeAChoice">Graag eerst een keuze maken</string>
+  <string name="holder_identitySelection_error_willBeRemoved">Deze wordt verwijderd</string>
+  <string name="general_vaccinations">vaccinations</string>
+  <string name="general_testresults">test results</string>
+  <string name="general_details">Details</string>
+  <string name="general_skip">Overslaan</string>
+  <string name="holder_identitySelection_skipAlert_title">Weet je zeker dat je wilt overslaan?</string>
+  <string name="holder_identitySelection_skipAlert_body">Je kunt je QR-codes dan mogelijk niet gebruiken. De volgende keer dat je de app opstart vragen we opnieuw om een keuze te maken.</string>
+  <string name="holder_identitySelection_skipAlert_action">Ja, overslaan</string>
 </resources>
