@@ -16,11 +16,10 @@ task createSpotlessPreCommitHook() {
     new File("$project.rootDir/.git/hooks", "pre-commit").text = """
         #!/bin/bash
         echo "Running spotless check"
-        ./gradlew spotlessApply
+        ./gradlew spotlessCheck
         if [ \$? -eq 0 ]
         then
-           echo "Spotless check succeed"
-           git add .
+           echo "Spotless check succeeded"
         else
            echo "Spotless check failed" >&2
            exit 1
