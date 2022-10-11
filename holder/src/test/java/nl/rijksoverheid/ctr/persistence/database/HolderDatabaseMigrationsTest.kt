@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.persistence.database
 
 import android.content.ContentValues
-import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
+import androidx.room.testing.MigrationTestHelper
 import androidx.test.platform.app.InstrumentationRegistry
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -23,9 +23,8 @@ class HolderDatabaseMigrationsTest : AutoCloseKoinTest() {
     }
 
     @get:Rule
-    val helper: RobolectricMigrationTestHelper = RobolectricMigrationTestHelper(InstrumentationRegistry.getInstrumentation(),
-        HolderDatabase::class.java.canonicalName,
-        FrameworkSQLiteOpenHelperFactory())
+    val helper: MigrationTestHelper = MigrationTestHelper(InstrumentationRegistry.getInstrumentation(),
+        HolderDatabase::class.java)
 
     @Test
     fun testMigration1To2() {
@@ -116,6 +115,20 @@ class HolderDatabaseMigrationsTest : AutoCloseKoinTest() {
 
         // Assert no errors
         val cursor = dbV8.query("SELECT * FROM wallet")
+        assertNotNull(cursor)
+    }
+
+    @Test
+    fun `Database v8 to v9 migrates successfully`() {
+        // Our database before the migration
+        val dbV8 = helper.createDatabase(DATABASE_NAME, 8)
+        dbV8.close()
+
+        // The database after the migration
+        val dbV9 = helper.runMigrationsAndValidate(DATABASE_NAME, 9, true)
+
+        // Assert no errors
+        val cursor = dbV9.query("SELECT * FROM wallet")
         assertNotNull(cursor)
     }
 }

@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.persistence.database
 
 import android.content.ContentValues
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -116,6 +117,7 @@ val MIGRATION_5_6 = object : Migration(5, 6) {
     }
 }
 
+@Suppress("FunctionName")
 fun MIGRATION_6_7(persistenceManager: PersistenceManager) = object : Migration(6, 7) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE IF NOT EXISTS secret_key (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, green_card_id INTEGER NOT NULL, secret TEXT NOT NULL, FOREIGN KEY(green_card_id) REFERENCES green_card(id) ON UPDATE NO ACTION ON DELETE CASCADE )")
@@ -149,7 +151,8 @@ val MIGRATION_7_8 = object : Migration(7, 8) {
 
 @Database(
     entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class, OriginEntity::class, SecretKeyEntity::class, BlockedEventEntity::class, OriginHintEntity::class],
-    version = 8
+    autoMigrations = [AutoMigration(from = 8, to = 9)],
+    version = 9
 )
 @TypeConverters(HolderDatabaseConverter::class)
 abstract class HolderDatabase : RoomDatabase() {
