@@ -4,7 +4,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.slot
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
 import nl.rijksoverheid.ctr.api.signing.certificates.BEARINGPOINT_ROOT_CA
@@ -36,6 +36,7 @@ class EventProviderRepositoryImplTest {
         coEvery { testProviderApiClientUtil.client(capture(tlsCertificateSlot), capture(cmsCertificateSlot)) } returns testProviderApiClient
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <R : Any> mockRequestResult() {
         coEvery {
             networkRequestResultFactory.createResult(
@@ -51,7 +52,7 @@ class EventProviderRepositoryImplTest {
     }
 
     @Test
-    fun `pin with the passed certificates the umomi request`() = runBlockingTest {
+    fun `pin with the passed certificates the umomi request`() = runTest {
         mockRequestResult<SignedResponseWithModel<RemoteUnomi>>()
         val signingCertificateSlot = slot<SigningCertificate>()
 
@@ -83,7 +84,7 @@ class EventProviderRepositoryImplTest {
     }
 
     @Test
-    fun `pin with the passed certificates the getEvents request`() = runBlockingTest {
+    fun `pin with the passed certificates the getEvents request`() = runTest {
         mockRequestResult<SignedResponseWithModel<RemoteProtocol>>()
         val signingCertificateSlot = slot<SigningCertificate>()
 

@@ -28,10 +28,11 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility
  */
 abstract class BaseMainFragment(
     contentLayoutId: Int,
-    val topLevelDestinations: Set<Int>
+    private val topLevelDestinations: Set<Int>
 ) :
     Fragment(contentLayoutId) {
 
+    @Suppress("DEPRECATION") // systemWindowInsets*
     override fun onStart() {
         super.onStart()
         val navHostFragment =

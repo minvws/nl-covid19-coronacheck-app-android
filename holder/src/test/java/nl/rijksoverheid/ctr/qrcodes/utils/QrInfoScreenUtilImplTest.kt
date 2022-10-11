@@ -13,13 +13,13 @@ import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
 import java.util.TimeZone
-import junit.framework.Assert.assertEquals
 import nl.rijksoverheid.ctr.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrInfoScreenUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.LocalDateUtilImpl
 import org.json.JSONObject
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest

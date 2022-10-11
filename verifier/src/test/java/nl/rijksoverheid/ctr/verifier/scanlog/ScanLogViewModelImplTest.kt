@@ -4,8 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import nl.rijksoverheid.ctr.verifier.scanlog.items.ScanLogItem
 import nl.rijksoverheid.ctr.verifier.scanlog.usecase.GetScanLogItemsUseCase
@@ -21,11 +22,11 @@ class ScanLogViewModelImplTest {
 
     @Before
     fun setup() {
-        Dispatchers.setMain(TestCoroutineDispatcher())
+        Dispatchers.setMain(UnconfinedTestDispatcher())
     }
 
     @Test
-    fun `getItems() delegates result to livedata()`() = runBlocking {
+    fun `getItems() delegates result to livedata()`() = runTest {
         val scanLogItems = listOf(
             ScanLogItem.HeaderItem(0L)
         )
@@ -38,6 +39,8 @@ class ScanLogViewModelImplTest {
         )
 
         viewModel.getItems()
+
+        advanceUntilIdle()
 
         assertEquals(scanLogItems, viewModel.scanLogItemsLiveData.value)
     }

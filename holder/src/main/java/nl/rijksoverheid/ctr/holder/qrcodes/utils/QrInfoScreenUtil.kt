@@ -71,7 +71,7 @@ class QrInfoScreenUtilImpl(
     }
 
     override fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): QrInfoScreen {
-        val dcc = readEuropeanCredential.optJSONObject("dcc")
+        val dcc = requireNotNull(readEuropeanCredential.optJSONObject("dcc"))
         val test = dcc.getJSONArray("t").optJSONObject(0)
 
         val title = application.getString(R.string.qr_explanation_title_eu)
@@ -165,7 +165,7 @@ class QrInfoScreenUtilImpl(
     }
 
     override fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen {
-        val dcc = readEuropeanCredential.optJSONObject("dcc")
+        val dcc = requireNotNull(readEuropeanCredential.optJSONObject("dcc"))
         val vaccination = dcc.getJSONArray("v").optJSONObject(0)
 
         val fullName = "${dcc.optJSONObject("nam").getStringOrNull("fn")}, ${
@@ -266,7 +266,7 @@ class QrInfoScreenUtilImpl(
     }
 
     override fun getForEuropeanRecoveryQr(readEuropeanCredential: JSONObject): QrInfoScreen {
-        val dcc = readEuropeanCredential.optJSONObject("dcc")
+        val dcc = requireNotNull(readEuropeanCredential.optJSONObject("dcc"))
         val recovery = dcc.getJSONArray("r").optJSONObject(0)
 
         val title = application.getString(R.string.qr_explanation_title_eu)
