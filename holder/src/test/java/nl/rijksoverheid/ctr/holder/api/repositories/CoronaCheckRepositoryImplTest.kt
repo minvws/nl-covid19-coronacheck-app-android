@@ -53,6 +53,7 @@ class CoronaCheckRepositoryImplTest : AutoCloseKoinTest() {
         coEvery { holderApiClientUtil.client(any()) } returns holderApiClient
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <R : Any> mockRequestResult() {
         coEvery {
             networkRequestResultFactory.createResult(

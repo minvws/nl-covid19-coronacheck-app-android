@@ -8,7 +8,7 @@ import io.mockk.verify
 import io.mockk.verifyOrder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
 import nl.rijksoverheid.ctr.appconfig.models.ExternalReturnAppData
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -38,7 +38,7 @@ class ScannerViewModelImplTest {
 
     @Before
     fun setup() {
-        Dispatchers.setMain(TestCoroutineDispatcher())
+        Dispatchers.setMain(UnconfinedTestDispatcher())
     }
 
     @Test

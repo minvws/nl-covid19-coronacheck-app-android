@@ -143,7 +143,7 @@ class DashboardItemUtilImpl(
         disclosurePolicy: DisclosurePolicy,
         greenCards: List<GreenCard>,
         greenCardType: GreenCardType,
-        originInfoTypeOrigin: OriginType
+        originType: OriginType
     ): Boolean {
         return when (disclosurePolicy) {
             is DisclosurePolicy.ZeroG -> {
@@ -156,7 +156,7 @@ class DashboardItemUtilImpl(
                 )
 
                 // We do not show the origin info item for a domestic test if there is a vaccination assessment green card active (this causes some confusion in the UI)
-                !(hasVaccinationAssessmentOrigin && originInfoTypeOrigin == OriginType.Test && greenCardType == GreenCardType.Domestic)
+                !(hasVaccinationAssessmentOrigin && originType == OriginType.Test && greenCardType == GreenCardType.Domestic)
             }
         }
     }

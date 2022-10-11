@@ -113,6 +113,9 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
                             negativeButtonCallback = { showBlockedEventsBottomSheetUtil.show(this, result.blockedEvents) }
                         )
                     }
+                    ShowBlockedEventsDialogResult.None -> {
+                        /* nothing */
+                    }
                 }
             }
         )

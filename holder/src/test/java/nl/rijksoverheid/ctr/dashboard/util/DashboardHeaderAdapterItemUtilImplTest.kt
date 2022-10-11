@@ -27,7 +27,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
         Assert.assertEquals(R.string.holder_dashboard_empty_domestic_only1Gaccess_message,
             util.getHeaderItem(
-                tabType = GreenCardType.Domestic,
+                greenCardType = GreenCardType.Domestic,
                 emptyState = true,
                 hasVisitorPassIncompleteItem = false
             ).text
@@ -42,7 +42,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
         Assert.assertEquals(R.string.my_overview_qr_placeholder_description,
             util.getHeaderItem(
-                tabType = GreenCardType.Domestic,
+                greenCardType = GreenCardType.Domestic,
                 emptyState = true,
                 hasVisitorPassIncompleteItem = false
             ).text
@@ -57,7 +57,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
         Assert.assertEquals(R.string.holder_dashboard_empty_domestic_3Gand1Gaccess_message,
             util.getHeaderItem(
-                tabType = GreenCardType.Domestic,
+                greenCardType = GreenCardType.Domestic,
                 emptyState = true,
                 hasVisitorPassIncompleteItem = false
             ).text
@@ -72,7 +72,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
         Assert.assertEquals(R.string.holder_dashboard_intro_domestic_only1Gaccess,
             util.getHeaderItem(
-                tabType = GreenCardType.Domestic,
+                greenCardType = GreenCardType.Domestic,
                 emptyState = false,
                 hasVisitorPassIncompleteItem = false
             ).text
@@ -87,7 +87,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
         Assert.assertEquals(R.string.my_overview_description,
             util.getHeaderItem(
-                tabType = GreenCardType.Domestic,
+                greenCardType = GreenCardType.Domestic,
                 emptyState = false,
                 hasVisitorPassIncompleteItem = false
             ).text
@@ -102,7 +102,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
         Assert.assertEquals(R.string.holder_dashboard_intro_domestic_3Gand1Gaccess,
             util.getHeaderItem(
-                tabType = GreenCardType.Domestic,
+                greenCardType = GreenCardType.Domestic,
                 emptyState = false,
                 hasVisitorPassIncompleteItem = false
             ).text
@@ -117,7 +117,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
         Assert.assertEquals(null,
             util.getHeaderItem(
-                tabType = GreenCardType.Domestic,
+                greenCardType = GreenCardType.Domestic,
                 emptyState = true,
                 hasVisitorPassIncompleteItem = false
             ).buttonInfo
@@ -131,7 +131,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
 
         val headerItem = util.getHeaderItem(
-            tabType = GreenCardType.Eu,
+            greenCardType = GreenCardType.Eu,
             emptyState = false,
             hasVisitorPassIncompleteItem = false
         )
@@ -153,7 +153,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
 
         val headerItem = util.getHeaderItem(
-            tabType = GreenCardType.Eu,
+            greenCardType = GreenCardType.Eu,
             emptyState = true,
             hasVisitorPassIncompleteItem = false
         )
@@ -175,7 +175,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
 
         val headerItem = util.getHeaderItem(
-            tabType = GreenCardType.Eu,
+            greenCardType = GreenCardType.Eu,
             emptyState = false,
             hasVisitorPassIncompleteItem = false
         )
@@ -203,7 +203,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
                 Assert.assertEquals(R.string.holder_dashboard_incompleteVisitorPass_message,
                     util.getHeaderItem(
-                        tabType = GreenCardType.Domestic,
+                        greenCardType = GreenCardType.Domestic,
                         emptyState = true,
                         hasVisitorPassIncompleteItem = true
                     ).text
