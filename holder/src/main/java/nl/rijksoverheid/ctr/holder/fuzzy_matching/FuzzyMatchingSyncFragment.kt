@@ -54,7 +54,7 @@ class FuzzyMatchingSyncFragment : BaseFragment(R.layout.fragment_saved_events_sy
     }
 
     private fun disableBackButton() {
-        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,11 +100,5 @@ class FuzzyMatchingSyncFragment : BaseFragment(R.layout.fragment_saved_events_sy
                     }
                 }
             })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        onBackPressedCallback.isEnabled = false
-        onBackPressedCallback.remove()
     }
 }
