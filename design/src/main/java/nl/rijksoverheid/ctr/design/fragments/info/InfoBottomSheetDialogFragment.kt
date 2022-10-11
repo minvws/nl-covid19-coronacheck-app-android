@@ -102,6 +102,9 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
                             binding.navigationButton.visibility = View.VISIBLE
                         }
                     }
+                    null -> {
+                        /* nothing */
+                    }
                 }
                 expandedBottomSheetData.primaryButtonData?.let { buttonData ->
                     binding.navigationButton.run {

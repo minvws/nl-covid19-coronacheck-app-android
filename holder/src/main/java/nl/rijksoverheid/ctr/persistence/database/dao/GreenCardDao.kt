@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
@@ -20,9 +21,11 @@ import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 @Dao
 interface GreenCardDao {
 
+    @Transaction
     @Query("SELECT * FROM green_card")
     suspend fun getAll(): List<GreenCard>
 
+    @Transaction
     @Query("SELECT * FROM green_card WHERE type = :type AND wallet_id = :walletId")
     suspend fun getAll(type: GreenCardType, walletId: Int): List<GreenCard>
 

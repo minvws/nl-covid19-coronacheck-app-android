@@ -23,6 +23,6 @@ import androidx.room.PrimaryKey
 )
 data class OriginHintEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "origin_id") val originId: Long,
+    @ColumnInfo(name = "origin_id", index = true) val originId: Long,
     @ColumnInfo(index = true) val hint: String
 )

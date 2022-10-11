@@ -22,7 +22,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
-import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
@@ -143,7 +142,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
                                     dashboardGreenCardAdapterItemBinding, originState, origin
                                 )
                                 is OriginType.Test -> setDomesticTestOrigin(
-                                    dashboardGreenCardAdapterItemBinding, originState, origin, it.credentialEntities
+                                    dashboardGreenCardAdapterItemBinding, originState, origin
                                 )
                                 is OriginType.VaccinationAssessment -> setDomesticVaccinationAssessmentOrigin(
                                     dashboardGreenCardAdapterItemBinding, originState, origin
@@ -170,8 +169,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
     private fun setDomesticTestOrigin(
         dashboardGreenCardAdapterItemBinding: DashboardGreenCardAdapterItemBindingWrapper,
         originState: OriginState,
-        origin: OriginEntity,
-        credentialEntities: List<CredentialEntity>
+        origin: OriginEntity
     ) {
         setOriginTitle(
             descriptionLayout = dashboardGreenCardAdapterItemBinding.description,

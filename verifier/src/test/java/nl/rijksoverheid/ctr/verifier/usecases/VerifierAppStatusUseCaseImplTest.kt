@@ -236,10 +236,6 @@ class VerifierAppStatusUseCaseImplTest {
     @Test
     fun `status is no action required when verifier recommend update was shown in upgrade interval`() {
         runBlocking {
-            val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager =
-                mockk(relaxed = true) {
-                    every { getRecommendedUpdateShownSeconds() } returns 3601
-                }
             val appStatusUseCase = VerifierAppStatusUseCaseImpl(
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),

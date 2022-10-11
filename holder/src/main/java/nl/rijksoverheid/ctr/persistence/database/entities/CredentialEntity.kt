@@ -25,7 +25,7 @@ import java.time.OffsetDateTime
 
 data class CredentialEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo(name = "green_card_id") val greenCardId: Long,
+    @ColumnInfo(name = "green_card_id", index = true) val greenCardId: Long,
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB) val data: ByteArray,
     val credentialVersion: Int,
     val validFrom: OffsetDateTime,

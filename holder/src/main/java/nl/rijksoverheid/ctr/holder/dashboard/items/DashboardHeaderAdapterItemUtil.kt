@@ -27,12 +27,12 @@ class DashboardHeaderAdapterItemUtilImpl(
 
     /**
      * Get the header item text to display in the domestic tab on the dashboard screen
-     * @param tabType The type of the tab that is currently selected
+     * @param greenCardType The type of the tab that is currently selected
      * @param emptyState If we should treat the dashboard as being empty state
      * @param hasVisitorPassIncompleteItem If there is a incomplete visitor pass item currently showing on the dashboard
      */
     override fun getHeaderItem(
-        tabType: GreenCardType,
+        greenCardType: GreenCardType,
         emptyState: Boolean,
         hasVisitorPassIncompleteItem: Boolean
     ): DashboardItem.HeaderItem {
@@ -40,9 +40,9 @@ class DashboardHeaderAdapterItemUtilImpl(
         val text = if (hasVisitorPassIncompleteItem) {
             R.string.holder_dashboard_incompleteVisitorPass_message
         } else {
-            getHeaderText(tabType, empty)
+            getHeaderText(greenCardType, empty)
         }
-        val buttonInfo = getButtonInfo(tabType, empty)
+        val buttonInfo = getButtonInfo(greenCardType, empty)
         return DashboardItem.HeaderItem(text, buttonInfo)
     }
 
