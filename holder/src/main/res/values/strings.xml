@@ -860,12 +860,25 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_identitySelection_actionTitle">Opslaan</string>
   <string name="holder_identitySelection_error_makeAChoice">Graag eerst een keuze maken</string>
   <string name="holder_identitySelection_error_willBeRemoved">Deze wordt verwijderd</string>
-  <string name="general_vaccinations">vaccinaties</string>
-  <string name="general_testresults">testuitslagen</string>
+  <plurals name="general_vaccinations">
+    <item quantity="one">vaccinatie</item>
+    <item quantity="other">vaccinaties</item>
+  </plurals>
+  <plurals name="general_testresults">
+    <item quantity="one">testuitslag</item>
+    <item quantity="other">testuitslagen</item>
+  </plurals>
   <string name="general_details">Details</string>
   <string name="general_skip">Overslaan</string>
   <string name="holder_identitySelection_skipAlert_title">Weet je zeker dat je wilt overslaan?</string>
   <string name="holder_identitySelection_skipAlert_body">Je kunt je QR-codes dan mogelijk niet gebruiken. De volgende keer dat je de app opstart vragen we opnieuw om een keuze te maken.</string>
   <string name="holder_identitySelection_skipAlert_action">Ja, overslaan</string>
+  <plurals name="general_vaccinationAssessments">
+    <item quantity="one">vaccinatiebeoordeling</item>
+    <item quantity="other">vaccinatiebeoordelingen</item>
+  </plurals>
+  <string name="general_and">en</string>
+  <string name="holder_identitySelection_details_body"><![CDATA[Deze gegevens horen bij de naam <b>%s</b>]]></string>
+  <string name="holder_identitySelection_details_scannedPaperProof">Ingescand bewijs</string>
   <string name="holder_fetchevents_loading">Gegevens ophalen...</string>
 </resources>

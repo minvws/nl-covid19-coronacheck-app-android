@@ -36,4 +36,6 @@
     <item name="general_notification" type="string" />
     <item name="checkbox_padding" type="dimen" />
     <item name="back_to_overview" type="string" />
+    <item name="holder_identitySelection_error_makeAChoice" type="string" />
+    <item name="holder_identitySelection_actionTitle" type="string" />
 </resources>

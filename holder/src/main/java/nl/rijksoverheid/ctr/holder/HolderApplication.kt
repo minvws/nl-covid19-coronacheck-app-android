@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.appconfig.appConfigModule
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.dashboard.dashboardModule
+import nl.rijksoverheid.ctr.holder.fuzzy_matching.fuzzyMatchingModule
 import nl.rijksoverheid.ctr.holder.modules.appModule
 import nl.rijksoverheid.ctr.holder.modules.cardUtilsModule
 import nl.rijksoverheid.ctr.holder.modules.disclosurePolicyModule
@@ -77,6 +78,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         responsesModule,
         qrScannerModule,
         disclosurePolicyModule,
+        fuzzyMatchingModule,
         dashboardModule
     ).toTypedArray()
 
