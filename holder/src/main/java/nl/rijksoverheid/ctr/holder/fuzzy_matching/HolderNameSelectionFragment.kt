@@ -14,7 +14,8 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentHolderNameSelectionBinding
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.holder.fuzzy_matching.HolderNameSelectionFragmentDirections.Companion.actionSavedEventsSyncGreenCards
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -41,11 +42,17 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
             setItems(it, binding)
         }
         binding.bottom.setButtonClick {
-            if (viewModel.noSelectionYet()) {
+            val selectedName = viewModel.selectedName()
+            if (selectedName == null) {
                 binding.bottom.showError()
             } else {
                 // TODO store selected name and discard the others
-                findNavControllerSafety()?.popBackStack()
+                resetToolbar()
+                navigateSafety(
+                    actionSavedEventsSyncGreenCards(
+                        selectedName = selectedName
+                    )
+                )
             }
         }
     }
@@ -68,13 +75,17 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    private fun resetToolbar() {
         (parentFragment?.parentFragment as? HolderMainFragment)?.let {
             it.getToolbar().menu.clear()
             // Reset menu item listener to default
             it.resetMenuItemListener()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        resetToolbar()
     }
 
     private fun initRecyclerView(binding: FragmentHolderNameSelectionBinding) {

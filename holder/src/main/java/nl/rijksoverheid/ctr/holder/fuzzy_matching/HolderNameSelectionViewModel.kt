@@ -22,7 +22,7 @@ abstract class HolderNameSelectionViewModel : ViewModel() {
     val itemsLiveData: LiveData<List<HolderNameSelectionItem>> = MutableLiveData()
 
     abstract fun onItemSelected(index: Int)
-    abstract fun noSelectionYet(): Boolean
+    abstract fun selectedName(): String?
 }
 
 class HolderNameSelectionViewModelImpl(
@@ -35,9 +35,11 @@ class HolderNameSelectionViewModelImpl(
         postItems(index - 1)
     }
 
-    override fun noSelectionYet(): Boolean {
-        return itemsLiveData.value?.filterIsInstance<HolderNameSelectionItem.ListItem>()
-            ?.any { it.isSelected } == false
+    override fun selectedName(): String? {
+        return itemsLiveData.value
+            ?.filterIsInstance<HolderNameSelectionItem.ListItem>()
+            ?.find { it.isSelected }
+            ?.name
     }
 
     // TODO will be removed in next task and will be populated from a usecase
@@ -48,8 +50,10 @@ class HolderNameSelectionViewModelImpl(
     private fun postItems(selectedIndex: Int? = null) {
         viewModelScope.launch {
             val eventGroupEntities = holderDatabase.eventGroupDao().getAll()
-            val remoteProtocols = eventGroupEntities.mapNotNull(getRemoteProtocolFromEventGroupUseCase::get)
-            val holderEvents = mutableListOf<Triple<String, RemoteProtocol.Holder, List<RemoteEvent>>>()
+            val remoteProtocols =
+                eventGroupEntities.mapNotNull(getRemoteProtocolFromEventGroupUseCase::get)
+            val holderEvents =
+                mutableListOf<Triple<String, RemoteProtocol.Holder, List<RemoteEvent>>>()
             remoteProtocols.forEach {
                 if (it.holder != null && it.events != null) {
                     holderEvents.add(Triple(it.providerIdentifier, it.holder, it.events))

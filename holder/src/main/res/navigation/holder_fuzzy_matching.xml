@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
   ~   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
   ~
@@ -32,6 +31,69 @@
         android:id="@+id/nav_holder_name_selection"
         android:name="nl.rijksoverheid.ctr.holder.fuzzy_matching.HolderNameSelectionFragment"
         android:label=""
-        tools:layout="@layout/fragment_holder_name_selection" />
+        tools:layout="@layout/fragment_holder_name_selection">
+
+        <action
+            android:id="@+id/action_saved_events_sync_green_cards"
+            app:destination="@id/nav_saved_events_sync_green_cards"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_saved_events_sync_green_cards"
+        android:name="nl.rijksoverheid.ctr.holder.fuzzy_matching.FuzzyMatchingSyncFragment"
+        android:label="@string/holder_identitySelection_success_toolbar_title"
+        tools:layout="@layout/fragment_saved_events_sync_green_cards">
+
+        <argument
+            android:name="selectedName"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_info_fragment"
+            app:destination="@id/nav_info_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/nav_holder_fuzzy_matching"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_info_fragment"
+        android:name="nl.rijksoverheid.ctr.design.fragments.info.InfoFragment"
+        android:label="{toolbarTitle}"
+        tools:layout="@layout/fragment_info">
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
+
+        <argument
+            android:name="closeIcon"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
+        <argument
+            android:name="data"
+            app:argType="nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData" />
+
+        <action
+            android:id="@+id/action_my_overview"
+            app:destination="@id/nav_graph_overview"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_graph_overview"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 
 </navigation>
