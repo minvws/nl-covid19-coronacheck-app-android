@@ -7,7 +7,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import java.io.File
@@ -150,11 +149,9 @@ val MIGRATION_7_8 = object : Migration(7, 8) {
     }
 }
 
-internal class EmptyAutoMigrationSpec : AutoMigrationSpec
-
 @Database(
     entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class, OriginEntity::class, SecretKeyEntity::class, BlockedEventEntity::class, OriginHintEntity::class],
-    autoMigrations = [AutoMigration(from = 8, to = 9, spec = EmptyAutoMigrationSpec::class)],
+    autoMigrations = [AutoMigration(from = 8, to = 9)],
     version = 9
 )
 @TypeConverters(HolderDatabaseConverter::class)
