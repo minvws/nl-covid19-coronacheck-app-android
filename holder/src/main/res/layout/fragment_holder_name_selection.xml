@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <nl.rijksoverheid.ctr.holder.fuzzy_matching.RecyclerViewButtonWidget
+    <nl.rijksoverheid.ctr.design.widgets.RecyclerViewButtonWidget
         android:id="@+id/bottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

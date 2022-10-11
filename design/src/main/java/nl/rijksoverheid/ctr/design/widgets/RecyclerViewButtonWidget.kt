@@ -1,4 +1,4 @@
-package nl.rijksoverheid.ctr.holder.fuzzy_matching
+package nl.rijksoverheid.ctr.design.widgets
 
 import android.content.Context
 import android.util.AttributeSet
@@ -28,7 +28,7 @@ class RecyclerViewButtonWidget @JvmOverloads constructor(
     private val binding: WidgetRecyclerViewButtonBinding
 
     private var attachToRecyclerViewId: Int? = null
-    private var recyclerViewGlobalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+    private var preDrawListener: ViewTreeObserver.OnPreDrawListener? = null
 
     init {
         elevation = 0f
@@ -57,15 +57,16 @@ class RecyclerViewButtonWidget @JvmOverloads constructor(
         attachToRecyclerViewId?.let {
             val parentLayout = parent as ViewGroup
             val recyclerView = parentLayout.findViewById<RecyclerView>(it)
-            recyclerViewGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+            preDrawListener = ViewTreeObserver.OnPreDrawListener {
                 cardElevation = if (recyclerView?.canScrollVertically(1) == true) {
                     resources.getDimensionPixelSize(R.dimen.scroll_view_button_elevation)
                         .toFloat()
                 } else {
                     0f
                 }
+                true
             }
-            recyclerView.viewTreeObserver.addOnGlobalLayoutListener(recyclerViewGlobalLayoutListener)
+            recyclerView.viewTreeObserver.addOnPreDrawListener(preDrawListener)
         }
     }
 
@@ -75,9 +76,7 @@ class RecyclerViewButtonWidget @JvmOverloads constructor(
         attachToRecyclerViewId?.let {
             val parentLayout = parent as ViewGroup
             val recyclerView = parentLayout.findViewById<RecyclerView>(it)
-            recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(
-                recyclerViewGlobalLayoutListener
-            )
+            recyclerView.viewTreeObserver.removeOnPreDrawListener(preDrawListener)
         }
     }
 
