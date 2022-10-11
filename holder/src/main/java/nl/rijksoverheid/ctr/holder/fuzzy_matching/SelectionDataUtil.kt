@@ -59,7 +59,7 @@ class SelectionDataUtilImpl(
                 eventsString.append(" ${getString(R.string.general_and)} ")
             }
             eventsString.append(
-                "$vaccinationCount ${
+                "$testCount ${
                     getQuantityString(
                         R.plurals.general_testresults,
                         testCount
