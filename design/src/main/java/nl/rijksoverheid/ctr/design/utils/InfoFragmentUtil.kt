@@ -10,6 +10,9 @@ import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.fragments.info.InfoBottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil.Companion.EXTRA_INFO_FRAGMENT_DATA
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil.Companion.HIDE_ICON
+import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil.Companion.TOOLBAR_TITLE
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,6 +24,7 @@ import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 interface InfoFragmentUtil {
 
     companion object {
+        const val TOOLBAR_TITLE = "toolbarTitle"
         const val EXTRA_INFO_FRAGMENT_DATA = "data"
         const val HIDE_ICON = "hideIcon"
     }
@@ -64,9 +68,9 @@ class InfoFragmentUtilImpl : InfoFragmentUtil {
         currentFragment.findNavController().navigate(
             infoFragmentNavigationId,
             bundleOf(
-                Pair("toolbarTitle", toolbarTitle),
-                Pair(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA, data),
-                Pair(InfoFragmentUtil.HIDE_ICON, hideNavigationIcon)
+                TOOLBAR_TITLE to toolbarTitle,
+                EXTRA_INFO_FRAGMENT_DATA to data,
+                HIDE_ICON to hideNavigationIcon
             )
         )
     }
@@ -77,7 +81,7 @@ class InfoFragmentUtilImpl : InfoFragmentUtil {
     ) {
         val bottomSheet = InfoBottomSheetDialogFragment().apply {
             arguments = Bundle().apply {
-                putParcelable(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA, data)
+                putParcelable(EXTRA_INFO_FRAGMENT_DATA, data)
             }
         }
         bottomSheet.show(fragmentManager, "bottomSheetTag")

@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.fuzzy_matching
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -35,12 +34,6 @@ class FuzzyMatchingSyncFragment : BaseFragment(R.layout.fragment_saved_events_sy
 
     private val fuzzyMatchingSyncFragmentArgs: FuzzyMatchingSyncFragmentArgs by navArgs()
 
-    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            // going back is disabled here to prevent invalid states while syncing
-        }
-    }
-
     override fun onButtonClickWithRetryAction() {
         // This screen does not have a retry button
     }
@@ -53,16 +46,10 @@ class FuzzyMatchingSyncFragment : BaseFragment(R.layout.fragment_saved_events_sy
         (parentFragment?.parentFragment as? HolderMainFragment)?.getToolbar()?.navigationIcon = null
     }
 
-    private fun disableBackButton() {
-        requireActivity().onBackPressedDispatcher.addCallback(onBackPressedCallback)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         hideNavigationIcon()
-
-        disableBackButton()
 
         syncGreenCardsViewModel.refresh()
 
@@ -100,11 +87,5 @@ class FuzzyMatchingSyncFragment : BaseFragment(R.layout.fragment_saved_events_sy
                     }
                 }
             })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        onBackPressedCallback.isEnabled = false
-        onBackPressedCallback.remove()
     }
 }
