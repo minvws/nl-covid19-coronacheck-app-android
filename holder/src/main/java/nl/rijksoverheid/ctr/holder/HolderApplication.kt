@@ -66,7 +66,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         greenCardUseCasesModule,
         eventsUseCasesModule,
         testProvidersUseCasesModule,
-        utilsModule(BuildConfig.VERSION_CODE),
+        utilsModule,
         viewModels,
         cardUtilsModule,
         repositoriesModule,

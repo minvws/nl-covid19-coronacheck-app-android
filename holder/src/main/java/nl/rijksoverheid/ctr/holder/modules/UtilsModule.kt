@@ -69,7 +69,7 @@ import org.koin.dsl.module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-fun utilsModule(versionCode: Int) = module {
+val utilsModule = module {
     factory<DashboardGreenCardAdapterItemUtil> {
         DashboardGreenCardAdapterItemUtilImpl(
             Clock.systemUTC(),

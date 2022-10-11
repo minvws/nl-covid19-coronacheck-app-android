@@ -24,6 +24,11 @@ import nl.rijksoverheid.ctr.design.ext.isHeading
 import nl.rijksoverheid.ctr.design.ext.separated
 import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
 
+private const val HTML_LINKS_ENABLED = false
+private const val PARAGRAPH_MARGIN_MULTIPLIER = 1.0f
+private const val HEADING_MARGIN_MULTIPLIER = 1.0f
+private const val LIST_ITEM_MARGIN_MULTIPLIER = 0.25f
+
 /**
  * The HtmlTextViewWidget is able to display (simple) HTML in an accessible way.
  * 1. HTML is parsed to a Spanned object.
@@ -34,17 +39,13 @@ import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
  * The methods enableHtmlLinks() and enableCustomLinks() are dispatched to each TextView subview.
  * The getSpannableFromHtml() method parses HTML into a Spannable object while taking legacy implementations into account.
  */
+
 class HtmlTextViewWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
     defStyleRes: Int = 0
 ) : LinearLayout(context, attrs, defStyle, defStyleRes) {
-
-    private val HTML_LINKS_ENABLED = false
-    private val PARAGRAPH_MARGIN_MULTIPLIER = 1.0f
-    private val HEADING_MARGIN_MULTIPLIER = 1.0f
-    private val LIST_ITEM_MARGIN_MULTIPLIER = 0.25f
 
     private val textColor by lazy {
         context.getColor(R.color.primary_text)
@@ -133,6 +134,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
      * Links are disabled by default, but can be enabled.
      * A multiplier can be set for the paragraph, heading and list item margins.
      */
+    @Suppress("UNUSED_PARAMETER") // false positive for margin multipliers
     fun setHtmlText(
         htmlText: String,
         htmlLinksEnabled: Boolean = HTML_LINKS_ENABLED,

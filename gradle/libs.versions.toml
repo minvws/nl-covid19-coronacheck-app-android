@@ -13,6 +13,7 @@ androidx-test = "1.4.0"
 androidx-work = "2.7.1"
 bouncycastle = "1.70"
 certificatetransparency = "1.1.0"
+coroutines = "1.6.4"
 groupie = "2.9.0"
 koin = "3.0.1"
 mockk = "1.12.0"
@@ -38,8 +39,8 @@ camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = 
 camera-view = { module = "androidx.camera:camera-view", version.ref = "androidx-camera" }
 certificatetransparency-android = { module = "com.appmattus.certificatetransparency:certificatetransparency-android", version.ref = "certificatetransparency" }
 constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.3"
-coroutines-android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
-coroutines-test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2"
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 crashlytics = "com.google.firebase:firebase-crashlytics-ktx:18.2.9"
 desugar = "com.android.tools:desugar_jdk_libs:1.1.5"
 espresso-core = "androidx.test.espresso:espresso-core:3.4.0"
@@ -102,7 +103,7 @@ kotlin-android = "org.jetbrains.kotlin.android:1.6.10"
 kotlin-jvm = "org.jetbrains.kotlin.jvm:1.6.10"
 kotlin-kapt = "org.jetbrains.kotlin.kapt:1.6.10"
 kotlin-parcelize = "org.jetbrains.kotlin.plugin.parcelize:1.6.10"
-navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidx-navigation"}
+navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidx-navigation" }
 shot = "shot:5.14.1"
 spotless = "com.diffplug.spotless:5.10.1"
 versionCatalogUpdate = "nl.littlerobots.version-catalog-update:0.6.1"

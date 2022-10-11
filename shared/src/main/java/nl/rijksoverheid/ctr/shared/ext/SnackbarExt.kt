@@ -26,6 +26,7 @@ fun Snackbar.show(fragmentActivity: FragmentActivity) {
         ViewCompat.setOnApplyWindowInsetsListener(
             fragmentActivity.findViewById(android.R.id.content)
         ) { _, insets ->
+            @Suppress("DEPRECATION")
             this.view.translationY = insets.systemWindowInsetBottom * -1f
             insets
         }
