@@ -215,7 +215,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
     }
 
     private fun onVisitorPassIncompleteClicked(dashboardPageFragment: DashboardPageFragment) {
-        val navigationDirection = InfoFragmentDirections.actionCommercialTestInputToken()
+        val navigationDirection = InfoFragmentDirections.actionMyOverview()
 
         infoFragmentUtil.presentFullScreen(
             currentFragment = dashboardPageFragment,
