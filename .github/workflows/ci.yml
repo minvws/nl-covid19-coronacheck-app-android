@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: macos-12
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - id: setup
@@ -23,14 +23,15 @@ jobs:
       - name: Spotless
         run: ./gradlew spotlessCheck
       - name: Test
-        run: ./gradlew testDebug testAccDebug holder:lintAccDebug verifier:lintAccDebug
-      - name: Emulator Test
+        run: ./gradlew testDebug testAccDebug holder:lintAccDebug verifier:lintAccDebug holder:assemAccDebug holder:assemAccDebugAndroidTest
+      - name: Run tests on Testlab
         if: "!contains(github.event.pull_request.labels.*.name, 'skip-screenshot-tests')"
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: ./gradlew connectedAccDebugAndroidTest
-          profile: pixel
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          echo $FIREBASE_SERVICE_ACCOUNT > $RUNNER_TEMP/.firebase_service_account.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/.firebase_service_account.json >> $GITHUB_ENV
+          ./gradlew holder:runFlank
       - name: Archive test-results
         if: always()
         uses: actions/upload-artifact@v2
@@ -40,12 +41,6 @@ jobs:
             holder/build/reports
             verifier/build/reports
           retention-days: 2
-      - name: Download all reports
-        if: always()
-        uses: actions/download-artifact@v2
-        with:
-          name: test-results
-          path: test-results
 
   distribute:
     if: ${{ (github.event.repository.name == 'nl-covid19-coronacheck-app-android-private' && (github.ref == 'refs/heads/main' || contains(github.event.ref, 'release/') || contains(github.event.pull_request.labels.*.name, 'generate-builds'))) }}
