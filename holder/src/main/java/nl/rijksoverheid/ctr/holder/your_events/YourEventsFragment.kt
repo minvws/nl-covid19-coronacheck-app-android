@@ -180,7 +180,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                     navigationActionId = R.id.action_my_overview
                                 )
                             ),
-                            closeIcon = true
+                            hideNavigationIcon = true
                         )
                     }
                     ConflictingEventResult.Holder -> replaceCertificateDialog(getEventsFromType())
@@ -248,7 +248,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             navigationActionId = R.id.action_my_overview
                         )
                     ),
-                    closeIcon = true
+                    hideNavigationIcon = true
                 )
             }
             is YourEventsEndState.WeCouldntMakeACertificateError -> {
@@ -291,7 +291,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             navigationActionId = R.id.action_my_overview
                         )
                     ),
-                    closeIcon = true
+                    hideNavigationIcon = true
                 )
             }
             else -> {
