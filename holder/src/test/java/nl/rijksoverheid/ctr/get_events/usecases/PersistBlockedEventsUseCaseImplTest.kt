@@ -43,7 +43,7 @@ class PersistBlockedEventsUseCaseImplTest : AutoCloseKoinTest() {
 
         usecase.persist(
             newEvents = listOf(firstVaccinationEvent),
-            blockedEvents = listOf(firstVaccinationEvent, secondVaccinationEvent)
+            removedEvents = listOf(firstVaccinationEvent, secondVaccinationEvent)
         )
 
         // Only the secondVaccinationEvent should be persisted,

@@ -13,21 +13,29 @@ import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 
 interface PersistBlockedEventsUseCase {
-    suspend fun persist(newEvents: List<RemoteEvent>, blockedEvents: List<RemoteEvent>)
+    suspend fun persist(
+        newEvents: List<RemoteEvent>,
+        removedEvents: List<RemoteEvent>,
+        reason: RemovedEventReason
+    )
 }
 
 class PersistBlockedEventsUseCaseImpl(
     private val holderDatabase: HolderDatabase
 ) : PersistBlockedEventsUseCase {
 
-    override suspend fun persist(newEvents: List<RemoteEvent>, blockedEvents: List<RemoteEvent>) {
-        val eventsToPersist = blockedEvents.filter { !newEvents.contains(it) }
+    override suspend fun persist(
+        newEvents: List<RemoteEvent>,
+        removedEvents: List<RemoteEvent>,
+        reason: RemovedEventReason
+    ) {
+        val eventsToPersist = removedEvents.filter { !newEvents.contains(it) }
         eventsToPersist.forEach { remoteEvent ->
             val removedEventEntity = RemovedEventEntity(
                 walletId = 1,
                 type = remoteEvent.type ?: "",
                 eventTime = remoteEvent.getDate(),
-                reason = RemovedEventReason.Blocked
+                reason = reason
             )
 
             holderDatabase.blockedEventDao().insert(removedEventEntity)

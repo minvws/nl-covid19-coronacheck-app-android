@@ -73,6 +73,19 @@ class GetRemoteGreenCardsUseCaseImpl(
 
             when (remoteGreenCardsResult) {
                 is NetworkRequestResult.Success -> {
+                    val matchingBlobIds = remoteGreenCardsResult.response.matchingBlobIds
+                    if (matchingBlobIds?.isNotEmpty() == true) {
+                        val fuzzyMatchedEvents = matchingBlobIds.flatten().toSet().mapNotNull { fuzzyMatchedEventId ->
+                            val eventGroup = events.firstOrNull() { event -> event.id == fuzzyMatchedEventId }
+                            val remoteProtocol =
+                                eventGroup?.let { getRemoteProtocolFromEventGroupUseCase.get(it) }
+                            remoteProtocol?.events?.mapNotNull { remoteEvent ->
+                                remoteEvent
+                            }
+                        }.flatten()
+                        return RemoteGreenCardsResult.FuzzyMatchingError(matchingBlobIds, fuzzyMatchedEvents)
+                    }
+
                     val blockedEventIds =
                         remoteGreenCardsResult.response.blobExpireDates?.filter { it.reason == "event_blocked" }
                             ?: listOf()
@@ -100,6 +113,11 @@ sealed class RemoteGreenCardsResult {
     data class Success(
         val remoteGreenCards: RemoteGreenCards,
         val blockedEvents: List<RemoteEvent> = listOf()
+    ) : RemoteGreenCardsResult()
+
+    data class FuzzyMatchingError(
+        val matchingBlobIds: List<List<Int>>,
+        val fuzzyMatchedEvents: List<RemoteEvent>
     ) : RemoteGreenCardsResult()
 
     data class Error(val errorResult: ErrorResult) : RemoteGreenCardsResult()

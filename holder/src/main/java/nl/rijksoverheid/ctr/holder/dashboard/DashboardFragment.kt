@@ -22,6 +22,7 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
+import nl.rijksoverheid.ctr.holder.NavGraphOverviewDirections
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
@@ -138,33 +139,41 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private fun observeSyncErrors() {
         dashboardViewModel.databaseSyncerResultLiveData.observe(viewLifecycleOwner,
             EventObserver {
-                if (it is DatabaseSyncerResult.Failed) {
-                    if (it is DatabaseSyncerResult.Failed.NetworkError && it.hasGreenCardsWithoutCredentials) {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_title_no_internet,
-                            message = getString(R.string.dialog_credentials_expired_no_internet),
-                            positiveButtonText = R.string.app_status_internet_required_action,
-                            positiveButtonCallback = {
-                                refresh(
-                                    dashboardSync = DashboardSync.ForceSync
-                                )
-                            },
-                            negativeButtonText = R.string.dialog_close
-                        )
-                    } else if (it !is DatabaseSyncerResult.Failed.ServerError) {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = R.string.dialog_title_no_internet,
-                            message = getString(R.string.dialog_update_credentials_no_internet),
-                            positiveButtonText = R.string.app_status_internet_required_action,
-                            positiveButtonCallback = {
-                                refresh(
-                                    dashboardSync = DashboardSync.ForceSync
-                                )
-                            },
-                            negativeButtonText = R.string.dialog_close
-                        )
+                when (it) {
+                    is DatabaseSyncerResult.Failed -> {
+                        if (it is DatabaseSyncerResult.Failed.NetworkError && it.hasGreenCardsWithoutCredentials) {
+                            dialogUtil.presentDialog(
+                                context = requireContext(),
+                                title = R.string.dialog_title_no_internet,
+                                message = getString(R.string.dialog_credentials_expired_no_internet),
+                                positiveButtonText = R.string.app_status_internet_required_action,
+                                positiveButtonCallback = {
+                                    refresh(
+                                        dashboardSync = DashboardSync.ForceSync
+                                    )
+                                },
+                                negativeButtonText = R.string.dialog_close
+                            )
+                        } else if (it !is DatabaseSyncerResult.Failed.ServerError) {
+                            dialogUtil.presentDialog(
+                                context = requireContext(),
+                                title = R.string.dialog_title_no_internet,
+                                message = getString(R.string.dialog_update_credentials_no_internet),
+                                positiveButtonText = R.string.app_status_internet_required_action,
+                                positiveButtonCallback = {
+                                    refresh(
+                                        dashboardSync = DashboardSync.ForceSync
+                                    )
+                                },
+                                negativeButtonText = R.string.dialog_close
+                            )
+                        }
+                    }
+                    is DatabaseSyncerResult.FuzzyMatchingError -> {
+                        navigateSafety(NavGraphOverviewDirections.actionFuzzyMatching())
+                    }
+                    is DatabaseSyncerResult.Success -> {
+                        // no extra action needed
                     }
                 }
             }
