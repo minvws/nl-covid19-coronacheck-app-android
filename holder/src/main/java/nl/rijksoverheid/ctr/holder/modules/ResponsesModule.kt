@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.modules.qualifier.ErrorResponseQualifier
+import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.MijnCnErrorResponse
 import okhttp3.ResponseBody
@@ -33,6 +34,13 @@ val responsesModule = module {
                 SignedResponseWithModel::class.java,
                 RemoteProtocol::class.java
             ), emptyArray()
+        )
+    }
+
+    single<Converter<ResponseBody, RemoteGreenCards>> {
+        get<Retrofit>(Retrofit::class).responseBodyConverter(
+            RemoteGreenCards::class.java,
+            emptyArray()
         )
     }
 
