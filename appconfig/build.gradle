@@ -9,7 +9,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs.kotlin)
     alias(libs.plugins.kotlin.parcelize)
 }
@@ -37,6 +37,13 @@ android {
     }
 }
 
+kotlin {
+    sourceSets {
+        main.kotlin.srcDirs += 'build/generated/ksp/main/kotlin'
+        test.kotlin.srcDirs += 'build/generated/ksp/test/kotlin'
+    }
+}
+
 dependencies {
     coreLibraryDesugaring libs.desugar
     implementation(project(":design"))
@@ -56,7 +63,7 @@ dependencies {
     implementation libs.navigation.ui
 
 
-    kapt libs.moshi.codegen
+    ksp libs.moshi.codegen
 
     testImplementation libs.mockk
     testImplementation libs.okhttp.mockWebServer
