@@ -6,12 +6,12 @@ runs:
     - name: Get mobile core version
       id: version
       run: |
-        echo "::set-output name=VERSION::`git rev-parse HEAD`"
+        echo VERSION=`git rev-parse HEAD` >> $GITHUB_OUTPUT
       working-directory: mobilecore-src
       shell: bash
     - name: Restore from cache
       id: corecache
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: |
           mobilecore/mobilecore.aar
