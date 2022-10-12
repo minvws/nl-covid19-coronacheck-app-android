@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.easylauncher)
     alias(libs.plugins.shot)
+    alias(libs.plugins.fladle)
 }
 
 def appVersionCode = 1000000
@@ -153,6 +154,16 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
+    }
+
+    fladle {
+        projectId = "coronatester-test"
+        variant = "accDebug"
+        maxTestShards = 1
+        devices = [
+                ["model": "Pixel2.arm", "version": "29"]
+        ]
+        flankVersion = "22.05.0"
     }
 }
 
