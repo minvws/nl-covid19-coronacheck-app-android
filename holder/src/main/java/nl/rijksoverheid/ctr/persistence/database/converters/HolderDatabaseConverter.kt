@@ -6,6 +6,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -62,6 +63,22 @@ class HolderDatabaseConverter {
             OriginType.Vaccination -> OriginType.TYPE_VACCINATION
             OriginType.VaccinationAssessment -> OriginType.TYPE_VACCINATION_ASSESSMENT
             else -> null
+        }
+    }
+
+    @TypeConverter
+    fun fromRemovedEventReason(value: String): RemovedEventReason {
+        return when (value) {
+            RemovedEventReason.FUZZY_MATCHED -> RemovedEventReason.FuzzyMatched
+            else -> RemovedEventReason.Blocked
+        }
+    }
+
+    @TypeConverter
+    fun removedEventReasonToString(type: RemovedEventReason): String {
+        return when (type) {
+            RemovedEventReason.Blocked -> RemovedEventReason.BLOCKED
+            RemovedEventReason.FuzzyMatched -> RemovedEventReason.FUZZY_MATCHED
         }
     }
 }

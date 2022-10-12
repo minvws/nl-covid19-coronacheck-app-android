@@ -23,13 +23,13 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAsses
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventStringUtil
-import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.BlockedEventException
 
 interface ShowBlockedEventsBottomSheetUtil {
-    fun show(dashboardPageFragment: DashboardPageFragment, blockedEvents: List<BlockedEventEntity>)
+    fun show(dashboardPageFragment: DashboardPageFragment, blockedEvents: List<RemovedEventEntity>)
 }
 
 class ShowBlockedEventsBottomSheetUtilImpl(
@@ -40,7 +40,7 @@ class ShowBlockedEventsBottomSheetUtilImpl(
 
     override fun show(
         dashboardPageFragment: DashboardPageFragment,
-        blockedEvents: List<BlockedEventEntity>
+        blockedEvents: List<RemovedEventEntity>
     ) {
         val context = dashboardPageFragment.requireContext()
         val removedEventsHtml = StringBuilder()

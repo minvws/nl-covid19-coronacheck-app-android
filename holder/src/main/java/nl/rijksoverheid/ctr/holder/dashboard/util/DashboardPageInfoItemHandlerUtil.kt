@@ -27,9 +27,9 @@ import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
@@ -238,7 +238,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
         )
     }
 
-    private fun onBlockedEventsClick(dashboardPageFragment: DashboardPageFragment, blockedEvents: List<BlockedEventEntity>) {
+    private fun onBlockedEventsClick(dashboardPageFragment: DashboardPageFragment, blockedEvents: List<RemovedEventEntity>) {
         showBlockedEventsBottomSheetUtil.show(dashboardPageFragment, blockedEvents)
     }
 

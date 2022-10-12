@@ -15,6 +15,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.fakeRemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.usecases.PersistBlockedEventsUseCaseImpl
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -46,7 +47,7 @@ class PersistBlockedEventsUseCaseImplTest : AutoCloseKoinTest() {
         )
 
         // Only the secondVaccinationEvent should be persisted,
-        val blockedEvents = db.blockedEventDao().getAll()
+        val blockedEvents = db.blockedEventDao().getAll(reason = RemovedEventReason.Blocked)
         assertEquals(1, blockedEvents.size)
         assertEquals("2022-01-02T00:00Z", blockedEvents.first().eventTime.toStr())
 
