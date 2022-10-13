@@ -110,8 +110,6 @@ class DashboardViewModelImpl(
                 }
             }
 
-            println("Found: ${holderDatabase.removedEventDao().getAll(RemovedEventReason.FuzzyMatched).size} removed events")
-
             val allGreenCards = greenCardUtil.getAllGreenCards()
             val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
 
