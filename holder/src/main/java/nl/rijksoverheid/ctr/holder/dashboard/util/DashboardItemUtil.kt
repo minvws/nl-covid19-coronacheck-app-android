@@ -27,6 +27,7 @@ interface DashboardItemUtil {
     fun shouldAddQrButtonItem(emptyState: Boolean): Boolean
     fun isAppUpdateAvailable(): Boolean
     suspend fun shouldShowBlockedEventsItem(): Boolean
+    suspend fun shouldShowFuzzyMatchedEventsItem(): Boolean
 
     /**
      * Multiple EU vaccination green card items will be combined into 1.
@@ -87,6 +88,10 @@ class DashboardItemUtilImpl(
 
     override suspend fun shouldShowBlockedEventsItem(): Boolean {
         return holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked).isNotEmpty()
+    }
+
+    override suspend fun shouldShowFuzzyMatchedEventsItem(): Boolean {
+        return holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.FuzzyMatched).isNotEmpty()
     }
 
     override fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {

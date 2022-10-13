@@ -21,8 +21,8 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtilImpl
-import nl.rijksoverheid.ctr.holder.dashboard.util.ShowBlockedEventsBottomSheetUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.ShowBlockedEventsBottomSheetUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.RemovedEventsBottomSheetUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.RemovedEventsBottomSheetUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
@@ -108,5 +108,5 @@ val utilsModule = module {
     factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get()) }
     factory<StringUtil> { StringUtilImpl(get()) }
     factory<YourEventsEndStateUtil> { YourEventsEndStateUtilImpl(get()) }
-    factory<ShowBlockedEventsBottomSheetUtil> { ShowBlockedEventsBottomSheetUtilImpl(get(), get(), get()) }
+    factory<RemovedEventsBottomSheetUtil> { RemovedEventsBottomSheetUtilImpl(get(), get(), get(), get(), get()) }
 }

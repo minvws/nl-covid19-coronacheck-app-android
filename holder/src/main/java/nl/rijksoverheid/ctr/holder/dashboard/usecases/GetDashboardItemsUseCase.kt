@@ -117,6 +117,13 @@ class GetDashboardItemsUseCaseImpl(
             ))
         }
 
+        if (dashboardItemUtil.shouldShowFuzzyMatchedEventsItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.FuzzyMatchedEvents(
+                storedEvent = holderDatabase.eventGroupDao().getAll().first(),
+                events = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.FuzzyMatched)
+            ))
+        }
+
         if (dashboardItemUtil.shouldShowClockDeviationItem(hasEmptyState, allGreenCards)) {
             dashboardItems.add(DashboardItem.InfoItem.ClockDeviationItem)
         }
@@ -217,6 +224,13 @@ class GetDashboardItemsUseCaseImpl(
         if (dashboardItemUtil.shouldShowBlockedEventsItem()) {
             dashboardItems.add(DashboardItem.InfoItem.BlockedEvents(
                 blockedEvents = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked)
+            ))
+        }
+
+        if (dashboardItemUtil.shouldShowFuzzyMatchedEventsItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.FuzzyMatchedEvents(
+                storedEvent = holderDatabase.eventGroupDao().getAll().first(),
+                events = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.FuzzyMatched)
             ))
         }
 
