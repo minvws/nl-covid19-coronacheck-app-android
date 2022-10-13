@@ -265,7 +265,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
             greenCardType = GreenCardType.Domestic,
-            originInfoTypeOrigin = OriginType.Test,
+            originType = OriginType.Test,
             disclosurePolicy = DisclosurePolicy.ThreeG
         )
 
@@ -281,7 +281,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(),
             greenCardType = GreenCardType.Domestic,
-            originInfoTypeOrigin = OriginType.Test,
+            originType = OriginType.Test,
             disclosurePolicy = DisclosurePolicy.ThreeG
         )
 
@@ -297,7 +297,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
             greenCardType = GreenCardType.Domestic,
-            originInfoTypeOrigin = OriginType.Vaccination,
+            originType = OriginType.Vaccination,
             disclosurePolicy = DisclosurePolicy.ThreeG
         )
 
@@ -313,7 +313,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
             greenCardType = GreenCardType.Domestic,
-            originInfoTypeOrigin = OriginType.Vaccination,
+            originType = OriginType.Vaccination,
             disclosurePolicy = DisclosurePolicy.ZeroG
         )
 

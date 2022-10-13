@@ -20,6 +20,6 @@ class GetDccFromEuropeanCredentialUseCaseImpl(
 
     override fun get(europeanCredential: ByteArray): JSONObject {
         val credentials = mobileCoreWrapper.readEuropeanCredential(europeanCredential)
-        return credentials.optJSONObject("dcc")
+        return requireNotNull(credentials.optJSONObject("dcc"))
     }
 }

@@ -7,7 +7,7 @@ import io.mockk.mockk
 import kotlin.test.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.verifier.policy.ConfigVerificationPolicyUseCase
@@ -23,16 +23,16 @@ class VerifierMainActivityViewModelImplTest {
 
     @Before
     fun setup() {
-        Dispatchers.setMain(TestCoroutineDispatcher())
+        Dispatchers.setMain(UnconfinedTestDispatcher())
     }
 
     @Test
     fun `cleanup calls cleanup usecases`() = runBlocking {
         val scanLogsCleanupUseCase = mockk<ScanLogsCleanupUseCase>()
+        coEvery { scanLogsCleanupUseCase.cleanup() } returns Unit
         val viewModel = VerifierMainActivityViewModelImpl(scanLogsCleanupUseCase, mockk(), mockk())
 
         viewModel.cleanup()
-
         coVerify { scanLogsCleanupUseCase.cleanup() }
     }
 

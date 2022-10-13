@@ -55,7 +55,6 @@ class SortGreenCardItemsUseCaseImpl(
                 }
                 DashboardItem.AddQrButtonItem -> 150
                 DashboardItem.AddQrCardItem -> 160
-                DashboardItem.CoronaMelderItem -> 170
             }
         }
     }

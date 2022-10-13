@@ -54,7 +54,7 @@ class GetMijnCnEventsUsecaseImpl(
     ): EventsResult {
         // Fetch event providers
         val eventProvidersResult = configProvidersUseCase.eventProvidersBES()
-        val (remoteEventProviders) = when (eventProvidersResult) {
+        when (eventProvidersResult) {
             is EventProvidersResult.Error -> return EventsResult.Error(eventProvidersResult.errorResult)
             is EventProvidersResult.Success -> {
                 eventProvidersResult.eventProviders

@@ -24,7 +24,7 @@ import java.time.OffsetDateTime
 )
 data class OriginEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "green_card_id") val greenCardId: Long,
+    @ColumnInfo(name = "green_card_id", index = true) val greenCardId: Long,
     val type: OriginType,
     val eventTime: OffsetDateTime,
     val expirationTime: OffsetDateTime,

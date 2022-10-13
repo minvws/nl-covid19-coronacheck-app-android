@@ -125,10 +125,10 @@ class YourEventsFragmentUtilImpl(
         } ?: ""
     }
 
-    override fun getVaccinationDate(vaccinationDate: LocalDate?): String {
-        return vaccinationDate?.let { date ->
+    override fun getVaccinationDate(date: LocalDate?): String {
+        return date?.let { vaccinationDate ->
             try {
-                date.formatDayMonthYear()
+                vaccinationDate.formatDayMonthYear()
             } catch (e: Exception) {
                 ""
             }

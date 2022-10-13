@@ -1,27 +1,36 @@
 plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    id "kotlin-kapt"
-    id 'kotlin-parcelize'
-    id "androidx.navigation.safeargs.kotlin"
-    id "com.starter.easylauncher"
-    id "shot"
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.navigation.safeargs.kotlin)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.easylauncher)
+    alias(libs.plugins.shot)
+    alias(libs.plugins.fladle)
 }
 
 def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
 }
-version = "4.7"
+version = "4.8"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
+    namespace 'nl.rijksoverheid.ctr.holder'
     testOptions {
         unitTests {
             includeAndroidResources = true
             unitTests.all {
                 jvmArgs '-Xmx2g'
             }
+        }
+    }
+
+    sourceSets {
+        debug {
+            // for testing Room migrations, see https://github.com/robolectric/robolectric/issues/3928#issuecomment-395309991
+            assets.srcDirs += files("$projectDir/schemas".toString())
         }
     }
 
@@ -146,6 +155,16 @@ android {
     compileOptions {
         coreLibraryDesugaringEnabled true
     }
+
+    fladle {
+        projectId = "coronatester-test"
+        variant = "accDebug"
+        maxTestShards = 1
+        devices = [
+                ["model": "Pixel2.arm", "version": "29"]
+        ]
+        flankVersion = "22.05.0"
+    }
 }
 
 dependencies {
@@ -157,63 +176,62 @@ dependencies {
     implementation project(':mobilecore')
     implementation project(":qrscanner")
 
-    implementation "net.openid:appauth:${app_auth_version}"
-    implementation "com.github.lisawray.groupie:groupie:${groupie_version}"
-    implementation "com.github.lisawray.groupie:groupie-viewbinding:${groupie_version}"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
-    implementation "io.insert-koin:koin-android:$koin_version"
-    implementation "androidx.preference:preference-ktx:$preference_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
-    implementation "com.jakewharton.timber:timber:${timber_version}"
-    implementation "com.airbnb.android:lottie:$lottie_version"
-    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
-    implementation "com.google.zxing:core:$zxing_core_version"
-    implementation("com.squareup.okhttp3:logging-interceptor")
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:$okhttp_version"))
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.okhttp3:okhttp-tls")
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation "androidx.security:security-crypto:$security_crypto_version"
-    implementation "com.scottyab:rootbeer-lib:${rootbeer_version}"
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "net.zetetic:android-database-sqlcipher:$sqlcypher_version"
-    implementation "androidx.work:work-runtime-ktx:$work_manager_version"
-    implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
+    implementation libs.openid.appauth
+    implementation libs.bundles.groupie
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+    implementation libs.koin.android
+    implementation libs.androidx.preference
+    implementation libs.constraintlayout
+    implementation libs.timber
+    implementation libs.lottie
+    debugImplementation libs.fragment.testing
+    implementation libs.zxing.core
+    implementation(platform(libs.okhttp.bom))
+    implementation libs.okhttp.logging.interceptor
+    implementation libs.okhttp
+    implementation libs.okhttp.tls
+    implementation libs.retrofit.moshi
+    implementation libs.androidx.security.crypto
+    implementation libs.rootbeer
+    implementation libs.room.runtime
+    implementation libs.room
+    kapt libs.room.compiler
+    implementation libs.sqlcipher
+    implementation libs.work.runtime
+    implementation libs.moshi.adapters
 
-    testImplementation "junit:junit:$junit_version"
-    testImplementation "io.mockk:mockk:$mock_version"
-    androidTestImplementation "io.mockk:mockk-android:$mock_version"
-    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
-    testImplementation("org.robolectric:robolectric:$robolectric_version") {
+    testImplementation libs.junit
+    testImplementation libs.mockk
+    androidTestImplementation libs.mockk.android
+    testImplementation libs.koin.test.junit4
+    testImplementation(libs.robolectric) {
         exclude group: 'org.bouncycastle'
     }
-    testImplementation "androidx.test:runner:$androix_test_version"
-    testImplementation "com.squareup.okhttp3:mockwebserver"
-    testImplementation("com.adevinta.android:barista:$barista_version") {
+    testImplementation libs.androidx.test.runner
+    testImplementation libs.okhttp.mockWebServer
+    testImplementation(libs.barista) {
         exclude group: "org.jetbrains.kotlin"
     }
-    testImplementation "androidx.navigation:navigation-testing:$navigation_version"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-    testImplementation "androidx.room:room-testing:$room_version"
-    testImplementation "androidx.work:work-testing:$work_manager_version"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-    testImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
-    testImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    testImplementation libs.navigation.testing
+    testImplementation libs.coroutines.android
+    testImplementation libs.room.testing
+    testImplementation libs.work.testing
+    testImplementation libs.coroutines.test
+    testImplementation libs.androidx.core.testing
+    testImplementation libs.espresso.core
 
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugar_jdk_version"
+    coreLibraryDesugaring libs.desugar
 
-    accImplementation "com.google.firebase:firebase-crashlytics-ktx:$crashlytics_version"
+    accImplementation libs.crashlytics
 
-    androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
-    androidTestImplementation "androidx.test:runner:$androix_test_version"
-    androidTestImplementation "androidx.test:rules:$androix_test_version"
-    androidTestImplementation "androidx.test:core-ktx:$androix_test_version"
-    androidTestImplementation "androidx.arch.core:core-testing:$androidx_arch_core_version"
+    androidTestImplementation libs.androidx.test.junit
+    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.androidx.test.rules
+    androidTestImplementation libs.androidx.test.core
+    androidTestImplementation libs.androidx.core.testing
 
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+    kapt libs.moshi.codegen
 }
 
 easylauncher {

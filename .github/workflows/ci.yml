@@ -3,26 +3,35 @@ on:
   push:
     branches:
       - main
+      - 'release/*'
   pull_request:
 
 jobs:
   build-and-test:
-    runs-on: macos-12
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - id: setup
-        uses: ./scripts
+        uses: ./.github/actions/setup
+      - name: Archive mobile core dependency
+        uses: actions/upload-artifact@v2
+        with:
+          name: mobilecore
+          path: |
+            mobilecore/mobilecore.aar
+          retention-days: 2
       - name: Spotless
         run: ./gradlew spotlessCheck
       - name: Test
-        run: ./gradlew testDebug testAccDebug lint
-      - name: Emulator Test
+        run: ./gradlew testDebug testAccDebug holder:lintAccDebug verifier:lintAccDebug holder:assemAccDebug holder:assemAccDebugAndroidTest
+      - name: Run tests on Testlab
         if: "!contains(github.event.pull_request.labels.*.name, 'skip-screenshot-tests')"
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          script: ./gradlew connectedAccDebugAndroidTest
-          profile: pixel
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          echo $FIREBASE_SERVICE_ACCOUNT > $RUNNER_TEMP/.firebase_service_account.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/.firebase_service_account.json >> $GITHUB_ENV
+          ./gradlew holder:runFlank
       - name: Archive test-results
         if: always()
         uses: actions/upload-artifact@v2
@@ -32,66 +41,32 @@ jobs:
             holder/build/reports
             verifier/build/reports
           retention-days: 2
-      - name: Download all reports
-        if: always()
-        uses: actions/download-artifact@v2
-        with:
-          name: test-results
-          path: test-results
 
   distribute:
-    if: ${{ (github.ref == 'refs/heads/main' && github.event.repository.name != 'nl-covid19-coronacheck-app-android') || (github.event.repository.name != 'nl-covid19-coronacheck-app-android' && contains(github.event.pull_request.labels.*.name, 'generate-builds')) }}
+    if: ${{ (github.event.repository.name == 'nl-covid19-coronacheck-app-android-private' && (github.ref == 'refs/heads/main' || contains(github.event.ref, 'release/') || contains(github.event.pull_request.labels.*.name, 'generate-builds'))) }}
     env:
       SLACK_WEBHOOK: ${{ secrets.SLACK_URL }}
       SLACK_MESSAGE: 'New apps available for android :green_heart:'
-      FIREBASE_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
       KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
       KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-      GENERATE_FDROID_BUILDS: ${{ github.event.repository.name != 'nl-covid19-coronacheck-app-android' && contains(github.event.pull_request.labels.*.name, 'generate-fdroid-builds') }}
+      GENERATE_FDROID_BUILDS: ${{ contains(github.event.pull_request.labels.*.name, 'generate-fdroid-builds') }}
+      KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
     runs-on: ubuntu-latest
     needs: [ "build-and-test" ]
 
     steps:
       - uses: actions/checkout@v2
       - id: setup
-        uses: ./scripts
-      - name: Build mobilecore.aar
-        if: github.repository_owner != 'minvws'
-        run: |
-          mkdir -p ../tmp-go
-          pushd ../tmp-go
-          if [ ! -e golang ]; then
-            wget -O go.tar.gz -- https://dl.google.com/go/go1.16.7.linux-amd64.tar.gz
-            printf '349f846599ca816f95f57adc41f789fdd6ade0ffcd325076de4fc3dcf06c72ae1474170ed5760e505a54a3ab10b1aa65d127f14a63cba27dec6672a1bcd2fbc6  go.tar.gz\n' | sha512sum -c
-            tar xzf go.tar.gz
-            mv go golang
-          fi
-          export GOPATH="$PWD"
-          export GO_LANG="$PWD/golang/bin"
-          export GO_COMPILED="$PWD/bin"
-          export PATH="$GO_LANG:$GO_COMPILED:$PATH"
-          popd
-          cd mobilecore-src
-          go get golang.org/x/mobile/cmd/gomobile
-          go get golang.org/x/mobile/cmd/gobind@latest
-          gomobile init
-          gomobile bind -target android -o mobilecore.aar github.com/minvws/nl-covid19-coronacheck-mobile-core
-          cd ..
-          cp mobilecore-src/mobilecore.aar mobilecore/
+        uses: ./.github/actions/setup
       - name: Write key store
-        if: github.event.repository.name != 'nl-covid19-coronacheck-app-android'
-        env:
-          KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
         run: echo $KEYSTORE_FILE | base64 --decode > keystore.jks
       - name: Build
-        if: github.event.repository.name != 'nl-covid19-coronacheck-app-android'
         run: ./gradlew assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
       - name: Build fdroid
         if: ${{ env.GENERATE_FDROID_BUILDS == 'true' }}
         run: /gradlew assemFdroidAccRelease
       - name: Clean up key store
-        if: ${{github.event.repository.name != 'nl-covid19-coronacheck-app-android'}}
         run: rm keystore.jks
       - name: Archive apks
         uses: actions/upload-artifact@v2
@@ -115,26 +90,22 @@ jobs:
         with:
           name: apks
           path: apks
-      - name: Use Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16.x
 
       - name: Install firebase-cli
-        run: npm install -g firebase-tools
+        uses: littlerobots/firebase-action@0bd9bd607cbc96e84fa2a95f74d1b31c93e56f5e
+        with:
+          serviceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
 
       - name: Distribute holder test variant
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/tst/release/holder-*.apk` \
           --app 1:168257592968:android:cbb6d05f4163e39026493d \
-          --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Distribute holder acc variant
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/acc/release/holder-*.apk` \
           --app 1:168257592968:android:5df6b2057b90a30826493d \
-          --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Distribute holder fdroid acc variant
@@ -142,21 +113,18 @@ jobs:
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/fdroidAcc/release/holder-*.apk` \
           --app 1:168257592968:android:28c578809115867926493d \
-          --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Distribute holder prod variant
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/prod/release/holder-*.apk` \
           --app 1:168257592968:android:aaa5afb416536fdb26493d \
-          --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Distribute verifier acc variant
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/acc/release/verifier-*.apk` \
           --app 1:168257592968:android:e9d445c4115a5c9d26493d \
-          --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Distribute verifier fdroid acc variant
@@ -164,14 +132,12 @@ jobs:
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/fdroidAcc/release/verifier-*.apk` \
           --app 1:168257592968:android:a5a6c5d5af1c18c726493d \
-          --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Distribute verifier prod variant
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/prod/release/verifier-*.apk` \
           --app 1:168257592968:android:79363a1282863aac26493d \
-          --token $FIREBASE_TOKEN \
           --groups testers
 
       - name: Slack Notification

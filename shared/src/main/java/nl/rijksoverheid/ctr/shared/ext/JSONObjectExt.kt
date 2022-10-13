@@ -3,7 +3,10 @@ package nl.rijksoverheid.ctr.shared.ext
 import org.json.JSONException
 import org.json.JSONObject
 
-fun JSONObject.getStringOrNull(name: String): String? {
+fun JSONObject?.getStringOrNull(name: String): String? {
+    if (this == null) {
+        return null
+    }
     return try {
         val string = getString(name)
         if (string.isNullOrEmpty()) {

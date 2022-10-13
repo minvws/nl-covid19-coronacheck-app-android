@@ -108,7 +108,7 @@ class HolderDatabaseSyncerImpl(
 
                             // Clean up expired events in the database
                             removeExpiredEventsUseCase.execute(
-                                events = events
+                                events = holderDatabase.eventGroupDao().getAll()
                             )
 
                             when (result) {

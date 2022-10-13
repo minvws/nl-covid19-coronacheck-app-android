@@ -228,30 +228,18 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
     }
 
     fun getOriginType(remoteProtocol: RemoteProtocol): OriginType {
-        return when (remoteProtocol) {
-            is RemoteProtocol -> {
-                if (remoteProtocol.events?.any { it is RemoteEventVaccinationAssessment } == true) {
-                    OriginType.VaccinationAssessment
-                } else {
-                    OriginType.Test
-                }
-            } else -> {
-                OriginType.Test
-            }
+        return if (remoteProtocol.events?.any { it is RemoteEventVaccinationAssessment } == true) {
+            OriginType.VaccinationAssessment
+        } else {
+            OriginType.Test
         }
     }
 
     fun getYourEventsToolbarTitle(remoteProtocol: RemoteProtocol): Int {
-        return when (remoteProtocol) {
-            is RemoteProtocol -> {
-                if (remoteProtocol.events?.any { it is RemoteEventVaccinationAssessment } == true) {
-                    R.string.holder_event_vaccination_assessment_toolbar_title
-                } else {
-                    R.string.your_negative_test_results_toolbar
-                }
-            } else -> {
-                R.string.your_negative_test_results_toolbar
-            }
+        return if (remoteProtocol.events?.any { it is RemoteEventVaccinationAssessment } == true) {
+            R.string.holder_event_vaccination_assessment_toolbar_title
+        } else {
+            R.string.your_negative_test_results_toolbar
         }
     }
 

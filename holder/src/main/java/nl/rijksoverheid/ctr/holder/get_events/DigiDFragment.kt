@@ -219,7 +219,6 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
 
         getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             onGetEventsLoading(it)
-            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
         })
     }
 

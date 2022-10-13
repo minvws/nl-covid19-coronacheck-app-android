@@ -10,13 +10,18 @@ package nl.rijksoverheid.ctr.qrscanner
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Paint
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Size
+import android.view.Display
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorRes
 import androidx.camera.core.AspectRatio
@@ -182,8 +187,8 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         val previewView = binding.previewView
 
         // Get screen metrics used to setup camera for full screen resolution
-        val metrics = DisplayMetrics().also { previewView.display?.getRealMetrics(it) }
-        val screenAspectRatio = aspectRatio(metrics.widthPixels, metrics.heightPixels)
+        val displaySize = getDisplaySize(previewView.context, previewView.display)
+        val screenAspectRatio = aspectRatio(displaySize.width, displaySize.height)
 
         // Select camera to use, back facing camera by default
         val cameraSelector =
@@ -203,6 +208,20 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                 requestPermission()
             }
         }, ContextCompat.getMainExecutor(requireContext()))
+    }
+
+    private fun getDisplaySize(context: Context, display: Display): Size {
+        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            DisplayMetrics().also {
+                @Suppress("DEPRECATION")
+                display.getRealMetrics(it)
+            }.let { Size(it.widthPixels, it.heightPixels) }
+        } else {
+            val windowContext = context.createWindowContext(display, WindowManager.LayoutParams.TYPE_APPLICATION, null)
+            val windowManager = windowContext.getSystemService(WindowManager::class.java)
+            val bounds = windowManager.currentWindowMetrics.bounds
+            Size(bounds.width(), bounds.height())
+        }
     }
 
     private fun requestPermission() {

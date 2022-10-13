@@ -9,6 +9,7 @@ package nl.rijksoverheid.ctr.holder.get_events
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -23,6 +24,7 @@ import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtil
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.makeIndeterminateAccessible
 import org.koin.android.ext.android.inject
 
 /*
@@ -104,8 +106,12 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     }
 
     override fun onGetEventsLoading(loading: Boolean) {
-        binding.button.isEnabled = !loading
-        binding.checkboxWithHeader.binding.checkbox.isEnabled = !loading
+        binding.loadingOverlay.progressBar.makeIndeterminateAccessible(
+            context = requireContext(),
+            isLoading = loading,
+            message = R.string.holder_fetchevents_loading
+        )
+        binding.loadingOverlay.root.isVisible = loading
     }
 
     override fun getOriginTypes(): List<RemoteOriginType> {

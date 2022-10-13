@@ -47,10 +47,10 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         ViewCompat.setAccessibilityDelegate(binding.close, object : AccessibilityDelegateCompat() {
             override fun onInitializeAccessibilityNodeInfo(
-                host: View?,
-                info: AccessibilityNodeInfoCompat?
+                host: View,
+                info: AccessibilityNodeInfoCompat
             ) {
-                info?.setTraversalBefore(binding.description)
+                info.setTraversalBefore(binding.description)
                 super.onInitializeAccessibilityNodeInfo(host, info)
             }
         })
@@ -101,6 +101,9 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
                             }
                             binding.navigationButton.visibility = View.VISIBLE
                         }
+                    }
+                    null -> {
+                        /* nothing */
                     }
                 }
                 expandedBottomSheetData.primaryButtonData?.let { buttonData ->

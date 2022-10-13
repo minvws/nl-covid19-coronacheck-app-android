@@ -17,7 +17,6 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardAddQrCardAdapterItem
-import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardCoronaMelderAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardPlaceHolderAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItem
@@ -114,6 +113,9 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
                             negativeButtonCallback = { showBlockedEventsBottomSheetUtil.show(this, result.blockedEvents) }
                         )
                     }
+                    ShowBlockedEventsDialogResult.None -> {
+                        /* nothing */
+                    }
                 }
             }
         )
@@ -140,9 +142,6 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
                     // Handled by MyOverviewTabsFragment
                 }
                 is DashboardItem.InfoItem -> addInfoCard(adapterItems, dashboardItem)
-                is DashboardItem.CoronaMelderItem -> adapterItems.add(
-                    DashboardCoronaMelderAdapterItem()
-                )
                 is DashboardItem.AddQrCardItem -> addAddQrCardItem(adapterItems)
             }
         }
