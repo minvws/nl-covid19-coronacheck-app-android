@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentFuzzyMatchingOnboardingBinding
@@ -24,6 +25,8 @@ import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matching_onboarding) {
     private var _binding: FragmentFuzzyMatchingOnboardingBinding? = null
     private val binding get() = _binding!!
+
+    private val args: HolderNameSelectionFragmentArgs by navArgs()
 
     private val onboardingItems by lazy {
         listOf(
@@ -72,7 +75,7 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matchin
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
-                navigateSafety(FuzzyMatchingOnboardingFragmentDirections.actionHolderNameSelection())
+                navigateSafety(FuzzyMatchingOnboardingFragmentDirections.actionHolderNameSelection(args.matchingBlobIds))
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }

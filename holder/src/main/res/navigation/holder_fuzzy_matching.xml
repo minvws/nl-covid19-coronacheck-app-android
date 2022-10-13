@@ -17,6 +17,10 @@
         android:label=""
         tools:layout="@layout/fragment_fuzzy_matching_onboarding">
 
+        <argument
+            android:name="matchingBlobIds"
+            app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
+
         <action
             android:id="@+id/action_holder_name_selection"
             app:destination="@id/nav_holder_name_selection"
@@ -32,6 +36,10 @@
         android:name="nl.rijksoverheid.ctr.holder.fuzzy_matching.HolderNameSelectionFragment"
         android:label=""
         tools:layout="@layout/fragment_holder_name_selection">
+
+        <argument
+            android:name="matchingBlobIds"
+            app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
 
         <action
             android:id="@+id/action_saved_events_sync_green_cards"

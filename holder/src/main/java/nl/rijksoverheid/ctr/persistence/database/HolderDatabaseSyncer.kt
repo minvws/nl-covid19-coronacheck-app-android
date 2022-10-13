@@ -182,7 +182,9 @@ sealed class DatabaseSyncerResult {
         val blockedEvents: List<RemoteEvent> = listOf()
     ) : DatabaseSyncerResult()
 
-    data class FuzzyMatchingError(val matchingBlobIds: List<List<Int>>) : DatabaseSyncerResult()
+    data class FuzzyMatchingError(
+        val matchingBlobIds: List<List<Int>>
+    ) : DatabaseSyncerResult()
 
     sealed class Failed(open val errorResult: ErrorResult, open val failedAt: OffsetDateTime) :
         DatabaseSyncerResult() {

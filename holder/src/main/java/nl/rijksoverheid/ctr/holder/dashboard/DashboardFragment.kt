@@ -29,6 +29,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardBinding
+import nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -170,7 +171,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                         }
                     }
                     is DatabaseSyncerResult.FuzzyMatchingError -> {
-                        navigateSafety(NavGraphOverviewDirections.actionFuzzyMatching())
+                        navigateSafety(NavGraphOverviewDirections.actionFuzzyMatching(
+                            MatchingBlobIds.fromList(it.matchingBlobIds)
+                        ))
                     }
                     is DatabaseSyncerResult.Success -> {
                         // no extra action needed
