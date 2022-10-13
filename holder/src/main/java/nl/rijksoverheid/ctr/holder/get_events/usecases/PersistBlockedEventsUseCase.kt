@@ -38,7 +38,7 @@ class PersistBlockedEventsUseCaseImpl(
                 reason = reason
             )
 
-            holderDatabase.blockedEventDao().insert(removedEventEntity)
+            holderDatabase.removedEventDao().insert(removedEventEntity)
         }
     }
 }

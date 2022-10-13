@@ -25,7 +25,7 @@ class ShowBlockedEventsDialogUseCaseImpl(
             ShowBlockedEventsDialogResult.None
         } else {
             ShowBlockedEventsDialogResult.Show(
-                blockedEvents = holderDatabase.blockedEventDao().getAll(reason = RemovedEventReason.Blocked)
+                blockedEvents = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked)
             )
         }
     }

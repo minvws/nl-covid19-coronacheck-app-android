@@ -86,7 +86,7 @@ class DashboardItemUtilImpl(
     }
 
     override suspend fun shouldShowBlockedEventsItem(): Boolean {
-        return holderDatabase.blockedEventDao().getAll(reason = RemovedEventReason.Blocked).isNotEmpty()
+        return holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked).isNotEmpty()
     }
 
     override fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {

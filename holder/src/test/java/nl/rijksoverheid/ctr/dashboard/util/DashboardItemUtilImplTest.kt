@@ -409,7 +409,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
     fun `shouldShowBlockedEventsItem return false when no blocked events in database`() = runBlocking {
         val removedEventDao = mockk<RemovedEventDao>(relaxed = true)
         val holderDatabase = mockk<HolderDatabase>(relaxed = true).apply {
-            coEvery { blockedEventDao() } returns removedEventDao
+            coEvery { removedEventDao() } returns removedEventDao
         }
         coEvery { removedEventDao.getAll(reason = RemovedEventReason.Blocked) } answers { listOf() }
 

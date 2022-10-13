@@ -167,7 +167,7 @@ abstract class HolderDatabase : RoomDatabase() {
     abstract fun eventGroupDao(): EventGroupDao
     abstract fun originDao(): OriginDao
     abstract fun secretKeyDao(): SecretKeyDao
-    abstract fun blockedEventDao(): RemovedEventDao
+    abstract fun removedEventDao(): RemovedEventDao
     abstract fun originHintDao(): OriginHintDao
 
     companion object {

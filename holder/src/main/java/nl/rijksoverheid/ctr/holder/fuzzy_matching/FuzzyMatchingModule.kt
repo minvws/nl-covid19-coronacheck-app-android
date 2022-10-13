@@ -18,6 +18,7 @@ val fuzzyMatchingModule = module {
             get(),
             get(),
             get(),
+            get(),
             matchingBlobIds
         )
     }
@@ -34,5 +35,9 @@ val fuzzyMatchingModule = module {
 
     factory<SelectionDetailBottomSheetDescriptionUtil> {
         SelectionDetailBottomSheetDescriptionUtilImpl()
+    }
+
+    factory<MatchedEventsUseCase> {
+        MatchedEventsUseCaseImpl(get(), get())
     }
 }

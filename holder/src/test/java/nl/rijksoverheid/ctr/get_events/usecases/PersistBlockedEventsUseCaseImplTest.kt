@@ -47,7 +47,7 @@ class PersistBlockedEventsUseCaseImplTest : AutoCloseKoinTest() {
         )
 
         // Only the secondVaccinationEvent should be persisted,
-        val blockedEvents = db.blockedEventDao().getAll(reason = RemovedEventReason.Blocked)
+        val blockedEvents = db.removedEventDao().getAll(reason = RemovedEventReason.Blocked)
         assertEquals(1, blockedEvents.size)
         assertEquals("2022-01-02T00:00Z", blockedEvents.first().eventTime.toStr())
 

@@ -127,13 +127,6 @@ class HolderDatabaseSyncerImpl(
                             }
                         }
                         is RemoteGreenCardsResult.FuzzyMatchingError -> {
-                            // Persist fuzzy matched events for communication to the user on the dashboard
-                            persistBlockedEventsUseCase.persist(
-                                newEvents = newEvents,
-                                removedEvents = remoteGreenCardsResult.fuzzyMatchedEvents,
-                                reason = RemovedEventReason.FuzzyMatched
-                            )
-
                             DatabaseSyncerResult.FuzzyMatchingError(
                                 matchingBlobIds = remoteGreenCardsResult.matchingBlobIds
                             )

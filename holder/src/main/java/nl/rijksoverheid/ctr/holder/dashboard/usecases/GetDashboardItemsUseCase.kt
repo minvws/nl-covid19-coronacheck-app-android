@@ -113,7 +113,7 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.shouldShowBlockedEventsItem()) {
             dashboardItems.add(DashboardItem.InfoItem.BlockedEvents(
-                blockedEvents = holderDatabase.blockedEventDao().getAll(reason = RemovedEventReason.Blocked)
+                blockedEvents = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked)
             ))
         }
 
@@ -216,7 +216,7 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.shouldShowBlockedEventsItem()) {
             dashboardItems.add(DashboardItem.InfoItem.BlockedEvents(
-                blockedEvents = holderDatabase.blockedEventDao().getAll(reason = RemovedEventReason.Blocked)
+                blockedEvents = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked)
             ))
         }
 

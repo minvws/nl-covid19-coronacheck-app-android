@@ -21,9 +21,11 @@ abstract class HolderNameSelectionViewModel : ViewModel() {
 
     abstract fun onItemSelected(index: Int)
     abstract fun selectedName(): String?
+    abstract fun storeSelection(onStored: () -> Unit)
 }
 
 class HolderNameSelectionViewModelImpl(
+    private val matchedEventsUseCase: MatchedEventsUseCase,
     private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase,
     private val selectionDataUtil: SelectionDataUtil,
     private val yourEventsFragmentUtil: YourEventsFragmentUtil,
@@ -44,6 +46,17 @@ class HolderNameSelectionViewModelImpl(
             ?.filterIsInstance<HolderNameSelectionItem.ListItem>()
             ?.find { it.isSelected }
             ?.name
+    }
+
+    override fun storeSelection(onStored: () -> Unit) {
+        val items = itemsLiveData.value?.filterIsInstance<HolderNameSelectionItem.ListItem>() ?: return
+        val itemSelected = items.find { it.isSelected }
+        if (itemSelected != null) {
+            viewModelScope.launch {
+                matchedEventsUseCase.selected(items.indexOf(itemSelected), matchingBlobIds)
+                onStored()
+            }
+        }
     }
 
     private fun updateItems(

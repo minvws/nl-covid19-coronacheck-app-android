@@ -36,7 +36,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
     private val holderNameSelectionFragmentArgs: HolderNameSelectionFragmentArgs by navArgs()
 
     private val viewModel: HolderNameSelectionViewModel by viewModel {
-        parametersOf(holderNameSelectionFragmentArgs.matchingBlobIds)
+        parametersOf(holderNameSelectionFragmentArgs.matchingBlobIds.ids)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,13 +52,14 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
             if (selectedName == null) {
                 binding.bottom.showError()
             } else {
-                // TODO store selected name and discard the others
-                resetToolbar()
-                navigateSafety(
-                    actionSavedEventsSyncGreenCards(
-                        selectedName = selectedName
+                viewModel.storeSelection {
+                    resetToolbar()
+                    navigateSafety(
+                        actionSavedEventsSyncGreenCards(
+                            selectedName = selectedName
+                        )
                     )
-                )
+                }
             }
         }
     }

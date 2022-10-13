@@ -53,7 +53,7 @@ class ShowBlockedEventsDialogUseCaseImplTest : AutoCloseKoinTest() {
             eventTime = OffsetDateTime.now(),
             reason = RemovedEventReason.Blocked
         )
-        db.blockedEventDao().insert(removedEventEntity)
+        db.removedEventDao().insert(removedEventEntity)
 
         val usecase = ShowBlockedEventsDialogUseCaseImpl(db)
 
