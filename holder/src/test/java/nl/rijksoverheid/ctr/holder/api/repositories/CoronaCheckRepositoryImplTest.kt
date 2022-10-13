@@ -18,14 +18,17 @@ import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingResponse
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.your_events.models.RemotePrepareIssue
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import okhttp3.ResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
+import retrofit2.Converter
 import retrofit2.HttpException
 
 @RunWith(RobolectricTestRunner::class)
@@ -36,10 +39,14 @@ class CoronaCheckRepositoryImplTest : AutoCloseKoinTest() {
     private val holderApiClientUtil: HolderApiClientUtil = mockk()
     private val remoteConfigApiClient: RemoteConfigApiClient = mockk(relaxed = true)
     private val networkRequestResultFactory: NetworkRequestResultFactory = mockk()
+    private val errorResponseBodyConverter: Converter<ResponseBody, CoronaCheckErrorResponse> = mockk()
+    private val responseBodyConverter: Converter<ResponseBody, RemoteGreenCards> = mockk()
     private val coronaCheckRepository: CoronaCheckRepository = CoronaCheckRepositoryImpl(
         cachedAppConfigUseCase,
         holderApiClientUtil,
         remoteConfigApiClient,
+        errorResponseBodyConverter,
+        responseBodyConverter,
         networkRequestResultFactory
     )
     private val holderApiClient: HolderApiClient = mockk(relaxed = true)
