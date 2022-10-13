@@ -73,34 +73,4 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/nav_info_fragment"
-        android:name="nl.rijksoverheid.ctr.design.fragments.info.InfoFragment"
-        android:label="{toolbarTitle}"
-        tools:layout="@layout/fragment_info">
-
-        <argument
-            android:name="toolbarTitle"
-            app:argType="string" />
-
-        <argument
-            android:name="closeIcon"
-            android:defaultValue="false"
-            app:argType="boolean" />
-
-        <argument
-            android:name="data"
-            app:argType="nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData" />
-
-        <action
-            android:id="@+id/action_my_overview"
-            app:destination="@id/nav_graph_overview"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
-            app:popUpTo="@id/nav_holder_fuzzy_matching" />
-
-    </fragment>
-
 </navigation>
