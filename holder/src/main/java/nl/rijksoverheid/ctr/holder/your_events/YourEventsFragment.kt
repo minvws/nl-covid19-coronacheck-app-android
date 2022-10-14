@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
+import nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
@@ -158,6 +159,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         presentError(
                             errorResult = databaseSyncerResult.errorResult
                         )
+                    }
+                    is DatabaseSyncerResult.FuzzyMatchingError -> {
+                        navigateSafety(YourEventsFragmentDirections.actionFuzzyMatching(
+                            MatchingBlobIds.fromList(databaseSyncerResult.matchingBlobIds)
+                        ))
                     }
                 }
             })

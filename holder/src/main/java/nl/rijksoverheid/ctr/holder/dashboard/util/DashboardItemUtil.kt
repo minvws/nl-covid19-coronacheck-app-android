@@ -91,6 +91,12 @@ class DashboardItemUtilImpl(
     }
 
     override suspend fun shouldShowFuzzyMatchedEventsItem(): Boolean {
+        val storedEvents = holderDatabase.eventGroupDao().getAll()
+        // if user has removed his events from the menu, there is no point on showing the banner
+        if (storedEvents.isEmpty()) {
+            holderDatabase.removedEventDao().deleteAll(RemovedEventReason.FuzzyMatched)
+            return false
+        }
         return holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.FuzzyMatched).isNotEmpty()
     }
 

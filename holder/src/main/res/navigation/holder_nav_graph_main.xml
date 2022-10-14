@@ -12,6 +12,8 @@
     android:id="@+id/main_nav"
     app:startDestination="@+id/nav_graph_overview">
 
+    <include app:graph="@navigation/holder_fuzzy_matching" />
+
     <navigation
         android:id="@+id/nav_graph_overview"
         app:startDestination="@+id/nav_dashboard">
@@ -541,6 +543,19 @@
             app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_dashboard"
             app:popUpToInclusive="false" />
+
+        <action
+            android:id="@+id/action_fuzzy_matching"
+            app:destination="@id/nav_holder_fuzzy_matching"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_dashboard">
+            <argument
+                android:name="matchingBlobIds"
+                app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
+        </action>
 
     </fragment>
 
