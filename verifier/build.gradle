@@ -162,9 +162,6 @@ dependencies {
     accImplementation libs.crashlytics
 
     debugImplementation libs.fragment.testing
-
-    // Needed in order for room to work with Apple Sillicon M1
-    ksp libs.sqliteJdbc
 }
 
 easylauncher {
