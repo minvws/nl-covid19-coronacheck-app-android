@@ -14,11 +14,10 @@ import androidx.lifecycle.viewModelScope
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import nl.rijksoverheid.ctr.dashboard.usecases.RemoveExpiredGreenCardsUseCase
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.dashboard.datamappers.DashboardTabsItemDataMapper
+import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
@@ -42,7 +41,8 @@ import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 abstract class DashboardViewModel : ViewModel() {
     val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
     val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
-    val showBlockedEventsDialogLiveData: LiveData<Event<ShowBlockedEventsDialogResult>> = MutableLiveData()
+    val showBlockedEventsDialogLiveData: LiveData<Event<ShowBlockedEventsDialogResult>> =
+        MutableLiveData()
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
@@ -51,7 +51,10 @@ abstract class DashboardViewModel : ViewModel() {
     abstract fun dismissFuzzyMatchedEventsInfo()
 
     companion object {
-        val RETRY_FAILED_REQUEST_AFTER_SECONDS = if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(10)
+        val RETRY_FAILED_REQUEST_AFTER_SECONDS =
+            if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(
+                10
+            )
     }
 }
 
@@ -68,93 +71,97 @@ class DashboardViewModelImpl(
     private val showBlockedEventsDialogUseCase: ShowBlockedEventsDialogUseCase
 ) : DashboardViewModel() {
 
-    private val mutex = Mutex()
-
     /**
      * Refreshing of database happens every 60 seconds
      */
     override fun refresh(dashboardSync: DashboardSync) {
+        if (loading()) {
+            return
+        }
         viewModelScope.launch {
             refreshCredentials(dashboardSync)
         }
     }
 
+    private fun loading(): Boolean {
+        val cardItems = dashboardTabItemsLiveData.value?.flatMap { it.items }?.filterIsInstance<DashboardItem.CardsItem>() ?: return false
+        return cardItems.flatMap { it.cards }.any { it.credentialState is DashboardItem.CardsItem.CredentialState.LoadingCredential }
+    }
+
     private suspend fun refreshCredentials(dashboardSync: DashboardSync) {
-        mutex.withLock {
-            val previousSyncResult = databaseSyncerResultLiveData.value?.peekContent()
+        val previousSyncResult = databaseSyncerResultLiveData.value?.peekContent()
 
-            // Check if we need to load new credentials
-            val shouldLoadNewCredentials = when (dashboardSync) {
-                is DashboardSync.ForceSync -> {
-                    // Load new credentials if we force it. For example on a retry button click
-                    true
-                }
-                is DashboardSync.DisableSync -> {
-                    // Never load new credentials when we don't want to. For example if we are checking to show the clock skew banner
-                    false
-                }
-                is DashboardSync.CheckSync -> {
-                    // Load new credentials if no previous refresh has been executed and we should refresh because a credentials for a green card expired
-                    val shouldRefreshCredentials = greenCardRefreshUtil.shouldRefresh()
-
-                    // Load new credentials if we the previous request failed more than once and more than x minutes ago
-                    val shouldRetryFailedRequest =
-                        previousSyncResult is DatabaseSyncerResult.Failed.ServerError.MultipleTimes && OffsetDateTime.now()
-                            .isAfter(
-                                previousSyncResult.failedAt.plusSeconds(
-                                    RETRY_FAILED_REQUEST_AFTER_SECONDS
-                                )
-                            )
-
-                    // Do the actual checks
-                    shouldRefreshCredentials || shouldRetryFailedRequest
-                }
+        // Check if we need to load new credentials
+        val shouldLoadNewCredentials = when (dashboardSync) {
+            is DashboardSync.ForceSync -> {
+                // Load new credentials if we force it. For example on a retry button click
+                true
             }
+            is DashboardSync.DisableSync -> {
+                // Never load new credentials when we don't want to. For example if we are checking to show the clock skew banner
+                false
+            }
+            is DashboardSync.CheckSync -> {
+                // Load new credentials if no previous refresh has been executed and we should refresh because a credentials for a green card expired
+                val shouldRefreshCredentials = greenCardRefreshUtil.shouldRefresh()
 
-            val allGreenCards = greenCardUtil.getAllGreenCards()
-            val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
+                // Load new credentials if we the previous request failed more than once and more than x minutes ago
+                val shouldRetryFailedRequest =
+                    previousSyncResult is DatabaseSyncerResult.Failed.ServerError.MultipleTimes && OffsetDateTime.now()
+                        .isAfter(
+                            previousSyncResult.failedAt.plusSeconds(
+                                RETRY_FAILED_REQUEST_AFTER_SECONDS
+                            )
+                        )
 
-            removeExpiredGreenCardsUseCase.execute(
-                allGreenCards = allGreenCards
+                // Do the actual checks
+                shouldRefreshCredentials || shouldRetryFailedRequest
+            }
+        }
+
+        val allGreenCards = greenCardUtil.getAllGreenCards()
+        val allEventGroupEntities = holderDatabase.eventGroupDao().getAll()
+
+        removeExpiredGreenCardsUseCase.execute(
+            allGreenCards = allGreenCards
+        )
+
+        refreshDashboardTabItems(
+            allGreenCards = allGreenCards,
+            databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent()
+                ?: DatabaseSyncerResult.Success(listOf()),
+            isLoadingNewCredentials = shouldLoadNewCredentials,
+            allEventGroupEntities = allEventGroupEntities
+        )
+
+        val databaseSyncerResult = holderDatabaseSyncer.sync(
+            syncWithRemote = shouldLoadNewCredentials,
+            previousSyncResult = previousSyncResult,
+            flow = HolderFlow.Refresh
+        )
+
+        if (databaseSyncerResult is DatabaseSyncerResult.Success) {
+            val result = showBlockedEventsDialogUseCase.execute(
+                blockedRemoteEvents = databaseSyncerResult.blockedEvents
             )
+            (showBlockedEventsDialogLiveData as MutableLiveData).postValue(Event(result))
+        }
 
+        (databaseSyncerResultLiveData as MutableLiveData).value = Event(databaseSyncerResult)
+
+        // If we loaded new credentials, we want to update our items again
+        if (shouldLoadNewCredentials) {
             refreshDashboardTabItems(
                 allGreenCards = allGreenCards,
-                databaseSyncerResult = databaseSyncerResultLiveData.value?.peekContent()
-                    ?: DatabaseSyncerResult.Success(listOf()),
-                isLoadingNewCredentials = shouldLoadNewCredentials,
-                allEventGroupEntities = allEventGroupEntities
-            )
-
-            val databaseSyncerResult = holderDatabaseSyncer.sync(
-                syncWithRemote = shouldLoadNewCredentials,
-                previousSyncResult = previousSyncResult,
-                flow = HolderFlow.Refresh
-            )
-
-            if (databaseSyncerResult is DatabaseSyncerResult.Success) {
-                val result = showBlockedEventsDialogUseCase.execute(
-                    blockedRemoteEvents = databaseSyncerResult.blockedEvents
-                )
-                (showBlockedEventsDialogLiveData as MutableLiveData).postValue(Event(result))
-            }
-
-            (databaseSyncerResultLiveData as MutableLiveData).value = Event(databaseSyncerResult)
-
-            // If we loaded new credentials, we want to update our items again
-            if (shouldLoadNewCredentials) {
-                refreshDashboardTabItems(
-                    allGreenCards = allGreenCards,
-                    allEventGroupEntities = allEventGroupEntities,
-                    databaseSyncerResult = databaseSyncerResult,
-                    isLoadingNewCredentials = false
-                )
-            }
-
-            removeExpiredEventsUseCase.execute(
-                events = allEventGroupEntities
+                allEventGroupEntities = allEventGroupEntities,
+                databaseSyncerResult = databaseSyncerResult,
+                isLoadingNewCredentials = false
             )
         }
+
+        removeExpiredEventsUseCase.execute(
+            events = allEventGroupEntities
+        )
     }
 
     /**
