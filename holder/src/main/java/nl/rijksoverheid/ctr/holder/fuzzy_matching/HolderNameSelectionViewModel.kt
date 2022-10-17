@@ -30,7 +30,7 @@ class HolderNameSelectionViewModelImpl(
     private val selectionDataUtil: SelectionDataUtil,
     private val yourEventsFragmentUtil: YourEventsFragmentUtil,
     private val holderDatabase: HolderDatabase,
-    private val matchingBlobIds: ArrayList<ArrayList<Int>>
+    private val matchingBlobIds: List<List<Int>>
 ) : HolderNameSelectionViewModel() {
 
     init {

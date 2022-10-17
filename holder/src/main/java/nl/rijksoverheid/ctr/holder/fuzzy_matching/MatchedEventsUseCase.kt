@@ -13,14 +13,14 @@ import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
  *
  */
 interface MatchedEventsUseCase {
-    suspend fun selected(selectionIndex: Int, matchingBlobIds: ArrayList<ArrayList<Int>>)
+    suspend fun selected(selectionIndex: Int, matchingBlobIds: List<List<Int>>)
 }
 
 class MatchedEventsUseCaseImpl(
     private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase,
     private val holderDatabase: HolderDatabase
 ) : MatchedEventsUseCase {
-    override suspend fun selected(selectionIndex: Int, matchingBlobIds: ArrayList<ArrayList<Int>>) {
+    override suspend fun selected(selectionIndex: Int, matchingBlobIds: List<List<Int>>) {
         val eventIdsToDelete = matchingBlobIds.filterIndexed { index, _ ->
             index != selectionIndex
         }.flatten().toSet().filter { !matchingBlobIds[selectionIndex].contains(it) }

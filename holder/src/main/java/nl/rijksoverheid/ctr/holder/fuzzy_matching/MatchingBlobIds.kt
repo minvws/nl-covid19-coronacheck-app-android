@@ -11,10 +11,4 @@ import kotlinx.parcelize.Parcelize
  *
  */
 @Parcelize
-data class MatchingBlobIds(val ids: ArrayList<ArrayList<Int>>) : Parcelable {
-    companion object {
-        fun fromList(ids: List<List<Int>>): MatchingBlobIds {
-            return MatchingBlobIds(ArrayList(ids.map { ArrayList(it) }))
-        }
-    }
-}
+data class MatchingBlobIds(val ids: List<List<Int>>) : Parcelable

@@ -172,7 +172,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                     }
                     is DatabaseSyncerResult.FuzzyMatchingError -> {
                         navigateSafety(NavGraphOverviewDirections.actionFuzzyMatching(
-                            MatchingBlobIds.fromList(it.matchingBlobIds)
+                            MatchingBlobIds(it.matchingBlobIds)
                         ))
                     }
                     is DatabaseSyncerResult.Success -> {
