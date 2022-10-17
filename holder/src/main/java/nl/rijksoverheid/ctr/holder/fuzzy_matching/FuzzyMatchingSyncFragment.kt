@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.sync_greencards.SyncGreenCardsViewModel
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
 import org.koin.android.ext.android.inject
@@ -84,6 +85,9 @@ class FuzzyMatchingSyncFragment : BaseFragment(R.layout.fragment_saved_events_sy
                         presentError(
                             errorResult = it.errorResult
                         )
+                    }
+                    is DatabaseSyncerResult.FuzzyMatchingError -> {
+                        findNavControllerSafety()?.popBackStack(R.id.nav_holder_fuzzy_matching, true)
                     }
                 }
             })

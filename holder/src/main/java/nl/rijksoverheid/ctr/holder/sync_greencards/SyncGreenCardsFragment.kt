@@ -67,6 +67,11 @@ class SyncGreenCardsFragment : BaseFragment(R.layout.fragment_sync_green_cards) 
                         errorResult = it.errorResult
                     )
                 }
+                is DatabaseSyncerResult.FuzzyMatchingError -> {
+                    navigateSafety(
+                        SyncGreenCardsFragmentDirections.actionMyOverview()
+                    )
+                }
             }
         })
     }

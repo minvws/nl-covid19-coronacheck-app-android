@@ -47,6 +47,11 @@ class SavedEventsSyncGreenCardsFragment : BaseFragment(R.layout.fragment_saved_e
                         errorResult = it.errorResult
                     )
                 }
+                is DatabaseSyncerResult.FuzzyMatchingError -> {
+                    navigateSafety(
+                        SavedEventsSyncGreenCardsFragmentDirections.actionMyOverview()
+                    )
+                }
             }
         })
     }

@@ -162,7 +162,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     }
                     is DatabaseSyncerResult.FuzzyMatchingError -> {
                         navigateSafety(YourEventsFragmentDirections.actionFuzzyMatching(
-                            MatchingBlobIds.fromList(databaseSyncerResult.matchingBlobIds)
+                            MatchingBlobIds(databaseSyncerResult.matchingBlobIds)
                         ))
                     }
                 }
