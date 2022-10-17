@@ -51,6 +51,11 @@ interface CoronaCheckRepository {
 }
 
 private const val FUZZY_MATCHING_ERROR = 99790
+private const val VACCINATION_BACKEND_FLOW = "vaccination"
+private const val POSITIVE_TEST_BACKEND_FLOW = "positivetest"
+private const val NEGATIVE_TEST_BACKEND_FLOW = "negativetest"
+private const val VACCINATION_ASSESSMENT_BACKEND_FLOW = "vaccinationassessment"
+private const val REFRESH_BACKEND_FLOW = "refresh"
 
 open class CoronaCheckRepositoryImpl(
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
@@ -98,23 +103,23 @@ open class CoronaCheckRepositoryImpl(
                             Base64.NO_WRAP
                         ),
                         flows = when (flow) {
-                            is HolderFlow.Vaccination -> listOf("vaccination")
-                            is HolderFlow.Recovery -> listOf("positivetest")
-                            is HolderFlow.CommercialTest, is HolderFlow.DigidTest -> listOf("negativetest")
+                            is HolderFlow.Vaccination -> listOf(VACCINATION_BACKEND_FLOW)
+                            is HolderFlow.Recovery -> listOf(POSITIVE_TEST_BACKEND_FLOW)
+                            is HolderFlow.CommercialTest, is HolderFlow.DigidTest -> listOf(NEGATIVE_TEST_BACKEND_FLOW)
                             is HolderFlow.VaccinationAndPositiveTest -> listOf(
-                                "vaccination",
-                                "positivetest"
+                                VACCINATION_BACKEND_FLOW,
+                                POSITIVE_TEST_BACKEND_FLOW
                             )
-                            is HolderFlow.VaccinationAssessment -> listOf("vaccinationassessment")
-                            is HolderFlow.Refresh -> listOf("refresh")
+                            is HolderFlow.VaccinationAssessment -> listOf(VACCINATION_ASSESSMENT_BACKEND_FLOW)
+                            is HolderFlow.Refresh -> listOf(REFRESH_BACKEND_FLOW)
                             is HolderFlow.HkviScanned -> {
                                 // Hkvi is a flow where you scanned a paper qr which holds one event. That event determines the backend flow.
                                 when (flow.remoteProtocol.events?.first()) {
-                                    is RemoteEventVaccination -> listOf("vaccination")
-                                    is RemoteEventNegativeTest -> listOf("negativetest")
-                                    is RemoteEventPositiveTest -> listOf("positivetest")
-                                    is RemoteEventVaccinationAssessment -> listOf("vaccinationassessment")
-                                    else -> listOf("refresh")
+                                    is RemoteEventVaccination -> listOf(VACCINATION_BACKEND_FLOW)
+                                    is RemoteEventNegativeTest -> listOf(NEGATIVE_TEST_BACKEND_FLOW)
+                                    is RemoteEventPositiveTest -> listOf(POSITIVE_TEST_BACKEND_FLOW)
+                                    is RemoteEventVaccinationAssessment -> listOf(VACCINATION_ASSESSMENT_BACKEND_FLOW)
+                                    else -> listOf(REFRESH_BACKEND_FLOW)
                                 }
                             }
                             else -> listOf()
