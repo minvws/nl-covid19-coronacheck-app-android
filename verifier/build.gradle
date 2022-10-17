@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs.kotlin)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.easylauncher)
@@ -45,13 +45,6 @@ android {
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl"]
         ndk {
             debugSymbolLevel "FULL"
-        }
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += ["room.schemaLocation":
-                                      "$projectDir/schemas".toString()]
-            }
         }
     }
 
@@ -112,6 +105,17 @@ android {
     }
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
+kotlin {
+    sourceSets {
+        main.kotlin.srcDirs += 'build/generated/ksp/main/kotlin'
+        test.kotlin.srcDirs += 'build/generated/ksp/test/kotlin'
+    }
+}
+
 dependencies {
     implementation project(":shared")
     implementation project(":appconfig")
@@ -135,7 +139,7 @@ dependencies {
     implementation libs.room
     implementation libs.sqlcipher
     implementation libs.lottie
-    kapt libs.room.compiler
+    ksp libs.room.compiler
     testImplementation libs.room.testing
 
 
@@ -158,9 +162,6 @@ dependencies {
     accImplementation libs.crashlytics
 
     debugImplementation libs.fragment.testing
-
-    // Needed in order for room to work with Apple Sillicon M1
-    kapt libs.sqliteJdbc
 }
 
 easylauncher {

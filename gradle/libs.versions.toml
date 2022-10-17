@@ -16,6 +16,8 @@ certificatetransparency = "1.1.0"
 coroutines = "1.6.4"
 groupie = "2.9.0"
 koin = "3.0.1"
+# @pin update Kotlin manually
+kotlin = "1.6.21"
 mockk = "1.12.0"
 moshi = "1.13.0"
 retrofit = "2.9.0"
@@ -80,7 +82,6 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-
 room-testing = { module = "androidx.room:room-testing", version.ref = "androidx-room" }
 rootbeer = "com.scottyab:rootbeer-lib:0.0.9"
 sqlcipher = "net.zetetic:android-database-sqlcipher:4.4.3"
-sqliteJdbc = "org.xerial:sqlite-jdbc:3.34.0"
 timber = "com.jakewharton.timber:timber:5.0.1"
 viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
 work-runtime = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
@@ -99,10 +100,11 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 easylauncher = "com.starter.easylauncher:5.0.1"
 firebase-crashlytics = "com.google.firebase.crashlytics:2.8.1"
 googleServices = "com.google.gms.google-services:4.3.10"
-kotlin-android = "org.jetbrains.kotlin.android:1.6.10"
-kotlin-jvm = "org.jetbrains.kotlin.jvm:1.6.10"
-kotlin-kapt = "org.jetbrains.kotlin.kapt:1.6.10"
-kotlin-parcelize = "org.jetbrains.kotlin.plugin.parcelize:1.6.10"
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+# @pin dependent on Kotlin version
+ksp = "com.google.devtools.ksp:1.6.21-1.0.6"
 navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidx-navigation" }
 shot = "shot:5.14.1"
 spotless = "com.diffplug.spotless:5.10.1"
