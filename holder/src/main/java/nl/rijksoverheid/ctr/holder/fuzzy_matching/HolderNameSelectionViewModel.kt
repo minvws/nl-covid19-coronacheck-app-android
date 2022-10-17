@@ -19,7 +19,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 abstract class HolderNameSelectionViewModel : ViewModel() {
     val itemsLiveData: LiveData<List<HolderNameSelectionItem>> = MutableLiveData()
 
-    abstract fun onItemSelected(index: Int)
+    abstract fun onItemSelected(recyclerViewItemsIndex: Int)
     abstract fun selectedName(): String?
     abstract fun storeSelection(onStored: () -> Unit)
 }
@@ -37,8 +37,9 @@ class HolderNameSelectionViewModelImpl(
         updateItems()
     }
 
-    override fun onItemSelected(index: Int) {
-        updateItems(index - 1)
+    override fun onItemSelected(recyclerViewItemsIndex: Int) {
+        val nameItemsIndex = recyclerViewItemsIndex - 1
+        updateItems(nameItemsIndex)
     }
 
     override fun selectedName(): String? {
