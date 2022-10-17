@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
@@ -21,18 +19,27 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 abstract class HolderNameSelectionViewModel : ViewModel() {
     val itemsLiveData: LiveData<List<HolderNameSelectionItem>> = MutableLiveData()
 
-    abstract fun onItemSelected(index: Int)
+    abstract fun onItemSelected(recyclerViewItemsIndex: Int)
     abstract fun selectedName(): String?
+    abstract fun storeSelection(onStored: () -> Unit)
 }
 
 class HolderNameSelectionViewModelImpl(
+    private val matchedEventsUseCase: MatchedEventsUseCase,
     private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase,
     private val selectionDataUtil: SelectionDataUtil,
+    private val yourEventsFragmentUtil: YourEventsFragmentUtil,
     private val holderDatabase: HolderDatabase,
-    private val yourEventsFragmentUtil: YourEventsFragmentUtil
+    private val matchingBlobIds: List<List<Int>>
 ) : HolderNameSelectionViewModel() {
-    override fun onItemSelected(index: Int) {
-        postItems(index - 1)
+
+    init {
+        updateItems()
+    }
+
+    override fun onItemSelected(recyclerViewItemsIndex: Int) {
+        val nameItemsIndex = recyclerViewItemsIndex - 1
+        updateItems(nameItemsIndex)
     }
 
     override fun selectedName(): String? {
@@ -42,25 +49,32 @@ class HolderNameSelectionViewModelImpl(
             ?.name
     }
 
-    // TODO will be removed in next task and will be populated from a usecase
-    init {
-        postItems()
+    override fun storeSelection(onStored: () -> Unit) {
+        val items = itemsLiveData.value?.filterIsInstance<HolderNameSelectionItem.ListItem>() ?: return
+        val itemSelected = items.find { it.isSelected }
+        if (itemSelected != null) {
+            viewModelScope.launch {
+                matchedEventsUseCase.selected(items.indexOf(itemSelected), matchingBlobIds)
+                onStored()
+            }
+        }
     }
 
-    private fun postItems(selectedIndex: Int? = null) {
+    private fun updateItems(
+        selectedIndex: Int? = null
+    ) {
         viewModelScope.launch {
-            val eventGroupEntities = holderDatabase.eventGroupDao().getAll()
-            val remoteProtocols =
-                eventGroupEntities.mapNotNull(getRemoteProtocolFromEventGroupUseCase::get)
-            val holderEvents =
-                mutableListOf<Triple<String, RemoteProtocol.Holder, List<RemoteEvent>>>()
-            remoteProtocols.forEach {
-                if (it.holder != null && it.events != null) {
-                    holderEvents.add(Triple(it.providerIdentifier, it.holder, it.events))
-                }
+            val allEvents = holderDatabase.eventGroupDao().getAll()
+            val fuzzyMatchedRemoteProtocols = matchingBlobIds.map { eventsCluster ->
+                eventsCluster.mapNotNull { fuzzyMatchedEventId ->
+                    allEvents.find { it.id == fuzzyMatchedEventId }
+                }.mapNotNull(getRemoteProtocolFromEventGroupUseCase::get)
             }
 
-            val items = holderEvents.mapIndexed() { index, (providerIdentifier, holder, events) ->
+            val selectionItems = fuzzyMatchedRemoteProtocols.mapIndexed { index, remoteProtocols ->
+                val holder = remoteProtocols.first().holder
+                val events = remoteProtocols.flatMap { it.events ?: emptyList() }
+                val providerIdentifier = remoteProtocols.first().providerIdentifier
                 HolderNameSelectionItem.ListItem(
                     name = yourEventsFragmentUtil.getFullName(holder),
                     events = selectionDataUtil.events(events),
@@ -70,12 +84,10 @@ class HolderNameSelectionViewModelImpl(
                 )
             }.toTypedArray()
 
-            (itemsLiveData as MutableLiveData).postValue(
-                listOf(
-                    HolderNameSelectionItem.HeaderItem,
-                    *items,
-                    HolderNameSelectionItem.FooterItem
-                )
+            (itemsLiveData as MutableLiveData).value = listOf(
+                HolderNameSelectionItem.HeaderItem,
+                *selectionItems,
+                HolderNameSelectionItem.FooterItem
             )
         }
     }

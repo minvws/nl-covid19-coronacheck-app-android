@@ -12,11 +12,11 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.ButtonInfo
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
-import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
@@ -89,7 +89,7 @@ sealed class DashboardItem {
             )
 
         data class BlockedEvents(
-            val blockedEvents: List<BlockedEventEntity>,
+            val blockedEvents: List<RemovedEventEntity>,
             @StringRes override val buttonText: Int = R.string.general_readmore
         ) : InfoItem(isDismissible = true, hasButton = true)
     }

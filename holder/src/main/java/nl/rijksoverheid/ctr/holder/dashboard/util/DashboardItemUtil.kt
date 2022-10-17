@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -85,7 +86,7 @@ class DashboardItemUtilImpl(
     }
 
     override suspend fun shouldShowBlockedEventsItem(): Boolean {
-        return holderDatabase.blockedEventDao().getAll().isNotEmpty()
+        return holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked).isNotEmpty()
     }
 
     override fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {

@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.usecases.PersistBlockedEventsUseCase
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.usecases.GetRemoteGreenCardsUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoteGreenCardsResult
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
@@ -95,7 +96,8 @@ class HolderDatabaseSyncerImpl(
                             // Persist blocked events for communication to the user on the dashboard
                             persistBlockedEventsUseCase.persist(
                                 newEvents = newEvents,
-                                blockedEvents = remoteGreenCardsResult.blockedEvents
+                                removedEvents = remoteGreenCardsResult.blockedEvents,
+                                reason = RemovedEventReason.Blocked
                             )
 
                             val remoteGreenCards = remoteGreenCardsResult.remoteGreenCards
@@ -123,6 +125,11 @@ class HolderDatabaseSyncerImpl(
                                     return@withContext DatabaseSyncerResult.Failed.Error(result.errorResult)
                                 }
                             }
+                        }
+                        is RemoteGreenCardsResult.FuzzyMatchingError -> {
+                            DatabaseSyncerResult.FuzzyMatchingError(
+                                matchingBlobIds = remoteGreenCardsResult.matchingBlobIds
+                            )
                         }
                         is RemoteGreenCardsResult.Error -> {
                             val greenCards = holderDatabase.greenCardDao().getAll()
@@ -166,6 +173,10 @@ sealed class DatabaseSyncerResult {
     data class Success(
         val hints: List<String> = listOf(),
         val blockedEvents: List<RemoteEvent> = listOf()
+    ) : DatabaseSyncerResult()
+
+    data class FuzzyMatchingError(
+        val matchingBlobIds: List<List<Int>>
     ) : DatabaseSyncerResult()
 
     sealed class Failed(open val errorResult: ErrorResult, open val failedAt: OffsetDateTime) :

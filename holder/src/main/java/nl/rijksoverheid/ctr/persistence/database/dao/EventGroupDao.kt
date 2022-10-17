@@ -22,6 +22,9 @@ interface EventGroupDao {
     @Query("SELECT * FROM event_group")
     suspend fun getAll(): List<EventGroupEntity>
 
+    @Query("SELECT * FROM event_group WHERE id IN (:ids)")
+    suspend fun getAllOfIds(ids: String): List<EventGroupEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(entity: List<EventGroupEntity>)
 
@@ -36,4 +39,7 @@ interface EventGroupDao {
 
     @Query("DELETE FROM event_group WHERE type = :originType")
     suspend fun deleteAllOfType(originType: OriginType)
+
+    @Query("DELETE FROM event_group WHERE id IN (:ids)")
+    suspend fun deleteAllOfIds(ids: String)
 }

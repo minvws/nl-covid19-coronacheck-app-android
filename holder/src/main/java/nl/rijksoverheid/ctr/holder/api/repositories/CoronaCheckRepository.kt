@@ -19,8 +19,11 @@ import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingResponse
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.your_events.models.RemotePrepareIssue
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import okhttp3.ResponseBody
+import retrofit2.Converter
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -41,18 +44,31 @@ interface CoronaCheckRepository {
     ): NetworkRequestResult<RemoteGreenCards>
 
     suspend fun getPrepareIssue(): NetworkRequestResult<RemotePrepareIssue>
-    suspend fun getCoupling(credential: String, couplingCode: String): NetworkRequestResult<RemoteCouplingResponse>
+    suspend fun getCoupling(
+        credential: String,
+        couplingCode: String
+    ): NetworkRequestResult<RemoteCouplingResponse>
 }
+
+private const val FUZZY_MATCHING_ERROR = 99790
+private const val VACCINATION_BACKEND_FLOW = "vaccination"
+private const val POSITIVE_TEST_BACKEND_FLOW = "positivetest"
+private const val NEGATIVE_TEST_BACKEND_FLOW = "negativetest"
+private const val VACCINATION_ASSESSMENT_BACKEND_FLOW = "vaccinationassessment"
+private const val REFRESH_BACKEND_FLOW = "refresh"
 
 open class CoronaCheckRepositoryImpl(
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
     private val holderApiClientUtil: HolderApiClientUtil,
     private val remoteConfigApiClient: RemoteConfigApiClient,
+    private val errorResponseBodyConverter: Converter<ResponseBody, CoronaCheckErrorResponse>,
+    private val responseBodyConverter: Converter<ResponseBody, RemoteGreenCards>,
     private val networkRequestResultFactory: NetworkRequestResultFactory
 ) : CoronaCheckRepository {
 
     private fun getHolderApiClient(): HolderApiClient {
-        val backendTlsCertificates = cachedAppConfigUseCase.getCachedAppConfig().backendTLSCertificates
+        val backendTlsCertificates =
+            cachedAppConfigUseCase.getCachedAppConfig().backendTLSCertificates
         val certificateBytes = backendTlsCertificates.map { it.toByteArray() }
         return holderApiClientUtil.client(certificateBytes)
     }
@@ -75,37 +91,54 @@ open class CoronaCheckRepositoryImpl(
         issueCommitmentMessage: String,
         flow: Flow
     ): NetworkRequestResult<RemoteGreenCards> {
-        return networkRequestResultFactory.createResult(HolderStep.GetCredentialsNetworkRequest) {
-            getHolderApiClient().getCredentials(
-                data = GetCredentialsPostData(
-                    stoken = stoken,
-                    events = events,
-                    issueCommitmentMessage = Base64.encodeToString(
-                        issueCommitmentMessage.toByteArray(),
-                        Base64.NO_WRAP
-                    ),
-                    flows = when (flow) {
-                        is HolderFlow.Vaccination -> listOf("vaccination")
-                        is HolderFlow.Recovery -> listOf("positivetest")
-                        is HolderFlow.CommercialTest, is HolderFlow.DigidTest -> listOf("negativetest")
-                        is HolderFlow.VaccinationAndPositiveTest -> listOf("vaccination", "positivetest")
-                        is HolderFlow.VaccinationAssessment -> listOf("vaccinationassessment")
-                        is HolderFlow.Refresh -> listOf("refresh")
-                        is HolderFlow.HkviScanned -> {
-                            // Hkvi is a flow where you scanned a paper qr which holds one event. That event determines the backend flow.
-                            when (flow.remoteProtocol.events?.first()) {
-                                is RemoteEventVaccination -> listOf("vaccination")
-                                is RemoteEventNegativeTest -> listOf("negativetest")
-                                is RemoteEventPositiveTest -> listOf("positivetest")
-                                is RemoteEventVaccinationAssessment -> listOf("vaccinationassessment")
-                                else -> listOf("refresh")
+        return networkRequestResultFactory.createResult(
+            step = HolderStep.GetCredentialsNetworkRequest,
+            networkCall = {
+                getHolderApiClient().getCredentials(
+                    data = GetCredentialsPostData(
+                        stoken = stoken,
+                        events = events,
+                        issueCommitmentMessage = Base64.encodeToString(
+                            issueCommitmentMessage.toByteArray(),
+                            Base64.NO_WRAP
+                        ),
+                        flows = when (flow) {
+                            is HolderFlow.Vaccination -> listOf(VACCINATION_BACKEND_FLOW)
+                            is HolderFlow.Recovery -> listOf(POSITIVE_TEST_BACKEND_FLOW)
+                            is HolderFlow.CommercialTest, is HolderFlow.DigidTest -> listOf(NEGATIVE_TEST_BACKEND_FLOW)
+                            is HolderFlow.VaccinationAndPositiveTest -> listOf(
+                                VACCINATION_BACKEND_FLOW,
+                                POSITIVE_TEST_BACKEND_FLOW
+                            )
+                            is HolderFlow.VaccinationAssessment -> listOf(VACCINATION_ASSESSMENT_BACKEND_FLOW)
+                            is HolderFlow.Refresh -> listOf(REFRESH_BACKEND_FLOW)
+                            is HolderFlow.HkviScanned -> {
+                                // Hkvi is a flow where you scanned a paper qr which holds one event. That event determines the backend flow.
+                                when (flow.remoteProtocol.events?.first()) {
+                                    is RemoteEventVaccination -> listOf(VACCINATION_BACKEND_FLOW)
+                                    is RemoteEventNegativeTest -> listOf(NEGATIVE_TEST_BACKEND_FLOW)
+                                    is RemoteEventPositiveTest -> listOf(POSITIVE_TEST_BACKEND_FLOW)
+                                    is RemoteEventVaccinationAssessment -> listOf(VACCINATION_ASSESSMENT_BACKEND_FLOW)
+                                    else -> listOf(REFRESH_BACKEND_FLOW)
+                                }
                             }
+                            else -> listOf()
                         }
-                        else -> listOf()
-                    }
+                    )
                 )
-            )
-        }
+            },
+            interceptHttpError = {
+                it.response()?.errorBody()?.let { errorBody ->
+                    errorResponseBodyConverter.convert(errorBody)?.let { coronaErrorResponse ->
+                        if (coronaErrorResponse.code == FUZZY_MATCHING_ERROR) {
+                            responseBodyConverter.convert(errorBody)
+                        } else {
+                            null
+                        }
+                    }
+                }
+            }
+        )
     }
 
     override suspend fun getPrepareIssue(): NetworkRequestResult<RemotePrepareIssue> {

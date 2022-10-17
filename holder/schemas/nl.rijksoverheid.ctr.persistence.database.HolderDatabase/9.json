@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "24a489d6dab05dc2851a75b0ad56cdfb",
+    "identityHash": "3f75b72e88cf17585b7a81629ebca1e9",
     "entities": [
       {
         "tableName": "wallet",
@@ -384,8 +384,8 @@
         ]
       },
       {
-        "tableName": "blocked_event",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `wallet_id` INTEGER NOT NULL, `type` TEXT NOT NULL, `event_time` INTEGER, FOREIGN KEY(`wallet_id`) REFERENCES `wallet`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "tableName": "removed_event",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `wallet_id` INTEGER NOT NULL, `type` TEXT NOT NULL, `event_time` INTEGER, `reason` TEXT NOT NULL DEFAULT 'blocked', FOREIGN KEY(`wallet_id`) REFERENCES `wallet`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -410,6 +410,13 @@
             "columnName": "event_time",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "reason",
+            "columnName": "reason",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "'blocked'"
           }
         ],
         "primaryKey": {
@@ -420,13 +427,13 @@
         },
         "indices": [
           {
-            "name": "index_blocked_event_wallet_id",
+            "name": "index_removed_event_wallet_id",
             "unique": false,
             "columnNames": [
               "wallet_id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_blocked_event_wallet_id` ON `${TABLE_NAME}` (`wallet_id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_removed_event_wallet_id` ON `${TABLE_NAME}` (`wallet_id`)"
           }
         ],
         "foreignKeys": [
@@ -510,7 +517,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '24a489d6dab05dc2851a75b0ad56cdfb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3f75b72e88cf17585b7a81629ebca1e9')"
     ]
   }
 }

@@ -33,6 +33,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -192,7 +193,7 @@ class DashboardViewModelImpl(
 
     override fun dismissBlockedEventsInfo() {
         viewModelScope.launch {
-            holderDatabase.blockedEventDao().deleteAll()
+            holderDatabase.removedEventDao().deleteAll(reason = RemovedEventReason.Blocked)
         }
     }
 }

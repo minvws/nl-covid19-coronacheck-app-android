@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -18,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.fuzzy_matching.HolderNameSelectionFragmentDir
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -28,10 +30,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selection) {
     private val section = Section()
-    private val viewModel: HolderNameSelectionViewModel by viewModel()
 
     private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val selectionDetailBottomSheetDescriptionUtil: SelectionDetailBottomSheetDescriptionUtil by inject()
+    private val holderNameSelectionFragmentArgs: HolderNameSelectionFragmentArgs by navArgs()
+
+    private val viewModel: HolderNameSelectionViewModel by viewModel {
+        parametersOf(holderNameSelectionFragmentArgs.matchingBlobIds.ids)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,13 +52,14 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
             if (selectedName == null) {
                 binding.bottom.showError()
             } else {
-                // TODO store selected name and discard the others
-                resetToolbar()
-                navigateSafety(
-                    actionSavedEventsSyncGreenCards(
-                        selectedName = selectedName
+                viewModel.storeSelection {
+                    resetToolbar()
+                    navigateSafety(
+                        actionSavedEventsSyncGreenCards(
+                            selectedName = selectedName
+                        )
                     )
-                )
+                }
             }
         }
     }

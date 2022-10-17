@@ -17,6 +17,10 @@
         android:label=""
         tools:layout="@layout/fragment_fuzzy_matching_onboarding">
 
+        <argument
+            android:name="matchingBlobIds"
+            app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
+
         <action
             android:id="@+id/action_holder_name_selection"
             app:destination="@id/nav_holder_name_selection"
@@ -32,6 +36,10 @@
         android:name="nl.rijksoverheid.ctr.holder.fuzzy_matching.HolderNameSelectionFragment"
         android:label=""
         tools:layout="@layout/fragment_holder_name_selection">
+
+        <argument
+            android:name="matchingBlobIds"
+            app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
 
         <action
             android:id="@+id/action_saved_events_sync_green_cards"
@@ -61,36 +69,6 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/nav_holder_fuzzy_matching" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_info_fragment"
-        android:name="nl.rijksoverheid.ctr.design.fragments.info.InfoFragment"
-        android:label="{toolbarTitle}"
-        tools:layout="@layout/fragment_info">
-
-        <argument
-            android:name="toolbarTitle"
-            app:argType="string" />
-
-        <argument
-            android:name="closeIcon"
-            android:defaultValue="false"
-            app:argType="boolean" />
-
-        <argument
-            android:name="data"
-            app:argType="nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData" />
-
-        <action
-            android:id="@+id/action_my_overview"
-            app:destination="@id/nav_graph_overview"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_holder_fuzzy_matching" />
 
     </fragment>

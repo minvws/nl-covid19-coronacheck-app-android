@@ -9,26 +9,36 @@ package nl.rijksoverheid.ctr.holder.get_events.usecases
 
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 
 interface PersistBlockedEventsUseCase {
-    suspend fun persist(newEvents: List<RemoteEvent>, blockedEvents: List<RemoteEvent>)
+    suspend fun persist(
+        newEvents: List<RemoteEvent>,
+        removedEvents: List<RemoteEvent>,
+        reason: RemovedEventReason
+    )
 }
 
 class PersistBlockedEventsUseCaseImpl(
     private val holderDatabase: HolderDatabase
 ) : PersistBlockedEventsUseCase {
 
-    override suspend fun persist(newEvents: List<RemoteEvent>, blockedEvents: List<RemoteEvent>) {
-        val eventsToPersist = blockedEvents.filter { !newEvents.contains(it) }
+    override suspend fun persist(
+        newEvents: List<RemoteEvent>,
+        removedEvents: List<RemoteEvent>,
+        reason: RemovedEventReason
+    ) {
+        val eventsToPersist = removedEvents.filter { !newEvents.contains(it) }
         eventsToPersist.forEach { remoteEvent ->
-            val blockedEventEntity = BlockedEventEntity(
+            val removedEventEntity = RemovedEventEntity(
                 walletId = 1,
                 type = remoteEvent.type ?: "",
-                eventTime = remoteEvent.getDate()
+                eventTime = remoteEvent.getDate(),
+                reason = reason
             )
 
-            holderDatabase.blockedEventDao().insert(blockedEventEntity)
+            holderDatabase.removedEventDao().insert(removedEventEntity)
         }
     }
 }

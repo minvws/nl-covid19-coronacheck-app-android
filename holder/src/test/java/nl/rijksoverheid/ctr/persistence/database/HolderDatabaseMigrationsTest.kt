@@ -128,7 +128,7 @@ class HolderDatabaseMigrationsTest : AutoCloseKoinTest() {
         val dbV9 = helper.runMigrationsAndValidate(DATABASE_NAME, 9, true)
 
         // Assert no errors
-        val cursor = dbV9.query("SELECT * FROM wallet")
+        val cursor = dbV9.query("SELECT * FROM removed_event")
         assertNotNull(cursor)
     }
 }
