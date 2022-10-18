@@ -110,7 +110,6 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             signingCertificateBytes = listOf(certificate.toByteArray()),
             tlsCertificateBytes = listOf(certificate.toByteArray())
         )
-        println(model)
         assertTrue(model is NetworkRequestResult.Success)
     }
 
@@ -139,7 +138,6 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             signingCertificateBytes = listOf(certificate.toByteArray()),
             tlsCertificateBytes = listOf(certificate.toByteArray())
         )
-        println(model)
         assertTrue(model is NetworkRequestResult.Success)
     }
 
