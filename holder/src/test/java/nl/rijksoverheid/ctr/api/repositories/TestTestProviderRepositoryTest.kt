@@ -34,7 +34,8 @@ import org.robolectric.RobolectricTestRunner
 class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
 
     private lateinit var mockWebServer: MockWebServer
-    private val certificate = """-----BEGIN CERTIFICATE-----
+    private val certificate = """
+        -----BEGIN CERTIFICATE-----
         MIIHnzCCBYegAwIBAgIUBrNeZgcQxfa9Uep4TrZSj6jIUNAwDQYJKoZIhvcNAQEL
         BQAwSTELMAkGA1UEBhMCTkwxETAPBgNVBAoMCEtQTiBCLlYuMScwJQYDVQQDDB5L
         UE4gUEtJb3ZlcmhlaWQgU2VydmVyIENBIDIwMjAwHhcNMjEwMTE0MTUwMTIxWhcN
@@ -77,7 +78,7 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
         SgVcLaaRgiP3XMxLsiO7VNvHcQkNRDsG9qYoFj8MNEBOjLS0YFzArZwzzafhlJkB
         PyNtEVGWNirrnZJImjooTsZSTgr5XPNUk01sTZI+T1bG1uo=
         -----END CERTIFICATE-----
-        """
+    """.trimIndent()
 
     @After
     fun tearDown() {
@@ -109,7 +110,6 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             signingCertificateBytes = listOf(certificate.toByteArray()),
             tlsCertificateBytes = listOf(certificate.toByteArray())
         )
-
         assertTrue(model is NetworkRequestResult.Success)
     }
 
@@ -138,7 +138,6 @@ class TestTestProviderRepositoryTest : AutoCloseKoinTest() {
             signingCertificateBytes = listOf(certificate.toByteArray()),
             tlsCertificateBytes = listOf(certificate.toByteArray())
         )
-
         assertTrue(model is NetworkRequestResult.Success)
     }
 
