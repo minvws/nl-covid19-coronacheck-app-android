@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs.kotlin)
     alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.easylauncher)
 }
 
 def appVersionCode =  1000000
@@ -162,27 +161,4 @@ dependencies {
     accImplementation libs.crashlytics
 
     debugImplementation libs.fragment.testing
-}
-
-easylauncher {
-    buildTypes {
-        debug {
-            filters = customRibbon(
-                    label: "Debug",
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-    }
-    variants {
-        accRelease {
-            filters = customRibbon(
-                    label: appVersionCode,
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-    }
 }
