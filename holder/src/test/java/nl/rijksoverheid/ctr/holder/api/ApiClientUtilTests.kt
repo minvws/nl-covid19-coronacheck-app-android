@@ -80,9 +80,12 @@ class ApiClientUtilTests : AutoCloseKoinTest() {
         )
 
         val trustManager = trustManagerSlot.captured
-        assertEquals(certificateBytes.size, trustManager.acceptedIssuers.size)
+        // certificate is added twice because the TLS cert and CMS cert are both added as trusted
+        assertEquals(2, trustManager.acceptedIssuers.size)
+        // Only expecting the certificated passed in
+        assertEquals(1, trustManager.acceptedIssuers.distinct().size)
         assertEquals(
-            "CN=api-test.coronatester.nl, O=\"Ministerie van Volksgezondheid, Welzijn en Sport\", L='s-Gravenhage, C=NL",
+            "CN=api-test.coronatester.nl,O=Ministerie van Volksgezondheid\\, Welzijn en Sport,L='s-Gravenhage,C=NL",
             trustManager.acceptedIssuers.first().subjectDN.name
         )
     }
