@@ -16,7 +16,6 @@ plugins {
     alias(libs.plugins.shot) apply false
     alias(libs.plugins.navigation.safeargs.kotlin) apply false
     alias(libs.plugins.googleServices) apply false
-    alias(libs.plugins.easylauncher) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
 }
 

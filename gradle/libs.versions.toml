@@ -97,7 +97,6 @@ groupie = [
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-easylauncher = "com.starter.easylauncher:5.0.1"
 firebase-crashlytics = "com.google.firebase.crashlytics:2.8.1"
 googleServices = "com.google.gms.google-services:4.3.10"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
