@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.navigation.safeargs.kotlin)
     alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.easylauncher)
     alias(libs.plugins.shot)
     alias(libs.plugins.ksp)
     alias(libs.plugins.fladle)
@@ -240,51 +239,4 @@ dependencies {
     androidTestImplementation libs.androidx.core.testing
 
     ksp libs.moshi.codegen
-}
-
-easylauncher {
-    buildTypes {
-        debug {
-            filters = customRibbon(
-                    label: "Debug",
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-    }
-    variants {
-        tstDebug {
-            filters = customRibbon(
-                    label: "Test Debug",
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-        accDebug {
-            filters = customRibbon(
-                    label: "Acc Debug",
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-        tstRelease {
-            filters = customRibbon(
-                    label: "Test $appVersionCode",
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-        accRelease {
-            filters = customRibbon(
-                    label: "Acc $appVersionCode",
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-    }
 }
