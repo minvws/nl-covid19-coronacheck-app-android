@@ -1,9 +1,9 @@
 [versions]
 agp = "7.3.1"
-androidx-appcompat = "1.4.1"
+androidx-appcompat = "1.5.1"
 androidx-arch-core = "2.1.0"
 androidx-camera = "1.1.0-beta03"
-androidx-core = "1.7.0"
+androidx-core = "1.9.0"
 androidx-fragment = "1.5.3"
 androidx-lifecycle = "2.5.1"
 androidx-navigation = "2.5.2"
@@ -44,7 +44,7 @@ constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 crashlytics = "com.google.firebase:firebase-crashlytics-ktx:18.3.0"
-desugar = "com.android.tools:desugar_jdk_libs:1.1.5"
+desugar = "com.android.tools:desugar_jdk_libs:1.2.2"
 espresso-core = "androidx.test.espresso:espresso-core:3.4.0"
 fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment" }
 fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "androidx-fragment" }

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.appconfig.R
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentNewFeatureItemBinding
 import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
+import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 
@@ -35,7 +36,7 @@ class NewFeatureItemFragment : Fragment(R.layout.fragment_new_feature_item) {
     private val androidUtil: AndroidUtil by inject()
 
     private val item: NewFeatureItem by lazy {
-        arguments?.getParcelable<NewFeatureItem>(
+        arguments?.getParcelableCompat<NewFeatureItem>(
             EXTRA_NEW_FEATURE_ITEM
         ) ?: throw Exception("Failed to get item")
     }

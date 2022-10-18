@@ -30,6 +30,7 @@ import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragment
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
+import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -77,7 +78,7 @@ class YourEventsFragmentTest : AutoCloseKoinTest() {
                 navigationActionId = R.id.action_my_overview
             )
         )
-        val returnedData = arguments?.getParcelable<InfoFragmentData>("data")
+        val returnedData = arguments?.getParcelableCompat<InfoFragmentData>("data")
         assertEquals(expectedData, returnedData)
     }
 
@@ -101,7 +102,7 @@ class YourEventsFragmentTest : AutoCloseKoinTest() {
                 navigationActionId = R.id.action_visitor_pass_input_token
             )
         )
-        val returnedData = arguments?.getParcelable<InfoFragmentData>("data")
+        val returnedData = arguments?.getParcelableCompat<InfoFragmentData>("data")
         assertEquals(expectedData, returnedData)
     }
 

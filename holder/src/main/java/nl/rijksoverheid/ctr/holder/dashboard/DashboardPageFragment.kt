@@ -31,6 +31,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardPageBinding
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -74,7 +75,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
     })
     val section = Section()
     private val greenCardType: GreenCardType by lazy {
-        arguments?.getParcelable<GreenCardType>(
+        arguments?.getParcelableCompat(
             EXTRA_GREEN_CARD_TYPE
         ) ?: error("EXTRA_GREEN_CARD_TYPE should not be null")
     }

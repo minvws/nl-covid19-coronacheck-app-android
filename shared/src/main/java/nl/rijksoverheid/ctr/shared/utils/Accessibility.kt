@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.shared.utils
 
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Context
+import android.os.Build
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
@@ -58,7 +59,12 @@ object Accessibility {
      */
     fun announce(context: Context?, message: String) {
         accessibilityManager(context)?.let { accessibilityManager ->
-            val event = AccessibilityEvent.obtain(AccessibilityEventCompat.TYPE_ANNOUNCEMENT)
+            val event = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                @Suppress("DEPRECATION")
+                AccessibilityEvent.obtain(AccessibilityEventCompat.TYPE_ANNOUNCEMENT)
+            } else {
+                AccessibilityEvent(AccessibilityEventCompat.TYPE_ANNOUNCEMENT)
+            }
             event.text.add(message)
 
             accessibilityManager.sendAccessibilityEvent(event)
@@ -236,10 +242,10 @@ object Accessibility {
             announceForAccessibility(context.getString(R.string.general_loading_description))
             accessibilityDelegate = object : View.AccessibilityDelegate() {
                 override fun onInitializeAccessibilityEvent(
-                    host: View?,
-                    event: AccessibilityEvent?
+                    host: View,
+                    event: AccessibilityEvent
                 ) {
-                    if (event?.eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
+                    if (event.eventType == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
                         announce(
                             context = context,
                             message = context.getString(message)
