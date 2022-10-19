@@ -90,7 +90,7 @@ class GetEventsFragmentTest : AutoCloseKoinTest() {
         getEventsViewModel: GetEventsViewModel = fakeViewModel()
     ): NavHostController {
         loadKoinModules(
-            module(override = true) {
+            module {
                 viewModel {
                     getEventsViewModel
                 }

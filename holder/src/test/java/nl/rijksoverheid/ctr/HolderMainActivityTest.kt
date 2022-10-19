@@ -131,7 +131,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     ): ActivityScenario<HolderMainActivity> {
 
         loadKoinModules(
-            module(override = true) {
+            module {
                 viewModel {
                     introductionViewModel
                 }
@@ -151,7 +151,7 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
                 }
                 single {
                     val context = ApplicationProvider.getApplicationContext<Context>()
-                    Room.inMemoryDatabaseBuilder(context, HolderDatabase::class.java).build()
+                    Room.inMemoryDatabaseBuilder(context, HolderDatabase::class.java).allowMainThreadQueries().build()
                 }
             })
 

@@ -117,7 +117,7 @@ class YourEventsFragmentTest : AutoCloseKoinTest() {
 
     private fun startFragment(databaseSyncerResult: DatabaseSyncerResult): FragmentScenario<YourEventsFragment> {
         loadKoinModules(
-            module(override = true) {
+            module {
                 viewModel { fakeYourEventsViewModel(databaseSyncerResult) }
             })
         val fragmentArgs = bundleOf(

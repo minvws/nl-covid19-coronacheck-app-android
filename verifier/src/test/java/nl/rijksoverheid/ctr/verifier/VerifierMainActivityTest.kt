@@ -130,7 +130,7 @@ class VerifierMainActivityTest : AutoCloseKoinTest() {
         verifierMainActivityViewModel: VerifierMainActivityViewModel
     ): ActivityScenario<VerifierMainActivity> {
         loadKoinModules(
-            module(override = true) {
+            module {
                 viewModel {
                     introductionViewModel
                 }

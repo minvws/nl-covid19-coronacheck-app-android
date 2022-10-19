@@ -49,7 +49,7 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
         )
 
         loadKoinModules(
-            module(override = true) {
+            module {
                 single {
                     db
                 }
@@ -161,7 +161,7 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
         val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
         coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { true }
         loadKoinModules(
-            module(override = true) {
+            module {
                 factory {
                     remoteEventHolderUtil
                 }
@@ -203,7 +203,7 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
         val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
         coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { false }
         loadKoinModules(
-            module(override = true) {
+            module {
                 factory {
                     remoteEventHolderUtil
                 }
@@ -245,7 +245,7 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
         val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
         coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { false }
         loadKoinModules(
-            module(override = true) {
+            module {
                 factory {
                     remoteEventHolderUtil
                 }

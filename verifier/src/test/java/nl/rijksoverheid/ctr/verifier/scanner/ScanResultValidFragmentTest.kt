@@ -70,7 +70,7 @@ class ScanResultValidFragmentTest : AutoCloseKoinTest() {
         )
     ) {
         loadKoinModules(
-            module(override = true) {
+            module {
                 factory {
                     scannerUtil
                 }
