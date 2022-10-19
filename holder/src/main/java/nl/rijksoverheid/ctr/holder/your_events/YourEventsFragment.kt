@@ -21,12 +21,12 @@ import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
-import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
+import nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
@@ -63,7 +63,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private val args: YourEventsFragmentArgs by navArgs()
 
     private val infoScreenUtil: InfoScreenUtil by inject()
-    private val dialogUtil: DialogUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
 
     private val remoteProtocol3Util: RemoteProtocol3Util by inject()
@@ -159,6 +158,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             errorResult = databaseSyncerResult.errorResult
                         )
                     }
+                    is DatabaseSyncerResult.FuzzyMatchingError -> {
+                        navigateSafety(YourEventsFragmentDirections.actionFuzzyMatching(
+                            MatchingBlobIds(databaseSyncerResult.matchingBlobIds)
+                        ))
+                    }
                 }
             })
 
@@ -183,7 +187,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             hideNavigationIcon = true
                         )
                     }
-                    ConflictingEventResult.Holder -> replaceCertificateDialog(getEventsFromType())
                     ConflictingEventResult.None -> yourEventsViewModel.saveRemoteProtocolEvents(
                         getFlow(), getEventsFromType(), false
                     )
@@ -298,30 +301,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 findNavControllerSafety()?.navigate(YourEventsFragmentDirections.actionMyOverview())
             }
         }
-    }
-
-    private fun replaceCertificateDialog(
-        remoteEvents: Map<RemoteProtocol, ByteArray>
-    ) {
-        dialogUtil.presentDialog(
-            context = requireContext(),
-            title = R.string.your_events_replace_dialog_title,
-            message = getString(R.string.your_events_replace_dialog_message),
-            positiveButtonText = R.string.your_events_replace_dialog_positive_button,
-            positiveButtonCallback = {
-                yourEventsViewModel.saveRemoteProtocolEvents(
-                    flow = getFlow(),
-                    remoteProtocols = remoteEvents,
-                    removePreviousEvents = true
-                )
-            },
-            negativeButtonText = R.string.your_events_replace_dialog_negative_button,
-            negativeButtonCallback = {
-                navigateSafety(
-                    YourEventsFragmentDirections.actionMyOverview()
-                )
-            }
-        )
     }
 
     private fun presentEvents(binding: FragmentYourEventsBinding) {

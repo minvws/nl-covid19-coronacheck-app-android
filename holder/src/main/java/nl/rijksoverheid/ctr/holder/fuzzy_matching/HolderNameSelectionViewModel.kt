@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
@@ -18,6 +19,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
  */
 abstract class HolderNameSelectionViewModel : ViewModel() {
     val itemsLiveData: LiveData<List<HolderNameSelectionItem>> = MutableLiveData()
+    val canSkipLiveData: LiveData<Boolean> = MutableLiveData()
 
     abstract fun onItemSelected(selectedName: String)
     abstract fun selectedName(): String?
@@ -30,11 +32,21 @@ class HolderNameSelectionViewModelImpl(
     private val selectionDataUtil: SelectionDataUtil,
     private val yourEventsFragmentUtil: YourEventsFragmentUtil,
     private val holderDatabase: HolderDatabase,
+    private val greenCardUtil: GreenCardUtil,
     private val matchingBlobIds: List<List<Int>>
 ) : HolderNameSelectionViewModel() {
 
     init {
         updateItems()
+        checkIfCanSkip()
+    }
+
+    private fun checkIfCanSkip() {
+        viewModelScope.launch {
+            val activeCredentialExists = holderDatabase.greenCardDao().getAll()
+                .any { !greenCardUtil.hasNoActiveCredentials(it) }
+            (canSkipLiveData as MutableLiveData).value = activeCredentialExists
+        }
     }
 
     override fun onItemSelected(selectedName: String) {

@@ -43,7 +43,13 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentHolderNameSelectionBinding.bind(view)
         initRecyclerView(binding)
-        addToolbarButton()
+
+        viewModel.canSkipLiveData.observe(viewLifecycleOwner) { canSkip ->
+            if (canSkip) {
+                addToolbarButton()
+            }
+        }
+
         viewModel.itemsLiveData.observe(viewLifecycleOwner) {
             setItems(it, binding)
         }
@@ -90,8 +96,8 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         resetToolbar()
     }
 

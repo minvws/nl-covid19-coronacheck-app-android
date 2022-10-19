@@ -19,6 +19,7 @@ val fuzzyMatchingModule = module {
             get(),
             get(),
             get(),
+            get(),
             matchingBlobIds
         )
     }
