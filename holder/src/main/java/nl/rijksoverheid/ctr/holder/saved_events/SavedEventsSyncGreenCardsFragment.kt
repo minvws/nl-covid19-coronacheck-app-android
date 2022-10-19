@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.view.View
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.sync_greencards.SyncGreenCardsViewModel
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
@@ -48,9 +49,9 @@ class SavedEventsSyncGreenCardsFragment : BaseFragment(R.layout.fragment_saved_e
                     )
                 }
                 is DatabaseSyncerResult.FuzzyMatchingError -> {
-                    navigateSafety(
-                        SavedEventsSyncGreenCardsFragmentDirections.actionMyOverview()
-                    )
+                    navigateSafety(SavedEventsSyncGreenCardsFragmentDirections.actionFuzzyMatching(
+                        MatchingBlobIds(it.matchingBlobIds)
+                    ))
                 }
             }
         })

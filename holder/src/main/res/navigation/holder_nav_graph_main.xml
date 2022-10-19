@@ -141,6 +141,19 @@
             app:popUpTo="@id/nav_saved_events"
             app:popUpToInclusive="true" />
 
+        <action
+            android:id="@+id/action_fuzzy_matching"
+            app:destination="@id/nav_holder_fuzzy_matching"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_dashboard">
+            <argument
+                android:name="matchingBlobIds"
+                app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
+        </action>
+
     </fragment>
 
     <fragment
