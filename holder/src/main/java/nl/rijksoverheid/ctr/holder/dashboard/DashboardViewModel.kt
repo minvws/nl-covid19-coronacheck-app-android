@@ -48,6 +48,7 @@ abstract class DashboardViewModel : ViewModel() {
     abstract fun removeOrigin(originEntity: OriginEntity)
     abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
     abstract fun dismissBlockedEventsInfo()
+    abstract fun dismissFuzzyMatchedEventsInfo()
 
     companion object {
         val RETRY_FAILED_REQUEST_AFTER_SECONDS = if (BuildConfig.FLAVOR == "acc") TimeUnit.SECONDS.toSeconds(10) else TimeUnit.MINUTES.toSeconds(10)
@@ -194,6 +195,12 @@ class DashboardViewModelImpl(
     override fun dismissBlockedEventsInfo() {
         viewModelScope.launch {
             holderDatabase.removedEventDao().deleteAll(reason = RemovedEventReason.Blocked)
+        }
+    }
+
+    override fun dismissFuzzyMatchedEventsInfo() {
+        viewModelScope.launch {
+            holderDatabase.removedEventDao().deleteAll(reason = RemovedEventReason.FuzzyMatched)
         }
     }
 }

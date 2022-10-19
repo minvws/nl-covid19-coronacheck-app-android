@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
+import android.content.Context
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -20,31 +21,33 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
+import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventStringUtil
+import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.BlockedEventException
 
-interface ShowBlockedEventsBottomSheetUtil {
-    fun show(dashboardPageFragment: DashboardPageFragment, blockedEvents: List<RemovedEventEntity>)
+interface RemovedEventsBottomSheetUtil {
+    fun presentBlockedEvents(dashboardPageFragment: DashboardPageFragment, blockedEvents: List<RemovedEventEntity>)
+    fun presentRemovedEvents(dashboardPageFragment: DashboardPageFragment, storedEvent: EventGroupEntity, removedEvents: List<RemovedEventEntity>)
 }
 
-class ShowBlockedEventsBottomSheetUtilImpl(
+class RemovedEventsBottomSheetUtilImpl(
     private val errorCodeStringFactory: ErrorCodeStringFactory,
     private val remoteEventStringUtil: RemoteEventStringUtil,
+    private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase,
+    private val yourEventsFragmentUtil: YourEventsFragmentUtil,
     private val infoFragmentUtil: InfoFragmentUtil
-) : ShowBlockedEventsBottomSheetUtil {
+) : RemovedEventsBottomSheetUtil {
 
-    override fun show(
-        dashboardPageFragment: DashboardPageFragment,
-        blockedEvents: List<RemovedEventEntity>
-    ) {
-        val context = dashboardPageFragment.requireContext()
+    private fun formattedEvents(context: Context, events: List<RemovedEventEntity>): String {
         val removedEventsHtml = StringBuilder()
-        blockedEvents.forEachIndexed { index, blockedEvent ->
+        events.forEachIndexed { index, blockedEvent ->
             val remoteEventClass = RemoteEvent.getRemoteEventClassFromType(blockedEvent.type)
 
             val title = remoteEventStringUtil.remoteEventTitle(remoteEventClass)
@@ -77,11 +80,21 @@ class ShowBlockedEventsBottomSheetUtilImpl(
             removedEventsHtml.append("<br/>")
             removedEventsHtml.append("<b>$date</b>")
 
-            val finalEvent = index == blockedEvents.size - 1
+            val finalEvent = index == events.size - 1
             if (!finalEvent) {
                 removedEventsHtml.append("<br/><br/>")
             }
         }
+
+        return removedEventsHtml.toString()
+    }
+
+    override fun presentBlockedEvents(
+        dashboardPageFragment: DashboardPageFragment,
+        blockedEvents: List<RemovedEventEntity>
+    ) {
+        val context = dashboardPageFragment.requireContext()
+        val removedEventsHtml = formattedEvents(context, blockedEvents)
 
         val errorCode = errorCodeStringFactory.get(
             HolderFlow.Refresh, listOf(
@@ -100,6 +113,32 @@ class ShowBlockedEventsBottomSheetUtilImpl(
                         R.string.holder_invaliddetailsremoved_moreinfo_body,
                         removedEventsHtml,
                         errorCode
+                    ),
+                    htmlLinksEnabled = true
+                )
+            )
+        )
+    }
+
+    override fun presentRemovedEvents(
+        dashboardPageFragment: DashboardPageFragment,
+        storedEvent: EventGroupEntity,
+        removedEvents: List<RemovedEventEntity>
+    ) {
+        val context = dashboardPageFragment.requireContext()
+        val removedEventsHtml = formattedEvents(context, removedEvents)
+
+        val name = yourEventsFragmentUtil.getFullName(getRemoteProtocolFromEventGroupUseCase.get(storedEvent)?.holder)
+
+        infoFragmentUtil.presentAsBottomSheet(
+            dashboardPageFragment.parentFragmentManager,
+            InfoFragmentData.TitleDescription(
+                title = context.getString(R.string.holder_identityRemoved_moreinfo_title),
+                descriptionData = DescriptionData(
+                    htmlTextString = context.getString(
+                        R.string.holder_identityRemoved_moreinfo_body,
+                        name,
+                        removedEventsHtml
                     ),
                     htmlLinksEnabled = true
                 )

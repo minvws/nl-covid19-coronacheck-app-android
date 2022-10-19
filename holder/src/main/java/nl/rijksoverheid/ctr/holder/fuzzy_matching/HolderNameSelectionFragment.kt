@@ -154,7 +154,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
                             )
                         }) { index ->
                         binding.bottom.hideError()
-                        viewModel.onItemSelected(index)
+                        viewModel.onItemSelected(item.name)
                     }
                 }
             }

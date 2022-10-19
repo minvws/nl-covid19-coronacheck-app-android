@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.items.ButtonInfo
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
@@ -90,6 +91,12 @@ sealed class DashboardItem {
 
         data class BlockedEvents(
             val blockedEvents: List<RemovedEventEntity>,
+            @StringRes override val buttonText: Int = R.string.general_readmore
+        ) : InfoItem(isDismissible = true, hasButton = true)
+
+        data class FuzzyMatchedEvents(
+            val storedEvent: EventGroupEntity,
+            val events: List<RemovedEventEntity>,
             @StringRes override val buttonText: Int = R.string.general_readmore
         ) : InfoItem(isDismissible = true, hasButton = true)
     }

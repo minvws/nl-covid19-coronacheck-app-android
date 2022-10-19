@@ -19,7 +19,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 abstract class HolderNameSelectionViewModel : ViewModel() {
     val itemsLiveData: LiveData<List<HolderNameSelectionItem>> = MutableLiveData()
 
-    abstract fun onItemSelected(recyclerViewItemsIndex: Int)
+    abstract fun onItemSelected(selectedName: String)
     abstract fun selectedName(): String?
     abstract fun storeSelection(onStored: () -> Unit)
 }
@@ -37,9 +37,8 @@ class HolderNameSelectionViewModelImpl(
         updateItems()
     }
 
-    override fun onItemSelected(recyclerViewItemsIndex: Int) {
-        val nameItemsIndex = recyclerViewItemsIndex - 1
-        updateItems(nameItemsIndex)
+    override fun onItemSelected(selectedName: String) {
+        updateItems(selectedName)
     }
 
     override fun selectedName(): String? {
@@ -61,7 +60,7 @@ class HolderNameSelectionViewModelImpl(
     }
 
     private fun updateItems(
-        selectedIndex: Int? = null
+        selectedName: String? = null
     ) {
         viewModelScope.launch {
             val allEvents = holderDatabase.eventGroupDao().getAll()
@@ -71,16 +70,17 @@ class HolderNameSelectionViewModelImpl(
                 }.mapNotNull(getRemoteProtocolFromEventGroupUseCase::get)
             }
 
-            val selectionItems = fuzzyMatchedRemoteProtocols.mapIndexed { index, remoteProtocols ->
+            val selectionItems = fuzzyMatchedRemoteProtocols.map { remoteProtocols ->
                 val holder = remoteProtocols.first().holder
                 val events = remoteProtocols.flatMap { it.events ?: emptyList() }
                 val providerIdentifier = remoteProtocols.first().providerIdentifier
+                val name = yourEventsFragmentUtil.getFullName(holder)
                 HolderNameSelectionItem.ListItem(
-                    name = yourEventsFragmentUtil.getFullName(holder),
+                    name = name,
                     events = selectionDataUtil.events(events),
                     detailData = selectionDataUtil.details(providerIdentifier, events),
-                    isSelected = index == selectedIndex,
-                    willBeRemoved = selectedIndex != null && index != selectedIndex
+                    isSelected = name == selectedName,
+                    willBeRemoved = selectedName != null && name != selectedName
                 )
             }.toTypedArray()
 

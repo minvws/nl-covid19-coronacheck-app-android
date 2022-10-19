@@ -111,6 +111,11 @@ class DashboardInfoCardAdapterItem(
                     R.string.holder_invaliddetailsremoved_banner_title
                 )
             }
+            is DashboardItem.InfoItem.FuzzyMatchedEvents -> {
+                viewBinding.text.setText(
+                    R.string.holder_identityRemoved_banner_title
+                )
+            }
         }
 
         viewBinding.button.setOnClickListener {
