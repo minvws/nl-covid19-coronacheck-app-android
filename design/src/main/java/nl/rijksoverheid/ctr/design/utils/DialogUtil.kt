@@ -37,28 +37,25 @@ class DialogUtilImpl : DialogUtil {
         negativeButtonCallback: (() -> Unit)?,
         onDismissCallback: (() -> Unit)?
     ) {
-        val fragmentManager = (context as FragmentActivity).supportFragmentManager
+        val activity = context as FragmentActivity
+        val fragmentManager = context.supportFragmentManager
         if (fragmentManager.findFragmentByTag(DialogFragment.TAG) == null) {
-            DialogFragment().show(
-                manager = fragmentManager,
-                tag = DialogFragment.TAG,
-                title = context.getString(title),
-                message = message,
-                positiveButtonText = context.getString(positiveButtonText),
-                positiveButtonCallback = positiveButtonCallback,
-                negativeButtonText = if (negativeButtonText != null) {
-                    context.getString(negativeButtonText)
-                } else {
-                    null
-                },
-                negativeButtonCallback = negativeButtonCallback,
-                onDismissCallback = onDismissCallback
-            )
+            val dialog = DialogFragment(title, message, positiveButtonText, negativeButtonText)
+            fragmentManager.setFragmentResultListener(DialogFragment.KEY_DIALOG_RESULT, activity) { _, bundle ->
+                fragmentManager.clearFragmentResultListener(DialogFragment.KEY_DIALOG_RESULT)
+                when {
+                    bundle.getBoolean(DialogFragment.KEY_POSITIVE) -> positiveButtonCallback.invoke()
+                    bundle.getBoolean(DialogFragment.KEY_NEGATIVE) -> negativeButtonCallback?.invoke()
+                    bundle.getBoolean(DialogFragment.KEY_DISMISSED) -> onDismissCallback?.invoke()
+                }
+            }
+            dialog.show(fragmentManager, DialogFragment.TAG)
         }
     }
 
     override fun dismiss(context: Context?) {
         val fragmentManager = (context as? FragmentActivity)?.supportFragmentManager
+        fragmentManager?.clearFragmentResultListener(DialogFragment.KEY_DIALOG_RESULT)
         (fragmentManager?.findFragmentByTag(DialogFragment.TAG) as? DialogFragment)?.dismiss()
     }
 }
