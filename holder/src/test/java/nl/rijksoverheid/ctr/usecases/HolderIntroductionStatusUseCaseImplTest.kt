@@ -9,7 +9,6 @@ package nl.rijksoverheid.ctr.usecases
 
 import io.mockk.every
 import io.mockk.mockk
-import junit.framework.Assert.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import nl.rijksoverheid.ctr.holder.R
@@ -21,6 +20,7 @@ import nl.rijksoverheid.ctr.introduction.privacy_consent.models.PrivacyPolicyIte
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class HolderIntroductionStatusUseCaseImplTest {

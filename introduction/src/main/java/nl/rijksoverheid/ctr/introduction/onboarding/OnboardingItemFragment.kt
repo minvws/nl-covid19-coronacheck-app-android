@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
+import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
 
@@ -35,7 +36,7 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
     private val androidUtil: AndroidUtil by inject()
 
     private val item: OnboardingItem by lazy {
-        arguments?.getParcelable<OnboardingItem>(
+        arguments?.getParcelableCompat<OnboardingItem>(
             EXTRA_ONBOARDING_ITEM
         ) ?: throw Exception("Failed to get item")
     }

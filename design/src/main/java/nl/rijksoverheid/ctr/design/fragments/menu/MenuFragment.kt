@@ -18,14 +18,14 @@ import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.FragmentMenuBinding
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.getParcelableArrayCompat
 import org.koin.android.ext.android.inject
 
 class MenuFragment : Fragment(R.layout.fragment_menu) {
 
     private val intentUtil: IntentUtil by inject()
 
-    // See https://stackoverflow.com/a/56368961
-    private val menuSections by lazy { (requireArguments().getParcelableArray("menuSections")?.map { it as MenuSection })?.toList() ?: listOf() }
+    private val menuSections by lazy { requireArguments().getParcelableArrayCompat<MenuSection>("menuSections")?.toList() ?: listOf() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
