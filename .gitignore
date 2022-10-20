@@ -5,4 +5,3 @@ local.properties
 .gradle
 keystore.jks
 *.li
-luhncheck

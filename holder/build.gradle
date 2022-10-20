@@ -182,7 +182,7 @@ dependencies {
     implementation project(":api")
     implementation project(':mobilecore')
     implementation project(":qrscanner")
-    implementation project(":luhncheck")
+    implementation fileTree(include: ['*.aar'], dir: 'libs')
 
     implementation libs.openid.appauth
     implementation libs.bundles.groupie
