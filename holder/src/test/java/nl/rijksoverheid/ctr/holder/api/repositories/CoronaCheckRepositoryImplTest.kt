@@ -6,6 +6,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.slot
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.holder.api.HolderApiClient
 import nl.rijksoverheid.ctr.holder.api.HolderApiClientUtil
@@ -14,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.api.post.GetCouplingData
 import nl.rijksoverheid.ctr.holder.api.post.GetCredentialsPostData
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteAccessTokens
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
+import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingResponse
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.holder.your_events.models.RemotePrepareIssue
@@ -23,6 +25,7 @@ import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,6 +33,7 @@ import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 import retrofit2.Converter
 import retrofit2.HttpException
+import retrofit2.Response
 
 @RunWith(RobolectricTestRunner::class)
 class CoronaCheckRepositoryImplTest : AutoCloseKoinTest() {
@@ -61,17 +65,26 @@ class CoronaCheckRepositoryImplTest : AutoCloseKoinTest() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun <R : Any> mockRequestResult() {
+    private fun <R : Any> mockRequestResult(
+        httpException: HttpException? = null
+    ) {
         coEvery {
             networkRequestResultFactory.createResult(
                 step = any(),
                 provider = any(),
                 interceptHttpError = any<suspend (HttpException) -> R>(),
-                networkCall = any<suspend () -> NetworkRequestResult<R>>()
+                networkCall = any()
             )
         } coAnswers {
-            val fourthArg = args[3] as suspend () -> NetworkRequestResult<R>
-            fourthArg.invoke()
+            NetworkRequestResult.Success(
+                if (httpException != null) {
+                    val interceptHttpError = args[2] as suspend (e: HttpException) -> R
+                    interceptHttpError.invoke(httpException)
+                } else {
+                    val networkCall = args[3] as suspend () -> R
+                    networkCall.invoke()
+                }
+            )
         }
     }
 
@@ -142,5 +155,39 @@ class CoronaCheckRepositoryImplTest : AutoCloseKoinTest() {
         assertEquals(base64EncodedCertificate, String(certSlot.captured.first()))
         assertEquals("credential", getCouplingDataSlot.captured.credential)
         assertEquals("couplingCode", getCouplingDataSlot.captured.couplingCode)
+    }
+
+    @Test
+    fun `when get_credentials request fails with error code 99790 then return matching blob ids`() = runTest {
+        val matchingBlobIds = RemoteGreenCards(null, null, null, matchingBlobIds = listOf(listOf(1), listOf(2)))
+        val errorBody = mockk<ResponseBody>()
+        val response = mockk<Response<CoronaCheckErrorResponse>> {
+            coEvery { code() } returns 400
+            coEvery { message() } returns ""
+            coEvery { errorBody() } returns errorBody
+        }
+        coEvery { errorResponseBodyConverter.convert(errorBody) } returns CoronaCheckErrorResponse("error", 99790)
+        coEvery { responseBodyConverter.convert(errorBody) } returns matchingBlobIds
+        mockRequestResult<RemoteGreenCards>(HttpException(response))
+
+        val testResult = coronaCheckRepository.getGreenCards("", listOf(), "", HolderFlow.Vaccination)
+
+        assertEquals(matchingBlobIds, (testResult as NetworkRequestResult.Success).response)
+    }
+
+    @Test
+    fun `when get_credentials request fails with error code other than 99790 then return null`() = runTest {
+        val errorBody = mockk<ResponseBody>()
+        val response = mockk<Response<CoronaCheckErrorResponse>> {
+            coEvery { code() } returns 400
+            coEvery { message() } returns ""
+            coEvery { errorBody() } returns errorBody
+        }
+        coEvery { errorResponseBodyConverter.convert(errorBody) } returns CoronaCheckErrorResponse("error", 99552)
+        mockRequestResult<RemoteGreenCards>(HttpException(response))
+
+        val testResult = coronaCheckRepository.getGreenCards("", listOf(), "", HolderFlow.Vaccination)
+
+        assertNull((testResult as NetworkRequestResult.Success).response)
     }
 }
