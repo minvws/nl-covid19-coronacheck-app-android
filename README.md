@@ -17,3 +17,15 @@ This increases the chance that we might be able to use your contribution (or it 
 
 Note that all commits should be signed using a gpg key.
 
+## Dependencies
+
+This project has at the moment two external dependencies:
+- Mobilecore library
+- Luhncheck https://github.com/minvws/nl-covid19-coronacheck-app-android/releases
+
+You need to add their .aar files manually in the project to be able to compile.
+
+Instructions for the Mobilecore library can be found at https://github.com/minvws/nl-covid19-coronacheck-app-android/tree/main/mobilecore
+
+The other libraries' .aar files have to placed in the libs folder of the holder module for the CoronaCheck app and in the libs folder of the verifier module for the Scanner app. You can either build their .aar yourself from their repo or grab directly the prebuilt artifacts from their github releases.
+
