@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.parcelize)
 }
 
@@ -21,6 +21,13 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
+    }
+}
+
+kotlin {
+    sourceSets {
+        main.kotlin.srcDirs += 'build/generated/ksp/main/kotlin'
+        test.kotlin.srcDirs += 'build/generated/ksp/test/kotlin'
     }
 }
 
@@ -47,5 +54,5 @@ dependencies {
     testImplementation libs.mockk
     testImplementation libs.coroutines.android
 
-    kapt libs.moshi.codegen
+    ksp libs.moshi.codegen
 }

@@ -31,6 +31,7 @@ import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTimeNumerical
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.Environment
@@ -51,7 +52,7 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentAboutAppBinding.bind(view)
 
-        val aboutThisAppData = arguments?.getParcelable<AboutThisAppData>(EXTRA_ABOUT_THIS_APP_DATA)
+        val aboutThisAppData = arguments?.getParcelableCompat<AboutThisAppData>(EXTRA_ABOUT_THIS_APP_DATA)
             ?: throw IllegalStateException("AboutThisAppData should be set")
 
         aboutThisAppData.sections.forEach {

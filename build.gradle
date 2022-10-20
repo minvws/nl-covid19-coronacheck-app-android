@@ -11,13 +11,11 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.spotless)
     alias(libs.plugins.shot) apply false
     alias(libs.plugins.navigation.safeargs.kotlin) apply false
     alias(libs.plugins.googleServices) apply false
-    alias(libs.plugins.easylauncher) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
 }
 
@@ -54,10 +52,10 @@ allprojects {
 
         project.plugins.withId("com.android.base") {
             android {
-                compileSdkVersion 31
+                compileSdkVersion 33
                 defaultConfig {
                     minSdkVersion 23
-                    targetSdkVersion 31
+                    targetSdkVersion 33
                 }
                 compileOptions {
                     sourceCompatibility JavaVersion.VERSION_1_8

@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.design.databinding.FragmentInfoBinding
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import org.koin.android.ext.android.inject
 
 class InfoFragment : Fragment(R.layout.fragment_info) {
@@ -19,7 +20,7 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentInfoBinding.bind(view)
 
-        val infoFragmentData = arguments?.get(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA) as? InfoFragmentData ?: return
+        val infoFragmentData = arguments?.getParcelableCompat<InfoFragmentData>(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA) ?: return
         binding.title.text = infoFragmentData.title
         binding.description.apply {
             infoFragmentData.descriptionData.run {

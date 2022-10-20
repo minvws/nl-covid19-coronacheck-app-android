@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.databinding.FragmentInfoBottomsheetBinding
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
 
@@ -56,7 +57,7 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
         })
 
         val expandedBottomSheetData =
-            arguments?.get(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA) as? InfoFragmentData ?: return
+            arguments?.getParcelableCompat<InfoFragmentData>(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA) ?: return
         binding.title.text = expandedBottomSheetData.title
         binding.description.apply {
             // split html text in parts per paragraph for Talkback users only

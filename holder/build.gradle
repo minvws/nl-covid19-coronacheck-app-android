@@ -1,11 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.navigation.safeargs.kotlin)
     alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.easylauncher)
     alias(libs.plugins.shot)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.fladle)
 }
 
@@ -58,13 +57,6 @@ android {
         buildConfigField "String", "PAP_BASE_URL", "\"https://qrcodezonderdigid.ggdghor.nl\""
         buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.coronacheck.nl/v8/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl", digidSchema: "coronacheck"]
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += ["room.schemaLocation":
-                                      "$projectDir/schemas".toString()]
-            }
-        }
     }
 
     signingConfigs {
@@ -156,6 +148,21 @@ android {
         coreLibraryDesugaringEnabled true
     }
 
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
+
+    kotlin {
+        sourceSets {
+            main.kotlin.srcDirs += 'build/generated/ksp/main/kotlin'
+            test.kotlin.srcDirs += 'build/generated/ksp/test/kotlin'
+        }
+    }
+
+    packagingOptions {
+        exclude "META-INF/LICENSE**"
+    }
+
     fladle {
         projectId = "coronatester-test"
         variant = "accDebug"
@@ -196,7 +203,7 @@ dependencies {
     implementation libs.rootbeer
     implementation libs.room.runtime
     implementation libs.room
-    kapt libs.room.compiler
+    ksp libs.room.compiler
     implementation libs.sqlcipher
     implementation libs.work.runtime
     implementation libs.moshi.adapters
@@ -231,52 +238,5 @@ dependencies {
     androidTestImplementation libs.androidx.test.core
     androidTestImplementation libs.androidx.core.testing
 
-    kapt libs.moshi.codegen
-}
-
-easylauncher {
-    buildTypes {
-        debug {
-            filters = customRibbon(
-                    label: "Debug",
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-    }
-    variants {
-        tstDebug {
-            filters = customRibbon(
-                    label: "Test Debug",
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-        accDebug {
-            filters = customRibbon(
-                    label: "Acc Debug",
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-        tstRelease {
-            filters = customRibbon(
-                    label: "Test $appVersionCode",
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-        accRelease {
-            filters = customRibbon(
-                    label: "Acc $appVersionCode",
-                    ribbonColor: "#727679",
-                    labelColor: "#FFFFFF",
-                    textSizeRatio: 0.2
-            )
-        }
-    }
+    ksp libs.moshi.codegen
 }

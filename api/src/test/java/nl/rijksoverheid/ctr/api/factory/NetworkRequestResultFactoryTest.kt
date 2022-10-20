@@ -201,10 +201,6 @@ class NetworkRequestResultFactoryTest {
                 return ""
             }
 
-            override fun isFirstInstall(): Boolean {
-                return true
-            }
-
             override fun isNetworkAvailable(): Boolean {
                 return isNetworkAvailable
             }
