@@ -44,3 +44,4 @@ include ':qrscanner:honeywellsupport'
 
 rootProject.name = "CoronaTester"
 
+include ':luhncheck'

@@ -32,7 +32,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.get_events.usecases.ConfigProvidersUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.EventProvidersResult
 import nl.rijksoverheid.ctr.holder.get_events.usecases.TestProvidersResult
-import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
@@ -68,6 +67,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
+import nl.rijksoverheid.luhncheck.TokenValidator
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -119,7 +119,7 @@ fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {
 
 fun fakeTokenValidatorUtil(
     isValid: Boolean = true
-) = object : TokenValidatorUtil {
+) = object : TokenValidator {
     override fun validate(token: String, checksum: String): Boolean {
         return isValid
     }

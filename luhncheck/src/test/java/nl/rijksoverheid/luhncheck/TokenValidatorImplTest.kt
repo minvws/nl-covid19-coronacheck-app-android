@@ -1,13 +1,5 @@
-/*
- * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
- * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
- *
- * SPDX-License-Identifier: EUPL-1.2
- */
+package nl.rijksoverheid.luhncheck
 
-package nl.rijksoverheid.ctr.input_token.utils
-
-import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtilImpl
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -18,9 +10,9 @@ import org.junit.Test
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class TokenValidatorUtilImplTest {
+class TokenValidatorImplTest {
 
-    private val util = TokenValidatorUtilImpl()
+    private val util = TokenValidatorImpl()
 
     @Test
     fun `Check valid token`() {

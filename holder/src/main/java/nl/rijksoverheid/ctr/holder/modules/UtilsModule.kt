@@ -27,8 +27,6 @@ import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtilImpl
-import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
-import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtilImpl
 import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtil
 import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtilImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
@@ -61,6 +59,8 @@ import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtilImpl
+import nl.rijksoverheid.luhncheck.TokenValidator
+import nl.rijksoverheid.luhncheck.TokenValidatorImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -80,7 +80,7 @@ val utilsModule = module {
             get()
         )
     }
-    factory<TokenValidatorUtil> { TokenValidatorUtilImpl() }
+    factory<TokenValidator> { TokenValidatorImpl() }
     factory<CredentialUtil> { CredentialUtilImpl(Clock.systemUTC(), get(), get(), get(), get()) }
     factory<OriginUtil> { OriginUtilImpl(Clock.systemUTC()) }
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get(), get(), get()) }
@@ -88,11 +88,28 @@ val utilsModule = module {
     factory<RemoteEventUtil> { RemoteEventUtilImpl(get()) }
     factory<RemoteEventStringUtil> { RemoteEventStringUtilImpl(androidContext()::getString) }
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
-    factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get()) }
+    factory<DashboardItemUtil> {
+        DashboardItemUtilImpl(
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<LocalDateUtil> { LocalDateUtilImpl(get(), get()) }
     factory<MultipleQrCodesUtil> { MultipleQrCodesUtilImpl() }
-    factory<DashboardPageInfoItemHandlerUtil> { DashboardPageInfoItemHandlerUtilImpl(get(), get(), get(), get()) }
+    factory<DashboardPageInfoItemHandlerUtil> {
+        DashboardPageInfoItemHandlerUtilImpl(
+            get(),
+            get(),
+            get(),
+            get()
+        )
+    }
     factory<QrCodesFragmentUtil> { QrCodesFragmentUtilImpl(Clock.systemUTC()) }
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }

@@ -12,14 +12,14 @@ import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.get_events.usecases.ConfigProvidersUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.TestProvidersResult
-import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
-import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtilImpl
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.ext.removeWhitespace
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import nl.rijksoverheid.luhncheck.TokenValidator
+import nl.rijksoverheid.luhncheck.TokenValidatorImpl
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -31,7 +31,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 class TestResultUseCase(
     private val configProviderUseCase: ConfigProvidersUseCase,
     private val testProviderRepository: TestProviderRepository,
-    private val tokenValidatorUtil: TokenValidatorUtil,
+    private val tokenValidatorUtil: TokenValidator,
     private val configUseCase: HolderCachedAppConfigUseCase
 ) {
 
@@ -57,7 +57,7 @@ class TestResultUseCase(
 
             // We need to check for valid chars
             token.toCharArray().forEach {
-                if (!TokenValidatorUtilImpl.CODE_POINTS.contains(it)) {
+                if (!TokenValidatorImpl.CODE_POINTS.contains(it)) {
                     return TestResult.InvalidToken
                 }
             }

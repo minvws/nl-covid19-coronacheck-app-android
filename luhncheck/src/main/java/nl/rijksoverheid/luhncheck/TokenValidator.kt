@@ -1,11 +1,4 @@
-/*
- * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
- * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
- *
- * SPDX-License-Identifier: EUPL-1.2
- */
-
-package nl.rijksoverheid.ctr.holder.input_token.utils
+package nl.rijksoverheid.luhncheck
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -14,19 +7,19 @@ package nl.rijksoverheid.ctr.holder.input_token.utils
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-interface TokenValidatorUtil {
+interface TokenValidator {
+    /**
+     * Validate a token based on the Luhn algorithm (https://en.wikipedia.org/wiki/Luhn_mod_N_algorithm)
+     */
     fun validate(token: String, checksum: String): Boolean
 }
 
-class TokenValidatorUtilImpl : TokenValidatorUtil {
+class TokenValidatorImpl : TokenValidator {
 
     companion object {
         const val CODE_POINTS = "BCFGJLQRSTUVXYZ23456789"
     }
 
-    /**
-     * Validate a CoronaCheck token based on the Luhn algorithm (https://en.wikipedia.org/wiki/Luhn_mod_N_algorithm)
-     */
     override fun validate(token: String, checksum: String): Boolean {
         return try {
             val tokenWithChecksum = token + checksum[0]
@@ -41,7 +34,7 @@ class TokenValidatorUtilImpl : TokenValidatorUtil {
     }
 
     /**
-     * Luhn algorithm (https://en.wikipedia.org/wiki/Luhn_mod_N_algorithm
+     * Luhn algorithm (https://en.wikipedia.org/wiki/Luhn_mod_N_algorithm)
      */
     private fun validateCheckCharacter(input: String): Boolean {
         var factor = 1
@@ -74,5 +67,4 @@ class TokenValidatorUtilImpl : TokenValidatorUtil {
 
     private fun numberOfValidInputCharacters() = CODE_POINTS.length
     private fun codePointFromCharacter(char: Char) = CODE_POINTS.indexOf(char)
-    private fun characterFromCodePoint(codePoint: Int) = CODE_POINTS[codePoint]
 }
