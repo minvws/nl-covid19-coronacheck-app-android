@@ -23,7 +23,7 @@ data class RemoteGreenCards(
     val domesticGreencard: DomesticGreenCard?,
     val euGreencards: List<EuGreenCard>?,
     val blobExpireDates: List<BlobExpiry>?,
-    val matchingBlobIds: List<List<Int>>? = null,
+    val context: Context? = null,
     val hints: List<String>? = listOf()
 ) {
     data class DomesticGreenCard(
@@ -68,4 +68,6 @@ data class RemoteGreenCards(
         val expiry: OffsetDateTime,
         val reason: String = ""
     )
+
+    data class Context(val matchingBlobIds: List<List<Int>>)
 }

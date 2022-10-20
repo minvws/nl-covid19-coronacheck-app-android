@@ -43,7 +43,8 @@ class CoronaCheckRepositoryImplTest : AutoCloseKoinTest() {
     private val holderApiClientUtil: HolderApiClientUtil = mockk()
     private val remoteConfigApiClient: RemoteConfigApiClient = mockk(relaxed = true)
     private val networkRequestResultFactory: NetworkRequestResultFactory = mockk()
-    private val errorResponseBodyConverter: Converter<ResponseBody, CoronaCheckErrorResponse> = mockk()
+    private val errorResponseBodyConverter: Converter<ResponseBody, CoronaCheckErrorResponse> =
+        mockk()
     private val responseBodyConverter: Converter<ResponseBody, RemoteGreenCards> = mockk()
     private val coronaCheckRepository: CoronaCheckRepository = CoronaCheckRepositoryImpl(
         cachedAppConfigUseCase,
@@ -114,7 +115,12 @@ class CoronaCheckRepositoryImplTest : AutoCloseKoinTest() {
         mockRequestResult<RemoteGreenCards>()
         val getCredentialsPostDataSlot = slot<GetCredentialsPostData>()
 
-        coronaCheckRepository.getGreenCards("stoken", listOf("event"), "issueCommitmentMessage", Flow(0))
+        coronaCheckRepository.getGreenCards(
+            "stoken",
+            listOf("event"),
+            "issueCommitmentMessage",
+            Flow(0)
+        )
 
         coVerify(exactly = 1) { holderApiClient.getCredentials(capture(getCredentialsPostDataSlot)) }
         coVerify(exactly = 1) { holderApiClientUtil.client(capture(certSlot)) }
@@ -158,36 +164,53 @@ class CoronaCheckRepositoryImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `when get_credentials request fails with error code 99790 then return matching blob ids`() = runTest {
-        val matchingBlobIds = RemoteGreenCards(null, null, null, matchingBlobIds = listOf(listOf(1), listOf(2)))
-        val errorBody = mockk<ResponseBody>()
-        val response = mockk<Response<CoronaCheckErrorResponse>> {
-            coEvery { code() } returns 400
-            coEvery { message() } returns ""
-            coEvery { errorBody() } returns errorBody
+    fun `when get_credentials request fails with error code 99790 then return matching blob ids`() =
+        runTest {
+            val matchingBlobIds = RemoteGreenCards(
+                null, null, null, context = RemoteGreenCards.Context(
+                    matchingBlobIds = listOf(listOf(1), listOf(2))
+                )
+            )
+            val errorBody = mockk<ResponseBody>(relaxed = true)
+
+            val response = mockk<Response<CoronaCheckErrorResponse>> {
+                coEvery { code() } returns 400
+                coEvery { message() } returns ""
+                coEvery { errorBody() } returns errorBody
+            }
+            coEvery { errorResponseBodyConverter.convert(errorBody) } returns CoronaCheckErrorResponse(
+                "error",
+                99790
+            )
+            coEvery { responseBodyConverter.convert(any()) } returns matchingBlobIds
+            mockRequestResult<RemoteGreenCards>(HttpException(response))
+
+            val testResult =
+                coronaCheckRepository.getGreenCards("", listOf(), "", HolderFlow.Vaccination)
+
+            assertEquals(matchingBlobIds, (testResult as NetworkRequestResult.Success).response)
         }
-        coEvery { errorResponseBodyConverter.convert(errorBody) } returns CoronaCheckErrorResponse("error", 99790)
-        coEvery { responseBodyConverter.convert(errorBody) } returns matchingBlobIds
-        mockRequestResult<RemoteGreenCards>(HttpException(response))
-
-        val testResult = coronaCheckRepository.getGreenCards("", listOf(), "", HolderFlow.Vaccination)
-
-        assertEquals(matchingBlobIds, (testResult as NetworkRequestResult.Success).response)
-    }
 
     @Test
-    fun `when get_credentials request fails with error code other than 99790 then return null`() = runTest {
-        val errorBody = mockk<ResponseBody>()
-        val response = mockk<Response<CoronaCheckErrorResponse>> {
-            coEvery { code() } returns 400
-            coEvery { message() } returns ""
-            coEvery { errorBody() } returns errorBody
+    fun `when get_credentials request fails with error code other than 99790 then return null`() =
+        runTest {
+            val errorBody = mockk<ResponseBody>()
+            coEvery { errorBody.source().buffer.clone() } returns mockk()
+
+            val response = mockk<Response<CoronaCheckErrorResponse>> {
+                coEvery { code() } returns 400
+                coEvery { message() } returns ""
+                coEvery { errorBody() } returns errorBody
+            }
+            coEvery { errorResponseBodyConverter.convert(errorBody) } returns CoronaCheckErrorResponse(
+                "error",
+                99552
+            )
+            mockRequestResult<RemoteGreenCards>(HttpException(response))
+
+            val testResult =
+                coronaCheckRepository.getGreenCards("", listOf(), "", HolderFlow.Vaccination)
+
+            assertNull((testResult as NetworkRequestResult.Success).response)
         }
-        coEvery { errorResponseBodyConverter.convert(errorBody) } returns CoronaCheckErrorResponse("error", 99552)
-        mockRequestResult<RemoteGreenCards>(HttpException(response))
-
-        val testResult = coronaCheckRepository.getGreenCards("", listOf(), "", HolderFlow.Vaccination)
-
-        assertNull((testResult as NetworkRequestResult.Success).response)
-    }
 }

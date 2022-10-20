@@ -25,8 +25,7 @@ class MatchedEventsUseCaseImpl(
             index != selectionIndex
         }.flatten().toSet().filter { !matchingBlobIds[selectionIndex].contains(it) }
 
-        val idsString = eventIdsToDelete.joinToString()
-        holderDatabase.eventGroupDao().getAllOfIds(idsString).forEach { eventGroupEntity ->
+        holderDatabase.eventGroupDao().getAllOfIds(eventIdsToDelete).forEach { eventGroupEntity ->
             val remoteProtocol = getRemoteProtocolFromEventGroupUseCase.get(eventGroupEntity)
             remoteProtocol?.events?.forEach { remoteEvent ->
                 holderDatabase.removedEventDao().insert(
@@ -40,6 +39,6 @@ class MatchedEventsUseCaseImpl(
             }
         }
 
-        holderDatabase.eventGroupDao().deleteAllOfIds(idsString)
+        holderDatabase.eventGroupDao().deleteAllOfIds(eventIdsToDelete)
     }
 }

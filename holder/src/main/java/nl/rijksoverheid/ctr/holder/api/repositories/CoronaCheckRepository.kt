@@ -23,6 +23,7 @@ import nl.rijksoverheid.ctr.shared.models.CoronaCheckErrorResponse
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.asResponseBody
 import retrofit2.Converter
 
 /*
@@ -105,12 +106,16 @@ open class CoronaCheckRepositoryImpl(
                         flows = when (flow) {
                             is HolderFlow.Vaccination -> listOf(VACCINATION_BACKEND_FLOW)
                             is HolderFlow.Recovery -> listOf(POSITIVE_TEST_BACKEND_FLOW)
-                            is HolderFlow.CommercialTest, is HolderFlow.DigidTest -> listOf(NEGATIVE_TEST_BACKEND_FLOW)
+                            is HolderFlow.CommercialTest, is HolderFlow.DigidTest -> listOf(
+                                NEGATIVE_TEST_BACKEND_FLOW
+                            )
                             is HolderFlow.VaccinationAndPositiveTest -> listOf(
                                 VACCINATION_BACKEND_FLOW,
                                 POSITIVE_TEST_BACKEND_FLOW
                             )
-                            is HolderFlow.VaccinationAssessment -> listOf(VACCINATION_ASSESSMENT_BACKEND_FLOW)
+                            is HolderFlow.VaccinationAssessment -> listOf(
+                                VACCINATION_ASSESSMENT_BACKEND_FLOW
+                            )
                             is HolderFlow.Refresh -> listOf(REFRESH_BACKEND_FLOW)
                             is HolderFlow.HkviScanned -> {
                                 // Hkvi is a flow where you scanned a paper qr which holds one event. That event determines the backend flow.
@@ -118,7 +123,9 @@ open class CoronaCheckRepositoryImpl(
                                     is RemoteEventVaccination -> listOf(VACCINATION_BACKEND_FLOW)
                                     is RemoteEventNegativeTest -> listOf(NEGATIVE_TEST_BACKEND_FLOW)
                                     is RemoteEventPositiveTest -> listOf(POSITIVE_TEST_BACKEND_FLOW)
-                                    is RemoteEventVaccinationAssessment -> listOf(VACCINATION_ASSESSMENT_BACKEND_FLOW)
+                                    is RemoteEventVaccinationAssessment -> listOf(
+                                        VACCINATION_ASSESSMENT_BACKEND_FLOW
+                                    )
                                     else -> listOf(REFRESH_BACKEND_FLOW)
                                 }
                             }
@@ -129,9 +136,14 @@ open class CoronaCheckRepositoryImpl(
             },
             interceptHttpError = {
                 it.response()?.errorBody()?.let { errorBody ->
+                    val errorBodyBuffer = errorBody.source().buffer.clone()
                     errorResponseBodyConverter.convert(errorBody)?.let { coronaErrorResponse ->
                         if (coronaErrorResponse.code == FUZZY_MATCHING_ERROR) {
-                            responseBodyConverter.convert(errorBody)
+                            val errorBodyClone = errorBodyBuffer.asResponseBody(
+                                errorBody.contentType(),
+                                errorBody.contentLength()
+                            )
+                            responseBodyConverter.convert(errorBodyClone)
                         } else {
                             null
                         }

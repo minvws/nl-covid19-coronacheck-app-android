@@ -73,7 +73,7 @@ class GetRemoteGreenCardsUseCaseImpl(
 
             when (remoteGreenCardsResult) {
                 is NetworkRequestResult.Success -> {
-                    val matchingBlobIds = remoteGreenCardsResult.response.matchingBlobIds
+                    val matchingBlobIds = remoteGreenCardsResult.response.context?.matchingBlobIds
                     if (matchingBlobIds?.isNotEmpty() == true) {
                         val fuzzyMatchedEvents = matchingBlobIds.flatten().toSet().mapNotNull { fuzzyMatchedEventId ->
                             val eventGroup = events.firstOrNull() { event -> event.id == fuzzyMatchedEventId }

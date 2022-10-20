@@ -16,9 +16,9 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class MatchedEventsUseCaseImplTest : AutoCloseKoinTest() {
-    private fun eventGroupEntity(type: OriginType) = EventGroupEntity(
+    private fun eventGroupEntity(type: OriginType, providerIdentifier: String) = EventGroupEntity(
         walletId = 1,
-        providerIdentifier = "GGD",
+        providerIdentifier = providerIdentifier,
         type = type,
         scope = "",
         expiryDate = OffsetDateTime.now(),
@@ -31,7 +31,7 @@ class MatchedEventsUseCaseImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `with two event groups, keep the selected one events and discard the other one's events`() = runTest {
-        val remoteEvents = listOf(eventGroupEntity(OriginType.Vaccination), eventGroupEntity(OriginType.Test))
+        val remoteEvents = listOf(eventGroupEntity(OriginType.Vaccination, "GGD"), eventGroupEntity(OriginType.Test, "ZZZ"))
         holderDatabase.eventGroupDao().insertAll(remoteEvents)
         val matchedEventsUseCase = MatchedEventsUseCaseImpl(getRemoteProtocolFromEventGroupUseCase, holderDatabase)
 
@@ -39,6 +39,24 @@ class MatchedEventsUseCaseImplTest : AutoCloseKoinTest() {
 
         val removedEventEntities = holderDatabase.removedEventDao().getAll(RemovedEventReason.FuzzyMatched)
         assertEquals(2, removedEventEntities.size)
+        val eventGroupEntities = holderDatabase.eventGroupDao().getAll()
+        assertEquals(1, eventGroupEntities.size)
+    }
+
+    @Test
+    fun `with three event groups, keep the selected one events and discard the other one's events`() = runTest {
+        val remoteEvents = listOf(
+            eventGroupEntity(OriginType.Vaccination, "GGD"),
+            eventGroupEntity(OriginType.Vaccination, "RIVM"),
+            eventGroupEntity(OriginType.Test, "ZZZ")
+        )
+        holderDatabase.eventGroupDao().insertAll(remoteEvents)
+        val matchedEventsUseCase = MatchedEventsUseCaseImpl(getRemoteProtocolFromEventGroupUseCase, holderDatabase)
+
+        matchedEventsUseCase.selected(1, listOf(listOf(1), listOf(2), listOf(3)))
+
+        val removedEventEntities = holderDatabase.removedEventDao().getAll(RemovedEventReason.FuzzyMatched)
+        assertEquals(4, removedEventEntities.size)
         val eventGroupEntities = holderDatabase.eventGroupDao().getAll()
         assertEquals(1, eventGroupEntities.size)
     }

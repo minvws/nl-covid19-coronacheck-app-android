@@ -402,7 +402,7 @@ fun fakeGreenCardUtil(
 
 fun fakeGetRemoteGreenCardUseCase(
     result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
-        RemoteGreenCards(null, null, listOf(), listOf())
+        RemoteGreenCards(null, null, listOf(), null)
     )
 ) = object : GetRemoteGreenCardsUseCase {
     override suspend fun get(events: List<EventGroupEntity>, secretKey: String, flow: Flow): RemoteGreenCardsResult {
@@ -603,7 +603,7 @@ fun fakeEventGroupEntity(
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),
     euGreencards: List<RemoteGreenCards.EuGreenCard>? = listOf(fakeEuGreenCard())
-) = RemoteGreenCards(domesticGreencard, euGreencards, listOf(), listOf())
+) = RemoteGreenCards(domesticGreencard, euGreencards, listOf(), null)
 
 fun fakeDomesticGreenCard(
     origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),
