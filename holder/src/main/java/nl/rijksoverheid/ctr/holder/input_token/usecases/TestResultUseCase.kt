@@ -18,8 +18,8 @@ import nl.rijksoverheid.ctr.shared.ext.removeWhitespace
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
-import nl.rijksoverheid.luhncheck.TokenValidator
-import nl.rijksoverheid.luhncheck.TokenValidatorImpl
+import nl.rijksoverheid.rdo.modules.luhncheck.TokenValidator
+import nl.rijksoverheid.rdo.modules.luhncheck.TokenValidatorImpl
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.

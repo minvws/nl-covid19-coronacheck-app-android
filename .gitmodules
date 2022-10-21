@@ -4,3 +4,6 @@
 [submodule "mobilecore-src"]
 	path = mobilecore-src
 	url = https://github.com/minvws/nl-covid19-coronacheck-mobile-core.git
+[submodule "modules"]
+	path = modules
+	url = git@github.com:ktiniatros/modules.git

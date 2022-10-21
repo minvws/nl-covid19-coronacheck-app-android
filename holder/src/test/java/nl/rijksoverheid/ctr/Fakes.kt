@@ -67,7 +67,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
-import nl.rijksoverheid.luhncheck.TokenValidator
+import nl.rijksoverheid.rdo.modules.luhncheck.TokenValidator
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -225,7 +225,10 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ByteArray(0)
         }
 
-        override fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String {
+        override fun createCommitmentMessage(
+            secretKey: ByteArray,
+            prepareIssueMessage: ByteArray
+        ): String {
             return ""
         }
 
@@ -408,7 +411,11 @@ fun fakeGetRemoteGreenCardUseCase(
         RemoteGreenCards(null, null, listOf(), null)
     )
 ) = object : GetRemoteGreenCardsUseCase {
-    override suspend fun get(events: List<EventGroupEntity>, secretKey: String, flow: Flow): RemoteGreenCardsResult {
+    override suspend fun get(
+        events: List<EventGroupEntity>,
+        secretKey: String,
+        flow: Flow
+    ): RemoteGreenCardsResult {
         return result
     }
 }
@@ -416,7 +423,10 @@ fun fakeGetRemoteGreenCardUseCase(
 fun fakeSyncRemoteGreenCardUseCase(
     result: SyncRemoteGreenCardsResult = SyncRemoteGreenCardsResult.Success
 ) = object : SyncRemoteGreenCardsUseCase {
-    override suspend fun execute(remoteGreenCards: RemoteGreenCards, secretKey: String): SyncRemoteGreenCardsResult {
+    override suspend fun execute(
+        remoteGreenCards: RemoteGreenCards,
+        secretKey: String
+    ): SyncRemoteGreenCardsResult {
         return result
     }
 }
