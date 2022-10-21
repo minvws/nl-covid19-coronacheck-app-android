@@ -105,7 +105,14 @@ class GetRemoteGreenCardsUseCaseImplTest : AutoCloseKoinTest() {
 
         coEvery { coronaCheckRepository.getGreenCards(any(), any(), any(), any()) } answers {
             NetworkRequestResult.Success(
-                RemoteGreenCards(null, null, null, listOf(listOf(firstEvent.id, secondEvent.id), listOf(thirdEvent.id, fourthEvent.id)))
+                RemoteGreenCards(null, null, null,
+                    RemoteGreenCards.Context(
+                        listOf(
+                            listOf(firstEvent.id, secondEvent.id),
+                            listOf(thirdEvent.id, fourthEvent.id)
+                        )
+                    )
+                )
             )
         }
 
