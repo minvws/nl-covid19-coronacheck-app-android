@@ -56,6 +56,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         binding.bottom.setButtonClick {
             val selectedName = viewModel.selectedName()
             if (selectedName == null) {
+                viewModel.nothingSelectedError()
                 binding.bottom.showError()
             } else {
                 viewModel.storeSelection {

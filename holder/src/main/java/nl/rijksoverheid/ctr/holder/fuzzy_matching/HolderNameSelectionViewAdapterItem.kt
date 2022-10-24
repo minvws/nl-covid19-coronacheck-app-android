@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.fuzzy_matching
 
+import android.content.res.ColorStateList
 import android.view.View
 import androidx.core.view.isVisible
 import com.xwray.groupie.viewbinding.BindableItem
@@ -23,6 +24,10 @@ class HolderNameSelectionViewAdapterItem(
 
     override fun bind(viewBinding: ItemHolderNameSelectionViewBinding, position: Int) {
         viewBinding.radioButton.isChecked = item.isSelected
+        if (item.nothingSelectedError) {
+            viewBinding.radioButton.buttonTintList =
+                ColorStateList.valueOf(viewBinding.radioButton.context.getColor(R.color.error))
+        }
         viewBinding.nameTextView.text = item.name
         viewBinding.eventsTextView.text = item.events
         viewBinding.removedEventTextView.isVisible = item.willBeRemoved
