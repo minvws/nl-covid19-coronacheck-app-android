@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
@@ -112,10 +113,12 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
-            DividerItemDecoration(
+            MaterialDividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL
-            )
+            ).apply {
+                isLastItemDecorated = false
+            }
         )
     }
 
