@@ -52,7 +52,7 @@ class RemoteEventHolderUtilImpl(
 
     /**
      * Compare the holder of the currently stored events with the holder of the new importing events
-     * If the birth date and one of the holder's names are different, then the holders are conflicting
+     * If the birth date or month are different, then the holders are conflicting and
      * we should keep only one of them.
      */
     override fun conflicting(
@@ -60,35 +60,13 @@ class RemoteEventHolderUtilImpl(
         incomingEventHolders: List<RemoteProtocol.Holder>
     ): Boolean {
         storedEventHolders.forEach { storedEventHolder ->
-            // if any of the stored or the new data is null
-            // then we cannot really compare, just go on and
-            // let the user store his new card
             val storedBirthdate = yourEventsFragmentUtil.getBirthDate(storedEventHolder)
-            val storedFirstName = storedEventHolder.firstName
-            val storedLastName = storedEventHolder.lastName
             incomingEventHolders.forEach { incomingEventHolder ->
                 val incomingBirthdate = yourEventsFragmentUtil.getBirthDate(incomingEventHolder)
-                val birthDateIsNotMatching = birthDateIsNotMatching(storedBirthdate, incomingBirthdate)
-                val incomingFirstName = incomingEventHolder.firstName
-                val incomingLastName = incomingEventHolder.lastName
-                val nameIsNotMatching = nameIsNotMatching(storedFirstName, incomingFirstName) && nameIsNotMatching(storedLastName, incomingLastName)
-                return birthDateIsNotMatching || nameIsNotMatching
+                return birthDateIsNotMatching(storedBirthdate, incomingBirthdate)
             }
         }
         return false
-    }
-
-    private fun nameIsNotMatching(stored: String?, incoming: String?): Boolean {
-        if (stored == null || incoming == null) {
-            return true
-        }
-        val storedNameInitial = stored.firstOrNull { it.isLetter() } ?: return false
-        val incomingNameInitial = incoming.firstOrNull { it.isLetter() } ?: return false
-
-        val input = "$storedNameInitial$incomingNameInitial"
-        if (!latinCharactersRegex.matches(input)) return false
-
-        return storedNameInitial != incomingNameInitial
     }
 
     private fun birthDateIsNotMatching(stored: String, incoming: String): Boolean {
@@ -105,10 +83,6 @@ class RemoteEventHolderUtilImpl(
         val incomingBirthMonth: String? = incomingBirthdayParts.getOrNull(1)
 
         return storedBirthDay != incomingBirthDay || storedBirthMonth != incomingBirthMonth
-    }
-
-    companion object {
-        private val latinCharactersRegex = Regex(pattern = "[A-Za-z]{2}")
     }
 }
 
