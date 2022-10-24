@@ -59,7 +59,6 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
                 binding.bottom.showError()
             } else {
                 viewModel.storeSelection {
-                    resetToolbar()
                     navigateSafety(
                         actionSavedEventsSyncGreenCards(
                             selectedName = selectedName
@@ -94,6 +93,11 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
             // Reset menu item listener to default
             it.resetMenuItemListener()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.canSkip()
     }
 
     override fun onPause() {
