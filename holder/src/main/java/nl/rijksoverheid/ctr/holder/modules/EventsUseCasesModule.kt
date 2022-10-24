@@ -63,7 +63,7 @@ val eventsUseCasesModule = module {
     }
     factory<GetEventsUseCase> { GetEventsUseCaseImpl(get(), get(), get(), get(), get()) }
     factory<GetMijnCnEventsUsecase> { GetMijnCnEventsUsecaseImpl(get(), get(), get()) }
-    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get(), get(), get()) }
+    factory<SaveEventsUseCase> { SaveEventsUseCaseImpl(get(), get(), get(), get(), get()) }
 
     factory<GetEventsFromPaperProofQrUseCase> {
         GetEventsFromPaperProofQrUseCaseImpl(get(), get())
