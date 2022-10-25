@@ -441,7 +441,7 @@
   <string name="your_events_replace_dialog_title">Wil je je bewijs vervangen?</string>
   <string name="your_events_replace_dialog_message">De persoonsgegevens die je net hebt opgehaald zijn anders dan die in je huidige bewijs staan. Stop en laat eerst de gegevens aanpassen bij de organisatie die de gegevens voor je bewijs heeft geregistreerd, of vervang je bewijs. Je huidige bewijs wordt dan verwijderd.</string>
   <string name="your_events_replace_dialog_negative_button">Stoppen</string>
-  <string name="your_events_replace_dialog_positive_button">Vervangen</string>
+  <string name="your_events_replace_dialog_positive_button">Vervang</string>
   <string name="your_events_details_button">Details</string>
   <string name="qr_explanation_certificate_issuer">Ministerie van VWS / Ministry of Health, Welfare and Sport</string>
   <string name="qr_code_return_app_button">Terug naar de %s</string>
