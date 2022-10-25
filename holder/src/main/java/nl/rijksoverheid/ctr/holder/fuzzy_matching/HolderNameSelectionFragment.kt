@@ -163,10 +163,14 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
                                 selectionDetailData = item.detailData,
                                 separator = " ${getString(R.string.general_and)} "
                             ) {
-                                getString(
-                                    R.string.holder_storedEvents_listHeader_fetchedFromProvider,
-                                    it
-                                )
+                                if (it == "dcc") {
+                                    getString(R.string.holder_identitySelection_details_scannedPaperProof)
+                                } else {
+                                    getString(
+                                        R.string.holder_storedEvents_listHeader_fetchedFromProvider,
+                                        it
+                                    )
+                                }
                             }
                             infoFragmentUtil.presentAsBottomSheet(
                                 fragmentManager = parentFragmentManager,
