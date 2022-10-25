@@ -15,6 +15,7 @@ sealed class HolderNameSelectionItem {
         val events: String,
         val isSelected: Boolean = false,
         val willBeRemoved: Boolean = false,
+        val nothingSelectedError: Boolean = false,
         val detailData: List<SelectionDetailData> = listOf()
     ) : HolderNameSelectionItem()
 

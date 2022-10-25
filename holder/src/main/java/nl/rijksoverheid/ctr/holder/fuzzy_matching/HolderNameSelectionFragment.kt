@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -32,6 +34,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
     private val section = Section()
 
     private val infoFragmentUtil: InfoFragmentUtil by inject()
+    private val dialogUtil: DialogUtil by inject()
     private val selectionDetailBottomSheetDescriptionUtil: SelectionDetailBottomSheetDescriptionUtil by inject()
     private val holderNameSelectionFragmentArgs: HolderNameSelectionFragmentArgs by navArgs()
 
@@ -56,10 +59,10 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         binding.bottom.setButtonClick {
             val selectedName = viewModel.selectedName()
             if (selectedName == null) {
+                viewModel.nothingSelectedError()
                 binding.bottom.showError()
             } else {
                 viewModel.storeSelection {
-                    resetToolbar()
                     navigateSafety(
                         actionSavedEventsSyncGreenCards(
                             selectedName = selectedName
@@ -78,8 +81,16 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
 
                     setOnMenuItemClickListener {
                         if (it.itemId == R.id.skip) {
-                            // close fuzzy matching
-                            findNavController().popBackStack(R.id.nav_holder_fuzzy_matching, true)
+                            dialogUtil.presentDialog(
+                                context = requireContext(),
+                                title = R.string.holder_identitySelection_skipAlert_title,
+                                message = getString(R.string.holder_identitySelection_skipAlert_body),
+                                positiveButtonText = R.string.holder_identitySelection_skipAlert_action,
+                                positiveButtonCallback = {
+                                    // close fuzzy matching
+                                    findNavController().popBackStack(R.id.nav_holder_fuzzy_matching, true)
+                                }
+                            )
                         }
                         true
                     }
@@ -96,6 +107,13 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (holderNameSelectionFragmentArgs.getEventsFlow == false) {
+            viewModel.canSkip()
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         resetToolbar()
@@ -107,10 +125,12 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
-            DividerItemDecoration(
+            MaterialDividerItemDecoration(
                 requireContext(),
                 DividerItemDecoration.VERTICAL
-            )
+            ).apply {
+                isLastItemDecorated = false
+            }
         )
     }
 

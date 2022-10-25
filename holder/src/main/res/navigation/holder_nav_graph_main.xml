@@ -510,6 +510,11 @@
             <argument
                 android:name="matchingBlobIds"
                 app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
+
+            <argument
+                android:name="getEventsFlow"
+                app:argType="boolean"
+                android:defaultValue="true" />
         </action>
 
     </fragment>

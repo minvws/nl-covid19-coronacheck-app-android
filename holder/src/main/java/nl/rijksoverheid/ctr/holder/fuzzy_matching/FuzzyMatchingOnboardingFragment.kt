@@ -75,7 +75,12 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matchin
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
-                navigateSafety(FuzzyMatchingOnboardingFragmentDirections.actionHolderNameSelection(fuzzyMatchingOnboardingFragmentArgs.matchingBlobIds))
+                navigateSafety(
+                    FuzzyMatchingOnboardingFragmentDirections.actionHolderNameSelection(
+                        matchingBlobIds = fuzzyMatchingOnboardingFragmentArgs.matchingBlobIds,
+                        getEventsFlow = fuzzyMatchingOnboardingFragmentArgs.getEventsFlow
+                    )
+                )
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }
