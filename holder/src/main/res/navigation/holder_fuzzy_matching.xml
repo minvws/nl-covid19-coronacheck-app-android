@@ -21,6 +21,11 @@
             android:name="matchingBlobIds"
             app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
 
+        <argument
+            android:name="getEventsFlow"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
         <action
             android:id="@+id/action_holder_name_selection"
             app:destination="@id/nav_holder_name_selection"
@@ -40,6 +45,11 @@
         <argument
             android:name="matchingBlobIds"
             app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
+
+        <argument
+            android:name="getEventsFlow"
+            app:argType="boolean"
+            android:defaultValue="false" />
 
         <action
             android:id="@+id/action_saved_events_sync_green_cards"
