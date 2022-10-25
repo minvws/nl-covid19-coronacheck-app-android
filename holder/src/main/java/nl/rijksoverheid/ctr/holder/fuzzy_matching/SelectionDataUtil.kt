@@ -7,6 +7,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_NEGATIVE_TEST
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_POSITIVE_TEST
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_RECOVERY
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_TEST
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_VACCINATION
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_VACCINATION_ASSESSMENT
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventStringUtil
@@ -36,7 +37,7 @@ class SelectionDataUtilImpl(
 ) : SelectionDataUtil {
 
     override fun events(remoteEvents: List<RemoteEvent>): String {
-        val testResultTypes = listOf(TYPE_NEGATIVE_TEST, TYPE_POSITIVE_TEST, TYPE_RECOVERY)
+        val testResultTypes = listOf(TYPE_NEGATIVE_TEST, TYPE_POSITIVE_TEST, TYPE_RECOVERY, TYPE_TEST)
         val vaccinationCount = remoteEvents.filter { it.type == TYPE_VACCINATION }.size
         val testCount = remoteEvents.filter { testResultTypes.contains(it.type) }.size
         val vaccinationAssessment =
