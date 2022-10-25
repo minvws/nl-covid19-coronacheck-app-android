@@ -94,7 +94,7 @@ class HolderNameSelectionViewModelImpl(
 
             val selectionItems = fuzzyMatchedRemoteProtocols.map { remoteProtocols ->
                 val holder = remoteProtocols.first().holder
-                val events = remoteProtocols.flatMap { it.events ?: emptyList() }
+                val events = remoteProtocols.flatMap { it.events ?: emptyList() }.sortedByDescending { it.getDate() }
                 val providerIdentifier = remoteProtocols.first().providerIdentifier
                 val name = yourEventsFragmentUtil.getFullName(holder)
                 HolderNameSelectionItem.ListItem(
