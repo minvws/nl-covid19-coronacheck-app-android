@@ -65,7 +65,7 @@
     <fragment
         android:id="@+id/nav_saved_events_sync_green_cards"
         android:name="nl.rijksoverheid.ctr.holder.fuzzy_matching.FuzzyMatchingSyncFragment"
-        android:label="@string/holder_identitySelection_success_toolbar_title"
+        android:label="@string/holder_identitySelection_loading_title"
         tools:layout="@layout/fragment_saved_events_sync_green_cards">
 
         <argument
