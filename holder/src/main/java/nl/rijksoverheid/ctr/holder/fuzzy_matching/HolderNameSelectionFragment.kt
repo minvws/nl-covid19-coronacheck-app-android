@@ -21,7 +21,7 @@ import nl.rijksoverheid.ctr.holder.fuzzy_matching.HolderNameSelectionFragmentDir
 import nl.rijksoverheid.ctr.holder.hideNavigationIcon
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 /*
@@ -39,7 +39,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
     private val selectionDetailBottomSheetDescriptionUtil: SelectionDetailBottomSheetDescriptionUtil by inject()
     private val holderNameSelectionFragmentArgs: HolderNameSelectionFragmentArgs by navArgs()
 
-    private val viewModel: HolderNameSelectionViewModel by sharedViewModel {
+    private val viewModel: HolderNameSelectionViewModel by viewModel {
         parametersOf(holderNameSelectionFragmentArgs.matchingBlobIds.ids)
     }
 
@@ -95,7 +95,8 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
                                         R.id.nav_holder_fuzzy_matching,
                                         true
                                     )
-                                }
+                                },
+                                negativeButtonText = R.string.general_cancel
                             )
                         }
                         true

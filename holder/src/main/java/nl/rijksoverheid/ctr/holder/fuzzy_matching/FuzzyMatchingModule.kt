@@ -12,6 +12,10 @@ import org.koin.dsl.module
  *
  */
 val fuzzyMatchingModule = module {
+    viewModel {
+        FuzzyMatchingOnboardingViewModel(get(), get())
+    }
+
     viewModel<HolderNameSelectionViewModel> { (matchingBlobIds: List<List<Int>>) ->
         HolderNameSelectionViewModelImpl(
             get(),

@@ -15,8 +15,7 @@ import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.core.parameter.parametersOf
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -31,9 +30,7 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matchin
 
     private val fuzzyMatchingOnboardingFragmentArgs: FuzzyMatchingOnboardingFragmentArgs by navArgs()
 
-    private val viewModel: HolderNameSelectionViewModel by sharedViewModel {
-        parametersOf(fuzzyMatchingOnboardingFragmentArgs.matchingBlobIds.ids)
-    }
+    private val viewModel: FuzzyMatchingOnboardingViewModel by viewModel()
 
     private val onboardingItems by lazy {
         listOf(
