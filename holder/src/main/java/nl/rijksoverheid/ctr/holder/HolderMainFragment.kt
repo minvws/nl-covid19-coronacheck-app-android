@@ -8,6 +8,7 @@
 
 package nl.rijksoverheid.ctr.holder
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
@@ -52,6 +53,11 @@ class HolderMainFragment : Fragment(R.layout.fragment_main) {
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                     return@setNavigationOnClickListener
                 }
+                R.id.nav_fuzzy_matching_onboarding -> {
+                    // Trigger custom dispatcher in destination
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                    return@setNavigationOnClickListener
+                }
             }
 
             NavigationUI.navigateUp(navController, null)
@@ -84,4 +90,8 @@ class HolderMainFragment : Fragment(R.layout.fragment_main) {
 
 fun Fragment.hideNavigationIcon() {
     (parentFragment?.parentFragment as? HolderMainFragment)?.getToolbar()?.navigationIcon = null
+}
+
+fun Fragment.showNavigationIcon(icon: Drawable) {
+    (parentFragment?.parentFragment as? HolderMainFragment)?.getToolbar()?.navigationIcon = icon
 }

@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentFuzzyMatchingOnboardingBinding
 import nl.rijksoverheid.ctr.holder.hideNavigationIcon
+import nl.rijksoverheid.ctr.holder.showNavigationIcon
 import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
@@ -137,6 +139,7 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matchin
                     (position + 1).toString(),
                     adapter.itemCount.toString()
                 )
+                val isFirstItem = position == 0
                 val isLastItem = position == adapter.itemCount - 1
                 binding.button.text = getString(
                     if (isLastItem) {
@@ -155,6 +158,17 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matchin
                             .toFloat()
                 } else {
                     binding.bottom.cardElevation = 0f
+                }
+
+                if (viewModel.canSkipLiveData.value == false) {
+                    if (isFirstItem) {
+                        hideNavigationIcon()
+                    } else {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_back)?.let {
+                            it.setTint(ContextCompat.getColor(requireContext(), R.color.black))
+                            showNavigationIcon(it)
+                        }
+                    }
                 }
             }
         })
