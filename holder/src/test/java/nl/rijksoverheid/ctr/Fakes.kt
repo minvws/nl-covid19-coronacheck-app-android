@@ -132,7 +132,7 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
-    override fun getCachedAppConfigOrNull(): HolderConfig? {
+    override fun getCachedAppConfigOrNull(): HolderConfig {
         return appConfig
     }
 }
@@ -387,7 +387,10 @@ fun fakeGreenCardUtil(
         return isExpiring
     }
 
-    override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
+    override fun hasNoActiveCredentials(
+        greenCard: GreenCard,
+        ignoreExpiredEuCredentials: Boolean
+    ): Boolean {
         return hasNoActiveCredentials
     }
 
