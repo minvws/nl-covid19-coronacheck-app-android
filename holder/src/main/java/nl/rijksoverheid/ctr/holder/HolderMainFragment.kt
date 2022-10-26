@@ -81,3 +81,7 @@ class HolderMainFragment : Fragment(R.layout.fragment_main) {
         }
     }
 }
+
+fun Fragment.hideNavigationIcon() {
+    (parentFragment?.parentFragment as? HolderMainFragment)?.getToolbar()?.navigationIcon = null
+}

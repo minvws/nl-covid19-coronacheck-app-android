@@ -18,9 +18,10 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentHolderNameSelectionBinding
 import nl.rijksoverheid.ctr.holder.fuzzy_matching.HolderNameSelectionFragmentDirections.Companion.actionSavedEventsSyncGreenCards
+import nl.rijksoverheid.ctr.holder.hideNavigationIcon
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.parameter.parametersOf
 
 /*
@@ -38,7 +39,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
     private val selectionDetailBottomSheetDescriptionUtil: SelectionDetailBottomSheetDescriptionUtil by inject()
     private val holderNameSelectionFragmentArgs: HolderNameSelectionFragmentArgs by navArgs()
 
-    private val viewModel: HolderNameSelectionViewModel by viewModel {
+    private val viewModel: HolderNameSelectionViewModel by sharedViewModel {
         parametersOf(holderNameSelectionFragmentArgs.matchingBlobIds.ids)
     }
 
@@ -50,6 +51,8 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         viewModel.canSkipLiveData.observe(viewLifecycleOwner) { canSkip ->
             if (canSkip) {
                 addToolbarButton()
+            } else {
+                hideNavigationIcon()
             }
         }
 
@@ -88,7 +91,10 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
                                 positiveButtonText = R.string.holder_identitySelection_skipAlert_action,
                                 positiveButtonCallback = {
                                     // close fuzzy matching
-                                    findNavController().popBackStack(R.id.nav_holder_fuzzy_matching, true)
+                                    findNavController().popBackStack(
+                                        R.id.nav_holder_fuzzy_matching,
+                                        true
+                                    )
                                 }
                             )
                         }
@@ -109,9 +115,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
 
     override fun onResume() {
         super.onResume()
-        if (holderNameSelectionFragmentArgs.getEventsFlow == false) {
-            viewModel.canSkip()
-        }
+        viewModel.canSkip(holderNameSelectionFragmentArgs.getEventsFlow)
     }
 
     override fun onPause() {
@@ -163,7 +167,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
                                 selectionDetailData = item.detailData,
                                 separator = " ${getString(R.string.general_and)} "
                             ) {
-                                if (it == "dcc") {
+                                if (it.contains("dcc")) {
                                     getString(R.string.holder_identitySelection_details_scannedPaperProof)
                                 } else {
                                     getString(

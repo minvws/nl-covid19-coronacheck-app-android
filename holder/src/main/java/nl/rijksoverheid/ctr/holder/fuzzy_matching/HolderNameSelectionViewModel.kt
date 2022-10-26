@@ -24,7 +24,7 @@ abstract class HolderNameSelectionViewModel : ViewModel() {
     abstract fun onItemSelected(selectedName: String)
     abstract fun selectedName(): String?
     abstract fun storeSelection(onStored: () -> Unit)
-    abstract fun canSkip()
+    abstract fun canSkip(fromGetEvents: Boolean)
     abstract fun nothingSelectedError()
 }
 
@@ -42,16 +42,16 @@ class HolderNameSelectionViewModelImpl(
         updateItems()
     }
 
-    private fun checkIfCanSkip() {
-        viewModelScope.launch {
-            val activeCredentialExists = holderDatabase.greenCardDao().getAll()
-                .any { !greenCardUtil.hasNoActiveCredentials(it) }
-            (canSkipLiveData as MutableLiveData).value = activeCredentialExists
+    override fun canSkip(fromGetEvents: Boolean) {
+        if (fromGetEvents) {
+            (canSkipLiveData as MutableLiveData).value = false
+        } else {
+            viewModelScope.launch {
+                val activeCredentialExists = holderDatabase.greenCardDao().getAll()
+                    .any { !greenCardUtil.hasNoActiveCredentials(it) }
+                (canSkipLiveData as MutableLiveData).value = activeCredentialExists
+            }
         }
-    }
-
-    override fun canSkip() {
-        checkIfCanSkip()
     }
 
     override fun onItemSelected(selectedName: String) {

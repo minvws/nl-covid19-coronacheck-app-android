@@ -10,10 +10,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentFuzzyMatchingOnboardingBinding
+import nl.rijksoverheid.ctr.holder.hideNavigationIcon
 import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.parameter.parametersOf
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -27,6 +30,10 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matchin
     private val binding get() = _binding!!
 
     private val fuzzyMatchingOnboardingFragmentArgs: FuzzyMatchingOnboardingFragmentArgs by navArgs()
+
+    private val viewModel: HolderNameSelectionViewModel by sharedViewModel {
+        parametersOf(fuzzyMatchingOnboardingFragmentArgs.matchingBlobIds.ids)
+    }
 
     private val onboardingItems by lazy {
         listOf(
@@ -67,6 +74,13 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matchin
 
         setBackPressListener()
         setBindings(adapter)
+
+        viewModel.canSkipLiveData.observe(viewLifecycleOwner) { canSkip ->
+            if (!canSkip) {
+                hideNavigationIcon()
+            }
+        }
+        viewModel.canSkip(fuzzyMatchingOnboardingFragmentArgs.getEventsFlow)
     }
 
     private fun setBindings(

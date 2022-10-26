@@ -9,8 +9,8 @@ import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
-import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.hideNavigationIcon
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.sync_greencards.SyncGreenCardsViewModel
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
@@ -41,10 +41,6 @@ class FuzzyMatchingSyncFragment : BaseFragment(R.layout.fragment_saved_events_sy
 
     override fun getFlow(): Flow {
         return HolderFlow.FuzzyMatching
-    }
-
-    private fun hideNavigationIcon() {
-        (parentFragment?.parentFragment as? HolderMainFragment)?.getToolbar()?.navigationIcon = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -87,7 +83,10 @@ class FuzzyMatchingSyncFragment : BaseFragment(R.layout.fragment_saved_events_sy
                         )
                     }
                     is DatabaseSyncerResult.FuzzyMatchingError -> {
-                        findNavControllerSafety()?.popBackStack(R.id.nav_holder_fuzzy_matching, true)
+                        findNavControllerSafety()?.popBackStack(
+                            R.id.nav_holder_fuzzy_matching,
+                            true
+                        )
                     }
                 }
             })
