@@ -49,13 +49,13 @@ android {
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
         buildConfigField "String", "OPEN_ID_REDIRECT_URL", "\"https://coronacheck.nl/app/auth2\""
-        buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v8/\""
+        buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v9/\""
         buildConfigField "String", "MAX_BASE_URL", "\"https://max.coronacheck.nl\""
         buildConfigField "String", "OPEN_ID_CLIENT_ID", "\"cc_app\""
         buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL",  "\"\""
         buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.coronacheck.nl\""
         buildConfigField "String", "PAP_BASE_URL", "\"https://qrcodezonderdigid.ggdghor.nl\""
-        buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.coronacheck.nl/v8/\""
+        buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.coronacheck.nl/v9/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl", digidSchema: "coronacheck"]
     }
 
@@ -72,7 +72,7 @@ android {
     productFlavors {
         tst {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.test.coronacheck.nl/v9/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://holder-api.test.coronacheck.nl/v8/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://holder-api.test.coronacheck.nl/v9/\""
             buildConfigField "String", "MAX_BASE_URL", "\"https://max.test.coronacheck.nl\""
             buildConfigField "String", "OPEN_ID_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "OPEN_ID_REDIRECT_URL", "\"https://web.test.coronacheck.nl/app/auth2\""
@@ -90,8 +90,8 @@ android {
             buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
         }
         acc {
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v8/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v8/\""
+            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v9/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v9/\""
             buildConfigField "String", "MAX_BASE_URL", "\"https://max.acc.coronacheck.nl\""
             buildConfigField "String", "OPEN_ID_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "OPEN_ID_REDIRECT_URL", "\"https://web.acc.coronacheck.nl/app/auth2\""
