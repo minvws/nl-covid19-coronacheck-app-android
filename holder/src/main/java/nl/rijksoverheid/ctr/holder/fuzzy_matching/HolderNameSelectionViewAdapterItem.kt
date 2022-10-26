@@ -34,6 +34,7 @@ class HolderNameSelectionViewAdapterItem(
         viewBinding.root.setOnClickListener {
             onSelected(position)
         }
+        viewBinding.detailsButton.contentDescription = "${item.name} ${viewBinding.detailsButton.text}"
         viewBinding.detailsButton.setOnClickListener {
             onDetailsButtonClicked()
         }
