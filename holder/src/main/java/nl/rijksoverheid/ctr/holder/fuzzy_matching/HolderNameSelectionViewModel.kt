@@ -87,7 +87,7 @@ class HolderNameSelectionViewModelImpl(
                 val providerIdentifier = remoteProtocols.first().providerIdentifier
                 // make sure we don't select a name present in other groups
                 val otherHolderNames = holderNames.filterIndexed { i, _ -> i != index }.flatten()
-                val name = holders.find { !otherHolderNames.contains(it) } ?: "mpourda"
+                val name = holders.first { !otherHolderNames.contains(it) }
                 HolderNameSelectionItem.ListItem(
                     name = name,
                     events = selectionDataUtil.events(events),
