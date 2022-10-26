@@ -21,7 +21,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 interface CredentialUtil {
-    fun getActiveCredential(greenCardType: GreenCardType, entities: List<CredentialEntity>): CredentialEntity?
+    fun getActiveCredential(greenCardType: GreenCardType, entities: List<CredentialEntity>, ignoreExpiredEuCredentials: Boolean = true): CredentialEntity?
     fun isExpiring(credentialRenewalDays: Long, credential: CredentialEntity): Boolean
     fun getTestTypeForEuropeanCredentials(entities: List<CredentialEntity>): String
     fun getVaccinationDosesCountryLineForEuropeanCredentials(
@@ -43,12 +43,12 @@ class CredentialUtilImpl(
     private val mobileCoreWrapper: MobileCoreWrapper,
     private val appConfigUseCase: HolderCachedAppConfigUseCase,
     private val countryUtil: CountryUtil,
-    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
+    cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : CredentialUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
-    override fun getActiveCredential(greenCardType: GreenCardType, entities: List<CredentialEntity>): CredentialEntity? {
+    override fun getActiveCredential(greenCardType: GreenCardType, entities: List<CredentialEntity>, ignoreExpiredEuCredentials: Boolean): CredentialEntity? {
 
         val credentialsInWindow = entities.filter {
             when (greenCardType) {
@@ -62,9 +62,20 @@ class CredentialUtilImpl(
                         )
                     )
                 }
-                // accept expired credentials for dcc
                 is GreenCardType.Eu -> {
-                    true
+                    if (ignoreExpiredEuCredentials) {
+                        // accept expired credentials for dcc
+                        true
+                    } else {
+                        // don't accept expired credentials for dcc
+                        it.validFrom.isBefore(
+                            OffsetDateTime.now(clock)
+                        ) && it.expirationTime.isAfter(
+                            OffsetDateTime.now(
+                                clock
+                            )
+                        )
+                    }
                 }
             }
         }

@@ -26,7 +26,7 @@ abstract class FuzzyMatchingBaseViewModel(
         } else {
             viewModelScope.launch {
                 val activeCredentialExists = holderDatabase.greenCardDao().getAll()
-                    .any { !greenCardUtil.hasNoActiveCredentials(it) }
+                    .any { !greenCardUtil.hasNoActiveCredentials(it, false) }
                 (canSkipLiveData as MutableLiveData).value = activeCredentialExists
             }
         }

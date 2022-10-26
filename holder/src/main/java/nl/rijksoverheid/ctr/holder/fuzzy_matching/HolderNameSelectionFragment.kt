@@ -18,7 +18,6 @@ import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentHolderNameSelectionBinding
 import nl.rijksoverheid.ctr.holder.fuzzy_matching.HolderNameSelectionFragmentDirections.Companion.actionSavedEventsSyncGreenCards
-import nl.rijksoverheid.ctr.holder.hideNavigationIcon
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -51,8 +50,6 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         viewModel.canSkipLiveData.observe(viewLifecycleOwner) { canSkip ->
             if (canSkip) {
                 addToolbarButton()
-            } else {
-                hideNavigationIcon()
             }
         }
 

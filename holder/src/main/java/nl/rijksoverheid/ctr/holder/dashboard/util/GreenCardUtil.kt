@@ -38,7 +38,7 @@ interface GreenCardUtil {
 
     fun isExpiring(renewalDays: Long, greenCard: GreenCard): Boolean
 
-    fun hasNoActiveCredentials(greenCard: GreenCard): Boolean
+    fun hasNoActiveCredentials(greenCard: GreenCard, ignoreExpiredEuCredentials: Boolean = true): Boolean
 
     /**
      * When in 1G or 1G/3G [DisclosurePolicy] mode, this returns true if we are dealing with
@@ -93,8 +93,8 @@ class GreenCardUtilImpl(
         return expirationTime.minusDays(renewalDays).isBefore(now)
     }
 
-    override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
-        return credentialUtil.getActiveCredential(greenCard.greenCardEntity.type, greenCard.credentialEntities) == null
+    override fun hasNoActiveCredentials(greenCard: GreenCard, ignoreExpiredEuCredentials: Boolean): Boolean {
+        return credentialUtil.getActiveCredential(greenCard.greenCardEntity.type, greenCard.credentialEntities, ignoreExpiredEuCredentials) == null
     }
 
     override fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean {
