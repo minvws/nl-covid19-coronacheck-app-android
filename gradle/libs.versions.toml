@@ -43,7 +43,7 @@ certificatetransparency-android = { module = "com.appmattus.certificatetranspare
 constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.4"
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
-crashlytics = "com.google.firebase:firebase-crashlytics-ktx:18.3.0"
+crashlytics = "com.google.firebase:firebase-crashlytics-ktx:18.3.1"
 desugar = "com.android.tools:desugar_jdk_libs:1.2.2"
 espresso-core = "androidx.test.espresso:espresso-core:3.4.0"
 fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment" }

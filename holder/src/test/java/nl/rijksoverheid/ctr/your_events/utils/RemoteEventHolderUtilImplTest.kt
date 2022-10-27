@@ -114,24 +114,6 @@ class RemoteEventHolderUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `two matching holders with different names are conflicting`() {
-        val storedHolders = listOf(
-            getHolderExample()
-        )
-
-        val incomingHolders = listOf(
-            getHolderExample(
-                firstName = "ian",
-                lastName = "'pijter"
-            )
-        )
-
-        val remoteUtil = RemoteEventHolderUtilImpl(moshi, mockk(), mockk(), YourEventsFragmentUtilImpl(mockk()))
-
-        assertTrue(remoteUtil.conflicting(storedHolders, incomingHolders))
-    }
-
-    @Test
     fun `two matching holders with different first name only are not conflicting`() {
         val storedHolders = listOf(
             getHolderExample()

@@ -24,6 +24,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 
 interface GetDashboardItemsUseCase {
@@ -112,7 +113,14 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.shouldShowBlockedEventsItem()) {
             dashboardItems.add(DashboardItem.InfoItem.BlockedEvents(
-                blockedEvents = holderDatabase.blockedEventDao().getAll()
+                blockedEvents = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked)
+            ))
+        }
+
+        if (dashboardItemUtil.shouldShowFuzzyMatchedEventsItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.FuzzyMatchedEvents(
+                storedEvent = holderDatabase.eventGroupDao().getAll().first(),
+                events = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.FuzzyMatched)
             ))
         }
 
@@ -215,7 +223,14 @@ class GetDashboardItemsUseCaseImpl(
 
         if (dashboardItemUtil.shouldShowBlockedEventsItem()) {
             dashboardItems.add(DashboardItem.InfoItem.BlockedEvents(
-                blockedEvents = holderDatabase.blockedEventDao().getAll()
+                blockedEvents = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked)
+            ))
+        }
+
+        if (dashboardItemUtil.shouldShowFuzzyMatchedEventsItem()) {
+            dashboardItems.add(DashboardItem.InfoItem.FuzzyMatchedEvents(
+                storedEvent = holderDatabase.eventGroupDao().getAll().first(),
+                events = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.FuzzyMatched)
             ))
         }
 

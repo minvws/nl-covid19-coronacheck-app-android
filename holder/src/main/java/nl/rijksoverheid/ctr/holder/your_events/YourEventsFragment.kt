@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
+import nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
@@ -159,6 +160,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             errorResult = databaseSyncerResult.errorResult
                         )
                     }
+                    is DatabaseSyncerResult.FuzzyMatchingError -> {
+                        navigateSafety(YourEventsFragmentDirections.actionFuzzyMatching(
+                            MatchingBlobIds(databaseSyncerResult.matchingBlobIds)
+                        ))
+                    }
                 }
             })
 
@@ -180,7 +186,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                     navigationActionId = R.id.action_my_overview
                                 )
                             ),
-                            closeIcon = true
+                            hideNavigationIcon = true
                         )
                     }
                     ConflictingEventResult.Holder -> replaceCertificateDialog(getEventsFromType())
@@ -248,7 +254,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             navigationActionId = R.id.action_my_overview
                         )
                     ),
-                    closeIcon = true
+                    hideNavigationIcon = true
                 )
             }
             is YourEventsEndState.WeCouldntMakeACertificateError -> {
@@ -291,7 +297,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             navigationActionId = R.id.action_my_overview
                         )
                     ),
-                    closeIcon = true
+                    hideNavigationIcon = true
                 )
             }
             else -> {

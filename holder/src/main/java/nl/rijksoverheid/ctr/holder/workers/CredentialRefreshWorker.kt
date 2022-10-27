@@ -38,6 +38,7 @@ class CredentialRefreshWorker(
             is DatabaseSyncerResult.Failed.NetworkError -> Result.retry()
             is DatabaseSyncerResult.Failed.ServerError.FirstTime -> Result.retry()
             is DatabaseSyncerResult.Failed.ServerError.MultipleTimes -> Result.failure()
+            is DatabaseSyncerResult.FuzzyMatchingError -> Result.success()
             is DatabaseSyncerResult.Success -> Result.success()
         }
     }

@@ -25,11 +25,12 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.dao.BlockedEventDao
+import nl.rijksoverheid.ctr.persistence.database.dao.RemovedEventDao
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -406,11 +407,11 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `shouldShowBlockedEventsItem return false when no blocked events in database`() = runBlocking {
-        val blockedEventDao = mockk<BlockedEventDao>(relaxed = true)
+        val removedEventDao = mockk<RemovedEventDao>(relaxed = true)
         val holderDatabase = mockk<HolderDatabase>(relaxed = true).apply {
-            coEvery { blockedEventDao() } returns blockedEventDao
+            coEvery { removedEventDao() } returns removedEventDao
         }
-        coEvery { blockedEventDao.getAll() } answers { listOf() }
+        coEvery { removedEventDao.getAll(reason = RemovedEventReason.Blocked) } answers { listOf() }
 
         val util = getUtil(
             holderDatabase = holderDatabase

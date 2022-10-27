@@ -107,6 +107,9 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         override fun dismissBlockedEventsInfo() {
         }
+
+        override fun dismissFuzzyMatchedEventsInfo() {
+        }
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {
@@ -129,7 +132,7 @@ fun fakeCachedAppConfigUseCase(
         return appConfig
     }
 
-    override fun getCachedAppConfigOrNull(): HolderConfig? {
+    override fun getCachedAppConfigOrNull(): HolderConfig {
         return appConfig
     }
 }
@@ -384,7 +387,10 @@ fun fakeGreenCardUtil(
         return isExpiring
     }
 
-    override fun hasNoActiveCredentials(greenCard: GreenCard): Boolean {
+    override fun hasNoActiveCredentials(
+        greenCard: GreenCard,
+        ignoreExpiredEuCredentials: Boolean
+    ): Boolean {
         return hasNoActiveCredentials
     }
 
@@ -399,7 +405,7 @@ fun fakeGreenCardUtil(
 
 fun fakeGetRemoteGreenCardUseCase(
     result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
-        RemoteGreenCards(null, null, listOf(), listOf())
+        RemoteGreenCards(null, null, listOf(), null)
     )
 ) = object : GetRemoteGreenCardsUseCase {
     override suspend fun get(events: List<EventGroupEntity>, secretKey: String, flow: Flow): RemoteGreenCardsResult {
@@ -600,7 +606,7 @@ fun fakeEventGroupEntity(
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),
     euGreencards: List<RemoteGreenCards.EuGreenCard>? = listOf(fakeEuGreenCard())
-) = RemoteGreenCards(domesticGreencard, euGreencards, listOf(), listOf())
+) = RemoteGreenCards(domesticGreencard, euGreencards, listOf(), null)
 
 fun fakeDomesticGreenCard(
     origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),

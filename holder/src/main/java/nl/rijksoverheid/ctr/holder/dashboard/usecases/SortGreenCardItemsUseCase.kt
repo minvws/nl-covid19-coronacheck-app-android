@@ -31,6 +31,7 @@ class SortGreenCardItemsUseCaseImpl(
                 DashboardItem.InfoItem.ClockDeviationItem -> 20
                 is DashboardItem.InfoItem.ConfigFreshnessWarning -> 30
                 is DashboardItem.InfoItem.BlockedEvents -> 40
+                is DashboardItem.InfoItem.FuzzyMatchedEvents -> 45
                 DashboardItem.InfoItem.AppUpdate -> 50
                 DashboardItem.InfoItem.VisitorPassIncompleteItem -> 60
                 is DashboardItem.InfoItem.GreenCardExpiredItem -> 70

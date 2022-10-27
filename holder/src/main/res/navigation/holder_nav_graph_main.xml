@@ -12,9 +12,13 @@
     android:id="@+id/main_nav"
     app:startDestination="@+id/nav_graph_overview">
 
+    <include app:graph="@navigation/holder_fuzzy_matching" />
+
     <navigation
         android:id="@+id/nav_graph_overview"
         app:startDestination="@+id/nav_dashboard">
+
+        <include app:graph="@navigation/holder_fuzzy_matching" />
 
         <fragment
             android:id="@+id/nav_dashboard"
@@ -46,14 +50,6 @@
                 app:popEnterAnim="@anim/fragment_close_enter"
                 app:popExitAnim="@anim/fragment_close_exit" />
 
-            <action
-                android:id="@+id/action_sync_green_cards"
-                app:destination="@id/nav_sync_green_cards"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right" />
-
             <action android:id="@+id/action_input_token"
                 app:destination="@id/nav_commercial_test_input_token"
                 app:enterAnim="@anim/slide_in_right"
@@ -78,6 +74,18 @@
                 app:popExitAnim="@anim/slide_out_right" />
 
         </fragment>
+
+        <action
+            android:id="@+id/action_fuzzy_matching"
+            app:destination="@id/nav_holder_fuzzy_matching"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit">
+            <argument
+                android:name="matchingBlobIds"
+                app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
+        </action>
 
     </navigation>
 
@@ -112,58 +120,8 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/action_sync_green_cards"
-            app:destination="@id/nav_sync_green_cards"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <action
             android:id="@+id/action_about_this_app"
             app:destination="@id/nav_about_this_app" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_sync_green_cards"
-        android:name="nl.rijksoverheid.ctr.holder.sync_greencards.SyncGreenCardsFragment"
-        android:label="{toolbarTitle}"
-        tools:layout="@layout/fragment_sync_green_cards">
-
-        <action
-            android:id="@+id/action_my_overview"
-            app:destination="@id/nav_graph_overview"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
-            app:popUpTo="@id/nav_graph_overview"
-            app:popUpToInclusive="true" />
-
-        <action
-            android:id="@+id/action_could_not_create_qr"
-            app:destination="@id/nav_could_not_create_qr"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
-        <argument
-            android:name="toolbarTitle"
-            app:argType="string" />
-
-        <argument
-            android:name="title"
-            app:argType="string" />
-
-        <argument
-            android:name="description"
-            app:argType="string" />
-
-        <argument
-            android:name="button"
-            app:argType="string" />
 
     </fragment>
 
@@ -182,6 +140,19 @@
             app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_saved_events"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_fuzzy_matching"
+            app:destination="@id/nav_holder_fuzzy_matching"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_dashboard">
+            <argument
+                android:name="matchingBlobIds"
+                app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
+        </action>
 
     </fragment>
 
@@ -528,6 +499,24 @@
             app:popUpTo="@id/nav_dashboard"
             app:popUpToInclusive="false" />
 
+        <action
+            android:id="@+id/action_fuzzy_matching"
+            app:destination="@id/nav_holder_fuzzy_matching"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/nav_dashboard">
+            <argument
+                android:name="matchingBlobIds"
+                app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
+
+            <argument
+                android:name="getEventsFlow"
+                app:argType="boolean"
+                android:defaultValue="true" />
+        </action>
+
     </fragment>
 
     <fragment
@@ -726,13 +715,6 @@
             app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_paper_proof"
             app:popUpToInclusive="true"/>
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/missing_dutch_certificate"
-        android:name="nl.rijksoverheid.ctr.holder.dashboard.MissingDutchVaccinationFragment"
-        tools:layout="@layout/fragment_missing_dutch_vaccination_certificate">
 
     </fragment>
 

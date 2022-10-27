@@ -21,8 +21,8 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtilImpl
-import nl.rijksoverheid.ctr.holder.dashboard.util.ShowBlockedEventsBottomSheetUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.ShowBlockedEventsBottomSheetUtilImpl
+import nl.rijksoverheid.ctr.holder.dashboard.util.RemovedEventsBottomSheetUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.RemovedEventsBottomSheetUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
@@ -49,6 +49,8 @@ import nl.rijksoverheid.ctr.holder.your_events.utils.EventGroupEntityUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.EventGroupEntityUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventHolderUtilImpl
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventStringUtil
+import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventStringUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteProtocol3Util
@@ -84,6 +86,7 @@ val utilsModule = module {
     factory<RemoteEventHolderUtil> { RemoteEventHolderUtilImpl(get(), get(), get(), get()) }
     factory<RemoteProtocol3Util> { RemoteProtocol3UtilImpl() }
     factory<RemoteEventUtil> { RemoteEventUtilImpl(get()) }
+    factory<RemoteEventStringUtil> { RemoteEventStringUtilImpl(androidContext()::getString) }
     factory<ReadEuropeanCredentialUtil> { ReadEuropeanCredentialUtilImpl(get()) }
     factory<DashboardItemUtil> { DashboardItemUtilImpl(get(), get(), get(), get(), get(), get(), get()) }
     factory<CountryUtil> { CountryUtilImpl() }
@@ -105,5 +108,5 @@ val utilsModule = module {
     factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get()) }
     factory<StringUtil> { StringUtilImpl(get()) }
     factory<YourEventsEndStateUtil> { YourEventsEndStateUtilImpl(get()) }
-    factory<ShowBlockedEventsBottomSheetUtil> { ShowBlockedEventsBottomSheetUtilImpl(get(), get()) }
+    factory<RemovedEventsBottomSheetUtil> { RemovedEventsBottomSheetUtilImpl(get(), get(), get(), get(), get()) }
 }

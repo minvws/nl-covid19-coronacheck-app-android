@@ -19,7 +19,8 @@ import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogRes
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUseCaseImpl
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import org.junit.Before
 import org.junit.Test
@@ -46,12 +47,13 @@ class ShowBlockedEventsDialogUseCaseImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `Show dialog if there are remote blocked events`() = runBlocking {
-        val blockedEventEntity = BlockedEventEntity(
+        val removedEventEntity = RemovedEventEntity(
             walletId = 1,
             type = "vaccination",
-            eventTime = OffsetDateTime.now()
+            eventTime = OffsetDateTime.now(),
+            reason = RemovedEventReason.Blocked
         )
-        db.blockedEventDao().insert(blockedEventEntity)
+        db.removedEventDao().insert(removedEventEntity)
 
         val usecase = ShowBlockedEventsDialogUseCaseImpl(db)
 

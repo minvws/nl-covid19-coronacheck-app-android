@@ -106,12 +106,14 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
     }
 
     override fun onGetEventsLoading(loading: Boolean) {
-        binding.loadingOverlay.progressBar.makeIndeterminateAccessible(
-            context = requireContext(),
-            isLoading = loading,
-            message = R.string.holder_fetchevents_loading
-        )
-        binding.loadingOverlay.root.isVisible = loading
+        if (loading) {
+            binding.loadingOverlay.progressBar.makeIndeterminateAccessible(
+                context = requireContext(),
+                isLoading = true,
+                message = R.string.holder_fetchevents_loading
+            )
+            binding.loadingOverlay.root.isVisible = true
+        }
     }
 
     override fun getOriginTypes(): List<RemoteOriginType> {

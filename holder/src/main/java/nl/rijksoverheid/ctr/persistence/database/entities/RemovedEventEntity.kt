@@ -14,7 +14,7 @@ import androidx.room.PrimaryKey
 import java.time.OffsetDateTime
 
 @Entity(
-    tableName = "blocked_event",
+    tableName = "removed_event",
     foreignKeys = [ForeignKey(
         entity = WalletEntity::class,
         parentColumns = arrayOf("id"),
@@ -22,9 +22,10 @@ import java.time.OffsetDateTime
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class BlockedEventEntity(
+data class RemovedEventEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "wallet_id", index = true) val walletId: Int,
     val type: String,
-    @ColumnInfo(name = "event_time") val eventTime: OffsetDateTime?
+    @ColumnInfo(name = "event_time") val eventTime: OffsetDateTime?,
+    @ColumnInfo(defaultValue = "blocked") val reason: RemovedEventReason
 )

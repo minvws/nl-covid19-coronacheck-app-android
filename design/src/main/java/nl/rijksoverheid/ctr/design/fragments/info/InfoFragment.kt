@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.design.fragments.info
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.R
@@ -79,10 +78,9 @@ class InfoFragment : Fragment(R.layout.fragment_info) {
             }
         }
 
-        if (arguments?.getBoolean(InfoFragmentUtil.CLOSE_ICON) == true) {
+        if (arguments?.getBoolean(InfoFragmentUtil.HIDE_ICON) == true) {
             activity?.findViewById<Toolbar>(R.id.toolbar)?.let { toolbar ->
-                toolbar.navigationIcon = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_close)
-                toolbar.navigationContentDescription = getString(R.string.back_to_overview)
+                toolbar.navigationIcon = null
             }
         }
     }
