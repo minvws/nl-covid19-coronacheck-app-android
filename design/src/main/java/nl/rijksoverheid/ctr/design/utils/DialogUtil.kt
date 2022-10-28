@@ -22,6 +22,7 @@ interface DialogUtil {
         negativeButtonCallback: (() -> Unit)? = null,
         onDismissCallback: (() -> Unit)? = null
     )
+
     fun dismiss(context: Context?)
 }
 
@@ -41,12 +42,23 @@ class DialogUtilImpl : DialogUtil {
         val fragmentManager = context.supportFragmentManager
         if (fragmentManager.findFragmentByTag(DialogFragment.TAG) == null) {
             val dialog = DialogFragment(title, message, positiveButtonText, negativeButtonText)
-            fragmentManager.setFragmentResultListener(DialogFragment.KEY_DIALOG_RESULT, activity) { _, bundle ->
+            fragmentManager.setFragmentResultListener(
+                DialogFragment.KEY_DIALOG_RESULT,
+                activity
+            ) { _, bundle ->
                 fragmentManager.clearFragmentResultListener(DialogFragment.KEY_DIALOG_RESULT)
                 when {
-                    bundle.getBoolean(DialogFragment.KEY_POSITIVE) -> positiveButtonCallback.invoke()
-                    bundle.getBoolean(DialogFragment.KEY_NEGATIVE) -> negativeButtonCallback?.invoke()
-                    bundle.getBoolean(DialogFragment.KEY_DISMISSED) -> onDismissCallback?.invoke()
+                    bundle.getBoolean(DialogFragment.KEY_SHOWN) -> {
+                        if ((dialog as? DialogFragment)?.isAdded == true) {
+                            dialog.registerCallbacks(
+                                positiveButtonText,
+                                negativeButtonText,
+                                positiveButtonCallback,
+                                negativeButtonCallback,
+                                onDismissCallback
+                            )
+                        }
+                    }
                 }
             }
             dialog.show(fragmentManager, DialogFragment.TAG)

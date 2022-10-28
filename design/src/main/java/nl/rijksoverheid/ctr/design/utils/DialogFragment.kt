@@ -1,13 +1,19 @@
 package nl.rijksoverheid.ctr.design.utils
 
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -48,47 +54,79 @@ private var Bundle.negativeButtonText: Int?
 
 class DialogFragment : DialogFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (savedInstanceState != null) {
-            dismiss()
+    private val viewModel: DialogViewModel by viewModel()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        viewModel.onDismissCallbackLiveData.observe(this) { onDismiss ->
+            dialog?.setOnDismissListener {
+                onDismiss?.invoke()
+                dismiss()
+            }
         }
+        viewModel.negativeButtonCallbackLiveData.observe(this) { (negativeButtonText, onCancel) ->
+            negativeButtonText?.let {
+                (dialog as? AlertDialog)?.setButton(
+                    DialogInterface.BUTTON_NEGATIVE,
+                    getString(negativeButtonText)
+                ) { _, _ ->
+                    onCancel?.invoke()
+                    dismiss()
+                }
+            }
+        }
+        viewModel.positiveButtonCallbackLiveData.observe(this) { (positiveButtonText, onOk) ->
+            (dialog as? AlertDialog)?.setButton(
+                DialogInterface.BUTTON_POSITIVE,
+                getString(positiveButtonText)
+            ) { _, _ ->
+                onOk.invoke()
+                dismiss()
+            }
+        }
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireContext())
             .setTitle(requireNotNull(arguments?.title))
             .setMessage(requireNotNull(arguments?.message))
-            .setPositiveButton(
-                requireNotNull(arguments?.positiveButtonText)
-            ) { _, _ ->
-                setFragmentResult(KEY_DIALOG_RESULT, bundleOf(KEY_POSITIVE to true))
-                dismiss()
-            }
-
-        if (arguments?.negativeButtonText != null) {
-            builder.setNegativeButton(
-                requireNotNull(arguments?.negativeButtonText)
-            ) { _, _ ->
-                setFragmentResult(KEY_DIALOG_RESULT, bundleOf(KEY_NEGATIVE to true))
-                dismiss()
-            }
+            .setPositiveButton(requireNotNull(arguments?.positiveButtonText), null)
+        arguments?.negativeButtonText?.let {
+            builder.setNegativeButton(it, null)
         }
 
         return builder.create()
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        setFragmentResult(KEY_DIALOG_RESULT, bundleOf(KEY_DISMISSED to true))
-        super.onDismiss(dialog)
+    override fun onAttach(context: Context) {
+        setFragmentResult(KEY_DIALOG_RESULT, bundleOf(KEY_SHOWN to true))
+        super.onAttach(context)
+    }
+
+    fun registerCallbacks(
+        positiveButtonText: Int,
+        negativeButtonText: Int?,
+        positiveButtonCallback: () -> Unit,
+        negativeButtonCallback: (() -> Unit)?,
+        onDismissCallback: (() -> Unit)?
+    ) {
+        viewModel.registerButtonCallbacks(
+            positiveButtonText,
+            negativeButtonText,
+            positiveButtonCallback,
+            negativeButtonCallback,
+            onDismissCallback
+        )
     }
 
     companion object {
         internal const val TAG = "DialogFragment"
         internal const val KEY_DIALOG_RESULT = "dialog_result"
-        internal const val KEY_POSITIVE = "positive"
-        internal const val KEY_NEGATIVE = "negative"
-        internal const val KEY_DISMISSED = "dismissed"
+        internal const val KEY_SHOWN = "shown"
 
         internal operator fun invoke(
             @StringRes title: Int,

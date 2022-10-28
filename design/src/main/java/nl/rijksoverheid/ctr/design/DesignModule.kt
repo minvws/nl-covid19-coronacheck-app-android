@@ -2,10 +2,13 @@ package nl.rijksoverheid.ctr.design
 
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.DialogUtilImpl
+import nl.rijksoverheid.ctr.design.utils.DialogViewModel
+import nl.rijksoverheid.ctr.design.utils.DialogViewModelImpl
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtilImpl
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtilImpl
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /*
@@ -19,4 +22,6 @@ val designModule = module {
     factory<DialogUtil> { DialogUtilImpl() }
     factory<InfoFragmentUtil> { InfoFragmentUtilImpl() }
     factory<IntentUtil> { IntentUtilImpl(get()) }
+
+    viewModel<DialogViewModel> { DialogViewModelImpl() }
 }
