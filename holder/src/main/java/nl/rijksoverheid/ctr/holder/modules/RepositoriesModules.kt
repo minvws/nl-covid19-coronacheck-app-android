@@ -1,13 +1,12 @@
 package nl.rijksoverheid.ctr.holder.modules
 
+import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.api.HolderApiClientUtil
 import nl.rijksoverheid.ctr.holder.api.HolderApiClientUtilImpl
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtil
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtilImpl
-import nl.rijksoverheid.ctr.holder.api.repositories.AuthenticationRepository
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepositoryImpl
-import nl.rijksoverheid.ctr.holder.api.repositories.DigidAuthenticationRepository
 import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepositoryImpl
 import nl.rijksoverheid.ctr.holder.api.repositories.MijnCNAuthenticationRepository
@@ -15,6 +14,8 @@ import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepositoryImpl
 import nl.rijksoverheid.ctr.holder.modules.qualifier.ErrorResponseQualifier
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
+import nl.rijksoverheid.rdo.modules.openidconnect.OpenIDConnectRepository
+import nl.rijksoverheid.rdo.modules.openidconnect.OpenIDConnectRepositoryImpl
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -26,8 +27,8 @@ import org.koin.dsl.module
  *
  */
 val repositoriesModule = module {
-    single<AuthenticationRepository>(named(LoginQualifier.DIGID)) { DigidAuthenticationRepository() }
-    single<AuthenticationRepository>(named(LoginQualifier.MIJN_CN)) {
+    single<OpenIDConnectRepository>(named(LoginQualifier.DIGID)) { OpenIDConnectRepositoryImpl(BuildConfig.OPEN_ID_CLIENT_ID, BuildConfig.OPEN_ID_REDIRECT_URL) }
+    single<OpenIDConnectRepository>(named(LoginQualifier.MIJN_CN)) {
         MijnCNAuthenticationRepository(
             get(),
             get()

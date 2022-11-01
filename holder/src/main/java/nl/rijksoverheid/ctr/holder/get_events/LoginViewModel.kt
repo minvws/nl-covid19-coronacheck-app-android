@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
-import nl.rijksoverheid.ctr.holder.api.repositories.AuthenticationRepository
+import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import nl.rijksoverheid.ctr.holder.models.HolderStep.DigidNetworkRequest
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
@@ -28,6 +28,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.Error
 import nl.rijksoverheid.ctr.shared.models.OpenIdErrorResult.ServerBusy
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
+import nl.rijksoverheid.rdo.modules.openidconnect.OpenIDConnectRepository
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -37,7 +38,7 @@ import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
  *
  */
 class LoginViewModel(
-    private val digidAuthenticationRepository: AuthenticationRepository,
+    private val digidAuthenticationRepository: OpenIDConnectRepository,
     private val androidUtil: AndroidUtil
 ) : ViewModel() {
 
@@ -58,9 +59,13 @@ class LoginViewModel(
         authService: AuthorizationService
     ) {
         (loading as MutableLiveData).value = Event(true)
+        val issuerUrl = when (loginType) {
+            LoginType.Max -> BuildConfig.MAX_BASE_URL
+            LoginType.Pap -> BuildConfig.PAP_BASE_URL
+        }
         viewModelScope.launch {
             try {
-                digidAuthenticationRepository.authResponse(loginType, activityResultLauncher, authService)
+                digidAuthenticationRepository.requestAuthorization(issuerUrl, activityResultLauncher, authService)
             } catch (e: Exception) {
                 postExceptionResult(e)
             }
@@ -134,8 +139,12 @@ class LoginViewModel(
         authResponse: AuthorizationResponse
     ) {
         try {
-            val jwt =
-                digidAuthenticationRepository.jwt(loginType, authService, authResponse)
+            val tokenResponse =
+                digidAuthenticationRepository.jwt(authService, authResponse)
+            val jwt = when (loginType) {
+                LoginType.Max -> tokenResponse.idToken!!
+                LoginType.Pap -> tokenResponse.accessToken!!
+            }
             loginResultLiveData.postValue(Event(LoginResult.Success(jwt)))
         } catch (e: Exception) {
             postExceptionResult(e)

@@ -184,6 +184,7 @@ dependencies {
     implementation project(":qrscanner")
     implementation project(":modules:luhncheck")
     implementation project(":modules:qrgenerator")
+    implementation project(":modules:openidconnect")
 
     implementation libs.openid.appauth
     implementation libs.bundles.groupie

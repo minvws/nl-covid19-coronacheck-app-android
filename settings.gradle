@@ -45,6 +45,7 @@ include ':modules'
 project(':modules').projectDir = new File('modules/modules')
 include ':modules:luhncheck'
 include ':modules:qrgenerator'
+include ':modules:openidconnect'
 
 rootProject.name = "CoronaTester"
 

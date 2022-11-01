@@ -59,8 +59,8 @@ import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtilImpl
-import nl.rijksoverheid.luhncheck.TokenValidator
-import nl.rijksoverheid.luhncheck.TokenValidatorImpl
+import nl.rijksoverheid.rdo.modules.luhncheck.TokenValidator
+import nl.rijksoverheid.rdo.modules.luhncheck.TokenValidatorImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
