@@ -140,7 +140,7 @@ class LoginViewModel(
     ) {
         try {
             val tokenResponse =
-                digidAuthenticationRepository.jwt(authService, authResponse)
+                digidAuthenticationRepository.tokenResponse(authService, authResponse)
             val jwt = when (loginType) {
                 LoginType.Max -> tokenResponse.idToken!!
                 LoginType.Pap -> tokenResponse.accessToken!!
