@@ -146,6 +146,15 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             )
         )
     }
+
+    override fun dialogPresented() {
+        binding.loadingOverlay.progressBar.makeIndeterminateAccessible(
+            context = requireContext(),
+            isLoading = false,
+            message = R.string.holder_fetchevents_loading
+        )
+        binding.loadingOverlay.root.isVisible = false
+    }
 }
 
 data class GetEventsFragmentCopy(
