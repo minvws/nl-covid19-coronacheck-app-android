@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.dashboard
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
@@ -80,6 +81,13 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         ) ?: error("EXTRA_GREEN_CARD_TYPE should not be null")
     }
 
+    override fun onResume() {
+        super.onResume()
+        view?.findViewById<RecyclerView>(R.id.recyclerView)?.let {
+            dashboardViewModel.scrollUpdate(it.canScrollVertically(RecyclerView.SCROLL_AXIS_VERTICAL), greenCardType)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -128,6 +136,15 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = null
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                dashboardViewModel.scrollUpdate(
+                    canScrollVertically = recyclerView.canScrollVertically(RecyclerView.SCROLL_AXIS_VERTICAL),
+                    greenCardType = greenCardType
+                )
+            }
+        })
     }
 
     private fun setItems(
