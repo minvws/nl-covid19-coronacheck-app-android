@@ -17,7 +17,7 @@ import nl.rijksoverheid.ctr.holder.databinding.ItemHolderNameSelectionViewBindin
 class HolderNameSelectionViewAdapterItem(
     private val item: HolderNameSelectionItem.ListItem,
     private val onDetailsButtonClicked: () -> Unit,
-    private val onSelected: (Int) -> Unit
+    private val onSelected: () -> Unit
 ) : BindableItem<ItemHolderNameSelectionViewBinding>(
     R.layout.item_holder_name_selection_view.toLong()
 ) {
@@ -27,12 +27,14 @@ class HolderNameSelectionViewAdapterItem(
         if (item.nothingSelectedError) {
             viewBinding.radioButton.buttonTintList =
                 ColorStateList.valueOf(viewBinding.radioButton.context.getColor(R.color.error))
+        } else {
+            viewBinding.radioButton.isUseMaterialThemeColors = true
         }
         viewBinding.nameTextView.text = item.name
         viewBinding.eventsTextView.text = item.events
         viewBinding.removedEventTextView.isVisible = item.willBeRemoved
         viewBinding.root.setOnClickListener {
-            onSelected(position)
+            onSelected()
         }
         viewBinding.detailsButton.contentDescription = "${item.name} ${viewBinding.detailsButton.text}"
         viewBinding.detailsButton.setOnClickListener {

@@ -39,12 +39,16 @@ class SelectionDataUtilImplTest : AutoCloseKoinTest() {
     private val yourEventsFragmentUtil: YourEventsFragmentUtil by inject()
     private val remoteEventStringUtil: RemoteEventStringUtil by inject()
 
+    private fun getFormattedString(stringResId: Int, formattedString: String): String {
+        return getApplication().getString(stringResId, formattedString)
+    }
     private val selectionDataUtil by lazy {
         SelectionDataUtilImpl(
             cachedAppConfigUseCase,
             yourEventsFragmentUtil,
             remoteEventStringUtil,
             getApplication().resources::getQuantityString,
+            ::getFormattedString,
             getApplication()::getString
         )
     }
@@ -100,5 +104,16 @@ class SelectionDataUtilImplTest : AutoCloseKoinTest() {
         actualData.forEachIndexed { index, data ->
             assertEquals(expectedData[index], data.type)
         }
+    }
+
+    @Test
+    fun `details string for dcc vaccinations display dose`() {
+        val actualData = selectionDataUtil.details("dcc_code1", listOf(RemoteEventVaccination(RemoteEvent.TYPE_VACCINATION, "", mockk {
+            every { date } returns LocalDate.now()
+            every { doseNumber } returns "2"
+            every { totalDoses } returns "2"
+        })))
+
+        assertEquals("Vaccinatie dosis 2/2", actualData.first().type)
     }
 }

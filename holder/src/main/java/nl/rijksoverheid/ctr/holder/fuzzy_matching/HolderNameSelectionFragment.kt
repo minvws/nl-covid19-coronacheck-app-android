@@ -56,19 +56,21 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         viewModel.itemsLiveData.observe(viewLifecycleOwner) {
             setItems(it, binding)
         }
-        binding.bottom.setButtonClick {
-            val selectedName = viewModel.selectedName()
-            if (selectedName == null) {
+
+        viewModel.nameSelectionError.observe(viewLifecycleOwner) { noSelectionError ->
+            if (noSelectionError) {
                 viewModel.nothingSelectedError()
                 binding.bottom.showError()
-            } else {
-                viewModel.storeSelection {
-                    navigateSafety(
-                        actionSavedEventsSyncGreenCards(
-                            selectedName = selectedName
-                        )
+            }
+        }
+
+        binding.bottom.setButtonClick {
+            viewModel.storeSelection { selectedName ->
+                navigateSafety(
+                    actionSavedEventsSyncGreenCards(
+                        selectedName = selectedName
                     )
-                }
+                )
             }
         }
     }
@@ -184,7 +186,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
                                     )
                                 )
                             )
-                        }) { index ->
+                        }) {
                         binding.bottom.hideError()
                         viewModel.onItemSelected(item.name)
                     }

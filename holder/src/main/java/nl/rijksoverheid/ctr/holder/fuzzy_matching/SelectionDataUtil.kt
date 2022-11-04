@@ -10,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_TEST
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_VACCINATION
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_VACCINATION_ASSESSMENT
+import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventStringUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 
@@ -33,6 +34,7 @@ class SelectionDataUtilImpl(
     private val yourEventsFragmentUtil: YourEventsFragmentUtil,
     private val remoteEventStringUtil: RemoteEventStringUtil,
     private val getQuantityString: (Int, Int) -> String,
+    private val getFormattedString: (Int, String) -> String,
     private val getString: (Int) -> String
 ) : SelectionDataUtil {
 
@@ -94,7 +96,19 @@ class SelectionDataUtilImpl(
         val data = remoteEvents.map { event ->
             val eventDate = event.getDate()
             SelectionDetailData(
-                type = remoteEventStringUtil.remoteEventTitle(event.javaClass),
+                type = "${remoteEventStringUtil.remoteEventTitle(event.javaClass)}${
+                    if (providerIdentifier.startsWith("dcc") && event is RemoteEventVaccination) {
+                        val dose = event.vaccination?.doseNumber
+                        val totalDoses = event.vaccination?.totalDoses
+                        if (dose != null && totalDoses != null) {
+                            " ${getFormattedString(R.string.your_vaccination_explanation_dose, "$dose/$totalDoses")}"
+                        } else {
+                            ""
+                        }
+                    } else {
+                        ""
+                    }
+                }",
                 providerIdentifiers = listOf(
                     yourEventsFragmentUtil.getProviderName(
                         configProviders,

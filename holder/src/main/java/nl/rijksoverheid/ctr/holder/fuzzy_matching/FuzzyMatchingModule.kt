@@ -29,11 +29,15 @@ val fuzzyMatchingModule = module {
     }
 
     factory<SelectionDataUtil> {
+        fun getFormattedString(stringResId: Int, template: String): String {
+            return androidContext().getString(stringResId, template)
+        }
         SelectionDataUtilImpl(
             get(),
             get(),
             get(),
             androidContext().resources::getQuantityString,
+            ::getFormattedString,
             androidContext()::getString
         )
     }
