@@ -21,10 +21,10 @@ abstract class HolderNameSelectionViewModel(
     greenCardUtil: GreenCardUtil
 ) : FuzzyMatchingBaseViewModel(holderDatabase, greenCardUtil) {
     val itemsLiveData: LiveData<List<HolderNameSelectionItem>> = MutableLiveData()
+    val nameSelectionError: LiveData<Boolean> = MutableLiveData()
 
     abstract fun onItemSelected(selectedName: String)
-    abstract fun selectedName(): String?
-    abstract fun storeSelection(onStored: () -> Unit)
+    abstract fun storeSelection(onStored: (String) -> Unit)
     abstract fun nothingSelectedError()
 }
 
@@ -43,24 +43,30 @@ class HolderNameSelectionViewModelImpl(
     }
 
     override fun onItemSelected(selectedName: String) {
+        (nameSelectionError as MutableLiveData).value = false
         updateItems(selectedName)
     }
 
-    override fun selectedName(): String? {
+    private fun selectedName(): String? {
         return itemsLiveData.value
             ?.filterIsInstance<HolderNameSelectionItem.ListItem>()
             ?.find { it.isSelected }
             ?.name
     }
 
-    override fun storeSelection(onStored: () -> Unit) {
-        val items = itemsLiveData.value?.filterIsInstance<HolderNameSelectionItem.ListItem>() ?: return
-        val itemSelected = items.find { it.isSelected }
-        if (itemSelected != null) {
-            viewModelScope.launch {
-                matchedEventsUseCase.selected(items.indexOf(itemSelected), matchingBlobIds)
-                onStored()
+    override fun storeSelection(onStored: (String) -> Unit) {
+        val selectedName = selectedName()
+        if (selectedName != null) {
+            val items = itemsLiveData.value?.filterIsInstance<HolderNameSelectionItem.ListItem>() ?: return
+            val itemSelected = items.find { it.isSelected }
+            if (itemSelected != null) {
+                viewModelScope.launch {
+                    matchedEventsUseCase.selected(items.indexOf(itemSelected), matchingBlobIds)
+                    onStored(selectedName)
+                }
             }
+        } else {
+            (nameSelectionError as MutableLiveData).value = true
         }
     }
 

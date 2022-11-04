@@ -19,6 +19,8 @@ import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -81,7 +83,6 @@ class HolderNameSelectionViewModelImplTest {
 
             val items = viewModel.itemsLiveData.getOrAwaitValue()
 
-            assertEquals("firstNameA2", viewModel.selectedName())
             assertEquals(false, (items[1] as HolderNameSelectionItem.ListItem).isSelected)
             assertEquals(true, (items[1] as HolderNameSelectionItem.ListItem).willBeRemoved)
             assertEquals(false, (items[1] as HolderNameSelectionItem.ListItem).nothingSelectedError)
@@ -137,6 +138,49 @@ class HolderNameSelectionViewModelImplTest {
 
             coVerify { matchedEventsUseCase.selected(capture(itemSlot), matchingBlobIds) }
             assertEquals(0, itemSlot.captured)
+        }
+
+    @Test
+    fun `given no name is selected, when store selection, then nothing selected error`() = runTest {
+        mockEvents()
+
+        val viewModel = HolderNameSelectionViewModelImpl(
+            matchedEventsUseCase,
+            getRemoteProtocolFromEventGroupUseCase,
+            selectionDataUtil,
+            yourEventsFragmentUtil,
+            holderDatabase,
+            greenCardUtil,
+            matchingBlobIds
+        )
+
+        viewModel.storeSelection { }
+
+        assertTrue(viewModel.nameSelectionError.getOrAwaitValue())
+    }
+
+    @Test
+    fun `given name no name is selected yet, when select name and store selection, then no error`() =
+        runTest {
+            mockEvents()
+            coEvery { matchedEventsUseCase.selected(any(), any()) } just runs
+
+            val viewModel = HolderNameSelectionViewModelImpl(
+                matchedEventsUseCase,
+                getRemoteProtocolFromEventGroupUseCase,
+                selectionDataUtil,
+                yourEventsFragmentUtil,
+                holderDatabase,
+                greenCardUtil,
+                matchingBlobIds
+            )
+
+            viewModel.onItemSelected("firstNameA1")
+            viewModel.storeSelection {
+                assertEquals("firstNameA1", it)
+            }
+
+            assertFalse(viewModel.nameSelectionError.getOrAwaitValue())
         }
 
     private suspend fun mockEvents() {
