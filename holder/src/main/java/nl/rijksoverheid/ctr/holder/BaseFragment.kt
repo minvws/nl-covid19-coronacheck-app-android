@@ -26,6 +26,12 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
      */
     abstract fun onButtonClickWithRetryAction()
 
+    /**
+     * Function that is also called when a network requests fails and a user presses the "close" button
+     */
+    open fun onButtonClickClose() {
+    }
+
     open fun onButtonClickWithRetryTitle(): Int {
         return R.string.dialog_retry
     }
@@ -46,7 +52,8 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
                     positiveButtonCallback = {
                         onButtonClickWithRetryAction()
                     },
-                    negativeButtonText = R.string.dialog_close
+                    negativeButtonText = R.string.dialog_close,
+                    negativeButtonCallback = this::onButtonClickClose
                 )
             }
             is NetworkRequestResult.Failed.ServerNetworkError -> {

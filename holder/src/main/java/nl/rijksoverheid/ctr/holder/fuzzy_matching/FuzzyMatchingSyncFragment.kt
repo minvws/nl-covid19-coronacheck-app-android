@@ -35,8 +35,12 @@ class FuzzyMatchingSyncFragment : BaseFragment(R.layout.fragment_saved_events_sy
 
     private val fuzzyMatchingSyncFragmentArgs: FuzzyMatchingSyncFragmentArgs by navArgs()
 
+    override fun onButtonClickClose() {
+        findNavControllerSafety()?.popBackStack()
+    }
+
     override fun onButtonClickWithRetryAction() {
-        // This screen does not have a retry button
+        syncGreenCardsViewModel.refresh()
     }
 
     override fun getFlow(): Flow {
