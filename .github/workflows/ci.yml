@@ -27,7 +27,7 @@ jobs:
       - name: Run tests on Testlab
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        if: "${{ env.FIREBASE_SERVICE_ACCOUNT }} != '' && !contains(github.event.pull_request.labels.*.name, 'skip-screenshot-tests')"
+        if: contains(env.FIREBASE_SERVICE_ACCOUNT, '{') && !contains(github.event.pull_request.labels.*.name, 'skip-screenshot-tests')
         run: |
           echo $FIREBASE_SERVICE_ACCOUNT > $RUNNER_TEMP/.firebase_service_account.json
           export GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/.firebase_service_account.json >> $GITHUB_ENV
