@@ -5,6 +5,6 @@
 	path = mobilecore-src
 	url = https://github.com/minvws/nl-covid19-coronacheck-mobile-core.git
 [submodule "modules"]
-	path = modules
+	path = rdo
 	url = git@github.com:minvws/nl-rdo-app-android-modules-private.git
 	branch = feature/4908
