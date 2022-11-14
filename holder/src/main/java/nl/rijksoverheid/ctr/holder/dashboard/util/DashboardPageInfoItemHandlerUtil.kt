@@ -27,9 +27,10 @@ import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
@@ -53,7 +54,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
     private val infoFragmentUtil: InfoFragmentUtil,
     private val intentUtil: IntentUtil,
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase,
-    private val showBlockedEventsBottomSheetUtil: ShowBlockedEventsBottomSheetUtil
+    private val removedEventsBottomSheetUtil: RemovedEventsBottomSheetUtil
 ) : DashboardPageInfoItemHandlerUtil {
 
     /**
@@ -89,6 +90,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
                 )
             }
             is DashboardItem.InfoItem.BlockedEvents -> onBlockedEventsClick(dashboardPageFragment, infoItem.blockedEvents)
+            is DashboardItem.InfoItem.FuzzyMatchedEvents -> onFuzzyMatchedEventsClick(dashboardPageFragment, infoItem.storedEvent, infoItem.events)
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 /* nothing, DashboardPageFragment.setItems never creates a card for this */
             }
@@ -238,8 +240,12 @@ class DashboardPageInfoItemHandlerUtilImpl(
         )
     }
 
-    private fun onBlockedEventsClick(dashboardPageFragment: DashboardPageFragment, blockedEvents: List<BlockedEventEntity>) {
-        showBlockedEventsBottomSheetUtil.show(dashboardPageFragment, blockedEvents)
+    private fun onBlockedEventsClick(dashboardPageFragment: DashboardPageFragment, blockedEvents: List<RemovedEventEntity>) {
+        removedEventsBottomSheetUtil.presentBlockedEvents(dashboardPageFragment, blockedEvents)
+    }
+
+    private fun onFuzzyMatchedEventsClick(dashboardPageFragment: DashboardPageFragment, storedEvent: EventGroupEntity, events: List<RemovedEventEntity>) {
+        removedEventsBottomSheetUtil.presentRemovedEvents(dashboardPageFragment, storedEvent, events)
     }
 
     private fun onOriginInfoClicked(
@@ -355,6 +361,9 @@ class DashboardPageInfoItemHandlerUtilImpl(
             }
             is DashboardItem.InfoItem.BlockedEvents -> {
                 dashboardPageFragment.dashboardViewModel.dismissBlockedEventsInfo()
+            }
+            is DashboardItem.InfoItem.FuzzyMatchedEvents -> {
+                dashboardPageFragment.dashboardViewModel.dismissFuzzyMatchedEventsInfo()
             }
             else -> {
             }

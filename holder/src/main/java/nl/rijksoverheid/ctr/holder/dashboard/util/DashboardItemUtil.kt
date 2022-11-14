@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -26,6 +27,7 @@ interface DashboardItemUtil {
     fun shouldAddQrButtonItem(emptyState: Boolean): Boolean
     fun isAppUpdateAvailable(): Boolean
     suspend fun shouldShowBlockedEventsItem(): Boolean
+    suspend fun shouldShowFuzzyMatchedEventsItem(): Boolean
 
     /**
      * Multiple EU vaccination green card items will be combined into 1.
@@ -85,7 +87,17 @@ class DashboardItemUtilImpl(
     }
 
     override suspend fun shouldShowBlockedEventsItem(): Boolean {
-        return holderDatabase.blockedEventDao().getAll().isNotEmpty()
+        return holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked).isNotEmpty()
+    }
+
+    override suspend fun shouldShowFuzzyMatchedEventsItem(): Boolean {
+        val storedEvents = holderDatabase.eventGroupDao().getAll()
+        // if user has removed his events from the menu, there is no point on showing the banner
+        if (storedEvents.isEmpty()) {
+            holderDatabase.removedEventDao().deleteAll(RemovedEventReason.FuzzyMatched)
+            return false
+        }
+        return holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.FuzzyMatched).isNotEmpty()
     }
 
     override fun combineEuVaccinationItems(items: List<DashboardItem>): List<DashboardItem> {

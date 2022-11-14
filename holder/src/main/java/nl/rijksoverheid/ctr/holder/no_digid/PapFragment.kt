@@ -105,7 +105,10 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
                     toolbarTitle = getString(R.string.choose_provider_toolbar),
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(R.string.holder_contactCoronaCheckHelpdesk_title),
-                        descriptionData = DescriptionData(R.string.holder_contactCoronaCheckHelpdesk_message, htmlLinksEnabled = true),
+                        descriptionData = DescriptionData(
+                            R.string.holder_contactCoronaCheckHelpdesk_message,
+                            htmlLinksEnabled = true
+                        ),
                         primaryButtonData = ButtonData.NavigationButton(
                             text = getString(R.string.general_toMyOverview),
                             navigationActionId = R.id.action_my_overview
@@ -119,6 +122,11 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
                 subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow)
             ) {
                 if (holderFeatureFlagUseCase.getPapEnabled()) {
+                    /** disable accessibility, otherwise it is announced when loading is finished
+                     * reenable with [dialogPresented] if a dialog is presented cause then the user will again interact with it
+                     */
+                    binding.secondButton.root.importantForAccessibility =
+                        View.IMPORTANT_FOR_ACCESSIBILITY_NO
                     loginWithDigiD()
                 } else {
                     infoFragmentUtil.presentFullScreen(
@@ -184,5 +192,9 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
                 flow = getFlow()
             )
         )
+    }
+
+    override fun dialogPresented() {
+        binding.secondButton.root.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
     }
 }

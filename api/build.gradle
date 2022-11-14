@@ -9,7 +9,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs.kotlin)
     alias(libs.plugins.kotlin.parcelize)
 }
@@ -39,6 +39,13 @@ android {
     }
 }
 
+kotlin {
+    sourceSets {
+        main.kotlin.srcDirs += 'build/generated/ksp/main/kotlin'
+        test.kotlin.srcDirs += 'build/generated/ksp/test/kotlin'
+    }
+}
+
 dependencies {
     implementation(project(":shared"))
 
@@ -55,10 +62,10 @@ dependencies {
     api libs.certificatetransparency.android
 
 
-    kapt libs.moshi.codegen
+    ksp libs.moshi.codegen
     coreLibraryDesugaring libs.desugar
 
-    kaptTest libs.moshi.codegen
+    kspTest libs.moshi.codegen
     testImplementation libs.junit
     testImplementation libs.okhttp.mockWebServer
     testImplementation libs.coroutines.android

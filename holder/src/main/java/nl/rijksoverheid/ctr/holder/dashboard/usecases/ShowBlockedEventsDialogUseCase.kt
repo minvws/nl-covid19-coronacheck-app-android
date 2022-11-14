@@ -9,7 +9,8 @@ package nl.rijksoverheid.ctr.holder.dashboard.usecases
 
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.BlockedEventEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 
 interface ShowBlockedEventsDialogUseCase {
     suspend fun execute(blockedRemoteEvents: List<RemoteEvent>): ShowBlockedEventsDialogResult
@@ -24,13 +25,13 @@ class ShowBlockedEventsDialogUseCaseImpl(
             ShowBlockedEventsDialogResult.None
         } else {
             ShowBlockedEventsDialogResult.Show(
-                blockedEvents = holderDatabase.blockedEventDao().getAll()
+                blockedEvents = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked)
             )
         }
     }
 }
 
 sealed class ShowBlockedEventsDialogResult {
-    data class Show(val blockedEvents: List<BlockedEventEntity>) : ShowBlockedEventsDialogResult()
+    data class Show(val blockedEvents: List<RemovedEventEntity>) : ShowBlockedEventsDialogResult()
     object None : ShowBlockedEventsDialogResult()
 }

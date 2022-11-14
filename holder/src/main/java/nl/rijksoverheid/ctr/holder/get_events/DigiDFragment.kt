@@ -89,6 +89,7 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                                 )
                             }
                         )
+                        dialogPresented()
                     } else {
                         onNavigateToYourEvents(
                             remoteProtocols = it.remoteEvents,
@@ -201,6 +202,7 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                         positiveButtonText = R.string.dialog_close,
                         positiveButtonCallback = {}
                     )
+                    dialogPresented()
                 }
                 LoginResult.NoBrowserFound -> {
                     dialogUtil.presentDialog(
@@ -213,6 +215,7 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                         positiveButtonText = R.string.ok,
                         positiveButtonCallback = {}
                     )
+                    dialogPresented()
                 }
             }
         })
@@ -300,4 +303,5 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
         remoteProtocols: Map<RemoteProtocol, ByteArray>,
         eventProviders: List<EventProvider> = emptyList()
     )
+    abstract fun dialogPresented()
 }

@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepositoryImpl
 import nl.rijksoverheid.ctr.holder.api.repositories.MijnCNAuthenticationRepository
 import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepository
 import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepositoryImpl
+import nl.rijksoverheid.ctr.holder.modules.qualifier.ErrorResponseQualifier
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -39,6 +40,8 @@ val repositoriesModule = module {
         CoronaCheckRepositoryImpl(
             get(),
             get(),
+            get(),
+            get(named(ErrorResponseQualifier.CORONA_CHECK)),
             get(),
             get()
         )

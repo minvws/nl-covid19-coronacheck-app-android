@@ -36,4 +36,7 @@
         <attr name="buttonHidden" format="boolean" />
         <attr name="attachCheckboxToScrollView" format="reference" />
     </declare-styleable>
+    <declare-styleable name="RecyclerViewButtonWidget">
+        <attr name="attachToRecyclerView" format="reference" />
+    </declare-styleable>
 </resources>

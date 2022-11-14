@@ -10,11 +10,11 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - id: setup
         uses: ./.github/actions/setup
       - name: Archive mobile core dependency
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: mobilecore
           path: |
@@ -25,16 +25,16 @@ jobs:
       - name: Test
         run: ./gradlew testDebug testAccDebug holder:lintAccDebug verifier:lintAccDebug holder:assemAccDebug holder:assemAccDebugAndroidTest
       - name: Run tests on Testlab
-        if: "!contains(github.event.pull_request.labels.*.name, 'skip-screenshot-tests')"
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        if: contains(env.FIREBASE_SERVICE_ACCOUNT, '{') && !contains(github.event.pull_request.labels.*.name, 'skip-screenshot-tests')
         run: |
           echo $FIREBASE_SERVICE_ACCOUNT > $RUNNER_TEMP/.firebase_service_account.json
           export GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/.firebase_service_account.json >> $GITHUB_ENV
           ./gradlew holder:runFlank
       - name: Archive test-results
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-results
           path: |
@@ -56,7 +56,7 @@ jobs:
     needs: [ "build-and-test" ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - id: setup
         uses: ./.github/actions/setup
       - name: Write key store
@@ -69,7 +69,7 @@ jobs:
       - name: Clean up key store
         run: rm keystore.jks
       - name: Archive apks
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: apks
           path: |
@@ -77,7 +77,7 @@ jobs:
             verifier/build/outputs/apk
           retention-days: 5
       - name: Archive bundle
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: bundle
           path: |
@@ -86,7 +86,7 @@ jobs:
           retention-days: 5
 
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: apks
           path: apks

@@ -61,6 +61,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
                 val currentItem = viewPager.currentItem
                 if (currentItem == adapter.itemCount - 1) finishFlow() else showNextPage(currentItem, binding)
             }
+            setButtonText(binding, viewPager.currentItem)
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
                 OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
@@ -144,7 +145,7 @@ class NewFeaturesFragment : Fragment(R.layout.fragment_new_features) {
     }
 
     private fun setButtonText(binding: FragmentNewFeaturesBinding, position: Int) {
-        val newFeature = args.appUpdateData.newFeatures[position]
+        val newFeature = args.appUpdateData.newFeatures.getOrNull(position) ?: return
         binding.button.text = getString(
             if (position == args.appUpdateData.newFeatures.size - 1) {
                 newFeature.lastButtonResource

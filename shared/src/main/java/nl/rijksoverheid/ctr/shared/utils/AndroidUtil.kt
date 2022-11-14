@@ -25,7 +25,6 @@ import java.util.UUID
 interface AndroidUtil {
     fun isSmallScreen(): Boolean
     fun getMasterKeyAlias(): String
-    fun isFirstInstall(): Boolean
     fun isNetworkAvailable(): Boolean
     fun getConnectivityManager(): ConnectivityManager
     fun generateRandomKey(): String
@@ -59,17 +58,6 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
             MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
         }
 
-    override fun isFirstInstall(): Boolean {
-        return try {
-            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-            val firstInstallTime = packageInfo.firstInstallTime
-            val lastUpdateTime = packageInfo.lastUpdateTime
-            firstInstallTime == lastUpdateTime
-        } catch (exc: PackageManager.NameNotFoundException) {
-            true
-        }
-    }
-
     override fun isNetworkAvailable(): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -93,7 +81,13 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
     override fun generateRandomKey(): String = UUID.randomUUID().toString()
 
     override fun getFirstInstallTime(): OffsetDateTime {
-        val millis = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
+        val packageInfo = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            @Suppress("DEPRECATION")
+            context.packageManager.getPackageInfo(context.packageName, 0)
+        } else {
+            context.packageManager.getPackageInfo(context.packageName, PackageManager.PackageInfoFlags.of(0))
+        }
+        val millis = packageInfo.firstInstallTime
         return OffsetDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneOffset.UTC)
     }
 }

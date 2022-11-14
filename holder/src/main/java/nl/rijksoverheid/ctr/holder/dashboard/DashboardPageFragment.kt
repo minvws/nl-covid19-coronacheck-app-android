@@ -26,11 +26,12 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogResult
 import nl.rijksoverheid.ctr.holder.dashboard.util.CardItemUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.ShowBlockedEventsBottomSheetUtil
+import nl.rijksoverheid.ctr.holder.dashboard.util.RemovedEventsBottomSheetUtil
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardPageBinding
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -64,7 +65,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
     }
 
     private val dashboardPageInfoItemHandlerUtil: DashboardPageInfoItemHandlerUtil by inject()
-    private val showBlockedEventsBottomSheetUtil: ShowBlockedEventsBottomSheetUtil by inject()
+    private val removedEventsBottomSheetUtil: RemovedEventsBottomSheetUtil by inject()
     private val cardItemUtil: CardItemUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
@@ -74,7 +75,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
     })
     val section = Section()
     private val greenCardType: GreenCardType by lazy {
-        arguments?.getParcelable<GreenCardType>(
+        arguments?.getParcelableCompat(
             EXTRA_GREEN_CARD_TYPE
         ) ?: error("EXTRA_GREEN_CARD_TYPE should not be null")
     }
@@ -110,7 +111,7 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
                             positiveButtonText = R.string.holder_invaliddetailsremoved_alert_button_close,
                             positiveButtonCallback = { },
                             negativeButtonText = R.string.holder_invaliddetailsremoved_alert_button_moreinfo,
-                            negativeButtonCallback = { showBlockedEventsBottomSheetUtil.show(this, result.blockedEvents) }
+                            negativeButtonCallback = { removedEventsBottomSheetUtil.presentBlockedEvents(this, result.blockedEvents) }
                         )
                     }
                     ShowBlockedEventsDialogResult.None -> {
