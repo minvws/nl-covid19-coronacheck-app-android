@@ -216,7 +216,7 @@ class ScanQrFragmentTest : AutoCloseKoinTest() {
         }
 
         loadKoinModules(
-            module(override = true) {
+            module {
                 factory {
                     scannerUtil
                 }

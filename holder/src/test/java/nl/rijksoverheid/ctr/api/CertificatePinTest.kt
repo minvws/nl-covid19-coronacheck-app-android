@@ -107,7 +107,7 @@ class CertificatePinTest : AutoCloseKoinTest() {
         }
     }
 
-    private fun apiModule(baseUrl: HttpUrl) = module(override = true) {
+    private fun apiModule(baseUrl: HttpUrl) = module {
         val certificateHash = "sha256/${localhostCertificate.certificate.sha256Hash().base64()}"
         single {
             OkHttpClient.Builder()

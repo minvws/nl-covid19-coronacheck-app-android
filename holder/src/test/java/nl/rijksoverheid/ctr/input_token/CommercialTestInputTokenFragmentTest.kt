@@ -112,7 +112,7 @@ class CommercialTestInputTokenFragmentTest : AutoCloseKoinTest() {
         inputTokenViewModel: InputTokenViewModel
     ) {
         loadKoinModules(
-            module(override = true) {
+            module {
                 viewModel {
                     inputTokenViewModel
                 }

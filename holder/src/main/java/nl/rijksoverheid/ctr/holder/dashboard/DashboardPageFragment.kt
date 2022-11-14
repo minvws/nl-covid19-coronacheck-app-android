@@ -34,10 +34,9 @@ import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -69,10 +68,8 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
     private val removedEventsBottomSheetUtil: RemovedEventsBottomSheetUtil by inject()
     private val cardItemUtil: CardItemUtil by inject()
     private val dialogUtil: DialogUtil by inject()
-    val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
-        ViewModelOwner.from(
+    val dashboardViewModel: DashboardViewModel by sharedViewModel(owner = {
             requireParentFragment()
-        )
     })
     val section = Section()
     private val greenCardType: GreenCardType by lazy {

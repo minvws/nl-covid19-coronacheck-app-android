@@ -40,7 +40,7 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
 
     @Before
     fun setup() {
-        loadKoinModules(module(override = true) {
+        loadKoinModules(module {
             factory {
                 mockk<PersistenceManager>(relaxed = true).apply {
                     every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG

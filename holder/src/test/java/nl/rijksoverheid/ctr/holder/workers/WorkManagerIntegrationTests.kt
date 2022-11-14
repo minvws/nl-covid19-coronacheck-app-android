@@ -66,7 +66,7 @@ class WorkManagerIntegrationTests : AutoCloseKoinTest() {
     @Before
     fun setup() {
         loadKoinModules(
-            module(override = true) {
+            module {
                 factory {
                     mockk<ConfigResultUseCase>().apply {
                         coEvery { fetch() } returns ConfigResult.Success("", "")

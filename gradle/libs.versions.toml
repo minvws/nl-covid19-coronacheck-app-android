@@ -15,7 +15,7 @@ bouncycastle = "1.72"
 certificatetransparency = "1.1.1"
 coroutines = "1.6.4"
 groupie = "2.9.0"
-koin = "3.0.1"
+koin = "3.2.2"
 # @pin update Kotlin manually
 kotlin = "1.7.20"
 mockk = "1.13.2"

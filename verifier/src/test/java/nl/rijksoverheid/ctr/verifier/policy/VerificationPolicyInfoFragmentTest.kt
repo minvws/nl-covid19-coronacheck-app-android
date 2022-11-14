@@ -84,7 +84,7 @@ class VerificationPolicyInfoFragmentTest : AutoCloseKoinTest() {
         isVerificationPolicySelectionEnabled: Boolean = true
     ) {
         loadKoinModules(
-            module(override = true) {
+            module {
                 factory {
                     mockk<ScannerStateUseCase>().apply {
                         every { get() } returns ScannerState.Unlocked(verificationPolicySelectionState)

@@ -57,7 +57,7 @@ class NoDigidFragmentTest : AutoCloseKoinTest() {
 
     private fun startFragment(): NavHostController {
         loadKoinModules(
-            module(override = true) {
+            module {
                 factory { intentUtil }
             }
         )
