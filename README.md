@@ -17,3 +17,10 @@ This increases the chance that we might be able to use your contribution (or it 
 
 Note that all commits should be signed using a gpg key.
 
+## Dependencies
+
+This project has at the moment two external dependencies:
+- Mobilecore library
+  Build its .aar according to the instructions found at https://github.com/minvws/nl-covid19-coronacheck-app-android/tree/main/mobilecore
+- [RDO modules](https://github.com/minvws/nl-rdo-app-android-modules)
+  Simply add them: `git submodule add https://github.com/minvws/nl-rdo-app-android-modules.git rdo`
