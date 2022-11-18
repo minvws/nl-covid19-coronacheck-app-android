@@ -7,6 +7,7 @@ import com.squareup.moshi.JsonEncodingException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.security.SignatureException
 import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLKeyException
 import javax.net.ssl.SSLPeerUnverifiedException
@@ -59,7 +60,7 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
                 is SSLPeerUnverifiedException -> "013"
                 is SQLiteConstraintException -> "060"
                 is OpenIdAuthorizationException -> "07${exception.type}-${exception.code}"
-                is CharacterCodingException -> "020"
+                is SignatureException -> "020"
                 is SocketTimeoutException -> "004"
                 is UnknownHostException -> "002"
                 is ConnectException -> "005"
