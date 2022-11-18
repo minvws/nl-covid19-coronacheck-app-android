@@ -7,7 +7,7 @@ This repository contains the Android release of the Dutch COVID-19 CoronaCheck p
 * The Android app is located in the repository you are currently viewing.
 * The iOS app can be found [here](https://github.com/minvws/nl-covid19-coronacheck-app-ios)
 
-See minvws/**[nl-covid19-coronacheck-app-coordination](https://github.com/minvws/nl-covid19-coronacheck-app-coordination)** for further technical documentation.
+See [minvws](https://github.com/minvws)/**[nl-covid19-coronacheck-app-coordination](https://github.com/minvws/nl-covid19-coronacheck-app-coordination)** for further technical documentation.
 
 ---
 
@@ -27,8 +27,8 @@ The codebase builds two different app products:
 
 The apps can run on devices that meet the following requirements.
 
-- Operating System: Android API 6.0+
-- Internet connection
+* Operating System: Android API 6.0+
+* Internet connection
 
 ### Feature Overview
 
@@ -38,11 +38,11 @@ The app works like this:
 
 *First make sure you are vaccinated or have tested for coronavirus.*
 
-- With the CoronaCheck app you can create a certificate based on your vaccination or coronavirus test results. You do this by retrieving your details via DigiD or via the retrieval code you received if you got tested at a test location other than the GGD.
+* With the CoronaCheck app you can create a certificate based on your vaccination or coronavirus test results. You do this by retrieving your details via DigiD or via the retrieval code you received if you got tested at a test location other than the GGD.
 
-- You can create a vaccination certificate from your vaccination, create a test certificate from your negative coronavirus test result, or create a recovery certificate from your positive coronavirus test result.
+* You can create a vaccination certificate from your vaccination, create a test certificate from your negative coronavirus test result, or create a recovery certificate from your positive coronavirus test result.
 
-- The QR code of your certificate may be checked at the entrance of venues and activities. And also at international borders. This is proof that you have been vaccinated, have had coronavirus or did not have coronavirus at the time of testing
+* The QR code of your certificate may be checked at the entrance of venues and activities. And also at international borders. This is proof that you have been vaccinated, have had coronavirus or did not have coronavirus at the time of testing
 
 This is a general overview of the features that are available in the app:
 
@@ -98,18 +98,15 @@ Depending on the active disclosure policy (which is set by the remote config), t
 
 The app works like this:
 
-- With CoronaCheck Scanner you can scan visitors' QR codes with your smartphone
-  camera. Visitors can show their QR code in the CoronaCheck app, or on paper. Tourists can
-  use an app or a printed QR code from their own country.
-- A number of details appear on your screen, allowing you to verify - using their proof of
+* With CoronaCheck Scanner you can scan visitors' QR codes with your smartphone camera. Visitors can show their QR code in the CoronaCheck app, or on paper. Tourists can use an app or a printed QR code from their own country.
+* A number of details appear on your screen, allowing you to verify - using their proof of
   identity - if the QR code really belongs to this visitor.
-- If the QR code is valid, and the details are the same as on the proof of identity, a check
+* If the QR code is valid, and the details are the same as on the proof of identity, a check
   mark will appear on the screen and you can give access to the visitor.
 
 This is how the app uses personal details:
 
 * Visitors' details may only be used to verify the coronavirus entry pass
-
 * Visitors' details are not centrally stored anywhere
 * Visitors' location details are neither used nor saved
 
@@ -161,7 +158,6 @@ Dependencies management is handled with [Gradle's Version Catalog](https://docs.
 * [rootbeer](https://github.com/scottyab/rootbeer) for checking if the device got root
 * [sqlcipher](https://github.com/sqlcipher/android-database-sqlcipher) for encrypting the database
 
-
 #### Development only
 
 * [crashlytics](https://firebase.google.com/docs/crashlytics/) crash reporting for internal testing builds
@@ -184,13 +180,13 @@ Dependencies management is handled with [Gradle's Version Catalog](https://docs.
 * [fladle](https://runningcode.github.io/fladle/) gradle plugin for Firebase test lab and flank
 * [flank](https://github.com/Flank/flank) for massively running ui tests on Firebase test lab
 
-### In-house dependencies
+### In house dependencies
 
 #### CLCore
 
-The Android and iOS apps share a [core library](https://github.com/minvws/nl-covid19-coronacheck-mobile-core), written in Go, which is responsible for producing the QR-code image, and for validating scanned QR-codes.
-Build its .aar according to the [instructions](/mobilecore)
-The library is also built by the [project's github actions workflow](/.github/workflows/ci.yml), to be transparent it is used uncompromised
+The Android and iOS apps share a [core library](https://github.com/minvws/nl-covid19-coronacheck-mobile-core), written in Go, which is responsible for producing the QR-code image, and for validating scanned QR-codes. Build its .aar according to the [instructions](/mobilecore).
+
+The library is also built by the [project's GitHub actions workflow](/.github/workflows/ci.yml), to be transparent it is used uncompromised
 
 #### RDO modules
 
@@ -205,59 +201,59 @@ The project is also dependent to [rdo modules](https://github.com/minvws/nl-rdo-
 All of them are added as git submodules.
 
 Steps to add them:
+
 1. `git submodule init`
-2. `git submodule update` 
-3. [Install latest go](https://go.dev/doc/install)
+2. `git submodule update`
+3. Install the latest [go](https://go.dev/doc/install)
 4. `./gradlew :mobilecore:buildCore`
 
 ### Project structure
 
-CoronaCheck can be built using the `holder` module. 
+CoronaCheck can be built using the `holder` module.
 Scanner can be built using the `verifier` module.
 
 Both come in 5 flavours:
 
-- tst (test environment)
-- acc (acceptance environment)
-- fdroidAcc (acceptance environment for fdroid builds, not depending in google play services)
-- fdroidProd (production environment for fdroid builds)
-- prod (production environment)
+* tst (test environment)
+* acc (acceptance environment)
+* fdroidAcc (acceptance environment for F-Droid builds, not depending in google play services)
+* fdroidProd (production environment for F-Droid builds)
+* prod (production environment)
 
 Note that test and acceptance environments are accessible only inside VWS trusted networks.
 
 Other project modules used by both apps:
-- [api](/api) http client setup
-- [appconfig](/appconfig) remote configuration management
-- [design](/design) common styles and components
-- [introduction](/introduction) onboarding and privacy consent components
-- [qrscanner](/qrscanner) camera scanning qr codes
-- [shared](/shared) common models and utility classes
+
+* [api](/api) http client setup
+* [appconfig](/appconfig) remote configuration management
+* [design](/design) common styles and components
+* [introduction](/introduction) onboarding and privacy consent components
+* [qrscanner](/qrscanner) camera scanning qr codes
+* [shared](/shared) common models and utility classes
 
 Finally, there are couple of bash and python [scripts](/scripts):
-- The original development team used [Lokalise](https://lokalise.com/) to manage the dutch and english copies of the apps. A [download script](/scripts/download_copy.py) is used to sync the local copies to the remote ones in Lokalise and an [upload script](/scripts/upload_copy.py) can be used to sync the remote ones to the local ones. To use them add an environment variable named `LOKALISE_API_KEY` with value a [lokalise api token](https://docs.lokalise.com/en/articles/1929556-api-tokens)
-- [Update the current screenshots](/scripts/record_screenshots.sh) used in the CoronaCheck screenshot testing [folder](/holder/screenshots)
-- [Sync the public repo to the private repo](/scripts/sync_public_repo.sh) used by the internal development team
+
+* The original development team used [Lokalise](https://lokalise.com/) to manage the dutch and english copies of the apps. A [download script](/scripts/download_copy.py) is used to sync the local copies to the remote ones in Lokalise and an [upload script](/scripts/upload_copy.py) can be used to sync the remote ones to the local ones. To use them add an environment variable named `LOKALISE_API_KEY` with value a [lokalise api token](https://docs.lokalise.com/en/articles/1929556-api-tokens).
+* [Update the current screenshots](/scripts/record_screenshots.sh) used in the CoronaCheck screenshot testing [folder](/holder/screenshots).
+* [Sync the public repo to the private repo](/scripts/sync_public_repo.sh) used by the internal development team.
 
 ## Release Procedure
 
 The release process is the same for CoronaCheck and for CoronaCheck Scanner.
 
-`apk` and `aab` artifacts are generated by github actions every time `main` or `release/*` branches have a new commit.
+`apk` and `aab` artifacts are generated by GitHub actions every time `main` or `release/*` branches have a new commit.
 
 We release test, acceptance and production-like builds internally to Firebase App Distribution. These are triggered whenever there is a commit made to the main branch (ie by merging a pull request).
-To use firebase, a [firebase service account json key](https://firebase.google.com/docs/admin/setup#:~:text=To%20authenticate%20a%20service%20account,confirm%20by%20clicking%20Generate%20Key.) must be added in github's secrets, named `FIREBASE_SERVICE_ACCOUNT`
+To use firebase, a [firebase service account json key](https://firebase.google.com/docs/admin/setup#:~:text=To%20authenticate%20a%20service%20account,confirm%20by%20clicking%20Generate%20Key.) must be added in github's secrets, named `FIREBASE_SERVICE_ACCOUNT`.
 
 Initial releases (4.6, 4.7 etc) are released from artifacts generated by the main branch. Hotfix releases artifacts are generated by release branches (eg `release/4.7.1`)
 Once the team is satisfied with the quality of the builds on Firebase, a production build can be sent to the play store.
 
 We perform a manual regression test on the build to make sure the production-ready binary performs as expected.
 
-Once the build is approved by Google, we release the approved build manually using a phased rollout to give us the opportunity to spot any crashes that might be detected, or bugs that might be reported. The rollout starts at 5% and goes to 10%, then 25%, then 50% and finally 100%
-At this point  a final tag should be made, with this format:
+Once the build is approved by Google, we release the approved build manually using a phased rollout to give us the opportunity to spot any crashes that might be detected, or bugs that might be reported. The rollout starts at 5% and goes to 10%, then 25%, then 50% and finally 100%.
 
-`Holder-4.7.0`
-
-`Verifier-3.0.2`
+At this point a final tag should be made, with this format: `Holder-4.7.0` and `Verifier-3.0.2`
 
 Now that the release is completed, the private git repository should be "synced" with the public repository by running [this script](scripts/sync_public_repo.sh). It also pushes the releases tags.
 
@@ -268,4 +264,4 @@ The development team works on the repository in a private fork (for reasons of c
 If you plan to make non-trivial changes, we recommend to open an issue beforehand where we can discuss your planned changes.
 This increases the chance that we might be able to use your contribution (or it avoids doing work if there are reasons why we wouldn't be able to use it).
 
-Note that all commits should be signed using a gpg key.
+Note that all commits should be signed using a GPG key.
