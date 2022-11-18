@@ -161,6 +161,7 @@ android {
 
     packagingOptions {
         exclude "META-INF/LICENSE**"
+        pickFirst "MANIFEST.MF"
     }
 
     fladle {
@@ -195,6 +196,7 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.timber
     implementation libs.lottie
+    implementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     debugImplementation libs.fragment.testing
     implementation libs.zxing.core
     implementation(platform(libs.okhttp.bom))
@@ -240,6 +242,9 @@ dependencies {
     androidTestImplementation libs.androidx.test.rules
     androidTestImplementation libs.androidx.test.core
     androidTestImplementation libs.androidx.core.testing
+    androidTestImplementation(libs.barista) {
+        exclude group: "org.jetbrains.kotlin"
+    }
 
     ksp libs.moshi.codegen
 }
