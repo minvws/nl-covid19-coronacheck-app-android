@@ -25,7 +25,7 @@ tasks.register("buildCore") {
         }
         exec {
             workingDir rootProject.file("mobilecore-src")
-            commandLine "gomobile", "bind", "-target", "android", "-o", "../mobilecore/mobilecore.aar", "github.com/minvws/nl-covid19-coronacheck-mobile-core"
+            commandLine "gomobile", "bind", "-target", "android", "-androidapi", "19", "-o", "../mobilecore/mobilecore.aar", "github.com/minvws/nl-covid19-coronacheck-mobile-core"
         }
         exec {
             workingDir rootProject.file("mobilecore-src")
