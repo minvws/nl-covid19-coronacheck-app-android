@@ -56,7 +56,8 @@ class UpdateEventExpirationUseCaseImplTest : AutoCloseKoinTest() {
                     type = OriginType.Test,
                     scope = "",
                     expiryDate = null,
-                    jsonData = "".toByteArray()
+                    jsonData = "".toByteArray(),
+                    draft = false
                 )
             )
         )
@@ -101,7 +102,8 @@ class UpdateEventExpirationUseCaseImplTest : AutoCloseKoinTest() {
                     type = OriginType.Test,
                     scope = "",
                     expiryDate = null,
-                    jsonData = "".toByteArray()
+                    jsonData = "".toByteArray(),
+                    draft = false
                 )
             )
         )

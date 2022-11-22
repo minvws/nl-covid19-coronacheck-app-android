@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.get_events.usecases.PersistBlockedEventsUseCa
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
+import nl.rijksoverheid.ctr.persistence.database.usecases.DraftEventUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.GetRemoteGreenCardsUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoteGreenCardsResult
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
@@ -33,7 +34,7 @@ interface HolderDatabaseSyncer {
 
     /**
      * Synchronized the database. Does cleanup in the database based on expiration dates and can resync with remote
-     * @param expectedOriginType If not null checks if the remote credentials contain this origin. Will return [DatabaseSyncerResult.MissingOrigin] if it's not present.
+     * @param flow the [HolderFlow] we are in
      * @param syncWithRemote If true and the data call to resync succeeds, clear all green cards in the database and re-add them
      * @param previousSyncResult The previous result outputted by this [sync] if known
      */
@@ -54,6 +55,7 @@ class HolderDatabaseSyncerImpl(
     private val syncRemoteGreenCardsUseCase: SyncRemoteGreenCardsUseCase,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
     private val updateEventExpirationUseCase: UpdateEventExpirationUseCase,
+    private val draftEventUseCase: DraftEventUseCase,
     private val persistBlockedEventsUseCase: PersistBlockedEventsUseCase
 ) : HolderDatabaseSyncer {
 
@@ -115,6 +117,7 @@ class HolderDatabaseSyncerImpl(
 
                             when (result) {
                                 is SyncRemoteGreenCardsResult.Success -> {
+                                    draftEventUseCase.finalise()
                                     workerManagerUtil.scheduleRefreshCredentialsJob()
                                     return@withContext DatabaseSyncerResult.Success(
                                         hints = remoteGreenCards.hints ?: listOf(),
@@ -122,6 +125,7 @@ class HolderDatabaseSyncerImpl(
                                     )
                                 }
                                 is SyncRemoteGreenCardsResult.Failed -> {
+                                    draftEventUseCase.remove()
                                     return@withContext DatabaseSyncerResult.Failed.Error(result.errorResult)
                                 }
                             }
@@ -132,6 +136,7 @@ class HolderDatabaseSyncerImpl(
                             )
                         }
                         is RemoteGreenCardsResult.Error -> {
+                            draftEventUseCase.remove()
                             val greenCards = holderDatabase.greenCardDao().getAll()
 
                             when (remoteGreenCardsResult.errorResult) {

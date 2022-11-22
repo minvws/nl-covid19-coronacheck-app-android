@@ -137,7 +137,8 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
             type = OriginType.Test,
             scope = "",
             expiryDate = OffsetDateTime.now(),
-            jsonData = "".toByteArray()
+            jsonData = "".toByteArray(),
+            draft = false
         )
         db.eventGroupDao().insertAll(listOf(eventGroupEntity))
         val eventGroups = db.eventGroupDao().getAll()
@@ -177,7 +178,8 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
             type = OriginType.Vaccination,
             scope = "",
             expiryDate = OffsetDateTime.now(),
-            jsonData = "".toByteArray()
+            jsonData = "".toByteArray(),
+            draft = false
         )
         db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
 
@@ -219,7 +221,8 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
             type = OriginType.Vaccination,
             scope = "",
             expiryDate = OffsetDateTime.now(),
-            jsonData = "".toByteArray()
+            jsonData = "".toByteArray(),
+            draft = false
         )
         db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
 
@@ -261,7 +264,8 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
             type = OriginType.Vaccination,
             scope = "",
             expiryDate = OffsetDateTime.now(),
-            jsonData = "".toByteArray()
+            jsonData = "".toByteArray(),
+            draft = false
         )
         db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
 

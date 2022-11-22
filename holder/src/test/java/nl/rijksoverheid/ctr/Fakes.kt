@@ -614,7 +614,7 @@ fun fakeEventGroupEntity(
         2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
     ),
     jsonData: ByteArray = ByteArray(1)
-) = EventGroupEntity(id, walletId, providerIdentifier, type, scope, maxIssuedAt, jsonData)
+) = EventGroupEntity(id, walletId, providerIdentifier, type, scope, maxIssuedAt, false, jsonData)
 
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),

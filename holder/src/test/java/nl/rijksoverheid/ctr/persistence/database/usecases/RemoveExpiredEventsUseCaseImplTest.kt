@@ -74,6 +74,7 @@ class RemoveExpiredEventsUseCaseImplTest {
         type = OriginType.Test,
         scope = "",
         expiryDate = expiryDate,
-        jsonData = "".toByteArray()
+        jsonData = "".toByteArray(),
+        draft = false
     )
 }

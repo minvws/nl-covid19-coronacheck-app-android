@@ -43,7 +43,8 @@ class HolderDatabaseSyncerImplTest {
             type = OriginType.Test,
             expiryDate = OffsetDateTime.now(),
             scope = "",
-            jsonData = "".toByteArray()
+            jsonData = "".toByteArray(),
+            draft = false
         )
     )
 
@@ -64,7 +65,8 @@ class HolderDatabaseSyncerImplTest {
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper,
-            persistBlockedEventsUseCase = mockk(relaxed = true)
+            persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true)
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -91,7 +93,8 @@ class HolderDatabaseSyncerImplTest {
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper,
-            persistBlockedEventsUseCase = mockk(relaxed = true)
+            persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true)
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -131,6 +134,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -172,6 +176,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -213,6 +218,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -240,6 +246,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -274,6 +281,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -301,6 +309,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -344,6 +353,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -378,6 +388,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )

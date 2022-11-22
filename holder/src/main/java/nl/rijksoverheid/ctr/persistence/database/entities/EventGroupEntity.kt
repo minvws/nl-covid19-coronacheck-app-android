@@ -31,6 +31,7 @@ data class EventGroupEntity(
     val type: OriginType,
     val scope: String,
     val expiryDate: OffsetDateTime?,
+    @ColumnInfo(defaultValue = "0") val draft: Boolean,
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB) val jsonData: ByteArray
 ) {
     override fun equals(other: Any?): Boolean {

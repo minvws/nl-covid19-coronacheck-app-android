@@ -156,8 +156,12 @@ class RemovedEventMigration : AutoMigrationSpec
 
 @Database(
     entities = [WalletEntity::class, EventGroupEntity::class, GreenCardEntity::class, CredentialEntity::class, OriginEntity::class, SecretKeyEntity::class, RemovedEventEntity::class, OriginHintEntity::class],
-    autoMigrations = [AutoMigration(from = 8, to = 9, spec = RemovedEventMigration::class)],
-    version = 9
+    autoMigrations = [AutoMigration(
+        from = 8,
+        to = 9,
+        spec = RemovedEventMigration::class
+    ), AutoMigration(from = 9, to = 10)],
+    version = 10
 )
 @TypeConverters(HolderDatabaseConverter::class)
 abstract class HolderDatabase : RoomDatabase() {
