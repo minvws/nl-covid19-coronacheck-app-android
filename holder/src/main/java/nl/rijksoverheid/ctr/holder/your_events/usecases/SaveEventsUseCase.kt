@@ -96,7 +96,8 @@ class SaveEventsUseCaseImpl(
                         originType = originType,
                         getPositiveTestWithVaccination = flow == HolderFlow.VaccinationAndPositiveTest
                     ),
-                    expiryDate = null
+                    expiryDate = null,
+                    draft = true
                 )
             }
 
