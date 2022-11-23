@@ -170,13 +170,13 @@ android {
         maxTestShards = 1
         testTargets = ["notPackage nl.rijksoverheid.ctr.holder.end2end"]
         devices = [
-                ["model": "Pixel4.arm", "version": "33"]
+                ["model": "Pixel2.arm", "version": "29"]
         ]
         configs {
             e2e {
                 testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
                 devices.set([
-                        ["model": "Pixel4.arm", "version": "33"]
+                        ["model": "Pixel2.arm", "version": "29"]
                 ])
             }
         }
