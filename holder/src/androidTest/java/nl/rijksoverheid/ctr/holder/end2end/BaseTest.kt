@@ -39,5 +39,6 @@ abstract class BaseTest {
     companion object {
         private val instrumentation: Instrumentation = InstrumentationRegistry.getInstrumentation()
         val device: UiDevice = UiDevice.getInstance(instrumentation)
+        val authPassword = InstrumentationRegistry.getArguments().getString("authPassword")
     }
 }

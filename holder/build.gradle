@@ -148,6 +148,7 @@ android {
         coreLibraryDesugaringEnabled true
     }
 
+    def e2ePassword = project.ext.has("android.testInstrumentationRunnerArguments.authPassword") ? project.ext.getProperty("android.testInstrumentationRunnerArguments.authPassword") : ""
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
@@ -175,6 +176,7 @@ android {
         configs {
             e2e {
                 testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
+                environmentVariables.set(["authPassword": e2ePassword])
                 devices.set([
                         ["model": "Pixel2.arm", "version": "29"]
                 ])
