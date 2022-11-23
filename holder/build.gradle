@@ -168,9 +168,18 @@ android {
         projectId = "coronatester-test"
         variant = "accDebug"
         maxTestShards = 1
+        testTargets = ["notPackage nl.rijksoverheid.ctr.holder.end2end"]
         devices = [
-                ["model": "Pixel2.arm", "version": "29"]
+                ["model": "Pixel4.arm", "version": "33"]
         ]
+        configs {
+            e2e {
+                testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
+                devices.set([
+                        ["model": "Pixel4.arm", "version": "33"]
+                ])
+            }
+        }
         flankVersion = "22.05.0"
     }
 }
