@@ -35,6 +35,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.persistence.database.usecases.DraftEventUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -80,6 +81,7 @@ class DashboardViewModelImpl(
     private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
     private val dashboardTabsItemDataMapper: DashboardTabsItemDataMapper,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
+    private val draftEventUseCase: DraftEventUseCase,
     private val showBlockedEventsDialogUseCase: ShowBlockedEventsDialogUseCase
 ) : DashboardViewModel() {
 
@@ -170,6 +172,8 @@ class DashboardViewModelImpl(
                 isLoadingNewCredentials = false
             )
         }
+
+        draftEventUseCase.remove()
 
         removeExpiredEventsUseCase.execute(
             events = allEventGroupEntities
