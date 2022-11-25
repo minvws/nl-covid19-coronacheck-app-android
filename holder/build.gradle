@@ -148,7 +148,6 @@ android {
         coreLibraryDesugaringEnabled true
     }
 
-    def e2ePassword = project.ext.has("android.testInstrumentationRunnerArguments.authPassword") ? project.ext.getProperty("android.testInstrumentationRunnerArguments.authPassword") : ""
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
@@ -165,6 +164,7 @@ android {
         pickFirst "MANIFEST.MF"
     }
 
+    def end2endPassword = project.ext.has("android.testInstrumentationRunnerArguments.authPassword") ? project.ext.getProperty("android.testInstrumentationRunnerArguments.authPassword") : ""
     fladle {
         projectId = "coronatester-test"
         variant = "accDebug"
@@ -174,9 +174,9 @@ android {
                 ["model": "Pixel2.arm", "version": "29"]
         ]
         configs {
-            e2e {
+            end2end {
                 testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
-                environmentVariables.set(["authPassword": e2ePassword])
+                environmentVariables.set(["authPassword": end2endPassword])
                 devices.set([
                         ["model": "Pixel2.arm", "version": "29"]
                 ])

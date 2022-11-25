@@ -20,4 +20,4 @@ jobs:
         run: |
           echo $FIREBASE_SERVICE_ACCOUNT > $RUNNER_TEMP/.firebase_service_account.json
           export GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/.firebase_service_account.json >> $GITHUB_ENV
-          ./gradlew holder:runFlank<e2e> -Pandroid.testInstrumentationRunnerArguments.authPassword=${{ secrets.ACCEPTANCE_BASIC_AUTH_PASSWORD }}
+          ./gradlew holder:runFlankEnd2end -Pandroid.testInstrumentationRunnerArguments.authPassword=${{ secrets.ACCEPTANCE_BASIC_AUTH_PASSWORD }}
