@@ -10,7 +10,7 @@
     android:focusable="true"
     android:contentDescription="@string/holder_dashboard_accessibility_notification"
     app:cardCornerRadius="15dp"
-    app:cardElevation="2dp">
+    app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
