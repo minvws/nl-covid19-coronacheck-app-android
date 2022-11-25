@@ -1,0 +1,23 @@
+name: End to end tests
+
+on:
+  schedule:
+    - cron: '0 5 * * 2,4' # Run at 05:00 on Tuesday and Thursday.
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - id: setup
+        uses: ./.github/actions/setup
+      - name: Assemble
+        run: ./gradlew holder:assemAccDebug holder:assemAccDebugAndroidTest
+      - name: Run tests on Testlab
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          echo $FIREBASE_SERVICE_ACCOUNT > $RUNNER_TEMP/.firebase_service_account.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/.firebase_service_account.json >> $GITHUB_ENV
+          ./gradlew holder:runFlankEnd2end -Pandroid.testInstrumentationRunnerArguments.authPassword=${{ secrets.ACCEPTANCE_BASIC_AUTH_PASSWORD }}

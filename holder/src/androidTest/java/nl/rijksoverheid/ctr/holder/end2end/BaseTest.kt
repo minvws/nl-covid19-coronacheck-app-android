@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.holder.end2end
 
 import android.app.Instrumentation
 import androidx.test.ext.junit.rules.activityScenarioRule
-import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
@@ -12,7 +11,6 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
 import org.junit.Before
 import org.junit.Rule
 
-@LargeTest
 abstract class BaseTest {
 
     @get:Rule
@@ -41,5 +39,6 @@ abstract class BaseTest {
     companion object {
         private val instrumentation: Instrumentation = InstrumentationRegistry.getInstrumentation()
         val device: UiDevice = UiDevice.getInstance(instrumentation)
+        val authPassword = InstrumentationRegistry.getArguments().getString("authPassword")
     }
 }
