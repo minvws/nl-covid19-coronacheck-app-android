@@ -42,7 +42,9 @@ class HolderApiClientUtilImpl(
                 })
             }
 
-            setLogListService(LogListDataSourceFactory.createLogListService())
+            setLogListService(LogListDataSourceFactory.createLogListService(
+                baseUrl = "https://www.gstatic.com/ct/log_list/v3/"
+            ))
         }
 
     override fun client(certificateBytes: List<ByteArray>): HolderApiClient {
