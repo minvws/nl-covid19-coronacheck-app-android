@@ -175,6 +175,7 @@ android {
         ]
         configs {
             end2end {
+                resultsHistoryName.set("end2end")
                 testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
                 environmentVariables.set(["authPassword": end2endPassword])
                 devices.set([
