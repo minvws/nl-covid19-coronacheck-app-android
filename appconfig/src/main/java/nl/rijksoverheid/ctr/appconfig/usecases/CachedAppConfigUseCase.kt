@@ -43,10 +43,10 @@ class CachedAppConfigUseCaseImpl constructor(
     override fun isCachedAppConfigValid(): Boolean {
         return try {
             if (isVerifierApp) {
-                appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject<VerifierConfig>(moshi) is VerifierConfig
-                appConfigStorageManager.getFileAsBufferedSource(publicKeysFile)?.readUtf8()?.toObject<JSONObject>(moshi)?.has("eu_keys") == true
+                appConfigStorageManager.getFileAsBufferedSource(configFile)?.toObject<VerifierConfig>(moshi) is VerifierConfig
+                appConfigStorageManager.getFileAsBufferedSource(publicKeysFile)?.toObject<JSONObject>(moshi)?.has("eu_keys") == true
             } else {
-                appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.toObject<HolderConfig>(moshi) is HolderConfig
+                appConfigStorageManager.getFileAsBufferedSource(configFile)?.toObject<HolderConfig>(moshi) is HolderConfig
             }
         } catch (exc: Exception) {
             false
@@ -64,10 +64,10 @@ class CachedAppConfigUseCaseImpl constructor(
 
         return try {
             val config = if (isVerifierApp) {
-                appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
+                appConfigStorageManager.getFileAsBufferedSource(configFile)
                     ?.toObject(moshi) as? VerifierConfig
             } else {
-                appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()
+                appConfigStorageManager.getFileAsBufferedSource(configFile)
                     ?.toObject(moshi) as? HolderConfig
             }
             return config
@@ -78,7 +78,7 @@ class CachedAppConfigUseCaseImpl constructor(
 
     override fun getCachedAppConfigHash(): String {
         val json = try {
-            appConfigStorageManager.getFileAsBufferedSource(configFile)?.readUtf8()?.replace("\\/", "/") ?: return ""
+            appConfigStorageManager.getFileAsBufferedSource(configFile)?.replace("\\/", "/") ?: return ""
         } catch (exc: Exception) {
             return ""
         }
