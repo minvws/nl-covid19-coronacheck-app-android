@@ -47,7 +47,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
         val binding = FragmentHolderNameSelectionBinding.bind(view)
         initRecyclerView(binding)
 
-        viewModel.canSkipLiveData.observe(viewLifecycleOwner) { canSkip ->
+        viewModel.toolbarButtonsStateLiveData.observe(viewLifecycleOwner) { (_, canSkip) ->
             if (canSkip) {
                 addToolbarButton()
             }
