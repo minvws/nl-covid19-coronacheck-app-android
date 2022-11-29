@@ -18,6 +18,7 @@ archivesBaseName = "holder-v${version}-${appVersionCode}"
 android {
     namespace 'nl.rijksoverheid.ctr.holder'
     testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
         unitTests {
             includeAndroidResources = true
             unitTests.all {
@@ -44,6 +45,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "com.karumi.shot.ShotTestRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
 
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
@@ -257,6 +259,8 @@ dependencies {
     androidTestImplementation(libs.barista) {
         exclude group: "org.jetbrains.kotlin"
     }
+
+    androidTestUtil libs.androidx.test.orchestrator
 
     ksp libs.moshi.codegen
 }
