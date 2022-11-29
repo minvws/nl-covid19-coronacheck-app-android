@@ -10,14 +10,14 @@ package nl.rijksoverheid.ctr.appconfig.persistence
 
 import java.io.File
 import java.io.IOException
-import okio.BufferedSource
 import okio.buffer
 import okio.source
+import okio.use
 
 interface AppConfigStorageManager {
     fun storageFile(file: File, fileContents: String): StorageResult
     fun areConfigFilesPresentInFilesFolder(): Boolean
-    fun getFileAsBufferedSource(file: File): BufferedSource?
+    fun getFileAsBufferedSource(file: File): String?
 }
 
 class AppConfigStorageManagerImpl(private val filesDirPath: String) : AppConfigStorageManager {
@@ -40,9 +40,11 @@ class AppConfigStorageManagerImpl(private val filesDirPath: String) : AppConfigS
         return configFileInFilesFolder.exists() && publicKeysInFilesFolder.exists()
     }
 
-    override fun getFileAsBufferedSource(file: File): BufferedSource? {
+    override fun getFileAsBufferedSource(file: File): String? {
         if (file.exists()) {
-            return file.source().buffer()
+            return file.source().use {
+                it.buffer().readUtf8()
+            }
         }
         return null
     }
