@@ -85,21 +85,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         navigateSafety(YourEventsFragmentDirections.actionMyOverview())
     }
 
-    private fun retrieveGreenCards() {
-        when (val type = args.type) {
-            is YourEventsFragmentType.RemoteProtocol3Type -> {
-                yourEventsViewModel.checkForConflictingEvents(
-                    remoteProtocols = type.remoteEvents
-                )
-            }
-            is YourEventsFragmentType.DCC -> {
-                yourEventsViewModel.checkForConflictingEvents(
-                    remoteProtocols = type.getRemoteEvents()
-                )
-            }
-        }
-    }
-
     override fun getFlow(): Flow {
         return args.flow
     }
@@ -653,7 +638,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun handleButton(binding: FragmentYourEventsBinding) {
         binding.bottom.setButtonClick {
-            retrieveGreenCards()
+            yourEventsViewModel.checkForConflictingEvents(
+                remoteProtocols = getEventsFromType()
+            )
         }
         binding.bottom.setButtonText(
             getString(

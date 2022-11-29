@@ -74,8 +74,8 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matchin
         setBackPressListener()
         setBindings(adapter)
 
-        viewModel.canSkipLiveData.observe(viewLifecycleOwner) { canSkip ->
-            if (!canSkip) {
+        viewModel.toolbarButtonsStateLiveData.observe(viewLifecycleOwner) { (canGoBack, _) ->
+            if (!canGoBack) {
                 hideNavigationIcon()
             }
         }
@@ -160,7 +160,7 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matchin
                     binding.bottom.cardElevation = 0f
                 }
 
-                if (viewModel.canSkipLiveData.value == false) {
+                if (viewModel.toolbarButtonsStateLiveData.value?.canGoBack == false) {
                     if (isFirstItem) {
                         hideNavigationIcon()
                     } else {

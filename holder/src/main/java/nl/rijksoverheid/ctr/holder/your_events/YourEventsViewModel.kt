@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCaseImpl
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
+import nl.rijksoverheid.ctr.persistence.database.usecases.DraftEventUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -53,12 +54,14 @@ data class RemoteEventInformation(
 
 class YourEventsViewModelImpl(
     private val saveEventsUseCase: SaveEventsUseCase,
-    private val holderDatabaseSyncer: HolderDatabaseSyncer
+    private val holderDatabaseSyncer: HolderDatabaseSyncer,
+    private val draftEventUseCase: DraftEventUseCase
 ) : YourEventsViewModel() {
 
     override fun checkForConflictingEvents(remoteProtocols: Map<RemoteProtocol, ByteArray>) {
         (loading as MutableLiveData).value = Event(true)
         viewModelScope.launch {
+            draftEventUseCase.remove()
             try {
                 val conflictingEvents =
                     saveEventsUseCase.remoteProtocols3AreConflicting(remoteProtocols)
