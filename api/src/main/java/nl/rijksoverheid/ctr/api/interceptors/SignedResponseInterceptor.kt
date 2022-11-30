@@ -13,22 +13,22 @@ import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.ByteArrayInputStream
+import java.security.SignatureException
+import java.time.Clock
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
-import nl.rijksoverheid.ctr.api.signing.SignatureValidationException
-import nl.rijksoverheid.ctr.api.signing.SignatureValidator
 import nl.rijksoverheid.ctr.api.signing.certificates.BEARINGPOINT_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.EMAX_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
+import nl.rijksoverheid.rdo.modules.httpsecurity.cms.CMSSignatureValidatorBuilder
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okio.Buffer
 import retrofit2.Invocation
-import timber.log.Timber
 
 private val responseAdapter by lazy {
     Moshi.Builder()
@@ -41,13 +41,14 @@ private val responseAdapter by lazy {
 class SignedResponseInterceptor(
     signatureCertificateCnMatch: String,
     private val testProviderApiChecks: Boolean,
-    private val isAcc: Boolean
+    private val isAcc: Boolean,
+    private val clock: Clock
 ) : Interceptor {
-    private val defaultValidator = SignatureValidator.Builder()
-        .addTrustedCertificate(EV_ROOT_CA)
-        .addTrustedCertificate(PRIVATE_ROOT_CA)
-        .cnMatching(signatureCertificateCnMatch)
-        .build()
+    private val defaultValidator = CMSSignatureValidatorBuilder.build(
+        certificatesPem = listOf(EV_ROOT_CA, PRIVATE_ROOT_CA),
+        cnMatchingString = signatureCertificateCnMatch,
+        clock = clock
+    )
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val expectedSigningCertificate = chain.request().tag(SigningCertificate::class.java)
@@ -73,37 +74,38 @@ class SignedResponseInterceptor(
             }
 
             val validator = if (expectedSigningCertificate != null) {
-                val builder = SignatureValidator.Builder()
-                    .apply {
-                        addTrustedCertificate(EV_ROOT_CA)
-                        addTrustedCertificate(ROOT_CA_G3)
-                        addTrustedCertificate(PRIVATE_ROOT_CA)
-                        if (isAcc) {
-                            addTrustedCertificate(EMAX_ROOT_CA)
-                            addTrustedCertificate(BEARINGPOINT_ROOT_CA)
-                        }
-                        signingCertificateBytes(expectedSigningCertificate.certificateBytes)
-                    }
-                builder.build()
+                val trustedCertificates = listOf(EV_ROOT_CA, ROOT_CA_G3, PRIVATE_ROOT_CA)
+                CMSSignatureValidatorBuilder.build(
+                    certificatesPem = if (isAcc) {
+                        trustedCertificates + listOf(EMAX_ROOT_CA, BEARINGPOINT_ROOT_CA)
+                    } else {
+                        trustedCertificates
+                    },
+                    signingCertificateBytes = expectedSigningCertificate.certificateBytes,
+                    clock = clock
+                )
             } else {
                 defaultValidator
             }
 
-            return if (!validateSignature(validator, signedResponse)) {
-                throw CharacterCodingException()
-            } else {
-                response.newBuilder()
-                    .body(
-                        (if (wrapResponse) wrapResponse(
-                            body,
-                            signedResponse.payload
-                        ) else signedResponse.payload).toResponseBody("application/json".toMediaType())
-                    )
-                    .build().also { response.close() }
+            if (testProviderApiChecks) {
+                validator.validate(
+                    signature = signedResponse.signature,
+                    content = ByteArrayInputStream(signedResponse.payload)
+                )
             }
+
+            return response.newBuilder()
+                .body(
+                    (if (wrapResponse) wrapResponse(
+                        body,
+                        signedResponse.payload
+                    ) else signedResponse.payload).toResponseBody("application/json".toMediaType())
+                )
+                .build().also { response.close() }
         } catch (e: Exception) {
             return if (response.isSuccessful) {
-                throw CharacterCodingException()
+                throw SignatureException("Invalid signature")
             } else {
                 // When something is wrong in parsing a unsuccessful request, cascade down the
                 // request as usual (so that HttpExceptions get picked up for example)
@@ -124,27 +126,6 @@ class SignedResponseInterceptor(
         writer.endObject()
         writer.flush()
         return buffer.readByteArray()
-    }
-
-    private fun validateSignature(
-        validator: SignatureValidator,
-        signedResponse: SignedResponse
-    ): Boolean {
-        if (signedResponse.signature == null || signedResponse.payload == null) {
-            return false
-        }
-        return try {
-            if (testProviderApiChecks) {
-                validator.verifySignature(
-                    ByteArrayInputStream(signedResponse.payload),
-                    signedResponse.signature
-                )
-            }
-            true
-        } catch (ex: SignatureValidationException) {
-            Timber.w(ex, "Error validating signature")
-            false
-        }
     }
 }
 
