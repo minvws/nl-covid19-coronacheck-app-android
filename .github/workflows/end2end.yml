@@ -9,6 +9,11 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
+      - name: Set version number
+        run: |
+          github=${{ env.GITHUB_RUN_NUMBER }}
+          version=$(( github + 4000 ))
+          echo VERSION_NUMBER=$version >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - id: setup
         uses: ./.github/actions/setup
