@@ -18,6 +18,7 @@ archivesBaseName = "holder-v${version}-${appVersionCode}"
 android {
     namespace 'nl.rijksoverheid.ctr.holder'
     testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
         unitTests {
             includeAndroidResources = true
             unitTests.all {
@@ -44,6 +45,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "com.karumi.shot.ShotTestRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
 
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
@@ -179,7 +181,7 @@ android {
                 testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
                 environmentVariables.set(["authPassword": end2endPassword])
                 devices.set([
-                        ["model": "Pixel2.arm", "version": "29"]
+                        ["model": "Pixel2.arm", "version": "29", "locale": "nl"]
                 ])
             }
         }
@@ -208,7 +210,6 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.timber
     implementation libs.lottie
-    implementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     debugImplementation libs.fragment.testing
     implementation libs.zxing.core
     implementation(platform(libs.okhttp.bom))
@@ -254,9 +255,13 @@ dependencies {
     androidTestImplementation libs.androidx.test.rules
     androidTestImplementation libs.androidx.test.core
     androidTestImplementation libs.androidx.core.testing
+    androidTestImplementation libs.uiautomator
+    androidTestImplementation libs.koin.test.junit4
     androidTestImplementation(libs.barista) {
         exclude group: "org.jetbrains.kotlin"
     }
+
+    androidTestUtil libs.androidx.test.orchestrator
 
     ksp libs.moshi.codegen
 }

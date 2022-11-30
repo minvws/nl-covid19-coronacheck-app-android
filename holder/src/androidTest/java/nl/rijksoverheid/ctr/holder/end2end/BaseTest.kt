@@ -1,39 +1,37 @@
 package nl.rijksoverheid.ctr.holder.end2end
 
 import android.app.Instrumentation
-import androidx.test.ext.junit.rules.activityScenarioRule
+import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
-import com.adevinta.android.barista.interaction.BaristaDialogInteractions.clickDialogPositiveButton
+import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
+import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
+import nl.rijksoverheid.ctr.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Before
-import org.junit.Rule
+import org.koin.test.AutoCloseKoinTest
+import org.koin.test.inject
 
-abstract class BaseTest {
+abstract class BaseTest : AutoCloseKoinTest() {
 
-    @get:Rule
-    var rule = activityScenarioRule<HolderMainActivity>()
+    private val persistenceManager: PersistenceManager by inject()
+    private val introductionPersistenceManager: IntroductionPersistenceManager by inject()
+    private val appUpdatePersistenceManager: AppUpdatePersistenceManager by inject()
+    private lateinit var scenario: ActivityScenario<HolderMainActivity>
 
     @Before
-    fun skipOnboarding() {
-        if (checkForText("Security risks have been found")) {
-            clickDialogPositiveButton()
-        }
-        if (checkForText("Travel safely with your certificate")) {
-            clickOn("Next")
+    fun startApp() {
+        persistenceManager.setHasDismissedUnsecureDeviceDialog(true)
+        persistenceManager.setHasDismissedRootedDeviceDialog()
 
-            if (checkForText("Certificate of vaccination, recovery or test")) {
-                clickOn("Next")
-            }
-            if (checkForText("Your certificate contains a QR code")) {
-                clickOn("Next")
-            }
-            if (checkForText("This is how the app uses your data")) {
-                clickOn("Get started")
-            }
-        }
+        introductionPersistenceManager.saveIntroductionFinished()
+        appUpdatePersistenceManager.saveNewFeaturesSeen(3)
+        appUpdatePersistenceManager.saveNewTermsSeen(2)
+        persistenceManager.setPolicyScreenSeen(DisclosurePolicy.OneAndThreeG)
+        persistenceManager.setSelectedDashboardTab(1)
+
+        scenario = ActivityScenario.launch(HolderMainActivity::class.java)
     }
 
     companion object {
