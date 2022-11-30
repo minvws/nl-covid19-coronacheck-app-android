@@ -11,8 +11,7 @@ jobs:
     steps:
       - name: Set version number
         run: |
-          github=${{ env.GITHUB_RUN_NUMBER }}
-          version=$(( github + 4000 ))
+          version=$(( $GITHUB_RUN_NUMBER + 4000 ))
           echo VERSION_NUMBER=$version >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - id: setup
