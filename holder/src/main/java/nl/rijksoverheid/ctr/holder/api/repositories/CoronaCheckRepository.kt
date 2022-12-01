@@ -25,6 +25,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.asResponseBody
 import retrofit2.Converter
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -81,6 +82,7 @@ open class CoronaCheckRepositoryImpl(
     }
 
     override suspend fun accessTokens(jwt: String): NetworkRequestResult<RemoteAccessTokens> {
+        Timber.tag("giorgos").d("accessTokens")
         return networkRequestResultFactory.createResult(HolderStep.AccessTokensNetworkRequest) {
             getHolderApiClient().getAccessTokens(authorization = "Bearer $jwt")
         }

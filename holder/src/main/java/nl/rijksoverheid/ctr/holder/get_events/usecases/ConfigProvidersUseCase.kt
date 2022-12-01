@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -38,6 +39,7 @@ class ConfigProvidersUseCaseImpl(private val coronaCheckRepository: CoronaCheckR
     }
 
     override suspend fun eventProviders(): EventProvidersResult {
+        Timber.tag("giorgos").d("eventProviders")
         return when (val result = coronaCheckRepository.configProviders()) {
             is NetworkRequestResult.Success<RemoteConfigProviders> -> {
                 EventProvidersResult.Success(result.response.eventProviders)
