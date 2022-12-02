@@ -17,6 +17,8 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
 
 object Actions {
 
+    var chromeFirstVisit = true
+
     private fun addEvent() {
         tapButton("Menu")
         tapButton("Vaccinatie of test toevoegen")
@@ -26,7 +28,24 @@ object Actions {
         addEvent()
         tapButton("Ik heb een (booster)vaccinatie gehad")
         tapButton("Log in met DigiD")
+        if (chromeFirstVisit) acceptChromeOnboarding()
         retrieveCertificateFromServer(bsn)
+    }
+
+    private fun acceptChromeOnboarding() {
+        if (checkForText("Welkom bij Chrome")) {
+            waitForText("Accept")?.click()
+            if (checkForText("Synchronisatie aanzetten?")) {
+                waitForText("Nee, bedankt")?.click()
+            }
+            if (checkForText("Chrome-meldingen")) {
+                waitForText("Nee, bedankt")?.click()
+            }
+            if (checkForText("Toestaan dat Chrome je meldingen stuurt?")) {
+                waitForText("Niet toestaan")?.click()
+            }
+            chromeFirstVisit = false
+        }
     }
 
     private fun retrieveCertificateFromServer(bsn: String) {

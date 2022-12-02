@@ -30,7 +30,7 @@ object Elements {
         return element
     }
 
-    fun checkForText(text: String, timeout: Long = 15): Boolean {
+    fun checkForText(text: String, timeout: Long = 5): Boolean {
         return device.wait(Until.hasObject(By.textStartsWith(text)), timeout * 1000)!!
     }
 
