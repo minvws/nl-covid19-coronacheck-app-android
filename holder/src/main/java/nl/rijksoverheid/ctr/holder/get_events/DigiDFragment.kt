@@ -39,7 +39,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.qualifier.named
-import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -74,7 +73,6 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
         val copy = getCopyForOriginType()
 
         getEventsViewModel.eventsResult.observe(viewLifecycleOwner, EventObserver {
-            Timber.tag("giorgos").d("gotEvents")
             when (it) {
                 is EventsResult.Success -> {
                     if (it.missingEvents) {
@@ -295,11 +293,6 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                 )
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Timber.tag("giorgos").d("onresume")
     }
 
     abstract fun getLoginType(): LoginType
