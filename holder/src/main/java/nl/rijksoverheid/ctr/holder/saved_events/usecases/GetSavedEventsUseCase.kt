@@ -51,10 +51,11 @@ class GetSavedEventsUseCaseImpl(
             val fullName = yourEventsFragmentUtil.getFullName(remoteProtocol?.holder)
             val birthDate = yourEventsFragmentUtil.getBirthDate(remoteProtocol?.holder)
 
+            val providerName = eventGroupEntityUtil.getProviderName(
+                providerIdentifier = eventGroupEntity.providerIdentifier
+            )
             SavedEvents(
-                providerName = eventGroupEntityUtil.getProviderName(
-                    providerIdentifier = eventGroupEntity.providerIdentifier
-                ),
+                providerName = providerName,
                 eventGroupEntity = eventGroupEntity,
                 events = remoteProtocol?.events?.mapNotNull { remoteEvent ->
                     val europeanCredential = if (isDccEvent) {
@@ -67,7 +68,7 @@ class GetSavedEventsUseCaseImpl(
                                 event = remoteEvent,
                                 fullName = fullName,
                                 birthDate = birthDate,
-                                providerIdentifier = eventGroupEntity.providerIdentifier,
+                                providerIdentifier = providerName,
                                 europeanCredential = europeanCredential,
                                 addExplanation = false
                             )
