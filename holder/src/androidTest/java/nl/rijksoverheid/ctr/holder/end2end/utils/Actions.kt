@@ -39,6 +39,9 @@ object Actions {
         if (checkForText("Synchronisatie aanzetten?", 2)) {
             waitForText("Nee, bedankt")?.click()
         }
+        if (checkForText("Inloggen", 2)) {
+            loginToServer()
+        }
         if (checkForText("Chrome-meldingen maken het je makkelijker", 2)) {
             waitForText("Nee, bedankt")?.click()
         }
