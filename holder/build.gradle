@@ -181,7 +181,7 @@ android {
                 testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
                 environmentVariables.set(["authPassword": end2endPassword])
                 devices.set([
-                        ["model": "Pixel2.arm", "version": "29", "locale": "nl"]
+                        ["model": "panther", "version": "33", "locale": "nl"]
                 ])
             }
         }
