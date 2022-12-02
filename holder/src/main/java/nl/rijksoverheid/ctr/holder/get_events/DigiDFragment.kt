@@ -185,7 +185,6 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
         })
 
         digidViewModel.loginResultLiveData.observe(viewLifecycleOwner, EventObserver {
-            Timber.tag("giorgos").d("loginResult")
             when (it) {
                 is LoginResult.Success -> {
                     getEventsViewModel.getDigidEvents(

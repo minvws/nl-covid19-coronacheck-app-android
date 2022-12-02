@@ -18,7 +18,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventsUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetMijnCnEventsUsecase
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import timber.log.Timber
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -56,7 +55,6 @@ class GetEventsViewModelImpl(
         originTypes: List<RemoteOriginType>,
         getPositiveTestWithVaccination: Boolean
     ) {
-        Timber.tag("giorgos").d("getDigidEvents")
         getEvents {
             getEventsUseCase.getEvents(
                 loginType = loginType,
