@@ -9,7 +9,9 @@ import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiObject
 import androidx.test.uiautomator.UiObject2
+import androidx.test.uiautomator.UiSelector
 import androidx.test.uiautomator.Until
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertContains
 import junit.framework.Assert.assertNotNull
@@ -82,5 +84,9 @@ object Elements {
 
     fun Matcher<View>.tapButton(text: String) {
         onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(text)))).perform(click())
+    }
+
+    fun findElement(className: Class<*>, label: String): UiObject? {
+        return device.findObject(UiSelector().className(className).text(label))
     }
 }

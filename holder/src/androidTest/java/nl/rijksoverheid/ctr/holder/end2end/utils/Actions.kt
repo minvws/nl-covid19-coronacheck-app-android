@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
-import androidx.test.uiautomator.UiSelector
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickBack
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
@@ -12,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.findElement
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
 
@@ -35,17 +35,17 @@ object Actions {
     private fun acceptChromeOnboarding() {
         if (checkForText("Welkom bij Chrome")) {
             waitForText("Accept")?.click()
-            if (checkForText("Synchronisatie aanzetten?", 2)) {
-                waitForText("Nee, bedankt")?.click()
-            }
-            if (checkForText("Chrome-meldingen", 2)) {
-                waitForText("Nee, bedankt")?.click()
-            }
-            if (checkForText("Toestaan dat Chrome je meldingen stuurt?", 2)) {
-                waitForText("Niet toestaan")?.click()
-            }
-            chromeFirstVisit = false
         }
+        if (checkForText("Synchronisatie aanzetten?", 2)) {
+            waitForText("Nee, bedankt")?.click()
+        }
+        if (checkForText("Chrome-meldingen maken het je makkelijker", 2)) {
+            waitForText("Nee, bedankt")?.click()
+        }
+        if (checkForText("Toestaan dat Chrome je meldingen stuurt?", 2)) {
+            waitForText("Niet toestaan")?.click()
+        }
+        chromeFirstVisit = false
     }
 
     private fun retrieveCertificateFromServer(bsn: String) {
@@ -53,7 +53,7 @@ object Actions {
             TestCase.fail("BSN was null or empty, no certificate can be retrieved.")
         }
 
-        if (checkForText("DigiD MOCK")) loginToServer()
+        if (!checkForText("DigiD MOCK")) loginToServer()
 
         waitForText("999991772")?.text = bsn
         waitForText("Login / Submit")!!.click()
@@ -65,20 +65,16 @@ object Actions {
             TestCase.fail("Password was null or empty, no certificate can be retrieved.")
         }
 
-        val password = waitForText("Wachtwoord")
-        password!!.click()
+        val password = findElement(android.widget.EditText::class.java, "Wachtwoord")!!
+        password.click()
         password.text = BaseTest.authPassword
 
-        val username = waitForText("Gebruikersnaam")
-        username!!.click()
+        val username = findElement(android.widget.EditText::class.java, "Gebruikersnaam")!!
+        username.click()
         username.text = "coronacheck"
 
-        val submitButton = BaseTest.device.findObject(
-            UiSelector()
-                .className(android.widget.Button::class.java.canonicalName!!)
-                .textStartsWith("Inloggen")
-        )
-        submitButton.click()
+        val submit = findElement(android.widget.Button::class.java, "Inloggen")!!
+        submit.click()
     }
 
     fun addRetrievedCertificateToApp() {
