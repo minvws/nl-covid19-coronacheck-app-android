@@ -35,13 +35,13 @@ object Actions {
     private fun acceptChromeOnboarding() {
         if (checkForText("Welkom bij Chrome")) {
             waitForText("Accept")?.click()
-            if (checkForText("Synchronisatie aanzetten?")) {
+            if (checkForText("Synchronisatie aanzetten?", 2)) {
                 waitForText("Nee, bedankt")?.click()
             }
-            if (checkForText("Chrome-meldingen")) {
+            if (checkForText("Chrome-meldingen", 2)) {
                 waitForText("Nee, bedankt")?.click()
             }
-            if (checkForText("Toestaan dat Chrome je meldingen stuurt?")) {
+            if (checkForText("Toestaan dat Chrome je meldingen stuurt?", 2)) {
                 waitForText("Niet toestaan")?.click()
             }
             chromeFirstVisit = false
@@ -53,15 +53,11 @@ object Actions {
             TestCase.fail("BSN was null or empty, no certificate can be retrieved.")
         }
 
-        val loggedIn = waitForText("DigiD MOCK")
-        if (loggedIn == null) loginToServer()
+        if (checkForText("DigiD MOCK")) loginToServer()
 
-        val inputBsn = waitForText("999991772")
-        if (inputBsn != null) {
-            inputBsn.text = bsn
-            waitForText("Login / Submit")!!.click()
-            waitForText("Kloppen de gegevens?", 15)
-        }
+        waitForText("999991772")?.text = bsn
+        waitForText("Login / Submit")!!.click()
+        waitForText("Kloppen de gegevens?", 15)
     }
 
     private fun loginToServer() {
