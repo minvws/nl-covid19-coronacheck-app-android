@@ -36,7 +36,7 @@ class CountryUtilImpl : CountryUtil {
     }
 
     override fun getCountryForQrInfoScreen(countryCode: String?, currentLocale: Locale?): String = if (countryCode != null) {
-        val localeIsNL = currentLocale?.country == "NL"
+        val localeIsNL = currentLocale?.language == "nl"
         val countryIsNL = countryCode == "NL"
         val countryNameInDutch = Locale("", countryCode).getDisplayCountry(Locale("nl"))
         val countryNameInEnglish = Locale("", countryCode).getDisplayCountry(Locale("en"))
