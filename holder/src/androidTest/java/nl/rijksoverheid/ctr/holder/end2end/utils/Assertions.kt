@@ -32,7 +32,7 @@ object Assertions {
         when (event) {
             is Vaccination -> {
                 assertContains("Ziekteverwekker: " + event.disease)
-                assertContains("Vaccin: " + event.vaccine)
+                assertContains("Vaccin: " + event.vaccine.value)
                 assertContains("Vaccinatiedatum: " + event.eventDate.written())
                 assertContains("Gevaccineerd in: " + event.country.domesticName)
             }
