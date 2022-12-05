@@ -26,9 +26,20 @@ object Actions {
 
     fun addVaccinationCertificate(bsn: String) {
         addEvent()
-        tapButton("Ik heb een (booster)vaccinatie gehad")
-        tapButton("Log in met DigiD")
-        if (chromeFirstVisit) acceptChromeOnboarding()
+        tapButton("Vaccinatie")
+        retrieveCertificateFromServer(bsn)
+    }
+
+    fun addRecoveryCertificate(bsn: String) {
+        addEvent()
+        tapButton("Positieve test")
+        retrieveCertificateFromServer(bsn)
+    }
+
+    fun addNegativeTestCertificateFromGGD(bsn: String) {
+        addEvent()
+        tapButton("Negatieve test")
+        tapButton("GGD")
         retrieveCertificateFromServer(bsn)
     }
 
@@ -52,9 +63,11 @@ object Actions {
     }
 
     private fun retrieveCertificateFromServer(bsn: String) {
-        if (bsn.isEmpty()) {
-            TestCase.fail("BSN was null or empty, no certificate can be retrieved.")
-        }
+        tapButton("Log in met DigiD")
+
+        if (chromeFirstVisit) acceptChromeOnboarding()
+
+        if (bsn.isEmpty()) TestCase.fail("BSN was null or empty, no certificate can be retrieved.")
 
         if (!checkForText("DigiD MOCK")) loginToServer()
 
