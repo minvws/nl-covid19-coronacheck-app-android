@@ -54,6 +54,21 @@ object Assertions {
         card(Event.Type.Vaccination).containsText("Bekijk QR")
     }
 
+    fun assertInternationalRecoveryOnOverview(recovery: PositiveTest) {
+        assertOverview()
+        card(Event.Type.PositiveTest).containsText(recovery.type.internationalName)
+        recovery.validUntil?.let { card(Event.Type.PositiveTest).containsText("Geldig tot " + it.written()) }
+        card(Event.Type.PositiveTest).containsText("Bekijk QR")
+    }
+
+    fun assertInternationalNegativeTestOnOverview(negativeTest: NegativeTest) {
+        assertOverview()
+        card(Event.Type.NegativeTest).containsText(negativeTest.type.internationalName)
+        card(Event.Type.NegativeTest).containsText("Type test: " + negativeTest.testType.value)
+        card(Event.Type.NegativeTest).containsText("Testdatum: " + negativeTest.eventDate.recently())
+        card(Event.Type.NegativeTest).containsText("Bekijk QR")
+    }
+
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null) {
         if (event is Vaccination) waitForText("Dosis $dose")
         tapButton("Details")
@@ -76,16 +91,14 @@ object Assertions {
                 labelValuePairExist("Testdatum / Test date:", event.eventDate.dutch())
                 labelValuePairExist("Getest in / Member state of test:", event.country.internationalName)
                 event.validFrom?.let { labelValuePairExist("Geldig vanaf / Valid from*:", it.dutch()) }
-                event.validUntil?.let { labelValuePairExist("Geldig vanaf / Valid from*:", it.dutch()) }
+                event.validUntil?.let { labelValuePairExist("Geldig tot / Valid to*:", it.dutch()) }
             }
             is NegativeTest -> {
                 labelValuePairExist("Ziekteverwekker / Disease targeted:", event.disease)
-                labelValuePairExist("Type test/ Type of test:", event.testType.value)
-                labelValuePairExist("Testdatum / Test date:", event.eventDate.dutch())
+                labelValuePairExist("Type test / Type of test:", event.testType.value)
+                labelValuePairExist("Testdatum / Test date:", event.eventDate.recently())
                 labelValuePairExist("Testuitslag / Test result:", "negatief (geen corona) / negative (no coronavirus)")
                 labelValuePairExist("Getest in / Member state of test:", event.country.internationalName)
-                event.validFrom?.let { labelValuePairExist("Geldig vanaf / Valid from*:", it.dutch()) }
-                event.validUntil?.let { labelValuePairExist("Geldig vanaf / Valid from*:", it.dutch()) }
             }
         }
         clickBack()
