@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.uiautomator.By
@@ -79,7 +81,7 @@ object Elements {
     }
 
     fun Matcher<View>.containsText(text: String) {
-        onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(text))))
+        onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(text)))).check(ViewAssertions.matches(isDisplayed()))
     }
 
     fun Matcher<View>.tapButton(text: String) {
