@@ -29,7 +29,7 @@ abstract class BaseTest : AutoCloseKoinTest() {
         introductionPersistenceManager.saveIntroductionFinished()
         appUpdatePersistenceManager.saveNewFeaturesSeen(3)
         appUpdatePersistenceManager.saveNewTermsSeen(2)
-        persistenceManager.setPolicyScreenSeen(DisclosurePolicy.OneAndThreeG)
+        persistenceManager.setPolicyScreenSeen(DisclosurePolicy.ZeroG)
         persistenceManager.setSelectedDashboardTab(1)
 
         scenario = ActivityScenario.launch(HolderMainActivity::class.java)
