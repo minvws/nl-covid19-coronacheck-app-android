@@ -16,7 +16,7 @@ import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.UiSelector
 import androidx.test.uiautomator.Until
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertContains
-import junit.framework.Assert.assertNotNull
+import junit.framework.TestCase.assertNotNull
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.device
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
