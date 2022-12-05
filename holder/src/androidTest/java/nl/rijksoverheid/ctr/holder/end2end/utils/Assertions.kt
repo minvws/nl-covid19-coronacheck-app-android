@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.holder.end2end.utils
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertContains
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickBack
-import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
 import java.time.temporal.ChronoUnit
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.today
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
@@ -22,7 +21,6 @@ object Assertions {
     fun assertOverview() {
         waitForText("Mijn bewijzen")
         assertDisplayed("Menu")
-        clickOn("Internationaal")
     }
 
     fun assertRetrievalDetails(person: Person, event: Event, position: Int = 0) {
