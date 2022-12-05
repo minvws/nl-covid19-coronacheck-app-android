@@ -47,7 +47,7 @@ object Elements {
     }
 
     // Based on: https://stackoverflow.com/a/41967652
-    private fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?>? {
+    private fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?> {
         return object : TypeSafeMatcher<View>() {
             var currentIndex = 0
             var viewObjHash = 0
