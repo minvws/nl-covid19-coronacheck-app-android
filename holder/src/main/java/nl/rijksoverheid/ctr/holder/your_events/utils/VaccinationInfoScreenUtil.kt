@@ -72,6 +72,9 @@ class VaccinationInfoScreenUtilImpl(
         val vaccine = resources.getString(R.string.your_vaccination_explanation_vaccine)
         val vaccineAnswer = getVaccineAnswer(hpkCode, event)
 
+        val vaccineDisplayName = resources.getString(R.string.holder_event_aboutVaccination_productName)
+        val vaccineDisplayNameAnswer = hpkCode?.displayName ?: ""
+
         val vaccineType = resources.getString(R.string.your_vaccination_explanation_vaccine_type)
         val vaccineTypeAnswer = getVaccineTypeAnswer(hpkCode, event)
 
@@ -116,6 +119,7 @@ class VaccinationInfoScreenUtilImpl(
                 "<br/>",
                 createdLine(disease, diseaseAnswer),
                 createdLine(vaccine, vaccineAnswer),
+                createdLine(vaccineDisplayName, vaccineDisplayNameAnswer),
                 createdLine(vaccineType, vaccineTypeAnswer),
                 createdLine(producer, producerAnswer),
                 createdLine(doses, dosesAnswer, isOptional = true),

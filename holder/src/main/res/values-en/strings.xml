@@ -894,4 +894,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_identitySelection_accessibility_details">See details for %s</string>
   <string name="holder_identitySelection_accessibility_select">Select %s</string>
   <string name="holder_identitySelection_loading_accessibility">Your details are being updated</string>
+  <string name="holder_event_aboutVaccination_productName">Product name:</string>
 </resources>
