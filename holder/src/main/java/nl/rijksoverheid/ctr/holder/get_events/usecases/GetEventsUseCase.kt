@@ -7,6 +7,9 @@
 
 package nl.rijksoverheid.ctr.holder.get_events.usecases
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepository
 import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
@@ -16,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteAccessTokens
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.shared.ext.parallelMap
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
@@ -56,8 +60,23 @@ class GetEventsUseCaseImpl(
         originTypes: List<RemoteOriginType>,
         loginType: LoginType
     ): EventsResult {
-        // Fetch event providers
-        val eventProvidersResult = configProvidersUseCase.eventProviders()
+        // Fetch event providers and access tokens
+        val result = coroutineScope {
+            awaitAll(
+                async {
+                    configProvidersUseCase.eventProviders()
+                },
+                async {
+                    when (loginType) {
+                        LoginType.Max -> coronaCheckRepository.accessTokens(jwt)
+                        LoginType.Pap -> Unit // no access tokens call needed
+                    }
+                }
+            )
+        }
+
+        val eventProvidersResult = result.filterIsInstance<EventProvidersResult>().first()
+
         val (tokens, remoteEventProviders) = when (eventProvidersResult) {
             is EventProvidersResult.Error -> return EventsResult.Error(eventProvidersResult.errorResult)
             is EventProvidersResult.Success -> {
@@ -78,7 +97,7 @@ class GetEventsUseCaseImpl(
                         )
                     }
                     is LoginType.Max -> {
-                        when (val tokensResult = coronaCheckRepository.accessTokens(jwt)) {
+                        when (val tokensResult = result.filterIsInstance<NetworkRequestResult<RemoteAccessTokens>>().first()) {
                             is NetworkRequestResult.Failed -> return EventsResult.Error(tokensResult)
                             is NetworkRequestResult.Success -> Pair(
                                 tokensResult.response,
@@ -93,13 +112,14 @@ class GetEventsUseCaseImpl(
 
         val eventProviderWithTokensResults =
             mutableMapOf<RemoteOriginType, List<EventProviderWithTokenResult>>()
-        originTypes.forEach { originType ->
+
+        val eventsResults = originTypes.parallelMap { originType ->
             val targetProviderIds = eventProviders.filter {
                 it.supports(originType, loginType)
             }.map { it.providerIdentifier.lowercase() }
 
             if (targetProviderIds.isEmpty()) {
-                return EventsResult.Error.noProvidersError(originType)
+                return@parallelMap EventsResult.Error.noProvidersError(originType)
             }
 
             val filter = EventProviderRepository.getFilter(originType)
@@ -117,6 +137,11 @@ class GetEventsUseCaseImpl(
                 scope = scope,
                 targetProviderIds = targetProviderIds
             )
+        }
+
+        val eventsResultsErrors = eventsResults.filterIsInstance<EventsResult.Error>()
+        if (eventsResultsErrors.isNotEmpty()) {
+            return eventsResultsErrors.first()
         }
 
         val eventProvidersWithTokensSuccessResults =

@@ -130,7 +130,7 @@
   <string name="no_negative_test_result_description"><![CDATA[Er is geen negatieve testuitslag beschikbaar.]]></string>
   <string name="test_result_not_known_title">Testuitslag nog niet bekend</string>
   <string name="test_result_not_known_description"><![CDATA[Probeer het later nog eens.<br/><br/>Neem voor vragen contact op met jouw testlocatie.]]></string>
-  <string name="about_this_app_description"><![CDATA[Met de CoronaCheck app kun je een digitaal coronabewijs maken. Je kunt een bewijs maken van een vaccinatie of negatieve testuitslag. Wanneer je corona hebt gehad kun je een herstelbewijs maken. Je coronabewijs heeft een QR-code. Ga je naar het buitenland? Check vooraf op Nederland Wereldwijd of je de QR-code kunt gebruiken.]]></string>
+  <string name="about_this_app_description"><![CDATA[Met de CoronaCheck app kun je een digitaal coronabewijs maken. Je kunt een bewijs maken van je vaccinatie(s), negatieve testuitslag of als je corona hebt gehad en bent hersteld. Je coronabewijs heeft een QR-code. Ga je naar het buitenland? Check vooraf op Nederland Wereldwijd of je de QR-code kunt gebruiken.]]></string>
   <string name="test_result_already_signed_title">Testuitslag is al opgehaald</string>
   <string name="test_result_already_signed_description"><![CDATA[Je testuitslag is al opgehaald. Ook is er al een QR-code van gemaakt.<br\><br\> Klopt dit niet? Neem dan contact op met de testlocatie.]]></string>
   <string name="item_test_result_expired"><![CDATA[Je QR-code is verlopen.<br/><br/>Laat je opnieuw testen.]]></string>

@@ -19,7 +19,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
 object Assertions {
 
     fun assertOverview() {
-        waitForText("Mijn bewijzen")
+        waitForText("Mijn bewijzen", 15)
         assertDisplayed("Menu")
     }
 
@@ -30,7 +30,7 @@ object Assertions {
         when (event) {
             is Vaccination -> {
                 assertContains("Ziekteverwekker: " + event.disease)
-                assertContains("Vaccin: " + event.vaccine)
+                assertContains("Vaccin: " + event.vaccine.value)
                 assertContains("Vaccinatiedatum: " + event.eventDate.written())
                 assertContains("Gevaccineerd in: " + event.country.domesticName)
             }
@@ -49,9 +49,8 @@ object Assertions {
     }
 
     fun assertInternationalVaccinationOnOverview(vaccination: Vaccination, dose: String) {
-        assertOverview()
-        card(Event.Type.Vaccination).containsText("Dosis $dose \n Vaccinatiedatum: " + vaccination.eventDate.written())
-        card(Event.Type.Vaccination).containsText("Bekijk QR")
+        card(Event.Type.Vaccination).containsText("Dosis $dose")
+        card(Event.Type.Vaccination).containsText("Vaccinatiedatum: " + vaccination.eventDate.written())
     }
 
     fun assertInternationalRecoveryOnOverview(recovery: PositiveTest) {

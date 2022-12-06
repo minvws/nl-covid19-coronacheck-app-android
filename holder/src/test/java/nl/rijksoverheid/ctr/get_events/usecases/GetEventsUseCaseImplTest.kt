@@ -66,6 +66,7 @@ class GetEventsUseCaseImplTest {
 
     @Test
     fun `given config providers call returns error then getEvents returns EventsResultError`() = runBlocking {
+        coEvery { coronaCheckRepository.accessTokens("jwt") } returns mockk<NetworkRequestResult.Failed.Error>()
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Error(
             eventsError
         )

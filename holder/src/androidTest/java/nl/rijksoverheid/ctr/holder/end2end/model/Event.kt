@@ -38,9 +38,9 @@ data class Vaccination(
 ) {
 
     enum class VaccineType(val value: String) {
-        Pfizer("Pfizer (Comirnaty)"),
-        Moderna("Moderna"),
-        Janssen("Janssen (COVID-19 Vaccin Janssen)")
+        Pfizer("Comirnaty (Pfizer)"),
+        Moderna("Spikevax (Moderna)"),
+        Janssen("Jcovden (Janssen)")
     }
 }
 
