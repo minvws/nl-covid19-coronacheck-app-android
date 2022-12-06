@@ -49,8 +49,8 @@ object Assertions {
     }
 
     fun assertInternationalVaccinationOnOverview(vaccination: Vaccination, dose: String) {
-        card(Event.Type.Vaccination).containsText("Dosis $dose \n Vaccinatiedatum: " + vaccination.eventDate.written())
-        card(Event.Type.Vaccination).containsText("Bekijk QR")
+        card(Event.Type.Vaccination).containsText("Dosis $dose")
+        card(Event.Type.Vaccination).containsText("Vaccinatiedatum: " + vaccination.eventDate.written())
     }
 
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null) {
