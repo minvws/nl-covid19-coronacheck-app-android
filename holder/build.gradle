@@ -179,7 +179,7 @@ android {
             end2end {
                 resultsHistoryName.set("end2end")
                 testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
-                environmentVariables.set(["authPassword": end2endPassword])
+                environmentVariables.set(["authPassword": end2endPassword, "clearPackageData": "true"])
                 devices.set([
                         ["model": "panther", "version": "33", "locale": "nl"]
                 ])
