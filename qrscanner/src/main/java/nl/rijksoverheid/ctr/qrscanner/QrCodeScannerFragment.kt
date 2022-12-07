@@ -14,6 +14,7 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
@@ -156,8 +157,14 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onStart() {
         super.onStart()
-        setupScanner()
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        val isPortrait = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+        val isPhone = resources.configuration.smallestScreenWidthDp < 600
+        if (isPortrait || !isPhone) {
+            setupScanner()
+        }
+        if (isPhone) {
+            requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
     }
 
     protected fun setupScanner(forceCamera: Boolean = false) {
@@ -187,7 +194,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         val previewView = binding.previewView
 
         // Get screen metrics used to setup camera for full screen resolution
-        val displaySize = getDisplaySize(previewView.context, previewView.display)
+        val displaySize = getDisplaySize(previewView.context, requireActivity().windowManager.defaultDisplay)
         val screenAspectRatio = aspectRatio(displaySize.width, displaySize.height)
 
         // Select camera to use, back facing camera by default
