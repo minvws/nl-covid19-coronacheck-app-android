@@ -15,7 +15,6 @@
     android:focusable="true">
 
     <RelativeLayout
-        android:id="@+id/green_cards"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
@@ -228,7 +227,7 @@
             android:layout_below="@id/proof_1"
             android:layout_marginTop="-40dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="7dp"
+            app:cardElevation="3dp"
             tools:layout_height="@dimen/dashboard_card_additional_card_height"/>
 
         <com.google.android.material.card.MaterialCardView
@@ -238,7 +237,7 @@
             android:layout_below="@id/proof_2"
             android:layout_marginTop="-40dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="6dp"
+            app:cardElevation="2dp"
             tools:layout_height="@dimen/dashboard_card_additional_card_height"/>
 
     </RelativeLayout>
