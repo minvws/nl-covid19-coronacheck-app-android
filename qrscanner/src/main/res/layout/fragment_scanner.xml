@@ -26,6 +26,7 @@
         app:navigationContentDescription="@string/back"
         app:navigationIcon="@drawable/ic_back"
         android:fitsSystemWindows="true"
+        app:titleTextColor="@color/white"
         tools:title="QR-Code scannen" />
 
     <androidx.camera.view.PreviewView
