@@ -137,6 +137,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
                 isLastItemDecorated = false
             }
         )
+        // prevent item decorator flickering when updating recyclerview to its error state
         (binding.recyclerView.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
     }
 
