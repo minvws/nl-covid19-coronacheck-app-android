@@ -29,8 +29,8 @@ import org.hamcrest.TypeSafeMatcher
 object Elements {
 
     fun waitForText(text: String, timeout: Long = 5): UiObject2? {
-        val element = device.wait(Until.findObject(By.textStartsWith(text)), timeout * 1000)
-        assertNotNull(element)
+        val element = device.wait(Until.findObject(By.textContains(text)), timeout * 1000)
+        assertNotNull("'$text' could not be found", element)
         return element
     }
 
