@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalVaccinationOnOverview
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
@@ -73,7 +72,6 @@ class VaccinationRetrievalTest : BaseTest() {
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
 
-        assertOverview()
         assertInternationalVaccinationOnOverview(vac2, dose = "2/1")
         assertInternationalVaccinationOnOverview(vac1, dose = "1/1")
 
