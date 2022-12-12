@@ -123,6 +123,8 @@ class RemoteEventUtilImpl(
                     type = jsonObject.getStringOrNull("tt"),
                     name = jsonObject.getStringOrNull("nm")
                         .takeIf { it?.isNotEmpty() ?: false },
+                    country = jsonObject.getStringOrNull("co")
+                        .takeIf { it?.isNotEmpty() ?: false },
                     manufacturer = jsonObject.getStringOrNull("ma")
                         .takeIf { it?.isNotEmpty() ?: false }
                 )

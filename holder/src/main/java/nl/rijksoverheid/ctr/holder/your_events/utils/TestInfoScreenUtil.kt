@@ -76,6 +76,8 @@ class TestInfoScreenUtilImpl(
 
         val unique = event.unique ?: ""
 
+        val country = event.negativeTest?.country
+
         val title =
             if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(
                 R.string.your_test_result_explanation_toolbar_title
@@ -116,12 +118,12 @@ class TestInfoScreenUtilImpl(
                 resources.getString(R.string.your_test_result_explanation_negative_test_result)
             ),
             createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_test_location),
-                testLocation
-            ),
-            createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_manufacturer),
                 testManufacturer
+            ),
+            createdLine(
+                resources.getString(R.string.your_test_result_explanation_description_test_location),
+                testLocation
             ),
             if (europeanCredential != null) {
                 val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
@@ -133,6 +135,16 @@ class TestInfoScreenUtilImpl(
             } else {
                 ""
             },
+            createdLine(
+                resources.getString(R.string.holder_event_about_test_countrytestedin),
+                if (country != null) {
+                    countryUtil.getCountryForInfoScreen(Locale.getDefault().language, country)
+                } else {
+                    ""
+                },
+                isOptional = true
+            ),
+            "<br/>",
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_unique_identifier),
                 unique

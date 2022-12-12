@@ -282,7 +282,7 @@
   <string name="qr_card_vaccination_doses">Dosis %1$s/%2$s</string>
   <string name="your_test_result_explanation_toolbar_title">Details</string>
   <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens: <b>%1$s</b><br/><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>Uniek testnummer: <b>%5$s</b>]]></string>
-  <string name="your_test_result_explanation_negative_test_result">negatief (geen coronavirus vastgesteld) / negative (no coronavirus detected)</string>
+  <string name="your_test_result_explanation_negative_test_result">negatief (geen coronavirus vastgesteld)</string>
   <string name="your_test_result_explanation_description_header">De volgende gegevens zijn opgehaald bij de testlocatie:</string>
   <string name="your_test_result_explanation_description_your_details">Jouw gegevens:</string>
   <string name="your_test_result_explanation_description_name">Naam:</string>
