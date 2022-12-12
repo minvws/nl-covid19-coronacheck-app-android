@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalVaccinationOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
@@ -35,7 +36,8 @@ class VaccinationRetrievalTest : BaseTest() {
 
         viewQR(Event.Type.Vaccination)
         assertInternationalQRDetails(person, vac2, dose = "2/2")
-        viewPreviousQR(hidden = true)
+        viewPreviousQR()
+        assertQRisHidden()
         assertInternationalQRDetails(person, vac1, dose = "1/2")
         backToOverview()
     }
@@ -56,7 +58,8 @@ class VaccinationRetrievalTest : BaseTest() {
 
         viewQR(Event.Type.Vaccination)
         assertInternationalQRDetails(person, vac2, dose = "2/2")
-        viewPreviousQR(hidden = true)
+        viewPreviousQR()
+        assertQRisHidden()
         assertInternationalQRDetails(person, vac1, dose = "1/2")
         backToOverview()
     }
