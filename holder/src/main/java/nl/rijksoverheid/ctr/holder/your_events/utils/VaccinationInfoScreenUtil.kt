@@ -132,6 +132,7 @@ class VaccinationInfoScreenUtilImpl(
                 } else {
                     ""
                 },
+                "<br/>",
                 createdLine(uniqueCode, uniqueCodeAnswer),
                 if (europeanCredential != null && addExplanation) {
                     paperProofUtil.getInfoScreenFooterText(europeanCredential)

@@ -114,7 +114,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals("Details", infoScreen.title)
         assertEquals(
-            "Deze gegevens van je vaccinatie zijn opgehaald bij GGD:<br/><br/>Naam: <b>Surname</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Ziekteverwekker: <b>COVID-19</b><br/>Vaccin: <b>Pfizer (Comirnaty)</b><br/>Productnaam: <b>PFIZER INJVLST 0,3ML</b><br/>Type vaccin: <b>type</b><br/>Producent: <b>Biontech Manufacturing GmbH</b><br/>Dosis: <b>1 / 2</b><br/>Vaccinatiedatum: <b>1 augustus 2021</b><br/>Gevaccineerd in: <b>Nederland</b><br/>Uniek vaccinatienummer: <b>unique</b><br/>",
+            "De volgende gegevens van je vaccinatie zijn opgehaald bij GGD:<br/><br/>Naam: <b>Surname</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Ziekteverwekker: <b>COVID-19</b><br/>Vaccin: <b>Pfizer (Comirnaty)</b><br/>Productnaam: <b>PFIZER INJVLST 0,3ML</b><br/>Type vaccin: <b>type</b><br/>Vaccin producent: <b>Biontech Manufacturing GmbH</b><br/>Dosis: <b>1 / 2</b><br/>Vaccinatiedatum: <b>1 augustus 2021</b><br/>Gevaccineerd in: <b>Nederland</b><br/><br/>Uniek vaccinatienummer: <b>unique</b><br/>",
             infoScreen.description
         )
     }
@@ -199,7 +199,7 @@ class VaccinationInfoScreenUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals("Details", infoScreen.title)
         assertEquals(
-            "Deze gegevens staan in je bewijs:<br/><br/>Naam: <b>Surname</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Ziekteverwekker: <b>COVID-19</b><br/>Vaccin: <b>Pfizer (Comirnaty)</b><br/>Productnaam: <b>PFIZER INJVLST 0,3ML</b><br/>Type vaccin: <b>type</b><br/>Producent: <b>Biontech Manufacturing GmbH</b><br/>Dosis: <b>1 / 2</b><br/>Vaccinatiedatum: <b>1 augustus 2021</b><br/>Gevaccineerd in: <b>Nederland</b><br/>Afgever certificaat: <b>Bart</b><br/>Uniek vaccinatienummer: <b>unique</b><br/>Footer Text",
+            "De volgende gegevens staan in je bewijs:<br/><br/>Naam: <b>Surname</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Ziekteverwekker: <b>COVID-19</b><br/>Vaccin: <b>Pfizer (Comirnaty)</b><br/>Productnaam: <b>PFIZER INJVLST 0,3ML</b><br/>Type vaccin: <b>type</b><br/>Vaccin producent: <b>Biontech Manufacturing GmbH</b><br/>Dosis: <b>1 / 2</b><br/>Vaccinatiedatum: <b>1 augustus 2021</b><br/>Gevaccineerd in: <b>Nederland</b><br/>Afgever certificaat: <b>Bart</b><br/><br/>Uniek vaccinatienummer: <b>unique</b><br/>Footer Text",
             infoScreen.description
         )
     }

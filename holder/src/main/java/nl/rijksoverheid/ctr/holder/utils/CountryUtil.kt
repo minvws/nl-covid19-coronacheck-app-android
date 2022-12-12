@@ -32,6 +32,10 @@ class CountryUtilImpl : CountryUtil {
             countriesMap[it] = fullCountryName
         }
 
+        if (countriesMap[countryCode] == "Netherlands") {
+            return "The Netherlands"
+        }
+
         return countriesMap[countryCode] ?: countryCode
     }
 
