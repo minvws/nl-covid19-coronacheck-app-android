@@ -896,4 +896,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_event_aboutVaccination_productName">Product name:</string>
   <string name="holder_event_about_test_countrytestedin">Tested in:</string>
   <string name="holder_event_about_recovery_countrytestedin">Tested in:</string>
+  <string name="holder_showqr_eu_about_test_negative">negative (no coronavirus detected)</string>
 </resources>

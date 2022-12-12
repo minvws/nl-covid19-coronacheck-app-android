@@ -897,4 +897,5 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_event_aboutVaccination_productName">Productnaam:</string>
   <string name="holder_event_about_test_countrytestedin">Getest in:</string>
   <string name="holder_event_about_recovery_countrytestedin">Getest in:</string>
+  <string name="holder_showqr_eu_about_test_negative">negatief (geen coronavirus vastgesteld) / negative (no coronavirus detected)</string>
 </resources>
