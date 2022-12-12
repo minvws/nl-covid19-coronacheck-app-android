@@ -3,12 +3,11 @@ package nl.rijksoverheid.ctr.holder.end2end.utils
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickBack
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
-import junit.framework.TestCase
+import junit.framework.TestCase.fail
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertOverview
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.findElement
@@ -16,8 +15,6 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
 
 object Actions {
-
-    var chromeFirstVisit = true
 
     private fun addEvent() {
         tapButton("Menu")
@@ -43,43 +40,40 @@ object Actions {
         retrieveCertificateFromServer(bsn)
     }
 
-    private fun acceptChromeOnboarding() {
-        if (checkForText("Welkom bij Chrome")) {
-            waitForText("Accept")?.click()
-        }
-        if (checkForText("Synchronisatie aanzetten?", 2)) {
-            waitForText("Nee, bedankt")?.click()
-        }
-        if (checkForText("Inloggen", 2)) {
-            loginToServer()
-        }
-        if (checkForText("Chrome-meldingen maken het je makkelijker", 2)) {
-            waitForText("Nee, bedankt")?.click()
-        }
-        if (checkForText("Toestaan dat Chrome je meldingen stuurt?", 2)) {
-            waitForText("Niet toestaan")?.click()
-        }
-        chromeFirstVisit = false
+    fun addRetrievedCertificateToApp() {
+        checkForText("Kloppen de gegevens?")
+        tapButton("Maak bewijs")
+        waitForText("Mijn bewijzen", 60)
+    }
+
+    fun viewQR(eventType: Event.Type) {
+        card(eventType).tapButton("Bekijk QR")
+        assertDisplayed("Internationale QR")
+    }
+
+    fun viewPreviousQR() {
+        clickOn(R.id.previousQrButton)
+    }
+
+    fun backToOverview() {
+        clickBack()
+        assertOverview()
     }
 
     private fun retrieveCertificateFromServer(bsn: String) {
+        if (bsn.isEmpty()) fail("BSN was null or empty, no certificate can be retrieved.")
+        if (BaseTest.authPassword.isNullOrEmpty()) fail("Password was null or empty, no certificate can be retrieved.")
+
         tapButton("Log in met DigiD")
 
-        if (chromeFirstVisit) acceptChromeOnboarding()
-
-        if (bsn.isEmpty()) TestCase.fail("BSN was null or empty, no certificate can be retrieved.")
-
-        if (!checkForText("DigiD MOCK")) loginToServer()
-
+        if (!checkForText("DigiD MOCK", 5)) loginToServer()
         waitForText("999991772")?.text = bsn
         waitForText("Login / Submit")!!.click()
         waitForText("Kloppen de gegevens?", 30)
     }
 
     private fun loginToServer() {
-        if (BaseTest.authPassword.isNullOrEmpty()) {
-            TestCase.fail("Password was null or empty, no certificate can be retrieved.")
-        }
+        while (!checkForText("Inloggen", 1)) acceptChromeOnboarding()
 
         val password = findElement(android.widget.EditText::class.java, "Wachtwoord")!!
         password.click()
@@ -93,24 +87,18 @@ object Actions {
         submit.click()
     }
 
-    fun addRetrievedCertificateToApp() {
-        checkForText("Kloppen de gegevens?")
-        tapButton("Maak bewijs")
-        waitForText("Mijn bewijzen", 60)
-    }
-
-    fun viewQR(eventType: Event.Type) {
-        card(eventType).tapButton("Bekijk QR")
-        assertDisplayed("Internationale QR")
-    }
-
-    fun viewPreviousQR(hidden: Boolean = false) {
-        clickOn(R.id.previousQrButton)
-        if (hidden) assertQRisHidden()
-    }
-
-    fun backToOverview() {
-        clickBack()
-        assertOverview()
+    private fun acceptChromeOnboarding() {
+        if (checkForText("Welkom bij Chrome", 1)) {
+            waitForText("Accept")?.click()
+        }
+        if (checkForText("Synchronisatie aanzetten?", 1)) {
+            waitForText("Nee, bedankt")?.click()
+        }
+        if (checkForText("Chrome-meldingen maken het je makkelijker", 1)) {
+            waitForText("Nee, bedankt")?.click()
+        }
+        if (checkForText("Toestaan dat Chrome je meldingen stuurt?", 1)) {
+            waitForText("Niet toestaan")?.click()
+        }
     }
 }
