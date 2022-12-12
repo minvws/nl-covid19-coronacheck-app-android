@@ -19,7 +19,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
 object Assertions {
 
     fun assertOverview() {
-        waitForText("Mijn bewijzen", 15)
+        waitForText("Mijn bewijzen")
         assertDisplayed("Menu")
     }
 

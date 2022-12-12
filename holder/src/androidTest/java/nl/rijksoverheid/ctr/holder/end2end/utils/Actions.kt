@@ -73,7 +73,7 @@ object Actions {
 
         waitForText("999991772")?.text = bsn
         waitForText("Login / Submit")!!.click()
-        waitForText("Kloppen de gegevens?", 15)
+        waitForText("Kloppen de gegevens?", 30)
     }
 
     private fun loginToServer() {
@@ -96,7 +96,7 @@ object Actions {
     fun addRetrievedCertificateToApp() {
         checkForText("Kloppen de gegevens?")
         tapButton("Maak bewijs")
-        assertOverview()
+        waitForText("Mijn bewijzen", 60)
     }
 
     fun viewQR(eventType: Event.Type) {
