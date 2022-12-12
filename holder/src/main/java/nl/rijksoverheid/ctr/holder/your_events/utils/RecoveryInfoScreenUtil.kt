@@ -83,6 +83,11 @@ class RecoveryInfoScreenUtilImpl(
                 ""
             },
             createdLine(
+                resources.getString(R.string.holder_event_about_test_countrytestedin),
+                "Nederland"
+            ),
+            "<br/>",
+            createdLine(
                 resources.getString(R.string.recovery_explanation_description_unique_test_identifier),
                 event.unique
             ),
