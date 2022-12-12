@@ -6,6 +6,10 @@ on:
       - 'release/*'
   pull_request:
 
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
