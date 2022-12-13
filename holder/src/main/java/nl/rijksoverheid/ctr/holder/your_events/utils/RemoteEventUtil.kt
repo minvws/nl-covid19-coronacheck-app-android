@@ -104,7 +104,8 @@ class RemoteEventUtilImpl(
                 recovery = RemoteEventRecovery.Recovery(
                     sampleDate = try { LocalDate.parse(it.getStringOrNull("fr")?.take(10)) } catch (e: Exception) { null },
                     validFrom = try { LocalDate.parse(it.getStringOrNull("df")?.take(10)) } catch (e: Exception) { null },
-                    validUntil = try { LocalDate.parse(it.getStringOrNull("du")?.take(10)) } catch (e: Exception) { null }
+                    validUntil = try { LocalDate.parse(it.getStringOrNull("du")?.take(10)) } catch (e: Exception) { null },
+                    country = it.getStringOrNull("co")
                 )
             )
         }

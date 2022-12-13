@@ -29,7 +29,8 @@ data class RemoteEventRecovery(
     data class Recovery(
         val sampleDate: LocalDate?,
         val validFrom: LocalDate?,
-        val validUntil: LocalDate?
+        val validUntil: LocalDate?,
+        val country: String?
     ) : Parcelable
 
     override fun getDate(): OffsetDateTime? {
