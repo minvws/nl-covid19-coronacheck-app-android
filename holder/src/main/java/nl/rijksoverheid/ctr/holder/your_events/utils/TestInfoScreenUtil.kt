@@ -119,7 +119,8 @@ class TestInfoScreenUtilImpl(
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_manufacturer),
-                testManufacturer
+                testManufacturer,
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_location),
