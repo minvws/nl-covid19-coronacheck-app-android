@@ -62,6 +62,7 @@
 
     <style name="Widget.App.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
         <item name="android:elevation">4dp</item>
+        <item name="titleTextColor">@color/primary_text</item>
     </style>
 
     <style name="Widget.App.Button.Toggle" parent="Widget.MaterialComponents.Button.TextButton">
@@ -101,11 +102,13 @@
     <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/primary_text</item>
     </style>
 
     <style name="App.TextAppearance.MaterialComponents.Headline6.Montserrat" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/primary_text</item>
     </style>
 
     <style name="App.TextAppearance.MaterialComponents.Body1.Montserrat.Secondary" parent="android:TextAppearance">

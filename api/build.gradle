@@ -48,6 +48,7 @@ kotlin {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(project(":modules:httpsecurity"))
 
     implementation libs.retrofit.moshi
     implementation libs.moshi.kotlin
@@ -57,13 +58,9 @@ dependencies {
     implementation libs.okhttp
     implementation libs.okhttp.tls
     implementation libs.okhttp.logging.interceptor
-    implementation libs.bouncycastle.bcprov.jdk15to18
-    api libs.bouncycastle.bcpkix.jdk15to18
     api libs.certificatetransparency.android
 
-
     ksp libs.moshi.codegen
-    coreLibraryDesugaring libs.desugar
 
     kspTest libs.moshi.codegen
     testImplementation libs.junit

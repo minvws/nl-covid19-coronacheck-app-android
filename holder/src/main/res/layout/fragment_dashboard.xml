@@ -48,7 +48,6 @@
         android:layout_height="wrap_content"
         android:visibility="visible"
         app:layout_anchor="@id/tabsContent"
-        app:cardBackgroundColor="@android:color/transparent"
         app:cardElevation="0dp"
         app:layout_anchorGravity="end|bottom">
 

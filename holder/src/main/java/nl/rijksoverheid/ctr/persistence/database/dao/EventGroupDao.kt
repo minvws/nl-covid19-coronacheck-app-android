@@ -31,6 +31,12 @@ interface EventGroupDao {
     @Query("UPDATE event_group SET expiryDate = :expiryDate WHERE id = :eventGroupId")
     suspend fun updateExpiryDate(eventGroupId: Int, expiryDate: OffsetDateTime)
 
+    @Query("UPDATE event_group SET draft = :draft")
+    suspend fun updateDraft(draft: Boolean)
+
+    @Query("UPDATE event_group SET draft = :draft WHERE id IN (:ids)")
+    suspend fun updateDraft(ids: List<Int>, draft: Boolean)
+
     @Delete
     suspend fun delete(entity: EventGroupEntity)
 
@@ -42,4 +48,7 @@ interface EventGroupDao {
 
     @Query("DELETE FROM event_group WHERE id IN (:ids)")
     suspend fun deleteAllOfIds(ids: List<Int>)
+
+    @Query("DELETE FROM event_group WHERE draft = 1")
+    suspend fun deleteDraftEvents()
 }

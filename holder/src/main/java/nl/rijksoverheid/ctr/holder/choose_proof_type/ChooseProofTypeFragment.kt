@@ -10,12 +10,12 @@ package nl.rijksoverheid.ctr.holder.choose_proof_type
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentChooseProofTypeBinding
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.android.ext.android.inject
 
 /*
@@ -39,9 +39,9 @@ class ChooseProofTypeFragment : Fragment(R.layout.fragment_choose_proof_type) {
             getString(R.string.qr_code_type_negative_test_description)
         ) {
             if (featureFlagUseCase.getGgdEnabled()) {
-                findNavController().navigate(ChooseProofTypeFragmentDirections.actionChooseProvider())
+                navigateSafety(ChooseProofTypeFragmentDirections.actionChooseProvider())
             } else {
-                findNavController().navigate(ChooseProofTypeFragmentDirections.actionInputToken())
+                navigateSafety(ChooseProofTypeFragmentDirections.actionInputToken())
             }
         }
 
@@ -49,7 +49,7 @@ class ChooseProofTypeFragment : Fragment(R.layout.fragment_choose_proof_type) {
             R.string.qr_code_type_recovery_title,
             getString(R.string.qr_code_type_recovery_description)
         ) {
-            findNavController().navigate(
+            navigateSafety(
                 ChooseProofTypeFragmentDirections.actionGetEvents(
                     originType = RemoteOriginType.Recovery,
                     toolbarTitle = resources.getString(R.string.choose_provider_toolbar)
@@ -61,7 +61,7 @@ class ChooseProofTypeFragment : Fragment(R.layout.fragment_choose_proof_type) {
             R.string.qr_code_type_vaccination_title,
             getString(R.string.qr_code_type_vaccination_description)
         ) {
-            findNavController().navigate(
+            navigateSafety(
                 ChooseProofTypeFragmentDirections.actionGetEvents(
                     originType = RemoteOriginType.Vaccination,
                     toolbarTitle = resources.getString(R.string.choose_provider_toolbar)

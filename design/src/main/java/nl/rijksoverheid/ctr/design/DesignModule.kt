@@ -1,9 +1,9 @@
 package nl.rijksoverheid.ctr.design
 
-import nl.rijksoverheid.ctr.design.utils.DialogFragmentViewModel
-import nl.rijksoverheid.ctr.design.utils.DialogFragmentViewModelImpl
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.DialogUtilImpl
+import nl.rijksoverheid.ctr.design.utils.DialogViewModel
+import nl.rijksoverheid.ctr.design.utils.DialogViewModelImpl
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtilImpl
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
@@ -23,7 +23,5 @@ val designModule = module {
     factory<InfoFragmentUtil> { InfoFragmentUtilImpl() }
     factory<IntentUtil> { IntentUtilImpl(get()) }
 
-    viewModel<DialogFragmentViewModel> {
-        DialogFragmentViewModelImpl()
-    }
+    viewModel<DialogViewModel> { DialogViewModelImpl() }
 }

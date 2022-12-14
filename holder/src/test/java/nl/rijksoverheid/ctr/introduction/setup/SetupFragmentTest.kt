@@ -37,7 +37,7 @@ class SetupFragmentTest : AutoCloseKoinTest() {
 
     private fun startSetupFragment(appStatus: AppStatus) {
         loadKoinModules(
-            module(override = true) {
+            module {
                 viewModel { fakeAppConfigViewModel(appStatus) }
                 viewModel { fakeSetupViewModel() }
             })

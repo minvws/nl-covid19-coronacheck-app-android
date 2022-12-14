@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.persistence.database
 
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import java.time.OffsetDateTime
 import kotlinx.coroutines.runBlocking
@@ -13,6 +14,7 @@ import nl.rijksoverheid.ctr.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.persistence.database.usecases.DraftEventUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoteGreenCardsResult
 import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsResult
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -43,9 +45,11 @@ class HolderDatabaseSyncerImplTest {
             type = OriginType.Test,
             expiryDate = OffsetDateTime.now(),
             scope = "",
-            jsonData = "".toByteArray()
+            jsonData = "".toByteArray(),
+            draft = false
         )
     )
+    private val draftEventUseCase: DraftEventUseCase = mockk(relaxed = true)
 
     @Test
     fun `sync returns Success if has no events`() = runBlocking {
@@ -64,7 +68,8 @@ class HolderDatabaseSyncerImplTest {
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper,
-            persistBlockedEventsUseCase = mockk(relaxed = true)
+            persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true)
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
@@ -91,12 +96,15 @@ class HolderDatabaseSyncerImplTest {
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper,
-            persistBlockedEventsUseCase = mockk(relaxed = true)
+            persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = draftEventUseCase
         )
 
         val databaseSyncerResult = holderDatabaseSyncer.sync(
             syncWithRemote = true
         )
+
+        coVerify { draftEventUseCase.finalise() }
 
         assertEquals(DatabaseSyncerResult.Success(), databaseSyncerResult)
     }
@@ -131,6 +139,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -172,6 +181,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -213,6 +223,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -240,6 +251,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -247,6 +259,8 @@ class HolderDatabaseSyncerImplTest {
         val databaseSyncerResult = holderDatabaseSyncer.sync(
             syncWithRemote = true
         )
+
+        coVerify { draftEventUseCase.remove() }
 
         assertTrue(databaseSyncerResult is DatabaseSyncerResult.Failed.NetworkError)
     }
@@ -274,6 +288,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -281,6 +296,8 @@ class HolderDatabaseSyncerImplTest {
         val databaseSyncerResult = holderDatabaseSyncer.sync(
             syncWithRemote = true
         )
+
+        coVerify { draftEventUseCase.remove() }
 
         assertTrue(databaseSyncerResult is DatabaseSyncerResult.Failed.ServerError)
     }
@@ -301,6 +318,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -308,6 +326,8 @@ class HolderDatabaseSyncerImplTest {
         val databaseSyncerResult = holderDatabaseSyncer.sync(
             syncWithRemote = true
         )
+
+        coVerify { draftEventUseCase.remove() }
 
         assertTrue(databaseSyncerResult is DatabaseSyncerResult.Failed.Error)
     }
@@ -344,6 +364,7 @@ class HolderDatabaseSyncerImplTest {
             ),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )
@@ -351,6 +372,8 @@ class HolderDatabaseSyncerImplTest {
         val databaseSyncerResult = holderDatabaseSyncer.sync(
             syncWithRemote = true
         )
+
+        coVerify { draftEventUseCase.remove() }
 
         assertTrue(databaseSyncerResult is DatabaseSyncerResult.Failed.Error)
     }
@@ -378,6 +401,7 @@ class HolderDatabaseSyncerImplTest {
             syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
             removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper
         )

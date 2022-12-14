@@ -8,5 +8,6 @@
   -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <stroke android:width="2dp" android:color="@color/blue_5_percent" />
+    <solid android:color="@color/message_container" />
     <corners android:radius="12dp" />
 </shape>

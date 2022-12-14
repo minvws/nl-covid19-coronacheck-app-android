@@ -39,6 +39,9 @@ class MatchedEventsUseCaseImpl(
             }
         }
 
+        val unDraftEventsIds = matchingBlobIds.flatten().toSet().minus(eventIdsToDelete.toSet())
+
         holderDatabase.eventGroupDao().deleteAllOfIds(eventIdsToDelete)
+        holderDatabase.eventGroupDao().updateDraft(unDraftEventsIds.toList(), false)
     }
 }

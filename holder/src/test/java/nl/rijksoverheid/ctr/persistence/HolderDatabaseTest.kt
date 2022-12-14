@@ -83,7 +83,8 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
             type = OriginType.Recovery,
             scope = "firstepisode",
             expiryDate = null,
-            jsonData = "".toByteArray()
+            jsonData = "".toByteArray(),
+            draft = false
         )
 
         val eventGroup2 = EventGroupEntity(
@@ -93,7 +94,8 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
             type = OriginType.Recovery,
             scope = "recovery",
             expiryDate = null,
-            jsonData = "".toByteArray()
+            jsonData = "".toByteArray(),
+            draft = false
         )
 
         db.eventGroupDao().insertAll(listOf(eventGroup1, eventGroup2))
@@ -131,7 +133,8 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
             type = OriginType.Recovery,
             scope = "firstepisode",
             expiryDate = null,
-            jsonData = "".toByteArray()
+            jsonData = "".toByteArray(),
+            draft = false
         )
 
         insertWalletInDatabase(
@@ -199,7 +202,8 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 expiryDate = null,
                 jsonData = "".toByteArray(),
                 scope = "",
-                providerIdentifier = "1"
+                providerIdentifier = "1",
+                draft = false
             ),
             EventGroupEntity(
                 id = 2,
@@ -208,7 +212,8 @@ class HolderDatabaseTest : AutoCloseKoinTest() {
                 expiryDate = null,
                 scope = "",
                 jsonData = "".toByteArray(),
-                providerIdentifier = "2"
+                providerIdentifier = "2",
+                draft = false
             )
         ),
         greenCards = listOf(

@@ -86,6 +86,9 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         override fun dismissFuzzyMatchedEventsInfo() {
         }
+
+        override fun scrollUpdate(canScrollVertically: Boolean, greenCardType: GreenCardType) {
+        }
     }
 
 val fakeDashboardTabItem = DashboardTabItem(

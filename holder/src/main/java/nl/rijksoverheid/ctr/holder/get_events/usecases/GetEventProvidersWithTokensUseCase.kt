@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteUnomi
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.filterNotNullValues
+import nl.rijksoverheid.ctr.shared.ext.parallelMap
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
@@ -73,10 +74,9 @@ class GetEventProvidersWithTokensUseCaseImpl(
             targetProviderIds?.contains(it.key.providerIdentifier.lowercase()) ?: true
         }
 
-        // Return a list of event providers that have events
-        return targetEventProvidersWithTokens.map {
-            val eventProvider = it.key
-            val token = it.value
+        return targetEventProvidersWithTokens.toList().parallelMap {
+            val eventProvider = it.first
+            val token = it.second
 
             val unomiResult = eventProviderRepository.getUnomi(
                 url = eventProvider.unomiUrl,

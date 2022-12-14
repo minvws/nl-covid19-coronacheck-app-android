@@ -448,7 +448,8 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         type = originType,
         expiryDate = OffsetDateTime.now(),
         jsonData = "".toByteArray(),
-        scope = ""
+        scope = "",
+        draft = false
     )
 
     private fun getGreenCard(originType: OriginType) = GreenCard(

@@ -19,15 +19,21 @@ abstract class FuzzyMatchingBaseViewModel(
     private val holderDatabase: HolderDatabase,
     private val greenCardUtil: GreenCardUtil
 ) : ViewModel() {
-    val canSkipLiveData: LiveData<Boolean> = MutableLiveData()
+    val toolbarButtonsStateLiveData: LiveData<ToolbarButtonsState> = MutableLiveData()
     fun canSkip(fromGetEvents: Boolean) {
         if (fromGetEvents) {
-            (canSkipLiveData as MutableLiveData).value = false
+            (toolbarButtonsStateLiveData as MutableLiveData).value = ToolbarButtonsState(
+                canGoBack = true,
+                canSkip = false
+            )
         } else {
             viewModelScope.launch {
                 val activeCredentialExists = holderDatabase.greenCardDao().getAll()
                     .any { !greenCardUtil.hasNoActiveCredentials(it, false) }
-                (canSkipLiveData as MutableLiveData).value = activeCredentialExists
+                (toolbarButtonsStateLiveData as MutableLiveData).value = ToolbarButtonsState(
+                    canGoBack = activeCredentialExists,
+                    canSkip = activeCredentialExists
+                )
             }
         }
     }

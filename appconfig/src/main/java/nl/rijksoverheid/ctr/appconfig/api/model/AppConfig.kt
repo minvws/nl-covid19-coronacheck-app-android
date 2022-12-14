@@ -36,6 +36,7 @@ abstract class AppConfig(
     data class HpkCode(
         val code: String,
         val name: String,
+        val displayName: String = "",
         val vp: String,
         val mp: String,
         val ma: String

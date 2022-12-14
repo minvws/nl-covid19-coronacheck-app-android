@@ -19,7 +19,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragmentDirections
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
 interface MenuUtil {
     fun showMenu(dashboardFragment: DashboardFragment)
@@ -32,7 +32,7 @@ class MenuUtilImpl(
 ) : MenuUtil {
 
     override fun showMenu(dashboardFragment: DashboardFragment) {
-        dashboardFragment.findNavControllerSafety()?.navigate(
+        dashboardFragment.navigateSafety(
             DashboardFragmentDirections.actionMenu(
                 menuSections = getMenuSections(dashboardFragment.requireContext())
             )

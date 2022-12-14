@@ -41,6 +41,12 @@ include ':mobilecore'
 include ':appconfig'
 include ':qrscanner:zebrasupport'
 include ':qrscanner:honeywellsupport'
+include ':modules'
+project(':modules').projectDir = new File('rdo/modules')
+include ':modules:luhncheck'
+include ':modules:qrgenerator'
+include ':modules:openidconnect'
+include ':modules:httpsecurity'
 
 rootProject.name = "CoronaTester"
 

@@ -52,7 +52,7 @@ class SaveEventsUseCaseImpl(
         val remoteEventUniques = remoteEvents.mapNotNull { it.unique }
         val storedEventIdentifiers = holderDatabase.eventGroupDao().getAll().map { it.providerIdentifier }
         return storedEventIdentifiers.any { identifier ->
-            remoteEventUniques.any { identifier.contains(it) }
+            remoteEventUniques.any { remoteEventUtil.isDccEvent(identifier) && identifier.contains(it) }
         }
     }
 
@@ -96,7 +96,8 @@ class SaveEventsUseCaseImpl(
                         originType = originType,
                         getPositiveTestWithVaccination = flow == HolderFlow.VaccinationAndPositiveTest
                     ),
-                    expiryDate = null
+                    expiryDate = null,
+                    draft = true
                 )
             }
 

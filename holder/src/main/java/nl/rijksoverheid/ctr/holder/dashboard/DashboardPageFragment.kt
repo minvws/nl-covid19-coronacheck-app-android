@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.dashboard
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
@@ -33,10 +34,9 @@ import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.shared.ext.sharedViewModelWithOwner
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ViewModelOwner
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -68,16 +68,21 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
     private val removedEventsBottomSheetUtil: RemovedEventsBottomSheetUtil by inject()
     private val cardItemUtil: CardItemUtil by inject()
     private val dialogUtil: DialogUtil by inject()
-    val dashboardViewModel: DashboardViewModel by sharedViewModelWithOwner(owner = {
-        ViewModelOwner.from(
+    val dashboardViewModel: DashboardViewModel by sharedViewModel(owner = {
             requireParentFragment()
-        )
     })
     val section = Section()
     private val greenCardType: GreenCardType by lazy {
         arguments?.getParcelableCompat(
             EXTRA_GREEN_CARD_TYPE
         ) ?: error("EXTRA_GREEN_CARD_TYPE should not be null")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        view?.findViewById<RecyclerView>(R.id.recyclerView)?.let {
+            dashboardViewModel.scrollUpdate(it.canScrollVertically(RecyclerView.SCROLL_AXIS_VERTICAL), greenCardType)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -128,6 +133,15 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.itemAnimator = null
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                dashboardViewModel.scrollUpdate(
+                    canScrollVertically = recyclerView.canScrollVertically(RecyclerView.SCROLL_AXIS_VERTICAL),
+                    greenCardType = greenCardType
+                )
+            }
+        })
     }
 
     private fun setItems(

@@ -27,6 +27,8 @@ import nl.rijksoverheid.ctr.holder.saved_events.usecases.GetSavedEventsUseCase
 import nl.rijksoverheid.ctr.holder.saved_events.usecases.GetSavedEventsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCase
 import nl.rijksoverheid.ctr.holder.your_events.usecases.SaveEventsUseCaseImpl
+import nl.rijksoverheid.ctr.persistence.database.usecases.DraftEventUseCase
+import nl.rijksoverheid.ctr.persistence.database.usecases.DraftEventUseCaseImpl
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCaseImpl
 import org.koin.dsl.module
@@ -80,4 +82,5 @@ val eventsUseCasesModule = module {
     }
     factory<PersistBlockedEventsUseCase> { PersistBlockedEventsUseCaseImpl(get()) }
     factory<ShowBlockedEventsDialogUseCase> { ShowBlockedEventsDialogUseCaseImpl(get()) }
+    factory<DraftEventUseCase> { DraftEventUseCaseImpl(get()) }
 }

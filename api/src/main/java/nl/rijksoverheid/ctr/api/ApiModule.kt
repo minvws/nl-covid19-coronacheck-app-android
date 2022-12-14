@@ -38,7 +38,7 @@ fun apiModule(
     signatureCertificateCnMatch: String,
     coronaCheckApiChecks: Boolean,
     testProviderApiChecks: Boolean
-) = module(override = true) {
+) = module {
     single {
         OkHttpClient.Builder()
             .addNetworkInterceptor(CacheOverrideInterceptor())
@@ -68,7 +68,8 @@ fun apiModule(
                 SignedResponseInterceptor(
                     signatureCertificateCnMatch = signatureCertificateCnMatch,
                     testProviderApiChecks = testProviderApiChecks,
-                    Environment.get(androidContext()) == Environment.Acc
+                    isAcc = Environment.get(androidContext()) == Environment.Acc,
+                    clock = get()
                 )
             ).build()
     }
@@ -102,5 +103,7 @@ private fun transparentTrustManager(trustManager: X509TrustManager) =
             })
         }
 
-        setLogListService(LogListDataSourceFactory.createLogListService())
+        setLogListService(LogListDataSourceFactory.createLogListService(
+            baseUrl = "https://www.gstatic.com/ct/log_list/v3/"
+        ))
     }

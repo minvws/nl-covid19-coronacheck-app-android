@@ -32,7 +32,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteUnomi
 import nl.rijksoverheid.ctr.holder.get_events.usecases.ConfigProvidersUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.EventProvidersResult
 import nl.rijksoverheid.ctr.holder.get_events.usecases.TestProvidersResult
-import nl.rijksoverheid.ctr.holder.input_token.utils.TokenValidatorUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.ReadEuropeanCredentialUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
@@ -68,6 +67,7 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
+import nl.rijksoverheid.rdo.modules.luhncheck.TokenValidator
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -110,6 +110,9 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         override fun dismissFuzzyMatchedEventsInfo() {
         }
+
+        override fun scrollUpdate(canScrollVertically: Boolean, greenCardType: GreenCardType) {
+        }
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {
@@ -119,7 +122,7 @@ fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {
 
 fun fakeTokenValidatorUtil(
     isValid: Boolean = true
-) = object : TokenValidatorUtil {
+) = object : TokenValidator {
     override fun validate(token: String, checksum: String): Boolean {
         return isValid
     }
@@ -225,7 +228,10 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ByteArray(0)
         }
 
-        override fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String {
+        override fun createCommitmentMessage(
+            secretKey: ByteArray,
+            prepareIssueMessage: ByteArray
+        ): String {
             return ""
         }
 
@@ -408,7 +414,11 @@ fun fakeGetRemoteGreenCardUseCase(
         RemoteGreenCards(null, null, listOf(), null)
     )
 ) = object : GetRemoteGreenCardsUseCase {
-    override suspend fun get(events: List<EventGroupEntity>, secretKey: String, flow: Flow): RemoteGreenCardsResult {
+    override suspend fun get(
+        events: List<EventGroupEntity>,
+        secretKey: String,
+        flow: Flow
+    ): RemoteGreenCardsResult {
         return result
     }
 }
@@ -416,7 +426,10 @@ fun fakeGetRemoteGreenCardUseCase(
 fun fakeSyncRemoteGreenCardUseCase(
     result: SyncRemoteGreenCardsResult = SyncRemoteGreenCardsResult.Success
 ) = object : SyncRemoteGreenCardsUseCase {
-    override suspend fun execute(remoteGreenCards: RemoteGreenCards, secretKey: String): SyncRemoteGreenCardsResult {
+    override suspend fun execute(
+        remoteGreenCards: RemoteGreenCards,
+        secretKey: String
+    ): SyncRemoteGreenCardsResult {
         return result
     }
 }
@@ -601,7 +614,7 @@ fun fakeEventGroupEntity(
         2000, 1, 1, 1, 1, 1, 1, ZoneOffset.ofTotalSeconds(0)
     ),
     jsonData: ByteArray = ByteArray(1)
-) = EventGroupEntity(id, walletId, providerIdentifier, type, scope, maxIssuedAt, jsonData)
+) = EventGroupEntity(id, walletId, providerIdentifier, type, scope, maxIssuedAt, false, jsonData)
 
 fun fakeRemoteGreenCards(
     domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),

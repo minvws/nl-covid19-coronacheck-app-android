@@ -31,9 +31,11 @@ import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
+import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
+import nl.rijksoverheid.ctr.persistence.database.usecases.DraftEventUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -43,12 +45,23 @@ abstract class DashboardViewModel : ViewModel() {
     val databaseSyncerResultLiveData: LiveData<Event<DatabaseSyncerResult>> = MutableLiveData()
     val showBlockedEventsDialogLiveData: LiveData<Event<ShowBlockedEventsDialogResult>> =
         MutableLiveData()
+    val bottomButtonElevationLiveData: LiveData<Boolean> = MutableLiveData()
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
     abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
     abstract fun dismissBlockedEventsInfo()
     abstract fun dismissFuzzyMatchedEventsInfo()
+
+    /**
+     * Post scroll updates from recyclerview scrolls and
+     * when a recyclerview becomes visible again in case of multiple active tabs
+     * When the current recyclerview can scroll more, we add an elevation to the bottom
+     * component to indicate the user he can scroll more
+     * @param canScrollVertically if reached end of scrolling
+     * @param greenCardType which greencard's type recyclerview interacting with
+     */
+    abstract fun scrollUpdate(canScrollVertically: Boolean, greenCardType: GreenCardType)
 
     companion object {
         val RETRY_FAILED_REQUEST_AFTER_SECONDS =
@@ -68,6 +81,7 @@ class DashboardViewModelImpl(
     private val removeExpiredGreenCardsUseCase: RemoveExpiredGreenCardsUseCase,
     private val dashboardTabsItemDataMapper: DashboardTabsItemDataMapper,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
+    private val draftEventUseCase: DraftEventUseCase,
     private val showBlockedEventsDialogUseCase: ShowBlockedEventsDialogUseCase
 ) : DashboardViewModel() {
 
@@ -159,6 +173,8 @@ class DashboardViewModelImpl(
             )
         }
 
+        draftEventUseCase.remove()
+
         removeExpiredEventsUseCase.execute(
             events = allEventGroupEntities
         )
@@ -208,6 +224,16 @@ class DashboardViewModelImpl(
     override fun dismissFuzzyMatchedEventsInfo() {
         viewModelScope.launch {
             holderDatabase.removedEventDao().deleteAll(reason = RemovedEventReason.FuzzyMatched)
+        }
+    }
+
+    override fun scrollUpdate(canScrollVertically: Boolean, greenCardType: GreenCardType) {
+        val currentTab = persistenceManager.getSelectedDashboardTab()
+        val tabItems = dashboardTabItemsLiveData.value
+        val currentTabItem = tabItems?.getOrNull(currentTab) ?: return
+
+        if (currentTabItem.greenCardType == greenCardType) {
+            (bottomButtonElevationLiveData as MutableLiveData).value = canScrollVertically
         }
     }
 }

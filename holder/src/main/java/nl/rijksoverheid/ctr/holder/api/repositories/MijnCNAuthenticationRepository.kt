@@ -15,10 +15,11 @@ import net.openid.appauth.TokenRequest
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.api.MijnCnApiClient
-import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import nl.rijksoverheid.ctr.holder.get_events.models.MijnCNTokenResponse
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
+import nl.rijksoverheid.rdo.modules.openidconnect.OpenIDConnectRepository
+import nl.rijksoverheid.rdo.modules.openidconnect.TokenResponse
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -30,10 +31,10 @@ import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 class MijnCNAuthenticationRepository(
     private val mijnCnApiClient: MijnCnApiClient,
     private val networkRequestResultFactory: NetworkRequestResultFactory
-) : AuthenticationRepository {
+) : OpenIDConnectRepository {
 
-    override suspend fun authResponse(
-        loginType: LoginType,
+    override suspend fun requestAuthorization(
+        issuerUrl: String,
         activityResultLauncher: ActivityResultLauncher<Intent>,
         authService: AuthorizationService
     ) {
@@ -64,16 +65,15 @@ class MijnCNAuthenticationRepository(
         ).setScope("openid email profile").build()
     }
 
-    override suspend fun jwt(
-        loginType: LoginType,
+    override suspend fun tokenResponse(
         authService: AuthorizationService,
         authResponse: AuthorizationResponse
-    ): String {
+    ): TokenResponse {
         val request = authResponse.createTokenExchangeRequest()
         val res = retrieveAccessToken(request)
         return suspendCoroutine { continuation ->
             when (res) {
-                is NetworkRequestResult.Success -> continuation.resume(res.response.idToken)
+                is NetworkRequestResult.Success -> continuation.resume(TokenResponse(res.response.idToken, res.response.accessToken))
                 is NetworkRequestResult.Failed -> continuation.resumeWithException(Exception("Failed to get JWT"))
             }
         }

@@ -561,7 +561,7 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
 
     private fun startFragment(tabItems: List<DashboardTabItem>): FragmentScenario<DashboardFragment> {
         loadKoinModules(
-            module(override = true) {
+            module {
                 viewModel { fakeAppConfigViewModel(appStatus = AppStatus.NoActionRequired) }
                 viewModel { fakeDashboardViewModel(tabItems) }
             })

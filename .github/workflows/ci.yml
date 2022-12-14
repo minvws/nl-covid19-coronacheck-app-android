@@ -61,6 +61,10 @@ jobs:
         uses: ./.github/actions/setup
       - name: Write key store
         run: echo $KEYSTORE_FILE | base64 --decode > keystore.jks
+      - name: Set version number
+        run: |
+          version=$(( $GITHUB_RUN_NUMBER ))
+          echo VERSION_NUMBER=$version >> $GITHUB_ENV
       - name: Build
         run: ./gradlew assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
       - name: Build fdroid

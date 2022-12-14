@@ -10,14 +10,15 @@ plugins {
 
 def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
-    appVersionCode = System.getenv("GITHUB_RUN_NUMBER") != null ? System.getenv("GITHUB_RUN_NUMBER").toInteger() : 1000000
+    appVersionCode = System.getenv("VERSION_NUMBER") != null ? System.getenv("VERSION_NUMBER").toInteger() : 1000000
 }
-version = "4.8"
+version = "4.9"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
     namespace 'nl.rijksoverheid.ctr.holder'
     testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
         unitTests {
             includeAndroidResources = true
             unitTests.all {
@@ -44,6 +45,7 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "com.karumi.shot.ShotTestRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
 
         buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
         buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
@@ -52,7 +54,7 @@ android {
         buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v9/\""
         buildConfigField "String", "MAX_BASE_URL", "\"https://max.coronacheck.nl\""
         buildConfigField "String", "OPEN_ID_CLIENT_ID", "\"cc_app\""
-        buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL",  "\"\""
+        buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL", "\"\""
         buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.coronacheck.nl\""
         buildConfigField "String", "PAP_BASE_URL", "\"https://qrcodezonderdigid.ggdghor.nl\""
         buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.coronacheck.nl/v9/\""
@@ -76,7 +78,7 @@ android {
             buildConfigField "String", "MAX_BASE_URL", "\"https://max.test.coronacheck.nl\""
             buildConfigField "String", "OPEN_ID_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "OPEN_ID_REDIRECT_URL", "\"https://web.test.coronacheck.nl/app/auth2\""
-            buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL",  "\"https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.test.coronacheck.nl/app/open?returnUri=scanner-test\""
+            buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL", "\"https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.test.coronacheck.nl/app/open?returnUri=scanner-test\""
             buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.test.coronacheck.nl\""
             buildConfigField "String", "PAP_BASE_URL", "\"https://pap.bananenhalen.nl/\""
             dimension "environment"
@@ -95,7 +97,7 @@ android {
             buildConfigField "String", "MAX_BASE_URL", "\"https://max.acc.coronacheck.nl\""
             buildConfigField "String", "OPEN_ID_CLIENT_ID", "\"cc_app\""
             buildConfigField "String", "OPEN_ID_REDIRECT_URL", "\"https://web.acc.coronacheck.nl/app/auth2\""
-            buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL",  "\"https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.acc.coronacheck.nl/app/open?returnUri=scanner-test\""
+            buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL", "\"https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.acc.coronacheck.nl/app/open?returnUri=scanner-test\""
             buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.acc.coronacheck.nl\""
             buildConfigField "String", "PAP_BASE_URL", "\"https://acceptatie.qrcodezonderdigid.ggdghor.nl\""
             dimension "environment"
@@ -161,15 +163,28 @@ android {
 
     packagingOptions {
         exclude "META-INF/LICENSE**"
+        pickFirst "MANIFEST.MF"
     }
 
+    def end2endPassword = project.ext.has("android.testInstrumentationRunnerArguments.authPassword") ? project.ext.getProperty("android.testInstrumentationRunnerArguments.authPassword") : ""
     fladle {
         projectId = "coronatester-test"
         variant = "accDebug"
         maxTestShards = 1
+        testTargets = ["notPackage nl.rijksoverheid.ctr.holder.end2end"]
         devices = [
                 ["model": "Pixel2.arm", "version": "29"]
         ]
+        configs {
+            end2end {
+                resultsHistoryName.set("end2end")
+                testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
+                environmentVariables.set(["authPassword": end2endPassword])
+                devices.set([
+                        ["model": "Pixel2.arm", "version": "29", "locale": "nl"]
+                ])
+            }
+        }
         flankVersion = "22.05.0"
     }
 }
@@ -182,6 +197,9 @@ dependencies {
     implementation project(":api")
     implementation project(':mobilecore')
     implementation project(":qrscanner")
+    implementation project(":modules:luhncheck")
+    implementation project(":modules:qrgenerator")
+    implementation project(":modules:openidconnect")
 
     implementation libs.openid.appauth
     implementation libs.bundles.groupie
@@ -237,6 +255,13 @@ dependencies {
     androidTestImplementation libs.androidx.test.rules
     androidTestImplementation libs.androidx.test.core
     androidTestImplementation libs.androidx.core.testing
+    androidTestImplementation libs.uiautomator
+    androidTestImplementation libs.koin.test.junit4
+    androidTestImplementation(libs.barista) {
+        exclude group: "org.jetbrains.kotlin"
+    }
+
+    androidTestUtil libs.androidx.test.orchestrator
 
     ksp libs.moshi.codegen
 }

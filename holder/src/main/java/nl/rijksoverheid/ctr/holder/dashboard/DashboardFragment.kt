@@ -20,6 +20,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
+import nl.rijksoverheid.ctr.design.R.dimen
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.NavGraphOverviewDirections
@@ -74,6 +75,17 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         observeItems(adapter)
         observeSyncErrors()
         observeAppConfig()
+        observeBottomElevation()
+    }
+
+    private fun observeBottomElevation() {
+        dashboardViewModel.bottomButtonElevationLiveData.observe(viewLifecycleOwner) { elevate ->
+            binding.bottom.elevation = if (elevate) {
+                resources.getDimensionPixelSize(dimen.scroll_view_button_elevation).toFloat()
+            } else {
+                0f
+            }
+        }
     }
 
     private fun setupViewPager(adapter: DashboardPagerAdapter) {
@@ -125,7 +137,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 })
             }
 
-            // This button needs to be shown in this view instead of MyOverviewFragment (which is a single item in the viewpager)
             binding.addQrButton.isVisible = dashboardTabItems.any { dashboardTabItem ->
                 dashboardTabItem.items.any { it is DashboardItem.AddQrButtonItem }
             }
