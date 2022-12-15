@@ -4,7 +4,6 @@ import java.time.Clock
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
-import kotlin.test.assertEquals
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
@@ -314,7 +313,8 @@ class RemoteProtocolUtilImplTest {
         recovery = RemoteEventRecovery.Recovery(
             sampleDate = LocalDate.now(clock),
             validFrom = LocalDate.now(clock),
-            validUntil = LocalDate.now(clock)
+            validUntil = LocalDate.now(clock),
+            country = "NL"
         )
     )
 }

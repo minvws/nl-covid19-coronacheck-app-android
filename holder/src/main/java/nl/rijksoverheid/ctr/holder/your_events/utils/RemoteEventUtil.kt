@@ -104,7 +104,8 @@ class RemoteEventUtilImpl(
                 recovery = RemoteEventRecovery.Recovery(
                     sampleDate = try { LocalDate.parse(it.getStringOrNull("fr")?.take(10)) } catch (e: Exception) { null },
                     validFrom = try { LocalDate.parse(it.getStringOrNull("df")?.take(10)) } catch (e: Exception) { null },
-                    validUntil = try { LocalDate.parse(it.getStringOrNull("du")?.take(10)) } catch (e: Exception) { null }
+                    validUntil = try { LocalDate.parse(it.getStringOrNull("du")?.take(10)) } catch (e: Exception) { null },
+                    country = it.getStringOrNull("co")
                 )
             )
         }
@@ -122,6 +123,8 @@ class RemoteEventUtilImpl(
                     facility = jsonObject.getStringOrNull("tc"),
                     type = jsonObject.getStringOrNull("tt"),
                     name = jsonObject.getStringOrNull("nm")
+                        .takeIf { it?.isNotEmpty() ?: false },
+                    country = jsonObject.getStringOrNull("co")
                         .takeIf { it?.isNotEmpty() ?: false },
                     manufacturer = jsonObject.getStringOrNull("ma")
                         .takeIf { it?.isNotEmpty() ?: false }
