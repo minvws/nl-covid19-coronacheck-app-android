@@ -76,7 +76,7 @@ class TestInfoScreenUtilImpl(
 
         val unique = event.unique ?: ""
 
-        val country = event.negativeTest?.country
+        val country = getCountry(event.negativeTest?.country)
 
         val title =
             if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(
@@ -163,6 +163,11 @@ class TestInfoScreenUtilImpl(
         )
     }
 
+    private fun getCountry(country: String?) = when {
+        country.isNullOrEmpty() -> "NL"
+        else -> country
+    }
+
     override fun getForPositiveTest(
         event: RemoteEventPositiveTest,
         testDate: String,
@@ -185,7 +190,7 @@ class TestInfoScreenUtilImpl(
 
         val unique = event.unique ?: ""
 
-        val country = event.positiveTest?.country
+        val country = getCountry(event.positiveTest?.country)
 
         val title = resources.getString(R.string.your_test_result_explanation_toolbar_title)
         val description = (TextUtils.concat(
