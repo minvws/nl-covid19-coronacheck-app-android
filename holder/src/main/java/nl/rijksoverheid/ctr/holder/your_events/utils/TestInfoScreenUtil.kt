@@ -130,7 +130,11 @@ class TestInfoScreenUtilImpl(
                 val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
                 createdLine(
                     resources.getString(R.string.holder_dcc_issuer),
-                    issuerAnswer,
+                    if (issuerAnswer == "Ministry of Health Welfare and Sport") {
+                        resources.getString(R.string.qr_explanation_certificate_issuer)
+                    } else {
+                        issuerAnswer
+                    },
                     isOptional = true
                 )
             } else {

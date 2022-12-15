@@ -51,7 +51,7 @@ class PaperProofUtilImpl(
 
     override fun getIssuer(europeanCredential: ByteArray): String {
         val dcc = getDccFromEuropeanCredentialUseCase.get(europeanCredential)
-        return dcc.optJSONArray("v")?.optJSONObject(0)?.getStringOrNull("is") ?: ""
+        return (dcc.optJSONArray("v") ?: dcc.optJSONArray("t"))?.optJSONObject(0)?.getStringOrNull("is") ?: ""
     }
 
     override fun getInfoScreenFooterText(europeanCredential: ByteArray): String {
