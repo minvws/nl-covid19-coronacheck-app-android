@@ -126,6 +126,11 @@ class TestInfoScreenUtilImpl(
                 resources.getString(R.string.your_test_result_explanation_description_test_location),
                 testLocation
             ),
+            createdLine(
+                resources.getString(R.string.holder_event_about_test_countrytestedin),
+                countryUtil.getCountryForInfoScreen(Locale.getDefault().language, country),
+                isOptional = true
+            ),
             if (europeanCredential != null) {
                 val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
                 createdLine(
@@ -140,15 +145,6 @@ class TestInfoScreenUtilImpl(
             } else {
                 ""
             },
-            createdLine(
-                resources.getString(R.string.holder_event_about_test_countrytestedin),
-                if (country != null) {
-                    countryUtil.getCountryForInfoScreen(Locale.getDefault().language, country)
-                } else {
-                    ""
-                },
-                isOptional = true
-            ),
             "<br/>",
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_unique_identifier),
@@ -231,17 +227,13 @@ class TestInfoScreenUtilImpl(
                 testManufacturer
             ),
             createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_test_location),
-                testLocation
+                resources.getString(R.string.holder_event_about_test_countrytestedin),
+                countryUtil.getCountryForInfoScreen(Locale.getDefault().language, country),
+                isOptional = true
             ),
             createdLine(
-                resources.getString(R.string.holder_event_about_test_countrytestedin),
-                if (country != null) {
-                    countryUtil.getCountryForInfoScreen(Locale.getDefault().language, country)
-                } else {
-                    ""
-                },
-                isOptional = true
+                resources.getString(R.string.your_test_result_explanation_description_test_location),
+                testLocation
             ),
             "<br/>",
             createdLine(

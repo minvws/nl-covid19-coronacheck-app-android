@@ -93,7 +93,7 @@ class TestInfoScreenUtilImplTest : AutoCloseKoinTest() {
             TestInfoScreenUtilImpl(resources, paperProofUtil, countryUtil, cachedAppConfigUseCase)
 
         assertEquals(
-            expected = "De volgende gegevens zijn opgehaald bij de testlocatie:<br/><br/>Naam: <b>Onoma Epitheto</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Type test: <b>PCR</b><br/>Testnaam: <b>testname</b><br/>Testdatum: <b>2022-12-01T00:00Z</b><br/>Testuitslag: <b>positief (coronavirus vastgesteld)</b><br/>Testproducent: <b>manufacturer</b><br/>Testlocatie: <b>facility</b><br/>Getest in: <b>Nederland</b><br/><br/>Uniek testnummer: <b>unique</b><br/>",
+            expected = "De volgende gegevens zijn opgehaald bij de testlocatie:<br/><br/>Naam: <b>Onoma Epitheto</b><br/>Geboortedatum: <b>01-08-1982</b><br/><br/>Type test: <b>PCR</b><br/>Testnaam: <b>testname</b><br/>Testdatum: <b>2022-12-01T00:00Z</b><br/>Testuitslag: <b>positief (coronavirus vastgesteld)</b><br/>Testproducent: <b>manufacturer</b><br/>Getest in: <b>Nederland</b><br/>Testlocatie: <b>facility</b><br/><br/>Uniek testnummer: <b>unique</b><br/>",
             actual = util.getForPositiveTest(
                 event = positiveTest,
                 testDate = OffsetDateTime.now(testClock).toString(),
