@@ -57,7 +57,11 @@ class RecoveryInfoScreenUtilImpl(
             resources.getString(R.string.recovery_explanation_description_header)
         }
 
-        val country = event.recovery?.country
+        val countryValue = event.recovery?.country
+        val country = when {
+            countryValue.isNullOrEmpty() -> "NL"
+            else -> countryValue
+        }
 
         val description = (TextUtils.concat(
             header,
@@ -78,18 +82,18 @@ class RecoveryInfoScreenUtilImpl(
             ),
             createdLine(
                 resources.getString(R.string.holder_event_about_test_countrytestedin),
-                if (country != null) {
-                    countryUtil.getCountryForInfoScreen(Locale.getDefault().language, country)
-                } else {
-                    ""
-                },
+                countryUtil.getCountryForInfoScreen(Locale.getDefault().language, country),
                 isOptional = true
             ),
             if (europeanCredential != null) {
                 val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
                 createdLine(
                     resources.getString(R.string.holder_dcc_issuer),
-                    issuerAnswer,
+                    if (issuerAnswer == "Ministry of Health Welfare and Sport") {
+                        resources.getString(R.string.qr_explanation_certificate_issuer)
+                    } else {
+                        issuerAnswer
+                    },
                     isOptional = true
                 )
             } else {
