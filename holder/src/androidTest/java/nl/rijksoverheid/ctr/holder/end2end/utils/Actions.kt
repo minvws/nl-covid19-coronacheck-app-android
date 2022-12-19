@@ -110,6 +110,7 @@ object Actions {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
                 if (checkForText("Wachtwoord opslaan?")) tapButtonElement("Nooit")
             }
+            if (checkForText("Help bij het maken van een beter toetsenbord")) tapButtonElement("Sluiten")
         }
     }
 }
