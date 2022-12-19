@@ -52,6 +52,7 @@ object Assertions {
     }
 
     fun assertInternationalVaccinationOnOverview(vaccination: Vaccination, dose: String) {
+        assertOverview()
         scrollToTextInOverview("BEKIJK QR")
         card(Event.Type.Vaccination).containsText("Dosis $dose")
         card(Event.Type.Vaccination).containsText("Vaccinatiedatum: " + vaccination.eventDate.written())
