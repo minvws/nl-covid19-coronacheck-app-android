@@ -35,13 +35,13 @@ object Actions {
 
     fun addNegativeTestCertificateFromGGD(bsn: String) {
         addEvent()
+        scrollTo("Negatieve test")
         tapButton("Negatieve test")
         tapButton("GGD")
         retrieveCertificateFromServer(bsn)
     }
 
     fun addRetrievedCertificateToApp() {
-        checkForText("Kloppen de gegevens?")
         tapButton("Maak bewijs")
         waitForText("Mijn bewijzen", 60)
     }
