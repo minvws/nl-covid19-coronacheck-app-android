@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.holder.end2end.utils
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertContains
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickBack
+import com.adevinta.android.barista.interaction.BaristaScrollInteractions.scrollTo
 import java.time.temporal.ChronoUnit
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.today
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
@@ -13,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.Vaccination
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.containsText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.labelValuePairExist
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollToTextInOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
 
@@ -24,6 +26,7 @@ object Assertions {
     }
 
     fun assertRetrievalDetails(person: Person, event: Event, position: Int = 0) {
+        scrollTo("Klopt er iets niet?")
         tapButton("Details", position)
         assertContains("Naam: " + person.name)
         assertContains("Geboortedatum: " + person.birthDate.written())
@@ -49,20 +52,21 @@ object Assertions {
     }
 
     fun assertInternationalVaccinationOnOverview(vaccination: Vaccination, dose: String) {
+        scrollToTextInOverview("BEKIJK QR")
         card(Event.Type.Vaccination).containsText("Dosis $dose")
         card(Event.Type.Vaccination).containsText("Vaccinatiedatum: " + vaccination.eventDate.written())
     }
 
     fun assertInternationalRecoveryOnOverview(recovery: PositiveTest) {
         assertOverview()
-        card(Event.Type.PositiveTest).containsText(recovery.type.internationalName)
+        scrollToTextInOverview("BEKIJK QR")
         recovery.validUntil?.let { card(Event.Type.PositiveTest).containsText("Geldig tot " + it.written()) }
         card(Event.Type.PositiveTest).containsText("Bekijk QR")
     }
 
     fun assertInternationalNegativeTestOnOverview(negativeTest: NegativeTest) {
         assertOverview()
-        card(Event.Type.NegativeTest).containsText(negativeTest.type.internationalName)
+        scrollToTextInOverview("BEKIJK QR")
         card(Event.Type.NegativeTest).containsText("Type test: " + negativeTest.testType.value)
         card(Event.Type.NegativeTest).containsText("Testdatum: " + negativeTest.eventDate.recently())
         card(Event.Type.NegativeTest).containsText("Bekijk QR")
