@@ -22,14 +22,13 @@ class TestsRetrievalTest : BaseTest() {
     @Test
     fun retrievePositiveTest() {
         val person = Person(bsn = "999993033")
-        val pos = PositiveTest(eventDate = today.offset(-30), testType = TestEvent.TestType.Pcr)
+        val pos = PositiveTest(eventDate = today.offset(-30), testType = TestEvent.TestType.Pcr, validUntil = today.offset(150))
 
         addRecoveryCertificate(person.bsn)
         assertRetrievalDetails(person, pos)
         addRetrievedCertificateToApp()
 
         assertInternationalRecoveryOnOverview(pos)
-
         viewQR(Event.Type.PositiveTest)
         assertInternationalQRDetails(person, pos)
         backToOverview()
