@@ -89,8 +89,8 @@ object Actions {
     }
 
     private fun loginToServer() {
+        if (checkForText("Help bij het maken van een beter toetsenbord")) tapButtonElement("Sluiten")
         if (checkForText("Inloggen") || checkForText("Verificatie vereist")) {
-            if (checkForText("Help bij het maken van een beter toetsenbord")) tapButtonElement("Sluiten")
             enterTextInField(0, "coronacheck")
             enterTextInField(1, BaseTest.authPassword)
             tapButtonElement("Inloggen")
