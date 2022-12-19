@@ -81,7 +81,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     }
 
     override fun onButtonClickWithRetryAction() {
-        navigateSafety(YourEventsFragmentDirections.actionMyOverview())
+        findNavControllerSafety()?.popBackStack()
     }
 
     override fun getFlow(): Flow {
@@ -285,7 +285,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 )
             }
             else -> {
-                findNavControllerSafety()?.navigate(YourEventsFragmentDirections.actionMyOverview())
+                findNavControllerSafety()?.popBackStack()
             }
         }
     }
@@ -307,9 +307,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             },
             negativeButtonText = R.string.your_events_replace_dialog_negative_button,
             negativeButtonCallback = {
-                navigateSafety(
-                    YourEventsFragmentDirections.actionMyOverview()
-                )
+                findNavControllerSafety()?.popBackStack()
             }
         )
     }
@@ -717,9 +715,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             )
                         )
                         .setPositiveButton(R.string.your_events_block_back_dialog_positive_button) { _, _ ->
-                            navigateSafety(
-                                YourEventsFragmentDirections.actionMyOverview()
-                            )
+                            findNavControllerSafety()?.popBackStack()
                         }
                         .setNegativeButton(R.string.your_events_block_back_dialog_negative_button) { _, _ -> }
                         .show()
