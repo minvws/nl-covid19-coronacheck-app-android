@@ -181,7 +181,9 @@ android {
                 testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
                 environmentVariables.set(["authPassword": end2endPassword, "clearPackageData": "true"])
                 devices.set([
-                        ["model": "panther", "version": "33", "locale": "nl"]
+                        ["model": "panther", "version": "33", "locale": "nl"],
+                        ["model": "Nexus6P", "version": "25", "locale": "nl"],
+                        ["model": "Pixel2.arm", "version": "26", "locale": "nl"],
                 ])
             }
         }
