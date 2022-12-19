@@ -182,6 +182,7 @@ android {
                 environmentVariables.set(["authPassword": end2endPassword, "clearPackageData": "true"])
                 devices.set([
                         ["model": "panther", "version": "33", "locale": "nl"],
+                        ["model": "Nexus5", "version": "23", "locale": "nl"],
                         ["model": "Nexus5X", "version": "24", "locale": "nl"],
                         ["model": "Nexus6P", "version": "25", "locale": "nl"],
                 ])
