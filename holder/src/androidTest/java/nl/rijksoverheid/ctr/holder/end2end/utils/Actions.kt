@@ -61,8 +61,8 @@ object Actions {
     }
 
     private fun retrieveCertificateFromServer(bsn: String) {
-        if (bsn.isEmpty()) fail("BSN was null or empty, no certificate can be retrieved.")
-        if (BaseTest.authPassword.isNullOrEmpty()) fail("Password was null or empty, no certificate can be retrieved.")
+        if (bsn.isEmpty()) fail("BSN was empty, no certificate can be retrieved.")
+        if (BaseTest.authPassword.isEmpty()) fail("Password was empty, no certificate can be retrieved.")
 
         tapButton("Log in met DigiD")
 
