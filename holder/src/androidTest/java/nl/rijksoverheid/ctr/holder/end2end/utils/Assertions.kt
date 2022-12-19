@@ -74,7 +74,7 @@ object Assertions {
 
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null) {
         if (event is Vaccination) waitForText("Dosis $dose")
-        waitForText("DETAILS")
+        waitForText("Details")
         tapButton("Details")
         labelValuePairExist("Naam / Name:", person.name)
         labelValuePairExist("Geboortedatum / Date of birth*:", person.birthDate.dutch())
