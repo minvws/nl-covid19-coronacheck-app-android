@@ -18,6 +18,7 @@ archivesBaseName = "holder-v${version}-${appVersionCode}"
 android {
     namespace 'nl.rijksoverheid.ctr.holder'
     testOptions {
+        animationsDisabled = true
         execution 'ANDROIDX_TEST_ORCHESTRATOR'
         unitTests {
             includeAndroidResources = true
