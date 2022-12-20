@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.Vaccination
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.containsText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.labelValuePairExist
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.rest
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollToTextInOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
@@ -75,7 +76,7 @@ object Assertions {
 
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null) {
         if (event is Vaccination) waitForText("Dosis $dose")
-        waitForText("Details")
+        rest() // Waiting until 'Details' is shown is unreliable
         tapButton("Details")
         labelValuePairExist("Naam / Name:", person.name)
         labelValuePairExist("Geboortedatum / Date of birth*:", person.birthDate.dutch())
