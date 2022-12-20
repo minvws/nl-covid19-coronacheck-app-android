@@ -96,7 +96,7 @@ object Actions {
 
         enterBsn(bsn)
 
-        if (checkForText("Openen met", 3)) {
+        if (checkForText("Openen met", 5)) {
             waitForText("CoronaCheck (Acc)")!!.click()
             tapButtonElement("Altijd")
         }
@@ -104,7 +104,7 @@ object Actions {
     }
 
     private fun loginToServer() {
-        if (checkForText("Help bij het maken van een beter toetsenbord")) tapButtonElement("Sluiten")
+        if (checkTextExists("Sluiten")) tapButtonElement("Sluiten")
         if (checkForText("Inloggen") || checkForText("Verificatie vereist")) {
             enterTextInField(0, "coronacheck")
             enterTextInField(1, BaseTest.authPassword)
