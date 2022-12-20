@@ -2,7 +2,7 @@ name: End to end tests
 
 on:
   schedule:
-    - cron: '0 5 * * 2,4' # Run at 05:00 on Tuesday and Thursday.
+    - cron: '0 13 * * 2,4' # Run at 13:00 on Tuesday and Thursday.
   workflow_dispatch:
 
 jobs:
