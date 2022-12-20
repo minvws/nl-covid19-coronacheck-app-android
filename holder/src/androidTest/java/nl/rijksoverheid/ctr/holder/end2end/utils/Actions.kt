@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkTextExists
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkTextMatches
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterBsn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterTextInField
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.rest
@@ -91,7 +91,7 @@ object Actions {
 
         for (index in 1 until 4) {
             Timber.tag("end2end").d("Log in attempt $index")
-            if (!checkTextExists("DigiD Mock")) loginToServer() else break
+            if (!checkTextMatches("DigiD Mock")) loginToServer() else break
         }
 
         enterBsn(bsn)
@@ -104,7 +104,7 @@ object Actions {
     }
 
     private fun loginToServer() {
-        if (checkTextExists("Sluiten")) tapButtonElement("Sluiten")
+        if (checkTextMatches("(?i)Sluiten")) tapButtonElement("(?i)Sluiten")
         if (checkForText("Inloggen") || checkForText("Verificatie vereist")) {
             enterTextInField(0, "coronacheck")
             enterTextInField(1, BaseTest.authPassword)

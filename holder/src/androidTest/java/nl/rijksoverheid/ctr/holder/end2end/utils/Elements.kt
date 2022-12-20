@@ -100,10 +100,10 @@ object Elements {
         onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(label)))).perform(click())
     }
 
-    fun checkTextExists(text: String): Boolean {
+    fun checkTextMatches(text: String): Boolean {
         Timber.tag("end2end").d("Check if text '$text' exists")
-        val element = device.findObject(UiSelector().textContains(text)).waitForExists(3)
-        Timber.tag("end2end").d("  Result: $element")
+        val element = device.findObject(UiSelector().textMatches(text)).waitForExists(3)
+        Timber.tag("end2end").d("Check if text '$text' exists - result: $element")
         return element
     }
 
@@ -128,7 +128,7 @@ object Elements {
 
     fun tapButtonElement(label: String) {
         Timber.tag("end2end").d("Find Button element with label '$label' and clicking")
-        val element = device.findObject(UiSelector().className(android.widget.Button::class.java).textContains(label))
+        val element = device.findObject(UiSelector().className(android.widget.Button::class.java).textMatches(label))
         assertNotNull("Button element with label '$label' could not be found", element)
         element!!.click()
     }
