@@ -6,6 +6,7 @@ import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickBa
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
 import com.adevinta.android.barista.interaction.BaristaScrollInteractions.scrollTo
 import junit.framework.TestCase.fail
+import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
@@ -22,6 +23,20 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
 import timber.log.Timber
 
 object Actions {
+
+    fun logVersions() {
+        val appVersion = BuildConfig.VERSION_NAME
+        val appVersionCode = BuildConfig.VERSION_CODE
+        val release = Build.VERSION.RELEASE
+        val sdkVersion = Build.VERSION.SDK_INT
+        val logLine = "App $appVersion ($appVersionCode), Android $release (SDK $sdkVersion)"
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            Timber.tag("end2end").d(logLine)
+        } else {
+            println("end2end: $logLine")
+        }
+    }
 
     private fun addEvent() {
         tapButton("Menu")
