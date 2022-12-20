@@ -46,10 +46,12 @@ class MenuUtilImpl(
         val actionAboutThisApp = MenuFragmentDirections.actionAboutThisApp(
             data = getAboutThisAppData(context)
         )
+        val actionSavedEvents = MenuFragmentDirections.actionSavedEvents()
+        val actionHelpInfo = MenuFragmentDirections.actionMenu(
+            menuSections = getHelpMenuData(context)
+        )
 
         val isVisitorPassEnabled = featureFlagUseCase.getVisitorPassEnabled()
-
-        val menuSections = mutableListOf<MenuSection>()
 
         val addVaccinationOrTestMenuItem = MenuSection.MenuItem(
             icon = R.drawable.ic_menu_add,
@@ -79,11 +81,20 @@ class MenuUtilImpl(
             )
         )
 
-        val faqMenuItem = MenuSection.MenuItem(
-            icon = R.drawable.ic_menu_chatbubble,
-            title = R.string.frequently_asked_questions,
-            onClick = MenuSection.MenuItem.OnClick.OpenBrowser(
-                url = context.getString(R.string.url_faq)
+        val savedEventsMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_saved_events,
+            title = R.string.holder_menu_storedEvents,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionSavedEvents.actionId
+            )
+        )
+
+        val helpInfoMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_info,
+            title = R.string.about_this_app,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionHelpInfo.actionId,
+                navigationArguments = actionHelpInfo.arguments
             )
         )
 
@@ -96,52 +107,79 @@ class MenuUtilImpl(
             )
         )
 
-        if (isVisitorPassEnabled) {
-            menuSections.add(
+        val menuSections: List<MenuSection> = listOfNotNull(
+            if (isVisitorPassEnabled) {
                 MenuSection(
                     menuItems = listOf(
                         addVaccinationOrTestMenuItem
                     )
                 )
-            )
-
-            menuSections.add(
-                MenuSection(
-                    menuItems = listOf(
-                        addPaperProofMenuItem,
-                        addVisitorPassMenuItem
-                    )
-                )
-            )
-
-            menuSections.add(
-                MenuSection(
-                    menuItems = listOf(
-                        faqMenuItem,
-                        aboutThisAppMenuItem
-                    )
-                )
-            )
-        } else {
-            menuSections.add(
+            } else {
                 MenuSection(
                     menuItems = listOf(
                         addVaccinationOrTestMenuItem,
                         addPaperProofMenuItem
                     )
                 )
-            )
-
-            menuSections.add(
+            },
+            if (isVisitorPassEnabled) {
                 MenuSection(
                     menuItems = listOf(
-                        faqMenuItem,
-                        aboutThisAppMenuItem
+                        addPaperProofMenuItem,
+                        addVisitorPassMenuItem
                     )
                 )
+            } else {
+                null
+            },
+            MenuSection(
+                menuItems = listOf(
+                    savedEventsMenuItem,
+                    helpInfoMenuItem
+                )
             )
-        }
+        )
+
         return menuSections.toTypedArray()
+    }
+
+    private fun getHelpMenuData(context: Context): Array<MenuSection> {
+        // TODO update the action to be under the help info fragment
+        val aboutThisAppAction = MenuFragmentDirections.actionAboutThisApp(
+            data = getAboutThisAppData(context)
+        )
+        return listOf(
+            MenuSection(
+                menuItems = listOf(
+                    MenuSection.MenuItem(
+                        icon = R.drawable.ic_menu_chatbubble,
+                        title = R.string.frequently_asked_questions,
+                        onClick = MenuSection.MenuItem.OnClick.OpenBrowser(
+                            url = context.getString(R.string.url_faq)
+                        )
+                    ),
+                    MenuSection.MenuItem(
+                        icon = R.drawable.ic_menu_helpdesk,
+                        title = R.string.helpdesk,
+                        onClick = MenuSection.MenuItem.OnClick.OpenBrowser(
+                            url = context.getString(R.string.url_faq)
+                        )
+                    )
+                )
+            ),
+            MenuSection(
+                menuItems = listOf(
+                    MenuSection.MenuItem(
+                        icon = R.drawable.ic_menu_smartphone,
+                        title = R.string.about_this_app,
+                        onClick = MenuSection.MenuItem.OnClick.Navigate(
+                            navigationActionId = aboutThisAppAction.actionId,
+                            navigationArguments = aboutThisAppAction.arguments
+                        )
+                    ),
+                )
+            )
+        ).toTypedArray()
     }
 
     private fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(

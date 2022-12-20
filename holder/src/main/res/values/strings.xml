@@ -502,7 +502,7 @@
   <string name="config_warning_page_message"><![CDATA[De CoronaCheck-app heeft af en toe internet nodig om te blijven werken. Zonder internetverbinding werkt jouw app nog tot %1s. Open de app zodra je internet hebt. Dan doet deze het gewoon weer.<br/><br/>Maak regelmatig verbinding om problemen te voorkomen.]]></string>
   <string name="dialog_no_browser_title">Geen browser gevonden</string>
   <string name="dialog_no_browser_message">Er is op deze telefoon geen internetbrowser gevonden waarmee %1s geopend kan worden. Download een browser om de link te kunnen openen.</string>
-  <string name="about_this_app_clear_data_title">Alle gegevens wissen?</string>
+  <string name="about_this_app_clear_data_title">Wil je de app resetten?</string>
   <string name="about_this_app_clear_data_description">Bij het resetten worden alle gegevens en bewijzen uit de app verwijderd en wordt de app afgesloten. Je kunt de app daarna gewoon weer opstarten.</string>
   <string name="about_this_app_clear_data_cancel">Annuleer</string>
   <string name="about_this_app_clear_data_confirm">Reset app</string>
@@ -898,4 +898,5 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_event_about_test_countrytestedin">Getest in:</string>
   <string name="holder_event_about_recovery_countrytestedin">Getest in:</string>
   <string name="holder_showqr_eu_about_test_negative">negatief (geen coronavirus vastgesteld) / negative (no coronavirus detected)</string>
+  <string name="helpdesk">Helpdesk</string>
 </resources>
