@@ -40,9 +40,10 @@ object Elements {
     }
 
     fun checkForText(text: String, timeout: Long = 1): Boolean {
-        val textFound = device.wait(Until.hasObject(By.textContains(text)), timeout * 1000)!!
-        Timber.tag("end2end").d("Checking if text '$text' was found: $textFound")
-        return textFound
+        Timber.tag("end2end").d("Checking if text '$text' was found")
+        val element = device.wait(Until.hasObject(By.textContains(text)), timeout * 1000)!!
+        assertNotNull("'$text' could not be found", element)
+        return element
     }
 
     fun tapButton(label: String, position: Int = 0) {
