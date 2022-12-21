@@ -6,145 +6,142 @@
   ~
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:focusableInTouchMode="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_marginHorizontal="@dimen/horizontal_padding"
-        android:layout_height="wrap_content">
+    <ScrollView
+        android:id="@+id/aboutThisAppScrollview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/aboutThisAppBottomButton">
 
-        <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
-            android:id="@+id/description"
-            style="@style/App.TextAppearance.MaterialComponents.Body1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:htmlText="@string/about_this_app_description"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Description" />
-
-        <LinearLayout
-            android:id="@+id/sections"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description" />
+            android:layout_marginHorizontal="@dimen/horizontal_padding"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/app_version"
-            style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:paddingBottom="16dp"
-            app:layout_constraintEnd_toEndOf="@+id/description"
-            app:layout_constraintStart_toStartOf="@+id/description"
-            app:layout_constraintTop_toBottomOf="@+id/sections"
-            tools:text="App versie 1.1" />
-
-        <TextView
-            android:id="@+id/config_version"
-            style="@style/App.TextAppearance.MaterialComponents.Body2.Secondary"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:paddingBottom="16dp"
-            app:layout_constraintEnd_toEndOf="@+id/description"
-            app:layout_constraintStart_toStartOf="@+id/description"
-            app:layout_constraintTop_toBottomOf="@+id/app_version"
-            tools:text="Configuration ABC123, 13-10-2021 00:00" />
-
-        <!--On test and acceptance builds show button to trigger deeplink to scanner-->
-        <Button
-            android:id="@+id/deeplink_scanner_button"
-            style="?attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="8dp"
-            android:text="deeplink to scanner"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/config_version"
-            tools:ignore="HardcodedText" />
-
-        <!--On test and acceptance builds show buttons to set policy locally-->
-        <LinearLayout
-            android:id="@+id/policy_buttons"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/deeplink_scanner_button">
-
-            <TextView
+            <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
+                android:id="@+id/description"
                 style="@style/App.TextAppearance.MaterialComponents.Body1"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Disclosure Policy:"
+                android:layout_marginTop="16dp"
+                app:htmlText="@string/about_this_app_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/deeplink_scanner_button"
-                tools:ignore="HardcodedText" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Description" />
 
+            <LinearLayout
+                android:id="@+id/sections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description" />
+
+            <!--On test and acceptance builds show button to trigger deeplink to scanner-->
             <Button
-                android:id="@+id/zero_g_policyButton"
+                android:id="@+id/deeplink_scanner_button"
+                style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="0G"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:text="deeplink to scanner"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sections"
                 tools:ignore="HardcodedText" />
 
-            <Button
-                android:id="@+id/one_g_policyButton"
-                android:layout_width="wrap_content"
+            <!--On test and acceptance builds show buttons to set policy locally-->
+            <LinearLayout
+                android:id="@+id/policy_buttons"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="1G"
-                tools:ignore="HardcodedText" />
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/deeplink_scanner_button">
 
-            <Button
-                android:id="@+id/three_g_policy_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="3G"
-                tools:ignore="HardcodedText" />
+                <TextView
+                    style="@style/App.TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Disclosure Policy:"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/deeplink_scanner_button"
+                    tools:ignore="HardcodedText" />
 
-            <Button
-                android:id="@+id/one_g_three_g_policy_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="1G + 3G"
-                tools:ignore="HardcodedText" />
+                <Button
+                    android:id="@+id/zero_g_policyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="0G"
+                    tools:ignore="HardcodedText" />
 
-            <Button
-                android:id="@+id/config_policy_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Config"
-                tools:ignore="HardcodedText" />
+                <Button
+                    android:id="@+id/one_g_policyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="1G"
+                    tools:ignore="HardcodedText" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/three_g_policy_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="3G"
+                    tools:ignore="HardcodedText" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <Button
+                    android:id="@+id/one_g_three_g_policy_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="1G + 3G"
+                    tools:ignore="HardcodedText" />
 
-</ScrollView>
+                <Button
+                    android:id="@+id/config_policy_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Config"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <nl.rijksoverheid.ctr.design.widgets.ScrollViewButtonWidget
+        android:id="@+id/aboutThisAppBottomButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aboutThisAppScrollview"
+        app:attachToScrollView="@+id/aboutThisAppScrollview"
+        app:secondaryButtonText="@string/holder_menu_resetApp" />
+    
+</androidx.constraintlayout.widget.ConstraintLayout>
