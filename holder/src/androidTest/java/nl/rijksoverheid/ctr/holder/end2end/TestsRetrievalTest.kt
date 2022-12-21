@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.end2end
 
+import androidx.test.filters.SdkSuppress
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
@@ -17,6 +18,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
+@SdkSuppress(minSdkVersion = 33) // Disable this temporarily
 class TestsRetrievalTest : BaseTest() {
 
     @Test
