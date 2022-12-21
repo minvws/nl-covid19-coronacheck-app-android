@@ -99,6 +99,7 @@ object Actions {
 
         if (checkForText("Openen met", 5)) {
             waitForText("CoronaCheck (Acc)")!!.click()
+            rest()
             tapButtonElement("Altijd")
         }
         waitForText("Kloppen de gegevens?", 30)
