@@ -26,6 +26,8 @@ jobs:
           retention-days: 2
       - name: Spotless
         run: ./gradlew spotlessCheck
+      - name: Debug dependency
+        run: ./gradlew -q holder:dependencyInsight --dependency startup --configuration accDebugCompileClasspath
       - name: Test
         run: ./gradlew testDebug testAccDebug holder:lintAccDebug verifier:lintAccDebug holder:assemAccDebug holder:assemAccDebugAndroidTest
       - name: Run tests on Testlab
