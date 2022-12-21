@@ -116,16 +116,15 @@ object Actions {
     }
 
     private fun acceptChromeOnboarding() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            if (checkForText("Welkom bij Chrome")) tapButtonElement("Accept")
-            if (checkForText("Synchronisatie aanzetten?")) tapButtonElement("Nee, bedankt")
-            if (checkForText("Inloggen bij Chrome")) tapButtonElement("Nee, bedankt")
-            if (checkForText("Toestaan dat Chrome je meldingen stuurt?")) tapButtonElement("Niet toestaan")
-            if (checkForText("meldingen")) tapButtonElement("Nee, bedankt")
-            if (checkForText("Wil je dat Google Chrome je wachtwoord voor deze site opslaat?")) tapButtonElement("Nooit")
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                if (checkForText("Wachtwoord opslaan?")) tapButtonElement("Nooit")
-            }
+        if (checkForText("Welkom bij Chrome")) tapButtonElement("Accept")
+        if (checkForText("Synchronisatie aanzetten?")) tapButtonElement("Nee, bedankt")
+        if (checkForText("Inloggen bij Chrome")) tapButtonElement("Nee, bedankt")
+        if (checkForText("Toestaan dat Chrome je meldingen stuurt?")) tapButtonElement("Niet toestaan")
+        if (checkForText("meldingen")) tapButtonElement("Nee, bedankt")
+        if (checkForText("Wil je dat Google Chrome je wachtwoord voor deze site opslaat?")) tapButtonElement("Nooit")
+        if (checkForText("Wachtwoord opslaan?")) {
+            tapButtonElement("Nooit")
+            tapButtonElement("Opslaan")
         }
     }
 }
