@@ -5,45 +5,35 @@
  * SPDX-License-Identifier: EUPL-1.2
  */
 
-package nl.rijksoverheid.ctr.holder.dashboard.util
+package nl.rijksoverheid.ctr.holder.menu
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
-import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragmentDirections
-import nl.rijksoverheid.ctr.holder.menu.AboutThisAppDataModel
-import nl.rijksoverheid.ctr.holder.menu.HelpMenuDataModel
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
-interface MenuUtil {
-    fun showMenu(dashboardFragment: DashboardFragment)
+abstract class MenuViewModel : ViewModel() {
+    val menuSectionLiveData: LiveData<Array<MenuSection>> = MutableLiveData()
+    abstract fun click(context: Context)
 }
 
-class MenuUtilImpl(
-    private val aboutThisAppDataModel: AboutThisAppDataModel,
+class MenuViewModelImpl(
     private val helpMenuDataModel: HelpMenuDataModel,
     private val featureFlagUseCase: HolderFeatureFlagUseCase
-) : MenuUtil {
+) : MenuViewModel() {
 
-    override fun showMenu(dashboardFragment: DashboardFragment) {
-        dashboardFragment.navigateSafety(
-            DashboardFragmentDirections.actionMenu(
-                toolbarTitle = dashboardFragment.getString(R.string.general_menu),
-                menuSections = getMenuSections(dashboardFragment.requireContext())
-            )
-        )
+    override fun click(context: Context) {
+        (menuSectionLiveData as MutableLiveData).value = menuSections(context)
     }
 
-    fun getMenuSections(context: Context): Array<MenuSection> {
+    private fun menuSections(context: Context): Array<MenuSection> {
         val actionChooseProofType = MenuFragmentDirections.actionChooseProofType()
         val actionPaperProof = MenuFragmentDirections.actionPaperProof()
         val actionVisitorPass = MenuFragmentDirections.actionVisitorPass()
-        val actionAboutThisApp = MenuFragmentDirections.actionAboutThisApp(
-            data = aboutThisAppDataModel.get(context)
-        )
         val actionSavedEvents = MenuFragmentDirections.actionSavedEvents()
         val actionHelpInfo = MenuFragmentDirections.actionMenu(
             toolbarTitle = context.getString(R.string.holder_helpInfo_title),
@@ -94,15 +84,6 @@ class MenuUtilImpl(
             onClick = MenuSection.MenuItem.OnClick.Navigate(
                 navigationActionId = actionHelpInfo.actionId,
                 navigationArguments = actionHelpInfo.arguments
-            )
-        )
-
-        val aboutThisAppMenuItem = MenuSection.MenuItem(
-            icon = R.drawable.ic_menu_info,
-            title = R.string.about_this_app,
-            onClick = MenuSection.MenuItem.OnClick.Navigate(
-                navigationActionId = actionAboutThisApp.actionId,
-                navigationArguments = actionAboutThisApp.arguments
             )
         )
 

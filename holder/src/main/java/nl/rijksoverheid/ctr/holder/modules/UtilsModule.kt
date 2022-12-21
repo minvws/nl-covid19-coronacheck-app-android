@@ -17,8 +17,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardPageInfoItemHandlerUtilImpl
-import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.RemovedEventsBottomSheetUtil
@@ -119,7 +117,6 @@ val utilsModule = module {
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
     factory<DashboardInfoCardAdapterItemUtil> { DashboardInfoCardAdapterItemUtilImpl() }
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
-    factory<MenuUtil> { MenuUtilImpl(get(), get(), get()) }
     factory<AboutThisAppDataModel> { AboutThisAppDataModelImpl() }
     factory<HelpMenuDataModel> { HelpMenuDataModelImpl(get(), get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
