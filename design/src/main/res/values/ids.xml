@@ -38,4 +38,10 @@
     <item name="back_to_overview" type="string" />
     <item name="holder_identitySelection_error_makeAChoice" type="string" />
     <item name="holder_identitySelection_actionTitle" type="string" />
+    <item name="holder_helpdesk_contact_title" type="string" />
+    <item name="holder_helpdesk_contact_message" type="string" />
+    <item name="holder_helpdesk_support_title" type="string" />
+    <item name="holder_helpdesk_support_message" type="string" />
+    <item name="holder_helpdesk_appVersion" type="string" />
+    <item name="holder_helpdesk_configuration" type="string" />
 </resources>

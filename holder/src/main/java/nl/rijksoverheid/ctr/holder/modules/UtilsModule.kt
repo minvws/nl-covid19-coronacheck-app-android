@@ -27,6 +27,10 @@ import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtilImpl
+import nl.rijksoverheid.ctr.holder.menu.AboutThisAppDataModel
+import nl.rijksoverheid.ctr.holder.menu.AboutThisAppDataModelImpl
+import nl.rijksoverheid.ctr.holder.menu.HelpMenuDataModel
+import nl.rijksoverheid.ctr.holder.menu.HelpMenuDataModelImpl
 import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtil
 import nl.rijksoverheid.ctr.holder.no_digid.NoDigidScreenDataUtilImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
@@ -116,6 +120,8 @@ val utilsModule = module {
     factory<DashboardInfoCardAdapterItemUtil> { DashboardInfoCardAdapterItemUtilImpl() }
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
     factory<MenuUtil> { MenuUtilImpl(get(), get(), get()) }
+    factory<AboutThisAppDataModel> { AboutThisAppDataModelImpl(get(), get()) }
+    factory<HelpMenuDataModel> { HelpMenuDataModelImpl(get(), get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
     factory<LoginTypeUtil> { LoginTypeUtilImpl() }
     factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }

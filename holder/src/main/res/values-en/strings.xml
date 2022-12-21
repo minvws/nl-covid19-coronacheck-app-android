@@ -897,5 +897,14 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_event_about_test_countrytestedin">Tested in:</string>
   <string name="holder_event_about_recovery_countrytestedin">Tested in:</string>
   <string name="holder_showqr_eu_about_test_negative">negative (no coronavirus detected)</string>
-  <string name="helpdesk">Helpdesk</string>
+  <string name="holder_helpdesk_support_message">When you contact the CoronaCheck helpdesk, you may be asked for the following information:</string>
+  <string name="holder_menu_helpInfo">Help &amp; Info</string>
+  <string name="holder_helpInfo_helpdesk">Helpdesk</string>
+  <string name="holder_helpdesk_title">Helpdesk</string>
+  <string name="holder_helpdesk_contact_title">Contact</string>
+  <string name="holder_helpdesk_contact_message"><![CDATA[If you have any questions or experience problems, you can contact the CoronaCheck helpdesk.<br/><br/><b>Call the helpdesk:</b><br />Op 0800-1421 (free). Or, if you are calling from abroad: +31 70 750 37 20.<br /> <br />Open from Monday till Friday, between 08.00 a.m. - 06.00 p.m.<br /><br /><b>Or send an e-mail to:</b><br />helpdesk@coronacheck.nl]]></string>
+  <string name="holder_helpdesk_support_title">Support</string>
+  <string name="holder_helpdesk_appVersion">App version:</string>
+  <string name="holder_helpdesk_configuration">Configuration:</string>
+  <string name="holder_helpInfo_title">Help &amp; Information</string>
 </resources>
