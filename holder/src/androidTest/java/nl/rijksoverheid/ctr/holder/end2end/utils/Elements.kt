@@ -151,4 +151,8 @@ object Elements {
             if (found) break
         }
     }
+
+    fun pressEscape() {
+        device.pressKeyCode(111)
+    }
 }
