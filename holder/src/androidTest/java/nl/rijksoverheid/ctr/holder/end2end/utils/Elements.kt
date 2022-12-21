@@ -127,10 +127,14 @@ object Elements {
     }
 
     fun tapButtonElement(label: String) {
-        Timber.tag("end2end").d("Find Button element with label '$label' and clicking")
+        Timber.tag("end2end").d("Find Button element with label '$label'")
         val element = device.findObject(UiSelector().className(android.widget.Button::class.java).textMatches(label))
-        assertNotNull("Button element with label '$label' could not be found", element)
-        element!!.click()
+        if (element != null) {
+            Timber.tag("end2end").d("Button element found with label '$label' and clicking")
+            element.click()
+        } else {
+            Timber.tag("end2end").d("Button element with label '$label' not found")
+        }
     }
 
     @Suppress("unused")
