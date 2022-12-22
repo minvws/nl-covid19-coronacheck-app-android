@@ -28,9 +28,9 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
-import nl.rijksoverheid.ctr.holder.dashboard.util.MenuUtil
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardBinding
 import nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds
+import nl.rijksoverheid.ctr.holder.menu.MenuViewModel
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -56,7 +56,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private val persistenceManager: PersistenceManager by inject()
     private val clockDeviationUseCase: ClockDeviationUseCase by inject()
     private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
-    private val menuUtil: MenuUtil by inject()
+    private val menuViewModel: MenuViewModel by viewModel()
 
     /** count of amount of tabs visible. When tab amount changes on policy change the adapter items need to be reset */
     private var tabItemsCount = 0
@@ -76,6 +76,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         observeSyncErrors()
         observeAppConfig()
         observeBottomElevation()
+        observeMenuItem()
     }
 
     private fun observeBottomElevation() {
@@ -85,6 +86,17 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             } else {
                 0f
             }
+        }
+    }
+
+    private fun observeMenuItem() {
+        menuViewModel.menuSectionLiveData.observe(viewLifecycleOwner) {
+            navigateSafety(
+                DashboardFragmentDirections.actionMenu(
+                    toolbarTitle = getString(R.string.general_menu),
+                    menuSections = it
+                )
+            )
         }
     }
 
@@ -265,7 +277,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 toolbar.apply {
                     inflateMenu(R.menu.menu_toolbar)
                     menu.findItem(R.id.action_menu).actionView?.setOnClickListener {
-                        menuUtil.showMenu(this@DashboardFragment)
+                        menuViewModel.click(requireContext())
                     }
                 }
             }
