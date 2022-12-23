@@ -93,22 +93,14 @@ object Actions {
 
         enterBsn(bsn)
 
-        if (checkForText("Openen met", 5)) {
-            waitForText("CoronaCheck (Acc)")!!.click()
-            rest()
-            tapButtonElement("Altijd")
-        }
         waitForText("Kloppen de gegevens?", 30)
     }
 
     private fun loginToServer() {
-        if (checkTextMatches("(?i)Sluiten")) tapButtonElement("(?i)Sluiten")
         if (checkForText("Inloggen") || checkForText("Verificatie vereist")) {
             enterTextInField(0, "coronacheck")
             enterTextInField(1, BaseTest.authPassword)
-            if (!checkTextMatches("Wachtwoord")) pressEscape() // Escape, to hide the keyboard
-            tapButtonElement("(?i)Inloggen")
-            rest()
+            tapButtonElement("Inloggen")
         } else {
             acceptChromeOnboarding()
         }
@@ -121,9 +113,6 @@ object Actions {
         if (checkForText("Toestaan dat Chrome je meldingen stuurt?")) tapButtonElement("Niet toestaan")
         if (checkForText("meldingen")) tapButtonElement("Nee, bedankt")
         if (checkForText("Wil je dat Google Chrome je wachtwoord voor deze site opslaat?")) tapButtonElement("Nooit")
-        if (checkForText("Wachtwoord opslaan?")) {
-            tapButtonElement("Nooit")
-            tapButtonElement("Opslaan")
-        }
+        if (checkForText("Wachtwoord opslaan?")) tapButtonElement("Opslaan")
     }
 }
