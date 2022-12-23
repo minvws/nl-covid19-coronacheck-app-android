@@ -1,13 +1,10 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.api.signing.certificates.BEARINGPOINT_ROOT_CA
-import nl.rijksoverheid.ctr.api.signing.certificates.EMAX_ROOT_CA
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.api.MijnCnApiClient
 import nl.rijksoverheid.ctr.holder.api.RemoteConfigApiClient
 import okhttp3.OkHttpClient
 import okhttp3.tls.HandshakeCertificates
-import okhttp3.tls.decodeCertificatePem
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -30,8 +27,6 @@ fun retrofitModule(baseUrl: String, cdnUrl: String) = module {
             .apply {
                 if (BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS) {
                     val handshakeCertificates = HandshakeCertificates.Builder()
-                        .addTrustedCertificate(EMAX_ROOT_CA.decodeCertificatePem())
-                        .addTrustedCertificate(BEARINGPOINT_ROOT_CA.decodeCertificatePem())
                         .build()
 
                     sslSocketFactory(

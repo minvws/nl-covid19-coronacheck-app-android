@@ -775,7 +775,11 @@
     <fragment
         android:id="@+id/nav_menu"
         android:name="nl.rijksoverheid.ctr.design.fragments.menu.MenuFragment"
-        android:label="@string/general_menu">
+        android:label="{toolbarTitle}">
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
 
         <argument
             android:name="menuSections"
@@ -813,6 +817,30 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_saved_events"
+            app:destination="@+id/nav_saved_events"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_menu"
+            app:destination="@id/nav_menu"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_helpdesk"
+            app:destination="@id/nav_helpdesk"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -835,6 +863,15 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment android:id="@+id/nav_helpdesk"
+        android:name="nl.rijksoverheid.ctr.design.menu.about.HelpdeskFragment"
+        android:label="@string/holder_helpdesk_title">
+
+        <argument android:name="data"
+            app:argType="nl.rijksoverheid.ctr.design.menu.about.HelpdeskData" />
 
     </fragment>
 

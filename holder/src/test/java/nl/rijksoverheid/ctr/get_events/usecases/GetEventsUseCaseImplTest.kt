@@ -59,9 +59,9 @@ class GetEventsUseCaseImplTest {
     private val remoteEventProviders = listOf(eventProvider1, eventProvider2)
     private val eventProviders = remoteEventProviders.map { EventProvider(it.providerIdentifier, it.name) }
 
-    private suspend fun getEvents(): EventsResult {
-        val getEventsUseCase = GetEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
-        return getEventsUseCase.getEvents(jwt, listOf(originType), LoginType.Max)
+    private suspend fun getEvents(configProvidersUseCase: ConfigProvidersUseCase): EventsResult {
+        val getEventsUseCase = GetEventsUseCaseImpl(coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
+        return getEventsUseCase.getEvents(configProvidersUseCase.eventProviders(), jwt, listOf(originType), LoginType.Max)
     }
 
     @Test
@@ -71,7 +71,7 @@ class GetEventsUseCaseImplTest {
             eventsError
         )
 
-        val eventsResult = getEvents()
+        val eventsResult = getEvents(configProvidersUseCase)
 
         assertTrue(eventsResult is EventsResult.Error)
     }
@@ -81,7 +81,7 @@ class GetEventsUseCaseImplTest {
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(remoteEventProviders)
         coEvery { coronaCheckRepository.accessTokens("jwt") } returns mockk<NetworkRequestResult.Failed.Error>()
 
-        val eventsResult = getEvents()
+        val eventsResult = getEvents(configProvidersUseCase)
 
         assertTrue(eventsResult is EventsResult.Error)
     }
@@ -96,7 +96,7 @@ class GetEventsUseCaseImplTest {
         val eventProviderWithTokenResult = EventProviderWithTokenResult.Error(httpError)
         coEvery { getEventProvidersWithTokensUseCase.get(any(), any(), any(), "", any()) } returns listOf(eventProviderWithTokenResult, eventProviderWithTokenResult)
 
-        val eventsResult = getEvents()
+        val eventsResult = getEvents(configProvidersUseCase)
 
         assertEquals(
             EventsResult.Error(listOf(httpError, httpError)),
@@ -112,7 +112,7 @@ class GetEventsUseCaseImplTest {
         coEvery { coronaCheckRepository.accessTokens("jwt") } returns tokensResult
         coEvery { getEventProvidersWithTokensUseCase.get(any(), any(), any(), "", any()) } returns listOf()
 
-        val eventsResult = getEvents()
+        val eventsResult = getEvents(configProvidersUseCase)
 
         assertEquals(
             EventsResult.HasNoEvents(false),
@@ -139,7 +139,7 @@ class GetEventsUseCaseImplTest {
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
             listOf(provider1, provider2))
 
-        val eventsResult = getEvents()
+        val eventsResult = getEvents(configProvidersUseCase)
 
         val protocols = listOf(signedModel1, signedModel2)
             .associate { it.model to it.rawResponse }
@@ -165,7 +165,7 @@ class GetEventsUseCaseImplTest {
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
             listOf(eventProvider1, eventProvider2))
 
-        val eventsResult = getEvents()
+        val eventsResult = getEvents(configProvidersUseCase)
 
         val protocols = listOf(signedModel1)
             .associate { it.model to it.rawResponse }
@@ -188,7 +188,7 @@ class GetEventsUseCaseImplTest {
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider1, any(), any(), any()) } returns RemoteEventsResult.Success(signedModel1)
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any(), any()) } returns RemoteEventsResult.Error(httpError)
 
-        val eventsResult = getEvents()
+        val eventsResult = getEvents(configProvidersUseCase)
 
         assertEquals(
             EventsResult.HasNoEvents(true, listOf(httpError)),
@@ -204,7 +204,7 @@ class GetEventsUseCaseImplTest {
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider1, any(), any(), any()) } returns RemoteEventsResult.Error(httpError)
         coEvery { getRemoteEventsUseCase.getRemoteEvents(provider2, any(), any(), any()) } returns RemoteEventsResult.Error(httpError)
 
-        val eventsResult = getEvents()
+        val eventsResult = getEvents(configProvidersUseCase)
 
         assertEquals(
             EventsResult.Error(listOf(httpError, httpError)),
@@ -220,7 +220,7 @@ class GetEventsUseCaseImplTest {
         val tokensResult = NetworkRequestResult.Success(remoteAccessTokens)
         coEvery { coronaCheckRepository.accessTokens("jwt") } returns tokensResult
 
-        val eventsResult = getEvents()
+        val eventsResult = getEvents(configProvidersUseCase)
 
         val exception = (eventsResult as EventsResult.Error).errorResults.first().getException()
         assertTrue(exception is NoProvidersException.Test)
@@ -257,8 +257,8 @@ class GetEventsUseCaseImplTest {
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
             listOf(eventProvider1, eventProvider2))
 
-        val getEventsUseCase = GetEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
-        val result = getEventsUseCase.getEvents(jwt, listOf(RemoteOriginType.Vaccination, RemoteOriginType.Recovery), LoginType.Max)
+        val getEventsUseCase = GetEventsUseCaseImpl(coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
+        val result = getEventsUseCase.getEvents(configProvidersUseCase.eventProviders(), jwt, listOf(RemoteOriginType.Vaccination, RemoteOriginType.Recovery), LoginType.Max)
 
         val protocols1 = listOf(signedModel1)
             .associate { it.model to it.rawResponse }
@@ -290,7 +290,7 @@ class GetEventsUseCaseImplTest {
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
             listOf(provider1, provider2))
 
-        val eventsResult = getEvents()
+        val eventsResult = getEvents(configProvidersUseCase)
 
         assertEquals(
             EventsResult.HasNoEvents(false, listOf()),
@@ -318,8 +318,8 @@ class GetEventsUseCaseImplTest {
         coEvery { configProvidersUseCase.eventProviders() } returns EventProvidersResult.Success(
             listOf(eventProvider1, eventProvider2))
 
-        val getEventsUseCase = GetEventsUseCaseImpl(configProvidersUseCase, coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
-        val result = getEventsUseCase.getEvents(jwt, listOf(RemoteOriginType.Vaccination, RemoteOriginType.Recovery), LoginType.Max)
+        val getEventsUseCase = GetEventsUseCaseImpl(coronaCheckRepository, getEventProvidersWithTokensUseCase, getRemoteEventsUseCase, scopeUtil)
+        val result = getEventsUseCase.getEvents(configProvidersUseCase.eventProviders(), jwt, listOf(RemoteOriginType.Vaccination, RemoteOriginType.Recovery), LoginType.Max)
 
         val protocols2 = listOf(signedModel2)
             .associate { it.model to it.rawResponse }

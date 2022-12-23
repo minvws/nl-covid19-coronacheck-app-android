@@ -97,8 +97,6 @@ class MenuUtilImpl(
     }
 
     private fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(
-        versionName = BuildConfig.VERSION_NAME,
-        versionCode = BuildConfig.VERSION_CODE.toString(),
         sections = mutableListOf(
             AboutThisAppData.AboutThisAppSection(
                 header = R.string.about_this_app_read_more,
@@ -117,26 +115,28 @@ class MenuUtilImpl(
                     )
                 ).apply {
                     if (!BuildConfig.FLAVOR.lowercase().contains("prod")) {
-                        add(AboutThisAppData.ClearAppData(
-                            text = context.getString(R.string.about_this_clear_data)
-                        ))
+                        add(
+                            AboutThisAppData.ClearAppData(
+                                text = context.getString(R.string.about_this_clear_data)
+                            )
+                        )
                     }
                 }
             )
         ).apply {
             if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
-                add(AboutThisAppData.AboutThisAppSection(
-                    header = R.string.verifier_about_this_app_law_enforcement,
-                    items = listOf(
-                        AboutThisAppData.Destination(
-                            text = context.getString(R.string.verifier_about_this_app_scan_log),
-                            destinationId = R.id.action_scan_log
+                add(
+                    AboutThisAppData.AboutThisAppSection(
+                        header = R.string.verifier_about_this_app_law_enforcement,
+                        items = listOf(
+                            AboutThisAppData.Destination(
+                                text = context.getString(R.string.verifier_about_this_app_scan_log),
+                                destinationId = R.id.action_scan_log
+                            )
                         )
                     )
-                ))
+                )
             }
-        },
-        configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
-        configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
+        }
     )
 }

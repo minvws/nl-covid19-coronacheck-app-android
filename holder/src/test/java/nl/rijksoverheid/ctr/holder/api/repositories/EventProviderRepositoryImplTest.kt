@@ -7,8 +7,8 @@ import io.mockk.slot
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
 import nl.rijksoverheid.ctr.api.interceptors.SigningCertificate
-import nl.rijksoverheid.ctr.api.signing.certificates.BEARINGPOINT_ROOT_CA
-import nl.rijksoverheid.ctr.api.signing.certificates.EMAX_ROOT_CA
+import nl.rijksoverheid.ctr.api.signing.certificates.DIGICERT_BTC_ROOT_CA
+import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClient
 import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtil
 import nl.rijksoverheid.ctr.holder.api.models.SignedResponseWithModel
@@ -26,8 +26,8 @@ class EventProviderRepositoryImplTest {
     private val eventProviderRepository: EventProviderRepository =
         EventProviderRepositoryImpl(testProviderApiClientUtil, networkRequestResultFactory)
     private val testProviderApiClient: TestProviderApiClient = mockk(relaxed = true)
-    private val cmsCertificatesBytes = listOf(EMAX_ROOT_CA.toByteArray())
-    private val tlsCertificateBytes = listOf(BEARINGPOINT_ROOT_CA.toByteArray())
+    private val cmsCertificatesBytes = listOf(PRIVATE_ROOT_CA.toByteArray())
+    private val tlsCertificateBytes = listOf(DIGICERT_BTC_ROOT_CA.toByteArray())
     private val tlsCertificateSlot = slot<List<ByteArray>>()
     private val cmsCertificateSlot = slot<List<ByteArray>>()
 

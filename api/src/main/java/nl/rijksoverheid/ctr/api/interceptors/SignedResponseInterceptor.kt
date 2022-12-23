@@ -16,9 +16,6 @@ import java.io.ByteArrayInputStream
 import java.security.SignatureException
 import java.time.Clock
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
-import nl.rijksoverheid.ctr.api.signing.certificates.BEARINGPOINT_ROOT_CA
-import nl.rijksoverheid.ctr.api.signing.certificates.EMAX_ROOT_CA
-import nl.rijksoverheid.ctr.api.signing.certificates.EV_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
 import nl.rijksoverheid.ctr.api.signing.certificates.ROOT_CA_G3
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
@@ -45,7 +42,7 @@ class SignedResponseInterceptor(
     private val clock: Clock
 ) : Interceptor {
     private val defaultValidator = CMSSignatureValidatorBuilder.build(
-        certificatesPem = listOf(EV_ROOT_CA, PRIVATE_ROOT_CA),
+        certificatesPem = listOf(PRIVATE_ROOT_CA),
         cnMatchingString = signatureCertificateCnMatch,
         clock = clock
     )
@@ -74,13 +71,9 @@ class SignedResponseInterceptor(
             }
 
             val validator = if (expectedSigningCertificate != null) {
-                val trustedCertificates = listOf(EV_ROOT_CA, ROOT_CA_G3, PRIVATE_ROOT_CA)
+                val trustedCertificates = listOf(ROOT_CA_G3, PRIVATE_ROOT_CA)
                 CMSSignatureValidatorBuilder.build(
-                    certificatesPem = if (isAcc) {
-                        trustedCertificates + listOf(EMAX_ROOT_CA, BEARINGPOINT_ROOT_CA)
-                    } else {
-                        trustedCertificates
-                    },
+                    certificatesPem = trustedCertificates,
                     signingCertificateBytes = expectedSigningCertificate.certificateBytes,
                     clock = clock
                 )

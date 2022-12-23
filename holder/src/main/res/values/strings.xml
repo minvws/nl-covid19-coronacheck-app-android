@@ -130,7 +130,7 @@
   <string name="no_negative_test_result_description"><![CDATA[Er is geen negatieve testuitslag beschikbaar.]]></string>
   <string name="test_result_not_known_title">Testuitslag nog niet bekend</string>
   <string name="test_result_not_known_description"><![CDATA[Probeer het later nog eens.<br/><br/>Neem voor vragen contact op met jouw testlocatie.]]></string>
-  <string name="about_this_app_description"><![CDATA[Met de CoronaCheck app kun je een digitaal coronabewijs maken. Je kunt een bewijs maken van je vaccinatie(s), negatieve testuitslag of als je corona hebt gehad en bent hersteld. Je coronabewijs heeft een QR-code. Ga je naar het buitenland? Check vooraf op Nederland Wereldwijd of je de QR-code kunt gebruiken.]]></string>
+  <string name="about_this_app_description"><![CDATA[Met de CoronaCheck app kun je aantonen dat je gevaccineerd, negatief getest, of hersteld van corona bent. Je kunt een digitaal coronabewijs maken van je vaccinatie(s), maar ook van een positieve of negatieve testuitslag.<br/><br/>Je bewijs heeft een QR-code. Die kan gescand worden voor toegang tot plekken of activiteiten, of om mee te reizen.]]></string>
   <string name="test_result_already_signed_title">Testuitslag is al opgehaald</string>
   <string name="test_result_already_signed_description"><![CDATA[Je testuitslag is al opgehaald. Ook is er al een QR-code van gemaakt.<br\><br\> Klopt dit niet? Neem dan contact op met de testlocatie.]]></string>
   <string name="item_test_result_expired"><![CDATA[Je QR-code is verlopen.<br/><br/>Laat je opnieuw testen.]]></string>
@@ -243,11 +243,11 @@
   <string name="qr_explanation_description_eu_vaccination_birth_date">Geboortedatum / Date of birth*:</string>
   <string name="qr_explanation_description_eu_vaccination_disease">Ziekteverwekker / Disease targeted:</string>
   <string name="qr_explanation_description_eu_vaccination_vaccine">Vaccin / Vaccine:</string>
-  <string name="qr_explanation_description_eu_vaccination_vaccine_type">Type vaccin / Vaccine medicinal product:</string>
-  <string name="qr_explanation_description_eu_vaccination_producer">Producent / Vaccine manufacturer:</string>
+  <string name="qr_explanation_description_eu_vaccination_vaccine_type">Type vaccin / Vaccine type:</string>
+  <string name="qr_explanation_description_eu_vaccination_producer">Vaccinproducent / Vaccine manufacturer:</string>
   <string name="qr_explanation_description_eu_vaccination_doses">Dosis / Number in series of doses:</string>
-  <string name="qr_explanation_description_eu_vaccination_vaccination_date">Vaccinatiedatum / Date of vaccination*:</string>
-  <string name="qr_explanation_description_eu_vaccination_vaccinated_in">Gevaccineerd in / Member state of vaccination:</string>
+  <string name="qr_explanation_description_eu_vaccination_vaccination_date">Vaccinatiedatum / Vaccination date*:</string>
+  <string name="qr_explanation_description_eu_vaccination_vaccinated_in">Gevaccineerd in / Vaccinated in:</string>
   <string name="qr_explanation_description_eu_vaccination_certificate_issuer">Afgever certificaat / Certificate issuer:</string>
   <string name="qr_explanation_description_eu_vaccination_unique_certificate">Uniek certificaatnummer / Unique certificate identifier:</string>
   <string name="qr_explanation_description_eu_vaccination_footer">*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.</string>
@@ -259,9 +259,9 @@
   <string name="qr_explanation_description_eu_test_test_name">Test naam / Test name:</string>
   <string name="qr_explanation_description_eu_test_test_date">Testdatum / Test date:</string>
   <string name="qr_explanation_description_eu_test_test_result">Testuitslag / Test result:</string>
-  <string name="qr_explanation_description_eu_test_test_centre">Testlocatie / Testing centre:</string>
-  <string name="qr_explanation_description_eu_test_manufacturer">Producent / Test manufacturer:</string>
-  <string name="qr_explanation_description_eu_test_test_country">Getest in / Member state of test:</string>
+  <string name="qr_explanation_description_eu_test_test_centre">Testlocatie / Test location:</string>
+  <string name="qr_explanation_description_eu_test_manufacturer">Testproducent / Test manufacturer:</string>
+  <string name="qr_explanation_description_eu_test_test_country">Getest in / Tested in:</string>
   <string name="qr_explanation_description_eu_test_issuer">Afgever certificaat / Certificate issuer:</string>
   <string name="qr_explanation_description_eu_test_certificate_identifier">Uniek certificaatnummer / Unique certificate identifier:</string>
   <string name="qr_explanation_description_eu_test_footer">*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.</string>
@@ -282,7 +282,7 @@
   <string name="qr_card_vaccination_doses">Dosis %1$s/%2$s</string>
   <string name="your_test_result_explanation_toolbar_title">Details</string>
   <string name="your_test_result_explanation_description"><![CDATA[De volgende gegevens zijn opgehaald bij de testlocatie:<br\><br\>Jouw gegevens: <b>%1$s</b><br/><br/>Type test: <b>%2$s</b><br/>Testdatum: <b>%3$s</b><br/>Testuitslag: <b>%4$s</b><br/>Uniek testnummer: <b>%5$s</b>]]></string>
-  <string name="your_test_result_explanation_negative_test_result">negatief (geen corona) / negative (no coronavirus)</string>
+  <string name="your_test_result_explanation_negative_test_result">negatief (geen coronavirus vastgesteld)</string>
   <string name="your_test_result_explanation_description_header">De volgende gegevens zijn opgehaald bij de testlocatie:</string>
   <string name="your_test_result_explanation_description_your_details">Jouw gegevens:</string>
   <string name="your_test_result_explanation_description_name">Naam:</string>
@@ -296,18 +296,18 @@
   <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Testdatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s]]></string>
   <string name="your_vaccination_row_subtitle"><![CDATA[Vaccinatiedatum: %1$s<br/>Naam: %2$s<br/>Geboortedatum: %3$s<br/>Gegevens opgehaald bij: %4$s]]></string>
   <string name="your_vaccination_explanation_toolbar_title">Details</string>
-  <string name="your_vaccination_explanation_description"><![CDATA[Deze gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Producent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is dit de laatste dosis van je vaccinatie? <b>%8$s</b><br/> Vaccinatiedatum: <b>%9$s</b><br/>Gevaccineerd in: <b>%10$s</b><br/>Uniek certificaatnummer: <b>%11$s</b>]]></string>
+  <string name="your_vaccination_explanation_description"><![CDATA[De volgende gegevens van je vaccinatie zijn opgehaald:<br/><br/>Naam: <b>%1$s</b><br/>Geboortedatum: <b>%2$s</b><br/><br/>Ziekteverwekker: <b>%3$s</b><br/>Vaccin: <b>%4$s</b><br/>Vaccin type: <b>%5$s</b><br/>Vaccinproducent: <b>%6$s</b><br/>Doses: <b>%7$s</b><br/>Is dit de laatste dosis van je vaccinatie? <b>%8$s</b><br/> Vaccinatiedatum: <b>%9$s</b><br/>Gevaccineerd in: <b>%10$s</b><br/>Uniek certificaatnummer: <b>%11$s</b>]]></string>
   <string name="your_vaccination_explanation_last_dose_yes">ja</string>
   <string name="your_vaccination_explanation_last_dose_yes_recovery">ja (eerder corona gehad)</string>
   <string name="your_vaccination_explanation_last_dose_yes_prior_event">ja (ergens anders gevaccineerd)</string>
   <string name="your_vaccination_explanation_last_dose_no">nee</string>
   <string name="your_vaccination_explanation_last_dose_unknown">niet bekend</string>
-  <string name="your_vaccination_explanation_header">Deze gegevens van je vaccinatie zijn opgehaald bij %1$s:</string>
+  <string name="your_vaccination_explanation_header">De volgende gegevens van je vaccinatie zijn opgehaald bij %1$s:</string>
   <string name="your_vaccination_explanation_covid_19">Ziekteverwekker:</string>
   <string name="your_vaccination_explanation_covid_19_answer">COVID-19</string>
   <string name="your_vaccination_explanation_vaccine">Vaccin:</string>
   <string name="your_vaccination_explanation_vaccine_type">Type vaccin:</string>
-  <string name="your_vaccination_explanation_producer">Producent:</string>
+  <string name="your_vaccination_explanation_producer">Vaccin producent:</string>
   <string name="your_vaccination_explanation_doses">Dosis:</string>
   <string name="your_vaccination_explanation_last_dose">Is dit de laatste dosis van je vaccinatie?</string>
   <string name="your_vaccination_explanation_vaccination_date">Vaccinatiedatum:</string>
@@ -360,7 +360,7 @@
   <string name="no_positive_test_result_description"><![CDATA[Ben je net getest? Het kan een paar uur duren voordat je uitslag beschikbaar is. Probeer het later nog eens.<br/><br/>Al even geleden getest? Kijk voor meer informatie op de <a href=\"https://www.coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="qr_code_type_recovery_title">Positieve test</string>
   <string name="qr_code_type_recovery_description">Uit de test blijkt dat ik corona heb gehad</string>
-  <string name="your_test_result_explanation_positive_test_result">positief (corona)</string>
+  <string name="your_test_result_explanation_positive_test_result">positief (coronavirus vastgesteld)</string>
   <string name="recovery_explanation_description_header">De volgende gegevens zijn opgehaald bij de testlocatie:</string>
   <string name="recovery_explanation_description_name">Naam:</string>
   <string name="recovery_explanation_description_birth_date">Geboortedatum:</string>
@@ -372,8 +372,8 @@
   <string name="qr_explanation_description_eu_recovery_name">Naam / Name:</string>
   <string name="qr_explanation_description_eu_recovery_birth_date">Geboortedatum / Date of birth*:</string>
   <string name="qr_explanation_description_eu_recovery_disease">Ziekte waarvan hersteld / Disease recovered from:</string>
-  <string name="qr_explanation_description_eu_recovery_test_date">Testdatum / Test date:</string>
-  <string name="qr_explanation_description_eu_recovery_country">Getest in / Member state of test:</string>
+  <string name="qr_explanation_description_eu_recovery_test_date">Testdatum / Test date*:</string>
+  <string name="qr_explanation_description_eu_recovery_country">Getest in / Tested in:</string>
   <string name="qr_explanation_description_eu_recovery_producer">Afgever certificaat / Certificate issuer:</string>
   <string name="qr_explanation_description_eu_recovery_valid_from_date">Geldig vanaf / Valid from*:</string>
   <string name="qr_explanation_description_eu_recovery_valid_until_date">Geldig tot / Valid to*:</string>
@@ -429,7 +429,6 @@
   <string name="add_paper_proof_invalid_combination_title">Geen geldige combinatie</string>
   <string name="add_paper_proof_invalid_combination_">Deze lettercombinatie en QR-code horen niet bij elkaar.</string>
   <string name="add_paper_proof_qr_scanner_title">Scan QR-code</string>
-  <string name="add_paper_proof_consent_button">Start scannen</string>
   <string name="add_paper_proof_no_camera_error_header">Bewijs toevoegen kan niet op jouw telefoon</string>
   <string name="add_paper_proof_no_camera_error_description"><![CDATA[Jouw telefoon heeft geen camerafunctie. Daardoor kan je het papieren bewijs niet scannen en toevoegen op jouw telefoon.<br><br>Gebruik het papieren bewijs dat je van de zorgverlener hebt gekregen]]></string>
   <string name="your_dcc_event_description">Als onderstaande gegevens kloppen kun je jouw bewijs toevoegen aan de app.</string>
@@ -503,7 +502,7 @@
   <string name="config_warning_page_message"><![CDATA[De CoronaCheck-app heeft af en toe internet nodig om te blijven werken. Zonder internetverbinding werkt jouw app nog tot %1s. Open de app zodra je internet hebt. Dan doet deze het gewoon weer.<br/><br/>Maak regelmatig verbinding om problemen te voorkomen.]]></string>
   <string name="dialog_no_browser_title">Geen browser gevonden</string>
   <string name="dialog_no_browser_message">Er is op deze telefoon geen internetbrowser gevonden waarmee %1s geopend kan worden. Download een browser om de link te kunnen openen.</string>
-  <string name="about_this_app_clear_data_title">Alle gegevens wissen?</string>
+  <string name="about_this_app_clear_data_title">Wil je de app resetten?</string>
   <string name="about_this_app_clear_data_description">Bij het resetten worden alle gegevens en bewijzen uit de app verwijderd en wordt de app afgesloten. Je kunt de app daarna gewoon weer opstarten.</string>
   <string name="about_this_app_clear_data_cancel">Annuleer</string>
   <string name="about_this_app_clear_data_confirm">Reset app</string>
@@ -540,7 +539,7 @@
   <string name="holder_listRemoteEvents_endStateNoRecoveryButDosisCorrection_title">We konden geen herstelbewijs maken</string>
   <string name="holder_listRemoteEvents_endStateNoRecoveryButDosisCorrection_message"><![CDATA[Het is te lang geleden dat je positief getest bent op corona. Daardoor is je testuitslag niet meer geldig om een herstelbewijs van te maken.<br><br>Je positieve test kon wel meegeteld worden in je vaccinatiebewijs. Kijk voor meer informatie op de <a href=\"https://coronacheck.nl/wegwijzer\">Wegwijzer</a>.]]></string>
   <string name="no_certificate_created_toolbar_title">Geen bewijs gemaakt</string>
-  <string name="paper_proof_event_explanation_header">Deze gegevens staan in je bewijs:</string>
+  <string name="paper_proof_event_explanation_header">De volgende gegevens staan in je bewijs:</string>
   <string name="paper_proof_event_explanation_footer"><![CDATA[<br/><b>Kloppen er gegevens niet?</b><br/>Neem contact op met de zorgverlener waar je bent gevaccineerd of getest. Dat kan de GGD, je huisarts of arts van een andere zorginstelling zijn. Zij kunnen je helpen je gegevens aan te passen.]]></string>
   <string name="rule_engine_no_test_origin_description_scanned_qr_code">gescande QR-code</string>
   <string name="rule_engine_no_test_origin_description_negative_test">negatieve testuitslag</string>
@@ -895,4 +894,18 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_identitySelection_accessibility_details">Bekijk de details voor %s</string>
   <string name="holder_identitySelection_accessibility_select">Kies %s</string>
   <string name="holder_identitySelection_loading_accessibility">Je gegevens worden bijgewerkt</string>
+  <string name="holder_event_aboutVaccination_productName">Productnaam:</string>
+  <string name="holder_event_about_test_countrytestedin">Getest in:</string>
+  <string name="holder_event_about_recovery_countrytestedin">Getest in:</string>
+  <string name="holder_showqr_eu_about_test_negative">negatief (geen coronavirus vastgesteld) / negative (no coronavirus detected)</string>
+  <string name="holder_helpdesk_support_message">Wanneer je contact opneemt met de CoronaCheck helpdesk, kan er gevraagd worden om de volgende informatie:</string>
+  <string name="holder_menu_helpInfo">Hulp &amp; Info</string>
+  <string name="holder_helpInfo_helpdesk">Helpdesk</string>
+  <string name="holder_helpdesk_title">Helpdesk</string>
+  <string name="holder_helpdesk_contact_title">Contact</string>
+  <string name="holder_helpdesk_contact_message"><![CDATA[Bij vragen of problemen kun je contact opnemen met de CoronaCheck helpdesk.<br/><br/><b>Bel de helpdesk:</b><br />Op 0800-1421 (gratis). Of als je vanuit het buitenland belt: +31 70 750 37 20.<br /> <br />Telefonisch bereikbaar van maandag t/m zondag 08:00 - 20:00 uur.<br /><br /><b>Of stuur een e-mail naar:</b><br />helpdesk@coronacheck.nl]]></string>
+  <string name="holder_helpdesk_support_title">Ondersteuning</string>
+  <string name="holder_helpdesk_appVersion">App versie:</string>
+  <string name="holder_helpdesk_configuration">Configuratie:</string>
+  <string name="holder_helpInfo_title">Hulp &amp; Informatie</string>
 </resources>

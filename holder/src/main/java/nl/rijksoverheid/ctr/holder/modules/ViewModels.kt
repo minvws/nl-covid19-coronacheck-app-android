@@ -9,6 +9,8 @@ import nl.rijksoverheid.ctr.holder.get_events.GetEventsViewModelImpl
 import nl.rijksoverheid.ctr.holder.get_events.LoginViewModel
 import nl.rijksoverheid.ctr.holder.input_token.InputTokenViewModel
 import nl.rijksoverheid.ctr.holder.input_token.InputTokenViewModelImpl
+import nl.rijksoverheid.ctr.holder.menu.MenuViewModel
+import nl.rijksoverheid.ctr.holder.menu.MenuViewModelImpl
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
 import nl.rijksoverheid.ctr.holder.paper_proof.PaperProofDomesticInputCodeViewModel
 import nl.rijksoverheid.ctr.holder.paper_proof.PaperProofDomesticInputCodeViewModelImpl
@@ -49,10 +51,11 @@ val viewModels = module {
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<DeviceSecureViewModel> { DeviceSecureViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get(), get()) }
-    viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get(), get()) }
+    viewModel<GetEventsViewModel> { GetEventsViewModelImpl(get(), get(), get()) }
     viewModel<PaperProofDomesticInputCodeViewModel> { PaperProofDomesticInputCodeViewModelImpl(get(), get()) }
     viewModel<PaperProofQrScannerViewModel> { PaperProofQrScannerViewModelImpl(get()) }
     viewModel<DashboardViewModel> { DashboardViewModelImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel<SyncGreenCardsViewModel> { SyncGreenCardsViewModelImpl(get(), get()) }
     viewModel { SavedEventsViewModel(get(), get()) }
+    viewModel<MenuViewModel> { MenuViewModelImpl(get(), get()) }
 }

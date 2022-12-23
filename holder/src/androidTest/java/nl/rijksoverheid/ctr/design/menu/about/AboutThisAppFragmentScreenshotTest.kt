@@ -24,38 +24,36 @@ class AboutThisAppFragmentScreenshotTest : ScreenshotTest {
     fun aboutThisAppFragment_Screenshot() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val fragmentScenario = launchFragmentInContainer<AboutThisAppFragment>(
-            bundleOf("data" to AboutThisAppData(
-                versionCode = "1000",
-                versionName = "4.4-acc",
-                sections = listOf(
-                    AboutThisAppData.AboutThisAppSection(
-                        header = R.string.about_this_app_read_more,
-                        items = mutableListOf(
-                            AboutThisAppData.Url(
-                                text = context.getString(R.string.privacy_statement),
-                                url = context.getString(R.string.url_privacy_statement)
-                            ),
-                            AboutThisAppData.Url(
-                                text = context.getString(R.string.about_this_app_accessibility),
-                                url = context.getString(R.string.url_accessibility)
-                            ),
-                            AboutThisAppData.Url(
-                                text = context.getString(R.string.about_this_app_colofon),
-                                url = context.getString(R.string.about_this_app_colofon_url)
-                            ),
-                            AboutThisAppData.Destination(
-                                text = context.getString(R.string.holder_menu_storedEvents),
-                                destinationId = AboutThisAppFragmentDirections.actionSavedEvents().actionId
-                            ),
-                            AboutThisAppData.ClearAppData(
-                                text = context.getString(R.string.holder_menu_resetApp)
+            bundleOf(
+                "data" to AboutThisAppData(
+                    sections = listOf(
+                        AboutThisAppData.AboutThisAppSection(
+                            header = R.string.about_this_app_read_more,
+                            items = mutableListOf(
+                                AboutThisAppData.Url(
+                                    text = context.getString(R.string.privacy_statement),
+                                    url = context.getString(R.string.url_privacy_statement)
+                                ),
+                                AboutThisAppData.Url(
+                                    text = context.getString(R.string.about_this_app_accessibility),
+                                    url = context.getString(R.string.url_accessibility)
+                                ),
+                                AboutThisAppData.Url(
+                                    text = context.getString(R.string.about_this_app_colofon),
+                                    url = context.getString(R.string.about_this_app_colofon_url)
+                                ),
+                                AboutThisAppData.Destination(
+                                    text = context.getString(R.string.holder_menu_storedEvents),
+                                    destinationId = AboutThisAppFragmentDirections.actionSavedEvents().actionId
+                                ),
+                                AboutThisAppData.ClearAppData(
+                                    text = context.getString(R.string.holder_menu_resetApp)
+                                )
                             )
                         )
                     )
-                ),
-                configVersionHash = "configVersionHash",
-                configVersionTimestamp = 1655222474
-            )),
+                )
+            ),
             themeResId = R.style.TestAppTheme
         )
 

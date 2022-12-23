@@ -106,7 +106,7 @@ class QrInfoScreenUtilImpl(
         } ?: ""
 
         val testResult =
-            application.getString(R.string.your_test_result_explanation_negative_test_result)
+            application.getString(R.string.holder_showqr_eu_about_test_negative)
 
         val testLocation = test.getStringOrNull("tc") ?: ""
 
@@ -130,36 +130,101 @@ class QrInfoScreenUtilImpl(
 
         val uniqueCode = test.getStringOrNull("ci")
 
+        val texts = mutableListOf(
+            application.getString(R.string.qr_explanation_description_eu_test_header),
+            "<br/><br/>",
+            application.getString(R.string.qr_explanation_description_eu_test_name),
+            createQrAnswer(fullName),
+            application.getString(R.string.qr_explanation_description_eu_test_birth_date),
+            createQrAnswer(birthDate),
+            application.getString(R.string.qr_explanation_description_eu_test_disease),
+            createQrAnswer(disease)
+        )
+
+        if (testType.isNotBlank()) {
+            texts.addAll(
+                listOf(
+                    application.getString(R.string.qr_explanation_description_eu_test_test_type),
+                    createQrAnswer(testType)
+                )
+            )
+        }
+
+        if (testName.isNotBlank()) {
+            texts.addAll(
+                listOf(
+                    application.getString(R.string.qr_explanation_description_eu_test_test_name),
+                    createQrAnswer(testName)
+                )
+            )
+        }
+
+        if (testDate.isNotBlank()) {
+            texts.addAll(
+                listOf(
+                    application.getString(R.string.qr_explanation_description_eu_test_test_date),
+                    createQrAnswer(testDate)
+                )
+            )
+        }
+
+        if (testResult.isNotBlank()) {
+            texts.addAll(
+                listOf(
+                    application.getString(R.string.qr_explanation_description_eu_test_test_result),
+                    createQrAnswer(testResult)
+                )
+            )
+        }
+
+        if (manufacturer.isNotBlank()) {
+            texts.addAll(
+                listOf(
+                    application.getString(R.string.qr_explanation_description_eu_test_manufacturer),
+                    createQrAnswer(manufacturer)
+                )
+            )
+        }
+
+        if (testLocation.isNotBlank()) {
+            texts.addAll(
+                listOf(
+                    application.getString(R.string.qr_explanation_description_eu_test_test_centre),
+                    createQrAnswer(testLocation)
+                )
+            )
+        }
+
+        if (testCountry.isNotBlank()) {
+            texts.addAll(
+                listOf(
+                    application.getString(R.string.qr_explanation_description_eu_test_test_country),
+                    createQrAnswer(testCountry)
+                )
+            )
+        }
+
+        if (issuer?.isNotBlank() == true) {
+            texts.addAll(
+                listOf(
+                    application.getString(R.string.qr_explanation_description_eu_test_issuer),
+                    createQrAnswer(issuer)
+                )
+            )
+        }
+
+        if (uniqueCode?.isNotBlank() == true) {
+            texts.addAll(
+                listOf(
+                    application.getString(R.string.qr_explanation_description_eu_test_certificate_identifier),
+                    createQrAnswer(uniqueCode)
+                )
+            )
+        }
+
         return QrInfoScreen(
             title = title,
-            description = (TextUtils.concat(
-                application.getString(R.string.qr_explanation_description_eu_test_header),
-                "<br/><br/>",
-                application.getString(R.string.qr_explanation_description_eu_test_name),
-                createQrAnswer(fullName),
-                application.getString(R.string.qr_explanation_description_eu_test_birth_date),
-                createQrAnswer(birthDate),
-                application.getString(R.string.qr_explanation_description_eu_test_disease),
-                createQrAnswer(disease),
-                application.getString(R.string.qr_explanation_description_eu_test_test_type),
-                createQrAnswer(testType),
-                application.getString(R.string.qr_explanation_description_eu_test_test_name),
-                createQrAnswer(testName),
-                application.getString(R.string.qr_explanation_description_eu_test_test_date),
-                createQrAnswer(testDate),
-                application.getString(R.string.qr_explanation_description_eu_test_test_result),
-                createQrAnswer(testResult),
-                application.getString(R.string.qr_explanation_description_eu_test_test_centre),
-                createQrAnswer(testLocation),
-                application.getString(R.string.qr_explanation_description_eu_test_manufacturer),
-                createQrAnswer(manufacturer),
-                application.getString(R.string.qr_explanation_description_eu_test_test_country),
-                createQrAnswer(testCountry),
-                application.getString(R.string.qr_explanation_description_eu_test_issuer),
-                createQrAnswer(issuer ?: ""),
-                application.getString(R.string.qr_explanation_description_eu_test_certificate_identifier),
-                createQrAnswer(uniqueCode ?: "")
-            ) as String),
+            description = (TextUtils.concat(*texts.toTypedArray()) as String),
             footer = application.getString(R.string.qr_explanation_description_eu_test_footer)
         )
     }
