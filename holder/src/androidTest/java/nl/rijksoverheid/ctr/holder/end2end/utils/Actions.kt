@@ -1,23 +1,20 @@
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import android.os.Build
-import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
-import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickBack
-import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
-import com.adevinta.android.barista.interaction.BaristaScrollInteractions.scrollTo
 import junit.framework.TestCase.fail
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertOverview
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkTextMatches
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickBack
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterBsn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterTextInField
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.pressEscape
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.rest
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButtonElement
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
@@ -87,12 +84,11 @@ object Actions {
         if (bsn.isEmpty()) fail("BSN was empty, no certificate can be retrieved.")
         if (BaseTest.authPassword.isEmpty()) fail("Password was empty, no certificate can be retrieved.")
 
-        scrollTo("Log in met DigiD")
-        tapButton("Log in met DigiD")
+        clickOn("Log in met DigiD")
 
         for (index in 1 until 4) {
             Timber.tag("end2end").d("Log in attempt $index")
-            if (!checkTextMatches("DigiD Mock")) loginToServer() else break
+            if (!checkForText("Login / Submit", 3)) loginToServer() else break
         }
 
         enterBsn(bsn)

@@ -16,8 +16,10 @@ import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.UiScrollable
 import androidx.test.uiautomator.UiSelector
 import androidx.test.uiautomator.Until
-import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertContains
-import com.adevinta.android.barista.interaction.BaristaListInteractions.scrollListToPosition
+import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions
+import com.adevinta.android.barista.interaction.BaristaClickInteractions
+import com.adevinta.android.barista.interaction.BaristaListInteractions
+import com.adevinta.android.barista.interaction.BaristaScrollInteractions
 import java.lang.Thread.sleep
 import junit.framework.TestCase.assertNotNull
 import nl.rijksoverheid.ctr.holder.R
@@ -32,28 +34,57 @@ import timber.log.Timber
 
 object Elements {
 
-    fun waitForText(text: String, timeout: Long = 5): UiObject2? {
-        Timber.tag("end2end").d("Waiting for text '$text'")
-        val element = device.wait(Until.findObject(By.textStartsWith(text)), timeout * 1000)
-        assertNotNull("'$text' could not be found", element)
-        return element
+    // MARK: Barista
+
+    fun assertContains(text: String) {
+        Timber.tag("end2end").d("Asserting contains '$text'")
+        BaristaVisibilityAssertions.assertContains(text)
     }
 
-    fun checkForText(text: String, timeout: Long = 1): Boolean {
-        Timber.tag("end2end").d("Checking if text '$text' was found")
-        val element = device.wait(Until.hasObject(By.textContains(text)), timeout * 1000)!!
-        assertNotNull("'$text' could not be found", element)
-        return element
+    fun assertDisplayed(text: String) {
+        Timber.tag("end2end").d("Asserting displayed '$text'")
+        BaristaVisibilityAssertions.assertDisplayed(text)
     }
 
-    fun tapButton(label: String, position: Int = 0) {
-        Timber.tag("end2end").d("Tapping button with label '$label'${if (position > 0) " on position $position" else ""}")
-        onView(allOf(withIndex(withText(containsStringIgnoringCase(label)), position))).perform(click())
+    fun clickOn(text: String) {
+        Timber.tag("end2end").d("Clicking on '$text'")
+        BaristaClickInteractions.clickOn(text)
+    }
+
+    fun clickOn(id: Int) {
+        Timber.tag("end2end").d("Clicking on view with id '$id'")
+        BaristaClickInteractions.clickOn(id)
+    }
+
+    fun clickBack() {
+        Timber.tag("end2end").d("Clicking back")
+        BaristaClickInteractions.clickBack()
+    }
+
+    fun scrollTo(text: String) {
+        Timber.tag("end2end").d("Scrolling to view with text '$text'")
+        BaristaScrollInteractions.scrollTo(text)
     }
 
     fun labelValuePairExist(label: String, value: String) {
         Timber.tag("end2end").d("Asserting label '$label' with value '$value'")
-        assertContains("$label\n$value")
+        BaristaVisibilityAssertions.assertContains("$label\n$value")
+    }
+
+    fun scrollToTextInOverview(text: String) {
+        for (i in 2..12 step 2) {
+            Timber.tag("end2end").d("Scrolling to position $i on overview to search for '$text'")
+            BaristaListInteractions.scrollListToPosition(R.id.recyclerView, i)
+            val found = device.findObject(By.textContains(text)) != null
+            if (found) break
+        }
+    }
+
+    // MARK: Espresso
+
+    fun tapButton(label: String, position: Int = 0) {
+        Timber.tag("end2end").d("Tapping button with label '$label'${if (position > 0) " on position $position" else ""}")
+        onView(allOf(withIndex(withText(containsStringIgnoringCase(label)), position))).perform(click())
     }
 
     // Based on: https://stackoverflow.com/a/41967652
@@ -91,7 +122,7 @@ object Elements {
     }
 
     fun Matcher<View>.containsText(text: String) {
-        Timber.tag("end2end").d("Asserting text '$text' on a view ")
+        Timber.tag("end2end").d("Contains text '$text' on a view ")
         onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(text)))).check(ViewAssertions.matches(isDisplayed()))
     }
 
@@ -100,10 +131,19 @@ object Elements {
         onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(label)))).perform(click())
     }
 
-    fun checkTextMatches(text: String): Boolean {
-        Timber.tag("end2end").d("Check if text '$text' exists")
-        val element = device.findObject(UiSelector().textMatches(text)).waitForExists(3)
-        Timber.tag("end2end").d("Check if text '$text' exists - result: $element")
+    // MARK: UiAutomator
+
+    fun waitForText(text: String, timeout: Long = 5): UiObject2? {
+        Timber.tag("end2end").d("Waiting for text '$text'")
+        val element = device.wait(Until.findObject(By.textStartsWith(text)), timeout * 1000)
+        assertNotNull("'$text' could not be found", element)
+        return element
+    }
+
+    fun checkForText(text: String, timeout: Long = 1): Boolean {
+        Timber.tag("end2end").d("Checking if text '$text' was found")
+        val element = device.wait(Until.hasObject(By.textContains(text)), timeout * 1000)!!
+        assertNotNull("'$text' could not be found", element)
         return element
     }
 
@@ -127,32 +167,15 @@ object Elements {
     }
 
     fun tapButtonElement(label: String) {
-        Timber.tag("end2end").d("Find Button element with label '$label'")
-        val element = device.findObject(UiSelector().className(android.widget.Button::class.java).textMatches(label))
-        if (element != null) {
-            Timber.tag("end2end").d("Button element found with label '$label' and clicking")
-            element.click()
-        } else {
-            Timber.tag("end2end").d("Button element with label '$label' not found")
-        }
+        Timber.tag("end2end").d("Find Button element with label '$label' and clicking")
+        device.findObject(UiSelector().className(android.widget.Button::class.java).textStartsWith(label)).click()
     }
+
+    // MARK: Other
 
     @Suppress("unused")
     fun Any.rest(timeout: Long = 1) {
         Timber.tag("end2end").d("  Rest Here Weary Traveler, for just ${if (timeout > 1) "$timeout seconds" else "a second"}")
         sleep(timeout * 1000)
-    }
-
-    fun scrollToTextInOverview(text: String) {
-        for (i in 2..12 step 2) {
-            Timber.tag("end2end").d("Scrolling to position $i on overview to search for '$text'")
-            scrollListToPosition(R.id.recyclerView, i)
-            val found = device.findObject(By.textContains(text)) != null
-            if (found) break
-        }
-    }
-
-    fun pressEscape() {
-        device.pressKeyCode(111)
     }
 }
