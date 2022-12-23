@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
+@SdkSuppress(minSdkVersion = 33)
 class VaccinationRetrievalTest : BaseTest() {
 
     @Test

@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
-@SdkSuppress(minSdkVersion = 33) // Disable this temporarily
+@SdkSuppress(minSdkVersion = 33)
 class TestsRetrievalTest : BaseTest() {
 
     @Test
