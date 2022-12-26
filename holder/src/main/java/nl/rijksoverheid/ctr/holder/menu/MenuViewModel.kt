@@ -126,6 +126,7 @@ class MenuViewModelImpl(
                     menuItems = listOf(
                         MenuSection.MenuItem(
                             icon = R.drawable.ic_menu_info,
+                            color = R.color.error,
                             title = R.string.holder_menu_resetApp,
                             onClick = MenuSection.MenuItem.OnClick.ResetApp
                         )
