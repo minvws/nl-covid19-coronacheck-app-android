@@ -29,6 +29,9 @@ data class MenuSection(
 
         sealed class OnClick : Parcelable {
             @Parcelize
+            object ResetApp : OnClick(), Parcelable
+
+            @Parcelize
             data class OpenBrowser(val url: String) : OnClick(), Parcelable
 
             @Parcelize

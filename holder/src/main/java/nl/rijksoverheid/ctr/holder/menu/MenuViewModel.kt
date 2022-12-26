@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.shared.models.Environment
 
 abstract class MenuViewModel : ViewModel() {
     val menuSectionLiveData: LiveData<Array<MenuSection>> = MutableLiveData()
@@ -117,7 +118,20 @@ class MenuViewModelImpl(
                     savedEventsMenuItem,
                     helpInfoMenuItem
                 )
-            )
+            ),
+            if (Environment.get(context) == Environment.Prod) {
+                null
+            } else {
+                MenuSection(
+                    menuItems = listOf(
+                        MenuSection.MenuItem(
+                            icon = R.drawable.ic_menu_info,
+                            title = R.string.holder_menu_resetApp,
+                            onClick = MenuSection.MenuItem.OnClick.ResetApp
+                        )
+                    )
+                )
+            }
         )
 
         return menuSections.toTypedArray()
