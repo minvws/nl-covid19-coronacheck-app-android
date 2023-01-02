@@ -45,7 +45,6 @@ class VaccinationRetrievalTest : BaseTest() {
     }
 
     @Test
-    @SdkSuppress(minSdkVersion = 33)
     fun retrieveVaccination_2Moderna() {
         val person = Person("999990159")
         val vac1 = Vaccination(eventDate = today.offset(-60), vaccine = Moderna)
@@ -68,7 +67,6 @@ class VaccinationRetrievalTest : BaseTest() {
     }
 
     @Test
-    @SdkSuppress(minSdkVersion = 33)
     fun retrieveVaccination_2Janssen() {
         val person = Person("999990093")
         val vac1 = Vaccination(eventDate = today.offset(-60), vaccine = Janssen)
