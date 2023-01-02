@@ -41,7 +41,6 @@ class VaccinationRetrievalTest : BaseTest() {
         viewPreviousQR()
         assertQRisHidden()
         assertInternationalQRDetails(person, vac1, dose = "1/2")
-        backToOverview()
     }
 
     @Test
@@ -63,7 +62,6 @@ class VaccinationRetrievalTest : BaseTest() {
         viewPreviousQR()
         assertQRisHidden()
         assertInternationalQRDetails(person, vac1, dose = "1/2")
-        backToOverview()
     }
 
     @Test
@@ -84,6 +82,5 @@ class VaccinationRetrievalTest : BaseTest() {
         assertInternationalQRDetails(person, vac2, dose = "2/1")
         viewPreviousQR()
         assertInternationalQRDetails(person, vac1, dose = "1/1")
-        backToOverview()
     }
 }

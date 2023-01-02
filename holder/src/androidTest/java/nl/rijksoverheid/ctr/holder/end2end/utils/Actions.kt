@@ -6,11 +6,9 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterBsn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterTextInField
@@ -73,11 +71,6 @@ object Actions {
 
     fun viewPreviousQR() {
         clickOn(R.id.previousQrButton)
-    }
-
-    fun backToOverview() {
-        clickBack()
-        assertOverview()
     }
 
     private fun retrieveCertificateFromServer(bsn: String) {
