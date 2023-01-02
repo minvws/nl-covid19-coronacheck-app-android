@@ -7,6 +7,8 @@
 
 package nl.rijksoverheid.ctr.design.fragments.menu
 
+import android.app.ActivityManager
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -16,6 +18,7 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.FragmentMenuBinding
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableArrayCompat
@@ -24,6 +27,8 @@ import org.koin.android.ext.android.inject
 class MenuFragment : Fragment(R.layout.fragment_menu) {
 
     private val intentUtil: IntentUtil by inject()
+
+    private val dialogUtil: DialogUtil by inject()
 
     private val menuSections by lazy { requireArguments().getParcelableArrayCompat<MenuSection>("menuSections")?.toList() ?: listOf() }
 
@@ -79,6 +84,24 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                     url = onClick.url
                 )
             }
+            is MenuSection.MenuItem.OnClick.ResetApp -> {
+                showClearAppDataDialog()
+            }
         }
+    }
+
+    private fun showClearAppDataDialog() {
+        dialogUtil.presentDialog(
+            context = requireContext(),
+            title = R.string.about_this_app_clear_data_title,
+            message = resources.getString(R.string.about_this_app_clear_data_description),
+            negativeButtonText = R.string.about_this_app_clear_data_cancel,
+            positiveButtonText = R.string.about_this_app_clear_data_confirm,
+            positiveButtonCallback = ::clearAppData
+        )
+    }
+
+    private fun clearAppData() {
+        (context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
     }
 }

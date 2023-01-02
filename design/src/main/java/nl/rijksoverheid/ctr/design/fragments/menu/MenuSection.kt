@@ -9,6 +9,7 @@ package nl.rijksoverheid.ctr.design.fragments.menu
 
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
@@ -24,10 +25,14 @@ data class MenuSection(
         @DrawableRes val icon: Int,
         @StringRes val title: Int,
         @StringRes val subtitle: Int? = null,
+        @ColorRes val color: Int = -1,
         val onClick: OnClick
     ) : Parcelable {
 
         sealed class OnClick : Parcelable {
+            @Parcelize
+            object ResetApp : OnClick(), Parcelable
+
             @Parcelize
             data class OpenBrowser(val url: String) : OnClick(), Parcelable
 

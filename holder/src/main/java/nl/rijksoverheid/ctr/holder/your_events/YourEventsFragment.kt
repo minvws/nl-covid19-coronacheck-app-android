@@ -285,7 +285,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 )
             }
             else -> {
-                findNavControllerSafety()?.popBackStack()
+                navigateSafety(YourEventsFragmentDirections.actionMyOverview())
             }
         }
     }
