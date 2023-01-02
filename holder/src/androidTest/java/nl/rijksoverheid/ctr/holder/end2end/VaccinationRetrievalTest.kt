@@ -10,7 +10,6 @@ import nl.rijksoverheid.ctr.holder.end2end.model.Vaccination.VaccineType.Pfizer
 import nl.rijksoverheid.ctr.holder.end2end.model.offset
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.backToOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
@@ -19,7 +18,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
-@SdkSuppress(minSdkVersion = 33)
+@SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
 class VaccinationRetrievalTest : BaseTest() {
 
     @Test

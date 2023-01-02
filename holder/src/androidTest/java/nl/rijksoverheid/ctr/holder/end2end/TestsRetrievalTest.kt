@@ -10,7 +10,6 @@ import nl.rijksoverheid.ctr.holder.end2end.model.offset
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.backToOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalNegativeTestOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
@@ -18,7 +17,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
-@SdkSuppress(minSdkVersion = 33)
+@SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
 class TestsRetrievalTest : BaseTest() {
 
     @Test
@@ -33,7 +32,6 @@ class TestsRetrievalTest : BaseTest() {
         assertInternationalRecoveryOnOverview(pos)
         viewQR(Event.Type.PositiveTest)
         assertInternationalQRDetails(person, pos)
-        backToOverview()
     }
 
     @Test
@@ -49,6 +47,5 @@ class TestsRetrievalTest : BaseTest() {
 
         viewQR(Event.Type.NegativeTest)
         assertInternationalQRDetails(person, neg)
-        backToOverview()
     }
 }
