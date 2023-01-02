@@ -41,12 +41,12 @@ object Assertions {
             is PositiveTest -> {
                 assertContains("Type test: " + event.testType.value)
                 assertContains("Testdatum: " + event.eventDate.recently())
-                assertContains("Testuitslag: positief (corona)")
+                assertContains("Testuitslag: positief (coronavirus vastgesteld)")
             }
             is NegativeTest -> {
                 assertContains("Type test: " + event.testType.value)
                 assertContains("Testdatum: " + event.eventDate.recently())
-                assertContains("Testuitslag: negatief (geen corona)")
+                assertContains("Testuitslag: negatief (geen coronavirus vastgesteld)")
             }
         }
         clickBack()
