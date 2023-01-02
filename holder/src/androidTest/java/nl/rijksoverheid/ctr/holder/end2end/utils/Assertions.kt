@@ -87,15 +87,15 @@ object Assertions {
                 labelValuePairExist("Ziekteverwekker / Disease targeted:", event.disease)
                 labelValuePairExist("Vaccin / Vaccine:", event.vaccine.value)
                 labelValuePairExist("Dosis / Number in series of doses:", split)
-                labelValuePairExist("Vaccinatiedatum / Date of vaccination*:", event.eventDate.dutch())
+                labelValuePairExist("Vaccinatiedatum / Vaccination date*:", event.eventDate.dutch())
                 val dateDiff = ChronoUnit.DAYS.between(event.eventDate, today)
                 labelValuePairExist("Dagen sinds vaccinatie / Days since vaccination:", dateDiff.toString())
-                labelValuePairExist("Gevaccineerd in / Member state of vaccination:", event.country.internationalName)
+                labelValuePairExist("Gevaccineerd in / Vaccinated in:", event.country.internationalName)
             }
             is PositiveTest -> {
                 labelValuePairExist("Ziekte waarvan hersteld / Disease recovered from:", event.disease)
-                labelValuePairExist("Testdatum / Test date:", event.eventDate.dutch())
-                labelValuePairExist("Getest in / Member state of test:", event.country.internationalName)
+                labelValuePairExist("Testdatum / Test date*:", event.eventDate.dutch())
+                labelValuePairExist("Getest in / Tested in:", event.country.internationalName)
                 event.validFrom?.let { labelValuePairExist("Geldig vanaf / Valid from*:", it.dutch()) }
                 event.validUntil?.let { labelValuePairExist("Geldig tot / Valid to*:", it.dutch()) }
             }
@@ -103,8 +103,8 @@ object Assertions {
                 labelValuePairExist("Ziekteverwekker / Disease targeted:", event.disease)
                 labelValuePairExist("Type test / Type of test:", event.testType.value)
                 labelValuePairExist("Testdatum / Test date:", event.eventDate.recently())
-                labelValuePairExist("Testuitslag / Test result:", "negatief (geen corona) / negative (no coronavirus)")
-                labelValuePairExist("Getest in / Member state of test:", event.country.internationalName)
+                labelValuePairExist("Testuitslag / Test result:", "negatief (geen coronavirus vastgesteld) / negative (no coronavirus detected)")
+                labelValuePairExist("Getest in / Tested in:", event.country.internationalName)
             }
         }
         clickBack()
