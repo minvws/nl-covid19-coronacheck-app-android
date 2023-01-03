@@ -90,14 +90,14 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun observeMenuItem() {
-        menuViewModel.menuSectionLiveData.observe(viewLifecycleOwner) {
+        menuViewModel.menuSectionLiveData.observe(viewLifecycleOwner, EventObserver {
             navigateSafety(
                 DashboardFragmentDirections.actionMenu(
                     toolbarTitle = getString(R.string.general_menu),
                     menuSections = it
                 )
             )
-        }
+        })
     }
 
     private fun setupViewPager(adapter: DashboardPagerAdapter) {

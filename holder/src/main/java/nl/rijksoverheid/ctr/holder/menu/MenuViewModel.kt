@@ -15,10 +15,11 @@ import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.Environment
 
 abstract class MenuViewModel : ViewModel() {
-    val menuSectionLiveData: LiveData<Array<MenuSection>> = MutableLiveData()
+    val menuSectionLiveData: LiveData<Event<Array<MenuSection>>> = MutableLiveData()
     abstract fun click(context: Context)
 }
 
@@ -28,7 +29,7 @@ class MenuViewModelImpl(
 ) : MenuViewModel() {
 
     override fun click(context: Context) {
-        (menuSectionLiveData as MutableLiveData).value = menuSections(context)
+        (menuSectionLiveData as MutableLiveData).value = Event(menuSections(context))
     }
 
     private fun menuSections(context: Context): Array<MenuSection> {

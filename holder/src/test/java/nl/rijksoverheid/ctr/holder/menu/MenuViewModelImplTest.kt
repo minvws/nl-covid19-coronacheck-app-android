@@ -33,7 +33,7 @@ class MenuViewModelImplTest : AutoCloseKoinTest() {
         val menuViewModel = MenuViewModelImpl(helpMenuDataModel, featureFlagUseCase)
 
         menuViewModel.click(ApplicationProvider.getApplicationContext())
-        val menuSections = menuViewModel.menuSectionLiveData.value!!
+        val menuSections = menuViewModel.menuSectionLiveData.value!!.peekContent()
 
         assertEquals(1, menuSections[0].menuItems.size)
         assertEquals(R.drawable.ic_menu_add, menuSections[0].menuItems[0].icon)
@@ -64,7 +64,7 @@ class MenuViewModelImplTest : AutoCloseKoinTest() {
         val menuViewModel = MenuViewModelImpl(helpMenuDataModel, featureFlagUseCase)
 
         menuViewModel.click(ApplicationProvider.getApplicationContext())
-        val menuSections = menuViewModel.menuSectionLiveData.value!!
+        val menuSections = menuViewModel.menuSectionLiveData.value!!.peekContent()
 
         assertEquals(2, menuSections[0].menuItems.size)
         assertEquals(R.drawable.ic_menu_add, menuSections[0].menuItems[0].icon)
