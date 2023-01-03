@@ -6,7 +6,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
 import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
-import nl.rijksoverheid.ctr.holder.end2end.model.offset
+import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
@@ -23,7 +23,7 @@ class TestsRetrievalTest : BaseTest() {
     @Test
     fun retrievePositiveTest() {
         val person = Person(bsn = "999993033")
-        val pos = PositiveTest(eventDate = today.offset(-30), testType = TestEvent.TestType.Pcr, validUntil = today.offset(150))
+        val pos = PositiveTest(eventDate = today.offsetDays(-30), testType = TestEvent.TestType.Pcr, validUntil = today.offsetDays(150))
 
         addRecoveryCertificate(person.bsn)
         assertRetrievalDetails(person, pos)

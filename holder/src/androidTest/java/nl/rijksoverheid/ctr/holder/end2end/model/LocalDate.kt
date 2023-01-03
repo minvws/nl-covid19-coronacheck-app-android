@@ -19,6 +19,6 @@ fun LocalDate.dutch(): String {
     return this.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
 }
 
-fun LocalDate.offset(offset: Long): LocalDate {
+fun LocalDate.offsetDays(offset: Long): LocalDate {
     return this.plusDays(offset)
 }
