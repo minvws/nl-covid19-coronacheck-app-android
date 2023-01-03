@@ -129,6 +129,18 @@
 
             </LinearLayout>
 
+            <!-- we have this button in the layout twice because of the design requirement to align bottom when the content is not scrollable -->
+            <!-- and to align bottom when the content is not scrollable and to follow the scrolling content otherwise -->
+            <nl.rijksoverheid.ctr.design.widgets.ScrollViewButtonWidget
+                android:id="@+id/resetButtonContainerWhenScrollable"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/policy_buttons"
+                app:secondaryButtonText="@string/holder_menu_resetApp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

@@ -92,7 +92,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
 
         attachToScrollViewId?.let {
             val parentLayout = parent as ViewGroup
-            val scrollView = parentLayout.findViewById<ScrollView>(it)
+            val scrollView: ScrollView? = parentLayout.findViewById(it)
             preDrawListener = ViewTreeObserver.OnPreDrawListener {
                 cardElevation = if (scrollView?.canScrollVertically(1) == true) {
                     resources.getDimensionPixelSize(R.dimen.scroll_view_button_elevation)
@@ -102,7 +102,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
                 }
                 true
             }
-            scrollView.viewTreeObserver.addOnPreDrawListener(preDrawListener)
+            scrollView?.viewTreeObserver?.addOnPreDrawListener(preDrawListener)
         }
     }
 
@@ -111,8 +111,8 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
 
         attachToScrollViewId?.let {
             val parentLayout = parent as ViewGroup
-            val scrollView = parentLayout.findViewById<ScrollView>(it)
-            scrollView.viewTreeObserver.removeOnPreDrawListener(preDrawListener)
+            val scrollView: ScrollView? = parentLayout.findViewById(it)
+            scrollView?.viewTreeObserver?.removeOnPreDrawListener(preDrawListener)
         }
     }
 
