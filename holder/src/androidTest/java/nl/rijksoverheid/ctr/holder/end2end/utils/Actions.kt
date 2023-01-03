@@ -27,11 +27,7 @@ object Actions {
         val sdkVersion = Build.VERSION.SDK_INT
         val logLine = "App $appVersion ($appVersionCode), Android $release (SDK $sdkVersion)"
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            Timber.tag("end2end").d(logLine)
-        } else {
-            println("end2end: $logLine")
-        }
+        Timber.tag("end2end").d(logLine)
     }
 
     private fun addEvent() {
