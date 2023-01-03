@@ -58,7 +58,7 @@ val holderPreferenceModule = module {
         try {
             createSharedPreferences()
         } catch (exception: Exception) {
-            // Android Keystore occasionally corrupts the master key on certain devices cause of faulty OEM firmware/hardware
+            // Android Keystore occasionally on a few devices corrupts the master key on certain devices cause of faulty OEM firmware/hardware
             // There's nothing we can do to prevent it, so we can only reset the user's keychain to at least be able to start the app
             // Workaround [https://github.com/google/tink/issues/535#issuecomment-912170221]
             // Issue Tracker - https://issuetracker.google.com/issues/176215143?pli=1
