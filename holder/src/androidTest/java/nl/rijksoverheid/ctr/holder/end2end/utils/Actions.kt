@@ -1,23 +1,34 @@
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
-import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
-import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickBack
-import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
-import junit.framework.TestCase
+import android.os.Build
+import junit.framework.TestCase.fail
+import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertOverview
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.findElement
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickOn
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterBsn
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterTextInField
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButtonElement
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
+import timber.log.Timber
 
 object Actions {
 
-    var chromeFirstVisit = true
+    fun logVersions() {
+        val appVersion = BuildConfig.VERSION_NAME
+        val appVersionCode = BuildConfig.VERSION_CODE
+        val release = Build.VERSION.RELEASE
+        val sdkVersion = Build.VERSION.SDK_INT
+        val logLine = "App $appVersion ($appVersionCode), Android $release (SDK $sdkVersion)"
+
+        Timber.tag("end2end").d(logLine)
+    }
 
     private fun addEvent() {
         tapButton("Menu")
@@ -26,62 +37,25 @@ object Actions {
 
     fun addVaccinationCertificate(bsn: String) {
         addEvent()
-        tapButton("Ik heb een (booster)vaccinatie gehad")
-        tapButton("Log in met DigiD")
-        if (chromeFirstVisit) acceptChromeOnboarding()
+        tapButton("Vaccinatie")
         retrieveCertificateFromServer(bsn)
     }
 
-    private fun acceptChromeOnboarding() {
-        if (checkForText("Welkom bij Chrome")) {
-            waitForText("Accept")?.click()
-        }
-        if (checkForText("Synchronisatie aanzetten?", 2)) {
-            waitForText("Nee, bedankt")?.click()
-        }
-        if (checkForText("Inloggen", 2)) {
-            loginToServer()
-        }
-        if (checkForText("Chrome-meldingen maken het je makkelijker", 2)) {
-            waitForText("Nee, bedankt")?.click()
-        }
-        if (checkForText("Toestaan dat Chrome je meldingen stuurt?", 2)) {
-            waitForText("Niet toestaan")?.click()
-        }
-        chromeFirstVisit = false
+    fun addRecoveryCertificate(bsn: String) {
+        addEvent()
+        tapButton("Positieve test")
+        retrieveCertificateFromServer(bsn)
     }
 
-    private fun retrieveCertificateFromServer(bsn: String) {
-        if (bsn.isEmpty()) {
-            TestCase.fail("BSN was null or empty, no certificate can be retrieved.")
-        }
-
-        if (!checkForText("DigiD MOCK")) loginToServer()
-
-        waitForText("999991772")?.text = bsn
-        waitForText("Login / Submit")!!.click()
-        waitForText("Kloppen de gegevens?", 30)
-    }
-
-    private fun loginToServer() {
-        if (BaseTest.authPassword.isNullOrEmpty()) {
-            TestCase.fail("Password was null or empty, no certificate can be retrieved.")
-        }
-
-        val password = findElement(android.widget.EditText::class.java, "Wachtwoord")!!
-        password.click()
-        password.text = BaseTest.authPassword
-
-        val username = findElement(android.widget.EditText::class.java, "Gebruikersnaam")!!
-        username.click()
-        username.text = "coronacheck"
-
-        val submit = findElement(android.widget.Button::class.java, "Inloggen")!!
-        submit.click()
+    fun addNegativeTestCertificateFromGGD(bsn: String) {
+        addEvent()
+        scrollTo("Negatieve test")
+        tapButton("Negatieve test")
+        tapButton("GGD")
+        retrieveCertificateFromServer(bsn)
     }
 
     fun addRetrievedCertificateToApp() {
-        checkForText("Kloppen de gegevens?")
         tapButton("Maak bewijs")
         waitForText("Mijn bewijzen", 60)
     }
@@ -91,13 +65,43 @@ object Actions {
         assertDisplayed("Internationale QR")
     }
 
-    fun viewPreviousQR(hidden: Boolean = false) {
+    fun viewPreviousQR() {
         clickOn(R.id.previousQrButton)
-        if (hidden) assertQRisHidden()
     }
 
-    fun backToOverview() {
-        clickBack()
-        assertOverview()
+    private fun retrieveCertificateFromServer(bsn: String) {
+        if (bsn.isEmpty()) fail("BSN was empty, no certificate can be retrieved.")
+        if (BaseTest.authPassword.isEmpty()) fail("Password was empty, no certificate can be retrieved.")
+
+        clickOn("Log in met DigiD")
+
+        for (index in 1 until 4) {
+            Timber.tag("end2end").d("Log in attempt $index")
+            if (!checkForText("Login / Submit", 3)) loginToServer() else break
+        }
+
+        enterBsn(bsn)
+
+        waitForText("Kloppen de gegevens?", 30)
+    }
+
+    private fun loginToServer() {
+        if (checkForText("Inloggen") || checkForText("Verificatie vereist")) {
+            enterTextInField(0, "coronacheck")
+            enterTextInField(1, BaseTest.authPassword)
+            tapButtonElement("Inloggen")
+        } else {
+            acceptChromeOnboarding()
+        }
+    }
+
+    private fun acceptChromeOnboarding() {
+        if (checkForText("Welkom bij Chrome")) tapButtonElement("Accept")
+        if (checkForText("Synchronisatie aanzetten?")) tapButtonElement("Nee, bedankt")
+        if (checkForText("Inloggen bij Chrome")) tapButtonElement("Nee, bedankt")
+        if (checkForText("Toestaan dat Chrome je meldingen stuurt?")) tapButtonElement("Niet toestaan")
+        if (checkForText("meldingen")) tapButtonElement("Nee, bedankt")
+        if (checkForText("Wil je dat Google Chrome je wachtwoord voor deze site opslaat?")) tapButtonElement("Nooit")
+        if (checkForText("Wachtwoord opslaan?")) tapButtonElement("Opslaan")
     }
 }

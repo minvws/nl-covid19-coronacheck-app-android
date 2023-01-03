@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.end2end
 
+import androidx.test.filters.SdkSuppress
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.Vaccination
@@ -9,14 +10,15 @@ import nl.rijksoverheid.ctr.holder.end2end.model.Vaccination.VaccineType.Pfizer
 import nl.rijksoverheid.ctr.holder.end2end.model.offset
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.backToOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalVaccinationOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
+@SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
 class VaccinationRetrievalTest : BaseTest() {
 
     @Test
@@ -35,9 +37,9 @@ class VaccinationRetrievalTest : BaseTest() {
 
         viewQR(Event.Type.Vaccination)
         assertInternationalQRDetails(person, vac2, dose = "2/2")
-        viewPreviousQR(hidden = true)
+        viewPreviousQR()
+        assertQRisHidden()
         assertInternationalQRDetails(person, vac1, dose = "1/2")
-        backToOverview()
     }
 
     @Test
@@ -56,9 +58,9 @@ class VaccinationRetrievalTest : BaseTest() {
 
         viewQR(Event.Type.Vaccination)
         assertInternationalQRDetails(person, vac2, dose = "2/2")
-        viewPreviousQR(hidden = true)
+        viewPreviousQR()
+        assertQRisHidden()
         assertInternationalQRDetails(person, vac1, dose = "1/2")
-        backToOverview()
     }
 
     @Test
@@ -79,6 +81,5 @@ class VaccinationRetrievalTest : BaseTest() {
         assertInternationalQRDetails(person, vac2, dose = "2/1")
         viewPreviousQR()
         assertInternationalQRDetails(person, vac1, dose = "1/1")
-        backToOverview()
     }
 }
