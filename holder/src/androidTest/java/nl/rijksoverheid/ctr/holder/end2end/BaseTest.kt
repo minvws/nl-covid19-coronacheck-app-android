@@ -35,6 +35,10 @@ abstract class BaseTest : AutoCloseKoinTest() {
         scenario = ActivityScenario.launch(HolderMainActivity::class.java)
     }
 
+    fun restartActivity() {
+        ActivityScenario.launch(HolderMainActivity::class.java)
+    }
+
     companion object {
         private val instrumentation: Instrumentation = InstrumentationRegistry.getInstrumentation()
         val device: UiDevice = UiDevice.getInstance(instrumentation)

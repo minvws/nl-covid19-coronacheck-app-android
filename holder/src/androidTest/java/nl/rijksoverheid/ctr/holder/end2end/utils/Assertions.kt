@@ -53,6 +53,11 @@ object Assertions {
         clickBack()
     }
 
+    fun assertRetrievalError(error: String) {
+        waitForText("Sorry, er gaat iets mis")
+        labelValuePairExist("Foutcode:", error)
+    }
+
     fun assertInternationalVaccinationOnOverview(vaccination: Vaccination, dose: String) {
         assertOverview()
         scrollToTextInOverview("BEKIJK QR")
