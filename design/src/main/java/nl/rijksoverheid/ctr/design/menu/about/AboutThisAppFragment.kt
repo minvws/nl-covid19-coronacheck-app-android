@@ -85,8 +85,9 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             }
         }
 
-        // / we have this button in the layout twice because of the design requirement to align bottom when the content is not scrollable
-        // / and to align bottom when the content is not scrollable and to follow the scrolling content otherwise
+        // we have this button in the layout twice because of the design requirement
+        // to align it to the bottom when the content is not scrollable
+        // or follow the scrolling content otherwise
         binding.aboutThisAppBottomButton.customiseSecondaryButton {
             it.setStrokeColorResource(R.color.error)
             it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
