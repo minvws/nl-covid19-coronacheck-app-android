@@ -19,6 +19,7 @@ import android.view.View
 import android.view.View.GONE
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.BuildConfig
@@ -84,6 +85,9 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             }
         }
 
+        // we have this button in the layout twice because of the design requirement
+        // to align it to the bottom when the content is not scrollable
+        // or follow the scrolling content otherwise
         binding.aboutThisAppBottomButton.customiseSecondaryButton {
             it.setStrokeColorResource(R.color.error)
             it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
@@ -92,6 +96,17 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             }
         }
         binding.aboutThisAppBottomButton.customiseButton {
+            it.visibility = GONE
+        }
+
+        binding.resetButtonContainerWhenScrollable.customiseSecondaryButton {
+            it.setStrokeColorResource(R.color.error)
+            it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
+            it.setOnClickListener {
+                showClearAppDataDialog()
+            }
+        }
+        binding.resetButtonContainerWhenScrollable.customiseButton {
             it.visibility = GONE
         }
 
@@ -109,6 +124,16 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             ) is Environment.Tst
         ) {
             bindDebugPolicyButtons(binding)
+        }
+
+        positionResetButton(binding)
+    }
+
+    private fun positionResetButton(binding: FragmentAboutAppBinding) {
+        binding.aboutThisAppScrollview.doOnPreDraw {
+            val canScroll = binding.aboutThisAppScrollview.canScrollVertically(1)
+            binding.aboutThisAppBottomButton.isVisible = !canScroll
+            binding.resetButtonContainerWhenScrollable.isVisible = canScroll
         }
     }
 
