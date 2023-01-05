@@ -227,13 +227,13 @@ class TestInfoScreenUtilImpl(
                 testManufacturer
             ),
             createdLine(
+                resources.getString(R.string.your_test_result_explanation_description_test_location),
+                testLocation
+            ),
+            createdLine(
                 resources.getString(R.string.holder_event_about_test_countrytestedin),
                 countryUtil.getCountryForInfoScreen(Locale.getDefault().language, country),
                 isOptional = true
-            ),
-            createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_test_location),
-                testLocation
             ),
             "<br/>",
             createdLine(
