@@ -89,31 +89,19 @@ class MenuViewModelImpl(
             )
         )
 
+        val firstSectionItems = listOf(
+            addVaccinationOrTestMenuItem,
+            addPaperProofMenuItem
+        ) + if (isVisitorPassEnabled) {
+            listOf(addVisitorPassMenuItem)
+        } else {
+            emptyList()
+        }
+
         val menuSections: List<MenuSection> = listOfNotNull(
-            if (isVisitorPassEnabled) {
-                MenuSection(
-                    menuItems = listOf(
-                        addVaccinationOrTestMenuItem
-                    )
-                )
-            } else {
-                MenuSection(
-                    menuItems = listOf(
-                        addVaccinationOrTestMenuItem,
-                        addPaperProofMenuItem
-                    )
-                )
-            },
-            if (isVisitorPassEnabled) {
-                MenuSection(
-                    menuItems = listOf(
-                        addPaperProofMenuItem,
-                        addVisitorPassMenuItem
-                    )
-                )
-            } else {
-                null
-            },
+            MenuSection(
+                menuItems = firstSectionItems
+            ),
             MenuSection(
                 menuItems = listOf(
                     savedEventsMenuItem,
