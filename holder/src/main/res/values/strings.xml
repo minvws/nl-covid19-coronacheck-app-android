@@ -307,7 +307,7 @@
   <string name="your_vaccination_explanation_covid_19_answer">COVID-19</string>
   <string name="your_vaccination_explanation_vaccine">Vaccin:</string>
   <string name="your_vaccination_explanation_vaccine_type">Type vaccin:</string>
-  <string name="your_vaccination_explanation_producer">Vaccin producent:</string>
+  <string name="your_vaccination_explanation_producer">Vaccinproducent:</string>
   <string name="your_vaccination_explanation_doses">Dosis:</string>
   <string name="your_vaccination_explanation_last_dose">Is dit de laatste dosis van je vaccinatie?</string>
   <string name="your_vaccination_explanation_vaccination_date">Vaccinatiedatum:</string>

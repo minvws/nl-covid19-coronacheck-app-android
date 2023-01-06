@@ -360,7 +360,7 @@
   <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="qr_code_type_recovery_title">Positive test</string>
   <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
-  <string name="your_test_result_explanation_positive_test_result">positive (corona detected)</string>
+  <string name="your_test_result_explanation_positive_test_result">positive (coronavirus detected)</string>
   <string name="recovery_explanation_description_header">The following details were retrieved from the test location:</string>
   <string name="recovery_explanation_description_name">Name:</string>
   <string name="recovery_explanation_description_birth_date">Date of birth:</string>
