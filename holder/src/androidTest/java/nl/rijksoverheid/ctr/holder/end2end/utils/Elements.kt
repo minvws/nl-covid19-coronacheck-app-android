@@ -38,12 +38,12 @@ object Elements {
     // MARK: Barista
 
     fun assertContains(text: String) {
-        Timber.tag("end2end").d("Asserting contains '$text'")
+        Timber.tag("end2end").d("Asserting contains text '$text'")
         BaristaVisibilityAssertions.assertContains(text)
     }
 
     fun assertDisplayed(text: String) {
-        Timber.tag("end2end").d("Asserting displayed '$text'")
+        Timber.tag("end2end").d("Asserting displayed text '$text'")
         BaristaVisibilityAssertions.assertDisplayed(text)
     }
 
@@ -57,9 +57,9 @@ object Elements {
         BaristaClickInteractions.clickOn(text)
     }
 
-    fun clickOn(id: Int) {
-        Timber.tag("end2end").d("Clicking on view with id '$id'")
-        BaristaClickInteractions.clickOn(id)
+    fun clickOn(@IdRes resId: Int) {
+        Timber.tag("end2end").d("Clicking on resource with id '$resId'")
+        BaristaClickInteractions.clickOn(resId)
     }
 
     fun clickBack() {
@@ -116,6 +116,7 @@ object Elements {
 
     fun card(eventType: Event.Type): Matcher<View> {
         val text = eventType.internationalName
+        Timber.tag("end2end").d("Getting card view with text '$text'")
         return allOf(
             withId(R.id.proof_1),
             hasDescendant(
@@ -128,7 +129,7 @@ object Elements {
     }
 
     fun Matcher<View>.containsText(text: String) {
-        Timber.tag("end2end").d("Contains text '$text' on a view ")
+        Timber.tag("end2end").d("Contains text '$text' on a view")
         onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(text)))).check(ViewAssertions.matches(isDisplayed()))
     }
 
