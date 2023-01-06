@@ -79,13 +79,9 @@ object Elements {
         BaristaVisibilityAssertions.assertContains("$label\n$value")
     }
 
-    fun scrollToTextInOverview(text: String) {
-        for (i in 2..12 step 2) {
-            Timber.tag("end2end").d("Scrolling to position $i on overview to search for '$text'")
-            BaristaListInteractions.scrollListToPosition(R.id.recyclerView, i)
-            val found = device.findObject(By.textContains(text)) != null
-            if (found) break
-        }
+    fun scrollListToPosition(@IdRes resId: Int, position: Int) {
+        Timber.tag("end2end").d("Scrolling to position '$position' on view with ID '$resId'")
+        BaristaListInteractions.scrollListToPosition(resId, position)
     }
 
     // MARK: Espresso
@@ -153,6 +149,12 @@ object Elements {
         val element = device.wait(Until.findObject(By.textStartsWith(text)), timeout * 1000)
         assertNotNull("'$text' could not be found", element)
         return element
+    }
+
+    fun waitForView(resource: String, timeout: Long = 5) {
+        Timber.tag("end2end").d("Waiting for view with ID '$resource'")
+        val element = device.wait(Until.findObject(By.res(device.currentPackageName, resource)), timeout * 1000)
+        assertNotNull("'$resource' could not be found", element)
     }
 
     fun checkForText(text: String, timeout: Long = 1): Boolean {

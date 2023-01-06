@@ -11,9 +11,8 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertific
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalNegativeTestOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalRecoveryOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
@@ -31,7 +30,7 @@ class TestsRetrievalTest : BaseTest() {
         assertRetrievalDetails(person, pos)
         addRetrievedCertificateToApp()
 
-        assertInternationalRecoveryOnOverview(pos)
+        assertInternationalEventOnOverview(pos)
         assertQrButtonIsEnabled(Event.Type.PositiveTest)
 
         viewQR(Event.Type.PositiveTest)
@@ -48,7 +47,7 @@ class TestsRetrievalTest : BaseTest() {
         assertRetrievalDetails(person, neg)
         addRetrievedCertificateToApp()
 
-        assertInternationalNegativeTestOnOverview(neg)
+        assertInternationalEventOnOverview(neg)
         assertQrButtonIsEnabled(Event.Type.NegativeTest)
 
         viewQR(Event.Type.NegativeTest)

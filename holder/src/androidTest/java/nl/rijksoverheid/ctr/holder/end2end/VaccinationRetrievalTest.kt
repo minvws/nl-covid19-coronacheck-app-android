@@ -10,8 +10,8 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalVaccinationOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
@@ -32,8 +32,8 @@ class VaccinationRetrievalTest : BaseTest() {
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
 
-        assertInternationalVaccinationOnOverview(vac2, dose = "2/2")
-        assertInternationalVaccinationOnOverview(vac1, dose = "1/2")
+        assertInternationalEventOnOverview(vac2, dose = "2/2")
+        assertInternationalEventOnOverview(vac1, dose = "1/2")
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
@@ -55,8 +55,8 @@ class VaccinationRetrievalTest : BaseTest() {
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
 
-        assertInternationalVaccinationOnOverview(vac2, dose = "2/2")
-        assertInternationalVaccinationOnOverview(vac1, dose = "1/2")
+        assertInternationalEventOnOverview(vac2, dose = "2/2")
+        assertInternationalEventOnOverview(vac1, dose = "1/2")
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
@@ -78,8 +78,8 @@ class VaccinationRetrievalTest : BaseTest() {
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
 
-        assertInternationalVaccinationOnOverview(vac2, dose = "2/1")
-        assertInternationalVaccinationOnOverview(vac1, dose = "1/1")
+        assertInternationalEventOnOverview(vac2, dose = "2/1")
+        assertInternationalEventOnOverview(vac1, dose = "1/1")
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)

@@ -8,6 +8,8 @@ import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Vaccination
+import nl.rijksoverheid.ctr.holder.end2end.model.written
+import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.scrollToBottomOfOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertContains
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertNotDisplayed
@@ -25,7 +27,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
 object Assertions {
 
     fun assertOverview() {
-        waitForText("Mijn bewijzen")
+        waitForText("Mijn bewijzen", 15)
         assertDisplayed("Menu")
     }
 
@@ -61,28 +63,26 @@ object Assertions {
         labelValuePairExist("Foutcode:", error)
     }
 
-    fun assertInternationalVaccinationOnOverview(vaccination: Vaccination, dose: String) {
-        assertOverview()
-        scrollToTextInOverview("BEKIJK QR")
-        card(Event.Type.Vaccination).containsText("Dosis $dose")
-        card(Event.Type.Vaccination).containsText("Vaccinatiedatum: " + vaccination.eventDate.written())
-    }
 
-    fun assertInternationalRecoveryOnOverview(recovery: PositiveTest) {
-        assertOverview()
-        scrollToTextInOverview("BEKIJK QR")
-        recovery.validUntil?.let { card(Event.Type.PositiveTest).containsText("Geldig tot " + it.written()) }
-        card(Event.Type.PositiveTest).containsText("Bekijk QR")
     fun assertQrButtonIsEnabled(eventType: Event.Type) {
         card(eventType).buttonIsEnabled(true)
     }
 
-    fun assertInternationalNegativeTestOnOverview(negativeTest: NegativeTest) {
-        assertOverview()
-        scrollToTextInOverview("BEKIJK QR")
-        card(Event.Type.NegativeTest).containsText("Type test: " + negativeTest.testType.value)
-        card(Event.Type.NegativeTest).containsText("Testdatum: " + negativeTest.eventDate.recently())
-        card(Event.Type.NegativeTest).containsText("Bekijk QR")
+    fun assertInternationalEventOnOverview(event: Event, dose: String? = null) {
+        scrollToBottomOfOverview()
+        when (event) {
+            is Vaccination -> {
+                card(Event.Type.Vaccination).containsText("Dosis $dose")
+                card(Event.Type.Vaccination).containsText("Vaccinatiedatum: " + event.eventDate.written())
+            }
+            is PositiveTest -> {
+                card(Event.Type.PositiveTest).containsText("Geldig tot " + event.validUntil!!.written())
+            }
+            is NegativeTest -> {
+                card(Event.Type.NegativeTest).containsText("Type test: " + event.testType.value)
+                card(Event.Type.NegativeTest).containsText("Testdatum: " + event.eventDate.recently())
+            }
+        }
     }
 
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null) {

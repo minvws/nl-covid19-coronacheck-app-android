@@ -12,10 +12,12 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterBsn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterTextInField
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollListToPosition
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButtonElement
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForView
 import timber.log.Timber
 
 object Actions {
@@ -61,7 +63,13 @@ object Actions {
         waitForText("Mijn bewijzen", 60)
     }
 
+    fun scrollToBottomOfOverview() {
+        waitForView("recyclerView")
+        scrollListToPosition(R.id.recyclerView, 8)
+    }
+
     fun viewQR(eventType: Event.Type) {
+        scrollToBottomOfOverview()
         card(eventType).tapButton("Bekijk QR")
         assertDisplayed("Internationale QR")
     }
