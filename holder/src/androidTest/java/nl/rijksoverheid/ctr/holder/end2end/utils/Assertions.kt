@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import java.time.temporal.ChronoUnit
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.today
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
@@ -9,6 +10,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Vaccination
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertContains
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertNotDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.containsText
@@ -126,5 +128,9 @@ object Assertions {
         clickBack()
 
         tapButton("Laat toch zien")
+    }
+
+    fun assertNoPreviousQR() {
+        assertNotDisplayed(R.id.previousQrButton)
     }
 }

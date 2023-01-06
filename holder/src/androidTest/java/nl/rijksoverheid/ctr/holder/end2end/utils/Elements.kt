@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
@@ -44,6 +45,11 @@ object Elements {
     fun assertDisplayed(text: String) {
         Timber.tag("end2end").d("Asserting displayed '$text'")
         BaristaVisibilityAssertions.assertDisplayed(text)
+    }
+
+    fun assertNotDisplayed(@IdRes viewId: Int) {
+        Timber.tag("end2end").d("Asserting not displayed view with ID '$viewId'")
+        BaristaVisibilityAssertions.assertNotDisplayed(viewId)
     }
 
     fun clickOn(text: String) {

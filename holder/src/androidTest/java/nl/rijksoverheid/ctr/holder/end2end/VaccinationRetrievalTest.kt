@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalVaccinationOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
@@ -38,6 +39,7 @@ class VaccinationRetrievalTest : BaseTest() {
         viewPreviousQR()
         assertQRisHidden()
         assertInternationalQRDetails(person, vac1, dose = "1/2")
+        assertNoPreviousQR()
     }
 
     @Test
@@ -59,6 +61,7 @@ class VaccinationRetrievalTest : BaseTest() {
         viewPreviousQR()
         assertQRisHidden()
         assertInternationalQRDetails(person, vac1, dose = "1/2")
+        assertNoPreviousQR()
     }
 
     @Test
@@ -79,5 +82,6 @@ class VaccinationRetrievalTest : BaseTest() {
         assertInternationalQRDetails(person, vac2, dose = "2/1")
         viewPreviousQR()
         assertInternationalQRDetails(person, vac1, dose = "1/1")
+        assertNoPreviousQR()
     }
 }

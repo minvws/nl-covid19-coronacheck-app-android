@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalNegativeTestOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalRecoveryOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
@@ -32,6 +33,7 @@ class TestsRetrievalTest : BaseTest() {
         assertInternationalRecoveryOnOverview(pos)
         viewQR(Event.Type.PositiveTest)
         assertInternationalQRDetails(person, pos)
+        assertNoPreviousQR()
     }
 
     @Test
@@ -47,5 +49,6 @@ class TestsRetrievalTest : BaseTest() {
 
         viewQR(Event.Type.NegativeTest)
         assertInternationalQRDetails(person, neg)
+        assertNoPreviousQR()
     }
 }
