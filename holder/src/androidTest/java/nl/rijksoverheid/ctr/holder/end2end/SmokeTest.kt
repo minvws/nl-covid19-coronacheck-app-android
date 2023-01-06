@@ -7,7 +7,7 @@ import org.junit.Test
 class SmokeTest : BaseTest() {
 
     @Test
-    fun start_app_and_check_versions() {
+    fun startApp_logVersions() {
         assertOverview()
         logVersions()
     }

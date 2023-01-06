@@ -32,19 +32,19 @@ class FutureEventRetrievalTest : BaseTest() {
     }
 
     @Test
-    fun futureVaccinationRetrieval() {
+    fun givenDeviceDateInFuture_whenVaccinationIsRetrieved_errorIsDisplayed() {
         addVaccinationCertificate(Person().bsn)
         assertRetrievalError("A 210 000 070-9")
     }
 
     @Test
-    fun futurePositiveTestRetrieval() {
+    fun givenDeviceDateInFuture_whenPositiveTestIsRetrieved_errorIsDisplayed() {
         addRecoveryCertificate(Person().bsn)
         assertRetrievalError("A 310 000 070-9")
     }
 
     @Test
-    fun futureNegativeTestRetrieval() {
+    fun givenDeviceDateInFuture_whenNegativeTestIsRetrieved_errorIsDisplayed() {
         addNegativeTestCertificateFromGGD(Person().bsn)
         assertRetrievalError("A 410 000 070-9")
     }
