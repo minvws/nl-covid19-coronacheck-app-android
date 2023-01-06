@@ -29,26 +29,28 @@ import androidx.test.uiautomator.Until
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
+import timber.log.Timber
 
-class DateTimeUtils(private val device: UiDevice, private val timeout: Long = 5000) {
+class DateTimeUtils(private val device: UiDevice) {
 
     fun setDate(date: LocalDate) {
+        Timber.tag("end2end").d("Setting the device date to ${date.short()}")
         openDateSettings()
         enableManualDateTime()
         setDeviceDate(date)
     }
 
     fun resetDateToAutomatic() {
+        Timber.tag("end2end").d("Resetting the device date to automatic")
         openDateSettings()
         disableManualDateTime()
-        closeSettings()
     }
 
     private fun openDateSettings() {
         device.pressHome()
 
         val launcherPackage = device.launcherPackageName!!
-        device.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), timeout)
+        device.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), 5000)
 
         val context = ApplicationProvider.getApplicationContext<Context>()
         val intent = Intent(Settings.ACTION_DATE_SETTINGS).apply {
