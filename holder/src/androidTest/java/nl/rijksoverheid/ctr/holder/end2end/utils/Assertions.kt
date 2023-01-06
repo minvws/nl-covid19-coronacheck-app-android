@@ -1,7 +1,7 @@
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
+import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.today
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
@@ -20,7 +20,6 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.containsText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.labelValuePairExist
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.rest
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollToTextInOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
 
@@ -30,6 +29,8 @@ object Assertions {
         waitForText("Mijn bewijzen", 15)
         assertDisplayed("Menu")
     }
+
+    // MARK: Retrieval
 
     fun assertRetrievalDetails(person: Person, event: Event, position: Int = 0) {
         waitForText("Kloppen de gegevens?", 30)
@@ -63,9 +64,14 @@ object Assertions {
         labelValuePairExist("Foutcode:", error)
     }
 
+    // MARK: Certificates on Overview
 
     fun assertQrButtonIsEnabled(eventType: Event.Type) {
         card(eventType).buttonIsEnabled(true)
+    }
+
+    fun assertQrButtonIsDisabled(eventType: Event.Type) {
+        card(eventType).buttonIsEnabled(false)
     }
 
     fun assertInternationalEventOnOverview(event: Event, dose: String? = null) {
@@ -85,7 +91,28 @@ object Assertions {
         }
     }
 
-    fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null) {
+    fun assertNotYetValidInternationalEventOnOverview(event: Event) {
+        scrollToBottomOfOverview()
+        when (event) {
+            is PositiveTest -> {
+                card(Event.Type.PositiveTest).containsText("geldig vanaf " + event.validFrom!!.writtenWithoutYear())
+                card(Event.Type.PositiveTest).containsText(" tot " + event.validUntil!!.written())
+            }
+            is NegativeTest -> {
+                card(Event.Type.NegativeTest).containsText("Type test: " + event.testType.value)
+                card(Event.Type.NegativeTest).containsText("geldig vanaf " + event.validFrom!!.written())
+                card(Event.Type.NegativeTest).containsText("Wordt automatisch geldig")
+            }
+        }
+    }
+
+    fun assertVaccinationWillBecomeValid() {
+        card(Event.Type.Vaccination).containsText("Wordt automatisch geldig")
+    }
+
+    // MARK: QR Details
+
+    fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null, deviceDate: LocalDate = LocalDate.now()) {
         if (event is Vaccination) waitForText("Dosis $dose")
         rest() // Waiting until 'Details' is clickable is unreliable
         tapButton("Details")
@@ -99,8 +126,8 @@ object Assertions {
                 labelValuePairExist("Vaccin / Vaccine:", event.vaccine.value)
                 labelValuePairExist("Dosis / Number in series of doses:", split)
                 labelValuePairExist("Vaccinatiedatum / Vaccination date*:", event.eventDate.dutch())
-                val dateDiff = ChronoUnit.DAYS.between(event.eventDate, today)
-                labelValuePairExist("Dagen sinds vaccinatie / Days since vaccination:", dateDiff.toString())
+                val dateDiff = ChronoUnit.DAYS.between(event.eventDate, deviceDate)
+                labelValuePairExist("Dagen sinds vaccinatie / Days since vaccination:", "$dateDiff dagen")
                 labelValuePairExist("Gevaccineerd in / Vaccinated in:", event.country.internationalName)
             }
             is PositiveTest -> {
