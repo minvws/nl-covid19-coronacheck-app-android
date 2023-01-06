@@ -35,13 +35,12 @@ data class Vaccination(
     country = country,
     validFrom = validFrom,
     validUntil = validUntil
-) {
+)
 
-    enum class VaccineType(val value: String) {
-        Pfizer("Comirnaty (Pfizer)"),
-        Moderna("Spikevax (Moderna)"),
-        Janssen("Jcovden (Janssen)")
-    }
+enum class VaccineType(val value: String) {
+    Pfizer("Comirnaty (Pfizer)"),
+    Moderna("Spikevax (Moderna)"),
+    Janssen("Jcovden (Janssen)")
 }
 
 abstract class TestEvent(
@@ -59,11 +58,11 @@ abstract class TestEvent(
     country = country,
     validFrom = validFrom,
     validUntil = validUntil
-) {
-    enum class TestType(val value: String) {
-        Pcr("PCR (NAAT)"),
-        Rat("Sneltest (RAT)")
-    }
+)
+
+enum class TestType(val value: String) {
+    Pcr("PCR (NAAT)"),
+    Rat("Sneltest (RAT)")
 }
 
 data class PositiveTest(
