@@ -23,7 +23,7 @@ class FutureEventRetrievalTest : BaseTest() {
     @Before
     fun setDeviceDate() {
         DateTimeUtils(device).setDate(today.offsetDays(2))
-        restartActivity()
+        launchApp()
     }
 
     @After

@@ -21,6 +21,10 @@ abstract class BaseTest : AutoCloseKoinTest() {
     private val appUpdatePersistenceManager: AppUpdatePersistenceManager by inject()
     private lateinit var scenario: ActivityScenario<HolderMainActivity>
 
+    fun launchApp(): ActivityScenario<HolderMainActivity> {
+        return ActivityScenario.launch(HolderMainActivity::class.java)
+    }
+
     @Before
     fun startApp() {
         persistenceManager.setHasDismissedUnsecureDeviceDialog(true)
@@ -32,11 +36,7 @@ abstract class BaseTest : AutoCloseKoinTest() {
         persistenceManager.setPolicyScreenSeen(DisclosurePolicy.ZeroG)
         persistenceManager.setSelectedDashboardTab(1)
 
-        scenario = ActivityScenario.launch(HolderMainActivity::class.java)
-    }
-
-    fun restartActivity() {
-        ActivityScenario.launch(HolderMainActivity::class.java)
+        scenario = launchApp()
     }
 
     companion object {
