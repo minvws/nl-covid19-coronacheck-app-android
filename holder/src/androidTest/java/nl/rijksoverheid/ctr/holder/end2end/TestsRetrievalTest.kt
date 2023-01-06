@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalN
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalRecoveryOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
@@ -31,6 +32,8 @@ class TestsRetrievalTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         assertInternationalRecoveryOnOverview(pos)
+        assertQrButtonIsEnabled(Event.Type.PositiveTest)
+
         viewQR(Event.Type.PositiveTest)
         assertInternationalQRDetails(person, pos)
         assertNoPreviousQR()
@@ -46,6 +49,7 @@ class TestsRetrievalTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         assertInternationalNegativeTestOnOverview(neg)
+        assertQrButtonIsEnabled(Event.Type.NegativeTest)
 
         viewQR(Event.Type.NegativeTest)
         assertInternationalQRDetails(person, neg)

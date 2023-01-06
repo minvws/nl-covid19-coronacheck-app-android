@@ -9,6 +9,7 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.uiautomator.By
@@ -28,6 +29,7 @@ import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.device
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.containsStringIgnoringCase
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
@@ -131,6 +133,12 @@ object Elements {
     fun Matcher<View>.containsText(text: String) {
         Timber.tag("end2end").d("Contains text '$text' on a view")
         onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(text)))).check(ViewAssertions.matches(isDisplayed()))
+    }
+
+    fun Matcher<View>.buttonIsEnabled(enabled: Boolean = true) {
+        Timber.tag("end2end").d("Checking if button on a view is ${if (enabled) "enabled" else "disabled"}")
+        val match = if (enabled) isEnabled() else not(isEnabled())
+        onView(allOf(isDescendantOfA(this), withId(R.id.button))).check(ViewAssertions.matches(match))
     }
 
     fun Matcher<View>.tapButton(label: String) {

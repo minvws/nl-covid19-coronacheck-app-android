@@ -11,6 +11,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.Vaccination
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertContains
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertNotDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.buttonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.containsText
@@ -72,6 +73,8 @@ object Assertions {
         scrollToTextInOverview("BEKIJK QR")
         recovery.validUntil?.let { card(Event.Type.PositiveTest).containsText("Geldig tot " + it.written()) }
         card(Event.Type.PositiveTest).containsText("Bekijk QR")
+    fun assertQrButtonIsEnabled(eventType: Event.Type) {
+        card(eventType).buttonIsEnabled(true)
     }
 
     fun assertInternationalNegativeTestOnOverview(negativeTest: NegativeTest) {
