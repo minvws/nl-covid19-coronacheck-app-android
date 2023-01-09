@@ -156,20 +156,20 @@ object Elements {
 
     fun waitForText(text: String, timeout: Long = 5): UiObject2? {
         Timber.tag("end2end").d("Waiting for text '$text'")
-        val element = device.wait(Until.findObject(By.textStartsWith(text)), timeout * 1000)
+        val element = device.wait(Until.findObject(By.textStartsWith(text)), timeout * 1_000)
         assertNotNull("'$text' could not be found", element)
         return element
     }
 
     fun waitForView(resource: String, timeout: Long = 5) {
         Timber.tag("end2end").d("Waiting for view with ID '$resource'")
-        val element = device.wait(Until.findObject(By.res(device.currentPackageName, resource)), timeout * 1000)
+        val element = device.wait(Until.findObject(By.res(device.currentPackageName, resource)), timeout * 1_000)
         assertNotNull("'$resource' could not be found", element)
     }
 
     fun checkForText(text: String, timeout: Long = 1): Boolean {
         Timber.tag("end2end").d("Checking if text '$text' was found")
-        val element = device.wait(Until.hasObject(By.textContains(text)), timeout * 1000)!!
+        val element = device.wait(Until.hasObject(By.textContains(text)), timeout * 1_000)!!
         assertNotNull("'$text' could not be found", element)
         return element
     }
@@ -203,6 +203,6 @@ object Elements {
     @Suppress("unused")
     fun Any.rest(timeout: Long = 1) {
         Timber.tag("end2end").d("  Rest Here Weary Traveler, for just ${if (timeout > 1) "$timeout seconds" else "a second"}")
-        sleep(timeout * 1000)
+        sleep(timeout * 1_000)
     }
 }

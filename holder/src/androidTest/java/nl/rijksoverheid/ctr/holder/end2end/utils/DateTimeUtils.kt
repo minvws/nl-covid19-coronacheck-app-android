@@ -49,7 +49,7 @@ class DateTimeUtils(private val device: UiDevice) {
         device.pressHome()
 
         val launcherPackage = device.launcherPackageName!!
-        device.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), 5000)
+        device.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), 5_000)
 
         val context = ApplicationProvider.getApplicationContext<Context>()
         val intent = Intent(Settings.ACTION_DATE_SETTINGS).apply {
