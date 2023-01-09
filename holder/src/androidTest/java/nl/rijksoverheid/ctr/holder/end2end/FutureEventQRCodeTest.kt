@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertific
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
+import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateFromServer
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
@@ -42,7 +43,8 @@ class FutureEventQRCodeTest : BaseTest() {
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
         val deviceDate = today.offsetDays(2)
 
-        addVaccinationCertificate(person.bsn)
+        addVaccinationCertificate()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
@@ -63,7 +65,8 @@ class FutureEventQRCodeTest : BaseTest() {
         val person = Person(bsn = "999993033")
         val pos = PositiveTest(eventDate = today.offsetDays(-30), testType = TestType.Pcr, validUntil = today.offsetDays(150))
 
-        addRecoveryCertificate(person.bsn)
+        addRecoveryCertificate()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(2))
@@ -81,7 +84,8 @@ class FutureEventQRCodeTest : BaseTest() {
         val person = Person(bsn = "999992004")
         val neg = NegativeTest(eventDate = today, testType = TestType.Pcr)
 
-        addNegativeTestCertificateFromGGD(person.bsn)
+        addNegativeTestCertificateFromGGD()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(2))

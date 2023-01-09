@@ -8,6 +8,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
+import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateFromServer
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
@@ -28,7 +29,8 @@ class VaccinationRetrievalTest : BaseTest() {
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
 
-        addVaccinationCertificate(person.bsn)
+        addVaccinationCertificate()
+        retrieveCertificateFromServer(person.bsn)
         assertRetrievalDetails(person, vac2, position = 0)
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
@@ -51,7 +53,8 @@ class VaccinationRetrievalTest : BaseTest() {
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Moderna)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Moderna)
 
-        addVaccinationCertificate(person.bsn)
+        addVaccinationCertificate()
+        retrieveCertificateFromServer(person.bsn)
         assertRetrievalDetails(person, vac2, position = 0)
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
@@ -74,7 +77,8 @@ class VaccinationRetrievalTest : BaseTest() {
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Janssen)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Janssen)
 
-        addVaccinationCertificate(person.bsn)
+        addVaccinationCertificate()
+        retrieveCertificateFromServer(person.bsn)
         assertRetrievalDetails(person, vac2, position = 0)
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()

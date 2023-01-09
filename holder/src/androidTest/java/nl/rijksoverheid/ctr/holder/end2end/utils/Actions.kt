@@ -37,24 +37,24 @@ object Actions {
         tapButton("Vaccinatie of test toevoegen")
     }
 
-    fun addVaccinationCertificate(bsn: String) {
+    fun addVaccinationCertificate() {
         addEvent()
         tapButton("Vaccinatie")
-        retrieveCertificateFromServer(bsn)
+        clickOn("Log in met DigiD")
     }
 
-    fun addRecoveryCertificate(bsn: String) {
+    fun addRecoveryCertificate() {
         addEvent()
         tapButton("Positieve test")
-        retrieveCertificateFromServer(bsn)
+        clickOn("Log in met DigiD")
     }
 
-    fun addNegativeTestCertificateFromGGD(bsn: String) {
+    fun addNegativeTestCertificateFromGGD() {
         addEvent()
         scrollTo("Negatieve test")
         tapButton("Negatieve test")
         tapButton("GGD")
-        retrieveCertificateFromServer(bsn)
+        clickOn("Log in met DigiD")
     }
 
     fun addRetrievedCertificateToApp() {
@@ -78,11 +78,9 @@ object Actions {
         clickOn(R.id.previousQrButton)
     }
 
-    private fun retrieveCertificateFromServer(bsn: String) {
+    fun retrieveCertificateFromServer(bsn: String) {
         if (bsn.isEmpty()) fail("BSN was empty, no certificate can be retrieved.")
         if (BaseTest.authPassword.isEmpty()) fail("Password was empty, no certificate can be retrieved.")
-
-        clickOn("Log in met DigiD")
 
         for (index in 1 until 4) {
             Timber.tag("end2end").d("Log in attempt $index")
