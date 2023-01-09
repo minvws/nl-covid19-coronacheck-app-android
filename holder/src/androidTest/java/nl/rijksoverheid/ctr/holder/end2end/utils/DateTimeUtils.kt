@@ -151,13 +151,13 @@ class DateTimeUtils(private val device: UiDevice, private val timeout: Long = 50
     private val switchClassName = Switch::class.java.canonicalName!!
     private val textViewClassName = TextView::class.java.canonicalName!!
 
-    private val settingsAppDescription = "Datum en tijd"
-    private val dateSwitchLabel = "Tijd automatisch instellen"
-    private val dateLabel = "Datum"
-    private val datePickerHeaderYearResource = "android:id/date_picker_header_year"
-    private val datePickerHeaderDateResource = "android:id/date_picker_header_date"
-    private val nextMonthResource = "android:id/next"
-    private val prevMonthResource = "android:id/prev"
-    private val monthViewResource = "android:id/month_view"
-    private val swipeUpSteps = 100
+    companion object {
+        private const val dateSwitchLabel = "Tijd automatisch instellen"
+        private const val dateLabel = "Datum"
+        private const val datePickerHeaderYearResource = "android:id/date_picker_header_year"
+        private const val datePickerHeaderDateResource = "android:id/date_picker_header_date"
+        private const val nextMonthResource = "android:id/next"
+        private const val prevMonthResource = "android:id/prev"
+        private const val monthViewResource = "android:id/month_view"
+    }
 }
