@@ -14,6 +14,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalE
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisNotHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
@@ -85,6 +86,7 @@ class VaccinationRetrievalTest : BaseTest() {
         viewQR(Event.Type.Vaccination)
         assertInternationalQRDetails(person, vac2, dose = "2/1")
         viewPreviousQR()
+        assertQRisNotHidden()
         assertInternationalQRDetails(person, vac1, dose = "1/1")
         assertNoPreviousQR()
     }

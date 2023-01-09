@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.scrollToBottomOfOvervie
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertContains
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertNotDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertNotExist
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.buttonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickBack
@@ -158,6 +159,12 @@ object Assertions {
         clickBack()
 
         tapButton("Laat toch zien")
+    }
+
+    fun assertQRisNotHidden() {
+        assertNotExist("QR-code is verborgen")
+        assertNotDisplayed("Wat betekent dit?")
+        assertNotDisplayed("Laat toch zien")
     }
 
     fun assertNoPreviousQR() {

@@ -49,6 +49,16 @@ object Elements {
         BaristaVisibilityAssertions.assertDisplayed(text)
     }
 
+    fun assertNotExist(text: String) {
+        Timber.tag("end2end").d("Asserting not displayed text '$text'")
+        BaristaVisibilityAssertions.assertNotExist(text)
+    }
+
+    fun assertNotDisplayed(text: String) {
+        Timber.tag("end2end").d("Asserting not displayed text '$text'")
+        BaristaVisibilityAssertions.assertNotDisplayed(text)
+    }
+
     fun assertNotDisplayed(@IdRes viewId: Int) {
         Timber.tag("end2end").d("Asserting not displayed view with ID '$viewId'")
         BaristaVisibilityAssertions.assertNotDisplayed(viewId)
