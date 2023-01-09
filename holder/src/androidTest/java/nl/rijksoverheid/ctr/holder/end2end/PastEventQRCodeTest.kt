@@ -49,7 +49,7 @@ class PastEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
-        restartActivity()
+        launchApp()
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
@@ -68,7 +68,7 @@ class PastEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
-        restartActivity()
+        launchApp()
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
@@ -89,7 +89,7 @@ class PastEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(-20))
-        restartActivity()
+        launchApp()
 
         assertNotYetValidInternationalEventOnOverview(pos)
         assertQrButtonIsDisabled(Event.Type.PositiveTest)
@@ -104,7 +104,7 @@ class PastEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(-2))
-        restartActivity()
+        launchApp()
 
         assertNotYetValidInternationalEventOnOverview(neg)
         assertQrButtonIsDisabled(Event.Type.NegativeTest)
