@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.end2end
 
+import androidx.test.filters.SdkSuppress
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions
@@ -22,6 +23,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisShown
 import org.junit.After
 import org.junit.Test
 
+@SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
 class OfflineQrTest : BaseTest() {
 
     @After

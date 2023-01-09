@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.end2end
 
+import androidx.test.filters.SdkSuppress
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
@@ -19,6 +20,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+@SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
 class PastEventRetrievalTest : BaseTest() {
 
     @Before

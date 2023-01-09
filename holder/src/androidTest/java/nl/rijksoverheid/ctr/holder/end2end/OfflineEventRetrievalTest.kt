@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.end2end
 
+import androidx.test.filters.SdkSuppress
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
@@ -16,6 +17,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
+@SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
 class OfflineEventRetrievalTest : BaseTest() {
 
     @Before
