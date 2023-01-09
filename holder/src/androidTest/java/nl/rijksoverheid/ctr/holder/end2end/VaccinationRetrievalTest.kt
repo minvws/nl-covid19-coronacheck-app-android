@@ -23,7 +23,7 @@ import org.junit.Test
 class VaccinationRetrievalTest : BaseTest() {
 
     @Test
-    fun retrieveVaccination_2Pfizer() {
+    fun retrieveVaccinationWith2Pfizer_assertOverviewAndQRDetails() {
         val person = Person(bsn = "999990020")
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
@@ -46,7 +46,7 @@ class VaccinationRetrievalTest : BaseTest() {
     }
 
     @Test
-    fun retrieveVaccination_2Moderna() {
+    fun retrieveVaccinationWith2Moderna_assertOverviewAndQRDetails() {
         val person = Person("999990159")
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Moderna)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Moderna)
@@ -69,7 +69,7 @@ class VaccinationRetrievalTest : BaseTest() {
     }
 
     @Test
-    fun retrieveVaccination_2Janssen() {
+    fun retrieveVaccinationWith2Janssen_assertOverviewAndQRDetails() {
         val person = Person("999990093")
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Janssen)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Janssen)

@@ -22,7 +22,7 @@ import org.junit.Test
 class TestsRetrievalTest : BaseTest() {
 
     @Test
-    fun retrievePositiveTest() {
+    fun retrievePositiveTest_assertOverviewAndQRDetails() {
         val person = Person(bsn = "999993033")
         val pos = PositiveTest(eventDate = today.offsetDays(-30), testType = TestType.Pcr, validUntil = today.offsetDays(150))
 
@@ -39,7 +39,7 @@ class TestsRetrievalTest : BaseTest() {
     }
 
     @Test
-    fun retrieveNegativeTest() {
+    fun retrieveNegativeTest_assertOverviewAndQRDetails() {
         val person = Person(bsn = "999992004")
         val neg = NegativeTest(eventDate = today, testType = TestType.Pcr)
 

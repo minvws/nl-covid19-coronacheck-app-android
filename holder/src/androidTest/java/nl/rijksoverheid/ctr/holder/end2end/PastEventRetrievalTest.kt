@@ -23,7 +23,7 @@ class PastEventRetrievalTest : BaseTest() {
     @Before
     fun setDeviceDate() {
         DateTimeUtils(device).setDate(today.offsetDays(-2))
-        restartActivity()
+        launchApp()
     }
 
     @After
@@ -32,19 +32,19 @@ class PastEventRetrievalTest : BaseTest() {
     }
 
     @Test
-    fun pastVaccinationRetrieval() {
+    fun givenDeviceDateInPast_whenVaccinationIsRetrieved_errorIsDisplayed() {
         addVaccinationCertificate(Person().bsn)
         assertRetrievalError("A 210 000 070-9")
     }
 
     @Test
-    fun pastPositiveTestRetrieval() {
+    fun givenDeviceDateInPast_whenPositiveTestIsRetrieved_errorIsDisplayed() {
         addRecoveryCertificate(Person().bsn)
         assertRetrievalError("A 310 000 070-9")
     }
 
     @Test
-    fun pastNegativeTestRetrieval() {
+    fun givenDeviceDateInPast_whenNegativeTestIsRetrieved_errorIsDisplayed() {
         addNegativeTestCertificateFromGGD(Person().bsn)
         assertRetrievalError("A 410 000 070-9")
     }
