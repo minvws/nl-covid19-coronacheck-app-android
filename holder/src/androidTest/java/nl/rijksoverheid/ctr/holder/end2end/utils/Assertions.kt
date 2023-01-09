@@ -19,10 +19,10 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.containsText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.labelValuePairExist
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.rest
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForView
 
 object Assertions {
 
@@ -130,7 +130,6 @@ object Assertions {
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null, deviceDate: LocalDate = LocalDate.now()) {
         assertQRisShown()
         if (event is Vaccination) waitForText("Dosis $dose")
-        rest() // Waiting until 'Details' is clickable is unreliable
         tapButton("Details")
         labelValuePairExist("Naam / Name:", person.name)
         labelValuePairExist("Geboortedatum / Date of birth*:", person.birthDate.dutch())
@@ -165,7 +164,7 @@ object Assertions {
     }
 
     fun assertQRisShown() {
-        assertDisplayed(R.id.image)
+        waitForView("image")
     }
 
     fun assertQRisHidden() {
