@@ -60,6 +60,12 @@ object Assertions {
         clickBack()
     }
 
+    fun assertSomethingWentWrong() {
+        assertDisplayed("Sorry, er gaat iets mis")
+        assertDisplayed("Sluiten")
+        assertDisplayed("Probeer opnieuw")
+    }
+
     fun assertRetrievalError(error: String) {
         waitForText("Sorry, er gaat iets mis")
         labelValuePairExist("Foutcode:", error)
@@ -114,6 +120,7 @@ object Assertions {
     // MARK: QR Details
 
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null, deviceDate: LocalDate = LocalDate.now()) {
+        assertQRisShown()
         if (event is Vaccination) waitForText("Dosis $dose")
         rest() // Waiting until 'Details' is clickable is unreliable
         tapButton("Details")
@@ -147,6 +154,10 @@ object Assertions {
             }
         }
         clickBack()
+    }
+
+    fun assertQRisShown() {
+        assertDisplayed(R.id.image)
     }
 
     fun assertQRisHidden() {

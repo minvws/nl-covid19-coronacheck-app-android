@@ -1,10 +1,14 @@
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
+import android.content.Intent
 import android.os.Build
+import android.provider.Settings
 import junit.framework.TestCase.fail
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.end2end.BaseTest
+import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.authPassword
+import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.context
+import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.device
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
@@ -16,6 +20,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollListToPosition
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButtonElement
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapOnElementWithContentDescription
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForView
 import timber.log.Timber
@@ -30,6 +35,19 @@ object Actions {
         val logLine = "App $appVersion ($appVersionCode), Android $release (SDK $sdkVersion)"
 
         Timber.tag("end2end").d(logLine)
+    }
+
+    // Based on https://stackoverflow.com/a/58359193
+    @Suppress("deprecation")
+    fun setAirplaneMode(enable: Boolean) {
+        val expectedState = if (enable) 1 else 0
+        val currentState = Settings.Global.getInt(context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0)
+        Timber.tag("end2end").d("Airplane mode state is currently '$currentState', expected state is '$expectedState'")
+        if (expectedState == currentState) return
+
+        device.openQuickSettings()
+        tapOnElementWithContentDescription("Vliegtuigmodus")
+        context.sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
     }
 
     private fun addEvent() {
@@ -80,7 +98,7 @@ object Actions {
 
     fun retrieveCertificateFromServer(bsn: String) {
         if (bsn.isEmpty()) fail("BSN was empty, no certificate can be retrieved.")
-        if (BaseTest.authPassword.isEmpty()) fail("Password was empty, no certificate can be retrieved.")
+        if (authPassword.isEmpty()) fail("Password was empty, no certificate can be retrieved.")
 
         for (index in 1 until 4) {
             Timber.tag("end2end").d("Log in attempt $index")
@@ -93,7 +111,7 @@ object Actions {
     private fun loginToServer() {
         if (checkForText("Inloggen") || checkForText("Verificatie vereist")) {
             enterTextInField(0, "coronacheck")
-            enterTextInField(1, BaseTest.authPassword)
+            enterTextInField(1, authPassword)
             tapButtonElement("Inloggen")
         } else {
             acceptChromeOnboarding()

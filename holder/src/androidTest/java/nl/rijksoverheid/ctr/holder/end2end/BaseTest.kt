@@ -41,6 +41,7 @@ abstract class BaseTest : AutoCloseKoinTest() {
 
     companion object {
         private val instrumentation: Instrumentation = InstrumentationRegistry.getInstrumentation()
+        val context = instrumentation.context
         val device: UiDevice = UiDevice.getInstance(instrumentation)
         val today: LocalDate = LocalDate.now()
         val authPassword: String = InstrumentationRegistry.getArguments().getString("authPassword", "")

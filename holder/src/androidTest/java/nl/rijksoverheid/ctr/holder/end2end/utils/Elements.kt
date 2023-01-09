@@ -49,6 +49,11 @@ object Elements {
         BaristaVisibilityAssertions.assertDisplayed(text)
     }
 
+    fun assertDisplayed(@IdRes viewId: Int) {
+        Timber.tag("end2end").d("Asserting displayed view with ID '$viewId'")
+        BaristaVisibilityAssertions.assertDisplayed(viewId)
+    }
+
     fun assertNotExist(text: String) {
         Timber.tag("end2end").d("Asserting not displayed text '$text'")
         BaristaVisibilityAssertions.assertNotExist(text)
@@ -196,6 +201,11 @@ object Elements {
     fun tapButtonElement(label: String) {
         Timber.tag("end2end").d("Find Button element with label '$label' and clicking")
         device.findObject(UiSelector().className(android.widget.Button::class.java).textStartsWith(label)).click()
+    }
+
+    fun tapOnElementWithContentDescription(contentDescription: String, timeout: Long = 3) {
+        Timber.tag("end2end").d("Find element with content description '$contentDescription' and clicking")
+        device.wait(Until.findObject(By.desc(contentDescription)), timeout * 1_000).click()
     }
 
     // MARK: Other
