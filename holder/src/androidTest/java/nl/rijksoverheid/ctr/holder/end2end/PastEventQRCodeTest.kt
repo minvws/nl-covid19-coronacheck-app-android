@@ -22,12 +22,12 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertifica
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateFromServer
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventWillBecomeValid
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNotYetValidInternationalEventOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsDisabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertVaccinationWillBecomeValid
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
 import org.junit.After
 import org.junit.Test
@@ -40,7 +40,7 @@ class PastEventQRCodeTest : BaseTest() {
     }
 
     @Test
-    fun whenDeviceDateIsBeforeEvents_VaccinationCertificatesAreNotYetValid() {
+    fun whenDeviceDateIsBeforeEvents_vaccinationCertificatesAreNotYetValid() {
         val person = Person(bsn = "999990020")
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
@@ -55,12 +55,12 @@ class PastEventQRCodeTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertVaccinationWillBecomeValid()
+        assertInternationalEventWillBecomeValid(Event.Type.Vaccination)
         assertQrButtonIsDisabled(Event.Type.Vaccination)
     }
 
     @Test
-    fun whenDeviceDateIsBetweenEvents_NotAllVaccinationsAreValid() {
+    fun whenDeviceDateIsBetweenEvents_notAllVaccinationsAreValid() {
         val person = Person(bsn = "999990020")
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
@@ -75,7 +75,7 @@ class PastEventQRCodeTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertVaccinationWillBecomeValid()
+        assertInternationalEventWillBecomeValid(Event.Type.Vaccination)
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
@@ -84,7 +84,7 @@ class PastEventQRCodeTest : BaseTest() {
     }
 
     @Test
-    fun whenDeviceDateIsBeforeEvent_RecoveryCertificateIsNotYetValid() {
+    fun whenDeviceDateIsBeforeEvent_recoveryCertificateIsNotYetValid() {
         val person = Person(bsn = "999993033")
         val pos = PositiveTest(eventDate = today.offsetDays(-30), testType = TestType.Pcr, validFrom = today.offsetDays(-19), validUntil = today.offsetDays(150))
 
@@ -100,7 +100,7 @@ class PastEventQRCodeTest : BaseTest() {
     }
 
     @Test
-    fun givenDeviceDateBeforeEvent_withNegativeTestFromToday_CertificateIsNotYetValid() {
+    fun givenDeviceDateBeforeEvent_negativeTestCertificateIsNotYetValid() {
         val person = Person(bsn = "999992004")
         val neg = NegativeTest(eventDate = today, validFrom = today, testType = TestType.Pcr)
 

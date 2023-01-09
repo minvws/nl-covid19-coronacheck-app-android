@@ -113,8 +113,16 @@ object Assertions {
         }
     }
 
-    fun assertVaccinationWillBecomeValid() {
-        card(Event.Type.Vaccination).containsText("Wordt automatisch geldig")
+    fun assertInternationalEventWillBecomeValid(eventType: Event.Type) {
+        card(eventType).containsText("Wordt automatisch geldig")
+    }
+
+    fun assertInternationalEventWillExpireSoon(eventType: Event.Type, daysLeft: Int) {
+        card(eventType).containsText("Verloopt over $daysLeft dagen")
+    }
+
+    fun assertInternationalEventIsExpired(eventType: Event.Type) {
+        assertDisplayed("Je internationale ${eventType.domesticName.lowercase()} is verlopen")
     }
 
     // MARK: QR Details
@@ -176,6 +184,18 @@ object Assertions {
         assertNotExist("QR-code is verborgen")
         assertNotDisplayed("Wat betekent dit?")
         assertNotDisplayed("Laat toch zien")
+    }
+
+    fun assertQRisExpired() {
+        assertDisplayed("QR-code is verlopen")
+        assertDisplayed("Wat betekent dit?")
+        assertDisplayed("Laat toch zien")
+
+        tapButton("Wat betekent dit?")
+        assertDisplayed("Verlopen QR-code")
+        clickBack()
+
+        tapButton("Laat toch zien")
     }
 
     fun assertNoPreviousQR() {

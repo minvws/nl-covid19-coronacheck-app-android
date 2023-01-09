@@ -83,7 +83,7 @@ object Actions {
 
     fun scrollToBottomOfOverview() {
         waitForView("recyclerView")
-        scrollListToPosition(R.id.recyclerView, 8)
+        for (i in 3 until 9 step 3) scrollListToPosition(R.id.recyclerView, i)
     }
 
     fun viewQR(eventType: Event.Type) {
