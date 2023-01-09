@@ -72,7 +72,8 @@ class FutureEventQRCodeTest : BaseTest() {
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
         val deviceDate = today.offsetDays(180)
 
-        addVaccinationCertificate(person.bsn)
+        addVaccinationCertificate()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
@@ -111,7 +112,8 @@ class FutureEventQRCodeTest : BaseTest() {
         val person = Person(bsn = "999993033")
         val pos = PositiveTest(eventDate = today.offsetDays(-30), testType = TestType.Pcr, validUntil = today.offsetDays(150))
 
-        addRecoveryCertificate(person.bsn)
+        addRecoveryCertificate()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(140))
@@ -126,7 +128,8 @@ class FutureEventQRCodeTest : BaseTest() {
     fun whenDeviceDateIsAfterExpiry_recoveryCertificateIsRemoved() {
         val person = Person(bsn = "999993033")
 
-        addRecoveryCertificate(person.bsn)
+        addRecoveryCertificate()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(150))
@@ -158,7 +161,8 @@ class FutureEventQRCodeTest : BaseTest() {
     fun whenDeviceDateIsAfterExpiry_negativeTestCertificateIsRemoved() {
         val person = Person(bsn = "999992004")
 
-        addNegativeTestCertificateFromGGD(person.bsn)
+        addNegativeTestCertificateFromGGD()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(60))
