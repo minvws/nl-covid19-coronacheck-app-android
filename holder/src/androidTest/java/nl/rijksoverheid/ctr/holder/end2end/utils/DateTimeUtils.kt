@@ -11,7 +11,6 @@ package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import android.content.Context
 import android.content.Intent
-import android.os.RemoteException
 import android.provider.Settings
 import android.util.Log
 import android.widget.LinearLayout
@@ -30,18 +29,17 @@ import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
 
-class DateTimeUtils(private val device: UiDevice, private val timeout: Long = 5000) {
+class DateTimeUtils(private val device: UiDevice, private val timeout: Long = 5_000) {
 
     fun setDate(date: LocalDate) {
         openDateSettings()
-        enableManualDateTime()
+        toggleAutomaticDateTime(false)
         setDeviceDate(date)
     }
 
     fun resetDateToAutomatic() {
         openDateSettings()
-        disableManualDateTime()
-        closeSettings()
+        toggleAutomaticDateTime(true)
     }
 
     private fun openDateSettings() {
@@ -58,30 +56,14 @@ class DateTimeUtils(private val device: UiDevice, private val timeout: Long = 50
         context.startActivity(intent)
     }
 
-    @Throws(RemoteException::class, UiObjectNotFoundException::class)
-    private fun closeSettings() {
-        with(device) {
-            pressRecentApps()
-            findObject(UiSelector().description(settingsAppDescription)).swipeUp(swipeUpSteps)
-            pressHome()
-        }
-    }
-
     @Throws(UiObjectNotFoundException::class)
-    private fun enableManualDateTime() {
+    private fun toggleAutomaticDateTime(enable: Boolean) {
         val dateTimeSettingList = UiScrollable(UiSelector().className(recyclerViewClassName))
         val automaticDateTimeOption = dateTimeSettingList.getChildByText(UiSelector().className(linearLayoutClassName), dateSwitchLabel)
         val automaticDateTimeSwitch = automaticDateTimeOption.getChild(UiSelector().className(switchClassName))
 
-        if (automaticDateTimeSwitch.isChecked) automaticDateTimeSwitch.click()
-    }
-
-    @Throws(UiObjectNotFoundException::class)
-    private fun disableManualDateTime() {
-        val dateTimeSettingList = UiScrollable(UiSelector().className(recyclerViewClassName))
-        val automaticDateTimeOption = dateTimeSettingList.getChildByText(UiSelector().className(linearLayoutClassName), dateSwitchLabel)
-        val automaticDateTimeSwitch = automaticDateTimeOption.getChild(UiSelector().className(switchClassName))
-        if (!automaticDateTimeSwitch.isChecked) automaticDateTimeSwitch.click()
+        if (automaticDateTimeSwitch.isChecked == enable) return
+        automaticDateTimeSwitch.click()
     }
 
     private fun setDeviceDate(targetDate: LocalDate) {
@@ -90,6 +72,12 @@ class DateTimeUtils(private val device: UiDevice, private val timeout: Long = 50
         selectTargetMonth(currentDate, targetDate)
         selectTargetDay(targetDate)
         clickOkButton()
+    }
+
+    private fun clickSetDateButton() {
+        val dateTimeSettingList = UiScrollable(UiSelector().className(recyclerViewClassName))
+        val setDate = dateTimeSettingList.getChildByText(UiSelector().className(textViewClassName), dateLabel)
+        setDate.click()
     }
 
     private fun getCurrentDeviceDate(): LocalDate {
@@ -104,10 +92,6 @@ class DateTimeUtils(private val device: UiDevice, private val timeout: Long = 50
         return date
     }
 
-    private fun clickOkButton() {
-        device.findObject(By.text("OK")).click()
-    }
-
     private fun selectTargetMonth(currentDate: LocalDate, targetDate: LocalDate) {
         val period = Period.between(currentDate.withDayOfMonth(1), targetDate.withDayOfMonth(1))
         val yearDiff = period.years
@@ -117,7 +101,7 @@ class DateTimeUtils(private val device: UiDevice, private val timeout: Long = 50
                 // ...nothing to do. Currently on the right month.
             }
             monthDiff < 0 -> {
-                for (i in monthDiff..-1) {
+                for (i in monthDiff until -1) {
                     val previousMonthButtonItem = findObjectByResourceName(prevMonthResource)
                     previousMonthButtonItem.click()
                 }
@@ -137,14 +121,12 @@ class DateTimeUtils(private val device: UiDevice, private val timeout: Long = 50
         dayItem.click()
     }
 
+    private fun clickOkButton() {
+        device.findObject(By.text("OK")).click()
+    }
+
     private fun findObjectByResourceName(resourceName: String) =
         device.findObject(UiSelector().resourceId(resourceName))
-
-    private fun clickSetDateButton() {
-        val dateTimeSettingList = UiScrollable(UiSelector().className(recyclerViewClassName))
-        val setDate = dateTimeSettingList.getChildByText(UiSelector().className(textViewClassName), dateLabel)
-        setDate.click()
-    }
 
     private val recyclerViewClassName = RecyclerView::class.java.canonicalName!!
     private val linearLayoutClassName = LinearLayout::class.java.canonicalName!!
