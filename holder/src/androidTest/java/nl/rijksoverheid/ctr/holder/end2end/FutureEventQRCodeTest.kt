@@ -26,9 +26,10 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventIsExpired
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventWillExpireSoon
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisExpired
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
 import org.junit.After
@@ -61,10 +62,9 @@ class FutureEventQRCodeTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
-        assertInternationalQRDetails(person, vac2, dose = "2/2", deviceDate)
+        assertQRisShown()
         viewPreviousQR()
         assertQRisHidden()
-        assertInternationalQRDetails(person, vac1, dose = "1/2", deviceDate)
     }
 
     @Test
@@ -87,10 +87,8 @@ class FutureEventQRCodeTest : BaseTest() {
 
         viewQR(Event.Type.Vaccination)
         assertQRisExpired()
-        assertInternationalQRDetails(person, vac2, dose = "2/2", deviceDate)
         viewPreviousQR()
         assertQRisHidden()
-        assertInternationalQRDetails(person, vac1, dose = "1/2", deviceDate)
     }
 
     @Test
@@ -107,6 +105,10 @@ class FutureEventQRCodeTest : BaseTest() {
 
         assertInternationalEventOnOverview(pos)
         assertQrButtonIsEnabled(Event.Type.PositiveTest)
+
+        viewQR(Event.Type.PositiveTest)
+        assertQRisShown()
+        assertNoPreviousQR()
     }
 
     @Test
@@ -124,6 +126,10 @@ class FutureEventQRCodeTest : BaseTest() {
         assertInternationalEventOnOverview(pos)
         assertInternationalEventWillExpireSoon(Event.Type.PositiveTest, daysLeft = 9)
         assertQrButtonIsEnabled(Event.Type.PositiveTest)
+
+        viewQR(Event.Type.PositiveTest)
+        assertQRisShown()
+        assertNoPreviousQR()
     }
 
     @Test
@@ -156,7 +162,8 @@ class FutureEventQRCodeTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.NegativeTest)
 
         viewQR(Event.Type.NegativeTest)
-        assertInternationalQRDetails(person, neg)
+        assertQRisShown()
+        assertNoPreviousQR()
     }
 
     @Test

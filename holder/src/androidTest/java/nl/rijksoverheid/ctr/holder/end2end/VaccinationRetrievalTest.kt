@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQ
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisNotHidden
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
@@ -40,6 +41,7 @@ class VaccinationRetrievalTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
+        assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/2")
         viewPreviousQR()
         assertQRisHidden()
@@ -64,6 +66,7 @@ class VaccinationRetrievalTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
+        assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/2")
         viewPreviousQR()
         assertQRisHidden()
@@ -88,6 +91,7 @@ class VaccinationRetrievalTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
+        assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/1")
         viewPreviousQR()
         assertQRisNotHidden()

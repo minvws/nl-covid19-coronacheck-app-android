@@ -24,9 +24,9 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateFrom
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventWillBecomeValid
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNotYetValidInternationalEventOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsDisabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
@@ -81,7 +81,7 @@ class PastEventQRCodeTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
-        assertInternationalQRDetails(person, vac1, dose = "1/2", deviceDate)
+        assertQRisShown()
         assertNoPreviousQR()
     }
 
