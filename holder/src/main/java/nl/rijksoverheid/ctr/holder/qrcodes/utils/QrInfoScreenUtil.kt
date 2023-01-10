@@ -41,7 +41,7 @@ class QrInfoScreenUtilImpl(
     private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
     private val countryUtil: CountryUtil,
     private val localDateUtil: LocalDateUtil,
-    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
+    cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : QrInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
