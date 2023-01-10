@@ -83,14 +83,19 @@ class QrInfoScreenUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `getForEuropeanVaccinationQr returns correct info`() {
-        val jsonObject =
-            JSONObject("{\"credentialVersion\":1,\"issuer\":\"NL\",\"issuedAt\":1655458911,\"expirationTime\":1657885768,\"dcc\":{\"ver\":\"1.3.0\",\"dob\":\"1960-01-01\",\"nam\":{\"fn\":\"van Geer\",\"fnt\":\"VAN<GEER\",\"gn\":\"Corrie\",\"gnt\":\"CORRIE\"},\"v\":[{\"tg\":\"840539006\",\"vp\":\"1119349007\",\"mp\":\"EU\\/1\\/20\\/1528\",\"ma\":\"ORG-100030215\",\"dn\":2,\"sd\":2,\"dt\":\"2021-03-17\",\"co\":\"NL\",\"is\":\"Ministry of Health Welfare and Sport\",\"ci\":\"URN:UCI:01:NL:RINECVIKHZDWHFQ2VKAG42#I\"}],\"t\":null,\"r\":null}}")
+        val jsonString =
+            "{\"credentialVersion\":1,\"issuer\":\"NL\",\"issuedAt\":1655458911,\"expirationTime\":1657885768,\"dcc\":{\"ver\":\"1.3.0\",\"dob\":\"1960-01-01\",\"nam\":{\"fn\":\"van Geer\",\"fnt\":\"VAN<GEER\",\"gn\":\"Corrie\",\"gnt\":\"CORRIE\"},\"v\":[{\"tg\":\"840539006\",\"vp\":\"1119349007\",\"mp\":\"EU\\/1\\/20\\/1528\",\"ma\":\"ORG-100030215\",\"dn\":2,\"sd\":2,\"dt\":\"2021-03-17\",\"co\":\"NL\",\"is\":\"Ministry of Health Welfare and Sport\",\"ci\":\"URN:UCI:01:NL:RINECVIKHZDWHFQ2VKAG42#I\"}],\"t\":null,\"r\":null}}"
+        val json = JSONObject(jsonString)
 
-        val infoScreen = infoScreenUtil.getForEuropeanVaccinationQr(jsonObject)
+        val infoScreen = infoScreenUtil.getForEuropeanVaccinationQr(json)
 
         assertEquals(
             "In jouw internationale QR-code staan de volgende gegevens:<br/><br/>Naam / Name:<br/><b>van Geer, Corrie</b><br/><br/>Geboortedatum / Date of birth*:<br/><b>01-01-1960</b><br/><br/>Ziekteverwekker / Disease targeted:<br/><b>COVID-19</b><br/><br/>Vaccin / Vaccine:<br/><b>EU/1/20/1528</b><br/><br/>Type vaccin / Vaccine type:<br/><b>1119349007</b><br/><br/>Vaccinproducent / Vaccine manufacturer:<br/><b>ORG-100030215</b><br/><br/>Dosis / Number in series of doses:<br/><b>2 / 2</b><br/><br/>Vaccinatiedatum / Vaccination date*:<br/><b>17-03-2021</b><br/><br/>Dagen sinds vaccinatie / Days since vaccination:<br/><b>290 dagen</b><br/><br/>Gevaccineerd in / Vaccinated in:<br/><b>Nederland / The Netherlands</b><br/><br/>Afgever certificaat / Certificate issuer:<br/><b>Ministerie van VWS / Ministry of Health, Welfare and Sport</b><br/><br/>Uniek certificaatnummer / Unique certificate identifier:<br/><b>URN:UCI:01:NL:RINECVIKHZDWHFQ2VKAG42#I</b><br/><br/>",
             infoScreen.description
+        )
+        assertEquals(
+            "*Datum weergegeven in dag-maand-jaar / Date noted in day-month-year.",
+            infoScreen.footer
         )
     }
 }
