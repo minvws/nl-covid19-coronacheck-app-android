@@ -62,17 +62,17 @@ class QrInfoScreenUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getForEuropeanTestQr returns correct info with London timezone`() {
+    fun `getForEuropeanRecoveryQr returns correct info with London timezone`() {
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"))
 
         val jsonString =
-            "{\"credentialVersion\":1,\"issuer\":\"NL\",\"issuedAt\":1628579448,\"expirationTime\":1630998658,\"dcc\":{\"ver\":\"1.3.0\",\"dob\":\"1991-08-18\",\"nam\":{\"fn\":\"ten Bouwer\",\"fnt\":\"TEN<BOUWER\",\"gn\":\"Bob\",\"gnt\":\"BOB\"},\"v\":null,\"t\":[{\"tg\":\"840539006\",\"tt\":\"LP6464-4\",\"nm\":\"\",\"ma\":\"\",\"sc\":\"2021-08-10T03:10:00+00:00\",\"dr\":\"\",\"tr\":\"260415000\",\"tc\":\"Facility approved by the State of The Netherlands\",\"co\":\"NL\",\"is\":\"Ministry of Health Welfare and Sport\",\"ci\":\"URN:UCI:01:NL:PJ7JLSZ4KRGX5O2E7OD342#E\"}],\"r\":null}}"
+            "{\"credentialVersion\":1,\"issuer\":\"NL\",\"issuedAt\":1628579448,\"expirationTime\":1630998658,\"dcc\":{\"ver\":\"1.3.0\",\"dob\":\"1991-08-18\",\"nam\":{\"fn\":\"ten Bouwer\",\"fnt\":\"TEN<BOUWER\",\"gn\":\"Bob\",\"gnt\":\"BOB\"},\"v\":null,\"t\":null,\"r\":[{\"tg\":\"840539006\",\"fr\":\"2022-12-11\",\"co\":\"NL\",\"is\":\"Ministry of Health Welfare and Sport\",\"df\":\"2022-12-22\",\"du\":\"2023-06-09\",\"ci\":\"URN:UCI:01:NL:KA52WQQLNNAGFAGUBUMW42#4\"}]}}"
         val json = JSONObject(jsonString)
 
-        val infoScreen = infoScreenUtil.getForEuropeanTestQr(json)
+        val infoScreen = infoScreenUtil.getForEuropeanRecoveryQr(json)
 
         assertEquals(
-            "In jouw internationale QR-code staan de volgende gegevens:<br/><br/>Naam / Name:<br/><b>ten Bouwer, Bob</b><br/><br/>Geboortedatum / Date of birth*:<br/><b>18-08-1991</b><br/><br/>Ziekteverwekker / Disease targeted:<br/><b>COVID-19</b><br/><br/>Type test / Type of test:<br/><b>LP6464-4</b><br/><br/>Testdatum / Test date:<br/><b>dinsdag 10 augustus 2021 04:10 BST</b><br/><br/>Testuitslag / Test result:<br/><b>negatief (geen coronavirus vastgesteld) / negative (no coronavirus detected)</b><br/><br/>Testlocatie / Test location:<br/><b>Facility approved by the State of The Netherlands</b><br/><br/>Getest in / Tested in:<br/><b>Nederland / The Netherlands</b><br/><br/>Afgever certificaat / Certificate issuer:<br/><b>Ministerie van VWS / Ministry of Health, Welfare and Sport</b><br/><br/>Uniek certificaatnummer / Unique certificate identifier:<br/><b>URN:UCI:01:NL:PJ7JLSZ4KRGX5O2E7OD342#E</b><br/><br/>",
+            "In jouw internationale QR-code staan de volgende gegevens:<br/><br/>Naam / Name:<br/><b>ten Bouwer, Bob</b><br/><br/>Geboortedatum / Date of birth*:<br/><b>18-08-1991</b><br/><br/>Ziekte waarvan hersteld / Disease recovered from:<br/><b>COVID-19</b><br/><br/>Testdatum / Test date*:<br/><b>11-12-2022</b><br/><br/>Getest in / Tested in:<br/><b>Nederland / The Netherlands</b><br/><br/>Afgever certificaat / Certificate issuer:<br/><b>Ministerie van VWS / Ministry of Health, Welfare and Sport</b><br/><br/>Geldig vanaf / Valid from*:<br/><b>22-12-2022</b><br/><br/>Geldig tot / Valid to*:<br/><b>09-06-2023</b><br/><br/>Uniek certificaatnummer / Unique certificate identifier:<br/><b>URN:UCI:01:NL:KA52WQQLNNAGFAGUBUMW42#4</b><br/><br/>",
             infoScreen.description
         )
         assertEquals(
