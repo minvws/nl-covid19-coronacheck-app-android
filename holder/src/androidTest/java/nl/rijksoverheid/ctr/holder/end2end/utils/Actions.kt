@@ -63,6 +63,7 @@ object Actions {
     }
 
     fun addRetrievedCertificateToApp() {
+        waitForText("Kloppen de gegevens?", 30)
         tapButton("Maak bewijs")
         waitForText("Mijn bewijzen", 60)
     }
@@ -88,8 +89,6 @@ object Actions {
         }
 
         enterBsn(bsn)
-
-        waitForText("Kloppen de gegevens?", 30)
     }
 
     private fun loginToServer() {

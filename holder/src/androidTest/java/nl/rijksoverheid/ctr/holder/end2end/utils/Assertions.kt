@@ -34,6 +34,7 @@ object Assertions {
     }
 
     fun assertRetrievalDetails(person: Person, event: Event, position: Int = 0) {
+        waitForText("Kloppen de gegevens?", 30)
         scrollTo("Klopt er iets niet?")
         tapButton("Details", position)
         assertContains("Naam: " + person.name)
@@ -57,6 +58,11 @@ object Assertions {
             }
         }
         clickBack()
+    }
+
+    fun assertRetrievalError(error: String) {
+        waitForText("Sorry, er gaat iets mis")
+        labelValuePairExist("Foutcode:", error)
     }
 
     fun assertInternationalVaccinationOnOverview(vaccination: Vaccination, dose: String) {
