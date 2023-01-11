@@ -41,7 +41,7 @@ class QrInfoScreenUtilImpl(
     private val readEuropeanCredentialUtil: ReadEuropeanCredentialUtil,
     private val countryUtil: CountryUtil,
     private val localDateUtil: LocalDateUtil,
-    private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
+    cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : QrInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
@@ -363,7 +363,12 @@ class QrInfoScreenUtilImpl(
             application.applicationContext.locale()
         )
 
-        val producer = recovery.getStringOrNull("is")
+        val issuerValue = recovery.getStringOrNull("is")
+        val issuer = if (issuerValue == issuerVWS) {
+            application.getString(R.string.qr_explanation_certificate_issuer)
+        } else {
+            issuerValue
+        }
 
         val validFromDate = recovery.getStringOrNull("df")?.let {
             try {
@@ -399,7 +404,7 @@ class QrInfoScreenUtilImpl(
                 application.getString(R.string.qr_explanation_description_eu_recovery_country),
                 createQrAnswer(country),
                 application.getString(R.string.qr_explanation_description_eu_recovery_producer),
-                createQrAnswer(producer ?: ""),
+                createQrAnswer(issuer ?: ""),
                 application.getString(R.string.qr_explanation_description_eu_recovery_valid_from_date),
                 createQrAnswer(validFromDate),
                 application.getString(R.string.qr_explanation_description_eu_recovery_valid_until_date),
