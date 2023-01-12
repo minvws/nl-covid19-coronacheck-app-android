@@ -7,6 +7,7 @@
   <string name="general_readmore">Lees meer</string>
   <string name="holder_authentication_popup_digid_title">Inloggen afgebroken</string>
   <string name="holder_dcc_alert_message">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
+  <string name="holder_dcc_test_identifier">Uniek certificaatnummer:</string>
   <string name="holder_recovery_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="holder_test_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="general_cancel">Annuleer</string>
@@ -255,7 +256,7 @@
   <string name="qr_explanation_description_eu_test_name">Naam / Name:</string>
   <string name="qr_explanation_description_eu_test_birth_date">Geboortedatum / Date of birth*:</string>
   <string name="qr_explanation_description_eu_test_disease">Ziekteverwekker / Disease targeted:</string>
-  <string name="qr_explanation_description_eu_test_test_type">Type test / Type of test:</string>
+  <string name="qr_explanation_description_eu_test_test_type">Type test / Test type:</string>
   <string name="qr_explanation_description_eu_test_test_name">Testnaam / Test name:</string>
   <string name="qr_explanation_description_eu_test_test_date">Testdatum / Test date:</string>
   <string name="qr_explanation_description_eu_test_test_result">Testuitslag / Test result:</string>

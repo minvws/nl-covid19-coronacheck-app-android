@@ -7,6 +7,7 @@
   <string name="general_readmore">Read more</string>
   <string name="holder_authentication_popup_digid_title">Login was cancelled</string>
   <string name="holder_dcc_alert_message">You can try to add a paper certificate again later.</string>
+  <string name="holder_dcc_test_identifier">Unique certificate identifier:</string>
   <string name="holder_recovery_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="holder_test_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="general_cancel">Cancel</string>
@@ -255,7 +256,7 @@
   <string name="qr_explanation_description_eu_test_name">Name:</string>
   <string name="qr_explanation_description_eu_test_birth_date">Date of birth*:</string>
   <string name="qr_explanation_description_eu_test_disease">Disease targeted:</string>
-  <string name="qr_explanation_description_eu_test_test_type">Type of test:</string>
+  <string name="qr_explanation_description_eu_test_test_type">Test type:</string>
   <string name="qr_explanation_description_eu_test_test_name">Test name:</string>
   <string name="qr_explanation_description_eu_test_test_date">Test date:</string>
   <string name="qr_explanation_description_eu_test_test_result">Test result:</string>
