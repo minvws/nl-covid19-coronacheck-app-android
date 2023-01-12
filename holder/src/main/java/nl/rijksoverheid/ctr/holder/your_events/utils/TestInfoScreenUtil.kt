@@ -103,19 +103,23 @@ class TestInfoScreenUtilImpl(
             "<br/>",
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_type),
-                testType
+                testType,
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_name),
-                testName
+                testName,
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_date),
-                testDate
+                testDate,
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_result),
-                resources.getString(R.string.your_test_result_explanation_negative_test_result)
+                resources.getString(R.string.your_test_result_explanation_negative_test_result),
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_manufacturer),
@@ -124,7 +128,8 @@ class TestInfoScreenUtilImpl(
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_location),
-                testLocation
+                testLocation,
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.holder_event_about_test_countrytestedin),
@@ -208,27 +213,33 @@ class TestInfoScreenUtilImpl(
             "<br/>",
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_type),
-                testType
+                testType,
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_name),
-                testName
+                testName,
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_date),
-                testDate
+                testDate,
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_result),
-                resources.getString(R.string.your_test_result_explanation_positive_test_result)
+                resources.getString(R.string.your_test_result_explanation_positive_test_result),
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_manufacturer),
-                testManufacturer
+                testManufacturer,
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.your_test_result_explanation_description_test_location),
-                testLocation
+                testLocation,
+                isOptional = true
             ),
             createdLine(
                 resources.getString(R.string.holder_event_about_test_countrytestedin),
