@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import android.os.Build
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import junit.framework.TestCase.fail
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
@@ -16,7 +18,8 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButtonElement
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForView
+import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
+import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 import timber.log.Timber
 
 object Actions {
@@ -63,8 +66,8 @@ object Actions {
     }
 
     fun scrollToBottomOfOverview() {
-        waitForView("recyclerView")
-        for (i in 3 until 9 step 3) scrollListToPosition(R.id.recyclerView, i)
+        Wait.until(ViewIsShown(onView(withId(R.id.recyclerView)), true))
+        for (i in 3 until 12 step 3) scrollListToPosition(R.id.recyclerView, i)
     }
 
     fun viewQR(eventType: Event.Type) {
