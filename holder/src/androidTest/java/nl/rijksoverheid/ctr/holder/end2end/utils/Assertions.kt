@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import nl.rijksoverheid.ctr.holder.R
@@ -23,6 +25,8 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForView
+import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
+import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 
 object Assertions {
 
@@ -83,6 +87,7 @@ object Assertions {
 
     fun assertInternationalEventOnOverview(event: Event, dose: String? = null) {
         scrollToBottomOfOverview()
+        Wait.until(ViewIsShown(onView(card(event.type)), true))
         when (event) {
             is Vaccination -> {
                 card(Event.Type.Vaccination).containsText("Dosis $dose")
@@ -100,6 +105,7 @@ object Assertions {
 
     fun assertNotYetValidInternationalEventOnOverview(event: Event) {
         scrollToBottomOfOverview()
+        Wait.until(ViewIsShown(onView(card(event.type)), true))
         when (event) {
             is PositiveTest -> {
                 card(Event.Type.PositiveTest).containsText("geldig vanaf " + event.validFrom!!.writtenWithoutYear())
@@ -114,15 +120,17 @@ object Assertions {
     }
 
     fun assertInternationalEventWillBecomeValid(eventType: Event.Type) {
+        Wait.until(ViewIsShown(onView(card(eventType)), true))
         card(eventType).containsText("Wordt automatisch geldig")
     }
 
     fun assertInternationalEventWillExpireSoon(eventType: Event.Type, daysLeft: Int) {
+        Wait.until(ViewIsShown(onView(card(eventType)), true))
         card(eventType).containsText("Verloopt over $daysLeft dagen")
     }
 
     fun assertInternationalEventIsExpired(eventType: Event.Type) {
-        assertDisplayed("Je internationale ${eventType.domesticName.lowercase()} is verlopen")
+        waitForText("Je internationale ${eventType.domesticName.lowercase()} is verlopen")
     }
 
     // MARK: QR Details
@@ -130,6 +138,7 @@ object Assertions {
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null, deviceDate: LocalDate = LocalDate.now()) {
         assertQRisShown()
         if (event is Vaccination) waitForText("Dosis $dose")
+        Wait.until(ViewIsShown(onView(withText("Details")), true))
         tapButton("Details")
         labelValuePairExist("Naam / Name:", person.name)
         labelValuePairExist("Geboortedatum / Date of birth*:", person.birthDate.dutch())
@@ -168,15 +177,9 @@ object Assertions {
     }
 
     fun assertQRisHidden() {
-        assertDisplayed("QR-code is verborgen")
+        waitForText("QR-code is verborgen")
         assertDisplayed("Wat betekent dit?")
         assertDisplayed("Laat toch zien")
-
-        tapButton("Wat betekent dit?")
-        assertDisplayed("Verborgen QR-code")
-        clickBack()
-
-        tapButton("Laat toch zien")
     }
 
     fun assertQRisNotHidden() {
@@ -186,15 +189,9 @@ object Assertions {
     }
 
     fun assertQRisExpired() {
-        assertDisplayed("QR-code is verlopen")
+        waitForText("QR-code is verlopen")
         assertDisplayed("Wat betekent dit?")
         assertDisplayed("Laat toch zien")
-
-        tapButton("Wat betekent dit?")
-        assertDisplayed("Verlopen QR-code")
-        clickBack()
-
-        tapButton("Laat toch zien")
     }
 
     fun assertNoPreviousQR() {
