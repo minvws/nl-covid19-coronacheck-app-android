@@ -45,7 +45,7 @@ class PastEventQRCodeTest : BaseTest() {
         val person = Person(bsn = "999990020")
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
-        val deviceDate = today.offsetDays(-65)
+        val deviceDate = today.offsetDays(-80)
 
         addVaccinationCertificate(person.bsn)
         addRetrievedCertificateToApp()
