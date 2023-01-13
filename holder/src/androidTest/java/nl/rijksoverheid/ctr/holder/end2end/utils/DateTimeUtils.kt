@@ -12,7 +12,6 @@ package nl.rijksoverheid.ctr.holder.end2end.utils
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
-import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Switch
 import android.widget.TextView
@@ -26,8 +25,8 @@ import androidx.test.uiautomator.UiScrollable
 import androidx.test.uiautomator.UiSelector
 import androidx.test.uiautomator.Until
 import java.time.LocalDate
-import java.time.Period
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import timber.log.Timber
 
 class DateTimeUtils(private val device: UiDevice) {
@@ -91,20 +90,19 @@ class DateTimeUtils(private val device: UiDevice) {
         val dateWithoutYear = dateHeader.text.lowercase()
         val dateTimeFormatter = DateTimeFormatter.ofPattern("E d MMM yyyy").withLocale(java.util.Locale("nl", "NL"))
         val date = LocalDate.parse("$dateWithoutYear $year", dateTimeFormatter)
-        Log.d("this", date.toString())
+        Timber.tag("end2end").d("Current device date is $date")
         return date
     }
 
     private fun selectTargetMonth(currentDate: LocalDate, targetDate: LocalDate) {
-        val period = Period.between(currentDate.withDayOfMonth(1), targetDate.withDayOfMonth(1))
-        val yearDiff = period.years
-        val monthDiff = period.months + yearDiff * 12
+        val monthDiff = ChronoUnit.MONTHS.between(currentDate.withDayOfMonth(1), targetDate.withDayOfMonth(1))
+            Timber.tag("end2end").d("Months to shift: $monthDiff")
         when {
-            monthDiff == 0 -> {
+            monthDiff == 0L -> {
                 // ...nothing to do. Currently on the right month.
             }
-            monthDiff < 0 -> {
-                for (i in monthDiff until -1) {
+            monthDiff < 0L -> {
+                for (i in monthDiff until 0) {
                     val previousMonthButtonItem = findObjectByResourceName(prevMonthResource)
                     previousMonthButtonItem.click()
                 }
@@ -119,6 +117,7 @@ class DateTimeUtils(private val device: UiDevice) {
     }
 
     private fun selectTargetDay(targetDate: LocalDate) {
+        Timber.tag("end2end").d("Target day: ${targetDate.dayOfMonth}")
         val dayList = UiCollection(UiSelector().resourceId(monthViewResource))
         val dayItem = dayList.getChild(UiSelector().index(targetDate.dayOfMonth - 1))
         dayItem.click()
