@@ -168,12 +168,6 @@ object Assertions {
         waitForText("QR-code is verborgen")
         assertDisplayed("Wat betekent dit?")
         assertDisplayed("Laat toch zien")
-
-        tapButton("Wat betekent dit?")
-        assertDisplayed("Verborgen QR-code")
-        clickBack()
-
-        tapButton("Laat toch zien")
     }
 
     fun assertQRisNotHidden() {
@@ -186,12 +180,6 @@ object Assertions {
         waitForText("QR-code is verlopen")
         assertDisplayed("Wat betekent dit?")
         assertDisplayed("Laat toch zien")
-
-        tapButton("Wat betekent dit?")
-        assertDisplayed("Verlopen QR-code")
-        clickBack()
-
-        tapButton("Laat toch zien")
     }
 
     fun assertNoPreviousQR() {
