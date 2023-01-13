@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
-import android.annotation.SuppressLint
 import android.view.View
 import android.widget.Button
 import androidx.annotation.IdRes
@@ -119,7 +118,6 @@ object Elements {
             var currentIndex = 0
             var viewObjHash = 0
 
-            @SuppressLint("DefaultLocale")
             override fun describeTo(description: Description) {
                 description.appendText(String.format("with index: %d ", index))
                 matcher.describeTo(description)
