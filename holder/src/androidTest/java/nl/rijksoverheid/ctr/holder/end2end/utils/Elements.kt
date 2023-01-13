@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import android.view.View
-import android.widget.Button
 import androidx.annotation.IdRes
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
