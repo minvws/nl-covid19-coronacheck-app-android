@@ -1,5 +1,7 @@
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import nl.rijksoverheid.ctr.holder.R
@@ -19,10 +21,11 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.containsText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.labelValuePairExist
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.rest
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
+import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
+import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 
 object Assertions {
 
@@ -77,6 +80,7 @@ object Assertions {
 
     fun assertInternationalEventOnOverview(event: Event, dose: String? = null) {
         scrollToBottomOfOverview()
+        Wait.until(ViewIsShown(onView(card(event.type)), true))
         when (event) {
             is Vaccination -> {
                 card(Event.Type.Vaccination).containsText("Dosis $dose")
@@ -94,6 +98,7 @@ object Assertions {
 
     fun assertNotYetValidInternationalEventOnOverview(event: Event) {
         scrollToBottomOfOverview()
+        Wait.until(ViewIsShown(onView(card(event.type)), true))
         when (event) {
             is PositiveTest -> {
                 card(Event.Type.PositiveTest).containsText("geldig vanaf " + event.validFrom!!.writtenWithoutYear())
@@ -108,10 +113,12 @@ object Assertions {
     }
 
     fun assertInternationalEventWillBecomeValid(eventType: Event.Type) {
+        Wait.until(ViewIsShown(onView(card(eventType)), true))
         card(eventType).containsText("Wordt automatisch geldig")
     }
 
     fun assertInternationalEventWillExpireSoon(eventType: Event.Type, daysLeft: Int) {
+        Wait.until(ViewIsShown(onView(card(eventType)), true))
         card(eventType).containsText("Verloopt over $daysLeft dagen")
     }
 
@@ -123,7 +130,7 @@ object Assertions {
 
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null, deviceDate: LocalDate = LocalDate.now()) {
         if (event is Vaccination) waitForText("Dosis $dose")
-        rest() // Waiting until 'Details' is clickable is unreliable
+        Wait.until(ViewIsShown(onView(withText("Details")), true))
         tapButton("Details")
         labelValuePairExist("Naam / Name:", person.name)
         labelValuePairExist("Geboortedatum / Date of birth*:", person.birthDate.dutch())

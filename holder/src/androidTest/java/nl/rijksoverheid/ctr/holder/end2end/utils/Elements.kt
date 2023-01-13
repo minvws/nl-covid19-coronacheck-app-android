@@ -2,11 +2,16 @@ package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import android.annotation.SuppressLint
 import android.view.View
+import android.widget.Button
 import androidx.annotation.IdRes
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.UiController
+import androidx.test.espresso.ViewAction
+import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
@@ -27,6 +32,9 @@ import junit.framework.TestCase.assertNotNull
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.device
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.wait.ButtonInState
+import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
+import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.containsStringIgnoringCase
 import org.hamcrest.CoreMatchers.not
@@ -66,11 +74,13 @@ object Elements {
 
     fun clickOn(text: String) {
         Timber.tag("end2end").d("Clicking on '$text'")
+        Wait.until(ButtonInState(onView(withText(text)), true))
         BaristaClickInteractions.clickOn(text)
     }
 
     fun clickOn(@IdRes resId: Int) {
         Timber.tag("end2end").d("Clicking on resource with id '$resId'")
+        Wait.until(ViewIsShown(onView(withId(resId)), true))
         BaristaClickInteractions.clickOn(resId)
     }
 
@@ -98,7 +108,9 @@ object Elements {
 
     fun tapButton(label: String, position: Int = 0) {
         Timber.tag("end2end").d("Tapping button with label '$label'${if (position > 0) " on position $position" else ""}")
-        onView(allOf(withIndex(withText(containsStringIgnoringCase(label)), position))).perform(click())
+        val viewInteraction = onView(allOf(withIndex(withText(containsStringIgnoringCase(label)), position)))
+        Wait.until(ViewIsShown(viewInteraction, true))
+        viewInteraction.perform(click())
     }
 
     // Based on: https://stackoverflow.com/a/41967652
@@ -122,6 +134,25 @@ object Elements {
         }
     }
 
+    // Based on https://stackoverflow.com/a/58452045
+    fun ViewInteraction.getView(): View? {
+        var viewElement: View? = null
+        this.perform(object : ViewAction {
+            override fun getConstraints(): Matcher<View> {
+                return isAssignableFrom(View::class.java)
+            }
+
+            override fun getDescription(): String {
+                return "return View object"
+            }
+
+            override fun perform(uiController: UiController, view: View) {
+                viewElement = view
+            }
+        })
+        return viewElement
+    }
+
     fun card(eventType: Event.Type): Matcher<View> {
         val text = eventType.internationalName
         Timber.tag("end2end").d("Getting card view with text '$text'")
@@ -138,18 +169,23 @@ object Elements {
 
     fun Matcher<View>.containsText(text: String) {
         Timber.tag("end2end").d("Contains text '$text' on a view")
-        onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(text)))).check(ViewAssertions.matches(isDisplayed()))
+        val viewInteraction = onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(text))))
+        Wait.until(ViewIsShown(viewInteraction, true))
+        viewInteraction.check(ViewAssertions.matches(isDisplayed()))
     }
 
     fun Matcher<View>.buttonIsEnabled(enabled: Boolean = true) {
         Timber.tag("end2end").d("Checking if button on a view is ${if (enabled) "enabled" else "disabled"}")
-        val match = if (enabled) isEnabled() else not(isEnabled())
-        onView(allOf(isDescendantOfA(this), withId(R.id.button))).check(ViewAssertions.matches(match))
+        val viewInteraction = onView(allOf(isDescendantOfA(this), withId(R.id.button)))
+        Wait.until(ButtonInState(viewInteraction, enabled))
+        viewInteraction.check(ViewAssertions.matches(if (enabled) isEnabled() else not(isEnabled())))
     }
 
     fun Matcher<View>.tapButton(label: String) {
         Timber.tag("end2end").d("Tapping button with label '$label' on a view")
-        onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(label)))).perform(click())
+        val viewInteraction = onView(allOf(isDescendantOfA(this), withText(containsStringIgnoringCase(label))))
+        Wait.until(ButtonInState(viewInteraction, true))
+        viewInteraction.perform(click())
     }
 
     // MARK: UiAutomator
