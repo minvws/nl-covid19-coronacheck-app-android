@@ -123,7 +123,7 @@ object Assertions {
     }
 
     fun assertInternationalEventIsExpired(eventType: Event.Type) {
-        assertDisplayed("Je internationale ${eventType.domesticName.lowercase()} is verlopen")
+        waitForText("Je internationale ${eventType.domesticName.lowercase()} is verlopen")
     }
 
     // MARK: QR Details
@@ -165,7 +165,7 @@ object Assertions {
     }
 
     fun assertQRisHidden() {
-        assertDisplayed("QR-code is verborgen")
+        waitForText("QR-code is verborgen")
         assertDisplayed("Wat betekent dit?")
         assertDisplayed("Laat toch zien")
 
@@ -183,7 +183,7 @@ object Assertions {
     }
 
     fun assertQRisExpired() {
-        assertDisplayed("QR-code is verlopen")
+        waitForText("QR-code is verlopen")
         assertDisplayed("Wat betekent dit?")
         assertDisplayed("Laat toch zien")
 

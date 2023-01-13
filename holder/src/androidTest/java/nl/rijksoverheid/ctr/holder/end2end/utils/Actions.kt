@@ -6,7 +6,6 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickOn
@@ -71,7 +70,7 @@ object Actions {
     fun viewQR(eventType: Event.Type) {
         scrollToBottomOfOverview()
         card(eventType).tapButton("Bekijk QR")
-        assertDisplayed("Internationale QR")
+        waitForText("Internationale QR")
     }
 
     fun viewPreviousQR() {
