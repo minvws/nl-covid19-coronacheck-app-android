@@ -179,7 +179,6 @@ android {
         configs {
             end2end {
                 resultsHistoryName.set("end2end")
-                flakyTestAttempts.set(1) // Retest flaky tests once
                 testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
                 environmentVariables.set(["authPassword": end2endPassword, "clearPackageData": "true"])
                 devices.set([
