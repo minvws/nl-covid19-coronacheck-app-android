@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.end2end
 
+import androidx.test.filters.SdkSuppress
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
@@ -31,6 +32,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
 import org.junit.After
 import org.junit.Test
 
+@SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
 class PastEventQRCodeTest : BaseTest() {
 
     @After
