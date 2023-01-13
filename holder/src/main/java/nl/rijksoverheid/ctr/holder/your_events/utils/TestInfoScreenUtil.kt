@@ -78,11 +78,13 @@ class TestInfoScreenUtilImpl(
 
         val country = getCountry(event.negativeTest?.country)
 
+        val isPaperCertificate = europeanCredential != null
+
         val title =
             if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(
                 R.string.your_test_result_explanation_toolbar_title
             )
-        val header = if (europeanCredential != null) {
+        val header = if (isPaperCertificate) {
             resources.getString(R.string.paper_proof_event_explanation_header)
         } else {
             resources.getString(R.string.your_test_result_explanation_description_header)
@@ -152,7 +154,13 @@ class TestInfoScreenUtilImpl(
             },
             "<br/>",
             createdLine(
-                resources.getString(R.string.your_test_result_explanation_description_unique_identifier),
+                resources.getString(
+                    if (isPaperCertificate) {
+                        R.string.holder_dcc_test_identifier
+                    } else {
+                        R.string.your_test_result_explanation_description_unique_identifier
+                    }
+                ),
                 unique
             ),
             if (europeanCredential != null && addExplanation) {

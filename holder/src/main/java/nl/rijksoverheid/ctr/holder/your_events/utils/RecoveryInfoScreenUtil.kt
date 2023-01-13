@@ -47,6 +47,8 @@ class RecoveryInfoScreenUtilImpl(
         val validFromDate = event.recovery?.validFrom?.formatDayMonthYear() ?: ""
         val validUntilDate = event.recovery?.validUntil?.formatDayMonthYear() ?: ""
 
+        val isPaperCertificate = europeanCredential != null
+
         val title =
             if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(
                 R.string.your_test_result_explanation_toolbar_title
@@ -110,7 +112,13 @@ class RecoveryInfoScreenUtilImpl(
             ),
             "<br/>",
             createdLine(
-                resources.getString(R.string.recovery_explanation_description_unique_test_identifier),
+                resources.getString(
+                    if (isPaperCertificate) {
+                        R.string.holder_dcc_test_identifier
+                    } else {
+                        R.string.your_test_result_explanation_description_unique_identifier
+                    }
+                ),
                 event.unique
             ),
             if (europeanCredential != null && addExplanation) {
