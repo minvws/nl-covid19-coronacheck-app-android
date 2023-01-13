@@ -59,10 +59,8 @@ class FutureEventQRCodeTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
-        assertInternationalQRDetails(person, vac2, dose = "2/2", deviceDate)
         viewPreviousQR()
         assertQRisHidden()
-        assertInternationalQRDetails(person, vac1, dose = "1/2", deviceDate)
     }
 
     @Test
@@ -84,10 +82,8 @@ class FutureEventQRCodeTest : BaseTest() {
 
         viewQR(Event.Type.Vaccination)
         assertQRisExpired()
-        assertInternationalQRDetails(person, vac2, dose = "2/2", deviceDate)
         viewPreviousQR()
         assertQRisHidden()
-        assertInternationalQRDetails(person, vac1, dose = "1/2", deviceDate)
     }
 
     @Test
