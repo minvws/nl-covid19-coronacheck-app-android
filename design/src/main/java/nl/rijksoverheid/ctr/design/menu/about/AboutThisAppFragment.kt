@@ -9,8 +9,6 @@
 package nl.rijksoverheid.ctr.design.menu.about
 
 import android.annotation.SuppressLint
-import android.app.ActivityManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -27,7 +25,6 @@ import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppSectionBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
-import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
@@ -39,7 +36,6 @@ import org.koin.android.ext.android.inject
 
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
-    private val dialogUtil: DialogUtil by inject()
     private val policyPersistenceManager: DebugDisclosurePolicyPersistenceManager by inject()
 
     companion object {
@@ -78,8 +74,10 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
                 itemView.root.setOnClickListener {
                     when (item) {
                         is AboutThisAppData.Url -> item.url.launchUrl(requireContext())
-                        is AboutThisAppData.ClearAppData -> showClearAppDataDialog()
-                        is AboutThisAppData.Destination -> findNavControllerSafety()?.navigate(item.destinationId)
+                        is AboutThisAppData.Destination -> findNavControllerSafety()?.navigate(
+                            item.destinationId,
+                            item.arguments
+                        )
                     }
                 }
             }
@@ -138,18 +136,9 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
     }
 
     private fun showClearAppDataDialog() {
-        dialogUtil.presentDialog(
-            context = requireContext(),
-            title = R.string.about_this_app_clear_data_title,
-            message = resources.getString(R.string.about_this_app_clear_data_description),
-            negativeButtonText = R.string.about_this_app_clear_data_cancel,
-            positiveButtonText = R.string.about_this_app_clear_data_confirm,
-            positiveButtonCallback = ::clearAppData
-        )
-    }
-
-    private fun clearAppData() {
-        (context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
+        arguments?.getParcelableCompat<AboutThisAppData>(EXTRA_ABOUT_THIS_APP_DATA)?.resetAppDialogDirection?.let {
+            findNavControllerSafety()?.navigate(it.destinationId, it.arguments)
+        }
     }
 
     private fun bindScannerDeeplinkButton(deeplinkScannerButton: Button, url: String) {

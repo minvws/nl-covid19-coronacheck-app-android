@@ -20,8 +20,10 @@ import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
-import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import nl.rijksoverheid.ctr.design.utils.DialogButtonData
+import nl.rijksoverheid.ctr.design.utils.DialogFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
+import nl.rijksoverheid.ctr.design.utils.SharedDialogFragmentDirections
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -32,6 +34,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
+import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -49,7 +52,6 @@ import org.koin.core.qualifier.named
  */
 abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutId) {
 
-    private val dialogUtil: DialogUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val loginTypeUtil: LoginTypeUtil by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
@@ -76,18 +78,24 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
             when (it) {
                 is EventsResult.Success -> {
                     if (it.missingEvents) {
-                        dialogUtil.presentDialog(
-                            context = requireContext(),
-                            title = getDialogTitleFromOriginType(getOriginTypes().first()),
-                            message = getString(R.string.error_get_events_missing_events_dialog_description),
-                            positiveButtonText = R.string.dialog_close,
-                            positiveButtonCallback = {},
-                            onDismissCallback = {
-                                onNavigateToYourEvents(
-                                    remoteProtocols = it.remoteEvents,
-                                    eventProviders = it.eventProviders
+                        val yourEventsDestination = SharedDialogFragmentDirections.actionYourEvents(
+                            toolbarTitle = getCopyForOriginType().toolbarTitle,
+                            type = yourEventsFragmentType(
+                                remoteProtocols = it.remoteEvents,
+                                eventProviders = it.eventProviders
+                            ),
+                            flow = getFlow()
+                        )
+                        openDialog(
+                            data = DialogFragmentData(
+                                title = getDialogTitleFromOriginType(getOriginTypes().first()),
+                                message = R.string.error_get_events_missing_events_dialog_description,
+                                positiveButtonData = DialogButtonData.NavigationButton(
+                                    textId = R.string.dialog_close,
+                                    navigationActionId = yourEventsDestination.actionId,
+                                    navigationArguments = yourEventsDestination.arguments
                                 )
-                            }
+                            )
                         )
                         dialogPresented()
                     } else {
@@ -195,25 +203,36 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                     presentError(it.errorResult)
                 }
                 is LoginResult.Cancelled -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = loginTypeUtil.getCanceledDialogTitle(getLoginType()),
-                        message = getString(loginTypeUtil.getCanceledDialogDescription(getLoginType(), getOriginTypes().first())),
-                        positiveButtonText = R.string.dialog_close,
-                        positiveButtonCallback = {}
+                    openDialog(
+                        DialogFragmentData(
+                            title = loginTypeUtil.getCanceledDialogTitle(getLoginType()),
+                            message = loginTypeUtil.getCanceledDialogDescription(
+                                getLoginType(),
+                                getOriginTypes().first()
+                            ),
+                            positiveButtonData = DialogButtonData.Dismiss(
+                                textId = R.string.dialog_close
+                            )
+                        )
                     )
                     dialogPresented()
                 }
                 LoginResult.NoBrowserFound -> {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.dialog_no_browser_title,
-                        message = getString(
-                            R.string.dialog_no_browser_message,
-                            getString(loginTypeUtil.getNoBrowserDialogDescription(getLoginType()))
-                        ),
-                        positiveButtonText = R.string.ok,
-                        positiveButtonCallback = {}
+                    openDialog(
+                        DialogFragmentData(
+                            title = R.string.dialog_no_browser_title,
+                            message = R.string.dialog_no_browser_message,
+                            messageArguments = listOf(
+                                getString(
+                                    loginTypeUtil.getNoBrowserDialogDescription(
+                                        getLoginType()
+                                    )
+                                )
+                            ),
+                            positiveButtonData = DialogButtonData.Dismiss(
+                                textId = R.string.ok
+                            )
+                        )
                     )
                     dialogPresented()
                 }
@@ -303,5 +322,12 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
         remoteProtocols: Map<RemoteProtocol, ByteArray>,
         eventProviders: List<EventProvider> = emptyList()
     )
+
     abstract fun dialogPresented()
+    abstract fun yourEventsFragmentType(
+        remoteProtocols: Map<RemoteProtocol, ByteArray>,
+        eventProviders: List<EventProvider>
+    ): YourEventsFragmentType
+
+    abstract fun openDialog(data: DialogFragmentData)
 }

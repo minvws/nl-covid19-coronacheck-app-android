@@ -346,6 +346,10 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_dialog"
+            app:destination="@+id/nav_dialog" />
+
     </fragment>
 
     <fragment
@@ -417,6 +421,10 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_dialog"
+            app:destination="@+id/nav_dialog" />
 
     </fragment>
 
@@ -635,6 +643,10 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_dialog"
+            app:destination="@+id/nav_dialog" />
+
     </fragment>
 
     <fragment
@@ -841,6 +853,10 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_dialog"
+            app:destination="@+id/nav_dialog" />
+
     </fragment>
 
     <fragment
@@ -874,5 +890,21 @@
             app:argType="nl.rijksoverheid.ctr.design.menu.about.HelpdeskData" />
 
     </fragment>
+
+    <dialog
+        android:id="@+id/nav_dialog"
+        android:name="nl.rijksoverheid.ctr.design.utils.SharedDialogFragment">
+        <argument android:name="data"
+            app:argType="nl.rijksoverheid.ctr.design.utils.DialogFragmentData" />
+
+        <action
+            android:id="@+id/action_your_events"
+            app:destination="@id/nav_your_events"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </dialog>
 
 </navigation>
