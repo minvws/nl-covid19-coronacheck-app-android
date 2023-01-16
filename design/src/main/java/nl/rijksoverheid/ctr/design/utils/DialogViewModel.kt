@@ -26,6 +26,8 @@ abstract class DialogViewModel : ViewModel() {
         negativeButtonCallback: (() -> Unit)?,
         onDismissCallback: (() -> Unit)?
     )
+
+    abstract fun onDestroy()
 }
 
 class DialogViewModelImpl : DialogViewModel() {
@@ -39,5 +41,9 @@ class DialogViewModelImpl : DialogViewModel() {
         (positiveButtonCallbackLiveData as MutableLiveData).value = positiveButtonText to positiveButtonCallback
         (negativeButtonCallbackLiveData as MutableLiveData).value = negativeButtonText to negativeButtonCallback
         (onDismissCallbackLiveData as MutableLiveData).value = onDismissCallback
+    }
+
+    override fun onDestroy() {
+        (onDismissCallbackLiveData as MutableLiveData).value = null
     }
 }

@@ -56,14 +56,23 @@ class DialogFragment : DialogFragment() {
 
     private val viewModel: DialogViewModel by viewModel()
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        viewModel.onDismissCallbackLiveData.value?.invoke()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onDestroy()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel.onDismissCallbackLiveData.observe(this) { onDismiss ->
-            dialog?.setOnDismissListener {
-                onDismiss?.invoke()
+            (dialog as? AlertDialog)?.setOnDismissListener {
                 dismiss()
             }
         }
