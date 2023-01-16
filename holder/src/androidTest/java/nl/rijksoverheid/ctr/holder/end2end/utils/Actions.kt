@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterBsn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterTextInField
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.rest
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollListToPosition
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
@@ -71,7 +72,8 @@ object Actions {
 
     fun scrollToBottomOfOverview() {
         Wait.until(ViewIsShown(onView(withId(R.id.recyclerView)), true))
-        for (i in 3 until 12 step 3) scrollListToPosition(R.id.recyclerView, i)
+        for (i in 2 until 12 step 2) scrollListToPosition(R.id.recyclerView, i)
+        rest(2)
     }
 
     fun viewQR(eventType: Event.Type) {

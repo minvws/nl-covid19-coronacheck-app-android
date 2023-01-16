@@ -227,8 +227,8 @@ object Elements {
     // MARK: Other
 
     @Suppress("unused")
-    fun Any.rest(timeout: Long = 1) {
-        Timber.tag("end2end").d("  Rest Here Weary Traveler, for just ${if (timeout > 1) "$timeout seconds" else "a second"}")
-        Thread.sleep(timeout * 1000)
+    fun rest(seconds: Long = 1) {
+        Timber.tag("end2end").d("  Rest Here Weary Traveler, for just ${if (seconds > 1) "$seconds seconds" else "a second"}")
+        Thread.sleep(seconds * 1000)
     }
 }

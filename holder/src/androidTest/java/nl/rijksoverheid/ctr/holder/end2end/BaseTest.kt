@@ -23,7 +23,7 @@ abstract class BaseTest : AutoCloseKoinTest() {
 
     fun relaunchApp() {
         ActivityScenario.launch(HolderMainActivity::class.java)
-        Thread.sleep(2 * 1_000)
+        instrumentation.waitForIdleSync()
     }
 
     @Before
