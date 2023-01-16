@@ -37,7 +37,6 @@ class SharedDialogFragment : DialogFragment() {
             it.positiveButtonData.apply {
                 builder.setPositiveButton(textId) { dialog, _ ->
                     when (this) {
-                        is DialogButtonData.LinkButton -> TODO()
                         is DialogButtonData.NavigationButton -> findNavControllerSafety()?.navigate(
                             navigationActionId,
                             navigationArguments

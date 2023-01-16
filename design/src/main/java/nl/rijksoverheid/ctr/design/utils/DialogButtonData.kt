@@ -6,9 +6,6 @@ import androidx.annotation.IdRes
 import kotlinx.parcelize.Parcelize
 
 sealed class DialogButtonData(open val textId: Int) : Parcelable {
-    @Parcelize
-    data class LinkButton(override val textId: Int, val link: String) : DialogButtonData(textId),
-        Parcelable
 
     @Parcelize
     data class NavigationButton(
