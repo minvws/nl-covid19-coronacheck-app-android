@@ -14,7 +14,7 @@ import androidx.test.uiautomator.UiDevice
 import java.time.LocalDate
 import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
-import nl.rijksoverheid.ctr.holder.end2end.utils.ConfigOverride
+import nl.rijksoverheid.ctr.holder.end2end.utils.overrideModules
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
@@ -36,7 +36,7 @@ abstract class BaseTest : AutoCloseKoinTest() {
 
     @Before
     fun startApp() {
-        ConfigOverride().overrideModules(listOf())
+        overrideModules(listOf())
 
         persistenceManager.setHasDismissedUnsecureDeviceDialog(true)
         persistenceManager.setHasDismissedRootedDeviceDialog()
