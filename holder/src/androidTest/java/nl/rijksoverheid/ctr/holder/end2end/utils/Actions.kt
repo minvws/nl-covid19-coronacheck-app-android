@@ -34,6 +34,8 @@ object Actions {
         Timber.tag("end2end").d(logLine)
     }
 
+    // MARK: Adding events
+
     private fun addEvent() {
         tapButton("Menu")
         tapButton("Vaccinatie of test toevoegen")
@@ -65,6 +67,8 @@ object Actions {
         waitForText("Mijn bewijzen", 60)
     }
 
+    // MARK: Overview
+
     fun scrollToBottomOfOverview() {
         Wait.until(ViewIsShown(onView(withId(R.id.recyclerView)), true))
         for (i in 3 until 12 step 3) scrollListToPosition(R.id.recyclerView, i)
@@ -76,9 +80,13 @@ object Actions {
         waitForText("Internationale QR")
     }
 
+    // MARK: QR
+
     fun viewPreviousQR() {
         clickOn(R.id.previousQrButton)
     }
+
+    // MARK: Private functions
 
     private fun retrieveCertificateFromServer(bsn: String) {
         if (bsn.isEmpty()) fail("BSN was empty, no certificate can be retrieved.")
