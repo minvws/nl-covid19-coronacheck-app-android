@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragment
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragmentDirections
@@ -97,8 +96,6 @@ class MenuUtilImpl(
     }
 
     private fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(
-        versionName = BuildConfig.VERSION_NAME,
-        versionCode = BuildConfig.VERSION_CODE.toString(),
         sections = mutableListOf(
             AboutThisAppData.AboutThisAppSection(
                 header = R.string.about_this_app_read_more,
@@ -115,28 +112,22 @@ class MenuUtilImpl(
                         text = context.getString(R.string.about_this_app_colofon),
                         url = context.getString(R.string.about_this_app_colofon_url)
                     )
-                ).apply {
-                    if (!BuildConfig.FLAVOR.lowercase().contains("prod")) {
-                        add(AboutThisAppData.ClearAppData(
-                            text = context.getString(R.string.about_this_clear_data)
-                        ))
-                    }
-                }
+                )
             )
         ).apply {
             if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
-                add(AboutThisAppData.AboutThisAppSection(
-                    header = R.string.verifier_about_this_app_law_enforcement,
-                    items = listOf(
-                        AboutThisAppData.Destination(
-                            text = context.getString(R.string.verifier_about_this_app_scan_log),
-                            destinationId = R.id.action_scan_log
+                add(
+                    AboutThisAppData.AboutThisAppSection(
+                        header = R.string.verifier_about_this_app_law_enforcement,
+                        items = listOf(
+                            AboutThisAppData.Destination(
+                                text = context.getString(R.string.verifier_about_this_app_scan_log),
+                                destinationId = R.id.action_scan_log
+                            )
                         )
                     )
-                ))
+                )
             }
-        },
-        configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
-        configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
+        }
     )
 }

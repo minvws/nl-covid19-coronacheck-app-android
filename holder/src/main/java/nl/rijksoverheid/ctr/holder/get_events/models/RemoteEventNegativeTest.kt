@@ -30,6 +30,7 @@ data class RemoteEventNegativeTest(
         val facility: String?,
         val type: String?,
         val name: String?,
+        val country: String?,
         val manufacturer: String?
     ) : Parcelable
 

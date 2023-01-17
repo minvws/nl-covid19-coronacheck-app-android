@@ -9,6 +9,7 @@ package nl.rijksoverheid.ctr.design.fragments.menu
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.ItemMenuBinding
@@ -25,6 +26,11 @@ class MenuItemAdapterItem(
 
         viewBinding.icon.setImageResource(menuItem.icon)
         viewBinding.title.setText(menuItem.title)
+        if (menuItem.color > 0) {
+            val color = ContextCompat.getColor(viewBinding.title.context, R.color.error)
+            viewBinding.icon.setColorFilter(color)
+            viewBinding.title.setTextColor(color)
+        }
         menuItem.subtitle?.let {
             viewBinding.subtitle.visibility = View.VISIBLE
             viewBinding.subtitle.setText(it)

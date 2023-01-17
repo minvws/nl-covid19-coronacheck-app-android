@@ -16,6 +16,7 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.FragmentMenuBinding
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableArrayCompat
@@ -24,6 +25,8 @@ import org.koin.android.ext.android.inject
 class MenuFragment : Fragment(R.layout.fragment_menu) {
 
     private val intentUtil: IntentUtil by inject()
+
+    private val dialogUtil: DialogUtil by inject()
 
     private val menuSections by lazy { requireArguments().getParcelableArrayCompat<MenuSection>("menuSections")?.toList() ?: listOf() }
 

@@ -8,10 +8,12 @@ package nl.rijksoverheid.ctr.holder.your_events.utils
 
 import android.content.res.Resources
 import android.text.TextUtils
+import java.util.Locale
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
+import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 
 interface RecoveryInfoScreenUtil {
@@ -29,7 +31,8 @@ interface RecoveryInfoScreenUtil {
 class RecoveryInfoScreenUtilImpl(
     val resources: Resources,
     private val mobileCoreWrapper: MobileCoreWrapper,
-    private val paperProofUtil: PaperProofUtil
+    private val paperProofUtil: PaperProofUtil,
+    private val countryUtil: CountryUtil
 ) : RecoveryInfoScreenUtil {
 
     override fun getForRecovery(
@@ -44,11 +47,22 @@ class RecoveryInfoScreenUtilImpl(
         val validFromDate = event.recovery?.validFrom?.formatDayMonthYear() ?: ""
         val validUntilDate = event.recovery?.validUntil?.formatDayMonthYear() ?: ""
 
-        val title = if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
+        val isPaperCertificate = europeanCredential != null
+
+        val title =
+            if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(
+                R.string.your_test_result_explanation_toolbar_title
+            )
         val header = if (europeanCredential != null) {
             resources.getString(R.string.paper_proof_event_explanation_header)
         } else {
             resources.getString(R.string.recovery_explanation_description_header)
+        }
+
+        val countryValue = event.recovery?.country
+        val country = when {
+            countryValue.isNullOrEmpty() -> "NL"
+            else -> countryValue
         }
 
         val description = (TextUtils.concat(
@@ -69,6 +83,26 @@ class RecoveryInfoScreenUtilImpl(
                 testDate
             ),
             createdLine(
+                resources.getString(R.string.holder_event_about_test_countrytestedin),
+                countryUtil.getCountryForInfoScreen(Locale.getDefault().language, country),
+                isOptional = true
+            ),
+            if (europeanCredential != null) {
+                val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
+                createdLine(
+                    resources.getString(R.string.holder_dcc_issuer),
+                    if (issuerAnswer == "Ministry of Health Welfare and Sport") {
+                        resources.getString(R.string.qr_explanation_certificate_issuer)
+                    } else {
+                        issuerAnswer
+                    },
+                    isOptional = true
+                )
+            } else {
+                ""
+            },
+            "<br/>",
+            createdLine(
                 resources.getString(R.string.recovery_explanation_description_valid_from),
                 validFromDate
             ),
@@ -76,14 +110,15 @@ class RecoveryInfoScreenUtilImpl(
                 resources.getString(R.string.recovery_explanation_description_valid_until),
                 validUntilDate
             ),
-            if (europeanCredential != null) {
-                val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
-                createdLine(resources.getString(R.string.holder_dcc_issuer), issuerAnswer, isOptional = true)
-            } else {
-                ""
-            },
+            "<br/>",
             createdLine(
-                resources.getString(R.string.recovery_explanation_description_unique_test_identifier),
+                resources.getString(
+                    if (isPaperCertificate) {
+                        R.string.holder_dcc_test_identifier
+                    } else {
+                        R.string.your_test_result_explanation_description_unique_identifier
+                    }
+                ),
                 event.unique
             ),
             if (europeanCredential != null && addExplanation) {

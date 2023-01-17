@@ -7,6 +7,7 @@
   <string name="general_readmore">Read more</string>
   <string name="holder_authentication_popup_digid_title">Login was cancelled</string>
   <string name="holder_dcc_alert_message">You can try to add a paper certificate again later.</string>
+  <string name="holder_dcc_test_identifier">Unique certificate identifier:</string>
   <string name="holder_recovery_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="holder_test_alert_message">Doing so will stop the creation of your certificate. You will have to retrieve your test result again later.</string>
   <string name="general_cancel">Cancel</string>
@@ -243,11 +244,11 @@
   <string name="qr_explanation_description_eu_vaccination_birth_date">Date of birth*:</string>
   <string name="qr_explanation_description_eu_vaccination_disease">Disease targeted:</string>
   <string name="qr_explanation_description_eu_vaccination_vaccine">Vaccine:</string>
-  <string name="qr_explanation_description_eu_vaccination_vaccine_type">Vaccine medicinal product:</string>
+  <string name="qr_explanation_description_eu_vaccination_vaccine_type">Vaccine type:</string>
   <string name="qr_explanation_description_eu_vaccination_producer">Vaccine manufacturer:</string>
   <string name="qr_explanation_description_eu_vaccination_doses">Number in series of doses:</string>
-  <string name="qr_explanation_description_eu_vaccination_vaccination_date">Date of vaccination*:</string>
-  <string name="qr_explanation_description_eu_vaccination_vaccinated_in">Member state of vaccination:</string>
+  <string name="qr_explanation_description_eu_vaccination_vaccination_date">Vaccination date*:</string>
+  <string name="qr_explanation_description_eu_vaccination_vaccinated_in">Vaccinated in:</string>
   <string name="qr_explanation_description_eu_vaccination_certificate_issuer">Certificate issuer:</string>
   <string name="qr_explanation_description_eu_vaccination_unique_certificate">Unique certificate identifier:</string>
   <string name="qr_explanation_description_eu_vaccination_footer">*Date noted in day-month-year.</string>
@@ -255,13 +256,13 @@
   <string name="qr_explanation_description_eu_test_name">Name:</string>
   <string name="qr_explanation_description_eu_test_birth_date">Date of birth*:</string>
   <string name="qr_explanation_description_eu_test_disease">Disease targeted:</string>
-  <string name="qr_explanation_description_eu_test_test_type">Type of test:</string>
+  <string name="qr_explanation_description_eu_test_test_type">Test type:</string>
   <string name="qr_explanation_description_eu_test_test_name">Test name:</string>
   <string name="qr_explanation_description_eu_test_test_date">Test date:</string>
   <string name="qr_explanation_description_eu_test_test_result">Test result:</string>
-  <string name="qr_explanation_description_eu_test_test_centre">Testing centre:</string>
+  <string name="qr_explanation_description_eu_test_test_centre">Test location:</string>
   <string name="qr_explanation_description_eu_test_manufacturer">Test manufacturer:</string>
-  <string name="qr_explanation_description_eu_test_test_country">Member state of test:</string>
+  <string name="qr_explanation_description_eu_test_test_country">Tested in:</string>
   <string name="qr_explanation_description_eu_test_issuer">Certificate issuer:</string>
   <string name="qr_explanation_description_eu_test_certificate_identifier">Unique certificate identifier:</string>
   <string name="qr_explanation_description_eu_test_footer">*Date noted in day-month-year.</string>
@@ -281,9 +282,9 @@
   <string name="qr_card_validity_future_hours">automatically becomes valid in %1$s hours</string>
   <string name="qr_card_vaccination_doses">Dose %1$s/%2$s</string>
   <string name="your_test_result_explanation_toolbar_title">Details</string>
-  <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved at the test location:<br\><br\>Your details: <b>%1$s<b/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Unique test identifier: <b>%5$s</b>]]></string>
-  <string name="your_test_result_explanation_negative_test_result">negative (no coronavirus)</string>
-  <string name="your_test_result_explanation_description_header">The following details were retrieved at the test location:</string>
+  <string name="your_test_result_explanation_description"><![CDATA[The following details were retrieved from the test location:<br\><br\>Your details: <b>%1$s</b><br/><br/>Test type: <b>%2$s</b><br/>Test date: <b>%3$s</b><br/>Test result: <b>%4$s</b><br/>Unique test identifier: <b>%5$s</b>]]></string>
+  <string name="your_test_result_explanation_negative_test_result">negative (no coronavirus detected)</string>
+  <string name="your_test_result_explanation_description_header">The following details were retrieved from the test location:</string>
   <string name="your_test_result_explanation_description_your_details">Your details:</string>
   <string name="your_test_result_explanation_description_name">Name:</string>
   <string name="your_test_result_explanation_description_date_of_birth">Date of birth:</string>
@@ -296,13 +297,13 @@
   <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
   <string name="your_vaccination_row_subtitle"><![CDATA[Vaccination date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s<br/>Data retrieved from: %4$s]]></string>
   <string name="your_vaccination_explanation_toolbar_title">Details</string>
-  <string name="your_vaccination_explanation_description"><![CDATA[<p>The following details of your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth*: <b>%2$s</b><br/><br/>Disease targeted: <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine medicinal product: <b>%5$s</b><br/>Vaccine manufacturer: <b>%6$s</b><br/>Number in series of doses: <b>%7$s</b><br/>Is this the last dose of your vaccination? <b>%8$s</b><br/>Date of vaccination*: <b>%9$s</b><br/>Member state of vaccination: <b>%10$s</b><br/>Unique certificate identifier: <b>%11$s</b>]]></string>
+  <string name="your_vaccination_explanation_description"><![CDATA[The following details about your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth*: <b>%2$s</b><br/><br/>Disease targeted: <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine medicinal product: <b>%5$s</b><br/>Vaccine manufacturer: <b>%6$s</b><br/>Number in series of doses: <b>%7$s</b><br/>Is this the last dose of your vaccination? <b>%8$s</b><br/>Vaccination date*: <b>%9$s</b><br/>Vaccinated in: <b>%10$s</b><br/>Unique certificate identifier: <b>%11$s</b>]]></string>
   <string name="your_vaccination_explanation_last_dose_yes">yes</string>
   <string name="your_vaccination_explanation_last_dose_yes_recovery">yes (I\'ve had coronavirus earlier)</string>
   <string name="your_vaccination_explanation_last_dose_yes_prior_event">yes (I have been vaccinated elsewhere)</string>
   <string name="your_vaccination_explanation_last_dose_no">no</string>
   <string name="your_vaccination_explanation_last_dose_unknown">unknown</string>
-  <string name="your_vaccination_explanation_header">These details about your vaccination were retrieved from %1$s:</string>
+  <string name="your_vaccination_explanation_header">The following details about your vaccination were retrieved from %1$s:</string>
   <string name="your_vaccination_explanation_covid_19">Disease targeted:</string>
   <string name="your_vaccination_explanation_covid_19_answer">COVID-19</string>
   <string name="your_vaccination_explanation_vaccine">Vaccine:</string>
@@ -310,8 +311,8 @@
   <string name="your_vaccination_explanation_producer">Vaccine manufacturer:</string>
   <string name="your_vaccination_explanation_doses">Number in series of doses:</string>
   <string name="your_vaccination_explanation_last_dose">Is this the last dose of your vaccination?</string>
-  <string name="your_vaccination_explanation_vaccination_date">Date of vaccination:</string>
-  <string name="your_vaccination_explanation_vaccination_country">Member state of vaccination:</string>
+  <string name="your_vaccination_explanation_vaccination_date">Vaccination date:</string>
+  <string name="your_vaccination_explanation_vaccination_country">Vaccinated in:</string>
   <string name="your_vaccination_explanation_unique_code">Unique vaccination identifier:</string>
   <string name="your_vaccination_explanation_doses_answer">%1$s / %2$s</string>
   <string name="my_overview_not_valid_domestic_but_is_in_eu">You don\'t have a Dutch %1$s.</string>
@@ -360,8 +361,8 @@
   <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="qr_code_type_recovery_title">Positive test</string>
   <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
-  <string name="your_test_result_explanation_positive_test_result">positive (corona)</string>
-  <string name="recovery_explanation_description_header">The following details were retrieved at the test location:</string>
+  <string name="your_test_result_explanation_positive_test_result">positive (coronavirus detected)</string>
+  <string name="recovery_explanation_description_header">The following details were retrieved from the test location:</string>
   <string name="recovery_explanation_description_name">Name:</string>
   <string name="recovery_explanation_description_birth_date">Date of birth:</string>
   <string name="recovery_explanation_description_test_date">Test date:</string>
@@ -372,8 +373,8 @@
   <string name="qr_explanation_description_eu_recovery_name">Name:</string>
   <string name="qr_explanation_description_eu_recovery_birth_date">Date of birth*:</string>
   <string name="qr_explanation_description_eu_recovery_disease">Disease recovered from:</string>
-  <string name="qr_explanation_description_eu_recovery_test_date">Test date:</string>
-  <string name="qr_explanation_description_eu_recovery_country">Member state of test:</string>
+  <string name="qr_explanation_description_eu_recovery_test_date">Test date*:</string>
+  <string name="qr_explanation_description_eu_recovery_country">Tested in:</string>
   <string name="qr_explanation_description_eu_recovery_producer">Certificate issuer:</string>
   <string name="qr_explanation_description_eu_recovery_valid_from_date">Valid from*:</string>
   <string name="qr_explanation_description_eu_recovery_valid_until_date">Valid to*:</string>
@@ -429,7 +430,6 @@
   <string name="add_paper_proof_invalid_combination_title">No valid combination</string>
   <string name="add_paper_proof_invalid_combination_">This letter combination and QR code don\'t belong together.</string>
   <string name="add_paper_proof_qr_scanner_title">Scan QR code</string>
-  <string name="add_paper_proof_consent_button">Start scanning</string>
   <string name="add_paper_proof_no_camera_error_header">We can\'t add a certificate on your phone</string>
   <string name="add_paper_proof_no_camera_error_description"><![CDATA[Your phone doesn\'t have a camera. This means you cannot scan the paper certificate and add it to your phone.<br><br>Please use the paper certificate you received from the healthcare provider.]]></string>
   <string name="your_dcc_event_description">If the details below are correct, you can add your certificate to the app.</string>
@@ -503,7 +503,7 @@
   <string name="config_warning_page_message"><![CDATA[Every now and then, the CoronaCheck app needs an internet connection to keep working. Without internet, your app will keep working until %1s. Open the app once you have an internet connection. It will automatically work again.<br/><br/>Please connect regularly to prevent any problems.]]></string>
   <string name="dialog_no_browser_title">Couldn’t find browser</string>
   <string name="dialog_no_browser_message">No internet browser was found on this phone to open %1s. Download a browser to open the link.</string>
-  <string name="about_this_app_clear_data_title">Clear all data?</string>
+  <string name="about_this_app_clear_data_title">Want to reset the app?</string>
   <string name="about_this_app_clear_data_description">Resetting will delete all data and certificates from the app and will close the app. You can simply restart it afterwards.</string>
   <string name="about_this_app_clear_data_cancel">Cancel</string>
   <string name="about_this_app_clear_data_confirm">Reset app</string>
@@ -540,7 +540,7 @@
   <string name="holder_listRemoteEvents_endStateNoRecoveryButDosisCorrection_title">We couldn\'t create a recovery certificate</string>
   <string name="holder_listRemoteEvents_endStateNoRecoveryButDosisCorrection_message"><![CDATA[You were tested positive for coronavirus too long ago. That is why your test result is no longer valid for creating a recovery certificate.<br><br>However, your positive test could be recorded into your vaccination certificate. Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="no_certificate_created_toolbar_title">No certificate created</string>
-  <string name="paper_proof_event_explanation_header">These details are in your certificate:</string>
+  <string name="paper_proof_event_explanation_header">The following details are in your certificate:</string>
   <string name="paper_proof_event_explanation_footer"><![CDATA[<br/><b>Are your details incorrect?</b><br/>Please contact the healthcare provider who vaccinated or tested you. This can be the GGD, your general practitioner or doctor. They can help you change these details.]]></string>
   <string name="rule_engine_no_test_origin_description_scanned_qr_code">scanned QR code</string>
   <string name="rule_engine_no_test_origin_description_negative_test">negative test result</string>
@@ -895,4 +895,20 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_identitySelection_accessibility_select">Select %s</string>
   <string name="holder_identitySelection_loading_accessibility">Your details are being updated</string>
   <string name="holder_event_aboutVaccination_productName">Product name:</string>
+  <string name="holder_event_about_test_countrytestedin">Tested in:</string>
+  <string name="holder_event_about_recovery_countrytestedin">Tested in:</string>
+  <string name="holder_showqr_eu_about_test_negative">negative (no coronavirus detected)</string>
+  <string name="holder_helpdesk_support_message">When you contact the CoronaCheck helpdesk, you may be asked for the following information:</string>
+  <string name="holder_menu_helpInfo">Help &amp; Info</string>
+  <string name="holder_helpInfo_helpdesk">Helpdesk</string>
+  <string name="holder_helpdesk_title">Helpdesk</string>
+  <string name="holder_helpdesk_contact_title">Contact</string>
+  <string name="holder_helpdesk_contact_message"><![CDATA[If you have any questions or experience problems, you can contact the CoronaCheck helpdesk.<br/><br/><b>Call the helpdesk:</b><br /><a href=\"tel:0800-1421\">0800-1421</a> (free). Or, if you are calling from abroad: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>.<br /> <br />Open from Monday till Friday, between 08.00 a.m. - 06.00 p.m.<br /><br /><b>Or send an email to:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
+  <string name="holder_helpdesk_support_title">Support</string>
+  <string name="holder_helpdesk_appVersion">App version:</string>
+  <string name="holder_helpdesk_configuration">Configuration:</string>
+  <string name="holder_helpInfo_title">Help &amp; Information</string>
+  <string name="appstatus_launchError_button">Sluit de app</string>
+  <string name="appstatus_launchError_title">Er gaat iets mis</string>
+  <string name="appstatus_launchError_body"><![CDATA[De app kan momenteel niet gestart worden. Bel voor meer informatie de CoronaCheck helpdesk op <a href=\"tel:0800-1421\">0800-1421</a> en geef onderstaande foutcode door.<br /><br /><b>Foutcode:</b><br /> %s]]></string>
 </resources>

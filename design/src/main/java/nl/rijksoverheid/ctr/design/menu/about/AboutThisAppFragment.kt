@@ -9,26 +9,22 @@
 package nl.rijksoverheid.ctr.design.menu.about
 
 import android.annotation.SuppressLint
-import android.app.ActivityManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.widget.Button
+import androidx.core.content.ContextCompat
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import java.time.Instant
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 import nl.rijksoverheid.ctr.design.BuildConfig
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppSectionBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
-import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTimeNumerical
-import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
@@ -40,7 +36,6 @@ import org.koin.android.ext.android.inject
 
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
-    private val dialogUtil: DialogUtil by inject()
     private val policyPersistenceManager: DebugDisclosurePolicyPersistenceManager by inject()
 
     companion object {
@@ -52,8 +47,9 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentAboutAppBinding.bind(view)
 
-        val aboutThisAppData = arguments?.getParcelableCompat<AboutThisAppData>(EXTRA_ABOUT_THIS_APP_DATA)
-            ?: throw IllegalStateException("AboutThisAppData should be set")
+        val aboutThisAppData =
+            arguments?.getParcelableCompat<AboutThisAppData>(EXTRA_ABOUT_THIS_APP_DATA)
+                ?: throw IllegalStateException("AboutThisAppData should be set")
 
         aboutThisAppData.sections.forEach {
             val sectionView = AboutThisAppSectionBinding.inflate(
@@ -78,27 +74,39 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
                 itemView.root.setOnClickListener {
                     when (item) {
                         is AboutThisAppData.Url -> item.url.launchUrl(requireContext())
-                        is AboutThisAppData.ClearAppData -> showClearAppDataDialog()
-                        is AboutThisAppData.Destination -> findNavControllerSafety()?.navigate(item.destinationId)
+                        is AboutThisAppData.Destination -> findNavControllerSafety()?.navigate(
+                            item.destinationId,
+                            item.arguments
+                        )
                     }
                 }
             }
         }
 
-        binding.appVersion.text = getString(
-            R.string.app_version,
-            aboutThisAppData.versionName,
-            aboutThisAppData.versionCode
-        )
+        // we have this button in the layout twice because of the design requirement
+        // to align it to the bottom when the content is not scrollable
+        // or follow the scrolling content otherwise
+        binding.aboutThisAppBottomButton.customiseSecondaryButton {
+            it.setStrokeColorResource(R.color.error)
+            it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
+            it.setOnClickListener {
+                showClearAppDataDialog()
+            }
+        }
+        binding.aboutThisAppBottomButton.customiseButton {
+            it.visibility = GONE
+        }
 
-        binding.configVersion.text = getString(
-            R.string.config_version,
-            aboutThisAppData.configVersionHash,
-            OffsetDateTime.ofInstant(
-                Instant.ofEpochSecond(aboutThisAppData.configVersionTimestamp),
-                ZoneOffset.UTC
-            ).formatDayMonthYearTimeNumerical()
-        )
+        binding.resetButtonContainerWhenScrollable.customiseSecondaryButton {
+            it.setStrokeColorResource(R.color.error)
+            it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
+            it.setOnClickListener {
+                showClearAppDataDialog()
+            }
+        }
+        binding.resetButtonContainerWhenScrollable.customiseButton {
+            it.visibility = GONE
+        }
 
         // On acceptance builds show button to trigger deeplink to scanner
         if (!aboutThisAppData.deeplinkScannerUrl.isNullOrEmpty()) {
@@ -109,24 +117,28 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         }
 
         // On test and acceptance builds show buttons to set policy locally
-        if (BuildConfig.DEBUG || Environment.get(requireContext()) is Environment.Acc || Environment.get(requireContext()) is Environment.Tst) {
+        if (BuildConfig.DEBUG || Environment.get(requireContext()) is Environment.Acc || Environment.get(
+                requireContext()
+            ) is Environment.Tst
+        ) {
             bindDebugPolicyButtons(binding)
+        }
+
+        positionResetButton(binding)
+    }
+
+    private fun positionResetButton(binding: FragmentAboutAppBinding) {
+        binding.aboutThisAppScrollview.doOnPreDraw {
+            val canScroll = binding.aboutThisAppScrollview.canScrollVertically(1)
+            binding.aboutThisAppBottomButton.isVisible = !canScroll
+            binding.resetButtonContainerWhenScrollable.isVisible = canScroll
         }
     }
 
     private fun showClearAppDataDialog() {
-        dialogUtil.presentDialog(
-            context = requireContext(),
-            title = R.string.about_this_app_clear_data_title,
-            message = resources.getString(R.string.about_this_app_clear_data_description),
-            negativeButtonText = R.string.about_this_app_clear_data_cancel,
-            positiveButtonText = R.string.about_this_app_clear_data_confirm,
-            positiveButtonCallback = ::clearAppData
-        )
-    }
-
-    private fun clearAppData() {
-        (context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
+        arguments?.getParcelableCompat<AboutThisAppData>(EXTRA_ABOUT_THIS_APP_DATA)?.resetAppDialogDirection?.let {
+            findNavControllerSafety()?.navigate(it.destinationId, it.arguments)
+        }
     }
 
     private fun bindScannerDeeplinkButton(deeplinkScannerButton: Button, url: String) {
@@ -163,7 +175,8 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
     }
 
     private fun restartApp() {
-        val intent = context?.packageManager?.getLaunchIntentForPackage(requireContext().packageName)
+        val intent =
+            context?.packageManager?.getLaunchIntentForPackage(requireContext().packageName)
         val mainIntent = Intent.makeRestartActivityTask(intent?.component)
         startActivity(mainIntent)
         Runtime.getRuntime().exit(0)

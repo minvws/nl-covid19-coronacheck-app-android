@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.widget.Button
 import android.widget.ScrollView
 import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
@@ -34,7 +33,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
     private val binding: WidgetScrollViewButtonBinding
 
     private var attachToScrollViewId: Int? = null
-    private var scrollViewGlobalLayoutListener: ViewTreeObserver.OnGlobalLayoutListener? = null
+    private var preDrawListener: ViewTreeObserver.OnPreDrawListener? = null
 
     init {
         elevation = 0f
@@ -93,16 +92,17 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
 
         attachToScrollViewId?.let {
             val parentLayout = parent as ViewGroup
-            val scrollView = parentLayout.findViewById<ScrollView>(it)
-            scrollViewGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
+            val scrollView: ScrollView? = parentLayout.findViewById(it)
+            preDrawListener = ViewTreeObserver.OnPreDrawListener {
                 cardElevation = if (scrollView?.canScrollVertically(1) == true) {
                     resources.getDimensionPixelSize(R.dimen.scroll_view_button_elevation)
                         .toFloat()
                 } else {
                     0f
                 }
+                true
             }
-            scrollView.viewTreeObserver.addOnGlobalLayoutListener(scrollViewGlobalLayoutListener)
+            scrollView?.viewTreeObserver?.addOnPreDrawListener(preDrawListener)
         }
     }
 
@@ -111,8 +111,8 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
 
         attachToScrollViewId?.let {
             val parentLayout = parent as ViewGroup
-            val scrollView = parentLayout.findViewById<ScrollView>(it)
-            scrollView.viewTreeObserver.removeOnGlobalLayoutListener(scrollViewGlobalLayoutListener)
+            val scrollView: ScrollView? = parentLayout.findViewById(it)
+            scrollView?.viewTreeObserver?.removeOnPreDrawListener(preDrawListener)
         }
     }
 
@@ -141,7 +141,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
         binding.button.isEnabled = isEnabled
     }
 
-    fun customiseButton(block: (Button) -> Unit) {
+    fun customiseButton(block: (MaterialButton) -> Unit) {
         binding.button.run(block)
     }
 

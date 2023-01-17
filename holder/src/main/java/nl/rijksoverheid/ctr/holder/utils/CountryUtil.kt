@@ -32,24 +32,31 @@ class CountryUtilImpl : CountryUtil {
             countriesMap[it] = fullCountryName
         }
 
+        if (countriesMap[countryCode] == "Netherlands") {
+            return "The Netherlands"
+        }
+
         return countriesMap[countryCode] ?: countryCode
     }
 
-    override fun getCountryForQrInfoScreen(countryCode: String?, currentLocale: Locale?): String = if (countryCode != null) {
-        val localeIsNL = currentLocale?.language == "nl"
-        val countryIsNL = countryCode == "NL"
-        val countryNameInDutch = Locale("", countryCode).getDisplayCountry(Locale("nl"))
-        val countryNameInEnglish = Locale("", countryCode).getDisplayCountry(Locale("en"))
+    override fun getCountryForQrInfoScreen(countryCode: String?, currentLocale: Locale?): String =
+        if (countryCode != null) {
+            val localeIsNL = currentLocale?.language == "nl"
+            val countryIsNL = countryCode == "NL"
+            val countryNameInDutch = Locale("", countryCode).getDisplayCountry(Locale("nl"))
+            val countryNameInEnglish = Locale("", countryCode).getDisplayCountry(Locale("en"))
 
-        // GetDisplayCountry returns country for "NL" as "Netherlands" instead of "The Netherlands"
-        if (localeIsNL && countryIsNL) {
-            "$countryNameInDutch / The $countryNameInEnglish"
-        } else if (localeIsNL) {
-            "$countryNameInDutch / $countryNameInEnglish"
+            // GetDisplayCountry returns country for "NL" as "Netherlands" instead of "The Netherlands"
+            if (localeIsNL && countryIsNL) {
+                "$countryNameInDutch / The $countryNameInEnglish"
+            } else if (localeIsNL) {
+                "$countryNameInDutch / $countryNameInEnglish"
+            } else if (countryIsNL) {
+                "The $countryNameInEnglish"
+            } else {
+                countryNameInEnglish
+            }
         } else {
-            countryNameInEnglish
+            ""
         }
-    } else {
-        ""
-    }
 }

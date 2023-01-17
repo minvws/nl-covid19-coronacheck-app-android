@@ -12,12 +12,13 @@ def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("VERSION_NUMBER") != null ? System.getenv("VERSION_NUMBER").toInteger() : 1000000
 }
-version = "4.9"
+version = "4.10"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
     namespace 'nl.rijksoverheid.ctr.holder'
     testOptions {
+        animationsDisabled = true
         execution 'ANDROIDX_TEST_ORCHESTRATOR'
         unitTests {
             includeAndroidResources = true
@@ -179,9 +180,12 @@ android {
             end2end {
                 resultsHistoryName.set("end2end")
                 testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
-                environmentVariables.set(["authPassword": end2endPassword])
+                environmentVariables.set(["authPassword": end2endPassword, "clearPackageData": "true"])
                 devices.set([
-                        ["model": "Pixel2.arm", "version": "29", "locale": "nl"]
+                        ["model": "panther", "version": "33", "locale": "nl"],
+                        ["model": "Nexus5", "version": "23", "locale": "nl"],
+                        ["model": "Nexus5X", "version": "24", "locale": "nl"],
+                        ["model": "Nexus6P", "version": "25", "locale": "nl"],
                 ])
             }
         }

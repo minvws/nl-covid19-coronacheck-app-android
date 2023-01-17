@@ -56,7 +56,10 @@ class VaccinationInfoScreenUtilImpl(
         europeanCredential: ByteArray?,
         addExplanation: Boolean
     ): InfoScreen {
-        val title = if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(R.string.your_test_result_explanation_toolbar_title)
+        val title =
+            if (europeanCredential != null) resources.getString(R.string.your_vaccination_explanation_toolbar_title) else resources.getString(
+                R.string.your_test_result_explanation_toolbar_title
+            )
 
         val name = resources.getString(R.string.your_vaccination_explanation_name)
 
@@ -72,7 +75,8 @@ class VaccinationInfoScreenUtilImpl(
         val vaccine = resources.getString(R.string.your_vaccination_explanation_vaccine)
         val vaccineAnswer = getVaccineAnswer(hpkCode, event)
 
-        val vaccineDisplayName = resources.getString(R.string.holder_event_aboutVaccination_productName)
+        val vaccineDisplayName =
+            resources.getString(R.string.holder_event_aboutVaccination_productName)
         val vaccineDisplayNameAnswer = hpkCode?.displayName ?: ""
 
         val vaccineType = resources.getString(R.string.your_vaccination_explanation_vaccine_type)
@@ -92,7 +96,10 @@ class VaccinationInfoScreenUtilImpl(
         val vaccinationDateAnswer = event.vaccination?.date?.formatDayMonthYear() ?: ""
 
         val fullCountryName = if (event.vaccination?.country != null) {
-            countryUtil.getCountryForInfoScreen(Locale.getDefault().language, event.vaccination.country)
+            countryUtil.getCountryForInfoScreen(
+                Locale.getDefault().language,
+                event.vaccination.country
+            )
         } else {
             ""
         }
@@ -119,19 +126,28 @@ class VaccinationInfoScreenUtilImpl(
                 "<br/>",
                 createdLine(disease, diseaseAnswer),
                 createdLine(vaccine, vaccineAnswer),
-                createdLine(vaccineDisplayName, vaccineDisplayNameAnswer),
-                createdLine(vaccineType, vaccineTypeAnswer),
-                createdLine(producer, producerAnswer),
+                createdLine(vaccineDisplayName, vaccineDisplayNameAnswer, isOptional = true),
+                createdLine(vaccineType, vaccineTypeAnswer, isOptional = true),
+                createdLine(producer, producerAnswer, isOptional = true),
                 createdLine(doses, dosesAnswer, isOptional = true),
                 createdLine(lastDose, lastDoseAnswer, isOptional = true),
                 createdLine(vaccinationDate, vaccinationDateAnswer, isOptional = true),
                 createdLine(vaccinationCountry, fullCountryName, isOptional = true),
                 if (europeanCredential != null) {
                     val issuerAnswer = paperProofUtil.getIssuer(europeanCredential)
-                    createdLine(resources.getString(R.string.holder_dcc_issuer), issuerAnswer, isOptional = true)
+                    createdLine(
+                        resources.getString(R.string.holder_dcc_issuer),
+                        if (issuerAnswer == "Ministry of Health Welfare and Sport") {
+                            resources.getString(R.string.qr_explanation_certificate_issuer)
+                        } else {
+                            issuerAnswer
+                        },
+                        isOptional = true
+                    )
                 } else {
                     ""
                 },
+                "<br/>",
                 createdLine(uniqueCode, uniqueCodeAnswer),
                 if (europeanCredential != null && addExplanation) {
                     paperProofUtil.getInfoScreenFooterText(europeanCredential)

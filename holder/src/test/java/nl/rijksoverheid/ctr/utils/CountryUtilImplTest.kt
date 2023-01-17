@@ -23,7 +23,7 @@ class CountryUtilImplTest {
     @Test
     fun `getCountryForQrInfoScreen returns correct strings for the Netherlands in English locale`() {
         val dutchString = util.getCountryForQrInfoScreen("NL", Locale("en"))
-        assertEquals("Netherlands", dutchString)
+        assertEquals("The Netherlands", dutchString)
     }
 
     @Test
