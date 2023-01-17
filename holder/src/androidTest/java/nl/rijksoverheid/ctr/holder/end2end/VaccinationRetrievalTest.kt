@@ -23,12 +23,14 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQ
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalVaccinationOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
+import nl.rijksoverheid.ctr.holder.end2end.utils.RunFirebaseTestOnDemand
 import org.junit.Test
 
 @SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
 class VaccinationRetrievalTest : BaseTest() {
 
     @Test
+    @RunFirebaseTestOnDemand
     fun retrieveVaccinationWith2Pfizer_assertOverviewAndQRDetails() {
         val person = Person(bsn = "999990020")
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = Pfizer)
