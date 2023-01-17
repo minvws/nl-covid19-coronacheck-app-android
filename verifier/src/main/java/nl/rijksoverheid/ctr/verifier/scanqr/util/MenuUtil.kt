@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragment
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragmentDirections
@@ -113,15 +112,7 @@ class MenuUtilImpl(
                         text = context.getString(R.string.about_this_app_colofon),
                         url = context.getString(R.string.about_this_app_colofon_url)
                     )
-                ).apply {
-                    if (!BuildConfig.FLAVOR.lowercase().contains("prod")) {
-                        add(
-                            AboutThisAppData.ClearAppData(
-                                text = context.getString(R.string.about_this_clear_data)
-                            )
-                        )
-                    }
-                }
+                )
             )
         ).apply {
             if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {

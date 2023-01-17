@@ -7,8 +7,6 @@
 
 package nl.rijksoverheid.ctr.design.fragments.menu
 
-import android.app.ActivityManager
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -84,24 +82,6 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
                     url = onClick.url
                 )
             }
-            is MenuSection.MenuItem.OnClick.ResetApp -> {
-                showClearAppDataDialog()
-            }
         }
-    }
-
-    private fun showClearAppDataDialog() {
-        dialogUtil.presentDialog(
-            context = requireContext(),
-            title = R.string.about_this_app_clear_data_title,
-            message = resources.getString(R.string.about_this_app_clear_data_description),
-            negativeButtonText = R.string.about_this_app_clear_data_cancel,
-            positiveButtonText = R.string.about_this_app_clear_data_confirm,
-            positiveButtonCallback = ::clearAppData
-        )
-    }
-
-    private fun clearAppData() {
-        (context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
     }
 }
