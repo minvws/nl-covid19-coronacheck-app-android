@@ -18,6 +18,8 @@ import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.models.ServerTime
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
+import nl.rijksoverheid.ctr.shared.factories.SharedStep
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import retrofit2.HttpException
 
 /*
@@ -62,9 +64,19 @@ class AppConfigUseCaseImpl(
             )
             success
         } catch (e: IOException) {
-            ConfigResult.Error
+            ConfigResult.Error(
+                NetworkRequestResult.Failed.ServerNetworkError(
+                    step = SharedStep.ConfigurationNetworkRequest,
+                    e = e
+                )
+            )
         } catch (e: HttpException) {
-            ConfigResult.Error
+            ConfigResult.Error(
+                NetworkRequestResult.Failed.CoronaCheckHttpError(
+                    step = SharedStep.ConfigurationNetworkRequest,
+                    e = e
+                )
+            )
         }
     }
 

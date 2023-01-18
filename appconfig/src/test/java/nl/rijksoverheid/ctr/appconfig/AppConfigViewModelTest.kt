@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import okio.BufferedSource
-import org.junit.Assert
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -55,7 +55,8 @@ class AppConfigViewModelTest {
         isVerifierApp = isVerifier,
         versionCode = 0,
         appUpdateData = mockk(),
-        appUpdatePersistenceManager = mockk()
+        appUpdatePersistenceManager = mockk(),
+        errorCodeStringFactory = mockk(relaxed = true)
     )
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
 
@@ -119,7 +120,7 @@ class AppConfigViewModelTest {
     @Test
     fun `refresh calls emits status to livedata`() = runBlocking {
         coEvery { appConfigUseCase.get() } answers {
-            ConfigResult.Error
+            ConfigResult.Error(mockk())
         }
 
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.Error }
@@ -127,7 +128,7 @@ class AppConfigViewModelTest {
         val viewModel = appConfigViewModel()
         viewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.Error)
+        assertTrue(viewModel.appStatusLiveData.value is AppStatus.LaunchError)
     }
 
     @Test
@@ -151,6 +152,6 @@ class AppConfigViewModelTest {
         val viewModel = appConfigViewModel(true)
         viewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.Error)
+        assertTrue(viewModel.appStatusLiveData.value is AppStatus.LaunchError)
     }
 }

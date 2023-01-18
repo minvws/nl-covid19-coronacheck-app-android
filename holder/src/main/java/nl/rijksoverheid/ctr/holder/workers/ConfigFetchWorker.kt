@@ -23,7 +23,7 @@ open class ConfigFetchWorker(
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         when (configResultUseCase.fetch()) {
-            ConfigResult.Error -> Result.retry()
+            is ConfigResult.Error -> Result.retry()
             is ConfigResult.Success -> Result.success()
         }
     }

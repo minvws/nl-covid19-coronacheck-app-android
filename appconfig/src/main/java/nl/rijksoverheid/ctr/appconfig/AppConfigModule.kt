@@ -90,6 +90,7 @@ fun appConfigModule(cdnUrl: String, path: String, versionCode: Int) = module {
             isVerifierApp(androidContext()),
             versionCode,
             get(),
+            get(),
             get()
         )
     }

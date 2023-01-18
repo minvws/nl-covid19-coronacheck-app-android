@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
+import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
@@ -22,6 +23,8 @@ import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.ext.initialisationException
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
+import nl.rijksoverheid.ctr.shared.factories.OnboardingFlow
 
 abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()
@@ -41,6 +44,7 @@ class AppConfigViewModelImpl(
     private val isVerifierApp: Boolean,
     private val versionCode: Int,
     private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
+    private val errorCodeStringFactory: ErrorCodeStringFactory,
     private val appUpdateData: AppUpdateData
 ) : AppConfigViewModel() {
 
@@ -54,7 +58,10 @@ class AppConfigViewModelImpl(
         // update the app status from the last fetched config
         // only if it is valid (so don't use the default one)
         if (cachedAppConfigUseCase.isCachedAppConfigValid()) {
-            val appStatus = appStatusUseCase.checkIfActionRequired(versionCode, cachedAppConfigUseCase.getCachedAppConfig())
+            val appStatus = appStatusUseCase.checkIfActionRequired(
+                versionCode,
+                cachedAppConfigUseCase.getCachedAppConfig()
+            )
             updateAppStatus(appStatus)
         }
 
@@ -68,7 +75,16 @@ class AppConfigViewModelImpl(
             val configFilesArePresentInFilesFolder =
                 appConfigStorageManager.areConfigFilesPresentInFilesFolder()
             if (!configFilesArePresentInFilesFolder || !cachedAppConfigUseCase.isCachedAppConfigValid()) {
-                return@launch appStatusLiveData.postValue(AppStatus.Error)
+                if (configResult is ConfigResult.Error) {
+                    return@launch appStatusLiveData.postValue(
+                        AppStatus.LaunchError(
+                            errorCodeStringFactory.get(
+                                OnboardingFlow,
+                                listOf(configResult.error)
+                            )
+                        )
+                    )
+                }
             }
 
             val initializationError = if (isVerifierApp) {
@@ -88,14 +104,20 @@ class AppConfigViewModelImpl(
     override fun saveNewFeaturesFinished() {
         appUpdateData.newFeatureVersion?.let { appUpdatePersistenceManager.saveNewFeaturesSeen(it) }
         updateAppStatus(
-            appStatusUseCase.checkIfActionRequired(versionCode, cachedAppConfigUseCase.getCachedAppConfig())
+            appStatusUseCase.checkIfActionRequired(
+                versionCode,
+                cachedAppConfigUseCase.getCachedAppConfig()
+            )
         )
     }
 
     override fun saveNewTerms() {
         appUpdatePersistenceManager.saveNewTermsSeen(appUpdateData.newTerms.version)
         updateAppStatus(
-            appStatusUseCase.checkIfActionRequired(versionCode, cachedAppConfigUseCase.getCachedAppConfig())
+            appStatusUseCase.checkIfActionRequired(
+                versionCode,
+                cachedAppConfigUseCase.getCachedAppConfig()
+            )
         )
     }
 }

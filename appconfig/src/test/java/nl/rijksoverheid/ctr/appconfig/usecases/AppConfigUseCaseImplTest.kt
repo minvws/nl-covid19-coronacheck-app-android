@@ -89,8 +89,8 @@ class AppConfigUseCaseImplTest {
                 configRepository,
                 clockDeviationUseCase
             )
-        assertEquals(
-            appConfigUseCase.get(), ConfigResult.Error
+        assertTrue(
+            appConfigUseCase.get() is ConfigResult.Error
         )
         coVerify(exactly = 0) { appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(0) }
     }
@@ -111,8 +111,8 @@ class AppConfigUseCaseImplTest {
                 configRepository,
                 clockDeviationUseCase
             )
-        assertEquals(
-            appConfigUseCase.get(), ConfigResult.Error
+        assertTrue(
+            appConfigUseCase.get() is ConfigResult.Error
         )
         coVerify(exactly = 0) { appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(0) }
     }
