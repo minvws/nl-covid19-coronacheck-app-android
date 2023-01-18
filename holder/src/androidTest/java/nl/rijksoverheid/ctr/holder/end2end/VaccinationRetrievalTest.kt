@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 package nl.rijksoverheid.ctr.holder.end2end
 
 import androidx.test.filters.SdkSuppress
@@ -17,12 +24,14 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisNotHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
+import nl.rijksoverheid.ctr.holder.end2end.utils.RunFirebaseTestOnDemand
 import org.junit.Test
 
 @SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
 class VaccinationRetrievalTest : BaseTest() {
 
     @Test
+    @RunFirebaseTestOnDemand
     fun retrieveVaccinationWith2Pfizer_assertOverviewAndQRDetails() {
         val person = Person(bsn = "999990020")
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)

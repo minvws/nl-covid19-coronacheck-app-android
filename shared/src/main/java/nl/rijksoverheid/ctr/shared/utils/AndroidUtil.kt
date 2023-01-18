@@ -14,6 +14,7 @@ import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil.Companion.KEYSTORE_ALIAS
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -29,6 +30,10 @@ interface AndroidUtil {
     fun getConnectivityManager(): ConnectivityManager
     fun generateRandomKey(): String
     fun getFirstInstallTime(): OffsetDateTime
+
+    companion object {
+        const val KEYSTORE_ALIAS = "_coronacheck_security_master_key_"
+    }
 }
 
 class AndroidUtilImpl(private val context: Context) : AndroidUtil {
@@ -43,7 +48,7 @@ class AndroidUtilImpl(private val context: Context) : AndroidUtil {
             try {
                 MasterKeys.getOrCreate(
                     KeyGenParameterSpec.Builder(
-                        "_coronacheck_security_master_key_",
+                        KEYSTORE_ALIAS,
                         KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
                     ).setBlockModes(KeyProperties.BLOCK_MODE_GCM)
                         .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
