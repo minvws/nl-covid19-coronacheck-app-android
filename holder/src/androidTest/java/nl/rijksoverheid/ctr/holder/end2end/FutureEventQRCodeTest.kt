@@ -29,6 +29,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisExpired
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
+import nl.rijksoverheid.ctr.holder.end2end.utils.RunFirebaseTestOnDemand
 import org.junit.After
 import org.junit.Test
 
@@ -41,6 +42,7 @@ class FutureEventQRCodeTest : BaseTest() {
     }
 
     @Test
+    @RunFirebaseTestOnDemand
     fun whenDeviceDateIsBeforeExpiry_vaccinationCertificatesAreValid() {
         val person = Person(bsn = "999990020")
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
