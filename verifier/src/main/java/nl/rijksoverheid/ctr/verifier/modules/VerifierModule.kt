@@ -123,7 +123,7 @@ fun verifierModule() = module {
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get(), get()) }
     viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
     viewModel<NewPolicyRulesViewModel> { NewPolicyRulesViewModelImpl(get(), get(), get()) }
-    viewModel<MenuViewModel> { MenuViewModelImpl(get()) }
+    viewModel<MenuViewModel> { MenuViewModelImpl(get(), get(), get()) }
 
     // Repositories
     factory<ScanLogRepository> { ScanLogRepositoryImpl(get(), get()) }

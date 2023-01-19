@@ -9,16 +9,26 @@ package nl.rijksoverheid.ctr.verifier.menu
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTimeNumerical
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.design.menu.MenuViewModel
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
+import nl.rijksoverheid.ctr.design.menu.about.HelpdeskData
 import nl.rijksoverheid.ctr.shared.livedata.Event
+import nl.rijksoverheid.ctr.verifier.BuildConfig
 import nl.rijksoverheid.ctr.verifier.R
 import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 
 class MenuViewModelImpl(
-    private val featureFlagUseCase: VerifierFeatureFlagUseCase
+    private val featureFlagUseCase: VerifierFeatureFlagUseCase,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val appConfigPersistenceManager: AppConfigPersistenceManager
 ) : MenuViewModel() {
     override fun click(context: Context) {
         (menuSectionLiveData as MutableLiveData).value = Event(menuSections(context))
@@ -70,7 +80,7 @@ class MenuViewModelImpl(
         val menuItems = mutableListOf<MenuSection.MenuItem>()
 
         val howItWorksMenuItem = MenuSection.MenuItem(
-            icon = R.drawable.ic_menu_question,
+            icon = R.drawable.ic_menu_info,
             title = R.string.scan_instructions_menu_title,
             onClick = MenuSection.MenuItem.OnClick.Navigate(
                 navigationActionId = actionScanInstructions.actionId,
@@ -95,8 +105,34 @@ class MenuViewModelImpl(
             )
         )
 
+        val configFetchDate = OffsetDateTime.ofInstant(
+            Instant.ofEpochSecond(appConfigPersistenceManager.getAppConfigLastFetchedSeconds()),
+            ZoneOffset.UTC
+        ).formatDayMonthYearTimeNumerical()
+        val actionHelpdesk = MenuFragmentDirections.actionHelpdesk(
+            data = HelpdeskData(
+                contactTitle = context.getString(R.string.verifier_helpdesk_contact_title),
+                contactMessage = context.getString(R.string.verifier_helpdesk_contact_message),
+                supportTitle = context.getString(R.string.verifier_helpdesk_support_title),
+                supportMessage = context.getString(R.string.verifier_helpdesk_support_message),
+                appVersionTitle = context.getString(R.string.verifier_helpdesk_appVersion),
+                appVersion = "${BuildConfig.VERSION_NAME} (build ${BuildConfig.VERSION_CODE})",
+                configurationTitle = context.getString(R.string.verifier_helpdesk_configuration),
+                configuration = "${cachedAppConfigUseCase.getCachedAppConfigHash()}, $configFetchDate"
+            )
+        )
+
+        val helpdeskItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_helpdesk,
+            title = R.string.verifier_helpInfo_helpdesk,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionHelpdesk.actionId,
+                navigationArguments = actionHelpdesk.arguments
+            )
+        )
+
         val aboutThisAppMenuItem = MenuSection.MenuItem(
-            icon = R.drawable.ic_menu_info,
+            icon = R.drawable.ic_menu_smartphone,
             title = R.string.about_this_app,
             onClick = MenuSection.MenuItem.OnClick.Navigate(
                 navigationActionId = actionAboutThisApp.actionId,
@@ -106,14 +142,30 @@ class MenuViewModelImpl(
 
         menuItems.add(howItWorksMenuItem)
         menuItems.add(supportMenuItem)
-        if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
-            menuItems.add(scanSettingsMenuItem)
-        }
+
         menuItems.add(aboutThisAppMenuItem)
 
         return listOf(
             MenuSection(
-                menuItems = menuItems
+                menuItems = listOfNotNull(
+                    howItWorksMenuItem,
+                    if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
+                        scanSettingsMenuItem
+                    } else {
+                        null
+                    }
+                )
+            ),
+            MenuSection(
+                menuItems = listOf(
+                    supportMenuItem,
+                    helpdeskItem
+                )
+            ),
+            MenuSection(
+                menuItems = listOf(
+                    aboutThisAppMenuItem
+                )
             )
         ).toTypedArray()
     }
