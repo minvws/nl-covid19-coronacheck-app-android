@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="app_name_test">Scanner (Test)</string>
-  <string name="app_name_acc">Scanner (Acc)</string>
+  <string name="app_name_test">(Test) Scanner</string>
+  <string name="app_name_acc">(Acc) Scanner</string>
   <string name="app_name">Scanner</string>
   <string name="onboarding_title">Onboarding</string>
   <string name="onboarding_screen_1_title">Jouw locatie veilig open</string>
