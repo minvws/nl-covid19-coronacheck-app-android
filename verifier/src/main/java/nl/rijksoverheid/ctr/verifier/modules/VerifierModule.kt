@@ -13,6 +13,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.time.Clock
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
+import nl.rijksoverheid.ctr.design.menu.MenuViewModel
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivityViewModel
 import nl.rijksoverheid.ctr.verifier.VerifierMainActivityViewModelImpl
@@ -20,6 +21,7 @@ import nl.rijksoverheid.ctr.verifier.instructions.ScanInstructionsButtonUtil
 import nl.rijksoverheid.ctr.verifier.instructions.ScanInstructionsButtonUtilImpl
 import nl.rijksoverheid.ctr.verifier.managers.DeeplinkManager
 import nl.rijksoverheid.ctr.verifier.managers.DeeplinkManagerImpl
+import nl.rijksoverheid.ctr.verifier.menu.MenuViewModelImpl
 import nl.rijksoverheid.ctr.verifier.persistance.PersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.SharedPreferencesPersistenceManager
 import nl.rijksoverheid.ctr.verifier.persistance.usecase.RandomKeyUseCase
@@ -68,8 +70,6 @@ import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrViewModel
 import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrViewModelImpl
 import nl.rijksoverheid.ctr.verifier.scanqr.ScannerNavigationStateUseCase
 import nl.rijksoverheid.ctr.verifier.scanqr.ScannerNavigationStateUseCaseImpl
-import nl.rijksoverheid.ctr.verifier.scanqr.util.MenuUtil
-import nl.rijksoverheid.ctr.verifier.scanqr.util.MenuUtilImpl
 import nl.rijksoverheid.ctr.verifier.scanqr.util.ScannerStateCountdownUtil
 import nl.rijksoverheid.ctr.verifier.scanqr.util.ScannerStateCountdownUtilImpl
 import nl.rijksoverheid.ctr.verifier.usecases.BuildConfigUseCaseImpl
@@ -116,7 +116,6 @@ fun verifierModule() = module {
     factory<ScanLogListAdapterItemUtil> { ScanLogListAdapterItemUtilImpl() }
     factory<ScanLogFirstInstallTimeAdapterItemUtil> { ScanLogFirstInstallTimeAdapterItemUtilImpl(Clock.systemUTC()) }
     factory<ScanInstructionsButtonUtil> { ScanInstructionsButtonUtilImpl(get()) }
-    factory<MenuUtil> { MenuUtilImpl(get(), get(), get()) }
 
     // ViewModels
     viewModel<VerifierMainActivityViewModel> { VerifierMainActivityViewModelImpl(get(), get(), get()) }
@@ -124,6 +123,7 @@ fun verifierModule() = module {
     viewModel<ScannerViewModel> { ScannerViewModelImpl(get(), get(), get()) }
     viewModel<ScanLogViewModel> { ScanLogViewModelImpl(get()) }
     viewModel<NewPolicyRulesViewModel> { NewPolicyRulesViewModelImpl(get(), get(), get()) }
+    viewModel<MenuViewModel> { MenuViewModelImpl(get()) }
 
     // Repositories
     factory<ScanLogRepository> { ScanLogRepositoryImpl(get(), get()) }

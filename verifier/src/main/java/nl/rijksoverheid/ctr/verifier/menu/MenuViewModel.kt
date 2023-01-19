@@ -5,39 +5,62 @@
  * SPDX-License-Identifier: EUPL-1.2
  */
 
-package nl.rijksoverheid.ctr.verifier.scanqr.util
+package nl.rijksoverheid.ctr.verifier.menu
 
 import android.content.Context
-import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
+import androidx.lifecycle.MutableLiveData
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
+import nl.rijksoverheid.ctr.design.menu.MenuViewModel
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.verifier.R
-import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragment
-import nl.rijksoverheid.ctr.verifier.scanqr.ScanQrFragmentDirections
 import nl.rijksoverheid.ctr.verifier.usecases.VerifierFeatureFlagUseCase
 
-interface MenuUtil {
-    fun showMenu(scanQrFragment: ScanQrFragment)
-}
-
-class MenuUtilImpl(
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
-    private val appConfigPersistenceManager: AppConfigPersistenceManager,
+class MenuViewModelImpl(
     private val featureFlagUseCase: VerifierFeatureFlagUseCase
-) : MenuUtil {
-
-    override fun showMenu(scanQrFragment: ScanQrFragment) {
-        scanQrFragment.navigateSafety(
-            ScanQrFragmentDirections.actionMenu(
-                menuSections = getMenuSections(scanQrFragment.requireContext())
-            )
-        )
+) : MenuViewModel() {
+    override fun click(context: Context) {
+        (menuSectionLiveData as MutableLiveData).value = Event(menuSections(context))
     }
 
-    fun getMenuSections(context: Context): Array<MenuSection> {
+    private fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(
+        sections = mutableListOf(
+            AboutThisAppData.AboutThisAppSection(
+                header = R.string.about_this_app_read_more,
+                items = mutableListOf<AboutThisAppData.AboutThisAppItem>(
+                    AboutThisAppData.Url(
+                        text = context.getString(R.string.privacy_statement),
+                        url = context.getString(R.string.url_terms_of_use)
+                    ),
+                    AboutThisAppData.Url(
+                        text = context.getString(R.string.about_this_app_accessibility),
+                        url = context.getString(R.string.url_accessibility)
+                    ),
+                    AboutThisAppData.Url(
+                        text = context.getString(R.string.about_this_app_colofon),
+                        url = context.getString(R.string.about_this_app_colofon_url)
+                    )
+                )
+            )
+        ).apply {
+            if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
+                add(
+                    AboutThisAppData.AboutThisAppSection(
+                        header = R.string.verifier_about_this_app_law_enforcement,
+                        items = listOf(
+                            AboutThisAppData.Destination(
+                                text = context.getString(R.string.verifier_about_this_app_scan_log),
+                                destinationId = R.id.action_scan_log
+                            )
+                        )
+                    )
+                )
+            }
+        }
+    )
+
+    private fun menuSections(context: Context): Array<MenuSection> {
         val actionScanInstructions = MenuFragmentDirections.actionScanInstructions()
         val actionPolicySettings = MenuFragmentDirections.actionPolicySettings()
         val actionAboutThisApp = MenuFragmentDirections.actionAboutThisApp(
@@ -94,40 +117,4 @@ class MenuUtilImpl(
             )
         ).toTypedArray()
     }
-
-    private fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(
-        sections = mutableListOf(
-            AboutThisAppData.AboutThisAppSection(
-                header = R.string.about_this_app_read_more,
-                items = mutableListOf<AboutThisAppData.AboutThisAppItem>(
-                    AboutThisAppData.Url(
-                        text = context.getString(R.string.privacy_statement),
-                        url = context.getString(R.string.url_terms_of_use)
-                    ),
-                    AboutThisAppData.Url(
-                        text = context.getString(R.string.about_this_app_accessibility),
-                        url = context.getString(R.string.url_accessibility)
-                    ),
-                    AboutThisAppData.Url(
-                        text = context.getString(R.string.about_this_app_colofon),
-                        url = context.getString(R.string.about_this_app_colofon_url)
-                    )
-                )
-            )
-        ).apply {
-            if (featureFlagUseCase.isVerificationPolicySelectionEnabled()) {
-                add(
-                    AboutThisAppData.AboutThisAppSection(
-                        header = R.string.verifier_about_this_app_law_enforcement,
-                        items = listOf(
-                            AboutThisAppData.Destination(
-                                text = context.getString(R.string.verifier_about_this_app_scan_log),
-                                destinationId = R.id.action_scan_log
-                            )
-                        )
-                    )
-                )
-            }
-        }
-    )
 }
