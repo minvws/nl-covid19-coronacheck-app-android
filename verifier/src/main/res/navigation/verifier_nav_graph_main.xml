@@ -64,6 +64,15 @@
 
     </fragment>
 
+    <fragment android:id="@+id/nav_helpdesk"
+        android:name="nl.rijksoverheid.ctr.design.menu.about.HelpdeskFragment"
+        android:label="@string/verifier_helpdesk_title">
+
+        <argument android:name="data"
+            app:argType="nl.rijksoverheid.ctr.design.menu.about.HelpdeskData" />
+
+    </fragment>
+
     <fragment
         android:id="@+id/nav_policy_selection"
         android:name="nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionFragment"
@@ -209,6 +218,14 @@
         <action
             android:id="@+id/action_about_this_app"
             app:destination="@id/nav_about_this_app"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_helpdesk"
+            app:destination="@id/nav_helpdesk"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

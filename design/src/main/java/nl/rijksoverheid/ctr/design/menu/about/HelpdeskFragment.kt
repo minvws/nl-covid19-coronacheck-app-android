@@ -16,7 +16,13 @@ class HelpdeskFragment : Fragment(R.layout.fragment_helpdesk) {
         val helpdeskData = arguments?.getParcelableCompat<HelpdeskData>("data")
             ?: throw IllegalStateException("HelpdeskData should be set")
 
+        binding.contactTitle.text = helpdeskData.contactTitle
+        binding.contactMessage.setHtmlText(helpdeskData.contactMessage, true)
+        binding.supportTitle.text = helpdeskData.supportTitle
+        binding.supportMessage.setHtmlText(helpdeskData.supportMessage, true)
+        binding.appVersionTitle.text = helpdeskData.appVersionTitle
         binding.appVersionMessage.text = helpdeskData.appVersion
+        binding.configurationTitle.text = helpdeskData.configurationTitle
         binding.configurationMessage.text = helpdeskData.configuration
     }
 }

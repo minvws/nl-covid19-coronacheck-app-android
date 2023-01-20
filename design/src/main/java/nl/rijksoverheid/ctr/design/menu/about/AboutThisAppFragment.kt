@@ -83,29 +83,35 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             }
         }
 
-        // we have this button in the layout twice because of the design requirement
-        // to align it to the bottom when the content is not scrollable
-        // or follow the scrolling content otherwise
-        binding.aboutThisAppBottomButton.customiseSecondaryButton {
-            it.setStrokeColorResource(R.color.error)
-            it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
-            it.setOnClickListener {
-                showClearAppDataDialog()
+        if (getString(R.string.holder_menu_resetApp).isNotEmpty()) {
+            // we have this button in the layout twice because of the design requirement
+            // to align it to the bottom when the content is not scrollable
+            // or follow the scrolling content otherwise
+            binding.aboutThisAppBottomButton.customiseSecondaryButton {
+                it.setStrokeColorResource(R.color.error)
+                it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
+                it.setOnClickListener {
+                    showClearAppDataDialog()
+                }
             }
-        }
-        binding.aboutThisAppBottomButton.customiseButton {
-            it.visibility = GONE
-        }
+            binding.aboutThisAppBottomButton.customiseButton {
+                it.visibility = GONE
+            }
 
-        binding.resetButtonContainerWhenScrollable.customiseSecondaryButton {
-            it.setStrokeColorResource(R.color.error)
-            it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
-            it.setOnClickListener {
-                showClearAppDataDialog()
+            binding.resetButtonContainerWhenScrollable.customiseSecondaryButton {
+                it.setStrokeColorResource(R.color.error)
+                it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
+                it.setOnClickListener {
+                    showClearAppDataDialog()
+                }
             }
-        }
-        binding.resetButtonContainerWhenScrollable.customiseButton {
-            it.visibility = GONE
+            binding.resetButtonContainerWhenScrollable.customiseButton {
+                it.visibility = GONE
+            }
+            positionResetButton(binding)
+        } else {
+            binding.aboutThisAppBottomButton.visibility = GONE
+            binding.resetButtonContainerWhenScrollable.visibility = GONE
         }
 
         // On acceptance builds show button to trigger deeplink to scanner
@@ -123,8 +129,6 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         ) {
             bindDebugPolicyButtons(binding)
         }
-
-        positionResetButton(binding)
     }
 
     private fun positionResetButton(binding: FragmentAboutAppBinding) {
