@@ -22,8 +22,8 @@
   <string name="holder_eventdetails_vaccinationStatus_complete">yes</string>
   <string name="holder_eventdetails_vaccinationStatus_recovery">yes (I’ve had coronavirus earlier)</string>
   <string name="holder_eventdetails_vaccinationStatus_firstVaccinationElsewhere">yes (I have been vaccinated elsewhere)</string>
-  <string name="app_name_test">CoronaCheck (Test)</string>
-  <string name="app_name_acc">CoronaCheck (Acc)</string>
+  <string name="app_name_test">(Test) CoronaCheck</string>
+  <string name="app_name_acc">(Acc) CoronaCheck</string>
   <string name="app_name">CoronaCheck</string>
   <string name="onboarding_title">Onboarding</string>
   <string name="onboarding_screen_1_title">Get access with your certificate</string>

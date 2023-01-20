@@ -26,6 +26,9 @@ sealed class AppStatus : Parcelable {
     object Error : AppStatus(), Parcelable
 
     @Parcelize
+    data class LaunchError(val errorMessage: String) : AppStatus(), Parcelable
+
+    @Parcelize
     object NoActionRequired : AppStatus(), Parcelable
 
     @Parcelize

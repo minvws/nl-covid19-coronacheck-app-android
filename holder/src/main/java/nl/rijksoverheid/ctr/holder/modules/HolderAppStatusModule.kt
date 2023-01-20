@@ -36,7 +36,7 @@ val holderAppStatusModule = module {
     }
     factory<AppStatusUseCase> {
         HolderAppStatusUseCaseImpl(
-            get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
+            get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()
         )
     }
 }
