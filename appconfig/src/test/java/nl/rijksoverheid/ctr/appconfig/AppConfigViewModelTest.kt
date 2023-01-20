@@ -5,6 +5,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import java.io.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -17,11 +18,14 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
+import nl.rijksoverheid.ctr.shared.factories.SharedStep
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okio.BufferedSource
-import org.junit.Assert
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import retrofit2.HttpException
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -55,8 +59,10 @@ class AppConfigViewModelTest {
         isVerifierApp = isVerifier,
         versionCode = 0,
         appUpdateData = mockk(),
-        appUpdatePersistenceManager = mockk()
+        appUpdatePersistenceManager = mockk(),
+        errorCodeStringFactory = mockk(relaxed = true)
     )
+
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
 
     @Before
@@ -119,7 +125,16 @@ class AppConfigViewModelTest {
     @Test
     fun `refresh calls emits status to livedata`() = runBlocking {
         coEvery { appConfigUseCase.get() } answers {
-            ConfigResult.Error
+            ConfigResult.Error(mockk())
+        }
+
+        coEvery { configResultUseCase.fetch() } answers {
+            ConfigResult.Error(
+                NetworkRequestResult.Failed.Error(
+                    step = SharedStep.ConfigurationNetworkRequest,
+                    e = HttpException(mockk(relaxed = true))
+                )
+            )
         }
 
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.Error }
@@ -127,30 +142,31 @@ class AppConfigViewModelTest {
         val viewModel = appConfigViewModel()
         viewModel.refresh(mobileCoreWrapper)
 
-        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.Error)
+        assertTrue(viewModel.appStatusLiveData.value is AppStatus.LaunchError)
     }
 
     @Test
-    fun `refresh with no config files in verifier app emits internet required status`() = runBlocking {
-        val appConfigContents = "app config contents"
+    fun `refresh with no config files in verifier app emits internet required status`() =
+        runBlocking {
+            val publicKeys = mockk<BufferedSource>()
+            val publicKeysContents = "file contents"
+            coEvery { publicKeys.readUtf8() } returns publicKeysContents
 
-        val publicKeys = mockk<BufferedSource>()
-        val publicKeysContents = "file contents"
-        coEvery { publicKeys.readUtf8() } returns publicKeysContents
+            coEvery { configResultUseCase.fetch() } answers {
+                ConfigResult.Error(
+                    NetworkRequestResult.Failed.ServerNetworkError(
+                        step = SharedStep.ConfigurationNetworkRequest,
+                        e = IOException()
+                    )
+                )
+            }
 
-        coEvery { appConfigUseCase.get() } answers {
-            ConfigResult.Success(
-                appConfig = appConfigContents,
-                publicKeys = publicKeysContents
-            )
+            coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
+            coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns false
+
+            val viewModel = appConfigViewModel(true)
+            viewModel.refresh(mobileCoreWrapper)
+
+            assertTrue(viewModel.appStatusLiveData.value is AppStatus.Error)
         }
-
-        coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
-        coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns false
-
-        val viewModel = appConfigViewModel(true)
-        viewModel.refresh(mobileCoreWrapper)
-
-        Assert.assertEquals(viewModel.appStatusLiveData.value, AppStatus.Error)
-    }
 }

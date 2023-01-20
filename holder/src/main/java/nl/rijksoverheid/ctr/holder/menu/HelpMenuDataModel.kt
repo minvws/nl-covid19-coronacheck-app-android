@@ -38,7 +38,13 @@ class HelpMenuDataModelImpl(
         ).formatDayMonthYearTimeNumerical()
         val actionHelpdesk = MenuFragmentDirections.actionHelpdesk(
             data = HelpdeskData(
+                contactTitle = context.getString(R.string.holder_helpdesk_contact_title),
+                contactMessage = context.getString(R.string.holder_helpdesk_contact_message),
+                supportTitle = context.getString(R.string.holder_helpdesk_support_title),
+                supportMessage = context.getString(R.string.holder_helpdesk_support_message),
+                appVersionTitle = context.getString(R.string.holder_helpdesk_appVersion),
                 appVersion = "${BuildConfig.VERSION_NAME} (build ${BuildConfig.VERSION_CODE})",
+                configurationTitle = context.getString(R.string.holder_helpdesk_configuration),
                 configuration = "${cachedAppConfigUseCase.getCachedAppConfigHash()}, $configFetchDate"
             )
         )

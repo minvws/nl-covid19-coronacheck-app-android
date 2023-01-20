@@ -27,4 +27,7 @@
     <item name="back" type="string" />
     <item name="onboarding_next" type="string" />
     <item name="general_toMyOverview" type="string" />
+    <item name="appstatus_launchError_title" type="string" />
+    <item name="appstatus_launchError_body" type="string" />
+    <item name="appstatus_launchError_button" type="string" />
 </resources>

@@ -35,7 +35,7 @@ class CredentialRefreshWorkerTest : AutoCloseKoinTest() {
     @Test
     fun `when config fetch fails, credentials refresh worker should retry`() = runBlocking {
         val configResultUseCase = mockk<ConfigResultUseCase>().apply {
-            coEvery { fetch() } returns ConfigResult.Error
+            coEvery { fetch() } returns ConfigResult.Error(mockk(relaxed = true))
         }
         val holderDatabaseSyncer = mockk<HolderDatabaseSyncer>()
 

@@ -7,7 +7,6 @@
   <string name="general_readmore">Lees meer</string>
   <string name="holder_authentication_popup_digid_title">Inloggen afgebroken</string>
   <string name="holder_dcc_alert_message">Je kunt later opnieuw proberen deze QR-code in de app te zetten.</string>
-  <string name="holder_dcc_test_identifier">Uniek certificaatnummer:</string>
   <string name="holder_recovery_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="holder_test_alert_message">Hierdoor stop je het maken van een bewijs en moet je later opnieuw je testuitslag ophalen.</string>
   <string name="general_cancel">Annuleer</string>
@@ -22,8 +21,8 @@
   <string name="holder_eventdetails_vaccinationStatus_complete">ja</string>
   <string name="holder_eventdetails_vaccinationStatus_recovery">ja (eerder corona gehad)</string>
   <string name="holder_eventdetails_vaccinationStatus_firstVaccinationElsewhere">ja (ergens anders gevaccineerd)</string>
-  <string name="app_name_test">CoronaCheck (Test)</string>
-  <string name="app_name_acc">CoronaCheck (Acc)</string>
+  <string name="app_name_test">(Test) CoronaCheck</string>
+  <string name="app_name_acc">(Acc) CoronaCheck</string>
   <string name="app_name">CoronaCheck</string>
   <string name="onboarding_title">Onboarding</string>
   <string name="onboarding_screen_1_title">Krijg toegang met je bewijs</string>
@@ -911,5 +910,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_helpInfo_title">Hulp &amp; Informatie</string>
   <string name="appstatus_launchError_button">Sluit de app</string>
   <string name="appstatus_launchError_title">Er gaat iets mis</string>
-  <string name="appstatus_launchError_body"><![CDATA[De app kan momenteel niet gestart worden. Bel voor meer informatie de CoronaCheck helpdesk op <a href=\"tel:0800-1421\">0800-1421</a> en geef onderstaande foutcode door.<br /><br /><b>Foutcode:</b><br /> %s]]></string>
+  <string name="appstatus_launchError_body"><![CDATA[Op dit moment kan de app niet gestart worden. Bel voor meer informatie de CoronaCheck helpdesk op <a href=\"tel:0800-1421\">0800-1421</a> en geef de foutcode hieronder door.<br /><br /><b>Foutcode:</b><br /> %s]]></string>
+  <string name="holder_dcc_test_identifier">Uniek certificaatnummer:</string>
 </resources>

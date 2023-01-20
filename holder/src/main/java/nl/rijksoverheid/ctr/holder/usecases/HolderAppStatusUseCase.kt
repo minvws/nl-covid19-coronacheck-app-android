@@ -21,6 +21,8 @@ import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceMana
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
+import nl.rijksoverheid.ctr.shared.factories.OnboardingFlow
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 /*
@@ -41,7 +43,8 @@ class HolderAppStatusUseCaseImpl(
     private val appUpdateData: AppUpdateData,
     private val persistenceManager: PersistenceManager,
     private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
-    private val introductionPersistenceManager: IntroductionPersistenceManager
+    private val introductionPersistenceManager: IntroductionPersistenceManager,
+    private val errorCodeStringFactory: ErrorCodeStringFactory
 ) : AppStatusUseCase {
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
@@ -63,7 +66,12 @@ class HolderAppStatusUseCaseImpl(
                             appConfig = cachedAppConfig
                         )
                     } else {
-                        AppStatus.Error
+                        AppStatus.LaunchError(
+                            errorCodeStringFactory.get(
+                                OnboardingFlow,
+                                listOf(config.error)
+                            )
+                        )
                     }
                 }
             }

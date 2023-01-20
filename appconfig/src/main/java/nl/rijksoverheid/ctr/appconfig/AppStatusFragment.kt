@@ -23,6 +23,9 @@ class AppStatusFragment : Fragment() {
         when (val status = args.appStatus) {
             is AppStatus.UpdateRequired,
             is AppStatus.Deactivated,
+            is AppStatus.LaunchError -> navigateSafety(
+                AppStatusFragmentDirections.actionAppLocked(status)
+            )
             is AppStatus.Error -> navigateSafety(
                 AppStatusFragmentDirections.actionAppLocked(status)
             )
