@@ -39,6 +39,7 @@ fun overrideModules(modules: List<Module>) {
                     val holderConfigString = jsonAdapter.toJson(
                         HolderConfig.default(
                             disclosurePolicy = DisclosurePolicy.ZeroG,
+                            configTTL = 1_000_000_000,
                             backendTLSCertificates = listOf(
                                 TestKeys.backendTLSCertificate1,
                                 TestKeys.backendTLSCertificate2
@@ -100,6 +101,12 @@ fun overrideModules(modules: List<Module>) {
                                 ), AppConfig.Code(
                                     code = "EU/1/20/1525",
                                     name = "Jcovden (Janssen)"
+                                )
+                            ),
+                            euTestTypes = listOf(
+                                AppConfig.Code(
+                                    code = "LP6464-4",
+                                    name = "PCR (NAAT)"
                                 )
                             )
                         )
