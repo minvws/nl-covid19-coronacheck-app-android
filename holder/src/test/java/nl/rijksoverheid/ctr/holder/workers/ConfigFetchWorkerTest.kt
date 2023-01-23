@@ -31,7 +31,7 @@ class ConfigFetchWorkerTest : AutoCloseKoinTest() {
     @Test
     fun `when config fetch fails, config fetch worker should retry`() = runBlocking {
         val configResultUseCase = mockk<ConfigResultUseCase>().apply {
-            coEvery { fetch() } returns ConfigResult.Error
+            coEvery { fetch() } returns ConfigResult.Error(mockk(relaxed = true))
         }
 
         val worker = ConfigFetchWorker(context, mockk(relaxed = true), configResultUseCase)

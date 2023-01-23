@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import android.view.View
@@ -25,7 +32,6 @@ import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions
 import com.adevinta.android.barista.interaction.BaristaClickInteractions
 import com.adevinta.android.barista.interaction.BaristaListInteractions
 import com.adevinta.android.barista.interaction.BaristaScrollInteractions
-import java.lang.Thread.sleep
 import junit.framework.TestCase.assertNotNull
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.device
@@ -239,8 +245,8 @@ object Elements {
     // MARK: Other
 
     @Suppress("unused")
-    fun Any.rest(timeout: Long = 1) {
-        Timber.tag("end2end").d("  Rest Here Weary Traveler, for just ${if (timeout > 1) "$timeout seconds" else "a second"}")
-        sleep(timeout * 1_000)
+    fun rest(seconds: Long = 1) {
+        Timber.tag("end2end").d("  Rest Here Weary Traveler, for just ${if (seconds > 1) "$seconds seconds" else "a second"}")
+        Thread.sleep(seconds * 1000)
     }
 }

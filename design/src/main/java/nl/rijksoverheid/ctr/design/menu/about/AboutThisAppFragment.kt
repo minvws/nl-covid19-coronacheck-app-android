@@ -9,8 +9,6 @@
 package nl.rijksoverheid.ctr.design.menu.about
 
 import android.annotation.SuppressLint
-import android.app.ActivityManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -19,6 +17,7 @@ import android.view.View
 import android.view.View.GONE
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.BuildConfig
@@ -26,7 +25,6 @@ import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppSectionBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
-import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
@@ -38,7 +36,6 @@ import org.koin.android.ext.android.inject
 
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
-    private val dialogUtil: DialogUtil by inject()
     private val policyPersistenceManager: DebugDisclosurePolicyPersistenceManager by inject()
 
     companion object {
@@ -77,22 +74,44 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
                 itemView.root.setOnClickListener {
                     when (item) {
                         is AboutThisAppData.Url -> item.url.launchUrl(requireContext())
-                        is AboutThisAppData.ClearAppData -> showClearAppDataDialog()
-                        is AboutThisAppData.Destination -> findNavControllerSafety()?.navigate(item.destinationId)
+                        is AboutThisAppData.Destination -> findNavControllerSafety()?.navigate(
+                            item.destinationId,
+                            item.arguments
+                        )
                     }
                 }
             }
         }
 
-        binding.aboutThisAppBottomButton.customiseSecondaryButton {
-            it.setStrokeColorResource(R.color.error)
-            it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
-            it.setOnClickListener {
-                showClearAppDataDialog()
+        if (getString(R.string.holder_menu_resetApp).isNotEmpty()) {
+            // we have this button in the layout twice because of the design requirement
+            // to align it to the bottom when the content is not scrollable
+            // or follow the scrolling content otherwise
+            binding.aboutThisAppBottomButton.customiseSecondaryButton {
+                it.setStrokeColorResource(R.color.error)
+                it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
+                it.setOnClickListener {
+                    showClearAppDataDialog()
+                }
             }
-        }
-        binding.aboutThisAppBottomButton.customiseButton {
-            it.visibility = GONE
+            binding.aboutThisAppBottomButton.customiseButton {
+                it.visibility = GONE
+            }
+
+            binding.resetButtonContainerWhenScrollable.customiseSecondaryButton {
+                it.setStrokeColorResource(R.color.error)
+                it.setTextColor(ContextCompat.getColor(requireContext(), R.color.error))
+                it.setOnClickListener {
+                    showClearAppDataDialog()
+                }
+            }
+            binding.resetButtonContainerWhenScrollable.customiseButton {
+                it.visibility = GONE
+            }
+            positionResetButton(binding)
+        } else {
+            binding.aboutThisAppBottomButton.visibility = GONE
+            binding.resetButtonContainerWhenScrollable.visibility = GONE
         }
 
         // On acceptance builds show button to trigger deeplink to scanner
@@ -112,19 +131,18 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         }
     }
 
-    private fun showClearAppDataDialog() {
-        dialogUtil.presentDialog(
-            context = requireContext(),
-            title = R.string.about_this_app_clear_data_title,
-            message = resources.getString(R.string.about_this_app_clear_data_description),
-            negativeButtonText = R.string.about_this_app_clear_data_cancel,
-            positiveButtonText = R.string.about_this_app_clear_data_confirm,
-            positiveButtonCallback = ::clearAppData
-        )
+    private fun positionResetButton(binding: FragmentAboutAppBinding) {
+        binding.aboutThisAppScrollview.doOnPreDraw {
+            val canScroll = binding.aboutThisAppScrollview.canScrollVertically(1)
+            binding.aboutThisAppBottomButton.isVisible = !canScroll
+            binding.resetButtonContainerWhenScrollable.isVisible = canScroll
+        }
     }
 
-    private fun clearAppData() {
-        (context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
+    private fun showClearAppDataDialog() {
+        arguments?.getParcelableCompat<AboutThisAppData>(EXTRA_ABOUT_THIS_APP_DATA)?.resetAppDialogDirection?.let {
+            findNavControllerSafety()?.navigate(it.destinationId, it.arguments)
+        }
     }
 
     private fun bindScannerDeeplinkButton(deeplinkScannerButton: Button, url: String) {

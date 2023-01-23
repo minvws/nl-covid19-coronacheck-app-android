@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import androidx.test.espresso.Espresso.onView
@@ -51,12 +58,12 @@ object Assertions {
                 assertContains("Gevaccineerd in: " + event.country.domesticName)
             }
             is PositiveTest -> {
-                assertContains("Type test: " + event.testType.value)
+                assertContains("Testnaam: " + event.testType.value)
                 assertContains("Testdatum: " + event.eventDate.recently())
                 assertContains("Testuitslag: positief (coronavirus vastgesteld)")
             }
             is NegativeTest -> {
-                assertContains("Type test: " + event.testType.value)
+                assertContains("Testnaam: " + event.testType.value)
                 assertContains("Testdatum: " + event.eventDate.recently())
                 assertContains("Testuitslag: negatief (geen coronavirus vastgesteld)")
             }
@@ -163,7 +170,7 @@ object Assertions {
             }
             is NegativeTest -> {
                 labelValuePairExist("Ziekteverwekker / Disease targeted:", event.disease)
-                labelValuePairExist("Type test / Type of test:", event.testType.value)
+                labelValuePairExist("Type test / Test type:", event.testType.value)
                 labelValuePairExist("Testdatum / Test date:", event.eventDate.recently())
                 labelValuePairExist("Testuitslag / Test result:", "negatief (geen coronavirus vastgesteld) / negative (no coronavirus detected)")
                 labelValuePairExist("Getest in / Tested in:", event.country.internationalName)

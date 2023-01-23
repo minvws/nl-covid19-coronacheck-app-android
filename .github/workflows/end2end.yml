@@ -2,7 +2,7 @@ name: End to end tests
 
 on:
   schedule:
-    - cron: '0 13 * * 2,4' # Run at 13:00 on Tuesday and Thursday.
+    - cron: '0 13 * * 0' # Run at 13:00 on Sunday.
   workflow_dispatch:
 
 jobs:
@@ -18,10 +18,15 @@ jobs:
         uses: ./.github/actions/setup
       - name: Assemble
         run: ./gradlew holder:assemAccDebug holder:assemAccDebugAndroidTest
-      - name: Run tests on Testlab
+      - name: Run tests on Firebase Test Lab
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
           echo $FIREBASE_SERVICE_ACCOUNT > $RUNNER_TEMP/.firebase_service_account.json
           export GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/.firebase_service_account.json >> $GITHUB_ENV
           ./gradlew holder:runFlankEnd2end -Pandroid.testInstrumentationRunnerArguments.authPassword=${{ secrets.ACCEPTANCE_BASIC_AUTH_PASSWORD }}
+      - name: Slack Notification
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_URL }}
+          SLACK_MESSAGE: 'New test run for Android :android:'
+        uses: rtCamp/action-slack-notify@v2

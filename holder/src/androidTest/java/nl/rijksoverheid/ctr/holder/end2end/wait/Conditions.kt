@@ -24,7 +24,7 @@ class ButtonInState(private val viewInteraction: ViewInteraction, private val en
 }
 
 class ViewIsShown(private val viewInteraction: ViewInteraction, private val shown: Boolean) : Condition() {
-    override val description = "text is shown"
+    override val description = "text is " + if (shown) "shown" else "not shown"
 
     override fun checkCondition(): Boolean? {
         return try {

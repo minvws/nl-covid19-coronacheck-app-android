@@ -21,8 +21,8 @@
   <string name="holder_eventdetails_vaccinationStatus_complete">ja</string>
   <string name="holder_eventdetails_vaccinationStatus_recovery">ja (eerder corona gehad)</string>
   <string name="holder_eventdetails_vaccinationStatus_firstVaccinationElsewhere">ja (ergens anders gevaccineerd)</string>
-  <string name="app_name_test">CoronaCheck (Test)</string>
-  <string name="app_name_acc">CoronaCheck (Acc)</string>
+  <string name="app_name_test">(Test) CoronaCheck</string>
+  <string name="app_name_acc">(Acc) CoronaCheck</string>
   <string name="app_name">CoronaCheck</string>
   <string name="onboarding_title">Onboarding</string>
   <string name="onboarding_screen_1_title">Krijg toegang met je bewijs</string>
@@ -130,7 +130,7 @@
   <string name="no_negative_test_result_description"><![CDATA[Er is geen negatieve testuitslag beschikbaar.]]></string>
   <string name="test_result_not_known_title">Testuitslag nog niet bekend</string>
   <string name="test_result_not_known_description"><![CDATA[Probeer het later nog eens.<br/><br/>Neem voor vragen contact op met jouw testlocatie.]]></string>
-  <string name="about_this_app_description"><![CDATA[Met de CoronaCheck app kun je aantonen dat je gevaccineerd, negatief getest, of hersteld van corona bent. Je kunt een digitaal coronabewijs maken van je vaccinatie(s), maar ook van een positieve of negatieve testuitslag.<br/><br/>Je bewijs heeft een QR-code. Die kan gescand worden voor toegang tot plekken of activiteiten, of om mee te reizen.]]></string>
+  <string name="about_this_app_description"><![CDATA[Met de CoronaCheck-app kun je aantonen dat je gevaccineerd, negatief getest, of hersteld van corona bent. Je kunt een digitaal coronabewijs maken van je vaccinatie(s), maar ook van een positieve of negatieve testuitslag.<br/><br/>Je bewijs heeft een QR-code. Die kan gescand worden voor toegang tot plekken of activiteiten, of om mee te reizen.]]></string>
   <string name="test_result_already_signed_title">Testuitslag is al opgehaald</string>
   <string name="test_result_already_signed_description"><![CDATA[Je testuitslag is al opgehaald. Ook is er al een QR-code van gemaakt.<br\><br\> Klopt dit niet? Neem dan contact op met de testlocatie.]]></string>
   <string name="item_test_result_expired"><![CDATA[Je QR-code is verlopen.<br/><br/>Laat je opnieuw testen.]]></string>
@@ -161,7 +161,7 @@
   <string name="personal_details_month_okt">OKT</string>
   <string name="personal_details_month_nov">NOV</string>
   <string name="personal_details_month_dec">DEC</string>
-  <string name="app_version">App versie: %1$s (%2$s)</string>
+  <string name="app_version">App-versie: %1$s (%2$s)</string>
   <string name="config_version">Configuratie %1$s, %2$s</string>
   <string name="my_overview_existing_qr_title">Laat QR-code zien bij ingang</string>
   <string name="my_overview_existing_qr_date">Geldig tot %1$s</string>
@@ -255,8 +255,8 @@
   <string name="qr_explanation_description_eu_test_name">Naam / Name:</string>
   <string name="qr_explanation_description_eu_test_birth_date">Geboortedatum / Date of birth*:</string>
   <string name="qr_explanation_description_eu_test_disease">Ziekteverwekker / Disease targeted:</string>
-  <string name="qr_explanation_description_eu_test_test_type">Type test / Type of test:</string>
-  <string name="qr_explanation_description_eu_test_test_name">Test naam / Test name:</string>
+  <string name="qr_explanation_description_eu_test_test_type">Type test / Test type:</string>
+  <string name="qr_explanation_description_eu_test_test_name">Testnaam / Test name:</string>
   <string name="qr_explanation_description_eu_test_test_date">Testdatum / Test date:</string>
   <string name="qr_explanation_description_eu_test_test_result">Testuitslag / Test result:</string>
   <string name="qr_explanation_description_eu_test_test_centre">Testlocatie / Test location:</string>
@@ -307,7 +307,7 @@
   <string name="your_vaccination_explanation_covid_19_answer">COVID-19</string>
   <string name="your_vaccination_explanation_vaccine">Vaccin:</string>
   <string name="your_vaccination_explanation_vaccine_type">Type vaccin:</string>
-  <string name="your_vaccination_explanation_producer">Vaccin producent:</string>
+  <string name="your_vaccination_explanation_producer">Vaccinproducent:</string>
   <string name="your_vaccination_explanation_doses">Dosis:</string>
   <string name="your_vaccination_explanation_last_dose">Is dit de laatste dosis van je vaccinatie?</string>
   <string name="your_vaccination_explanation_vaccination_date">Vaccinatiedatum:</string>
@@ -903,9 +903,13 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_helpInfo_helpdesk">Helpdesk</string>
   <string name="holder_helpdesk_title">Helpdesk</string>
   <string name="holder_helpdesk_contact_title">Contact</string>
-  <string name="holder_helpdesk_contact_message"><![CDATA[Bij vragen of problemen kun je contact opnemen met de CoronaCheck helpdesk.<br/><br/><b>Bel de helpdesk:</b><br />Op <a href=\"tel:0800-1421\">0800-1421</a> (gratis). Of als je vanuit het buitenland belt: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>.<br /> <br />Telefonisch bereikbaar van maandag t/m zondag 08:00 - 20:00 uur.<br /><br /><b>Of stuur een e-mail naar:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
+  <string name="holder_helpdesk_contact_message"><![CDATA[Bij vragen of problemen kun je contact opnemen met de CoronaCheck helpdesk.<br/><br/><b>Bel de helpdesk:</b><br />Op <a href=\"tel:0800-1421\">0800-1421</a> (gratis). Of als je vanuit het buitenland belt: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>.<br /> <br />Telefonisch bereikbaar van maandag t/m vrijdag 08:00 - 18:00 uur.<br /><br /><b>Of stuur een e-mail naar:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
   <string name="holder_helpdesk_support_title">Ondersteuning</string>
-  <string name="holder_helpdesk_appVersion">App versie:</string>
+  <string name="holder_helpdesk_appVersion">App-versie:</string>
   <string name="holder_helpdesk_configuration">Configuratie:</string>
   <string name="holder_helpInfo_title">Hulp &amp; Informatie</string>
+  <string name="appstatus_launchError_button">Sluit de app</string>
+  <string name="appstatus_launchError_title">Er gaat iets mis</string>
+  <string name="appstatus_launchError_body"><![CDATA[Op dit moment kan de app niet gestart worden. Bel voor meer informatie de CoronaCheck helpdesk op <a href=\"tel:0800-1421\">0800-1421</a> en geef de foutcode hieronder door.<br /><br /><b>Foutcode:</b><br /> %s]]></string>
+  <string name="holder_dcc_test_identifier">Uniek certificaatnummer:</string>
 </resources>

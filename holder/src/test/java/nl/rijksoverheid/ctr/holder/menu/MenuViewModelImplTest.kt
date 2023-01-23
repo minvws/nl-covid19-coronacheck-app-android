@@ -35,27 +35,27 @@ class MenuViewModelImplTest : AutoCloseKoinTest() {
         menuViewModel.click(ApplicationProvider.getApplicationContext())
         val menuSections = menuViewModel.menuSectionLiveData.value!!.peekContent()
 
-        assertEquals(1, menuSections[0].menuItems.size)
+        assertEquals(3, menuSections[0].menuItems.size)
         assertEquals(R.drawable.ic_menu_add, menuSections[0].menuItems[0].icon)
         assertEquals(
             R.string.holder_menu_listItem_addVaccinationOrTest_title,
             menuSections[0].menuItems[0].title
         )
         assertTrue(menuSections[0].menuItems[0].onClick is MenuSection.MenuItem.OnClick.Navigate)
+        assertEquals(3, menuSections[0].menuItems.size)
+        assertEquals(R.drawable.ic_menu_paper, menuSections[0].menuItems[1].icon)
+        assertEquals(R.string.holder_menu_paperproof_title, menuSections[0].menuItems[1].title)
+        assertTrue(menuSections[0].menuItems[1].onClick is MenuSection.MenuItem.OnClick.Navigate)
+        assertEquals(R.drawable.ic_menu_briefcase, menuSections[0].menuItems[2].icon)
+        assertEquals(R.string.holder_menu_visitorpass, menuSections[0].menuItems[2].title)
+        assertTrue(menuSections[0].menuItems[2].onClick is MenuSection.MenuItem.OnClick.Navigate)
         assertEquals(2, menuSections[1].menuItems.size)
-        assertEquals(R.drawable.ic_menu_paper, menuSections[1].menuItems[0].icon)
-        assertEquals(R.string.holder_menu_paperproof_title, menuSections[1].menuItems[0].title)
+        assertEquals(R.drawable.ic_menu_saved_events, menuSections[1].menuItems[0].icon)
+        assertEquals(R.string.holder_menu_storedEvents, menuSections[1].menuItems[0].title)
         assertTrue(menuSections[1].menuItems[0].onClick is MenuSection.MenuItem.OnClick.Navigate)
-        assertEquals(R.drawable.ic_menu_briefcase, menuSections[1].menuItems[1].icon)
-        assertEquals(R.string.holder_menu_visitorpass, menuSections[1].menuItems[1].title)
+        assertEquals(R.drawable.ic_menu_info, menuSections[1].menuItems[1].icon)
+        assertEquals(R.string.holder_menu_helpInfo, menuSections[1].menuItems[1].title)
         assertTrue(menuSections[1].menuItems[1].onClick is MenuSection.MenuItem.OnClick.Navigate)
-        assertEquals(2, menuSections[2].menuItems.size)
-        assertEquals(R.drawable.ic_menu_saved_events, menuSections[2].menuItems[0].icon)
-        assertEquals(R.string.holder_menu_storedEvents, menuSections[2].menuItems[0].title)
-        assertTrue(menuSections[2].menuItems[0].onClick is MenuSection.MenuItem.OnClick.Navigate)
-        assertEquals(R.drawable.ic_menu_info, menuSections[2].menuItems[1].icon)
-        assertEquals(R.string.holder_menu_helpInfo, menuSections[2].menuItems[1].title)
-        assertTrue(menuSections[2].menuItems[1].onClick is MenuSection.MenuItem.OnClick.Navigate)
     }
 
     @Test

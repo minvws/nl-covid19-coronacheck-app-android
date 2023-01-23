@@ -55,7 +55,7 @@ class FutureEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
-        launchApp()
+        relaunchApp()
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
@@ -79,7 +79,7 @@ class FutureEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
-        launchApp()
+        relaunchApp()
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
@@ -101,7 +101,7 @@ class FutureEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(2))
-        launchApp()
+        relaunchApp()
 
         assertInternationalEventOnOverview(pos)
         assertQrButtonIsEnabled(Event.Type.PositiveTest)
@@ -121,7 +121,7 @@ class FutureEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(140))
-        launchApp()
+        relaunchApp()
 
         assertInternationalEventOnOverview(pos)
         assertInternationalEventWillExpireSoon(Event.Type.PositiveTest, daysLeft = 9)
@@ -141,7 +141,7 @@ class FutureEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(150))
-        launchApp()
+        relaunchApp()
 
         assertInternationalEventIsExpired(Event.Type.PositiveTest)
     }
@@ -156,7 +156,7 @@ class FutureEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(2))
-        launchApp()
+        relaunchApp()
 
         assertInternationalEventOnOverview(neg)
         assertQrButtonIsEnabled(Event.Type.NegativeTest)
@@ -175,7 +175,7 @@ class FutureEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(60))
-        launchApp()
+        relaunchApp()
 
         assertInternationalEventIsExpired(Event.Type.NegativeTest)
     }

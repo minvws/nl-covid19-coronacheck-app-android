@@ -23,7 +23,7 @@ class OfflineEventRetrievalTest : BaseTest() {
     @Before
     fun goOffline() {
         setAirplaneMode(true)
-        launchApp()
+        relaunchApp()
     }
 
     @After

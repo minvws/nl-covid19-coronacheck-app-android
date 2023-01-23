@@ -21,6 +21,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.R.dimen
+import nl.rijksoverheid.ctr.design.menu.MenuViewModel
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.NavGraphOverviewDirections
@@ -30,7 +31,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDashboardBinding
 import nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds
-import nl.rijksoverheid.ctr.holder.menu.MenuViewModel
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety

@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.design.utils.DialogFragmentData
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentGetEventsBinding
@@ -73,14 +74,18 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         }
         binding.noDigidButton.setOnClickListener {
             if (args.originType == RemoteOriginType.Vaccination) {
-                navigateSafety(GetEventsFragmentDirections.actionNoDigid(
-                    NoDigidFragmentData(
-                        title = getString(R.string.holder_noDigiD_title),
-                        description = getString(R.string.holder_noDigiD_message),
-                        firstNavigationButtonData = noDigidScreenDataUtil.requestDigidButton(),
-                        secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(args.originType),
-                        originType = args.originType
-                    ))
+                navigateSafety(
+                    GetEventsFragmentDirections.actionNoDigid(
+                        NoDigidFragmentData(
+                            title = getString(R.string.holder_noDigiD_title),
+                            description = getString(R.string.holder_noDigiD_message),
+                            firstNavigationButtonData = noDigidScreenDataUtil.requestDigidButton(),
+                            secondNavigationButtonData = noDigidScreenDataUtil.continueWithoutDigidButton(
+                                args.originType
+                            ),
+                            originType = args.originType
+                        )
+                    )
                 )
             } else {
                 navigateSafety(
@@ -147,6 +152,16 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
         )
     }
 
+    override fun yourEventsFragmentType(
+        remoteProtocols: Map<RemoteProtocol, ByteArray>,
+        eventProviders: List<EventProvider>
+    ): YourEventsFragmentType {
+        return YourEventsFragmentType.RemoteProtocol3Type(
+            remoteEvents = remoteProtocols,
+            eventProviders = eventProviders
+        )
+    }
+
     override fun dialogPresented() {
         binding.loadingOverlay.progressBar.makeIndeterminateAccessible(
             context = requireContext(),
@@ -154,6 +169,10 @@ class GetEventsFragment : DigiDFragment(R.layout.fragment_get_events) {
             message = R.string.holder_fetchevents_loading
         )
         binding.loadingOverlay.root.isVisible = false
+    }
+
+    override fun openDialog(data: DialogFragmentData) {
+        navigateSafety(GetEventsFragmentDirections.actionDialog(data))
     }
 }
 

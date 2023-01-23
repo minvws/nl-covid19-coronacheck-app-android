@@ -106,7 +106,8 @@ data class HolderConfig(
             visitorPassEnabled: Boolean = false,
             vaccinationAssessmentEventValidityDays: Int = 14,
             mijnCnEnabled: Boolean = false,
-            disclosurePolicy: DisclosurePolicy = DisclosurePolicy.ThreeG
+            disclosurePolicy: DisclosurePolicy = DisclosurePolicy.ThreeG,
+            backendTLSCertificates: List<String> = listOf()
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
             holderAppDeactivated = holderAppDeactivated,
@@ -147,7 +148,7 @@ data class HolderConfig(
             vaccinationAssessmentEventValidityDays = vaccinationAssessmentEventValidityDays,
             mijnCnEnabled = mijnCnEnabled,
             disclosurePolicy = disclosurePolicy,
-            backendTLSCertificates = emptyList(),
+            backendTLSCertificates = backendTLSCertificates,
             papEnabled = false
         )
     }

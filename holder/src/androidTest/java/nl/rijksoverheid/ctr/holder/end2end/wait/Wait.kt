@@ -20,7 +20,7 @@ object Wait {
     }
 
     @Throws
-    fun until(condition: Condition, timeoutLimit: Long = 5 * 1000, watchInterval: Long = 200) {
+    fun until(condition: Condition, timeoutLimit: Long = 5 * 1_000, watchInterval: Long = 200) {
         Timber.tag("end2end").d("Start waiting on '${condition.description}'")
         var status = State.ConditionNotMet
         var elapsedTime: Long = 0

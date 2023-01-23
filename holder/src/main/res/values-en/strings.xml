@@ -21,8 +21,8 @@
   <string name="holder_eventdetails_vaccinationStatus_complete">yes</string>
   <string name="holder_eventdetails_vaccinationStatus_recovery">yes (I’ve had coronavirus earlier)</string>
   <string name="holder_eventdetails_vaccinationStatus_firstVaccinationElsewhere">yes (I have been vaccinated elsewhere)</string>
-  <string name="app_name_test">CoronaCheck (Test)</string>
-  <string name="app_name_acc">CoronaCheck (Acc)</string>
+  <string name="app_name_test">(Test) CoronaCheck</string>
+  <string name="app_name_acc">(Acc) CoronaCheck</string>
   <string name="app_name">CoronaCheck</string>
   <string name="onboarding_title">Onboarding</string>
   <string name="onboarding_screen_1_title">Get access with your certificate</string>
@@ -255,7 +255,7 @@
   <string name="qr_explanation_description_eu_test_name">Name:</string>
   <string name="qr_explanation_description_eu_test_birth_date">Date of birth*:</string>
   <string name="qr_explanation_description_eu_test_disease">Disease targeted:</string>
-  <string name="qr_explanation_description_eu_test_test_type">Type of test:</string>
+  <string name="qr_explanation_description_eu_test_test_type">Test type:</string>
   <string name="qr_explanation_description_eu_test_test_name">Test name:</string>
   <string name="qr_explanation_description_eu_test_test_date">Test date:</string>
   <string name="qr_explanation_description_eu_test_test_result">Test result:</string>
@@ -360,7 +360,7 @@
   <string name="no_positive_test_result_description"><![CDATA[Have you just been tested? It may take a few hours before your result is available. Please try again later.<br/><br/>Were you tested longer ago? Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="qr_code_type_recovery_title">Positive test</string>
   <string name="qr_code_type_recovery_description">The test proves I have had coronavirus</string>
-  <string name="your_test_result_explanation_positive_test_result">positive (corona detected)</string>
+  <string name="your_test_result_explanation_positive_test_result">positive (coronavirus detected)</string>
   <string name="recovery_explanation_description_header">The following details were retrieved from the test location:</string>
   <string name="recovery_explanation_description_name">Name:</string>
   <string name="recovery_explanation_description_birth_date">Date of birth:</string>
@@ -902,9 +902,13 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_helpInfo_helpdesk">Helpdesk</string>
   <string name="holder_helpdesk_title">Helpdesk</string>
   <string name="holder_helpdesk_contact_title">Contact</string>
-  <string name="holder_helpdesk_contact_message"><![CDATA[If you have any questions or experience problems, you can contact the CoronaCheck helpdesk.<br/><br/><b>Call the helpdesk:</b><br />Op <a href=\"tel:0800-1421\">0800-1421</a> (free). Or, if you are calling from abroad: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>.<br /> <br />Open from Monday till Friday, between 08.00 a.m. - 06.00 p.m.<br /><br /><b>Or send an e-mail to:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
+  <string name="holder_helpdesk_contact_message"><![CDATA[If you have any questions or experience problems, you can contact the CoronaCheck helpdesk.<br/><br/><b>Call the helpdesk:</b><br /><a href=\"tel:0800-1421\">0800-1421</a> (free). Or, if you are calling from abroad: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>.<br /> <br />Open from Monday till Friday, between 08.00 a.m. - 06.00 p.m.<br /><br /><b>Or send an email to:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
   <string name="holder_helpdesk_support_title">Support</string>
   <string name="holder_helpdesk_appVersion">App version:</string>
   <string name="holder_helpdesk_configuration">Configuration:</string>
   <string name="holder_helpInfo_title">Help &amp; Information</string>
+  <string name="appstatus_launchError_button">Close the app</string>
+  <string name="appstatus_launchError_title">Something went wrong</string>
+  <string name="appstatus_launchError_body"><![CDATA[We can’t launch the app right now. For more information, contact the CoronaCheck helpdesk via <a href=\"tel:0800-1421\">0800-1421</a> and pass on the error code below.<br /><br /><b>Error code:</b><br /> %s]]></string>
+  <string name="holder_dcc_test_identifier">Unique certificate identifier:</string>
 </resources>

@@ -2,7 +2,7 @@ package nl.rijksoverheid.ctr.design.utils
 
 import android.content.Context
 import androidx.annotation.StringRes
-import androidx.fragment.app.FragmentActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -22,8 +22,6 @@ interface DialogUtil {
         negativeButtonCallback: (() -> Unit)? = null,
         onDismissCallback: (() -> Unit)? = null
     )
-
-    fun dismiss(context: Context?)
 }
 
 class DialogUtilImpl : DialogUtil {
@@ -38,36 +36,27 @@ class DialogUtilImpl : DialogUtil {
         negativeButtonCallback: (() -> Unit)?,
         onDismissCallback: (() -> Unit)?
     ) {
-        val activity = context as FragmentActivity
-        val fragmentManager = context.supportFragmentManager
-        if (fragmentManager.findFragmentByTag(DialogFragment.TAG) == null) {
-            val dialog = DialogFragment(title, message, positiveButtonText, negativeButtonText)
-            fragmentManager.setFragmentResultListener(
-                DialogFragment.KEY_DIALOG_RESULT,
-                activity
-            ) { _, bundle ->
-                fragmentManager.clearFragmentResultListener(DialogFragment.KEY_DIALOG_RESULT)
-                when {
-                    bundle.getBoolean(DialogFragment.KEY_SHOWN) -> {
-                        if ((dialog as? DialogFragment)?.isAdded == true) {
-                            dialog.registerCallbacks(
-                                positiveButtonText,
-                                negativeButtonText,
-                                positiveButtonCallback,
-                                negativeButtonCallback,
-                                onDismissCallback
-                            )
-                        }
-                    }
-                }
+        val builder = MaterialAlertDialogBuilder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveButtonText) { dialog, _ ->
+                positiveButtonCallback()
+                dialog.dismiss()
             }
-            dialog.show(fragmentManager, DialogFragment.TAG)
-        }
-    }
 
-    override fun dismiss(context: Context?) {
-        val fragmentManager = (context as? FragmentActivity)?.supportFragmentManager
-        fragmentManager?.clearFragmentResultListener(DialogFragment.KEY_DIALOG_RESULT)
-        (fragmentManager?.findFragmentByTag(DialogFragment.TAG) as? DialogFragment)?.dismiss()
+        negativeButtonText?.let {
+            builder.setNegativeButton(it) { dialog, _ ->
+                negativeButtonCallback?.invoke()
+                dialog.dismiss()
+            }
+        }
+
+        onDismissCallback?.let {
+            builder.setOnDismissListener {
+                onDismissCallback()
+            }
+        }
+
+        builder.create().show()
     }
 }

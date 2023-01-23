@@ -1,8 +1,17 @@
+/*
+ * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import junit.framework.TestCase.fail
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
@@ -15,13 +24,15 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterBsn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterTextInField
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.rest
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollListToPosition
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButtonElement
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapOnElementWithContentDescription
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForView
+import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
+import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 import timber.log.Timber
 
 object Actions {
@@ -48,6 +59,8 @@ object Actions {
         tapOnElementWithContentDescription("Vliegtuigmodus")
         context.sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
     }
+
+    // MARK: Adding events
 
     private fun addEvent() {
         tapButton("Menu")
@@ -80,9 +93,12 @@ object Actions {
         waitForText("Mijn bewijzen", 60)
     }
 
+    // MARK: Overview
+
     fun scrollToBottomOfOverview() {
-        waitForView("recyclerView")
-        for (i in 3 until 9 step 3) scrollListToPosition(R.id.recyclerView, i)
+        Wait.until(ViewIsShown(onView(withId(R.id.recyclerView)), true))
+        for (i in 2 until 12 step 2) scrollListToPosition(R.id.recyclerView, i)
+        rest(2)
     }
 
     fun viewQR(eventType: Event.Type) {
@@ -91,9 +107,13 @@ object Actions {
         waitForText("Internationale QR")
     }
 
+    // MARK: QR
+
     fun viewPreviousQR() {
         clickOn(R.id.previousQrButton)
     }
+
+    // MARK: Private functions
 
     fun retrieveCertificateFromServer(bsn: String) {
         if (bsn.isEmpty()) fail("BSN was empty, no certificate can be retrieved.")

@@ -40,7 +40,7 @@ class OfflineQrTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         setAirplaneMode(true)
-        launchApp()
+        relaunchApp()
 
         viewQR(Event.Type.Vaccination)
         assertQRisShown()
@@ -58,7 +58,7 @@ class OfflineQrTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         setAirplaneMode(true)
-        launchApp()
+        relaunchApp()
 
         viewQR(Event.Type.PositiveTest)
         assertQRisShown()
@@ -74,7 +74,7 @@ class OfflineQrTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         setAirplaneMode(true)
-        launchApp()
+        relaunchApp()
 
         viewQR(Event.Type.NegativeTest)
         assertQRisShown()

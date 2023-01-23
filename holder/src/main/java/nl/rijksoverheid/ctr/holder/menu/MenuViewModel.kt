@@ -8,20 +8,16 @@
 package nl.rijksoverheid.ctr.holder.menu
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
+import nl.rijksoverheid.ctr.design.menu.MenuViewModel
+import nl.rijksoverheid.ctr.design.utils.DialogButtonData
+import nl.rijksoverheid.ctr.design.utils.DialogFragmentData
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.Environment
-
-abstract class MenuViewModel : ViewModel() {
-    val menuSectionLiveData: LiveData<Event<Array<MenuSection>>> = MutableLiveData()
-    abstract fun click(context: Context)
-}
 
 class MenuViewModelImpl(
     private val helpMenuDataModel: HelpMenuDataModel,
@@ -89,31 +85,19 @@ class MenuViewModelImpl(
             )
         )
 
+        val firstSectionItems = listOf(
+            addVaccinationOrTestMenuItem,
+            addPaperProofMenuItem
+        ) + if (isVisitorPassEnabled) {
+            listOf(addVisitorPassMenuItem)
+        } else {
+            emptyList()
+        }
+
         val menuSections: List<MenuSection> = listOfNotNull(
-            if (isVisitorPassEnabled) {
-                MenuSection(
-                    menuItems = listOf(
-                        addVaccinationOrTestMenuItem
-                    )
-                )
-            } else {
-                MenuSection(
-                    menuItems = listOf(
-                        addVaccinationOrTestMenuItem,
-                        addPaperProofMenuItem
-                    )
-                )
-            },
-            if (isVisitorPassEnabled) {
-                MenuSection(
-                    menuItems = listOf(
-                        addPaperProofMenuItem,
-                        addVisitorPassMenuItem
-                    )
-                )
-            } else {
-                null
-            },
+            MenuSection(
+                menuItems = firstSectionItems
+            ),
             MenuSection(
                 menuItems = listOf(
                     savedEventsMenuItem,
@@ -123,13 +107,23 @@ class MenuViewModelImpl(
             if (Environment.get(context) == Environment.Prod) {
                 null
             } else {
+                val dialogDirection = MenuFragmentDirections.actionDialog(
+                    data = DialogFragmentData(
+                        title = nl.rijksoverheid.ctr.design.R.string.about_this_app_clear_data_title,
+                        message = nl.rijksoverheid.ctr.design.R.string.about_this_app_clear_data_description,
+                        positiveButtonData = DialogButtonData.ResetApp(
+                            textId = nl.rijksoverheid.ctr.design.R.string.about_this_app_clear_data_confirm
+                        ),
+                        negativeButtonData = DialogButtonData.Dismiss(nl.rijksoverheid.ctr.design.R.string.about_this_app_clear_data_cancel)
+                    )
+                )
                 MenuSection(
                     menuItems = listOf(
                         MenuSection.MenuItem(
-                            icon = R.drawable.ic_menu_info,
+                            icon = R.drawable.ic_warning,
                             color = R.color.error,
                             title = R.string.holder_menu_resetApp,
-                            onClick = MenuSection.MenuItem.OnClick.ResetApp
+                            onClick = MenuSection.MenuItem.OnClick.Navigate(dialogDirection.actionId, dialogDirection.arguments)
                         )
                     )
                 )

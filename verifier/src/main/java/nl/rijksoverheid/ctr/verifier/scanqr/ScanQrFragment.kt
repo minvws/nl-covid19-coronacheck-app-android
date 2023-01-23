@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.menu.MenuViewModel
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -32,7 +33,6 @@ import nl.rijksoverheid.ctr.verifier.persistance.usecase.VerifierCachedAppConfig
 import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionState
 import nl.rijksoverheid.ctr.verifier.policy.VerificationPolicySelectionType
 import nl.rijksoverheid.ctr.verifier.scanner.utils.ScannerUtil
-import nl.rijksoverheid.ctr.verifier.scanqr.util.MenuUtil
 import nl.rijksoverheid.ctr.verifier.scanqr.util.ScannerStateCountdownUtil
 import nl.rijksoverheid.ctr.verifier.usecases.ScannerStateUseCase
 import org.koin.android.ext.android.inject
@@ -59,7 +59,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
     private val scannerStateUseCase: ScannerStateUseCase by inject()
     private val androidUtil: AndroidUtil by inject()
     private val deeplinkManager: DeeplinkManager by inject()
-    private val menuUtil: MenuUtil by inject()
+    private val menuViewModel: MenuViewModel by viewModel()
 
     private var scannerStateCountDownTimer: ScannerStateCountDownTimer? = null
 
@@ -115,6 +115,14 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
         if (deeplinkManager.getReturnUri() != null) {
             scanQrViewModel.nextScreen()
         }
+
+        menuViewModel.menuSectionLiveData.observe(viewLifecycleOwner, EventObserver {
+            navigateSafety(
+                ScanQrFragmentDirections.actionMenu(
+                    menuSections = it
+                )
+            )
+        })
     }
 
     private fun setupClockDeviation() {
@@ -143,7 +151,7 @@ class ScanQrFragment : Fragment(R.layout.fragment_scan_qr) {
                 toolbar.apply {
                     inflateMenu(nl.rijksoverheid.ctr.design.R.menu.menu_toolbar)
                     menu.findItem(nl.rijksoverheid.ctr.design.R.id.action_menu).actionView?.setOnClickListener {
-                        menuUtil.showMenu(this@ScanQrFragment)
+                        menuViewModel.click(requireContext())
                     }
                 }
             }

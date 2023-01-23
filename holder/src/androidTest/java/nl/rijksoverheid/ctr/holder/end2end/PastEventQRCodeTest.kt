@@ -46,14 +46,14 @@ class PastEventQRCodeTest : BaseTest() {
         val person = Person(bsn = "999990020")
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
-        val deviceDate = today.offsetDays(-65)
+        val deviceDate = today.offsetDays(-80)
 
         addVaccinationCertificate()
         retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
-        launchApp()
+        relaunchApp()
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
@@ -73,7 +73,7 @@ class PastEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
-        launchApp()
+        relaunchApp()
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
@@ -95,7 +95,7 @@ class PastEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(-20))
-        launchApp()
+        relaunchApp()
 
         assertNotYetValidInternationalEventOnOverview(pos)
         assertQrButtonIsDisabled(Event.Type.PositiveTest)
@@ -111,7 +111,7 @@ class PastEventQRCodeTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(-2))
-        launchApp()
+        relaunchApp()
 
         assertNotYetValidInternationalEventOnOverview(neg)
         assertQrButtonIsDisabled(Event.Type.NegativeTest)
