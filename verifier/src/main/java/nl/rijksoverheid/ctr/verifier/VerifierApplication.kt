@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.verifier
 
+import errorsModule
 import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.appConfigModule
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
@@ -56,6 +57,7 @@ open class VerifierApplication : SharedApplication() {
                 *getAdditionalModules().toTypedArray(),
                 designModule,
                 qrScannerModule,
+                errorsModule,
                 storageModule
             )
         }
