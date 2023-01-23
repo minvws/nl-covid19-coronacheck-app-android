@@ -57,7 +57,11 @@ fun fakeCredentialEntity(
 
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
-        override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
+        override fun refresh(
+            mobileCoreWrapper: MobileCoreWrapper,
+            force: Boolean,
+            afterRefresh: () -> Unit
+        ) {
             appStatusLiveData.value = appStatus
         }
 
