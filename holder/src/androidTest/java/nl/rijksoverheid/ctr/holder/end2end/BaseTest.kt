@@ -30,8 +30,9 @@ abstract class BaseTest : AutoCloseKoinTest() {
 
     private lateinit var scenario: ActivityScenario<HolderMainActivity>
 
-    fun launchApp(): ActivityScenario<HolderMainActivity> {
-        return ActivityScenario.launch(HolderMainActivity::class.java)
+    fun relaunchApp() {
+        ActivityScenario.launch(HolderMainActivity::class.java)
+        instrumentation.waitForIdleSync()
     }
 
     @Before
@@ -47,7 +48,7 @@ abstract class BaseTest : AutoCloseKoinTest() {
         persistenceManager.setPolicyScreenSeen(DisclosurePolicy.ZeroG)
         persistenceManager.setSelectedDashboardTab(1)
 
-        scenario = launchApp()
+        scenario = ActivityScenario.launch(HolderMainActivity::class.java)
     }
 
     companion object {

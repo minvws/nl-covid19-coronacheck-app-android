@@ -18,6 +18,10 @@ fun LocalDate.written(): String {
     return this.format(DateTimeFormatter.ofPattern("d MMMM yyyy"))
 }
 
+fun LocalDate.writtenWithoutYear(): String {
+    return this.format(DateTimeFormatter.ofPattern("d MMMM"))
+}
+
 fun LocalDate.recently(): String {
     return this.format(DateTimeFormatter.ofPattern("EEEE d MMMM"))
 }
