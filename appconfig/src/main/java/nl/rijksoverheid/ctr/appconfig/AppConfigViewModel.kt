@@ -26,7 +26,11 @@ import nl.rijksoverheid.ctr.shared.ext.initialisationException
 abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()
 
-    abstract fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean = false)
+    abstract fun refresh(
+        mobileCoreWrapper: MobileCoreWrapper,
+        force: Boolean = false,
+        afterRefresh: () -> Unit = {}
+    )
     abstract fun saveNewFeaturesFinished()
     abstract fun saveNewTerms()
 }
@@ -50,7 +54,11 @@ class AppConfigViewModelImpl(
         }
     }
 
-    override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
+    override fun refresh(
+        mobileCoreWrapper: MobileCoreWrapper,
+        force: Boolean,
+        afterRefresh: () -> Unit
+    ) {
         // update the app status from the last fetched config
         // only if it is valid (so don't use the default one)
         if (cachedAppConfigUseCase.isCachedAppConfigValid()) {
@@ -63,6 +71,7 @@ class AppConfigViewModelImpl(
         }
         viewModelScope.launch {
             val configResult = configResultUseCase.fetch()
+            afterRefresh()
             val appStatus = appStatusUseCase.get(configResult, versionCode)
 
             val configFilesArePresentInFilesFolder =

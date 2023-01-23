@@ -34,7 +34,11 @@ import org.json.JSONObject
 
 fun fakeAppConfigViewModel(appStatus: AppStatus = AppStatus.NoActionRequired) =
     object : AppConfigViewModel() {
-        override fun refresh(mobileCoreWrapper: MobileCoreWrapper, force: Boolean) {
+        override fun refresh(
+            mobileCoreWrapper: MobileCoreWrapper,
+            force: Boolean,
+            afterRefresh: () -> Unit
+        ) {
             if (appStatusLiveData.value != appStatus) {
                 appStatusLiveData.postValue(appStatus)
             }

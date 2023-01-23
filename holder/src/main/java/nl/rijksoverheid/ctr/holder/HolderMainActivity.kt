@@ -15,6 +15,7 @@ import android.net.NetworkRequest
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -22,6 +23,7 @@ import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
@@ -53,6 +55,7 @@ class HolderMainActivity : AppCompatActivity() {
     private var isFreshStart: Boolean = true // track if this is a fresh start of the app
     private val androidUtil: AndroidUtil by inject()
     private val workerManagerUtil: WorkerManagerUtil by inject()
+    private val coronaCheckRepository: CoronaCheckRepository by inject()
 
     private val connectivityChangeCallback =
         object : ConnectivityManager.NetworkCallback() {
@@ -179,9 +182,13 @@ class HolderMainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Only get app config on every app foreground when introduction is finished
+        // get app and providers config on every app foreground when introduction is finished
         if (!introductionViewModel.getIntroductionRequired()) {
-            appConfigViewModel.refresh(mobileCoreWrapper, isFreshStart)
+            appConfigViewModel.refresh(mobileCoreWrapper, isFreshStart) {
+                lifecycle.coroutineScope.launchWhenStarted {
+                    coronaCheckRepository.configProviders(useCache = false)
+                }
+            }
             isFreshStart = false
         }
     }
