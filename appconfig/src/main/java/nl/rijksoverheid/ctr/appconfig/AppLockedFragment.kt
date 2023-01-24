@@ -8,16 +8,19 @@
 
 package nl.rijksoverheid.ctr.appconfig
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppLockedBinding
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.design.ext.enableHtmlLinks
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
@@ -29,6 +32,7 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
     private val androidUtil: AndroidUtil by inject()
     private val intentUtil: IntentUtil by inject()
 
+    @SuppressLint("StringFormatInvalid")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -38,7 +42,7 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
             binding.illustration.visibility = View.GONE
         }
 
-        when (args.appStatus) {
+        when (val appStatus = args.appStatus) {
             is AppStatus.Deactivated -> {
                 binding.bind(
                     R.string.app_status_deactivated_title,
@@ -70,6 +74,17 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
                 ) {
                     intentUtil.openPlayStore(requireContext())
                 }
+            }
+            is AppStatus.LaunchError -> {
+                binding.bind(
+                    R.string.appstatus_launchError_title,
+                    getString(R.string.appstatus_launchError_body, appStatus.errorMessage),
+                    R.string.appstatus_launchError_button,
+                    R.drawable.illustration_app_status_launch_error
+                ) {
+                    activity?.finish()
+                }
+                binding.message
             }
             is AppStatus.Error -> {
                 binding.bind(
@@ -103,6 +118,27 @@ private fun FragmentAppLockedBinding.bind(
 ) {
     this.title.setText(title)
     this.message.setText(message)
+    this.action.setText(action)
+    this.illustration.setImageResource(illustration)
+    this.action.setOnClickListener {
+        onClick()
+    }
+}
+
+private fun FragmentAppLockedBinding.bind(
+    @StringRes title: Int,
+    message: String,
+    @StringRes action: Int,
+    @DrawableRes illustration: Int,
+    onClick: () -> Unit
+) {
+    this.title.setText(title)
+    this.message.text = HtmlCompat.fromHtml(
+        message,
+        HtmlCompat.FROM_HTML_MODE_COMPACT
+    )
+    this.message.enableHtmlLinks()
+    this.message.textAlignment = View.TEXT_ALIGNMENT_CENTER
     this.action.setText(action)
     this.illustration.setImageResource(illustration)
     this.action.setOnClickListener {

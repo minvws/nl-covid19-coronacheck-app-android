@@ -163,7 +163,7 @@ class VerifierAppStatusUseCaseImplTest {
             )
 
             val appStatus = appStatusUseCase.get(
-                config = ConfigResult.Error,
+                config = ConfigResult.Error(mockk()),
                 currentVersionCode = 1
             )
             Assert.assertEquals(AppStatus.Error, appStatus)
@@ -195,7 +195,7 @@ class VerifierAppStatusUseCaseImplTest {
             )
 
             val appStatus = appStatusUseCase.get(
-                config = ConfigResult.Error,
+                config = ConfigResult.Error(mockk()),
                 currentVersionCode = 1026
             )
             Assert.assertEquals(AppStatus.NoActionRequired, appStatus)

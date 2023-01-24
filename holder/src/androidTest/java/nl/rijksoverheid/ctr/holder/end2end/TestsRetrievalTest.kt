@@ -12,15 +12,16 @@ import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
-import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalNegativeTestOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalRecoveryOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
@@ -30,29 +31,34 @@ class TestsRetrievalTest : BaseTest() {
     @Test
     fun retrievePositiveTest_assertOverviewAndQRDetails() {
         val person = Person(bsn = "999993033")
-        val pos = PositiveTest(eventDate = today.offsetDays(-30), testType = TestEvent.TestType.Pcr, validUntil = today.offsetDays(150))
+        val pos = PositiveTest(eventDate = today.offsetDays(-30), testType = TestType.Pcr, validUntil = today.offsetDays(150))
 
         addRecoveryCertificate(person.bsn)
         assertRetrievalDetails(person, pos)
         addRetrievedCertificateToApp()
 
-        assertInternationalRecoveryOnOverview(pos)
+        assertInternationalEventOnOverview(pos)
+        assertQrButtonIsEnabled(Event.Type.PositiveTest)
+
         viewQR(Event.Type.PositiveTest)
         assertInternationalQRDetails(person, pos)
+        assertNoPreviousQR()
     }
 
     @Test
     fun retrieveNegativeTest_assertOverviewAndQRDetails() {
         val person = Person(bsn = "999992004")
-        val neg = NegativeTest(eventDate = today, testType = TestEvent.TestType.Pcr)
+        val neg = NegativeTest(eventDate = today, testType = TestType.Pcr)
 
         addNegativeTestCertificateFromGGD(person.bsn)
         assertRetrievalDetails(person, neg)
         addRetrievedCertificateToApp()
 
-        assertInternationalNegativeTestOnOverview(neg)
+        assertInternationalEventOnOverview(neg)
+        assertQrButtonIsEnabled(Event.Type.NegativeTest)
 
         viewQR(Event.Type.NegativeTest)
         assertInternationalQRDetails(person, neg)
+        assertNoPreviousQR()
     }
 }

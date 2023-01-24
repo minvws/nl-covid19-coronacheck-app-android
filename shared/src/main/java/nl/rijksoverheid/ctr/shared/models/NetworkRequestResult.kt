@@ -14,7 +14,7 @@ sealed class NetworkRequestResult<out R> {
         open class CoronaCheckHttpError(
             override val step: Step,
             override val e: HttpException,
-            open val provider: String?
+            open val provider: String? = null
         ) : Failed(step, e) {
             override fun getCurrentStep(): Step {
                 return step

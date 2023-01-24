@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.modules
 
+import nl.rijksoverheid.ctr.design.menu.MenuViewModel
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModelImpl
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModel
@@ -9,7 +10,6 @@ import nl.rijksoverheid.ctr.holder.get_events.GetEventsViewModelImpl
 import nl.rijksoverheid.ctr.holder.get_events.LoginViewModel
 import nl.rijksoverheid.ctr.holder.input_token.InputTokenViewModel
 import nl.rijksoverheid.ctr.holder.input_token.InputTokenViewModelImpl
-import nl.rijksoverheid.ctr.holder.menu.MenuViewModel
 import nl.rijksoverheid.ctr.holder.menu.MenuViewModelImpl
 import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
 import nl.rijksoverheid.ctr.holder.paper_proof.PaperProofDomesticInputCodeViewModel

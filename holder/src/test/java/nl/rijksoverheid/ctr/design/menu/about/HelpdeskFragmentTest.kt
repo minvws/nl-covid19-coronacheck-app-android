@@ -11,6 +11,8 @@ import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry
+import nl.rijksoverheid.ctr.holder.R
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.After
@@ -25,11 +27,18 @@ class HelpdeskFragmentTest : AutoCloseKoinTest() {
 
     @Before
     fun setup() {
+        val context = InstrumentationRegistry.getInstrumentation().context
         launchFragmentInContainer<HelpdeskFragment>(
             bundleOf(
                 "data" to HelpdeskData(
-                    "version",
-                    "configuration"
+                    contactTitle = "Contact",
+                    contactMessage = context.getString(R.string.holder_helpdesk_contact_message),
+                    supportTitle = "Ondersteuning",
+                    supportMessage = "Wanneer je contact opneemt met de CoronaCheck helpdesk, kan er gevraagd worden om de volgende informatie:",
+                    appVersionTitle = "App-versie:",
+                    appVersion = "version",
+                    configurationTitle = "Configuratie:",
+                    configuration = "configuration"
                 )
             )
         )

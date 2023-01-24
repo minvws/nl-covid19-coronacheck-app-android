@@ -45,9 +45,6 @@ class AboutThisAppFragmentScreenshotTest : ScreenshotTest {
                                 AboutThisAppData.Destination(
                                     text = context.getString(R.string.holder_menu_storedEvents),
                                     destinationId = AboutThisAppFragmentDirections.actionSavedEvents().actionId
-                                ),
-                                AboutThisAppData.ClearAppData(
-                                    text = context.getString(R.string.holder_menu_resetApp)
                                 )
                             )
                         )

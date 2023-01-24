@@ -7,31 +7,41 @@
 
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.today
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Vaccination
+import nl.rijksoverheid.ctr.holder.end2end.model.written
+import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.scrollToBottomOfOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertContains
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertNotDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertNotExist
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.buttonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.containsText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.labelValuePairExist
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.rest
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollToTextInOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
+import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
+import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 
 object Assertions {
 
     fun assertOverview() {
-        waitForText("Mijn bewijzen")
+        waitForText("Mijn bewijzen", 15)
         assertDisplayed("Menu")
     }
+
+    // MARK: Retrieval
 
     fun assertRetrievalDetails(person: Person, event: Event, position: Int = 0) {
         waitForText("Kloppen de gegevens?", 30)
@@ -47,12 +57,12 @@ object Assertions {
                 assertContains("Gevaccineerd in: " + event.country.domesticName)
             }
             is PositiveTest -> {
-                assertContains("Type test: " + event.testType.value)
+                assertContains("Testnaam: " + event.testType.value)
                 assertContains("Testdatum: " + event.eventDate.recently())
                 assertContains("Testuitslag: positief (coronavirus vastgesteld)")
             }
             is NegativeTest -> {
-                assertContains("Type test: " + event.testType.value)
+                assertContains("Testnaam: " + event.testType.value)
                 assertContains("Testdatum: " + event.eventDate.recently())
                 assertContains("Testuitslag: negatief (geen coronavirus vastgesteld)")
             }
@@ -65,31 +75,69 @@ object Assertions {
         labelValuePairExist("Foutcode:", error)
     }
 
-    fun assertInternationalVaccinationOnOverview(vaccination: Vaccination, dose: String) {
-        assertOverview()
-        scrollToTextInOverview("BEKIJK QR")
-        card(Event.Type.Vaccination).containsText("Dosis $dose")
-        card(Event.Type.Vaccination).containsText("Vaccinatiedatum: " + vaccination.eventDate.written())
+    // MARK: Certificates on Overview
+
+    fun assertQrButtonIsEnabled(eventType: Event.Type) {
+        card(eventType).buttonIsEnabled(true)
     }
 
-    fun assertInternationalRecoveryOnOverview(recovery: PositiveTest) {
-        assertOverview()
-        scrollToTextInOverview("BEKIJK QR")
-        recovery.validUntil?.let { card(Event.Type.PositiveTest).containsText("Geldig tot " + it.written()) }
-        card(Event.Type.PositiveTest).containsText("Bekijk QR")
+    fun assertQrButtonIsDisabled(eventType: Event.Type) {
+        card(eventType).buttonIsEnabled(false)
     }
 
-    fun assertInternationalNegativeTestOnOverview(negativeTest: NegativeTest) {
-        assertOverview()
-        scrollToTextInOverview("BEKIJK QR")
-        card(Event.Type.NegativeTest).containsText("Type test: " + negativeTest.testType.value)
-        card(Event.Type.NegativeTest).containsText("Testdatum: " + negativeTest.eventDate.recently())
-        card(Event.Type.NegativeTest).containsText("Bekijk QR")
+    fun assertInternationalEventOnOverview(event: Event, dose: String? = null) {
+        scrollToBottomOfOverview()
+        Wait.until(ViewIsShown(onView(card(event.type)), true))
+        when (event) {
+            is Vaccination -> {
+                card(Event.Type.Vaccination).containsText("Dosis $dose")
+                card(Event.Type.Vaccination).containsText("Vaccinatiedatum: " + event.eventDate.written())
+            }
+            is PositiveTest -> {
+                card(Event.Type.PositiveTest).containsText("Geldig tot " + event.validUntil!!.written())
+            }
+            is NegativeTest -> {
+                card(Event.Type.NegativeTest).containsText("Type test: " + event.testType.value)
+                card(Event.Type.NegativeTest).containsText("Testdatum: " + event.eventDate.recently())
+            }
+        }
     }
 
-    fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null) {
+    fun assertNotYetValidInternationalEventOnOverview(event: Event) {
+        scrollToBottomOfOverview()
+        Wait.until(ViewIsShown(onView(card(event.type)), true))
+        when (event) {
+            is PositiveTest -> {
+                card(Event.Type.PositiveTest).containsText("geldig vanaf " + event.validFrom!!.writtenWithoutYear())
+                card(Event.Type.PositiveTest).containsText(" tot " + event.validUntil!!.written())
+            }
+            is NegativeTest -> {
+                card(Event.Type.NegativeTest).containsText("Type test: " + event.testType.value)
+                card(Event.Type.NegativeTest).containsText("geldig vanaf " + event.validFrom!!.written())
+                card(Event.Type.NegativeTest).containsText("Wordt automatisch geldig")
+            }
+        }
+    }
+
+    fun assertInternationalEventWillBecomeValid(eventType: Event.Type) {
+        Wait.until(ViewIsShown(onView(card(eventType)), true))
+        card(eventType).containsText("Wordt automatisch geldig")
+    }
+
+    fun assertInternationalEventWillExpireSoon(eventType: Event.Type, daysLeft: Int) {
+        Wait.until(ViewIsShown(onView(card(eventType)), true))
+        card(eventType).containsText("Verloopt over $daysLeft dagen")
+    }
+
+    fun assertInternationalEventIsExpired(eventType: Event.Type) {
+        waitForText("Je internationale ${eventType.domesticName.lowercase()} is verlopen")
+    }
+
+    // MARK: QR Details
+
+    fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null, deviceDate: LocalDate = LocalDate.now()) {
         if (event is Vaccination) waitForText("Dosis $dose")
-        rest() // Waiting until 'Details' is clickable is unreliable
+        Wait.until(ViewIsShown(onView(withText("Details")), true))
         tapButton("Details")
         labelValuePairExist("Naam / Name:", person.name)
         labelValuePairExist("Geboortedatum / Date of birth*:", person.birthDate.dutch())
@@ -101,8 +149,8 @@ object Assertions {
                 labelValuePairExist("Vaccin / Vaccine:", event.vaccine.value)
                 labelValuePairExist("Dosis / Number in series of doses:", split)
                 labelValuePairExist("Vaccinatiedatum / Vaccination date*:", event.eventDate.dutch())
-                val dateDiff = ChronoUnit.DAYS.between(event.eventDate, today)
-                labelValuePairExist("Dagen sinds vaccinatie / Days since vaccination:", dateDiff.toString())
+                val dateDiff = ChronoUnit.DAYS.between(event.eventDate, deviceDate)
+                labelValuePairExist("Dagen sinds vaccinatie / Days since vaccination:", "$dateDiff dagen")
                 labelValuePairExist("Gevaccineerd in / Vaccinated in:", event.country.internationalName)
             }
             is PositiveTest -> {
@@ -114,7 +162,7 @@ object Assertions {
             }
             is NegativeTest -> {
                 labelValuePairExist("Ziekteverwekker / Disease targeted:", event.disease)
-                labelValuePairExist("Type test / Type of test:", event.testType.value)
+                labelValuePairExist("Type test / Test type:", event.testType.value)
                 labelValuePairExist("Testdatum / Test date:", event.eventDate.recently())
                 labelValuePairExist("Testuitslag / Test result:", "negatief (geen coronavirus vastgesteld) / negative (no coronavirus detected)")
                 labelValuePairExist("Getest in / Tested in:", event.country.internationalName)
@@ -124,14 +172,24 @@ object Assertions {
     }
 
     fun assertQRisHidden() {
-        assertDisplayed("QR-code is verborgen")
+        waitForText("QR-code is verborgen")
         assertDisplayed("Wat betekent dit?")
         assertDisplayed("Laat toch zien")
+    }
 
-        tapButton("Wat betekent dit?")
-        assertDisplayed("Verborgen QR-code")
-        clickBack()
+    fun assertQRisNotHidden() {
+        assertNotExist("QR-code is verborgen")
+        assertNotDisplayed("Wat betekent dit?")
+        assertNotDisplayed("Laat toch zien")
+    }
 
-        tapButton("Laat toch zien")
+    fun assertQRisExpired() {
+        waitForText("QR-code is verlopen")
+        assertDisplayed("Wat betekent dit?")
+        assertDisplayed("Laat toch zien")
+    }
+
+    fun assertNoPreviousQR() {
+        assertNotDisplayed(R.id.previousQrButton)
     }
 }

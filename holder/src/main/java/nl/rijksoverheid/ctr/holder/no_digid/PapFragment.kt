@@ -7,6 +7,7 @@ import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
+import nl.rijksoverheid.ctr.design.utils.DialogFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
@@ -194,7 +195,21 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
         )
     }
 
+    override fun yourEventsFragmentType(
+        remoteProtocols: Map<RemoteProtocol, ByteArray>,
+        eventProviders: List<EventProvider>
+    ): YourEventsFragmentType {
+        return YourEventsFragmentType.RemoteProtocol3Type(
+            remoteEvents = remoteProtocols,
+            eventProviders = eventProviders
+        )
+    }
+
     override fun dialogPresented() {
         binding.secondButton.root.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+    }
+
+    override fun openDialog(data: DialogFragmentData) {
+        navigateSafety(PapFragmentDirections.actionDialog(data))
     }
 }

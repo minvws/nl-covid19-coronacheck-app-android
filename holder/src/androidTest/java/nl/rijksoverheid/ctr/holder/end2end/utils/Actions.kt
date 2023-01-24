@@ -8,21 +8,26 @@
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import android.os.Build
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import junit.framework.TestCase.fail
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterBsn
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.enterTextInField
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.rest
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollListToPosition
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButtonElement
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
+import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
+import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 import timber.log.Timber
 
 object Actions {
@@ -36,6 +41,8 @@ object Actions {
 
         Timber.tag("end2end").d(logLine)
     }
+
+    // MARK: Adding events
 
     private fun addEvent() {
         tapButton("Menu")
@@ -68,14 +75,27 @@ object Actions {
         waitForText("Mijn bewijzen", 60)
     }
 
-    fun viewQR(eventType: Event.Type) {
-        card(eventType).tapButton("Bekijk QR")
-        assertDisplayed("Internationale QR")
+    // MARK: Overview
+
+    fun scrollToBottomOfOverview() {
+        Wait.until(ViewIsShown(onView(withId(R.id.recyclerView)), true))
+        for (i in 2 until 12 step 2) scrollListToPosition(R.id.recyclerView, i)
+        rest(2)
     }
+
+    fun viewQR(eventType: Event.Type) {
+        scrollToBottomOfOverview()
+        card(eventType).tapButton("Bekijk QR")
+        waitForText("Internationale QR")
+    }
+
+    // MARK: QR
 
     fun viewPreviousQR() {
         clickOn(R.id.previousQrButton)
     }
+
+    // MARK: Private functions
 
     private fun retrieveCertificateFromServer(bsn: String) {
         if (bsn.isEmpty()) fail("BSN was empty, no certificate can be retrieved.")
