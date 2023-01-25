@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.EventsResult
 import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.usecases.ConfigProvidersUseCase
-import nl.rijksoverheid.ctr.holder.get_events.usecases.EventProvidersResult
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventsUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetMijnCnEventsUsecase
 import nl.rijksoverheid.ctr.shared.livedata.Event
@@ -52,14 +51,6 @@ class GetEventsViewModelImpl(
     private val mijnCnEventsUsecase: GetMijnCnEventsUsecase
 ) : GetEventsViewModel() {
 
-    private lateinit var eventProvidersResult: EventProvidersResult
-
-    init {
-        viewModelScope.launch {
-            eventProvidersResult = configProvidersUseCase.eventProviders()
-        }
-    }
-
     override fun getDigidEvents(
         loginType: LoginType,
         jwt: String,
@@ -68,7 +59,7 @@ class GetEventsViewModelImpl(
     ) {
         getEvents {
             getEventsUseCase.getEvents(
-                eventProvidersResult = eventProvidersResult,
+                eventProvidersResult = configProvidersUseCase.eventProviders(),
                 loginType = loginType,
                 jwt = jwt,
                 originTypes = originTypes
