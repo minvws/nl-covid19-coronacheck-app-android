@@ -29,7 +29,8 @@ abstract class AppConfig(
     val recommendedUpgradeIntervalHours: Int,
     val deeplinkDomains: List<Url>,
     val clockDeviationThresholdSeconds: Int,
-    val configAlmostOutOfDateWarningSeconds: Int
+    val configAlmostOutOfDateWarningSeconds: Int,
+    val contactInfo: ContactInformation
 ) : JSON() {
 
     @JsonClass(generateAdapter = true)
@@ -47,4 +48,7 @@ abstract class AppConfig(
 
     @JsonClass(generateAdapter = true)
     data class Url(val url: String, val name: String) : JSON()
+
+    @JsonClass(generateAdapter = true)
+    data class ContactInformation(val phoneNumber: String, val phoneNumberAbroad: String, val startDay: Int, val startHour: String, val endDay: Int, val endHour: String) : JSON()
 }

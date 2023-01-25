@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import android.content.Context
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -42,7 +43,8 @@ class RemovedEventsBottomSheetUtilImpl(
     private val remoteEventStringUtil: RemoteEventStringUtil,
     private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase,
     private val yourEventsFragmentUtil: YourEventsFragmentUtil,
-    private val infoFragmentUtil: InfoFragmentUtil
+    private val infoFragmentUtil: InfoFragmentUtil,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : RemovedEventsBottomSheetUtil {
 
     private fun formattedEvents(context: Context, events: List<RemovedEventEntity>): String {
@@ -104,6 +106,7 @@ class RemovedEventsBottomSheetUtilImpl(
             )
         )
 
+        val contactInformation = cachedAppConfigUseCase.getCachedAppConfig().contactInfo
         infoFragmentUtil.presentAsBottomSheet(
             dashboardPageFragment.parentFragmentManager,
             InfoFragmentData.TitleDescription(
@@ -112,6 +115,8 @@ class RemovedEventsBottomSheetUtilImpl(
                     htmlTextString = context.getString(
                         R.string.holder_invaliddetailsremoved_moreinfo_body,
                         removedEventsHtml,
+                        contactInformation.phoneNumber,
+                        contactInformation.phoneNumber,
                         errorCode
                     ),
                     htmlLinksEnabled = true

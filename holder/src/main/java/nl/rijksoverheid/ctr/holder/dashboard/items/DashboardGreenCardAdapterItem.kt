@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.xwray.groupie.viewbinding.BindableItem
 import java.time.OffsetDateTime
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem.CredentialState.HasCredential
@@ -43,6 +44,7 @@ class DashboardGreenCardAdapterItem(
 
     private val dashboardGreenCardAdapterItemUtil: DashboardGreenCardAdapterItemUtil by inject()
     private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil by inject()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
     private val runnable = Runnable {
         notifyChanged()
@@ -211,7 +213,7 @@ class DashboardGreenCardAdapterItem(
                 }
                 is DatabaseSyncerResult.Failed.ServerError.MultipleTimes -> {
                     viewBinding.errorText.setHtmlText(
-                        htmlText = context.getString(R.string.my_overview_green_card_server_error_after_retry),
+                        htmlText = context.getString(R.string.my_overview_green_card_server_error_after_retry, cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber),
                         htmlTextColor = ContextCompat.getColor(context, R.color.error),
                         htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
                     )
