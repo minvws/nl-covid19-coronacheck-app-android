@@ -125,8 +125,8 @@ val utilsModule = module {
     factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
-    factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get()) }
+    factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get(), get()) }
     factory<StringUtil> { StringUtilImpl(get()) }
     factory<YourEventsEndStateUtil> { YourEventsEndStateUtilImpl(get()) }
-    factory<RemovedEventsBottomSheetUtil> { RemovedEventsBottomSheetUtilImpl(get(), get(), get(), get(), get()) }
+    factory<RemovedEventsBottomSheetUtil> { RemovedEventsBottomSheetUtilImpl(get(), get(), get(), get(), get(), get()) }
 }
