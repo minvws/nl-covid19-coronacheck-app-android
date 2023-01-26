@@ -190,13 +190,19 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private fun handleEndState(endState: YourEventsEndState) {
         when (endState) {
             is YourEventsEndState.BlockedEvent -> {
+                val helpdeskPhoneNumber = cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
                     toolbarTitle = getString(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title),
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(R.string.holder_listRemoteEvents_endStateNoValidCertificate_title),
                         descriptionData = DescriptionData(
-                            htmlTextString = getString(R.string.holder_listRemoteEvents_endStateNoValidCertificate_body, errorCodeStringFactory.get(getFlow(), listOf(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, BlockedEventException())))),
+                            htmlTextString = getString(
+                                R.string.holder_listRemoteEvents_endStateNoValidCertificate_body,
+                                helpdeskPhoneNumber,
+                                helpdeskPhoneNumber,
+                                errorCodeStringFactory.get(getFlow(), listOf(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, BlockedEventException())))
+                            ),
                             htmlLinksEnabled = true
                         ),
                         primaryButtonData = ButtonData.NavigationButton(

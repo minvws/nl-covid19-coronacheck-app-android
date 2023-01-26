@@ -840,8 +840,8 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_invaliddetailsremoved_banner_button_readmore">Lees meer</string>
   <string name="holder_invaliddetailsremoved_moreinfo_title">Verwijderde gegevens</string>
   <string name="holder_listRemoteEvents_endStateNoValidCertificate_title">Geen geldig bewijs</string>
-  <string name="holder_invaliddetailsremoved_moreinfo_body" formatted="false"><![CDATA[Er zijn gegevens van jou ongeldig verklaard. Daarom zijn deze uit de app verwijderd. Het gaat om de volgende gegevens:<br /><br />%s<br /><br />Mogelijk zijn hierdoor ook bewijzen uit de app verwijderd. Voeg een geldige vaccinatie of test toe om bewijzen weer terug te halen.<br/><br/>Heb je vragen? Bel de CoronaCheck helpdesk op <a href=\"tel:%s\">%s</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br/>%s]]></string>
-  <string name="holder_listRemoteEvents_endStateNoValidCertificate_body" formatted="false"><![CDATA[Dit bewijs is ongeldig verklaard. Daarom kun je het niet aan de app toevoegen.<br/><br/>Probeer een geldig bewijs toe te voegen, of bel de CoronaCheck helpdesk op <a href=\"tel:%s\">%s</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br/>%s]]></string>
+  <string name="holder_invaliddetailsremoved_moreinfo_body"><![CDATA[Er zijn gegevens van jou ongeldig verklaard. Daarom zijn deze uit de app verwijderd. Het gaat om de volgende gegevens:<br /><br />%1$s<br /><br />Mogelijk zijn hierdoor ook bewijzen uit de app verwijderd. Voeg een geldige vaccinatie of test toe om bewijzen weer terug te halen.<br/><br/>Heb je vragen? Bel de CoronaCheck helpdesk op <a href=\"tel:%2$s\">%3$s</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br/>%4$s]]></string>
+  <string name="holder_listRemoteEvents_endStateNoValidCertificate_body"><![CDATA[Dit bewijs is ongeldig verklaard. Daarom kun je het niet aan de app toevoegen.<br/><br/>Probeer een geldig bewijs toe te voegen, of bel de CoronaCheck helpdesk op <a href=\"tel:%1$s\">%2$s</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br/>%3$s]]></string>
   <string name="holder_showQR_domestic_title_3g">3G-toegang</string>
   <string name="holder_showQR_domestic_title_1g">1G-toegang</string>
   <string name="holder_fuzzyMatching_onboarding_firstPage_title">Je naam is niet hetzelfde geschreven</string>
@@ -903,7 +903,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_helpInfo_helpdesk">Helpdesk</string>
   <string name="holder_helpdesk_title">Helpdesk</string>
   <string name="holder_helpdesk_contact_title">Contact</string>
-  <string name="holder_helpdesk_contact_message" formatted="false"><![CDATA[Bij vragen of problemen kun je contact opnemen met de CoronaCheck helpdesk.<br/><br/><b>Bel de helpdesk:</b><br />Op <a href=\"tel:%s\">%s</a> (gratis). Of als je vanuit het buitenland belt: <a href=\"tel:%s\">%s</a>.<br /> <br />Telefonisch bereikbaar van %s t/m %s %s - %s uur.<br /><br /><b>Of stuur een e-mail naar:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
+  <string name="holder_helpdesk_contact_message"><![CDATA[Bij vragen of problemen kun je contact opnemen met de CoronaCheck helpdesk.<br/><br/><b>Bel de helpdesk:</b><br />Op <a href=\"tel:%1$s\">%2$s</a> (gratis). Of als je vanuit het buitenland belt: <a href=\"tel:%3$s\">%4$s</a>.<br /> <br />Telefonisch bereikbaar van %5$s t/m %6$s %7$s - %8$s uur.<br /><br /><b>Of stuur een e-mail naar:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
   <string name="holder_helpdesk_support_title">Ondersteuning</string>
   <string name="holder_helpdesk_appVersion">App-versie:</string>
   <string name="holder_helpdesk_configuration">Configuratie:</string>
