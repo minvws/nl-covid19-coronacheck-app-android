@@ -122,7 +122,8 @@ object Actions {
     }
 
     private fun acceptChromeOnboarding() {
-        if (checkForText("Welkom bij Chrome")) tapButtonElement("Accept")
+        if (checkForText("Accept")) tapButtonElement("Accept")
+        if (checkForText("Gebruiken zonder account")) tapButtonElement("Gebruiken zonder account")
         if (checkForText("Synchronisatie aanzetten?")) tapButtonElement("Nee, bedankt")
         if (checkForText("Inloggen bij Chrome")) tapButtonElement("Nee, bedankt")
         if (checkForText("Toestaan dat Chrome je meldingen stuurt?")) tapButtonElement("Niet toestaan")
