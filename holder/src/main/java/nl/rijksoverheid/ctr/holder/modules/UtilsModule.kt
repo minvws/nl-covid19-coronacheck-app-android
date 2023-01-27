@@ -117,7 +117,7 @@ val utilsModule = module {
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
     factory<DashboardInfoCardAdapterItemUtil> { DashboardInfoCardAdapterItemUtilImpl() }
     factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
-    factory<AboutThisAppDataModel> { AboutThisAppDataModelImpl() }
+    factory<AboutThisAppDataModel> { AboutThisAppDataModelImpl(get(), get()) }
     factory<HelpMenuDataModel> { HelpMenuDataModelImpl(get(), get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
     factory<LoginTypeUtil> { LoginTypeUtilImpl() }

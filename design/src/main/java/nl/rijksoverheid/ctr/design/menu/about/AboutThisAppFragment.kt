@@ -20,11 +20,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import nl.rijksoverheid.ctr.design.BuildConfig
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppSectionBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTimeNumerical
 import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
@@ -58,7 +62,6 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
                 true
             )
 
-            sectionView.header.text = getString(it.header)
             it.items.forEach { item ->
                 val itemView = AboutThisAppRowBinding.inflate(
                     LayoutInflater.from(requireContext()),
@@ -82,6 +85,21 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
                 }
             }
         }
+
+        binding.appVersion.text = getString(
+            R.string.app_version,
+            aboutThisAppData.versionName,
+            aboutThisAppData.versionCode
+        )
+
+        binding.configVersion.text = getString(
+            R.string.config_version,
+            aboutThisAppData.configVersionHash,
+            OffsetDateTime.ofInstant(
+                Instant.ofEpochSecond(aboutThisAppData.configVersionTimestamp),
+                ZoneOffset.UTC
+            ).formatDayMonthYearTimeNumerical()
+        )
 
         if (getString(R.string.holder_menu_resetApp).isNotEmpty()) {
             // we have this button in the layout twice because of the design requirement
