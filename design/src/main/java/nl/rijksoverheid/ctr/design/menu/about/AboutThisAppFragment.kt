@@ -62,7 +62,6 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
                 true
             )
 
-            sectionView.header.text = getString(it.header)
             it.items.forEach { item ->
                 val itemView = AboutThisAppRowBinding.inflate(
                     LayoutInflater.from(requireContext()),
