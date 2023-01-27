@@ -12,9 +12,9 @@ import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
-import nl.rijksoverheid.ctr.holder.end2end.model.TestType
-import nl.rijksoverheid.ctr.holder.end2end.model.Vaccination
-import nl.rijksoverheid.ctr.holder.end2end.model.VaccineType
+import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent.TestType
+import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
+import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
@@ -43,8 +43,8 @@ class FutureEventQRCodeTest : BaseTest() {
     @Test
     fun whenDeviceDateIsBeforeExpiry_vaccinationCertificatesAreValid() {
         val person = Person(bsn = "999990020")
-        val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
-        val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
+        val vac1 = VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
+        val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
         val deviceDate = today.offsetDays(2)
 
         addVaccinationCertificate(person.bsn)
@@ -65,8 +65,8 @@ class FutureEventQRCodeTest : BaseTest() {
     @Test
     fun whenDeviceDateIsAfterExpiry_vaccinationCertificatesAreExpired() {
         val person = Person(bsn = "999990020")
-        val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
-        val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
+        val vac1 = VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
+        val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
         val deviceDate = today.offsetDays(180)
 
         addVaccinationCertificate(person.bsn)

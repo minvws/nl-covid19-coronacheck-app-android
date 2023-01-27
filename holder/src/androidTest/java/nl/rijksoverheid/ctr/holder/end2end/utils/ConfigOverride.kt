@@ -66,22 +66,13 @@ fun overrideModules(modules: List<Module>) {
                                     vp = "1119349007",
                                     mp = "EU/1/20/1528",
                                     ma = "ORG-100030215"
-                                ),
-                                AppConfig.HpkCode(
+                                ), AppConfig.HpkCode(
                                     code = "2924536",
                                     name = "Spikevax (Moderna)",
                                     displayName = "MODERNA INJVLST 0,5ML",
                                     vp = "1119349007",
                                     mp = "EU/1/20/1507",
                                     ma = "ORG-100031184"
-                                ),
-                                AppConfig.HpkCode(
-                                    code = "2925508",
-                                    name = "Vaxzevria (AstraZeneca)",
-                                    displayName = "ASTRAZENECA INJVLST",
-                                    vp = "J07BX03",
-                                    mp = "EU/1/21/1529",
-                                    ma = "ORG-100001699"
                                 ), AppConfig.HpkCode(
                                     code = "2934701",
                                     name = "Jcovden (Janssen)",
@@ -101,6 +92,30 @@ fun overrideModules(modules: List<Module>) {
                                 ), AppConfig.Code(
                                     code = "EU/1/20/1525",
                                     name = "Jcovden (Janssen)"
+                                )
+                            ),
+                            euVaccinations = listOf(
+                                AppConfig.Code(
+                                    code = "1119349007",
+                                    name = "SARS-CoV-2 mRNA vaccine"
+                                ),
+                                AppConfig.Code(
+                                    code = "J07BX03",
+                                    name = "covid-19 vaccines"
+                                )
+                            ),
+                            euManufacturers = listOf(
+                                AppConfig.Code(
+                                    code = "ORG-100030215",
+                                    name = "Biontech Manufacturing GmbH"
+                                ),
+                                AppConfig.Code(
+                                    code = "ORG-100001417",
+                                    name = "Janssen-Cilag International"
+                                ),
+                                AppConfig.Code(
+                                    code = "ORG-100031184",
+                                    name = "Moderna Biotech Spain S.L."
                                 )
                             ),
                             euTestTypes = listOf(

@@ -16,7 +16,8 @@ import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
-import nl.rijksoverheid.ctr.holder.end2end.model.Vaccination
+import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
+import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
 import nl.rijksoverheid.ctr.holder.end2end.model.written
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.scrollToBottomOfOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertContains
@@ -50,20 +51,29 @@ object Assertions {
         assertContains("Naam: " + person.name)
         assertContains("Geboortedatum: " + person.birthDate.written())
         when (event) {
-            is Vaccination -> {
+            is VaccinationEvent -> {
                 assertContains("Ziekteverwekker: " + event.disease)
                 assertContains("Vaccin: " + event.vaccine.value)
+                assertContains("Type vaccin: " + event.vaccine.type)
+                assertContains("Vaccinproducent: " + event.vaccine.manufacturer)
                 assertContains("Vaccinatiedatum: " + event.eventDate.written())
                 assertContains("Gevaccineerd in: " + event.country.domesticName)
             }
-            is PositiveTest -> {
-                assertContains("Testnaam: " + event.testType.value)
+            else -> {
+                event as TestEvent
+                assertContains("Type test: " + event.testType.value)
+                assertContains("Testnaam: " + event.testName)
                 assertContains("Testdatum: " + event.eventDate.recently())
+                assertContains("Testproducent: " + event.testProducer)
+                assertContains("Testlocatie: " + event.testLocation.realName)
+                assertContains("Getest in: " + event.country.domesticName)
+            }
+        }
+        when (event) {
+            is PositiveTest -> {
                 assertContains("Testuitslag: positief (coronavirus vastgesteld)")
             }
             is NegativeTest -> {
-                assertContains("Testnaam: " + event.testType.value)
-                assertContains("Testdatum: " + event.eventDate.recently())
                 assertContains("Testuitslag: negatief (geen coronavirus vastgesteld)")
             }
         }
@@ -89,7 +99,7 @@ object Assertions {
         scrollToBottomOfOverview()
         Wait.until(ViewIsShown(onView(card(event.type)), true))
         when (event) {
-            is Vaccination -> {
+            is VaccinationEvent -> {
                 card(Event.Type.Vaccination).containsText("Dosis $dose")
                 card(Event.Type.Vaccination).containsText("Vaccinatiedatum: " + event.eventDate.written())
             }
@@ -97,6 +107,7 @@ object Assertions {
                 card(Event.Type.PositiveTest).containsText("Geldig tot " + event.validUntil!!.written())
             }
             is NegativeTest -> {
+                event as TestEvent
                 card(Event.Type.NegativeTest).containsText("Type test: " + event.testType.value)
                 card(Event.Type.NegativeTest).containsText("Testdatum: " + event.eventDate.recently())
             }
@@ -136,17 +147,19 @@ object Assertions {
     // MARK: QR Details
 
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null, deviceDate: LocalDate = LocalDate.now()) {
-        if (event is Vaccination) waitForText("Dosis $dose")
+        if (event is VaccinationEvent) waitForText("Dosis $dose")
         Wait.until(ViewIsShown(onView(withText("Details")), true))
         tapButton("Details")
         labelValuePairExist("Naam / Name:", person.name)
         labelValuePairExist("Geboortedatum / Date of birth*:", person.birthDate.dutch())
         when (event) {
-            is Vaccination -> {
+            is VaccinationEvent -> {
                 val split = dose!!.split("/").joinToString(" / ")
                 assertContains("Over mijn dosis $split")
                 labelValuePairExist("Ziekteverwekker / Disease targeted:", event.disease)
                 labelValuePairExist("Vaccin / Vaccine:", event.vaccine.value)
+                labelValuePairExist("Type vaccin / Vaccine type:", event.vaccine.type)
+                labelValuePairExist("Vaccinproducent / Vaccine manufacturer:", event.vaccine.manufacturer)
                 labelValuePairExist("Dosis / Number in series of doses:", split)
                 labelValuePairExist("Vaccinatiedatum / Vaccination date*:", event.eventDate.dutch())
                 val dateDiff = ChronoUnit.DAYS.between(event.eventDate, deviceDate)
@@ -155,19 +168,23 @@ object Assertions {
             }
             is PositiveTest -> {
                 labelValuePairExist("Ziekte waarvan hersteld / Disease recovered from:", event.disease)
-                labelValuePairExist("Testdatum / Test date*:", event.eventDate.dutch())
-                labelValuePairExist("Getest in / Tested in:", event.country.internationalName)
                 event.validFrom?.let { labelValuePairExist("Geldig vanaf / Valid from*:", it.dutch()) }
                 event.validUntil?.let { labelValuePairExist("Geldig tot / Valid to*:", it.dutch()) }
+                labelValuePairExist("Testdatum / Test date*:", event.eventDate.dutch())
+                labelValuePairExist("Getest in / Tested in:", event.country.internationalName)
             }
             is NegativeTest -> {
+                event as TestEvent
                 labelValuePairExist("Ziekteverwekker / Disease targeted:", event.disease)
                 labelValuePairExist("Type test / Test type:", event.testType.value)
+                labelValuePairExist("Testnaam / Test name:", event.testName)
                 labelValuePairExist("Testdatum / Test date:", event.eventDate.recently())
                 labelValuePairExist("Testuitslag / Test result:", "negatief (geen coronavirus vastgesteld) / negative (no coronavirus detected)")
+                labelValuePairExist("Testlocatie / Test location:", event.testLocation.detailsName)
                 labelValuePairExist("Getest in / Tested in:", event.country.internationalName)
             }
         }
+        labelValuePairExist("Afgever certificaat / Certificate issuer:", event.issuer)
         clickBack()
     }
 
