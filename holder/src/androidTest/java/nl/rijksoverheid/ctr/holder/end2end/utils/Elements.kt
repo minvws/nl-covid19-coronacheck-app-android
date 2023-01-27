@@ -30,6 +30,7 @@ import androidx.test.uiautomator.UiSelector
 import androidx.test.uiautomator.Until
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions
 import com.adevinta.android.barista.interaction.BaristaClickInteractions
+import com.adevinta.android.barista.interaction.BaristaEditTextInteractions
 import com.adevinta.android.barista.interaction.BaristaListInteractions
 import com.adevinta.android.barista.interaction.BaristaScrollInteractions
 import junit.framework.TestCase.assertNotNull
@@ -76,6 +77,11 @@ object Elements {
         BaristaVisibilityAssertions.assertNotDisplayed(viewId)
     }
 
+    fun assertNotContains(text: String) {
+        Timber.tag("end2end").d("Asserting not contains text '$text'")
+        BaristaVisibilityAssertions.assertNotContains(text)
+    }
+
     fun clickOn(text: String) {
         Timber.tag("end2end").d("Clicking on '$text'")
         Wait.until(ButtonInState(onView(withText(text)), true))
@@ -106,6 +112,12 @@ object Elements {
     fun scrollListToPosition(@IdRes resId: Int, position: Int) {
         Timber.tag("end2end").d("Scrolling to position '$position' on view with ID '$resId'")
         BaristaListInteractions.scrollListToPosition(resId, position)
+    }
+
+    fun writeTo(@IdRes editTextId: Int, text: String) {
+        Timber.tag("end2end").d("Writing text '$text' on edit text ID '$editTextId'")
+        Wait.until(ViewIsShown(onView(withId(editTextId)), true))
+        BaristaEditTextInteractions.writeTo(editTextId, text)
     }
 
     // MARK: Espresso

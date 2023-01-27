@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickOn
@@ -26,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButtonElement
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.writeTo
 import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
 import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 import timber.log.Timber
@@ -67,6 +69,25 @@ object Actions {
         tapButton("Negatieve test")
         tapButton("GGD")
         retrieveCertificateFromServer(bsn)
+    }
+
+    fun addNegativeTestCertificateFromOtherLocation() {
+        addEvent()
+        scrollTo("Negatieve test")
+        tapButton("Negatieve test")
+        tapButton("Andere testlocatie")
+    }
+
+    fun retrieveCertificateWithToken(retrievalCode: String) {
+        assertDisplayed("Testuitslag ophalen")
+        writeTo(R.id.unique_code_input, retrievalCode)
+        clickOn("Haal testuitslag op")
+    }
+
+    fun retrieveCertificateWithTokenAndVerificationCode(retrievalCode: String, verificationCode: String) {
+        retrieveCertificateWithToken(retrievalCode)
+        writeTo(R.id.verification_code_input, verificationCode)
+        clickOn("Haal testuitslag op")
     }
 
     fun addRetrievedCertificateToApp() {

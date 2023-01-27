@@ -81,6 +81,7 @@ abstract class TestEvent(
 
     enum class TestLocation(val realName: String, val detailsName: String) {
         GgdXl("GGD XL Amsterdam", "Facility approved by the State of The Netherlands"),
+        YellowBanana("Yellow Banana Test Center", "Facility approved by the State of The Netherlands")
     }
 }
 
@@ -107,7 +108,7 @@ data class PositiveTest(
     testProducer = testProducer
 )
 
-data class NegativeTest(
+open class NegativeTest(
     override val eventDate: LocalDate,
     override val country: Country = Country.NL,
     override val testType: TestType,
@@ -119,6 +120,31 @@ data class NegativeTest(
     override val testProducer: String = testType.value
 ) : TestEvent(
     type = Type.NegativeTest,
+    eventDate = eventDate,
+    testType = testType,
+    country = country,
+    validFrom = validFrom,
+    validUntil = validUntil,
+    issuer = issuer,
+    testLocation = testLocation,
+    testName = testName,
+    testProducer = testProducer
+)
+
+class NegativeToken(
+    override val type: Type = Type.NegativeTest,
+    override val eventDate: LocalDate,
+    override val testType: TestType,
+    override val country: Country = Country.NL,
+    override val validFrom: LocalDate? = null,
+    override val validUntil: LocalDate? = null,
+    override val issuer: String = minVws,
+    override val testLocation: TestLocation = TestLocation.YellowBanana,
+    override val testName: String = "Yellow Banana",
+    override val testProducer: String = "Yellow Banana Company",
+    val couplingCode: String,
+    val verificationCode: String? = null
+) : NegativeTest(
     eventDate = eventDate,
     testType = testType,
     country = country,
