@@ -63,7 +63,7 @@ object Elements {
     }
 
     fun assertNotExist(text: String) {
-        Timber.tag("end2end").d("Asserting not displayed text '$text'")
+        Timber.tag("end2end").d("Asserting not existing text '$text'")
         BaristaVisibilityAssertions.assertNotExist(text)
     }
 
@@ -111,6 +111,7 @@ object Elements {
 
     fun scrollListToPosition(@IdRes resId: Int, position: Int) {
         Timber.tag("end2end").d("Scrolling to position '$position' on view with ID '$resId'")
+        Wait.until(ViewIsShown(onView(withId(resId)), true))
         BaristaListInteractions.scrollListToPosition(resId, position)
     }
 
@@ -124,7 +125,7 @@ object Elements {
 
     fun tapButton(label: String, position: Int = 0) {
         Timber.tag("end2end").d("Tapping button with label '$label'${if (position > 0) " on position $position" else ""}")
-        val viewInteraction = onView(allOf(withIndex(withText(containsStringIgnoringCase(label)), position)))
+        val viewInteraction = onView(withIndex(withText(containsStringIgnoringCase(label)), position))
         Wait.until(ViewIsShown(viewInteraction, true))
         viewInteraction.perform(click())
     }
