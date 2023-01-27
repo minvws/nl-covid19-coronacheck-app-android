@@ -38,6 +38,10 @@ class MenuViewModelImpl(
     }
 
     private fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(
+        configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
+        configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds(),
+        versionName = BuildConfig.VERSION_NAME,
+        versionCode = BuildConfig.VERSION_CODE.toString(),
         sections = mutableListOf(
             AboutThisAppData.AboutThisAppSection(
                 header = R.string.about_this_app_read_more,
@@ -113,8 +117,10 @@ class MenuViewModelImpl(
             ZoneOffset.UTC
         ).formatDayMonthYearTimeNumerical()
         val contactInformation = cachedAppConfigUseCase.getCachedAppConfig().contactInfo
-        val startDay = DayOfWeek.of(contactInformation.startDay).getDisplayName(TextStyle.FULL, context.locale())
-        val endDay = DayOfWeek.of(contactInformation.endDay).getDisplayName(TextStyle.FULL, context.locale())
+        val startDay = DayOfWeek.of(contactInformation.startDay)
+            .getDisplayName(TextStyle.FULL, context.locale())
+        val endDay =
+            DayOfWeek.of(contactInformation.endDay).getDisplayName(TextStyle.FULL, context.locale())
         val actionHelpdesk = MenuFragmentDirections.actionHelpdesk(
             data = HelpdeskData(
                 contactTitle = context.getString(R.string.verifier_helpdesk_contact_title),
