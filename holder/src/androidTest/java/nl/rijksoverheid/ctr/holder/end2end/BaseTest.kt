@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.holder.end2end
 
 import android.app.Instrumentation
+import android.content.Context
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
@@ -53,6 +54,7 @@ abstract class BaseTest : AutoCloseKoinTest() {
 
     companion object {
         val instrumentation: Instrumentation = InstrumentationRegistry.getInstrumentation()
+        val context: Context = instrumentation.context
         val device: UiDevice = UiDevice.getInstance(instrumentation)
         val today: LocalDate = LocalDate.now()
         val authPassword: String =

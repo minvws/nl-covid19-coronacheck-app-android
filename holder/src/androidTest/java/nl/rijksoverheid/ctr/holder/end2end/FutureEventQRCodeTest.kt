@@ -20,13 +20,16 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertific
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
+import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateFromServer
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventIsExpired
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventWillExpireSoon
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisExpired
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
 import org.junit.After
@@ -47,7 +50,8 @@ class FutureEventQRCodeTest : BaseTest() {
         val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
         val deviceDate = today.offsetDays(2)
 
-        addVaccinationCertificate(person.bsn)
+        addVaccinationCertificate()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
@@ -58,6 +62,7 @@ class FutureEventQRCodeTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
+        assertQRisShown()
         viewPreviousQR()
         assertQRisHidden()
     }
@@ -69,7 +74,8 @@ class FutureEventQRCodeTest : BaseTest() {
         val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
         val deviceDate = today.offsetDays(180)
 
-        addVaccinationCertificate(person.bsn)
+        addVaccinationCertificate()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
@@ -90,7 +96,8 @@ class FutureEventQRCodeTest : BaseTest() {
         val person = Person(bsn = "999993033")
         val pos = PositiveTest(eventDate = today.offsetDays(-30), testType = TestType.Pcr, validUntil = today.offsetDays(150))
 
-        addRecoveryCertificate(person.bsn)
+        addRecoveryCertificate()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(2))
@@ -98,6 +105,10 @@ class FutureEventQRCodeTest : BaseTest() {
 
         assertInternationalEventOnOverview(pos)
         assertQrButtonIsEnabled(Event.Type.PositiveTest)
+
+        viewQR(Event.Type.PositiveTest)
+        assertQRisShown()
+        assertNoPreviousQR()
     }
 
     @Test
@@ -105,7 +116,8 @@ class FutureEventQRCodeTest : BaseTest() {
         val person = Person(bsn = "999993033")
         val pos = PositiveTest(eventDate = today.offsetDays(-30), testType = TestType.Pcr, validUntil = today.offsetDays(150))
 
-        addRecoveryCertificate(person.bsn)
+        addRecoveryCertificate()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(140))
@@ -114,13 +126,18 @@ class FutureEventQRCodeTest : BaseTest() {
         assertInternationalEventOnOverview(pos)
         assertInternationalEventWillExpireSoon(Event.Type.PositiveTest, daysLeft = 9)
         assertQrButtonIsEnabled(Event.Type.PositiveTest)
+
+        viewQR(Event.Type.PositiveTest)
+        assertQRisShown()
+        assertNoPreviousQR()
     }
 
     @Test
     fun whenDeviceDateIsAfterExpiry_recoveryCertificateIsRemoved() {
         val person = Person(bsn = "999993033")
 
-        addRecoveryCertificate(person.bsn)
+        addRecoveryCertificate()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(150))
@@ -134,7 +151,8 @@ class FutureEventQRCodeTest : BaseTest() {
         val person = Person(bsn = "999992004")
         val neg = NegativeTest(eventDate = today, testType = TestType.Pcr)
 
-        addNegativeTestCertificateFromGGD(person.bsn)
+        addNegativeTestCertificateFromGGD()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(2))
@@ -144,13 +162,16 @@ class FutureEventQRCodeTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.NegativeTest)
 
         viewQR(Event.Type.NegativeTest)
+        assertQRisShown()
+        assertNoPreviousQR()
     }
 
     @Test
     fun whenDeviceDateIsAfterExpiry_negativeTestCertificateIsRemoved() {
         val person = Person(bsn = "999992004")
 
-        addNegativeTestCertificateFromGGD(person.bsn)
+        addNegativeTestCertificateFromGGD()
+        retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(60))

@@ -13,6 +13,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
+import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateFromServer
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalError
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
 import org.junit.After
@@ -35,19 +36,22 @@ class PastEventRetrievalTest : BaseTest() {
 
     @Test
     fun givenDeviceDateInPast_whenVaccinationIsRetrieved_errorIsDisplayed() {
-        addVaccinationCertificate(Person().bsn)
+        addVaccinationCertificate()
+        retrieveCertificateFromServer(Person().bsn)
         assertRetrievalError("A 210 000 070-9")
     }
 
     @Test
     fun givenDeviceDateInPast_whenPositiveTestIsRetrieved_errorIsDisplayed() {
-        addRecoveryCertificate(Person().bsn)
+        addRecoveryCertificate()
+        retrieveCertificateFromServer(Person().bsn)
         assertRetrievalError("A 310 000 070-9")
     }
 
     @Test
     fun givenDeviceDateInPast_whenNegativeTestIsRetrieved_errorIsDisplayed() {
-        addNegativeTestCertificateFromGGD(Person().bsn)
+        addNegativeTestCertificateFromGGD()
+        retrieveCertificateFromServer(Person().bsn)
         assertRetrievalError("A 410 000 070-9")
     }
 }

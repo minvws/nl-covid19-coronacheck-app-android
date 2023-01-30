@@ -26,6 +26,10 @@ class AboutThisAppFragmentScreenshotTest : ScreenshotTest {
         val fragmentScenario = launchFragmentInContainer<AboutThisAppFragment>(
             bundleOf(
                 "data" to AboutThisAppData(
+                    versionCode = "1000",
+                    versionName = "4.4-acc",
+                    configVersionHash = "configVersionHash",
+                    configVersionTimestamp = 1655222474,
                     sections = listOf(
                         AboutThisAppData.AboutThisAppSection(
                             header = R.string.about_this_app_read_more,

@@ -33,6 +33,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.labelValuePairExist
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForView
 import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
 import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 
@@ -79,6 +80,12 @@ object Assertions {
             }
         }
         clickBack()
+    }
+
+    fun assertSomethingWentWrong() {
+        assertDisplayed("Sorry, er gaat iets mis")
+        assertDisplayed("Sluiten")
+        assertDisplayed("Probeer opnieuw")
     }
 
     fun assertRetrievalError(error: String) {
@@ -187,6 +194,10 @@ object Assertions {
         }
         labelValuePairExist("Afgever certificaat / Certificate issuer:", event.issuer)
         clickBack()
+    }
+
+    fun assertQRisShown() {
+        waitForView("image")
     }
 
     fun assertQRisHidden() {

@@ -35,7 +35,7 @@ import retrofit2.Converter
  */
 
 interface CoronaCheckRepository {
-    suspend fun configProviders(): NetworkRequestResult<RemoteConfigProviders>
+    suspend fun configProviders(useCache: Boolean = true): NetworkRequestResult<RemoteConfigProviders>
     suspend fun accessTokens(jwt: String): NetworkRequestResult<RemoteAccessTokens>
     suspend fun getGreenCards(
         stoken: String,
@@ -67,6 +67,8 @@ open class CoronaCheckRepositoryImpl(
     private val networkRequestResultFactory: NetworkRequestResultFactory
 ) : CoronaCheckRepository {
 
+    private var cachedConfigProvidersResult: NetworkRequestResult<RemoteConfigProviders>? = null
+
     private fun getHolderApiClient(): HolderApiClient {
         val backendTlsCertificates =
             cachedAppConfigUseCase.getCachedAppConfig().backendTLSCertificates
@@ -74,10 +76,18 @@ open class CoronaCheckRepositoryImpl(
         return holderApiClientUtil.client(certificateBytes)
     }
 
-    override suspend fun configProviders(): NetworkRequestResult<RemoteConfigProviders> {
-        return networkRequestResultFactory.createResult(HolderStep.ConfigProvidersNetworkRequest) {
+    override suspend fun configProviders(useCache: Boolean): NetworkRequestResult<RemoteConfigProviders> {
+        if (useCache) {
+            cachedConfigProvidersResult?.takeIf {
+                it is NetworkRequestResult.Success
+            }?.let { return it }
+        }
+
+        val result = networkRequestResultFactory.createResult(HolderStep.ConfigProvidersNetworkRequest) {
             remoteConfigApiClient.getConfigCtp()
         }
+        cachedConfigProvidersResult = result
+        return result
     }
 
     override suspend fun accessTokens(jwt: String): NetworkRequestResult<RemoteAccessTokens> {

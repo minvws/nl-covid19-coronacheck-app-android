@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppLockedBinding
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.enableHtmlLinks
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
@@ -31,6 +32,7 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
 
     private val androidUtil: AndroidUtil by inject()
     private val intentUtil: IntentUtil by inject()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
     @SuppressLint("StringFormatInvalid")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,9 +78,10 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
                 }
             }
             is AppStatus.LaunchError -> {
+                val helpdeskPhoneNumber = cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber
                 binding.bind(
                     R.string.appstatus_launchError_title,
-                    getString(R.string.appstatus_launchError_body, appStatus.errorMessage),
+                    getString(R.string.appstatus_launchError_body, helpdeskPhoneNumber, helpdeskPhoneNumber, appStatus.errorMessage),
                     R.string.appstatus_launchError_button,
                     R.drawable.illustration_app_status_launch_error
                 ) {

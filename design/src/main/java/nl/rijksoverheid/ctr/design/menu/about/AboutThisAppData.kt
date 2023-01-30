@@ -14,7 +14,11 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 data class AboutThisAppData(
+    val versionName: String,
+    val versionCode: String,
     val sections: List<AboutThisAppSection> = listOf(),
+    val configVersionHash: String,
+    val configVersionTimestamp: Long,
     val resetAppDialogDirection: Destination? = null,
     val deeplinkScannerUrl: String? = null
 ) : Parcelable {

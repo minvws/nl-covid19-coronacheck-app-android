@@ -47,6 +47,7 @@ import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.shared.ext.capitalize
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -190,13 +191,19 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private fun handleEndState(endState: YourEventsEndState) {
         when (endState) {
             is YourEventsEndState.BlockedEvent -> {
+                val helpdeskPhoneNumber = cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
                     toolbarTitle = getString(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title),
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(R.string.holder_listRemoteEvents_endStateNoValidCertificate_title),
                         descriptionData = DescriptionData(
-                            htmlTextString = getString(R.string.holder_listRemoteEvents_endStateNoValidCertificate_body, errorCodeStringFactory.get(getFlow(), listOf(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, BlockedEventException())))),
+                            htmlTextString = getString(
+                                R.string.holder_listRemoteEvents_endStateNoValidCertificate_body,
+                                helpdeskPhoneNumber,
+                                helpdeskPhoneNumber,
+                                errorCodeStringFactory.get(getFlow(), listOf(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, BlockedEventException())))
+                            ),
                             htmlLinksEnabled = true
                         ),
                         primaryButtonData = ButtonData.NavigationButton(
@@ -495,7 +502,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = getString(R.string.your_negative_test_results_row_title),
+                title = getString(R.string.general_testcertificate).capitalize(),
                 subtitle = getString(
                     R.string.your_negative_test_3_0_results_row_subtitle,
                     testDate,
@@ -613,7 +620,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = getString(R.string.positive_test_title),
+                title = getString(R.string.general_recoverycertificate).capitalize(),
                 subtitle = getString(
                     R.string.your_negative_test_3_0_results_row_subtitle,
                     testDate,
@@ -646,7 +653,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         R.string.holder_event_vaccination_assessment_action_title
                     }
                     else -> {
-                        R.string.your_negative_test_results_row_button
+                        R.string.my_overview_add_qr_button
                     }
                 }
             )

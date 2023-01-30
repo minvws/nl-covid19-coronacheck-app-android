@@ -207,7 +207,7 @@
   <string name="verifier_helpInfo_helpdesk">Helpdesk</string>
   <string name="verifier_helpdesk_title">Helpdesk</string>
   <string name="verifier_helpdesk_contact_title">Contact</string>
-  <string name="verifier_helpdesk_contact_message"><![CDATA[If you have any questions or experience problems, you can contact the CoronaCheck helpdesk.<br/><br/><b>Call the helpdesk:</b><br /><a href=\"tel:0800-1421\">0800-1421</a> (free). Or, if you are calling from abroad: <a href=\"tel:+31707503720\">+31 70 750 37 20</a>.<br /> <br />Open from Monday till Friday, between 08.00 a.m. - 06.00 p.m.<br /><br /><b>Or send an email to:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
+  <string name="verifier_helpdesk_contact_message"><![CDATA[If you have any questions or experience problems, you can contact the CoronaCheck helpdesk.<br/><br/><b>Call the helpdesk:</b><br /><a href=\"tel:%1$s\">%2$s</a> (free). Or, if you are calling from abroad: <a href=\"tel:%3$s\">%4$s</a>.<br /> <br />Open from %5$s till %6$s, between %7$s - %8$s<br /><br /><b>Or send an email to:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>wqw]]></string>
   <string name="verifier_helpdesk_support_title">Support</string>
   <string name="verifier_helpdesk_appVersion">App version:</string>
   <string name="verifier_helpdesk_configuration">Configuration:</string>

@@ -37,7 +37,7 @@ val repositoriesModule = module {
     factory<HolderApiClientUtil> {
         HolderApiClientUtilImpl(get(), get())
     }
-    factory<CoronaCheckRepository> {
+    single<CoronaCheckRepository> {
         CoronaCheckRepositoryImpl(
             get(),
             get(),

@@ -9,9 +9,11 @@
 package nl.rijksoverheid.ctr.holder.menu
 
 import android.content.Context
+import java.time.DayOfWeek
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.time.format.TextStyle
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTimeNumerical
@@ -20,6 +22,7 @@ import nl.rijksoverheid.ctr.design.fragments.menu.MenuSection
 import nl.rijksoverheid.ctr.design.menu.about.HelpdeskData
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.shared.ext.locale
 
 interface HelpMenuDataModel {
     fun get(context: Context): Array<MenuSection>
@@ -36,10 +39,23 @@ class HelpMenuDataModelImpl(
             Instant.ofEpochSecond(appConfigPersistenceManager.getAppConfigLastFetchedSeconds()),
             ZoneOffset.UTC
         ).formatDayMonthYearTimeNumerical()
+        val contactInformation = cachedAppConfigUseCase.getCachedAppConfig().contactInfo
+        val startDay = DayOfWeek.of(contactInformation.startDay).getDisplayName(TextStyle.FULL, context.locale())
+        val endDay = DayOfWeek.of(contactInformation.endDay).getDisplayName(TextStyle.FULL, context.locale())
         val actionHelpdesk = MenuFragmentDirections.actionHelpdesk(
             data = HelpdeskData(
                 contactTitle = context.getString(R.string.holder_helpdesk_contact_title),
-                contactMessage = context.getString(R.string.holder_helpdesk_contact_message),
+                contactMessage = context.getString(
+                    R.string.holder_helpdesk_contact_message,
+                    contactInformation.phoneNumber,
+                    contactInformation.phoneNumber,
+                    contactInformation.phoneNumberAbroad,
+                    contactInformation.phoneNumberAbroad,
+                    startDay,
+                    endDay,
+                    contactInformation.startHour,
+                    contactInformation.endHour
+                ),
                 supportTitle = context.getString(R.string.holder_helpdesk_support_title),
                 supportMessage = context.getString(R.string.holder_helpdesk_support_message),
                 appVersionTitle = context.getString(R.string.holder_helpdesk_appVersion),
