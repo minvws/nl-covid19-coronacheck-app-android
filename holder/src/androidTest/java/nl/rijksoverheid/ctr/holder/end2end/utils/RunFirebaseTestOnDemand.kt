@@ -7,4 +7,4 @@
 
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
-annotation class RunFirebaseTestOnDemand()
+annotation class RunFirebaseTestOnDemand

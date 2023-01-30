@@ -34,8 +34,8 @@ class VaccinationRetrievalTest : BaseTest() {
     @Test
     fun retrieveVaccinationWith2Pfizer_assertOverviewAndQRDetails() {
         val person = Person(bsn = "999990020")
-        val vac1 = VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccinationEvent.VaccineType.Pfizer)
-        val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccinationEvent.VaccineType.Pfizer)
+        val vac1 = VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
+        val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
 
         addVaccinationCertificate()
         retrieveCertificateFromServer(person.bsn)
