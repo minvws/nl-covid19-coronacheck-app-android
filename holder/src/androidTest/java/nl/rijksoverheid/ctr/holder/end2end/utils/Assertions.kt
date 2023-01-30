@@ -14,7 +14,6 @@ import java.time.temporal.ChronoUnit
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
-import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
 import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
@@ -75,7 +74,7 @@ object Assertions {
             is PositiveTest -> {
                 assertContains("Testuitslag: positief (coronavirus vastgesteld)")
             }
-            is NegativeTest, is NegativeToken -> {
+            is NegativeTest -> {
                 assertContains("Testuitslag: negatief (geen coronavirus vastgesteld)")
             }
         }
@@ -114,8 +113,7 @@ object Assertions {
             is PositiveTest -> {
                 card(Event.Type.PositiveTest).containsText("Geldig tot " + event.validUntil!!.written())
             }
-            is NegativeTest, is NegativeToken -> {
-                event as TestEvent
+            is NegativeTest -> {
                 card(Event.Type.NegativeTest).containsText("Type test: " + event.testType.value)
                 card(Event.Type.NegativeTest).containsText("Testdatum: " + event.eventDate.recently())
             }
@@ -181,8 +179,7 @@ object Assertions {
                 labelValuePairExist("Testdatum / Test date*:", event.eventDate.dutch())
                 labelValuePairExist("Getest in / Tested in:", event.country.internationalName)
             }
-            is NegativeTest, is NegativeToken -> {
-                event as TestEvent
+            is NegativeTest -> {
                 labelValuePairExist("Ziekteverwekker / Disease targeted:", event.disease)
                 labelValuePairExist("Type test / Test type:", event.testType.value)
                 labelValuePairExist("Testnaam / Test name:", event.testName)
