@@ -40,6 +40,9 @@ class YourEventsFragmentUtilImpl(
             isVaccinationAssessment(type) -> {
                 R.string.holder_listRemoteEvents_vaccinationAssessment_message
             }
+            isRecovery(type) -> {
+                R.string.holder_listRemoteEvents_recovery_message
+            }
             else -> {
                 R.string.holder_listRemoteEvents_vaccination_message
             }
@@ -50,6 +53,12 @@ class YourEventsFragmentUtilImpl(
         val type = yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
         val remoteEvent = type.remoteEvents.keys.firstOrNull()?.events?.first() ?: return false
         return remoteEventUtil.getOriginType(remoteEvent) == OriginType.VaccinationAssessment
+    }
+
+    private fun isRecovery(yourEventsFragmentType: YourEventsFragmentType): Boolean {
+        val type = yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
+        val remoteEvent = type.remoteEvents.keys.firstOrNull()?.events?.first() ?: return false
+        return remoteEventUtil.getOriginType(remoteEvent) == OriginType.Recovery
     }
 
     override fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int {
