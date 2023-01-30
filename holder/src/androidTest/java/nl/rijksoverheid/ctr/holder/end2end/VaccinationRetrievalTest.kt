@@ -15,6 +15,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
+import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateFromServer
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
@@ -22,6 +23,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQ
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisNotHidden
+import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
@@ -35,7 +37,8 @@ class VaccinationRetrievalTest : BaseTest() {
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Pfizer)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
 
-        addVaccinationCertificate(person.bsn)
+        addVaccinationCertificate()
+        retrieveCertificateFromServer(person.bsn)
         assertRetrievalDetails(person, vac2, position = 0)
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
@@ -45,6 +48,7 @@ class VaccinationRetrievalTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
+        assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/2")
         viewPreviousQR()
         assertQRisHidden()
@@ -58,7 +62,8 @@ class VaccinationRetrievalTest : BaseTest() {
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Moderna)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Moderna)
 
-        addVaccinationCertificate(person.bsn)
+        addVaccinationCertificate()
+        retrieveCertificateFromServer(person.bsn)
         assertRetrievalDetails(person, vac2, position = 0)
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
@@ -68,6 +73,7 @@ class VaccinationRetrievalTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
+        assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/2")
         viewPreviousQR()
         assertQRisHidden()
@@ -81,7 +87,8 @@ class VaccinationRetrievalTest : BaseTest() {
         val vac1 = Vaccination(eventDate = today.offsetDays(-60), vaccine = VaccineType.Janssen)
         val vac2 = Vaccination(eventDate = today.offsetDays(-30), vaccine = VaccineType.Janssen)
 
-        addVaccinationCertificate(person.bsn)
+        addVaccinationCertificate()
+        retrieveCertificateFromServer(person.bsn)
         assertRetrievalDetails(person, vac2, position = 0)
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
@@ -91,6 +98,7 @@ class VaccinationRetrievalTest : BaseTest() {
         assertQrButtonIsEnabled(Event.Type.Vaccination)
 
         viewQR(Event.Type.Vaccination)
+        assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/1")
         viewPreviousQR()
         assertQRisNotHidden()

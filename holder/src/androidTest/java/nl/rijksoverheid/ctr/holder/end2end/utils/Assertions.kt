@@ -31,6 +31,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.labelValuePairExist
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForView
 import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
 import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 
@@ -68,6 +69,12 @@ object Assertions {
             }
         }
         clickBack()
+    }
+
+    fun assertSomethingWentWrong() {
+        assertDisplayed("Sorry, er gaat iets mis")
+        assertDisplayed("Sluiten")
+        assertDisplayed("Probeer opnieuw")
     }
 
     fun assertRetrievalError(error: String) {
@@ -136,6 +143,7 @@ object Assertions {
     // MARK: QR Details
 
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null, deviceDate: LocalDate = LocalDate.now()) {
+        assertQRisShown()
         if (event is Vaccination) waitForText("Dosis $dose")
         Wait.until(ViewIsShown(onView(withText("Details")), true))
         tapButton("Details")
@@ -169,6 +177,10 @@ object Assertions {
             }
         }
         clickBack()
+    }
+
+    fun assertQRisShown() {
+        waitForView("image")
     }
 
     fun assertQRisHidden() {
