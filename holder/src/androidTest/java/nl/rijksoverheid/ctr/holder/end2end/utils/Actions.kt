@@ -110,7 +110,7 @@ object Actions {
 
     fun addRetrievedCertificateToApp() {
         waitForText("Kloppen de gegevens?", 30)
-        tapButton("Maak bewijs")
+        tapButton("Bewijs toevoegen")
         waitForText("Mijn bewijzen", 60)
     }
 
