@@ -32,7 +32,6 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.labelValuePairExist
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForView
 import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
 import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 
@@ -194,7 +193,7 @@ object Assertions {
     }
 
     fun assertQRisShown() {
-        waitForView("image")
+        assertDisplayed(R.id.image, "jouw QR-code")
     }
 
     fun assertQRisHidden() {

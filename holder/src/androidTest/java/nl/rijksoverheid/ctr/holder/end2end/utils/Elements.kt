@@ -20,6 +20,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.uiautomator.By
@@ -60,6 +61,12 @@ object Elements {
     fun assertDisplayed(text: String) {
         Timber.tag("end2end").d("Asserting displayed text '$text'")
         BaristaVisibilityAssertions.assertDisplayed(text)
+    }
+
+    fun assertDisplayed(@IdRes viewId: Int, desc: String) {
+        Timber.tag("end2end").d("Asserting displayed view '$viewId'")
+        Wait.until(ViewIsShown(onView(allOf(withId(viewId), withContentDescription(desc))), true))
+        BaristaVisibilityAssertions.assertDisplayed(viewId)
     }
 
     fun assertNotExist(text: String) {
@@ -211,12 +218,6 @@ object Elements {
         val element = device.wait(Until.findObject(By.textStartsWith(text)), timeout * 1_000)
         assertNotNull("'$text' could not be found", element)
         return element
-    }
-
-    fun waitForView(resource: String, timeout: Long = 5) {
-        Timber.tag("end2end").d("Waiting for view with ID '$resource'")
-        val element = device.wait(Until.findObject(By.res(device.currentPackageName, resource)), timeout * 1_000)
-        assertNotNull("'$resource' could not be found", element)
     }
 
     fun checkForText(text: String, timeout: Long = 1): Boolean {
