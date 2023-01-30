@@ -287,7 +287,7 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
             }), listOf())
         )
 
-        assertEquals(R.string.holder_listRemoteEvents_vaccination_message, copy)
+        assertEquals(R.string.holder_listRemoteEvents_recovery_message, copy)
     }
 
     @Test
