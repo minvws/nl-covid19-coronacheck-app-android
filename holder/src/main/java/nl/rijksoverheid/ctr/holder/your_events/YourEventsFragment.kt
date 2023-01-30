@@ -47,6 +47,7 @@ import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidget
 import nl.rijksoverheid.ctr.holder.your_events.widgets.YourEventWidgetUtil
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
+import nl.rijksoverheid.ctr.shared.ext.capitalize
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -619,7 +620,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = getString(R.string.positive_test_title),
+                title = getString(R.string.general_recoverycertificate).capitalize(),
                 subtitle = getString(
                     R.string.your_negative_test_3_0_results_row_subtitle,
                     testDate,
@@ -652,7 +653,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         R.string.holder_event_vaccination_assessment_action_title
                     }
                     else -> {
-                        R.string.your_negative_test_results_row_button
+                        R.string.my_overview_add_qr_button
                     }
                 }
             )
