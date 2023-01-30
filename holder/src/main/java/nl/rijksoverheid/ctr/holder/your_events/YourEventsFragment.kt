@@ -502,7 +502,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
         val eventWidget = YourEventWidget(requireContext()).apply {
             setContent(
-                title = getString(R.string.your_negative_test_results_row_title),
+                title = getString(R.string.general_testcertificate).capitalize(),
                 subtitle = getString(
                     R.string.your_negative_test_3_0_results_row_subtitle,
                     testDate,
