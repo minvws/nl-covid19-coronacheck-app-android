@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.authPassword
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.context
 import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.device
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.checkForText
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickOn
@@ -31,6 +32,7 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapButtonElement
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.tapOnElementWithContentDescription
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
+import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.writeTo
 import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
 import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 import timber.log.Timber
@@ -87,9 +89,28 @@ object Actions {
         clickOn("Log in met DigiD")
     }
 
+    fun addNegativeTestCertificateFromOtherLocation() {
+        addEvent()
+        scrollTo("Negatieve test")
+        tapButton("Negatieve test")
+        tapButton("Andere testlocatie")
+    }
+
+    fun retrieveCertificateWithToken(retrievalCode: String) {
+        assertDisplayed("Testuitslag ophalen")
+        writeTo(R.id.unique_code_input, retrievalCode)
+        clickOn("Haal testuitslag op")
+    }
+
+    fun retrieveCertificateWithTokenAndVerificationCode(retrievalCode: String, verificationCode: String) {
+        retrieveCertificateWithToken(retrievalCode)
+        writeTo(R.id.verification_code_input, verificationCode)
+        clickOn("Haal testuitslag op")
+    }
+
     fun addRetrievedCertificateToApp() {
         waitForText("Kloppen de gegevens?", 30)
-        tapButton("Maak bewijs")
+        tapButton("Bewijs toevoegen")
         waitForText("Mijn bewijzen", 60)
     }
 
@@ -138,7 +159,8 @@ object Actions {
     }
 
     private fun acceptChromeOnboarding() {
-        if (checkForText("Welkom bij Chrome")) tapButtonElement("Accept")
+        if (checkForText("Accept")) tapButtonElement("Accept")
+        if (checkForText("Gebruiken zonder account")) tapButtonElement("Gebruiken zonder account")
         if (checkForText("Synchronisatie aanzetten?")) tapButtonElement("Nee, bedankt")
         if (checkForText("Inloggen bij Chrome")) tapButtonElement("Nee, bedankt")
         if (checkForText("Toestaan dat Chrome je meldingen stuurt?")) tapButtonElement("Niet toestaan")

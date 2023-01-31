@@ -21,20 +21,17 @@ object Wait {
 
     @Throws
     fun until(condition: Condition, timeoutLimit: Long = 5 * 1_000, watchInterval: Long = 200) {
-        Timber.tag("end2end").d("Start waiting on '${condition.description}'")
         var status = State.ConditionNotMet
         var elapsedTime: Long = 0
         do {
             if (condition.checkCondition() == true) {
-                Timber.tag("end2end").d("Condition met of '${condition.description}'")
                 status = State.ConditionMet
             } else {
                 elapsedTime += watchInterval
-                Timber.tag("end2end").d("Sleeping")
                 Thread.sleep(watchInterval)
             }
             if (elapsedTime >= timeoutLimit) {
-                Timber.tag("end2end").d("Waiting timed out")
+                Timber.tag("end2end").d("Waiting on '${condition.description}' timed out!")
                 status = State.Timeout
                 break
             }

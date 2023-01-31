@@ -96,7 +96,7 @@ class DateTimeUtils(private val device: UiDevice) {
 
     private fun selectTargetMonth(currentDate: LocalDate, targetDate: LocalDate) {
         val monthDiff = ChronoUnit.MONTHS.between(currentDate.withDayOfMonth(1), targetDate.withDayOfMonth(1))
-            Timber.tag("end2end").d("Months to shift: $monthDiff")
+        Timber.tag("end2end").d("Months to shift: $monthDiff")
         when {
             monthDiff == 0L -> {
                 // ...nothing to do. Currently on the right month.

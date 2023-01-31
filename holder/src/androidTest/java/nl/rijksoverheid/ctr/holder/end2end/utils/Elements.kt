@@ -20,6 +20,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.uiautomator.By
@@ -30,6 +31,7 @@ import androidx.test.uiautomator.UiSelector
 import androidx.test.uiautomator.Until
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions
 import com.adevinta.android.barista.interaction.BaristaClickInteractions
+import com.adevinta.android.barista.interaction.BaristaEditTextInteractions
 import com.adevinta.android.barista.interaction.BaristaListInteractions
 import com.adevinta.android.barista.interaction.BaristaScrollInteractions
 import junit.framework.TestCase.assertNotNull
@@ -61,8 +63,14 @@ object Elements {
         BaristaVisibilityAssertions.assertDisplayed(text)
     }
 
+    fun assertDisplayed(@IdRes viewId: Int, desc: String) {
+        Timber.tag("end2end").d("Asserting displayed view '$viewId'")
+        Wait.until(ViewIsShown(onView(allOf(withId(viewId), withContentDescription(desc))), true))
+        BaristaVisibilityAssertions.assertDisplayed(viewId)
+    }
+
     fun assertNotExist(text: String) {
-        Timber.tag("end2end").d("Asserting not displayed text '$text'")
+        Timber.tag("end2end").d("Asserting not existing text '$text'")
         BaristaVisibilityAssertions.assertNotExist(text)
     }
 
@@ -74,6 +82,11 @@ object Elements {
     fun assertNotDisplayed(@IdRes viewId: Int) {
         Timber.tag("end2end").d("Asserting not displayed view with ID '$viewId'")
         BaristaVisibilityAssertions.assertNotDisplayed(viewId)
+    }
+
+    fun assertNotContains(text: String) {
+        Timber.tag("end2end").d("Asserting not contains text '$text'")
+        BaristaVisibilityAssertions.assertNotContains(text)
     }
 
     fun clickOn(text: String) {
@@ -105,14 +118,21 @@ object Elements {
 
     fun scrollListToPosition(@IdRes resId: Int, position: Int) {
         Timber.tag("end2end").d("Scrolling to position '$position' on view with ID '$resId'")
+        Wait.until(ViewIsShown(onView(withId(resId)), true))
         BaristaListInteractions.scrollListToPosition(resId, position)
+    }
+
+    fun writeTo(@IdRes editTextId: Int, text: String) {
+        Timber.tag("end2end").d("Writing text '$text' on edit text ID '$editTextId'")
+        Wait.until(ViewIsShown(onView(withId(editTextId)), true))
+        BaristaEditTextInteractions.writeTo(editTextId, text)
     }
 
     // MARK: Espresso
 
     fun tapButton(label: String, position: Int = 0) {
         Timber.tag("end2end").d("Tapping button with label '$label'${if (position > 0) " on position $position" else ""}")
-        val viewInteraction = onView(allOf(withIndex(withText(containsStringIgnoringCase(label)), position)))
+        val viewInteraction = onView(withIndex(withText(containsStringIgnoringCase(label)), position))
         Wait.until(ViewIsShown(viewInteraction, true))
         viewInteraction.perform(click())
     }
@@ -198,12 +218,6 @@ object Elements {
         val element = device.wait(Until.findObject(By.textStartsWith(text)), timeout * 1_000)
         assertNotNull("'$text' could not be found", element)
         return element
-    }
-
-    fun waitForView(resource: String, timeout: Long = 5) {
-        Timber.tag("end2end").d("Waiting for view with ID '$resource'")
-        val element = device.wait(Until.findObject(By.res(device.currentPackageName, resource)), timeout * 1_000)
-        assertNotNull("'$resource' could not be found", element)
     }
 
     fun checkForText(text: String, timeout: Long = 1): Boolean {
