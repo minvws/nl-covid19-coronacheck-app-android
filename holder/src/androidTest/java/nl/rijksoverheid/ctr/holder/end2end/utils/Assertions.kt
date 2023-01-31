@@ -37,12 +37,16 @@ import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 
 object Assertions {
 
+    // region Overview
+
     fun assertOverview() {
         waitForText("Mijn bewijzen", 15)
         assertDisplayed("Menu")
     }
 
-    // MARK: Retrieval
+    // endregion
+
+    // region Retrieval
 
     fun assertRetrievalDetails(person: Person, event: Event, position: Int = 0) {
         waitForText("Kloppen de gegevens?", 30)
@@ -91,7 +95,9 @@ object Assertions {
         labelValuePairExist("Foutcode:", error)
     }
 
-    // MARK: Certificates on Overview
+    // endregion
+
+    // region Certificates on Overview
 
     fun assertQrButtonIsEnabled(eventType: Event.Type) {
         card(eventType).buttonIsEnabled(true)
@@ -149,7 +155,9 @@ object Assertions {
         waitForText("Je internationale ${eventType.domesticName.lowercase()} is verlopen")
     }
 
-    // MARK: QR Details
+    // endregion
+
+    // region QR Details
 
     fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null, deviceDate: LocalDate = LocalDate.now()) {
         if (event is VaccinationEvent) waitForText("Dosis $dose")
@@ -217,4 +225,6 @@ object Assertions {
     fun assertNoPreviousQR() {
         assertNotDisplayed(R.id.previousQrButton)
     }
+
+    // endregion
 }

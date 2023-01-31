@@ -62,7 +62,7 @@ object Actions {
         context.sendBroadcast(Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS))
     }
 
-    // MARK: Adding events
+    // region Adding events
 
     private fun addEvent() {
         tapButton("Menu")
@@ -114,7 +114,9 @@ object Actions {
         waitForText("Mijn bewijzen", 60)
     }
 
-    // MARK: Overview
+    // endregion
+
+    // region Overview
 
     fun scrollToBottomOfOverview() {
         Wait.until(ViewIsShown(onView(withId(R.id.recyclerView)), true))
@@ -128,13 +130,17 @@ object Actions {
         waitForText("Internationale QR")
     }
 
-    // MARK: QR
+    // endregion
+
+    // region QR
 
     fun viewPreviousQR() {
         clickOn(R.id.previousQrButton)
     }
 
-    // MARK: Private functions
+    // endregion
+
+    // region Private functions
 
     fun retrieveCertificateFromServer(bsn: String) {
         if (bsn.isEmpty()) fail("BSN was empty, no certificate can be retrieved.")
@@ -168,4 +174,6 @@ object Actions {
         if (checkForText("Wil je dat Google Chrome je wachtwoord voor deze site opslaat?")) tapButtonElement("Nooit")
         if (checkForText("Wachtwoord opslaan?")) tapButtonElement("Opslaan")
     }
+
+    // endregion
 }

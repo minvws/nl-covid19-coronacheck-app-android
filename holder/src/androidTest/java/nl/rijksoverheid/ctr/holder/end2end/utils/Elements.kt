@@ -51,7 +51,7 @@ import timber.log.Timber
 
 object Elements {
 
-    // MARK: Barista
+    // region Barista
 
     fun assertContains(text: String) {
         Timber.tag("end2end").d("Asserting contains text '$text'")
@@ -128,7 +128,9 @@ object Elements {
         BaristaEditTextInteractions.writeTo(editTextId, text)
     }
 
-    // MARK: Espresso
+    // endregion
+
+    // region Espresso
 
     fun tapButton(label: String, position: Int = 0) {
         Timber.tag("end2end").d("Tapping button with label '$label'${if (position > 0) " on position $position" else ""}")
@@ -211,7 +213,9 @@ object Elements {
         viewInteraction.perform(click())
     }
 
-    // MARK: UiAutomator
+    // endregion
+
+    // region UiAutomator
 
     fun waitForText(text: String, timeout: Long = 5): UiObject2? {
         Timber.tag("end2end").d("Waiting for text '$text'")
@@ -256,11 +260,15 @@ object Elements {
         device.wait(Until.findObject(By.desc(contentDescription)), timeout * 1_000).click()
     }
 
-    // MARK: Other
+    // endregion
+
+    // region Other
 
     @Suppress("unused")
     fun rest(seconds: Long = 1) {
         Timber.tag("end2end").d("  Rest Here Weary Traveler, for just ${if (seconds > 1) "$seconds seconds" else "a second"}")
         Thread.sleep(seconds * 1000)
     }
+
+    // endregion
 }
