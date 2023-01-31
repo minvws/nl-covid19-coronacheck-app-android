@@ -4,9 +4,11 @@ import com.squareup.moshi.Moshi
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import java.net.UnknownHostException
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
+import javax.net.ssl.SSLException
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
@@ -147,6 +149,41 @@ class HolderAppStatusUseCaseImplTest {
         }
 
     @Test
+    fun `status is offline when config is offline error and cached app config is no longer valid`() =
+        runTest {
+            // Current time is 100 seconds
+            // Max offline time is set to 50 seconds
+            // Last time config fetched was 20 seconds
+            val appStatusUseCase = HolderAppStatusUseCaseImpl(
+                clock = Clock.fixed(Instant.ofEpochSecond(100), ZoneId.of("UTC")),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
+                    appConfig = fakeAppConfig(
+                        configTtlSeconds = 50
+                    )
+                ),
+                appConfigPersistenceManager = fakeAppConfigPersistenceManager(
+                    lastFetchedSeconds = 20
+                ),
+                moshi = moshi,
+                recommendedUpdatePersistenceManager = mockk(relaxed = true),
+                appUpdateData = mockk(),
+                appUpdatePersistenceManager = mockk(),
+                introductionPersistenceManager = mockk(),
+                persistenceManager = mockk(),
+                showNewDisclosurePolicyUseCase = mockk(),
+                errorCodeStringFactory = mockk(relaxed = true)
+            )
+
+            val appStatus = appStatusUseCase.get(
+                config = ConfigResult.Error(mockk {
+                    every { e } returns UnknownHostException("you cannot reach me")
+                }),
+                currentVersionCode = 1
+            )
+            assertTrue(appStatus is AppStatus.Error)
+        }
+
+    @Test
     fun `status returns launch error when config is Error and cached app config is no longer valid`() =
         runTest {
 
@@ -174,7 +211,9 @@ class HolderAppStatusUseCaseImplTest {
             )
 
             val appStatus = appStatusUseCase.get(
-                config = ConfigResult.Error(mockk()),
+                config = ConfigResult.Error(mockk {
+                    every { e } returns SSLException("ssl expired")
+                }),
                 currentVersionCode = 1
             )
             assertTrue(appStatus is AppStatus.LaunchError)
@@ -650,7 +689,9 @@ class HolderAppStatusUseCaseImplTest {
             val appStatusUseCase = appStatusUseCase(false, 1000, cachedAppConfig = null)
 
             val appStatus = appStatusUseCase.get(
-                config = ConfigResult.Error(mockk()),
+                config = ConfigResult.Error(mockk {
+                    every { e } returns SSLException("ssl error")
+                }),
                 currentVersionCode = 1000
             )
 
@@ -675,7 +716,9 @@ class HolderAppStatusUseCaseImplTest {
             )
 
             val appStatus = appStatusUseCase.get(
-                config = ConfigResult.Error(mockk()),
+                config = ConfigResult.Error(mockk {
+                    every { e } returns SSLException("ssl expired")
+                }),
                 currentVersionCode = 1000
             )
 
@@ -693,7 +736,9 @@ class HolderAppStatusUseCaseImplTest {
             )
 
             val appStatus = appStatusUseCase.get(
-                config = ConfigResult.Error(mockk()),
+                config = ConfigResult.Error(mockk {
+                    every { e } returns SSLException("ssl expired")
+                }),
                 currentVersionCode = 1000
             )
 
