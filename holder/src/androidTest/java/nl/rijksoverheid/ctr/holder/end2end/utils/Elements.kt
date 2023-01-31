@@ -36,7 +36,7 @@ import com.adevinta.android.barista.interaction.BaristaListInteractions
 import com.adevinta.android.barista.interaction.BaristaScrollInteractions
 import junit.framework.TestCase.assertNotNull
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.device
+import nl.rijksoverheid.ctr.holder.end2end.BaseTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.wait.ButtonInState
 import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
@@ -49,7 +49,7 @@ import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
 import timber.log.Timber
 
-object Elements {
+object Elements : BaseTest() {
 
     // region Barista
 

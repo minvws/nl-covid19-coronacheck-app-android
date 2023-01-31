@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
+import android.app.Instrumentation
 import androidx.preference.PreferenceManager
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -15,7 +16,6 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResponse
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
-import nl.rijksoverheid.ctr.holder.end2end.BaseTest
 import nl.rijksoverheid.ctr.holder.end2end.res.TestKeys
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import okhttp3.Headers
@@ -23,10 +23,10 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun overrideModules(modules: List<Module>) {
+fun overrideModules(modules: List<Module>, instrumentation: Instrumentation) {
     loadKoinModules(listOf(module {
         factory {
-            PreferenceManager.getDefaultSharedPreferences(BaseTest.instrumentation.targetContext)
+            PreferenceManager.getDefaultSharedPreferences(instrumentation.targetContext)
         }
     }, module {
         factory<ConfigRepository> {

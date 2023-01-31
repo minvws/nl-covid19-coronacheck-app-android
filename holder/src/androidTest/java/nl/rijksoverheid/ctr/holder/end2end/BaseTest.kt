@@ -31,6 +31,12 @@ abstract class BaseTest : AutoCloseKoinTest() {
 
     private lateinit var scenario: ActivityScenario<HolderMainActivity>
 
+    private val instrumentation: Instrumentation = InstrumentationRegistry.getInstrumentation()
+    val context: Context = instrumentation.context
+    val device: UiDevice = UiDevice.getInstance(instrumentation)
+    val today: LocalDate = LocalDate.now()
+    val authPassword: String = InstrumentationRegistry.getArguments().getString("authPassword", "")
+
     fun relaunchApp() {
         ActivityScenario.launch(HolderMainActivity::class.java)
         instrumentation.waitForIdleSync()
@@ -38,7 +44,7 @@ abstract class BaseTest : AutoCloseKoinTest() {
 
     @Before
     fun startApp() {
-        overrideModules(listOf())
+        overrideModules(listOf(), instrumentation)
 
         persistenceManager.setHasDismissedUnsecureDeviceDialog(true)
         persistenceManager.setHasDismissedRootedDeviceDialog()
@@ -50,14 +56,5 @@ abstract class BaseTest : AutoCloseKoinTest() {
         persistenceManager.setSelectedDashboardTab(1)
 
         scenario = ActivityScenario.launch(HolderMainActivity::class.java)
-    }
-
-    companion object {
-        val instrumentation: Instrumentation = InstrumentationRegistry.getInstrumentation()
-        val context: Context = instrumentation.context
-        val device: UiDevice = UiDevice.getInstance(instrumentation)
-        val today: LocalDate = LocalDate.now()
-        val authPassword: String =
-            InstrumentationRegistry.getArguments().getString("authPassword", "")
     }
 }

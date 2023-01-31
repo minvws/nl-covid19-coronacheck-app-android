@@ -15,9 +15,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import junit.framework.TestCase.fail
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.authPassword
-import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.context
-import nl.rijksoverheid.ctr.holder.end2end.BaseTest.Companion.device
+import nl.rijksoverheid.ctr.holder.end2end.BaseTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.card
@@ -37,7 +35,7 @@ import nl.rijksoverheid.ctr.holder.end2end.wait.ViewIsShown
 import nl.rijksoverheid.ctr.holder.end2end.wait.Wait
 import timber.log.Timber
 
-object Actions {
+object Actions : BaseTest() {
 
     fun logVersions() {
         val appVersion = BuildConfig.VERSION_NAME
