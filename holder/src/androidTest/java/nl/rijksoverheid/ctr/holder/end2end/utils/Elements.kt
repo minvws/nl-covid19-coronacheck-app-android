@@ -264,7 +264,6 @@ object Elements : BaseTest() {
 
     // region Other
 
-    @Suppress("unused")
     fun rest(seconds: Long = 1) {
         Timber.tag("end2end").d("  Rest Here Weary Traveler, for just ${if (seconds > 1) "$seconds seconds" else "a second"}")
         Thread.sleep(seconds * 1000)
