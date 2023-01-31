@@ -10,7 +10,8 @@ package nl.rijksoverheid.ctr.holder.end2end
 import androidx.test.filters.SdkSuppress
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions
+import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
+import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateFromServer
@@ -53,7 +54,7 @@ class OfflineQrTest : BaseTest() {
     fun whenDeviceIsOffline_positiveTestCertificateShowsQR() {
         val person = Person(bsn = "999993033")
 
-        Actions.addRecoveryCertificate()
+        addRecoveryCertificate()
         retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
@@ -69,7 +70,7 @@ class OfflineQrTest : BaseTest() {
     fun whenDeviceIsOffline_negativeTestCertificateShowsQr() {
         val person = Person(bsn = "999992004")
 
-        Actions.addNegativeTestCertificateFromGGD()
+        addNegativeTestCertificateFromGGD()
         retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
