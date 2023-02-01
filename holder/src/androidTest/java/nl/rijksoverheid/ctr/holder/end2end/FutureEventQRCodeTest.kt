@@ -196,4 +196,45 @@ class FutureEventQRCodeTest : BaseTest() {
     }
 
     // endregion
+
+    // region Tokens
+
+    @Test
+    fun whenDeviceDateIsBeforeExpiry_negativeTokenCertificateIsValid() {
+        val person = Person(name = "de Beer, Boris", birthDate = LocalDate.of(1971, 7, 31))
+        val token = NegativeToken(eventDate = today, testType = TestType.Pcr, couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2")
+
+        addNegativeTestCertificateFromOtherLocation()
+        retrieveCertificateWithToken(token.couplingCode)
+        assertRetrievalDetails(person, token)
+        addRetrievedCertificateToApp()
+
+        DateTimeUtils(device).setDate(today.offsetDays(2))
+        relaunchApp()
+
+        assertInternationalEventOnOverview(token)
+        assertQrButtonIsEnabled(Event.Type.NegativeTest)
+
+        viewQR(Event.Type.NegativeTest)
+        assertQRisShown()
+        assertNoPreviousQR()
+    }
+
+    @Test
+    fun whenDeviceDateIsAfterExpiry_negativeTokenCertificateIsRemoved() {
+        val person = Person(name = "de Beer, Boris", birthDate = LocalDate.of(1971, 7, 31))
+        val token = NegativeToken(eventDate = today, testType = TestType.Pcr, couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2")
+
+        addNegativeTestCertificateFromOtherLocation()
+        retrieveCertificateWithToken(token.couplingCode)
+        assertRetrievalDetails(person, token)
+        addRetrievedCertificateToApp()
+
+        DateTimeUtils(device).setDate(today.offsetDays(60))
+        relaunchApp()
+
+        assertInternationalEventIsExpired(Event.Type.NegativeTest)
+    }
+
+    // endregion
 }
