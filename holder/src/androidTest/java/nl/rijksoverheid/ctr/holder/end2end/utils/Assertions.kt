@@ -86,6 +86,7 @@ object Assertions {
 
     fun assertSomethingWentWrong() {
         assertDisplayed("Sorry, er gaat iets mis")
+        assertContains("Het is niet gelukt de server te bereiken")
         assertDisplayed("Sluiten")
         assertDisplayed("Probeer opnieuw")
     }
