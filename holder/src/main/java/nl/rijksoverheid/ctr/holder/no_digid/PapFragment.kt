@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -43,6 +44,7 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
     private val args: PapFragmentArgs by navArgs()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase by inject()
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
     override fun onButtonClickWithRetryAction() {
         loginWithDigiD()
@@ -101,13 +103,22 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
                 title = R.string.holder_checkForBSN_buttonTitle_doesHaveBSN,
                 subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesHaveBSN)
             ) {
+                val contactInformation = cachedAppConfigUseCase.getCachedAppConfig().contactInfo
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this@PapFragment,
                     toolbarTitle = getString(R.string.choose_provider_toolbar),
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(R.string.holder_contactCoronaCheckHelpdesk_title),
                         descriptionData = DescriptionData(
-                            R.string.holder_contactCoronaCheckHelpdesk_message,
+                            htmlTextString = getString(
+                                R.string.holder_contactCoronaCheckHelpdesk_message,
+                                contactInformation.startHour,
+                                contactInformation.endHour,
+                                contactInformation.phoneNumber,
+                                contactInformation.phoneNumber,
+                                contactInformation.phoneNumberAbroad,
+                                contactInformation.phoneNumberAbroad
+                            ),
                             htmlLinksEnabled = true
                         ),
                         primaryButtonData = ButtonData.NavigationButton(
