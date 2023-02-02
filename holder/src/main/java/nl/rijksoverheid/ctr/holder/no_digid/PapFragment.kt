@@ -1,9 +1,13 @@
 package nl.rijksoverheid.ctr.holder.no_digid
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
+import java.time.DayOfWeek
+import java.time.format.TextStyle
+import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -24,6 +28,7 @@ import nl.rijksoverheid.ctr.holder.ui.create_qr.bind
 import nl.rijksoverheid.ctr.holder.ui.create_qr.setEnabled
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
+import nl.rijksoverheid.ctr.shared.ext.locale
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -45,6 +50,22 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
     private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+
+    companion object {
+        fun openDaysString(context: Context, contactInformation: AppConfig.ContactInformation): String {
+            val startDay = contactInformation.startDay
+            val endDay = contactInformation.endDay
+
+            if (startDay == 1 && endDay == 7) {
+                return context.getString(R.string.holder_contactCoronaCheckHelpdesk_message_every_day)
+            }
+
+            val startDayOfWeek = DayOfWeek.of(contactInformation.startDay).getDisplayName(TextStyle.FULL, context.locale())
+            val endDayOfWeek = DayOfWeek.of(contactInformation.endDay).getDisplayName(TextStyle.FULL, context.locale())
+
+            return context.getString(R.string.holder_contactCoronaCheckHelpdesk_message_until, startDayOfWeek, endDayOfWeek)
+        }
+    }
 
     override fun onButtonClickWithRetryAction() {
         loginWithDigiD()
@@ -112,6 +133,7 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
                         descriptionData = DescriptionData(
                             htmlTextString = getString(
                                 R.string.holder_contactCoronaCheckHelpdesk_message,
+                                openDaysString(requireContext(), contactInformation),
                                 contactInformation.startHour,
                                 contactInformation.endHour,
                                 contactInformation.phoneNumber,
