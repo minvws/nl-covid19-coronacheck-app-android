@@ -12,6 +12,7 @@
     <dimen name="menu_list_item_spacing">1dp</dimen>
     <dimen name="onboarding_item_image_height">216dp</dimen>
     <dimen name="horizontal_padding">16dp</dimen>
+    <dimen name="about_this_app_horizontal_margin">0dp</dimen>
     <dimen name="divider_padding">0dp</dimen>
     <dimen name="button_horizontal_margin">8dp</dimen>
     <item name="wrap_content" format="integer" type="dimen">-2</item>

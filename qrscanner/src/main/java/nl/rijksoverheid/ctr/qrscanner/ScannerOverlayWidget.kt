@@ -41,8 +41,14 @@ class ScannerOverlayWidget @JvmOverloads constructor(
 
         // Determine center
         val centerOfWindow = Point(w / 2, h / 2)
-        // Offset center by 1/8th of screen height
-        centerOfWindow.offset(0, -h / 8)
+        // Offset center by 1/8th of screen height unless table landscape
+        val isTabletLandscape = w > h && w > 2000
+        val dy = if (isTabletLandscape) {
+            -h / 14
+        } else {
+            -h / 8
+        }
+        centerOfWindow.offset(0, dy)
 
         // Calculate width of cutout based on width or height depending on orientation
         val rectW = if (w < h) {
@@ -50,6 +56,7 @@ class ScannerOverlayWidget @JvmOverloads constructor(
         } else {
             h - (2 * overlayMargin)
         }
+
         // Calculate corner coordinates
         val left = centerOfWindow.x - rectW / 2
         val top = centerOfWindow.y - rectW / 2
