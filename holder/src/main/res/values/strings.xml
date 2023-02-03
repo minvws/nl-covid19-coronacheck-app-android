@@ -790,7 +790,7 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_checkForBSN_buttonTitle_doesNotHaveBSN">Nee, ik heb geen BSN</string>
   <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow">Krijg je bewijs via de GGD</string>
   <string name="holder_contactCoronaCheckHelpdesk_title">Vraag je coronabewijs aan via de helpdesk</string>
-  <string name="holder_contactCoronaCheckHelpdesk_message" formatted="false"><![CDATA[Vraag je bewijs aan bij de CoronaCheck helpdesk. Die kun je elke dag tussen %s en %s uur bellen op: <a href=\"tel:%s\">%s</a> (gratis).<br/><br/>Of als je vanuit het buitenland belt: <a href=\"tel:%s\">%s</a>. Kies in het keuzemenu voor “een bewijs aanvragen”.<br/><br/>Geef het volgende door:<ul><li>je burgerservicenummer (BSN)</li><li>je postcode</li></ul><br/><br/>Je bewijs met QR-code wordt per post opgestuurd. Dit kan maximaal 7 werkdagen duren.]]></string>
+  <string name="holder_contactCoronaCheckHelpdesk_message" formatted="false"><![CDATA[Vraag je bewijs aan bij de CoronaCheck helpdesk. Die kun je %s tussen %s en %s uur bellen op: <a href=\"tel:%s\">%s</a> (gratis).<br/><br/>Of als je vanuit het buitenland belt: <a href=\"tel:%s\">%s</a>. Kies in het keuzemenu voor “een bewijs aanvragen”.<br/><br/>Geef het volgende door:<ul><li>je burgerservicenummer (BSN)</li><li>je postcode</li></ul><br/><br/>Je bewijs met QR-code wordt per post opgestuurd. Dit kan maximaal 7 werkdagen duren.]]></string>
   <string name="holder_contactProviderHelpdesk_vaccinationFlow_title">Vraag je coronabewijs aan bij je zorgverlener</string>
   <string name="holder_contactProviderHelpdesk_message"><![CDATA[Vraag je bewijs aan bij de locatie waar je %s bent.<br/><br/><ul><li>Was dit bij de GGD? Bel de GGD op <a href=\"tel:0888-5090\">0800 - 5090</a> om je bewijs aan te vragen. </li><li>Was dit ergens anders? Bijvoorbeeld bij je huisarts of een andere zorgverlener? Neem direct contact op met hen.</li></ul><br/><br/>Je kunt je coronabewijs aanvragen op papier of als pdf-bestand.]]></string>
   <string name="holder_contactProviderHelpdesk_message_ggdPortalEnabled">Neem contact op met de zorgverlener waar je bent gevaccineerd. Hier kun je jouw coronabewijs aanvragen op papier of als pdf-bestand.</string>
@@ -912,4 +912,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="appstatus_launchError_title">Er gaat iets mis</string>
   <string name="appstatus_launchError_body" formatted="false"><![CDATA[Op dit moment kan de app niet gestart worden. Bel voor meer informatie de CoronaCheck helpdesk op <a href=\"tel:%s\">%s</a> en geef de foutcode hieronder door.<br /><br /><b>Foutcode:</b><br /> %s]]></string>
   <string name="holder_dcc_test_identifier">Uniek certificaatnummer:</string>
+  <string name="holder_contactCoronaCheckHelpdesk_message_every_day">elke dag</string>
+  <string name="holder_contactCoronaCheckHelpdesk_message_until" formatted="false">%s t/m %s</string>
 </resources>

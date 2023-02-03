@@ -31,7 +31,7 @@ class NoDigidScreenDataUtilImplTest : AutoCloseKoinTest() {
                 phoneNumberAbroad = "+3112345678",
                 startDay = 1,
                 startHour = "12:00",
-                endDay = 3,
+                endDay = 7,
                 endHour = "18:00"
             )
         }
@@ -79,6 +79,7 @@ class NoDigidScreenDataUtilImplTest : AutoCloseKoinTest() {
         assertEquals(
             applicationContext.getString(
                 R.string.holder_contactCoronaCheckHelpdesk_message,
+                "every day",
                 "12:00",
                 "18:00",
                 "757961",

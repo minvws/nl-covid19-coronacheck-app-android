@@ -37,6 +37,7 @@ class NoDigidScreenDataUtilImpl(
     val description = getStringArgs(
         R.string.holder_contactCoronaCheckHelpdesk_message,
         arrayOf(
+            PapFragment.openDaysString(context, contactInformation),
             contactInformation.startHour,
             contactInformation.endHour,
             contactInformation.phoneNumber,

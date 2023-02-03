@@ -789,7 +789,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_checkForBSN_buttonTitle_doesNotHaveBSN">No, I don’t have a BSN</string>
   <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow">Get your certificate from the GGD</string>
   <string name="holder_contactCoronaCheckHelpdesk_title">Request your certificate via the helpdesk</string>
-  <string name="holder_contactCoronaCheckHelpdesk_message" formatted="false"><![CDATA[Request your certificate at the CoronaCheck helpdesk. You can call them every day between %s and %s at: <a href=\"tel:%s\">%s</a> (free).<br/><br/>Or if you’re calling from abroad: <a href=\"tel:%s\">%s</a>. In the menu you can choose “request a certificate”.<br/><br/>Please provide the following:<ul><li>your citizen service number (BSN)</li><li>your zipcode</li></ul><br/><br/>Your certificate with QR code will be sent by post. This can take up to 7 working days.]]></string>
+  <string name="holder_contactCoronaCheckHelpdesk_message" formatted="false"><![CDATA[Request your certificate at the CoronaCheck helpdesk. You can call them %s between %s and %s at: <a href=\"tel:%s\">%s</a> (free).<br/><br/>Or if you’re calling from abroad: <a href=\"tel:%s\">%s</a>. In the menu you can choose “request a certificate”.<br/><br/>Please provide the following:<ul><li>your citizen service number (BSN)</li><li>your zipcode</li></ul><br/><br/>Your certificate with QR code will be sent by post. This can take up to 7 working days.]]></string>
   <string name="holder_contactProviderHelpdesk_vaccinationFlow_title">Request your certificate from your healthcare provider</string>
   <string name="holder_contactProviderHelpdesk_message"><![CDATA[Request your certificate at the location where you were %s.<br/><br/><ul><li>Was this at the GGD? Call the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a> to request your certificate. </li><li>Was this somewhere else? For example with your GP or another healthcare provider? Contact them directly.</li></ul><br/><br/>You can request your certificate on paper or as a PDF file.]]></string>
   <string name="holder_contactProviderHelpdesk_message_ggdPortalEnabled">Please contact the care provider who vaccinated you. Here you can request your certificate on paper or as a PDF file.</string>
@@ -911,4 +911,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="appstatus_launchError_title">Something went wrong</string>
   <string name="appstatus_launchError_body" formatted="false"><![CDATA[We can’t launch the app right now. For more information, contact the CoronaCheck helpdesk via <a href=\"tel:%s\">%s</a> and pass on the error code below.<br /><br /><b>Error code:</b><br /> %s]]></string>
   <string name="holder_dcc_test_identifier">Unique certificate identifier:</string>
+  <string name="holder_contactCoronaCheckHelpdesk_message_every_day">every day</string>
+  <string name="holder_contactCoronaCheckHelpdesk_message_until" formatted="false">%s until %s</string>
 </resources>
