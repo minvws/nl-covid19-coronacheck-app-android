@@ -10,27 +10,27 @@ package nl.rijksoverheid.ctr.holder.end2end
 import androidx.test.filters.SdkSuppress
 import java.time.LocalDate
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addNegativeTestCertificateFromOtherLocation
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRetrievedCertificateToApp
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.retrieveCertificateWithToken
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.retrieveCertificateWithTokenAndVerificationCode
+import nl.rijksoverheid.ctr.holder.end2end.actions.Overview.viewQR
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertInternationalEventOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertQrButtonIsEnabled
+import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertInternationalQRDetails
+import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertNoPreviousQR
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalDetails
+import nl.rijksoverheid.ctr.holder.end2end.interaction.assertContains
+import nl.rijksoverheid.ctr.holder.end2end.interaction.assertDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.interaction.assertNotContains
+import nl.rijksoverheid.ctr.holder.end2end.interaction.assertNotExist
+import nl.rijksoverheid.ctr.holder.end2end.interaction.clickOn
+import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
+import nl.rijksoverheid.ctr.holder.end2end.interaction.writeTo
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent.TestType
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromOtherLocation
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateWithToken
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateWithTokenAndVerificationCode
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertContains
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertDisplayed
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertNotContains
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.assertNotExist
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.clickOn
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.waitForText
-import nl.rijksoverheid.ctr.holder.end2end.utils.Elements.writeTo
 import nl.rijksoverheid.ctr.holder.end2end.utils.RunFirebaseTestOnDemand
 import org.junit.Test
 
@@ -42,10 +42,18 @@ class TokenTest : BaseTest() {
 
     @Test
     fun retrieveTokenWithVerificationCode_assertOverviewAndQRDetails() {
-        val token = NegativeToken(eventDate = today, testType = TestType.Pcr, couplingCode = "ZZZ-ZT66URU6TY2J96-32", verificationCode = "123456")
+        val token = NegativeToken(
+            eventDate = today,
+            testType = TestType.Pcr,
+            couplingCode = "ZZZ-ZT66URU6TY2J96-32",
+            verificationCode = "123456"
+        )
 
         addNegativeTestCertificateFromOtherLocation()
-        retrieveCertificateWithTokenAndVerificationCode(token.couplingCode, token.verificationCode!!)
+        retrieveCertificateWithTokenAndVerificationCode(
+            token.couplingCode,
+            token.verificationCode!!
+        )
         assertRetrievalDetails(person, token)
         addRetrievedCertificateToApp()
 
@@ -59,7 +67,11 @@ class TokenTest : BaseTest() {
 
     @Test
     fun retrieveTokenWithoutVerificationCode_assertOverviewAndQRDetails() {
-        val token = NegativeToken(eventDate = today, testType = TestType.Pcr, couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2")
+        val token = NegativeToken(
+            eventDate = today,
+            testType = TestType.Pcr,
+            couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2"
+        )
 
         addNegativeTestCertificateFromOtherLocation()
         retrieveCertificateWithToken(token.couplingCode)
@@ -76,54 +88,49 @@ class TokenTest : BaseTest() {
 
     @Test
     fun retrieveTokens_verifyErrors() {
-        val token = NegativeToken(eventDate = today, testType = TestType.Pcr, couplingCode = "ZZZ-ZT66URU6TY2J96-32", verificationCode = "123456")
+        val token = NegativeToken(
+            eventDate = today,
+            testType = TestType.Pcr,
+            couplingCode = "ZZZ-ZT66URU6TY2J96-32",
+            verificationCode = "123456"
+        )
 
         addNegativeTestCertificateFromOtherLocation()
-
         // Assert screen
         assertDisplayed("Testuitslag ophalen")
         assertNotExist("Deze code is niet geldig.")
-
         // Assert info sheet
         assertDisplayed("Heb je geen ophaalcode?")
         clickOn("Heb je geen ophaalcode?")
         assertContains("Je krijgt van de testlocatie een ophaalcode met cijfers en letters.")
         assertContains("Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met je testlocatie.")
         clickOn(R.id.close)
-
         // No retrieval code
         writeTo(R.id.unique_code_text, "")
         clickOn("Haal testuitslag op")
         assertDisplayed("Graag eerst een ophaalcode invullen")
-
         // Incorrect retrieval code
         writeTo(R.id.unique_code_text, "incorrect")
         clickOn("Haal testuitslag op")
         assertContains("Deze code is niet geldig.")
-
         // Correct retrieval code
         writeTo(R.id.unique_code_text, token.couplingCode)
         clickOn("Haal testuitslag op")
         assertNotContains("Deze code is niet geldig.")
-        waitForText("Verificatiecode")
-        assertDisplayed("Je krijgt een code via sms of e-mail")
-
+        waitUntilTextIsShown("Je krijgt een code via sms of e-mail")
         // No verification code
         writeTo(R.id.verification_code_text, "")
         clickOn("Haal testuitslag op")
-        waitForText("Graag eerst een verificatiecode invullen")
-
+        waitUntilTextIsShown("Graag eerst een verificatiecode invullen")
         // Incorrect verification code
         writeTo(R.id.verification_code_text, "incorrect")
         clickOn("Haal testuitslag op")
-        waitForText("Geen geldige combinatie. Vul de 6-cijferige verificatiecode in.")
-
+        waitUntilTextIsShown("Geen geldige combinatie. Vul de 6-cijferige verificatiecode in.")
         // Assert info dialog
         clickOn("Geen verificatiecode gekregen?")
         assertDisplayed("Geen verificatiecode gekregen?")
         assertDisplayed("Je krijgt de verificatiecode via een sms of e-mail. Niks gekregen? Klik hieronder op ‘stuur opnieuw’ voor een nieuwe code.")
         clickOn("Sluiten")
-
         // Correct verification code
         writeTo(R.id.verification_code_text, token.verificationCode!!)
         clickOn("Haal testuitslag op")

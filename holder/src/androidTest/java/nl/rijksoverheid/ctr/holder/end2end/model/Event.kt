@@ -30,6 +30,7 @@ abstract class Event(
     }
 
     companion object {
+
         const val minVws = "Ministerie van VWS / Ministry of Health, Welfare and Sport"
     }
 }
@@ -49,6 +50,7 @@ data class VaccinationEvent(
     validUntil = validUntil,
     issuer = issuer
 ) {
+
     enum class VaccineType(val value: String, val type: String, val manufacturer: String) {
         Pfizer("Comirnaty (Pfizer)", "SARS-CoV-2 mRNA vaccine", "Biontech Manufacturing GmbH"),
         Moderna("Spikevax (Moderna)", "SARS-CoV-2 mRNA vaccine", "Moderna Biotech Spain S.L."),
@@ -75,14 +77,17 @@ abstract class TestEvent(
     validUntil = validUntil,
     issuer = issuer
 ) {
-    enum class TestType(val value: String) {
-        Pcr("PCR (NAAT)"),
+
+    enum class TestType(val value: String, val testName: String, val testManufacturer: String) {
+        Pcr("PCR (NAAT)", "PCR Name", "PCR Manufacturer")
     }
 
     enum class TestLocation(val realName: String, val detailsName: String) {
         GgdXl("GGD XL Amsterdam", "Facility approved by the State of The Netherlands"),
         YellowBanana("Yellow Banana Test Center", "Facility approved by the State of The Netherlands")
     }
+
+    companion object
 }
 
 data class PositiveTest(
@@ -93,8 +98,8 @@ data class PositiveTest(
     override val validUntil: LocalDate? = null,
     override val issuer: String = minVws,
     override val testLocation: TestLocation = TestLocation.GgdXl,
-    override val testName: String = testType.value,
-    override val testProducer: String = testType.value
+    override val testName: String = testType.testName,
+    override val testProducer: String = testType.testManufacturer
 ) : TestEvent(
     type = Type.PositiveTest,
     eventDate = eventDate,
@@ -116,8 +121,8 @@ open class NegativeTest(
     override val validUntil: LocalDate? = null,
     override val issuer: String = minVws,
     override val testLocation: TestLocation = TestLocation.GgdXl,
-    override val testName: String = testType.value,
-    override val testProducer: String = testType.value
+    override val testName: String = testType.testName,
+    override val testProducer: String = testType.testManufacturer
 ) : TestEvent(
     type = Type.NegativeTest,
     eventDate = eventDate,

@@ -4,9 +4,7 @@
  *
  * SPDX-License-Identifier: EUPL-1.2
  */
-
 // Based on https://github.com/AdevintaSpain/Barista/issues/324#issuecomment-692019057
-
 package nl.rijksoverheid.ctr.holder.end2end.utils
 
 import android.content.Context
@@ -46,10 +44,8 @@ class DateTimeUtils(private val device: UiDevice) {
 
     private fun openDateSettings() {
         device.pressHome()
-
         val launcherPackage = device.launcherPackageName!!
         device.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), 5_000)
-
         val context = ApplicationProvider.getApplicationContext<Context>()
         val intent = Intent(Settings.ACTION_DATE_SETTINGS).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -85,7 +81,6 @@ class DateTimeUtils(private val device: UiDevice) {
     private fun getCurrentDeviceDate(): LocalDate {
         val yearHeader = findObjectByResourceName(datePickerHeaderYearResource)
         val dateHeader = findObjectByResourceName(datePickerHeaderDateResource)
-
         val year = yearHeader.text
         val dateWithoutYear = dateHeader.text.lowercase()
         val dateTimeFormatter = DateTimeFormatter.ofPattern("E d MMM yyyy").withLocale(java.util.Locale("nl", "NL"))
@@ -136,6 +131,7 @@ class DateTimeUtils(private val device: UiDevice) {
     private val textViewClassName = TextView::class.java.canonicalName!!
 
     companion object {
+
         private const val dateSwitchLabel = "Tijd automatisch instellen"
         private const val dateLabel = "Datum"
         private const val datePickerHeaderYearResource = "android:id/date_picker_header_year"

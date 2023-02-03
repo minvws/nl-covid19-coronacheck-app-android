@@ -7,8 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.end2end
 
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.logVersions
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertOverview
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertOverview
 import org.junit.Test
 
 class SmokeTest : BaseTest() {

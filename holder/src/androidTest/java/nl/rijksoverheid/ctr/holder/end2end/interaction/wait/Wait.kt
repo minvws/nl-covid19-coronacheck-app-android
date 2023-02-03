@@ -4,10 +4,8 @@
  *
  * SPDX-License-Identifier: EUPL-1.2
  */
-
 // Based on https://github.com/AzimoLabs/ConditionWatcher
-
-package nl.rijksoverheid.ctr.holder.end2end.wait
+package nl.rijksoverheid.ctr.holder.end2end.interaction.wait
 
 import timber.log.Timber
 
@@ -20,7 +18,7 @@ object Wait {
     }
 
     @Throws
-    fun until(condition: Condition, timeoutLimit: Long = 5 * 1_000, watchInterval: Long = 200) {
+    fun until(condition: Condition, timeoutLimit: Long, watchInterval: Long = 200) {
         var status = State.ConditionNotMet
         var elapsedTime: Long = 0
         do {

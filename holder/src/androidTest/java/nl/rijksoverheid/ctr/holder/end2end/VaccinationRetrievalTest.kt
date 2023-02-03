@@ -8,24 +8,24 @@
 package nl.rijksoverheid.ctr.holder.end2end
 
 import androidx.test.filters.SdkSuppress
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRetrievedCertificateToApp
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addVaccinationCertificate
+import nl.rijksoverheid.ctr.holder.end2end.actions.Overview.viewQR
+import nl.rijksoverheid.ctr.holder.end2end.actions.QR.viewPreviousQR
+import nl.rijksoverheid.ctr.holder.end2end.actions.retrieveCertificateFromServer
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertInternationalEventOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertQrButtonIsEnabled
+import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertInternationalQRDetails
+import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertNoPreviousQR
+import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisHidden
+import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisNotHidden
+import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalDetails
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateFromServer
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewPreviousQR
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalQRDetails
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisHidden
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisNotHidden
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisShown
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalDetails
 import org.junit.Test
 
 @SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
@@ -38,7 +38,7 @@ class VaccinationRetrievalTest : BaseTest() {
         val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
 
         addVaccinationCertificate()
-        retrieveCertificateFromServer(person.bsn)
+        device.retrieveCertificateFromServer(person.bsn)
         assertRetrievalDetails(person, vac2, position = 0)
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
@@ -63,7 +63,7 @@ class VaccinationRetrievalTest : BaseTest() {
         val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Moderna)
 
         addVaccinationCertificate()
-        retrieveCertificateFromServer(person.bsn)
+        device.retrieveCertificateFromServer(person.bsn)
         assertRetrievalDetails(person, vac2, position = 0)
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
@@ -88,7 +88,7 @@ class VaccinationRetrievalTest : BaseTest() {
         val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Janssen)
 
         addVaccinationCertificate()
-        retrieveCertificateFromServer(person.bsn)
+        device.retrieveCertificateFromServer(person.bsn)
         assertRetrievalDetails(person, vac2, position = 0)
         assertRetrievalDetails(person, vac1, position = 1)
         addRetrievedCertificateToApp()
