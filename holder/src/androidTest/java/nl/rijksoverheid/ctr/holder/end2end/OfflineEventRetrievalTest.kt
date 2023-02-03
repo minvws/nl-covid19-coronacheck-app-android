@@ -8,9 +8,13 @@
 package nl.rijksoverheid.ctr.holder.end2end
 
 import androidx.test.filters.SdkSuppress
+import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
+import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
+import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromOtherLocation
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
+import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateWithToken
 import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.setAirplaneMode
 import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertSomethingWentWrong
 import org.junit.After
@@ -46,6 +50,15 @@ class OfflineEventRetrievalTest : BaseTest() {
     @Test
     fun givenDeviceIsOffline_whenNegativeTestIsRetrieved_errorIsDisplayed() {
         addNegativeTestCertificateFromGGD()
+        assertSomethingWentWrong()
+    }
+
+    @Test
+    fun givenDeviceIsOffline_whenTokenIsRetrieved_errorIsDisplayed() {
+        val token = NegativeToken(eventDate = today, testType = TestEvent.TestType.Pcr, couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2")
+
+        addNegativeTestCertificateFromOtherLocation()
+        retrieveCertificateWithToken(token.couplingCode)
         assertSomethingWentWrong()
     }
 }
