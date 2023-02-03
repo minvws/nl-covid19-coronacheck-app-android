@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.holder.no_digid
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -52,6 +53,7 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
     companion object {
+        @SuppressLint("StringFormatInvalid")
         fun openDaysString(context: Context, contactInformation: AppConfig.ContactInformation): String {
             val startDay = contactInformation.startDay
             val endDay = contactInformation.endDay
@@ -84,6 +86,7 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
         (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
     }
 
+    @SuppressLint("StringFormatInvalid")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
