@@ -5,9 +5,10 @@
  * SPDX-License-Identifier: EUPL-1.2
  */
 
-package nl.rijksoverheid.ctr.holder.end2end.wait
+package nl.rijksoverheid.ctr.holder.end2end.interaction.wait
 
 abstract class Condition {
+
     abstract val description: String
     abstract fun checkCondition(): Boolean?
 }

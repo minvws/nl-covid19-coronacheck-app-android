@@ -8,6 +8,21 @@
 package nl.rijksoverheid.ctr.holder.end2end
 
 import androidx.test.filters.SdkSuppress
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addNegativeTestCertificateFromGGD
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addNegativeTestCertificateFromOtherLocation
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRecoveryCertificate
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRetrievedCertificateToApp
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addVaccinationCertificate
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.retrieveCertificateWithToken
+import nl.rijksoverheid.ctr.holder.end2end.actions.Overview.viewQR
+import nl.rijksoverheid.ctr.holder.end2end.actions.retrieveCertificateFromServer
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertInternationalEventOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertInternationalEventWillBecomeValid
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertNotYetValidInternationalEventOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertQrButtonIsDisabled
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertQrButtonIsEnabled
+import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertNoPreviousQR
+import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
@@ -17,21 +32,6 @@ import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent.TestType
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromOtherLocation
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRetrievedCertificateToApp
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateFromServer
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateWithToken
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.viewQR
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventOnOverview
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertInternationalEventWillBecomeValid
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNoPreviousQR
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertNotYetValidInternationalEventOnOverview
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQRisShown
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsDisabled
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
 import org.junit.After
 import org.junit.Test
@@ -45,7 +45,6 @@ class PastEventQRCodeTest : BaseTest() {
     }
 
     // region Vaccinations
-
     @Test
     fun whenDeviceDateIsBeforeEvents_vaccinationCertificatesAreNotYetValid() {
         val person = Person(bsn = "999990020")
@@ -54,7 +53,7 @@ class PastEventQRCodeTest : BaseTest() {
         val deviceDate = today.offsetDays(-80)
 
         addVaccinationCertificate()
-        retrieveCertificateFromServer(person.bsn)
+        device.retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
@@ -74,7 +73,7 @@ class PastEventQRCodeTest : BaseTest() {
         val deviceDate = today.offsetDays(-35)
 
         addVaccinationCertificate()
-        retrieveCertificateFromServer(person.bsn)
+        device.retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(deviceDate)
@@ -91,14 +90,18 @@ class PastEventQRCodeTest : BaseTest() {
     }
 
     // endregion
-
     @Test
     fun whenDeviceDateIsBeforeEvent_recoveryCertificateIsNotYetValid() {
         val person = Person(bsn = "999993033")
-        val pos = PositiveTest(eventDate = today.offsetDays(-30), testType = TestType.Pcr, validFrom = today.offsetDays(-19), validUntil = today.offsetDays(150))
+        val pos = PositiveTest(
+            eventDate = today.offsetDays(-30),
+            testType = TestType.Pcr,
+            validFrom = today.offsetDays(-19),
+            validUntil = today.offsetDays(150)
+        )
 
         addRecoveryCertificate()
-        retrieveCertificateFromServer(person.bsn)
+        device.retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(-20))
@@ -114,7 +117,7 @@ class PastEventQRCodeTest : BaseTest() {
         val neg = NegativeTest(eventDate = today, validFrom = today, testType = TestType.Pcr)
 
         addNegativeTestCertificateFromGGD()
-        retrieveCertificateFromServer(person.bsn)
+        device.retrieveCertificateFromServer(person.bsn)
         addRetrievedCertificateToApp()
 
         DateTimeUtils(device).setDate(today.offsetDays(-2))
@@ -126,7 +129,12 @@ class PastEventQRCodeTest : BaseTest() {
 
     @Test
     fun givenDeviceDateBeforeEvent_negativeTokenCertificateIsNotYetValid() {
-        val token = NegativeToken(eventDate = today, validFrom = today, testType = TestType.Pcr, couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2")
+        val token = NegativeToken(
+            eventDate = today,
+            validFrom = today,
+            testType = TestType.Pcr,
+            couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2"
+        )
 
         addNegativeTestCertificateFromOtherLocation()
         retrieveCertificateWithToken(token.couplingCode)

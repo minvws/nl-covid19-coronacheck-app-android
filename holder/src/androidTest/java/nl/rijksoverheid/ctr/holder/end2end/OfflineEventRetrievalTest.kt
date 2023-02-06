@@ -8,15 +8,15 @@
 package nl.rijksoverheid.ctr.holder.end2end
 
 import androidx.test.filters.SdkSuppress
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addNegativeTestCertificateFromGGD
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addNegativeTestCertificateFromOtherLocation
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRecoveryCertificate
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addVaccinationCertificate
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.retrieveCertificateWithToken
+import nl.rijksoverheid.ctr.holder.end2end.actions.setAirplaneMode
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertSomethingWentWrong
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromOtherLocation
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.retrieveCertificateWithToken
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.setAirplaneMode
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertSomethingWentWrong
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -26,13 +26,13 @@ class OfflineEventRetrievalTest : BaseTest() {
 
     @Before
     fun goOffline() {
-        setAirplaneMode(true)
+        instrumentation.setAirplaneMode(true)
         relaunchApp()
     }
 
     @After
     fun goOnline() {
-        setAirplaneMode(false)
+        instrumentation.setAirplaneMode(false)
     }
 
     @Test
