@@ -16,6 +16,7 @@ import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Paint
+import android.hardware.display.DisplayManager
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -195,7 +196,9 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         val previewView = binding.previewView
 
         // Get screen metrics used to setup camera for full screen resolution
-        val displaySize = getDisplaySize(previewView.context, requireActivity().windowManager.defaultDisplay)
+        val displayManager = requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        val primaryDisplay = displayManager.displays.firstOrNull() ?: return
+        val displaySize = getDisplaySize(previewView.context, primaryDisplay)
         val screenAspectRatio = aspectRatio(displaySize.width, displaySize.height)
 
         // Select camera to use, back facing camera by default
