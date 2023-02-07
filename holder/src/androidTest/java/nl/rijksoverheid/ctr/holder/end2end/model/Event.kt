@@ -30,7 +30,6 @@ abstract class Event(
     }
 
     companion object {
-
         const val minVws = "Ministerie van VWS / Ministry of Health, Welfare and Sport"
     }
 }
@@ -86,8 +85,6 @@ abstract class TestEvent(
         GgdXl("GGD XL Amsterdam", "Facility approved by the State of The Netherlands"),
         YellowBanana("Yellow Banana Test Center", "Facility approved by the State of The Netherlands")
     }
-
-    companion object
 }
 
 data class PositiveTest(
