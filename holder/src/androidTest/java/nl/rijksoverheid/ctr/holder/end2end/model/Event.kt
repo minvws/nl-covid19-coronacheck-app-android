@@ -78,7 +78,10 @@ abstract class TestEvent(
 
     enum class TestLocation(val realName: String, val detailsName: String) {
         GgdXl("GGD XL Amsterdam", "Facility approved by the State of The Netherlands"),
-        YellowBanana("Yellow Banana Test Center", "Facility approved by the State of The Netherlands")
+        YellowBanana(
+            "Yellow Banana Test Center",
+            "Facility approved by the State of The Netherlands"
+        )
     }
 }
 

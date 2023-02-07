@@ -57,8 +57,12 @@ class DateTimeUtils(private val device: UiDevice) {
     @Throws(UiObjectNotFoundException::class)
     private fun toggleAutomaticDateTime(enable: Boolean) {
         val dateTimeSettingList = UiScrollable(UiSelector().className(recyclerViewClassName))
-        val automaticDateTimeOption = dateTimeSettingList.getChildByText(UiSelector().className(linearLayoutClassName), dateSwitchLabel)
-        val automaticDateTimeSwitch = automaticDateTimeOption.getChild(UiSelector().className(switchClassName))
+        val automaticDateTimeOption = dateTimeSettingList.getChildByText(
+            UiSelector().className(linearLayoutClassName),
+            dateSwitchLabel
+        )
+        val automaticDateTimeSwitch =
+            automaticDateTimeOption.getChild(UiSelector().className(switchClassName))
 
         if (automaticDateTimeSwitch.isChecked == enable) return
         automaticDateTimeSwitch.click()
@@ -74,7 +78,8 @@ class DateTimeUtils(private val device: UiDevice) {
 
     private fun clickSetDateButton() {
         val dateTimeSettingList = UiScrollable(UiSelector().className(recyclerViewClassName))
-        val setDate = dateTimeSettingList.getChildByText(UiSelector().className(textViewClassName), dateLabel)
+        val setDate =
+            dateTimeSettingList.getChildByText(UiSelector().className(textViewClassName), dateLabel)
         setDate.click()
     }
 
@@ -83,14 +88,16 @@ class DateTimeUtils(private val device: UiDevice) {
         val dateHeader = findObjectByResourceName(datePickerHeaderDateResource)
         val year = yearHeader.text
         val dateWithoutYear = dateHeader.text.lowercase()
-        val dateTimeFormatter = DateTimeFormatter.ofPattern("E d MMM yyyy").withLocale(java.util.Locale("nl", "NL"))
+        val dateTimeFormatter =
+            DateTimeFormatter.ofPattern("E d MMM yyyy").withLocale(java.util.Locale("nl", "NL"))
         val date = LocalDate.parse("$dateWithoutYear $year", dateTimeFormatter)
         Timber.tag("end2end").d("Current device date is $date")
         return date
     }
 
     private fun selectTargetMonth(currentDate: LocalDate, targetDate: LocalDate) {
-        val monthDiff = ChronoUnit.MONTHS.between(currentDate.withDayOfMonth(1), targetDate.withDayOfMonth(1))
+        val monthDiff =
+            ChronoUnit.MONTHS.between(currentDate.withDayOfMonth(1), targetDate.withDayOfMonth(1))
         Timber.tag("end2end").d("Months to shift: $monthDiff")
         when {
             monthDiff == 0L -> {

@@ -26,7 +26,8 @@ fun UiDevice.checkForText(text: String, timeout: Long = 1): Boolean {
 fun UiDevice.enterBsn(bsn: String) {
     Timber.tag("end2end").d("Enter bsn '$bsn'")
     val browserWindow = UiScrollable(UiSelector().scrollable(true))
-    val element = browserWindow.getChild(UiSelector().className(android.widget.EditText::class.java))
+    val element =
+        browserWindow.getChild(UiSelector().className(android.widget.EditText::class.java))
     element!!.click()
     element.text = bsn
     this.pressEnter()
@@ -35,7 +36,8 @@ fun UiDevice.enterBsn(bsn: String) {
 
 fun UiDevice.enterTextInField(index: Int, text: String): UiObject {
     Timber.tag("end2end").d("Find EditText element with index '$index' and entering text")
-    val element = this.findObject(UiSelector().className(android.widget.EditText::class.java).instance(index))
+    val element =
+        this.findObject(UiSelector().className(android.widget.EditText::class.java).instance(index))
     TestCase.assertNotNull("EditText element with index '$index' could not be found", element)
     element!!.click()
     element.text = text
@@ -44,10 +46,12 @@ fun UiDevice.enterTextInField(index: Int, text: String): UiObject {
 
 fun UiDevice.tapButtonElement(label: String) {
     Timber.tag("end2end").d("Find Button element with label '$label' and clicking")
-    this.findObject(UiSelector().className(android.widget.Button::class.java).textStartsWith(label)).click()
+    this.findObject(UiSelector().className(android.widget.Button::class.java).textStartsWith(label))
+        .click()
 }
 
 fun UiDevice.tapOnElementWithContentDescription(contentDescription: String, timeout: Long = 3) {
-    Timber.tag("end2end").d("Find element with content description '$contentDescription' and clicking")
+    Timber.tag("end2end")
+        .d("Find element with content description '$contentDescription' and clicking")
     this.wait(Until.findObject(By.desc(contentDescription)), timeout * 1_000).click()
 }

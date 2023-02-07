@@ -18,9 +18,12 @@ import timber.log.Timber
 @Suppress("deprecation")
 fun Instrumentation.setAirplaneMode(enable: Boolean) {
     val expectedState = if (enable) 1 else 0
-    val currentState = Settings.Global.getInt(this.context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0)
-    Timber.tag("end2end").d("Airplane mode state is currently '$currentState', expected state is '$expectedState'")
+    val currentState =
+        Settings.Global.getInt(this.context.contentResolver, Settings.Global.AIRPLANE_MODE_ON, 0)
+    Timber.tag("end2end")
+        .d("Airplane mode state is currently '$currentState', expected state is '$expectedState'")
     if (expectedState == currentState) return
+
     val device = UiDevice.getInstance(this)
     device.openQuickSettings()
     device.tapOnElementWithContentDescription("Vliegtuigmodus")

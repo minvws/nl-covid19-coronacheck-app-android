@@ -28,7 +28,12 @@ import nl.rijksoverheid.ctr.holder.end2end.utils.recently
 
 object QR {
 
-    fun assertInternationalQRDetails(person: Person, event: Event, dose: String? = null, deviceDate: LocalDate = LocalDate.now()) {
+    fun assertInternationalQRDetails(
+        person: Person,
+        event: Event,
+        dose: String? = null,
+        deviceDate: LocalDate = LocalDate.now()
+    ) {
         if (event is VaccinationEvent) waitUntilTextIsShown("Dosis $dose")
         waitUntilTextIsShown("Details")
         tapButton("Details")
@@ -41,16 +46,33 @@ object QR {
                 labelValuePairExist("Ziekteverwekker / Disease targeted:", event.disease)
                 labelValuePairExist("Vaccin / Vaccine:", event.vaccine.value)
                 labelValuePairExist("Type vaccin / Vaccine type:", event.vaccine.type)
-                labelValuePairExist("Vaccinproducent / Vaccine manufacturer:", event.vaccine.manufacturer)
+                labelValuePairExist(
+                    "Vaccinproducent / Vaccine manufacturer:",
+                    event.vaccine.manufacturer
+                )
                 labelValuePairExist("Dosis / Number in series of doses:", split)
                 labelValuePairExist("Vaccinatiedatum / Vaccination date*:", event.eventDate.dutch())
                 val dateDiff = ChronoUnit.DAYS.between(event.eventDate, deviceDate)
-                labelValuePairExist("Dagen sinds vaccinatie / Days since vaccination:", "$dateDiff dagen")
-                labelValuePairExist("Gevaccineerd in / Vaccinated in:", event.country.internationalName)
+                labelValuePairExist(
+                    "Dagen sinds vaccinatie / Days since vaccination:",
+                    "$dateDiff dagen"
+                )
+                labelValuePairExist(
+                    "Gevaccineerd in / Vaccinated in:",
+                    event.country.internationalName
+                )
             }
             is PositiveTest -> {
-                labelValuePairExist("Ziekte waarvan hersteld / Disease recovered from:", event.disease)
-                event.validFrom?.let { labelValuePairExist("Geldig vanaf / Valid from*:", it.dutch()) }
+                labelValuePairExist(
+                    "Ziekte waarvan hersteld / Disease recovered from:",
+                    event.disease
+                )
+                event.validFrom?.let {
+                    labelValuePairExist(
+                        "Geldig vanaf / Valid from*:",
+                        it.dutch()
+                    )
+                }
                 event.validUntil?.let { labelValuePairExist("Geldig tot / Valid to*:", it.dutch()) }
                 labelValuePairExist("Testdatum / Test date*:", event.eventDate.dutch())
                 labelValuePairExist("Getest in / Tested in:", event.country.internationalName)
@@ -60,7 +82,10 @@ object QR {
                 labelValuePairExist("Type test / Test type:", event.testType.value)
                 labelValuePairExist("Testnaam / Test name:", event.testName)
                 labelValuePairExist("Testdatum / Test date:", event.eventDate.recently())
-                labelValuePairExist("Testuitslag / Test result:", "negatief (geen coronavirus vastgesteld) / negative (no coronavirus detected)")
+                labelValuePairExist(
+                    "Testuitslag / Test result:",
+                    "negatief (geen coronavirus vastgesteld) / negative (no coronavirus detected)"
+                )
                 labelValuePairExist("Testlocatie / Test location:", event.testLocation.detailsName)
                 labelValuePairExist("Getest in / Tested in:", event.country.internationalName)
             }

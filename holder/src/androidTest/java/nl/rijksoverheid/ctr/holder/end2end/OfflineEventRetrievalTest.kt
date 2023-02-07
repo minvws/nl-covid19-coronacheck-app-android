@@ -55,7 +55,11 @@ class OfflineEventRetrievalTest : BaseTest() {
 
     @Test
     fun givenDeviceIsOffline_whenTokenIsRetrieved_errorIsDisplayed() {
-        val token = NegativeToken(eventDate = today, testType = TestType.Pcr, couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2")
+        val token = NegativeToken(
+            eventDate = today,
+            testType = TestType.Pcr,
+            couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2"
+        )
 
         addNegativeTestCertificateFromOtherLocation()
         retrieveCertificateWithToken(token.couplingCode)

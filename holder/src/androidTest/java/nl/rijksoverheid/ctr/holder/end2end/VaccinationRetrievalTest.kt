@@ -59,8 +59,10 @@ class VaccinationRetrievalTest : BaseTest() {
     @Test
     fun retrieveVaccinationWith2Moderna_assertOverviewAndQRDetails() {
         val person = Person("999990159")
-        val vac1 = VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccineType.Moderna)
-        val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Moderna)
+        val vac1 =
+            VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccineType.Moderna)
+        val vac2 =
+            VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Moderna)
 
         addVaccinationCertificate()
         device.retrieveCertificateFromServer(person.bsn)
@@ -84,8 +86,10 @@ class VaccinationRetrievalTest : BaseTest() {
     @Test
     fun retrieveVaccinationWith2Janssen_assertOverviewAndQRDetails() {
         val person = Person("999990093")
-        val vac1 = VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccineType.Janssen)
-        val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Janssen)
+        val vac1 =
+            VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccineType.Janssen)
+        val vac2 =
+            VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Janssen)
 
         addVaccinationCertificate()
         device.retrieveCertificateFromServer(person.bsn)
