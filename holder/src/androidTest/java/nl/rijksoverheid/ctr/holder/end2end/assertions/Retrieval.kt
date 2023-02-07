@@ -7,12 +7,12 @@
 
 package nl.rijksoverheid.ctr.holder.end2end.assertions
 
-import nl.rijksoverheid.ctr.holder.end2end.interaction.assertContains
-import nl.rijksoverheid.ctr.holder.end2end.interaction.assertDisplayed
-import nl.rijksoverheid.ctr.holder.end2end.interaction.clickBack
-import nl.rijksoverheid.ctr.holder.end2end.interaction.labelValuePairExist
-import nl.rijksoverheid.ctr.holder.end2end.interaction.scrollTo
-import nl.rijksoverheid.ctr.holder.end2end.interaction.tapButton
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertContains
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickBack
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.labelValuePairExist
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.scrollTo
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest

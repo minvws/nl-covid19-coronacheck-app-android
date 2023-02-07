@@ -9,10 +9,10 @@ package nl.rijksoverheid.ctr.holder.end2end.assertions
 
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.actions.Overview.scrollToBottomOfOverview
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.buttonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.card
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.containsText
-import nl.rijksoverheid.ctr.holder.end2end.interaction.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilViewIsShown
 import nl.rijksoverheid.ctr.holder.end2end.model.Event

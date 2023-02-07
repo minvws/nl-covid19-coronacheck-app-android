@@ -20,13 +20,13 @@ import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertQrButtonIsE
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertInternationalQRDetails
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalDetails
-import nl.rijksoverheid.ctr.holder.end2end.interaction.assertContains
-import nl.rijksoverheid.ctr.holder.end2end.interaction.assertDisplayed
-import nl.rijksoverheid.ctr.holder.end2end.interaction.assertNotContains
-import nl.rijksoverheid.ctr.holder.end2end.interaction.assertNotExist
-import nl.rijksoverheid.ctr.holder.end2end.interaction.clickOn
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertContains
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertNotContains
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertNotExist
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickOn
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.writeTo
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
-import nl.rijksoverheid.ctr.holder.end2end.interaction.writeTo
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
@@ -96,41 +96,50 @@ class TokenTest : BaseTest() {
         )
 
         addNegativeTestCertificateFromOtherLocation()
+
         // Assert screen
         assertDisplayed("Testuitslag ophalen")
         assertNotExist("Deze code is niet geldig.")
+
         // Assert info sheet
         assertDisplayed("Heb je geen ophaalcode?")
         clickOn("Heb je geen ophaalcode?")
         assertContains("Je krijgt van de testlocatie een ophaalcode met cijfers en letters.")
         assertContains("Heb je geen code gekregen? Of ben je deze kwijtgeraakt? Neem dan contact op met je testlocatie.")
         clickOn(R.id.close)
+
         // No retrieval code
         writeTo(R.id.unique_code_text, "")
         clickOn("Haal testuitslag op")
         assertDisplayed("Graag eerst een ophaalcode invullen")
+
         // Incorrect retrieval code
         writeTo(R.id.unique_code_text, "incorrect")
         clickOn("Haal testuitslag op")
         assertContains("Deze code is niet geldig.")
+
         // Correct retrieval code
         writeTo(R.id.unique_code_text, token.couplingCode)
         clickOn("Haal testuitslag op")
         assertNotContains("Deze code is niet geldig.")
         waitUntilTextIsShown("Je krijgt een code via sms of e-mail")
+
         // No verification code
         writeTo(R.id.verification_code_text, "")
         clickOn("Haal testuitslag op")
         waitUntilTextIsShown("Graag eerst een verificatiecode invullen")
+
         // Incorrect verification code
         writeTo(R.id.verification_code_text, "incorrect")
         clickOn("Haal testuitslag op")
         waitUntilTextIsShown("Geen geldige combinatie. Vul de 6-cijferige verificatiecode in.")
+
         // Assert info dialog
         clickOn("Geen verificatiecode gekregen?")
         assertDisplayed("Geen verificatiecode gekregen?")
         assertDisplayed("Je krijgt de verificatiecode via een sms of e-mail. Niks gekregen? Klik hieronder op ‘stuur opnieuw’ voor een nieuwe code.")
         clickOn("Sluiten")
+
         // Correct verification code
         writeTo(R.id.verification_code_text, token.verificationCode!!)
         clickOn("Haal testuitslag op")
