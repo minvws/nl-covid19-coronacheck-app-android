@@ -99,14 +99,15 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
                 onQrScanned(it)
             })
 
-            binding.zebraContrainer.visibility = View.VISIBLE
+            binding.laserContainer.visibility = View.VISIBLE
         } else if (honeywellManager?.isHoneywellDevice() == true) {
             // Setup Honeywell scanner
             honeywellManager.setupHoneywellScanner(onDatawedgeResultListener = {
                 onQrScanned(it)
             })
 
-            binding.honeywellContrainer.visibility = View.VISIBLE
+            binding.laserContainer.visibility = View.VISIBLE
+            binding.laserExplanationFooter.text = getString(R.string.verifier_scanner_honeywell_footer)
         }
 
         // Set overlay to software accelerated only to fix transparency on certain devices
