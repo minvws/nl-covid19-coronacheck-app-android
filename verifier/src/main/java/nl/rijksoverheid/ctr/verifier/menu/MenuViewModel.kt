@@ -124,16 +124,24 @@ class MenuViewModelImpl(
         val actionHelpdesk = MenuFragmentDirections.actionHelpdesk(
             data = HelpdeskData(
                 contactTitle = context.getString(R.string.verifier_helpdesk_contact_title),
-                contactMessage = context.getString(
-                    R.string.verifier_helpdesk_contact_message,
-                    contactInformation.phoneNumber,
-                    contactInformation.phoneNumber,
-                    contactInformation.phoneNumberAbroad,
-                    contactInformation.phoneNumberAbroad,
-                    startDay,
-                    endDay,
-                    contactInformation.startHour,
-                    contactInformation.endHour
+                contactMessageLines = listOf(
+                    context.getString(
+                        R.string.verifier_helpdesk_contact_message_line1,
+                        contactInformation.phoneNumber,
+                        contactInformation.phoneNumber
+                    ),
+                    context.getString(
+                        R.string.verifier_helpdesk_contact_message_line2,
+                        contactInformation.phoneNumberAbroad,
+                        contactInformation.phoneNumberAbroad
+                    ),
+                    context.getString(
+                        R.string.verifier_helpdesk_contact_message_line3,
+                        startDay,
+                        endDay,
+                        contactInformation.startHour,
+                        contactInformation.endHour
+                    )
                 ),
                 supportTitle = context.getString(R.string.verifier_helpdesk_support_title),
                 supportMessage = context.getString(R.string.verifier_helpdesk_support_message),

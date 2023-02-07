@@ -9,7 +9,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/horizontal_padding">
+        android:paddingTop="16dp"
+        android:paddingBottom="64dp"
+        android:paddingHorizontal="@dimen/horizontal_padding">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/contactTitle"
@@ -23,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
-            android:id="@+id/contactMessage"
+            android:id="@+id/contactMessageLine1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -34,6 +36,28 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/contactTitle" />
 
+        <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
+            android:id="@+id/contactMessageLine2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:enableHtmlLinks="true"
+            app:htmlText="@string/holder_helpdesk_contact_message"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contactMessageLine1" />
+
+        <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
+            android:id="@+id/contactMessageLine3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:enableHtmlLinks="true"
+            app:htmlText="@string/holder_helpdesk_contact_message"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/contactMessageLine2" />
+
         <View
             android:id="@+id/separator"
             android:layout_width="match_parent"
@@ -42,7 +66,7 @@
             android:background="@color/grey_3"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/contactMessage" />
+            app:layout_constraintTop_toBottomOf="@id/contactMessageLine3" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/supportTitle"
@@ -103,10 +127,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceBody1"
-            android:layout_marginBottom="48dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/configurationTitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

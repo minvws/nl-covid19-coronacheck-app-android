@@ -32,16 +32,24 @@ class HelpdeskFragmentTest : AutoCloseKoinTest() {
             bundleOf(
                 "data" to HelpdeskData(
                     contactTitle = "Contact",
-                    contactMessage = context.getString(
-                        R.string.holder_helpdesk_contact_message,
-                        "0800-1421",
-                        "0800-1421",
-                        "+31707503720",
-                        "+31707503720",
-                        1,
-                        "08:00",
-                        5,
-                        "18:00"
+                    contactMessageLines = listOf(
+                        context.getString(
+                            R.string.holder_helpdesk_contact_message_line1,
+                            "0800-1421",
+                            "0800-1421"
+                        ),
+                        context.getString(
+                            R.string.holder_helpdesk_contact_message_line2,
+                            "+31707503720",
+                            "+31707503720"
+                        ),
+                        context.getString(
+                            R.string.holder_helpdesk_contact_message_line3,
+                            1,
+                            "08:00",
+                            5,
+                            "18:00"
+                        )
                     ),
                     supportTitle = "Ondersteuning",
                     supportMessage = "Wanneer je contact opneemt met de CoronaCheck helpdesk, kan er gevraagd worden om de volgende informatie:",
