@@ -24,7 +24,7 @@ import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalD
 import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
-import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent.VaccineType
+import nl.rijksoverheid.ctr.holder.end2end.model.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import org.junit.Test
 

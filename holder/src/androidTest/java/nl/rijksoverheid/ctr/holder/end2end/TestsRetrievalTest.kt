@@ -26,6 +26,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
 import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent.TestType
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
+import nl.rijksoverheid.ctr.holder.end2end.model.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import org.junit.Test
 
@@ -78,9 +79,9 @@ class TestsRetrievalTest : BaseTest() {
     fun retrievePositiveTestAndVaccination_assertEndScreen() {
         val person = Person(bsn = "999991772")
         val vac1 =
-            VaccinationEvent(today.offsetDays(-90), vaccine = VaccinationEvent.VaccineType.Pfizer)
+            VaccinationEvent(today.offsetDays(-90), vaccine = VaccineType.Pfizer)
         val vac2 =
-            VaccinationEvent(today.offsetDays(-120), vaccine = VaccinationEvent.VaccineType.Pfizer)
+            VaccinationEvent(today.offsetDays(-120), vaccine = VaccineType.Pfizer)
         val pos = PositiveTest(
             eventDate = today.offsetDays(-30),
             testType = TestType.Pcr,

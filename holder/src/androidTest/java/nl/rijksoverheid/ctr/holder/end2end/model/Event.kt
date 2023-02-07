@@ -48,13 +48,12 @@ data class VaccinationEvent(
     validFrom = validFrom,
     validUntil = validUntil,
     issuer = issuer
-) {
+)
 
-    enum class VaccineType(val value: String, val type: String, val manufacturer: String) {
-        Pfizer("Comirnaty (Pfizer)", "SARS-CoV-2 mRNA vaccine", "Biontech Manufacturing GmbH"),
-        Moderna("Spikevax (Moderna)", "SARS-CoV-2 mRNA vaccine", "Moderna Biotech Spain S.L."),
-        Janssen("Jcovden (Janssen)", "covid-19 vaccines", "Janssen-Cilag International")
-    }
+enum class VaccineType(val value: String, val type: String, val manufacturer: String) {
+    Pfizer("Comirnaty (Pfizer)", "SARS-CoV-2 mRNA vaccine", "Biontech Manufacturing GmbH"),
+    Moderna("Spikevax (Moderna)", "SARS-CoV-2 mRNA vaccine", "Moderna Biotech Spain S.L."),
+    Janssen("Jcovden (Janssen)", "covid-19 vaccines", "Janssen-Cilag International")
 }
 
 abstract class TestEvent(
