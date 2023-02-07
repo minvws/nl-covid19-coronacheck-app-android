@@ -10,13 +10,13 @@ package nl.rijksoverheid.ctr.holder.end2end.assertions
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.interaction.assertContains
 import nl.rijksoverheid.ctr.holder.end2end.interaction.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.interaction.assertNotDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.interaction.assertNotExist
 import nl.rijksoverheid.ctr.holder.end2end.interaction.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.interaction.labelValuePairExist
-import nl.rijksoverheid.ctr.holder.end2end.interaction.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest

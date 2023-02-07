@@ -8,10 +8,10 @@
 package nl.rijksoverheid.ctr.holder.end2end.actions
 
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.interaction.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.interaction.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.interaction.scrollTo
-import nl.rijksoverheid.ctr.holder.end2end.interaction.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 import nl.rijksoverheid.ctr.holder.end2end.interaction.writeTo
 

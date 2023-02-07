@@ -21,62 +21,64 @@ import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
 import timber.log.Timber
 
-fun tapButton(label: String, position: Int = 0) {
-    Timber.tag("end2end").d("Tapping button with label '$label'${if (position > 0) " on position $position" else ""}")
-    val viewInteraction = Espresso.onView(withIndex(ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(label)), position))
-    waitUntilViewIsShown(viewInteraction)
-    viewInteraction.perform(ViewActions.click())
-}
+object Espresso {
+    fun tapButton(label: String, position: Int = 0) {
+        Timber.tag("end2end").d("Tapping button with label '$label'${if (position > 0) " on position $position" else ""}")
+        val viewInteraction = Espresso.onView(withIndex(ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(label)), position))
+        waitUntilViewIsShown(viewInteraction)
+        viewInteraction.perform(ViewActions.click())
+    }
 
-// Based on: https://stackoverflow.com/a/41967652
-private fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?> {
-    return object : TypeSafeMatcher<View>() {
-        var currentIndex = 0
-        var viewObjHash = 0
+    // Based on: https://stackoverflow.com/a/41967652
+    private fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?> {
+        return object : TypeSafeMatcher<View>() {
+            var currentIndex = 0
+            var viewObjHash = 0
 
-        override fun describeTo(description: Description) {
-            description.appendText(String.format("with index: %d ", index))
-            matcher.describeTo(description)
-        }
-
-        override fun matchesSafely(view: View): Boolean {
-            if (matcher.matches(view) && currentIndex++ == index) {
-                viewObjHash = view.hashCode()
+            override fun describeTo(description: Description) {
+                description.appendText(String.format("with index: %d ", index))
+                matcher.describeTo(description)
             }
-            return view.hashCode() == viewObjHash
+
+            override fun matchesSafely(view: View): Boolean {
+                if (matcher.matches(view) && currentIndex++ == index) {
+                    viewObjHash = view.hashCode()
+                }
+                return view.hashCode() == viewObjHash
+            }
         }
     }
-}
 
-fun card(eventType: Event.Type): Matcher<View> {
-    val text = eventType.internationalName
-    Timber.tag("end2end").d("Getting card view with text '$text'")
-    return CoreMatchers.allOf(
-        ViewMatchers.withId(R.id.proof_1), ViewMatchers.hasDescendant(
-            CoreMatchers.allOf(
-                ViewMatchers.withId(R.id.title), ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(text))
+    fun card(eventType: Event.Type): Matcher<View> {
+        val text = eventType.internationalName
+        Timber.tag("end2end").d("Getting card view with text '$text'")
+        return CoreMatchers.allOf(
+            ViewMatchers.withId(R.id.proof_1), ViewMatchers.hasDescendant(
+                CoreMatchers.allOf(
+                    ViewMatchers.withId(R.id.title), ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(text))
+                )
             )
         )
-    )
-}
+    }
 
-fun Matcher<View>.containsText(text: String) {
-    Timber.tag("end2end").d("Contains text '$text' on a view")
-    val viewInteraction = Espresso.onView(CoreMatchers.allOf(ViewMatchers.isDescendantOfA(this), ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(text))))
-    waitUntilViewIsShown(viewInteraction)
-    viewInteraction.check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-}
+    fun Matcher<View>.containsText(text: String) {
+        Timber.tag("end2end").d("Contains text '$text' on a view")
+        val viewInteraction = Espresso.onView(CoreMatchers.allOf(ViewMatchers.isDescendantOfA(this), ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(text))))
+        waitUntilViewIsShown(viewInteraction)
+        viewInteraction.check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+    }
 
-fun Matcher<View>.buttonIsEnabled(@IdRes viewId: Int, enabled: Boolean = true) {
-    Timber.tag("end2end").d("Checking if button on a view is ${if (enabled) "enabled" else "disabled"}")
-    val viewInteraction = Espresso.onView(CoreMatchers.allOf(ViewMatchers.isDescendantOfA(this), ViewMatchers.withId(viewId)))
-    waitUntilButtonEnabled(viewInteraction, enabled)
-    viewInteraction.check(ViewAssertions.matches(if (enabled) ViewMatchers.isEnabled() else CoreMatchers.not(ViewMatchers.isEnabled())))
-}
+    fun Matcher<View>.buttonIsEnabled(@IdRes viewId: Int, enabled: Boolean = true) {
+        Timber.tag("end2end").d("Checking if button on a view is ${if (enabled) "enabled" else "disabled"}")
+        val viewInteraction = Espresso.onView(CoreMatchers.allOf(ViewMatchers.isDescendantOfA(this), ViewMatchers.withId(viewId)))
+        waitUntilButtonEnabled(viewInteraction, enabled)
+        viewInteraction.check(ViewAssertions.matches(if (enabled) ViewMatchers.isEnabled() else CoreMatchers.not(ViewMatchers.isEnabled())))
+    }
 
-fun Matcher<View>.tapButton(label: String) {
-    Timber.tag("end2end").d("Tapping button with label '$label' on a view")
-    val viewInteraction = Espresso.onView(CoreMatchers.allOf(ViewMatchers.isDescendantOfA(this), ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(label))))
-    waitUntilButtonEnabled(viewInteraction, true)
-    viewInteraction.perform(ViewActions.click())
+    fun Matcher<View>.tapButton(label: String) {
+        Timber.tag("end2end").d("Tapping button with label '$label' on a view")
+        val viewInteraction = Espresso.onView(CoreMatchers.allOf(ViewMatchers.isDescendantOfA(this), ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(label))))
+        waitUntilButtonEnabled(viewInteraction, true)
+        viewInteraction.perform(ViewActions.click())
+    }
 }
