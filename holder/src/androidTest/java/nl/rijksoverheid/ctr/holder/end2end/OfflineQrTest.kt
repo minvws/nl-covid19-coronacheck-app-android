@@ -24,7 +24,7 @@ import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
-import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import org.junit.After
 import org.junit.Test
 
@@ -90,7 +90,7 @@ class OfflineQrTest : BaseTest() {
     fun whenDeviceIsOffline_negativeTokenCertificateShowsQr() {
         val token = NegativeToken(
             eventDate = today,
-            testType = TestEvent.TestType.Pcr,
+            testType = TestType.Pcr,
             couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2"
         )
 

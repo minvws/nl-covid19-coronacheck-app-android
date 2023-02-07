@@ -24,7 +24,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
-import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent.TestType
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays

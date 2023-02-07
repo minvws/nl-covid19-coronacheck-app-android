@@ -21,7 +21,7 @@ import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalE
 import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
-import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
 import org.junit.After
@@ -67,7 +67,7 @@ class FutureEventRetrievalTest : BaseTest() {
     fun givenDeviceDateInFuture_whenNegativeTokenIsRetrieved_dataIsRetrieved() {
         val token = NegativeToken(
             eventDate = today,
-            testType = TestEvent.TestType.Pcr,
+            testType = TestType.Pcr,
             couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2"
         )
 

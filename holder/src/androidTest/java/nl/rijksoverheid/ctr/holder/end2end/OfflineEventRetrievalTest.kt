@@ -16,7 +16,7 @@ import nl.rijksoverheid.ctr.holder.end2end.actions.Add.retrieveCertificateWithTo
 import nl.rijksoverheid.ctr.holder.end2end.actions.setAirplaneMode
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertSomethingWentWrong
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
-import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -55,7 +55,7 @@ class OfflineEventRetrievalTest : BaseTest() {
 
     @Test
     fun givenDeviceIsOffline_whenTokenIsRetrieved_errorIsDisplayed() {
-        val token = NegativeToken(eventDate = today, testType = TestEvent.TestType.Pcr, couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2")
+        val token = NegativeToken(eventDate = today, testType = TestType.Pcr, couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2")
 
         addNegativeTestCertificateFromOtherLocation()
         retrieveCertificateWithToken(token.couplingCode)

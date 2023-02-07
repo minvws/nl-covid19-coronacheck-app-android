@@ -76,14 +76,14 @@ abstract class TestEvent(
     issuer = issuer
 ) {
 
-    enum class TestType(val value: String, val testName: String, val testManufacturer: String) {
-        Pcr("PCR (NAAT)", "PCR Name", "PCR Manufacturer")
-    }
-
     enum class TestLocation(val realName: String, val detailsName: String) {
         GgdXl("GGD XL Amsterdam", "Facility approved by the State of The Netherlands"),
         YellowBanana("Yellow Banana Test Center", "Facility approved by the State of The Netherlands")
     }
+}
+
+enum class TestType(val value: String, val testName: String, val testManufacturer: String) {
+    Pcr("PCR (NAAT)", "PCR Name", "PCR Manufacturer")
 }
 
 data class PositiveTest(

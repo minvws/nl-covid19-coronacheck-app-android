@@ -30,7 +30,7 @@ import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
-import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent.TestType
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import nl.rijksoverheid.ctr.holder.end2end.utils.RunFirebaseTestOnDemand
 import org.junit.Test
 
