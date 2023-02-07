@@ -14,7 +14,7 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -49,7 +49,7 @@ object Espresso {
         }
     }
 
-    fun card(eventType: Event.Type): Matcher<View> {
+    fun card(eventType: EventType): Matcher<View> {
         val text = eventType.internationalName
         Timber.tag("end2end").d("Getting card view with text '$text'")
         return CoreMatchers.allOf(

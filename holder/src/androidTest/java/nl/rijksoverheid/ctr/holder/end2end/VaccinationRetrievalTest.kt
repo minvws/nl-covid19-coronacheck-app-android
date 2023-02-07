@@ -21,7 +21,7 @@ import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisNotHidden
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalDetails
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent.VaccineType
@@ -45,9 +45,9 @@ class VaccinationRetrievalTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(Event.Type.Vaccination)
+        viewQR(EventType.Vaccination)
         assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/2")
         viewPreviousQR()
@@ -70,9 +70,9 @@ class VaccinationRetrievalTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(Event.Type.Vaccination)
+        viewQR(EventType.Vaccination)
         assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/2")
         viewPreviousQR()
@@ -95,9 +95,9 @@ class VaccinationRetrievalTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/1")
         assertInternationalEventOnOverview(vac1, dose = "1/1")
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(Event.Type.Vaccination)
+        viewQR(EventType.Vaccination)
         assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/1")
         viewPreviousQR()

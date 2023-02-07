@@ -20,7 +20,7 @@ import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertInternationalQRDe
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalDetails
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
@@ -47,9 +47,9 @@ class TestsRetrievalTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         assertInternationalEventOnOverview(pos)
-        assertQrButtonIsEnabled(Event.Type.PositiveTest)
+        assertQrButtonIsEnabled(EventType.PositiveTest)
 
-        viewQR(Event.Type.PositiveTest)
+        viewQR(EventType.PositiveTest)
         assertQRisShown()
         assertInternationalQRDetails(person, pos)
         assertNoPreviousQR()
@@ -66,9 +66,9 @@ class TestsRetrievalTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         assertInternationalEventOnOverview(neg)
-        assertQrButtonIsEnabled(Event.Type.NegativeTest)
+        assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(Event.Type.NegativeTest)
+        viewQR(EventType.NegativeTest)
         assertQRisShown()
         assertInternationalQRDetails(person, neg)
         assertNoPreviousQR()
@@ -97,7 +97,7 @@ class TestsRetrievalTest : BaseTest() {
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
         assertInternationalEventOnOverview(pos)
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
-        assertQrButtonIsEnabled(Event.Type.PositiveTest)
+        assertQrButtonIsEnabled(EventType.Vaccination)
+        assertQrButtonIsEnabled(EventType.PositiveTest)
     }
 }

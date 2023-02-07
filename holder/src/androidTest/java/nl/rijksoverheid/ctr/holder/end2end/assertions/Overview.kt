@@ -16,6 +16,7 @@ import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.containsText
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilViewIsShown
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
@@ -32,59 +33,59 @@ object Overview {
         assertDisplayed("Menu")
     }
 
-    fun assertQrButtonIsEnabled(eventType: Event.Type) {
+    fun assertQrButtonIsEnabled(eventType: EventType) {
         card(eventType).buttonIsEnabled(qrButton, true)
     }
 
-    fun assertQrButtonIsDisabled(eventType: Event.Type) {
+    fun assertQrButtonIsDisabled(eventType: EventType) {
         card(eventType).buttonIsEnabled(qrButton, false)
     }
 
     fun assertInternationalEventOnOverview(event: Event, dose: String? = null) {
         scrollToBottomOfOverview()
-        waitUntilViewIsShown(card(event.type))
+        waitUntilViewIsShown(card(event.eventType))
         when (event) {
             is VaccinationEvent -> {
-                card(Event.Type.Vaccination).containsText("Dosis $dose")
-                card(Event.Type.Vaccination).containsText("Vaccinatiedatum: " + event.eventDate.written())
+                card(EventType.Vaccination).containsText("Dosis $dose")
+                card(EventType.Vaccination).containsText("Vaccinatiedatum: " + event.eventDate.written())
             }
             is PositiveTest -> {
-                card(Event.Type.PositiveTest).containsText("Geldig tot " + event.validUntil!!.written())
+                card(EventType.PositiveTest).containsText("Geldig tot " + event.validUntil!!.written())
             }
             is NegativeTest -> {
-                card(Event.Type.NegativeTest).containsText("Type test: " + event.testType.value)
-                card(Event.Type.NegativeTest).containsText("Testdatum: " + event.eventDate.recently())
+                card(EventType.NegativeTest).containsText("Type test: " + event.testType.value)
+                card(EventType.NegativeTest).containsText("Testdatum: " + event.eventDate.recently())
             }
         }
     }
 
     fun assertNotYetValidInternationalEventOnOverview(event: Event) {
         scrollToBottomOfOverview()
-        waitUntilViewIsShown(card(event.type))
+        waitUntilViewIsShown(card(event.eventType))
         when (event) {
             is PositiveTest -> {
-                card(Event.Type.PositiveTest).containsText("geldig vanaf " + event.validFrom!!.writtenWithoutYear())
-                card(Event.Type.PositiveTest).containsText(" tot " + event.validUntil!!.written())
+                card(EventType.PositiveTest).containsText("geldig vanaf " + event.validFrom!!.writtenWithoutYear())
+                card(EventType.PositiveTest).containsText(" tot " + event.validUntil!!.written())
             }
             is NegativeTest -> {
-                card(Event.Type.NegativeTest).containsText("Type test: " + event.testType.value)
-                card(Event.Type.NegativeTest).containsText("geldig vanaf " + event.validFrom!!.written())
-                card(Event.Type.NegativeTest).containsText("Wordt automatisch geldig")
+                card(EventType.NegativeTest).containsText("Type test: " + event.testType.value)
+                card(EventType.NegativeTest).containsText("geldig vanaf " + event.validFrom!!.written())
+                card(EventType.NegativeTest).containsText("Wordt automatisch geldig")
             }
         }
     }
 
-    fun assertInternationalEventWillBecomeValid(eventType: Event.Type) {
+    fun assertInternationalEventWillBecomeValid(eventType: EventType) {
         waitUntilViewIsShown(card(eventType))
         card(eventType).containsText("Wordt automatisch geldig")
     }
 
-    fun assertInternationalEventWillExpireSoon(eventType: Event.Type, daysLeft: Int) {
+    fun assertInternationalEventWillExpireSoon(eventType: EventType, daysLeft: Int) {
         waitUntilViewIsShown(card(eventType))
         card(eventType).containsText("Verloopt over $daysLeft dagen")
     }
 
-    fun assertInternationalEventIsExpired(eventType: Event.Type) {
+    fun assertInternationalEventIsExpired(eventType: EventType) {
         waitUntilTextIsShown("Je internationale ${eventType.domesticName.lowercase()} is verlopen")
     }
 }

@@ -27,7 +27,7 @@ import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisExpired
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalDetails
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
@@ -65,9 +65,9 @@ class FutureEventQRCodeTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(Event.Type.Vaccination)
+        viewQR(EventType.Vaccination)
         assertQRisShown()
         viewPreviousQR()
         assertQRisHidden()
@@ -89,9 +89,9 @@ class FutureEventQRCodeTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(Event.Type.Vaccination)
+        viewQR(EventType.Vaccination)
         assertQRisExpired()
         viewPreviousQR()
         assertQRisHidden()
@@ -116,9 +116,9 @@ class FutureEventQRCodeTest : BaseTest() {
         relaunchApp()
 
         assertInternationalEventOnOverview(pos)
-        assertQrButtonIsEnabled(Event.Type.PositiveTest)
+        assertQrButtonIsEnabled(EventType.PositiveTest)
 
-        viewQR(Event.Type.PositiveTest)
+        viewQR(EventType.PositiveTest)
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -140,10 +140,10 @@ class FutureEventQRCodeTest : BaseTest() {
         relaunchApp()
 
         assertInternationalEventOnOverview(pos)
-        assertInternationalEventWillExpireSoon(Event.Type.PositiveTest, daysLeft = 9)
-        assertQrButtonIsEnabled(Event.Type.PositiveTest)
+        assertInternationalEventWillExpireSoon(EventType.PositiveTest, daysLeft = 9)
+        assertQrButtonIsEnabled(EventType.PositiveTest)
 
-        viewQR(Event.Type.PositiveTest)
+        viewQR(EventType.PositiveTest)
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -159,7 +159,7 @@ class FutureEventQRCodeTest : BaseTest() {
         DateTimeUtils(device).setDate(today.offsetDays(150))
         relaunchApp()
 
-        assertInternationalEventIsExpired(Event.Type.PositiveTest)
+        assertInternationalEventIsExpired(EventType.PositiveTest)
     }
 
     // endregion
@@ -177,9 +177,9 @@ class FutureEventQRCodeTest : BaseTest() {
         relaunchApp()
 
         assertInternationalEventOnOverview(neg)
-        assertQrButtonIsEnabled(Event.Type.NegativeTest)
+        assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(Event.Type.NegativeTest)
+        viewQR(EventType.NegativeTest)
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -195,7 +195,7 @@ class FutureEventQRCodeTest : BaseTest() {
         DateTimeUtils(device).setDate(today.offsetDays(60))
         relaunchApp()
 
-        assertInternationalEventIsExpired(Event.Type.NegativeTest)
+        assertInternationalEventIsExpired(EventType.NegativeTest)
     }
 
     // endregion
@@ -218,9 +218,9 @@ class FutureEventQRCodeTest : BaseTest() {
         relaunchApp()
 
         assertInternationalEventOnOverview(token)
-        assertQrButtonIsEnabled(Event.Type.NegativeTest)
+        assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(Event.Type.NegativeTest)
+        viewQR(EventType.NegativeTest)
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -242,7 +242,7 @@ class FutureEventQRCodeTest : BaseTest() {
         DateTimeUtils(device).setDate(today.offsetDays(60))
         relaunchApp()
 
-        assertInternationalEventIsExpired(Event.Type.NegativeTest)
+        assertInternationalEventIsExpired(EventType.NegativeTest)
     }
     // endregion
 }

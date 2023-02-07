@@ -27,7 +27,7 @@ import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertNotExist
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.writeTo
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent.TestType
@@ -58,9 +58,9 @@ class TokenTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         assertInternationalEventOnOverview(token)
-        assertQrButtonIsEnabled(Event.Type.NegativeTest)
+        assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(Event.Type.NegativeTest)
+        viewQR(EventType.NegativeTest)
         assertInternationalQRDetails(person, token)
         assertNoPreviousQR()
     }
@@ -79,9 +79,9 @@ class TokenTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         assertInternationalEventOnOverview(token)
-        assertQrButtonIsEnabled(Event.Type.NegativeTest)
+        assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(Event.Type.NegativeTest)
+        viewQR(EventType.NegativeTest)
         assertInternationalQRDetails(person, token)
         assertNoPreviousQR()
     }

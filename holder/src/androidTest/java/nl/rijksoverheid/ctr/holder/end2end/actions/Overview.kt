@@ -13,7 +13,7 @@ import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.card
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilViewIsShown
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 
 object Overview {
 
@@ -22,7 +22,7 @@ object Overview {
         for (i in 2 until 12 step 2) scrollListToPosition(R.id.recyclerView, i)
     }
 
-    fun viewQR(eventType: Event.Type) {
+    fun viewQR(eventType: EventType) {
         scrollToBottomOfOverview()
         card(eventType).tapButton("Bekijk QR")
         waitUntilTextIsShown("Internationale QR")

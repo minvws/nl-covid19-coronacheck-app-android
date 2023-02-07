@@ -10,7 +10,7 @@ package nl.rijksoverheid.ctr.holder.end2end.model
 import java.time.LocalDate
 
 abstract class Event(
-    open val type: Type,
+    open val eventType: EventType,
     open val eventDate: LocalDate,
     open val country: Country,
     open val validFrom: LocalDate?,
@@ -18,12 +18,6 @@ abstract class Event(
     open val disease: String = "COVID-19",
     open val issuer: String
 ) {
-
-    enum class Type(val value: String, val domesticName: String, val internationalName: String) {
-        Vaccination("Vaccinatie", "Vaccinatiebewijs", "Internationaal vaccinatiebewijs"),
-        PositiveTest("Positieve test", "Herstelbewijs", "Internationaal herstelbewijs"),
-        NegativeTest("Negatieve test", "Testbewijs", "Internationaal testbewijs")
-    }
 
     enum class Country(val domesticName: String, val internationalName: String) {
         NL("Nederland", "Nederland / The Netherlands"),
@@ -34,6 +28,12 @@ abstract class Event(
     }
 }
 
+enum class EventType(val value: String, val domesticName: String, val internationalName: String) {
+    Vaccination("Vaccinatie", "Vaccinatiebewijs", "Internationaal vaccinatiebewijs"),
+    PositiveTest("Positieve test", "Herstelbewijs", "Internationaal herstelbewijs"),
+    NegativeTest("Negatieve test", "Testbewijs", "Internationaal testbewijs")
+}
+
 data class VaccinationEvent(
     override val eventDate: LocalDate,
     val vaccine: VaccineType,
@@ -42,7 +42,7 @@ data class VaccinationEvent(
     override val validUntil: LocalDate? = null,
     override val issuer: String = minVws
 ) : Event(
-    type = Type.Vaccination,
+    eventType = EventType.Vaccination,
     eventDate = eventDate,
     country = country,
     validFrom = validFrom,
@@ -58,7 +58,7 @@ data class VaccinationEvent(
 }
 
 abstract class TestEvent(
-    override val type: Type,
+    override val eventType: EventType,
     override val eventDate: LocalDate,
     open val testType: TestType,
     override val country: Country,
@@ -69,7 +69,7 @@ abstract class TestEvent(
     open val testName: String,
     open val testProducer: String
 ) : Event(
-    type = type,
+    eventType = eventType,
     eventDate = eventDate,
     country = country,
     validFrom = validFrom,
@@ -98,7 +98,7 @@ data class PositiveTest(
     override val testName: String = testType.testName,
     override val testProducer: String = testType.testManufacturer
 ) : TestEvent(
-    type = Type.PositiveTest,
+    eventType = EventType.PositiveTest,
     eventDate = eventDate,
     testType = testType,
     country = country,
@@ -121,7 +121,7 @@ open class NegativeTest(
     override val testName: String = testType.testName,
     override val testProducer: String = testType.testManufacturer
 ) : TestEvent(
-    type = Type.NegativeTest,
+    eventType = EventType.NegativeTest,
     eventDate = eventDate,
     testType = testType,
     country = country,
@@ -134,7 +134,7 @@ open class NegativeTest(
 )
 
 class NegativeToken(
-    override val type: Type = Type.NegativeTest,
+    override val eventType: EventType = EventType.NegativeTest,
     override val eventDate: LocalDate,
     override val testType: TestType,
     override val country: Country = Country.NL,

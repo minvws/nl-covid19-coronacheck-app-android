@@ -18,7 +18,7 @@ import nl.rijksoverheid.ctr.holder.end2end.actions.retrieveCertificateFromServer
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertNotYetValidInternationalEventOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertQrButtonIsDisabled
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalError
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
@@ -77,6 +77,6 @@ class PastEventRetrievalTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         assertNotYetValidInternationalEventOnOverview(token)
-        assertQrButtonIsDisabled(Event.Type.NegativeTest)
+        assertQrButtonIsDisabled(EventType.NegativeTest)
     }
 }
