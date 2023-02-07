@@ -43,7 +43,8 @@ fun onboardingItemList(selectionState: VerificationPolicySelectionState): List<O
                 is VerificationPolicySelectionState.Selection,
                 is VerificationPolicySelectionState.Policy1G -> R.string.scan_instructions_4_description_1G
                 is VerificationPolicySelectionState.Policy3G -> R.string.scan_instructions_4_description
-            }
+            },
+            position = 4
         ),
         OnboardingItem(
             animationResource = R.raw.scaninstructions_5,
