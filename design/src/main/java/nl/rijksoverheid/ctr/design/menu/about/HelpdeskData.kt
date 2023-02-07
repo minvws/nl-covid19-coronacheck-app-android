@@ -13,7 +13,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class HelpdeskData(
     val contactTitle: String,
-    val contactMessage: String,
+    val contactMessageLines: List<String>,
     val supportTitle: String,
     val supportMessage: String,
     val appVersionTitle: String,
