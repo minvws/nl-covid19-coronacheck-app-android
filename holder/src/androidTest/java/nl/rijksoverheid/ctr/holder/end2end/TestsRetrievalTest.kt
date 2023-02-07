@@ -11,6 +11,7 @@ import androidx.test.filters.SdkSuppress
 import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addNegativeTestCertificateFromGGD
 import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRetrievedCertificateToApp
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addVaccinationCertificate
 import nl.rijksoverheid.ctr.holder.end2end.actions.Overview.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.actions.retrieveCertificateFromServer
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertInternationalEventOnOverview
@@ -24,6 +25,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
 import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent.TestType
+import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import org.junit.Test
 
@@ -70,5 +72,32 @@ class TestsRetrievalTest : BaseTest() {
         assertQRisShown()
         assertInternationalQRDetails(person, neg)
         assertNoPreviousQR()
+    }
+
+    @Test
+    fun retrievePositiveTestAndVaccination_assertEndScreen() {
+        val person = Person(bsn = "999991772")
+        val vac1 =
+            VaccinationEvent(today.offsetDays(-90), vaccine = VaccinationEvent.VaccineType.Pfizer)
+        val vac2 =
+            VaccinationEvent(today.offsetDays(-120), vaccine = VaccinationEvent.VaccineType.Pfizer)
+        val pos = PositiveTest(
+            eventDate = today.offsetDays(-30),
+            testType = TestType.Pcr,
+            validUntil = today.offsetDays(150)
+        )
+
+        addVaccinationCertificate(combinedWithPositiveTest = true)
+        device.retrieveCertificateFromServer(person.bsn)
+        assertRetrievalDetails(person, pos, 0)
+        assertRetrievalDetails(person, vac1, 1)
+        assertRetrievalDetails(person, vac2, 2)
+        addRetrievedCertificateToApp("Vaccinatiebewijs en herstelbewijs gemaakt")
+
+        assertInternationalEventOnOverview(vac2, dose = "2/2")
+        assertInternationalEventOnOverview(vac1, dose = "1/2")
+        assertInternationalEventOnOverview(pos)
+        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertQrButtonIsEnabled(Event.Type.PositiveTest)
     }
 }

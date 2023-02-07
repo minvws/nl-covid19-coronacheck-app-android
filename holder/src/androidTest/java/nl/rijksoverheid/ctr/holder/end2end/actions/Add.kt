@@ -58,15 +58,20 @@ object Add {
         clickOn("Haal testuitslag op")
     }
 
-    fun addVaccinationCertificate() {
+    fun addVaccinationCertificate(combinedWithPositiveTest: Boolean = false) {
         addEvent()
         tapButton("Vaccinatie")
+        if (combinedWithPositiveTest) clickOn(R.id.checkbox)
         clickOn("Log in met DigiD")
     }
 
-    fun addRetrievedCertificateToApp() {
+    fun addRetrievedCertificateToApp(endScreen: String? = null) {
         waitUntilTextIsShown("Kloppen de gegevens?", 30)
         tapButton("Bewijs toevoegen")
+        endScreen?.let {
+            waitUntilTextIsShown(it)
+            tapButton("Naar mijn bewijzen")
+        }
         waitUntilTextIsShown("Mijn bewijzen", 60)
     }
 }
