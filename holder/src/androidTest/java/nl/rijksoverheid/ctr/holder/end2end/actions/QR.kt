@@ -7,14 +7,14 @@
 
 package nl.rijksoverheid.ctr.holder.end2end.actions
 
-import com.adevinta.android.barista.interaction.BaristaClickInteractions
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.end2end.interaction.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilViewIsShown
 
 object QR {
 
     fun viewPreviousQR() {
         waitUntilViewIsShown(R.id.previousQrButton)
-        BaristaClickInteractions.clickOn(R.id.previousQrButton)
+        clickOn(R.id.previousQrButton)
     }
 }

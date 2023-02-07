@@ -7,13 +7,13 @@
 
 package nl.rijksoverheid.ctr.holder.end2end.actions
 
-import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions
-import com.adevinta.android.barista.interaction.BaristaClickInteractions
-import com.adevinta.android.barista.interaction.BaristaEditTextInteractions
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.end2end.interaction.assertDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.interaction.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.interaction.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.interaction.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
+import nl.rijksoverheid.ctr.holder.end2end.interaction.writeTo
 
 object Add {
 
@@ -25,7 +25,7 @@ object Add {
     fun addRecoveryCertificate() {
         addEvent()
         tapButton("Positieve test")
-        BaristaClickInteractions.clickOn("Log in met DigiD")
+        clickOn("Log in met DigiD")
     }
 
     fun addNegativeTestCertificateFromGGD() {
@@ -33,7 +33,7 @@ object Add {
         scrollTo("Negatieve test")
         tapButton("Negatieve test")
         tapButton("GGD")
-        BaristaClickInteractions.clickOn("Log in met DigiD")
+        clickOn("Log in met DigiD")
     }
 
     fun addNegativeTestCertificateFromOtherLocation() {
@@ -44,9 +44,9 @@ object Add {
     }
 
     fun retrieveCertificateWithToken(retrievalCode: String) {
-        BaristaVisibilityAssertions.assertDisplayed("Testuitslag ophalen")
-        BaristaEditTextInteractions.writeTo(R.id.unique_code_input, retrievalCode)
-        BaristaClickInteractions.clickOn("Haal testuitslag op")
+        assertDisplayed("Testuitslag ophalen")
+        writeTo(R.id.unique_code_input, retrievalCode)
+        clickOn("Haal testuitslag op")
     }
 
     fun retrieveCertificateWithTokenAndVerificationCode(
@@ -54,19 +54,24 @@ object Add {
         verificationCode: String
     ) {
         retrieveCertificateWithToken(retrievalCode)
-        BaristaEditTextInteractions.writeTo(R.id.verification_code_input, verificationCode)
-        BaristaClickInteractions.clickOn("Haal testuitslag op")
+        writeTo(R.id.verification_code_input, verificationCode)
+        clickOn("Haal testuitslag op")
     }
 
-    fun addVaccinationCertificate() {
+    fun addVaccinationCertificate(combinedWithPositiveTest: Boolean = false) {
         addEvent()
         tapButton("Vaccinatie")
-        BaristaClickInteractions.clickOn("Log in met DigiD")
+        if (combinedWithPositiveTest) clickOn(R.id.checkbox)
+        clickOn("Log in met DigiD")
     }
 
-    fun addRetrievedCertificateToApp() {
+    fun addRetrievedCertificateToApp(endScreen: String? = null) {
         waitUntilTextIsShown("Kloppen de gegevens?", 30)
         tapButton("Bewijs toevoegen")
+        endScreen?.let {
+            waitUntilTextIsShown(it)
+            tapButton("Naar mijn bewijzen")
+        }
         waitUntilTextIsShown("Mijn bewijzen", 60)
     }
 }
