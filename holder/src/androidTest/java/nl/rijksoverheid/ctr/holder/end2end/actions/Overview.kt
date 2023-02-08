@@ -8,6 +8,8 @@
 package nl.rijksoverheid.ctr.holder.end2end.actions
 
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertOverview
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.scrollListToPosition
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.card
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButton
@@ -26,5 +28,10 @@ object Overview {
         scrollToBottomOfOverview()
         card(eventType, position).tapButton("Bekijk QR")
         waitUntilTextIsShown("Internationale QR")
+    }
+
+    fun backToOverview() {
+        clickBack()
+        assertOverview()
     }
 }
