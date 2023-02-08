@@ -86,7 +86,8 @@ abstract class TestEvent(
 }
 
 enum class TestType(val value: String, val testName: String, val testManufacturer: String) {
-    Pcr("PCR (NAAT)", "PCR Name", "PCR Manufacturer")
+    Pcr("PCR (NAAT)", "PCR Name", "PCR Manufacturer"),
+    Rat("Sneltest (RAT)", "RAT Name", "RAT Manufacturer")
 }
 
 data class PositiveTest(
