@@ -56,15 +56,21 @@ object Espresso {
         }
     }
 
-    fun card(eventType: EventType): Matcher<View> {
+    fun card(eventType: EventType, position: Int): Matcher<View> {
         val text = eventType.internationalName
-        Timber.tag("end2end").d("Getting card view with text '$text'")
+        Timber.tag("end2end")
+            .d("Getting card view with text '$text'${if (position > 0) " on position $position" else ""}")
         return CoreMatchers.allOf(
-            ViewMatchers.withId(R.id.proof_1), ViewMatchers.hasDescendant(
+            withIndex(
                 CoreMatchers.allOf(
-                    ViewMatchers.withId(R.id.title),
-                    ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(text))
-                )
+                    ViewMatchers.withId(R.id.proof_1),
+                    ViewMatchers.hasDescendant(
+                        CoreMatchers.allOf(
+                            ViewMatchers.withId(R.id.title),
+                            ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(text))
+                        )
+                    )
+                ), position
             )
         )
     }

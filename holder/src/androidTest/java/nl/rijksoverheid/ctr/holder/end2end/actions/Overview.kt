@@ -22,9 +22,9 @@ object Overview {
         for (i in 2 until 12 step 2) scrollListToPosition(R.id.recyclerView, i)
     }
 
-    fun viewQR(eventType: EventType) {
+    fun viewQR(eventType: EventType, position: Int = 0) {
         scrollToBottomOfOverview()
-        card(eventType).tapButton("Bekijk QR")
+        card(eventType, position).tapButton("Bekijk QR")
         waitUntilTextIsShown("Internationale QR")
     }
 }
