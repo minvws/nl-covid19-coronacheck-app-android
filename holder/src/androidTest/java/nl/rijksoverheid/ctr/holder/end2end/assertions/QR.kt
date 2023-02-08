@@ -22,6 +22,7 @@ import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
 import nl.rijksoverheid.ctr.holder.end2end.utils.dutch
 import nl.rijksoverheid.ctr.holder.end2end.utils.recently
@@ -80,7 +81,9 @@ object QR {
             is NegativeTest -> {
                 labelValuePairExist("Ziekteverwekker / Disease targeted:", event.disease)
                 labelValuePairExist("Type test / Test type:", event.testType.value)
-                labelValuePairExist("Testnaam / Test name:", event.testName)
+                if (event.testType != TestType.Rat) {
+                    labelValuePairExist("Testnaam / Test name:", event.testName)
+                }
                 labelValuePairExist("Testdatum / Test date:", event.eventDate.recently())
                 labelValuePairExist(
                     "Testuitslag / Test result:",
