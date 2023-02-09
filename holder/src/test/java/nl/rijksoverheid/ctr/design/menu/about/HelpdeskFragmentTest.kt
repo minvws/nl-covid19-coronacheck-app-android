@@ -11,6 +11,8 @@ import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasData
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.platform.app.InstrumentationRegistry
+import nl.rijksoverheid.ctr.holder.R
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.After
@@ -25,11 +27,36 @@ class HelpdeskFragmentTest : AutoCloseKoinTest() {
 
     @Before
     fun setup() {
+        val context = InstrumentationRegistry.getInstrumentation().context
         launchFragmentInContainer<HelpdeskFragment>(
             bundleOf(
                 "data" to HelpdeskData(
-                    "version",
-                    "configuration"
+                    contactTitle = "Contact",
+                    contactMessageLines = listOf(
+                        context.getString(
+                            R.string.holder_helpdesk_contact_message_line1,
+                            "0800-1421",
+                            "0800-1421"
+                        ),
+                        context.getString(
+                            R.string.holder_helpdesk_contact_message_line2,
+                            "+31707503720",
+                            "+31707503720"
+                        ),
+                        context.getString(
+                            R.string.holder_helpdesk_contact_message_line3,
+                            1,
+                            "08:00",
+                            5,
+                            "18:00"
+                        )
+                    ),
+                    supportTitle = "Ondersteuning",
+                    supportMessage = "Wanneer je contact opneemt met de CoronaCheck helpdesk, kan er gevraagd worden om de volgende informatie:",
+                    appVersionTitle = "App-versie:",
+                    appVersion = "version",
+                    configurationTitle = "Configuratie:",
+                    configuration = "configuration"
                 )
             )
         )
@@ -52,8 +79,8 @@ class HelpdeskFragmentTest : AutoCloseKoinTest() {
         val expectedIntent = allOf(hasAction(Intent.ACTION_VIEW), hasData("tel:+31707503720"))
         intending(expectedIntent).respondWith(Instrumentation.ActivityResult(0, null))
 
-        onView(withText(containsString("+31 70 750 37 20")))
-            .perform(openLinkWithText("+31 70 750 37 20"))
+        onView(withText(containsString("+31707503720")))
+            .perform(openLinkWithText("+31707503720"))
 
         Intents.intended(expectedIntent)
     }

@@ -92,7 +92,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:attachToScrollView="@+id/scroll"
-        app:buttonText="@string/your_negative_test_results_row_button"
+        app:buttonText="@string/my_overview_add_qr_button"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

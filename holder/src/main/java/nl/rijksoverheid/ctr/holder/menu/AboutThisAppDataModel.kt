@@ -9,6 +9,8 @@
 package nl.rijksoverheid.ctr.holder.menu
 
 import android.content.Context
+import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.fragments.menu.MenuFragmentDirections
 import nl.rijksoverheid.ctr.design.menu.about.AboutThisAppData
 import nl.rijksoverheid.ctr.design.utils.DialogButtonData
@@ -20,8 +22,12 @@ interface AboutThisAppDataModel {
     fun get(context: Context): AboutThisAppData
 }
 
-class AboutThisAppDataModelImpl : AboutThisAppDataModel {
+class AboutThisAppDataModelImpl(
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val appConfigPersistenceManager: AppConfigPersistenceManager
+) : AboutThisAppDataModel {
     override fun get(context: Context): AboutThisAppData {
+
         val dialogDirection = MenuFragmentDirections.actionDialog(
             data = DialogFragmentData(
                 title = nl.rijksoverheid.ctr.design.R.string.about_this_app_clear_data_title,
@@ -34,6 +40,8 @@ class AboutThisAppDataModelImpl : AboutThisAppDataModel {
         )
         return AboutThisAppData(
             deeplinkScannerUrl = BuildConfig.DEEPLINK_SCANNER_TEST_URL,
+            versionName = BuildConfig.VERSION_NAME,
+            versionCode = BuildConfig.VERSION_CODE.toString(),
             resetAppDialogDirection = AboutThisAppData.Destination(
                 text = context.getString(R.string.about_this_app_clear_data_confirm),
                 dialogDirection.actionId,
@@ -57,7 +65,9 @@ class AboutThisAppDataModelImpl : AboutThisAppDataModel {
                         )
                     )
                 )
-            )
+            ),
+            configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
+            configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds()
         )
     }
 }

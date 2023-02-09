@@ -36,7 +36,7 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
     private val androidUtil: AndroidUtil by inject()
 
     private val item: OnboardingItem by lazy {
-        arguments?.getParcelableCompat<OnboardingItem>(
+        arguments?.getParcelableCompat(
             EXTRA_ONBOARDING_ITEM
         ) ?: throw Exception("Failed to get item")
     }

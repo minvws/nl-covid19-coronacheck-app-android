@@ -21,9 +21,7 @@ import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepositoryImpl
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.ResponseBody
-import okhttp3.ResponseBody.Companion.toResponseBody
+import nl.rijksoverheid.ctr.appconfig.repositories.PublicKeysHttpException
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -38,7 +36,7 @@ class AppConfigUseCaseImplTest {
 
     private val appConfig = Response.success(JSONObject())
 
-    private val publicKeys = "".toResponseBody("application/json".toMediaType())
+    private val publicKeys = Response.success(JSONObject())
 
     private val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
     private val appConfigPersistenceManager = mockk<AppConfigPersistenceManager>(relaxed = true)
@@ -46,14 +44,14 @@ class AppConfigUseCaseImplTest {
 
     private val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>().apply {
         every { getCachedAppConfig() } returns object :
-            AppConfig(true, "", 1, 3600, 100, emptyList(), 1, 1, listOf(), 30, 300) {}
+            AppConfig(true, "", 1, 3600, 100, emptyList(), 1, 1, listOf(), 30, 300, mockk()) {}
     }
 
     @Test
     fun `config returns Success when both calls succeed`() = runBlocking {
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(): Response<JSONObject> = appConfig
-            override suspend fun getPublicKeys(): ResponseBody = publicKeys
+            override suspend fun getPublicKeys(): Response<JSONObject> = publicKeys
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
         val appConfigUseCase =
@@ -63,11 +61,11 @@ class AppConfigUseCaseImplTest {
                 configRepository,
                 clockDeviationUseCase
             )
-        assertEquals(
-            appConfigUseCase.get(), ConfigResult.Success(
+        assertEquals(ConfigResult.Success(
                 appConfig = appConfig.body().toString(),
-                publicKeys = publicKeys.source().readUtf8()
-            )
+                publicKeys = "{}"
+            ),
+            appConfigUseCase.get()
         )
         coVerify { appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(0) }
     }
@@ -79,7 +77,7 @@ class AppConfigUseCaseImplTest {
                 throw IOException()
             }
 
-            override suspend fun getPublicKeys(): ResponseBody = publicKeys
+            override suspend fun getPublicKeys(): Response<JSONObject> = publicKeys
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
         val appConfigUseCase =
@@ -89,8 +87,8 @@ class AppConfigUseCaseImplTest {
                 configRepository,
                 clockDeviationUseCase
             )
-        assertEquals(
-            appConfigUseCase.get(), ConfigResult.Error
+        assertTrue(
+            appConfigUseCase.get() is ConfigResult.Error
         )
         coVerify(exactly = 0) { appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(0) }
     }
@@ -99,8 +97,8 @@ class AppConfigUseCaseImplTest {
     fun `config returns Error when public keys call fails`() = runBlocking {
         val fakeApi = object : AppConfigApi {
             override suspend fun getConfig(): Response<JSONObject> = appConfig
-            override suspend fun getPublicKeys(): ResponseBody {
-                throw IOException()
+            override suspend fun getPublicKeys(): Response<JSONObject> {
+                throw PublicKeysHttpException(publicKeys)
             }
         }
         val configRepository = ConfigRepositoryImpl(api = fakeApi)
@@ -111,8 +109,9 @@ class AppConfigUseCaseImplTest {
                 configRepository,
                 clockDeviationUseCase
             )
-        assertEquals(
-            appConfigUseCase.get(), ConfigResult.Error
+
+        assertTrue(
+            appConfigUseCase.get() is ConfigResult.Error
         )
         coVerify(exactly = 0) { appConfigPersistenceManager.saveAppConfigLastFetchedSeconds(0) }
     }

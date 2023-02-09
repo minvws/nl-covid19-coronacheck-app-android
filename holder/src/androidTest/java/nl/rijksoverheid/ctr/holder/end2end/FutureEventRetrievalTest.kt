@@ -8,12 +8,21 @@
 package nl.rijksoverheid.ctr.holder.end2end
 
 import androidx.test.filters.SdkSuppress
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addNegativeTestCertificateFromGGD
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addNegativeTestCertificateFromOtherLocation
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRecoveryCertificate
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRetrievedCertificateToApp
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addVaccinationCertificate
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add.retrieveCertificateWithToken
+import nl.rijksoverheid.ctr.holder.end2end.actions.retrieveCertificateFromServer
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertInternationalEventOnOverview
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertQrButtonIsEnabled
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalError
+import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
+import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addNegativeTestCertificateFromGGD
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addRecoveryCertificate
-import nl.rijksoverheid.ctr.holder.end2end.utils.Actions.addVaccinationCertificate
-import nl.rijksoverheid.ctr.holder.end2end.utils.Assertions.assertRetrievalError
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
 import org.junit.After
 import org.junit.Before
@@ -25,7 +34,7 @@ class FutureEventRetrievalTest : BaseTest() {
     @Before
     fun setDeviceDate() {
         DateTimeUtils(device).setDate(today.offsetDays(2))
-        launchApp()
+        relaunchApp()
     }
 
     @After
@@ -35,19 +44,38 @@ class FutureEventRetrievalTest : BaseTest() {
 
     @Test
     fun givenDeviceDateInFuture_whenVaccinationIsRetrieved_errorIsDisplayed() {
-        addVaccinationCertificate(Person().bsn)
+        addVaccinationCertificate()
+        device.retrieveCertificateFromServer(Person().bsn)
         assertRetrievalError("A 210 000 070-9")
     }
 
     @Test
     fun givenDeviceDateInFuture_whenPositiveTestIsRetrieved_errorIsDisplayed() {
-        addRecoveryCertificate(Person().bsn)
+        addRecoveryCertificate()
+        device.retrieveCertificateFromServer(Person().bsn)
         assertRetrievalError("A 310 000 070-9")
     }
 
     @Test
     fun givenDeviceDateInFuture_whenNegativeTestIsRetrieved_errorIsDisplayed() {
-        addNegativeTestCertificateFromGGD(Person().bsn)
+        addNegativeTestCertificateFromGGD()
+        device.retrieveCertificateFromServer(Person().bsn)
         assertRetrievalError("A 410 000 070-9")
+    }
+
+    @Test
+    fun givenDeviceDateInFuture_whenNegativeTokenIsRetrieved_dataIsRetrieved() {
+        val token = NegativeToken(
+            eventDate = today,
+            testType = TestEvent.TestType.Pcr,
+            couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2"
+        )
+
+        addNegativeTestCertificateFromOtherLocation()
+        retrieveCertificateWithToken(token.couplingCode)
+        addRetrievedCertificateToApp()
+
+        assertInternationalEventOnOverview(token)
+        assertQrButtonIsEnabled(Event.Type.NegativeTest)
     }
 }

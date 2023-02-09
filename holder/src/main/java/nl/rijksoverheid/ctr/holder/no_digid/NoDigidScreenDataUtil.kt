@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.no_digid
 
 import android.content.Context
 import androidx.annotation.StringRes
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -23,7 +24,8 @@ interface NoDigidScreenDataUtil {
 
 class NoDigidScreenDataUtilImpl(
     private val context: Context,
-    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : NoDigidScreenDataUtil {
 
     private fun getString(@StringRes stringId: Int) = context.getString(stringId)
@@ -31,12 +33,28 @@ class NoDigidScreenDataUtilImpl(
     private fun getStringArgs(@StringRes stringId: Int, args: Array<String>) =
         context.getString(stringId, *args)
 
+    val contactInformation = cachedAppConfigUseCase.getCachedAppConfig().contactInfo
+    val description = getStringArgs(
+        R.string.holder_contactCoronaCheckHelpdesk_message,
+        arrayOf(
+            PapFragment.openDaysString(context, contactInformation),
+            contactInformation.startHour,
+            contactInformation.endHour,
+            contactInformation.phoneNumber,
+            contactInformation.phoneNumber,
+            contactInformation.phoneNumberAbroad,
+            contactInformation.phoneNumberAbroad
+        )
+    )
     private val doesHaveBSNButton = NoDigidNavigationButtonData.Info(
         title = R.string.holder_checkForBSN_buttonTitle_doesHaveBSN,
         subtitle = getString(R.string.holder_checkForBSN_buttonSubTitle_doesHaveBSN),
         infoFragmentData = InfoFragmentData.TitleDescriptionWithButton(
             title = getString(R.string.holder_contactCoronaCheckHelpdesk_title),
-            descriptionData = DescriptionData(R.string.holder_contactCoronaCheckHelpdesk_message, htmlLinksEnabled = true),
+            descriptionData = DescriptionData(
+                htmlTextString = description,
+                htmlLinksEnabled = true
+            ),
             primaryButtonData = ButtonData.NavigationButton(
                 text = getString(R.string.general_toMyOverview),
                 navigationActionId = R.id.action_my_overview
@@ -46,11 +64,13 @@ class NoDigidScreenDataUtilImpl(
 
     private fun doesNotHaveBSNButton(originType: RemoteOriginType): NoDigidNavigationButtonData {
         val title = R.string.holder_checkForBSN_buttonTitle_doesNotHaveBSN
-        val subtitle = getString(if (originType == RemoteOriginType.Vaccination) {
-            R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_vaccinationFlow
-        } else {
-            R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow
-        })
+        val subtitle = getString(
+            if (originType == RemoteOriginType.Vaccination) {
+                R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_vaccinationFlow
+            } else {
+                R.string.holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow
+            }
+        )
 
         return if (holderFeatureFlagUseCase.getPapEnabled()) {
             NoDigidNavigationButtonData.Ggd(
@@ -91,15 +111,16 @@ class NoDigidScreenDataUtilImpl(
         externalUrl = getString(R.string.holder_noDigiD_url)
     )
 
-    override fun continueWithoutDigidButton(originType: RemoteOriginType) = NoDigidNavigationButtonData.NoDigid(
-        title = R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD,
-        subtitle = getString(R.string.holder_noDigiD_buttonSubTitle_continueWithoutDigiD),
-        noDigidFragmentData = NoDigidFragmentData(
-            title = getString(R.string.holder_checkForBSN_title),
-            description = getString(R.string.holder_checkForBSN_message),
-            firstNavigationButtonData = doesHaveBSNButton,
-            secondNavigationButtonData = doesNotHaveBSNButton(originType),
-            originType = originType
+    override fun continueWithoutDigidButton(originType: RemoteOriginType) =
+        NoDigidNavigationButtonData.NoDigid(
+            title = R.string.holder_noDigiD_buttonTitle_continueWithoutDigiD,
+            subtitle = getString(R.string.holder_noDigiD_buttonSubTitle_continueWithoutDigiD),
+            noDigidFragmentData = NoDigidFragmentData(
+                title = getString(R.string.holder_checkForBSN_title),
+                description = getString(R.string.holder_checkForBSN_message),
+                firstNavigationButtonData = doesHaveBSNButton,
+                secondNavigationButtonData = doesNotHaveBSNButton(originType),
+                originType = originType
+            )
         )
-    )
 }

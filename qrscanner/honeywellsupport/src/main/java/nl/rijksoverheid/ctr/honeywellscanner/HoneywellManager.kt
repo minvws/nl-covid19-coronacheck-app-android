@@ -49,6 +49,9 @@ class HoneywellManagerImpl(
 
     private val dataWedgeResultBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action != HONEYWELL_INTENT_ACTION_BARCODE_DATA_FILTER_ACTION) {
+                return
+            }
             intent.getStringExtra(HoneywellConstants.DATAWEDGE_INTENT_KEY_SYMBOLOGY)?.let {
                 if (it == "s") { // if QR
                     intent.getStringExtra(HoneywellConstants.DATAWEDGE_INTENT_KEY_DATA)?.let {

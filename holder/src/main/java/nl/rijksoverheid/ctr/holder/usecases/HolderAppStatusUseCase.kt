@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.usecases
 
 import androidx.annotation.StringRes
 import com.squareup.moshi.Moshi
+import java.net.UnknownHostException
 import java.time.Clock
 import java.time.OffsetDateTime
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +22,8 @@ import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceMana
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.toObject
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
+import nl.rijksoverheid.ctr.shared.factories.OnboardingFlow
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 /*
@@ -41,7 +44,8 @@ class HolderAppStatusUseCaseImpl(
     private val appUpdateData: AppUpdateData,
     private val persistenceManager: PersistenceManager,
     private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
-    private val introductionPersistenceManager: IntroductionPersistenceManager
+    private val introductionPersistenceManager: IntroductionPersistenceManager,
+    private val errorCodeStringFactory: ErrorCodeStringFactory
 ) : AppStatusUseCase {
 
     override suspend fun get(config: ConfigResult, currentVersionCode: Int): AppStatus =
@@ -55,17 +59,26 @@ class HolderAppStatusUseCaseImpl(
                 }
                 is ConfigResult.Error -> {
                     val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfigOrNull()
-                    if (cachedAppConfig != null && appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds
-                        >= OffsetDateTime.now(clock).toEpochSecond()
-                    ) {
-                        checkIfActionRequired(
-                            currentVersionCode = currentVersionCode,
-                            appConfig = cachedAppConfig
-                        )
-                    } else {
-                        AppStatus.Error
+                    when {
+                        cachedAppConfig != null && appConfigPersistenceManager.getAppConfigLastFetchedSeconds() + cachedAppConfig.configTtlSeconds
+                                >= OffsetDateTime.now(clock).toEpochSecond() -> {
+                            checkIfActionRequired(
+                                currentVersionCode = currentVersionCode,
+                                appConfig = cachedAppConfig
+                            )
+                                }
+                        config.error.e is UnknownHostException -> {
+                            AppStatus.Error
+                        }
+                        else -> {
+                            AppStatus.LaunchError(
+                                errorCodeStringFactory.get(
+                                    OnboardingFlow,
+                                    listOf(config.error)
+                                )
+                            ) }
                     }
-                }
+                    }
             }
         }
 

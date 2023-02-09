@@ -53,7 +53,8 @@ data class HolderConfig(
     @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean,
     @Json(name = "disclosurePolicies") val disclosurePolicy: DisclosurePolicy,
     @Json(name = "backendTLSCertificates") val backendTLSCertificates: List<String>,
-    @Json(name = "papEnabled") val papEnabled: Boolean
+    @Json(name = "papEnabled") val papEnabled: Boolean,
+    @Json(name = "contactInformation") val contactInformation: ContactInformation
 ) : AppConfig(
     holderAppDeactivated,
     holderInformationURL,
@@ -65,7 +66,8 @@ data class HolderConfig(
     upgradeRecommendationIntervalHours,
     holderDeeplinkDomains,
     holderClockDeviationThresholdSeconds,
-    holderConfigAlmostOutOfDateWarningSeconds
+    holderConfigAlmostOutOfDateWarningSeconds,
+    contactInformation
 ) {
 
     companion object {
@@ -149,7 +151,9 @@ data class HolderConfig(
             mijnCnEnabled = mijnCnEnabled,
             disclosurePolicy = disclosurePolicy,
             backendTLSCertificates = backendTLSCertificates,
-            papEnabled = false
+            papEnabled = false,
+            contactInformation =
+            ContactInformation("08001421", "+31 70 750 37 20", 1, "08:00", 7, "18:00")
         )
     }
 }

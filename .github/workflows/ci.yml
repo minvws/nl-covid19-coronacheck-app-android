@@ -9,7 +9,7 @@ on:
 concurrency:
   group: build-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
-  
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
     if: ${{ (github.event.repository.name == 'nl-covid19-coronacheck-app-android-private' && (github.ref == 'refs/heads/main' || contains(github.event.ref, 'release/') || contains(github.event.pull_request.labels.*.name, 'generate-builds'))) }}
     env:
       SLACK_WEBHOOK: ${{ secrets.SLACK_URL }}
-      SLACK_MESSAGE: 'New apps available for android :green_heart:'
+      SLACK_MESSAGE: 'New build for Android :android:'
       KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
       KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}

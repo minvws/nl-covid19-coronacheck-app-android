@@ -11,4 +11,13 @@ import kotlinx.parcelize.Parcelize
  *
  */
 @Parcelize
-data class HelpdeskData(val appVersion: String, val configuration: String) : Parcelable
+data class HelpdeskData(
+    val contactTitle: String,
+    val contactMessageLines: List<String>,
+    val supportTitle: String,
+    val supportMessage: String,
+    val appVersionTitle: String,
+    val appVersion: String,
+    val configurationTitle: String,
+    val configuration: String
+) : Parcelable

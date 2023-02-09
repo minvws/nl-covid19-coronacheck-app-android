@@ -4,10 +4,12 @@ import com.squareup.moshi.Moshi
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import java.net.UnknownHostException
 import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
-import kotlinx.coroutines.runBlocking
+import javax.net.ssl.SSLException
+import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
@@ -67,7 +69,7 @@ class HolderAppStatusUseCaseImplTest {
 
     @Test
     fun `status returns Deactivated when app is deactivated remotely`() =
-        runBlocking {
+        runTest {
             val appStatusUseCase = HolderAppStatusUseCaseImpl(
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
@@ -78,7 +80,8 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdatePersistenceManager = mockk(relaxed = true),
                 introductionPersistenceManager = mockk(relaxed = true),
                 persistenceManager = mockk(relaxed = true),
-                showNewDisclosurePolicyUseCase = mockk(relaxed = true)
+                showNewDisclosurePolicyUseCase = mockk(relaxed = true),
+                errorCodeStringFactory = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
@@ -93,7 +96,7 @@ class HolderAppStatusUseCaseImplTest {
 
     @Test
     fun `status returns UpdateRequired when remote version code is higher than current`() =
-        runBlocking {
+        runTest {
             val appStatusUseCase = HolderAppStatusUseCaseImpl(
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
@@ -104,7 +107,8 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdatePersistenceManager = mockk(relaxed = true),
                 introductionPersistenceManager = mockk(relaxed = true),
                 persistenceManager = mockk(relaxed = true),
-                showNewDisclosurePolicyUseCase = mockk(relaxed = true)
+                showNewDisclosurePolicyUseCase = mockk(relaxed = true),
+                errorCodeStringFactory = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
@@ -119,7 +123,7 @@ class HolderAppStatusUseCaseImplTest {
 
     @Test
     fun `status returns NoActionRequired when app is up to date`() =
-        runBlocking {
+        runTest {
             val appStatusUseCase = HolderAppStatusUseCaseImpl(
                 clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC")),
                 cachedAppConfigUseCase = fakeCachedAppConfigUseCase(),
@@ -130,7 +134,8 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdatePersistenceManager = mockk(relaxed = true),
                 introductionPersistenceManager = mockk(relaxed = true),
                 persistenceManager = mockk(relaxed = true),
-                showNewDisclosurePolicyUseCase = mockk(relaxed = true)
+                showNewDisclosurePolicyUseCase = mockk(relaxed = true),
+                errorCodeStringFactory = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
@@ -144,8 +149,43 @@ class HolderAppStatusUseCaseImplTest {
         }
 
     @Test
-    fun `status returns InternetRequired when config is Error and cached app config is no longer valid`() =
-        runBlocking {
+    fun `status is offline when config is offline error and cached app config is no longer valid`() =
+        runTest {
+            // Current time is 100 seconds
+            // Max offline time is set to 50 seconds
+            // Last time config fetched was 20 seconds
+            val appStatusUseCase = HolderAppStatusUseCaseImpl(
+                clock = Clock.fixed(Instant.ofEpochSecond(100), ZoneId.of("UTC")),
+                cachedAppConfigUseCase = fakeCachedAppConfigUseCase(
+                    appConfig = fakeAppConfig(
+                        configTtlSeconds = 50
+                    )
+                ),
+                appConfigPersistenceManager = fakeAppConfigPersistenceManager(
+                    lastFetchedSeconds = 20
+                ),
+                moshi = moshi,
+                recommendedUpdatePersistenceManager = mockk(relaxed = true),
+                appUpdateData = mockk(),
+                appUpdatePersistenceManager = mockk(),
+                introductionPersistenceManager = mockk(),
+                persistenceManager = mockk(),
+                showNewDisclosurePolicyUseCase = mockk(),
+                errorCodeStringFactory = mockk(relaxed = true)
+            )
+
+            val appStatus = appStatusUseCase.get(
+                config = ConfigResult.Error(mockk {
+                    every { e } returns UnknownHostException("you cannot reach me")
+                }),
+                currentVersionCode = 1
+            )
+            assertTrue(appStatus is AppStatus.Error)
+        }
+
+    @Test
+    fun `status returns launch error when config is Error and cached app config is no longer valid`() =
+        runTest {
 
             // Current time is 100 seconds
             // Max offline time is set to 50 seconds
@@ -166,19 +206,22 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdatePersistenceManager = mockk(),
                 introductionPersistenceManager = mockk(),
                 persistenceManager = mockk(),
-                showNewDisclosurePolicyUseCase = mockk()
+                showNewDisclosurePolicyUseCase = mockk(),
+                errorCodeStringFactory = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
-                config = ConfigResult.Error,
+                config = ConfigResult.Error(mockk {
+                    every { e } returns SSLException("ssl expired")
+                }),
                 currentVersionCode = 1
             )
-            assertEquals(AppStatus.Error, appStatus)
+            assertTrue(appStatus is AppStatus.LaunchError)
         }
 
     @Test
     fun `status returns NoActionRequired when config is Error and cached app config is still valid`() =
-        runBlocking {
+        runTest {
 
             // Current time is 100 seconds
             // Max offline time is set to 50 seconds
@@ -199,11 +242,12 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdatePersistenceManager = mockk(relaxed = true),
                 introductionPersistenceManager = mockk(relaxed = true),
                 persistenceManager = mockk(relaxed = true),
-                showNewDisclosurePolicyUseCase = mockk(relaxed = true)
+                showNewDisclosurePolicyUseCase = mockk(relaxed = true),
+                errorCodeStringFactory = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
-                config = ConfigResult.Error,
+                config = ConfigResult.Error(mockk()),
                 currentVersionCode = 1026
             )
             assertEquals(AppStatus.NoActionRequired, appStatus)
@@ -211,7 +255,7 @@ class HolderAppStatusUseCaseImplTest {
 
     @Test
     fun `status is update recommended when holder version is higher and not shown before`() =
-        runBlocking {
+        runTest {
             val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager =
                 mockk(relaxed = true) {
                     every { getHolderVersionUpdateShown() } returns 0
@@ -233,7 +277,8 @@ class HolderAppStatusUseCaseImplTest {
                 persistenceManager = mockk(relaxed = true),
                 showNewDisclosurePolicyUseCase = mockk {
                     every { get() } returns null
-                }
+                },
+                errorCodeStringFactory = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
@@ -250,7 +295,7 @@ class HolderAppStatusUseCaseImplTest {
 
     @Test
     fun `status is no action required recommended version was shown before`() =
-        runBlocking {
+        runTest {
             val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager =
                 mockk(relaxed = true) {
                     every { getHolderVersionUpdateShown() } returns 2001
@@ -272,7 +317,8 @@ class HolderAppStatusUseCaseImplTest {
                 persistenceManager = mockk(relaxed = true),
                 showNewDisclosurePolicyUseCase = mockk {
                     every { get() } returns null
-                }
+                },
+                errorCodeStringFactory = mockk(relaxed = true)
             )
 
             val appStatus = appStatusUseCase.get(
@@ -308,7 +354,7 @@ class HolderAppStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when new features are available, the status is new features`() = runBlocking {
+    fun `when new features are available, the status is new features`() = runTest {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
@@ -340,7 +386,7 @@ class HolderAppStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when new terms are available, the status is consent needed`() = runBlocking {
+    fun `when new terms are available, the status is consent needed`() = runTest {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
@@ -370,7 +416,7 @@ class HolderAppStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when disclosure is 1G+3G, there should be a 1G+3G new feature item added`() = runBlocking {
+    fun `when disclosure is 1G+3G, there should be a 1G+3G new feature item added`() = runTest {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
@@ -418,7 +464,7 @@ class HolderAppStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when disclosure is 1G, there should be a 1G new feature item added`() = runBlocking {
+    fun `when disclosure is 1G, there should be a 1G new feature item added`() = runTest {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
@@ -465,7 +511,7 @@ class HolderAppStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when disclosure is 3G, there should be a 3G new feature item added`() = runBlocking {
+    fun `when disclosure is 3G, there should be a 3G new feature item added`() = runTest {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
@@ -513,7 +559,7 @@ class HolderAppStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when disclosure is 0G, there should be a 0G new feature item added`() = runBlocking {
+    fun `when disclosure is 0G, there should be a 0G new feature item added`() = runTest {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
@@ -561,132 +607,143 @@ class HolderAppStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when there are no new feature but there is a policy change, there should be a new feature item`() = runBlocking {
-        val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
-        val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
-        val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
-        val holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk()
-        val persistenceManager: PersistenceManager = mockk()
-        val appStatusUseCase = appStatusUseCase(
-            false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
-            introductionPersistenceManager, showNewDisclosurePolicyUseCase,
-            persistenceManager = persistenceManager
-        )
-
-        every { introductionPersistenceManager.getIntroductionFinished() } returns true
-        every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns true
-        every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
-        every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
-        every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.OneAndThreeG
-
-        val appStatus = appStatusUseCase.get(
-            config = ConfigResult.Success(
-                appConfig = getHolderConfig(),
-                publicKeys = publicKeys
-            ),
-            currentVersionCode = 1
-        )
-
-        with(appStatus as AppStatus.NewFeatures) {
-            assertEquals(
-                R.string.holder_newintheapp_content_only3G_title,
-                appUpdateData.newFeatures.first().titleResource
+    fun `when there are no new feature but there is a policy change, there should be a new feature item`() =
+        runTest {
+            val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
+            val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
+            val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
+            val holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk()
+            val persistenceManager: PersistenceManager = mockk()
+            val appStatusUseCase = appStatusUseCase(
+                false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
+                introductionPersistenceManager, showNewDisclosurePolicyUseCase,
+                persistenceManager = persistenceManager
             )
-            assertEquals(
-                R.string.holder_newintheapp_content_only3G_body,
-                appUpdateData.newFeatures.first().description
+
+            every { introductionPersistenceManager.getIntroductionFinished() } returns true
+            every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns true
+            every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
+            every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
+            every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.OneAndThreeG
+
+            val appStatus = appStatusUseCase.get(
+                config = ConfigResult.Success(
+                    appConfig = getHolderConfig(),
+                    publicKeys = publicKeys
+                ),
+                currentVersionCode = 1
             )
-            assertEquals(
-                R.drawable.illustration_new_disclosure_policy,
-                appUpdateData.newFeatures.first().imageResource
-            )
-            assertEquals(1, appUpdateData.newFeatures.size)
-            assertEquals(2, appUpdateData.newFeatureVersion)
-        }
-    }
 
-    @Test
-    fun `when there is new feature but no policy change, there should not be a policy new feature item`() = runBlocking {
-        val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
-        val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
-        val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
-        val holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk()
-        val appStatusUseCase = appStatusUseCase(
-            false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
-            introductionPersistenceManager, showNewDisclosurePolicyUseCase
-        )
-
-        every { introductionPersistenceManager.getIntroductionFinished() } returns true
-        every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
-        every { showNewDisclosurePolicyUseCase.get() } returns null
-        every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
-
-        val appStatus = appStatusUseCase.get(
-            config = ConfigResult.Success(
-                appConfig = getHolderConfig(),
-                publicKeys = publicKeys
-            ),
-            currentVersionCode = 1
-        )
-
-        with(appStatus as AppStatus.NewFeatures) {
-            assertEquals(1, appUpdateData.newFeatures.size)
-            assertEquals(2, appUpdateData.newFeatureVersion)
-        }
-    }
-
-    @Test
-    fun `given config result error and a corrupted cached config, AppStatus is Error`() = runBlocking {
-        val appStatusUseCase = appStatusUseCase(false, 1000, cachedAppConfig = null)
-
-        val appStatus = appStatusUseCase.get(
-            config = ConfigResult.Error,
-            currentVersionCode = 1000
-        )
-
-        assertEquals(AppStatus.Error, appStatus)
-    }
-
-    @Test
-    fun `given a valid cached config fetched recently, when config result is error, then no action is required`() = runBlocking {
-        val appStatusUseCase = appStatusUseCase(
-            appDeactivated = false,
-            minimumVersion = 1000,
-            configLastFetchedSeconds = 10000,
-            configTtlSeconds = 1000,
-            showNewDisclosurePolicyUseCase = mockk {
-                every { get() } returns null
-            },
-            appUpdatePersistenceManager = mockk {
-                every { getNewFeaturesSeen(any()) } returns true
-                every { getNewTermsSeen(any()) } returns true
+            with(appStatus as AppStatus.NewFeatures) {
+                assertEquals(
+                    R.string.holder_newintheapp_content_only3G_title,
+                    appUpdateData.newFeatures.first().titleResource
+                )
+                assertEquals(
+                    R.string.holder_newintheapp_content_only3G_body,
+                    appUpdateData.newFeatures.first().description
+                )
+                assertEquals(
+                    R.drawable.illustration_new_disclosure_policy,
+                    appUpdateData.newFeatures.first().imageResource
+                )
+                assertEquals(1, appUpdateData.newFeatures.size)
+                assertEquals(2, appUpdateData.newFeatureVersion)
             }
-        )
-
-        val appStatus = appStatusUseCase.get(
-            config = ConfigResult.Error,
-            currentVersionCode = 1000
-        )
-
-        assertEquals(AppStatus.NoActionRequired, appStatus)
-    }
+        }
 
     @Test
-    fun `given a valid cached config fetched long time ago, when config result is error, then AppStatus is error`() = runBlocking {
-        val appStatusUseCase = appStatusUseCase(
-            appDeactivated = false,
-            minimumVersion = 1000,
-            configLastFetchedSeconds = 1000,
-            configTtlSeconds = 1000
-        )
+    fun `when there is new feature but no policy change, there should not be a policy new feature item`() =
+        runTest {
+            val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
+            val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
+            val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
+            val holderFeatureFlagUseCase: HolderFeatureFlagUseCase = mockk()
+            val appStatusUseCase = appStatusUseCase(
+                false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
+                introductionPersistenceManager, showNewDisclosurePolicyUseCase
+            )
 
-        val appStatus = appStatusUseCase.get(
-            config = ConfigResult.Error,
-            currentVersionCode = 1000
-        )
+            every { introductionPersistenceManager.getIntroductionFinished() } returns true
+            every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns false
+            every { showNewDisclosurePolicyUseCase.get() } returns null
+            every { holderFeatureFlagUseCase.getDisclosurePolicy() } returns DisclosurePolicy.ThreeG
 
-        assertEquals(AppStatus.Error, appStatus)
-    }
+            val appStatus = appStatusUseCase.get(
+                config = ConfigResult.Success(
+                    appConfig = getHolderConfig(),
+                    publicKeys = publicKeys
+                ),
+                currentVersionCode = 1
+            )
+
+            with(appStatus as AppStatus.NewFeatures) {
+                assertEquals(1, appUpdateData.newFeatures.size)
+                assertEquals(2, appUpdateData.newFeatureVersion)
+            }
+        }
+
+    @Test
+    fun `given config result error and a corrupted cached config, AppStatus is LaunchError`() =
+        runTest {
+            val appStatusUseCase = appStatusUseCase(false, 1000, cachedAppConfig = null)
+
+            val appStatus = appStatusUseCase.get(
+                config = ConfigResult.Error(mockk {
+                    every { e } returns SSLException("ssl error")
+                }),
+                currentVersionCode = 1000
+            )
+
+            assertTrue(appStatus is AppStatus.LaunchError)
+        }
+
+    @Test
+    fun `given a valid cached config fetched recently, when config result is error, then no action is required`() =
+        runTest {
+            val appStatusUseCase = appStatusUseCase(
+                appDeactivated = false,
+                minimumVersion = 1000,
+                configLastFetchedSeconds = 10000,
+                configTtlSeconds = 1000,
+                showNewDisclosurePolicyUseCase = mockk {
+                    every { get() } returns null
+                },
+                appUpdatePersistenceManager = mockk {
+                    every { getNewFeaturesSeen(any()) } returns true
+                    every { getNewTermsSeen(any()) } returns true
+                }
+            )
+
+            val appStatus = appStatusUseCase.get(
+                config = ConfigResult.Error(mockk {
+                    every { e } returns SSLException("ssl expired")
+                }),
+                currentVersionCode = 1000
+            )
+
+            assertEquals(AppStatus.NoActionRequired, appStatus)
+        }
+
+    @Test
+    fun `given a valid cached config fetched long time ago, when config result is error, then AppStatus is launch error`() =
+        runTest {
+            val appStatusUseCase = appStatusUseCase(
+                appDeactivated = false,
+                minimumVersion = 1000,
+                configLastFetchedSeconds = 1000,
+                configTtlSeconds = 1000
+            )
+
+            val appStatus = appStatusUseCase.get(
+                config = ConfigResult.Error(mockk {
+                    every { e } returns SSLException("ssl expired")
+                }),
+                currentVersionCode = 1000
+            )
+
+            assertTrue(appStatus is AppStatus.LaunchError)
+        }
 
     private fun getAppUpdateData() = AppUpdateData(
         newTerms = NewTerms(
@@ -701,7 +758,7 @@ class HolderAppStatusUseCaseImplTest {
     )
 
     @Test
-    fun `when there is switch from 0G to CTB, there should be a new feature item`() = runBlocking {
+    fun `when there is switch from 0G to CTB, there should be a new feature item`() = runTest {
         val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
         val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
         val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
@@ -751,34 +808,35 @@ class HolderAppStatusUseCaseImplTest {
     }
 
     @Test
-    fun `when switching policy and there is no change in CTB, there should not be a new feature item`() = runBlocking {
-        val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
-        val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
-        val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
-        val persistenceManager: PersistenceManager = mockk()
-        val appStatusUseCase = appStatusUseCase(
-            false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
-            introductionPersistenceManager, showNewDisclosurePolicyUseCase,
-            persistenceManager = persistenceManager
-        )
+    fun `when switching policy and there is no change in CTB, there should not be a new feature item`() =
+        runTest {
+            val introductionPersistenceManager: IntroductionPersistenceManager = mockk()
+            val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
+            val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase = mockk()
+            val persistenceManager: PersistenceManager = mockk()
+            val appStatusUseCase = appStatusUseCase(
+                false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
+                introductionPersistenceManager, showNewDisclosurePolicyUseCase,
+                persistenceManager = persistenceManager
+            )
 
-        every { introductionPersistenceManager.getIntroductionFinished() } returns true
-        every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns true
-        every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
-        every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.OneG
+            every { introductionPersistenceManager.getIntroductionFinished() } returns true
+            every { appUpdatePersistenceManager.getNewFeaturesSeen(2) } returns true
+            every { showNewDisclosurePolicyUseCase.get() } returns DisclosurePolicy.ThreeG
+            every { persistenceManager.getPolicyScreenSeen() } returns DisclosurePolicy.OneG
 
-        val appStatus = appStatusUseCase.get(
-            config = ConfigResult.Success(
-                appConfig = getHolderConfig(),
-                publicKeys = publicKeys
-            ),
-            currentVersionCode = 1
-        )
+            val appStatus = appStatusUseCase.get(
+                config = ConfigResult.Success(
+                    appConfig = getHolderConfig(),
+                    publicKeys = publicKeys
+                ),
+                currentVersionCode = 1
+            )
 
-        with(appStatus as AppStatus.NewFeatures) {
-            assertEquals(1, appUpdateData.newFeatures.size)
+            with(appStatus as AppStatus.NewFeatures) {
+                assertEquals(1, appUpdateData.newFeatures.size)
+            }
         }
-    }
 
     private fun appStatusUseCase(
         appDeactivated: Boolean,
@@ -814,6 +872,7 @@ class HolderAppStatusUseCaseImplTest {
             appUpdatePersistenceManager = appUpdatePersistenceManager,
             introductionPersistenceManager = introductionPersistenceManager,
             persistenceManager = persistenceManager,
-            showNewDisclosurePolicyUseCase = showNewDisclosurePolicyUseCase
+            showNewDisclosurePolicyUseCase = showNewDisclosurePolicyUseCase,
+            errorCodeStringFactory = mockk(relaxed = true)
         )
 }
