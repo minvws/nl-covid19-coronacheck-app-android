@@ -21,7 +21,6 @@ import nl.rijksoverheid.ctr.holder.end2end.actions.setAirplaneMode
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
-import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.TestType
@@ -47,7 +46,7 @@ class OfflineQrTest : BaseTest() {
         instrumentation.setAirplaneMode(true)
         relaunchApp()
 
-        viewQR(EventType.Vaccination)
+        viewQR()
         assertQRisShown()
         viewPreviousQR()
         assertQRisHidden()
@@ -65,7 +64,7 @@ class OfflineQrTest : BaseTest() {
         instrumentation.setAirplaneMode(true)
         relaunchApp()
 
-        viewQR(EventType.PositiveTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -81,7 +80,7 @@ class OfflineQrTest : BaseTest() {
         instrumentation.setAirplaneMode(true)
         relaunchApp()
 
-        viewQR(EventType.NegativeTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -101,7 +100,7 @@ class OfflineQrTest : BaseTest() {
         instrumentation.setAirplaneMode(true)
         relaunchApp()
 
-        viewQR(EventType.NegativeTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }

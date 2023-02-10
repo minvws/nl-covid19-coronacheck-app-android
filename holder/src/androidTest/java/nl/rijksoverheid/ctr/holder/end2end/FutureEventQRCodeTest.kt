@@ -67,7 +67,7 @@ class FutureEventQRCodeTest : BaseTest() {
         assertInternationalEventOnOverview(vac1, dose = "1/2")
         assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(EventType.Vaccination)
+        viewQR()
         assertQRisShown()
         viewPreviousQR()
         assertQRisHidden()
@@ -91,7 +91,7 @@ class FutureEventQRCodeTest : BaseTest() {
         assertInternationalEventOnOverview(vac1, dose = "1/2")
         assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(EventType.Vaccination)
+        viewQR()
         assertQRisExpired()
         viewPreviousQR()
         assertQRisHidden()
@@ -118,7 +118,7 @@ class FutureEventQRCodeTest : BaseTest() {
         assertInternationalEventOnOverview(pos)
         assertQrButtonIsEnabled(EventType.PositiveTest)
 
-        viewQR(EventType.PositiveTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -143,7 +143,7 @@ class FutureEventQRCodeTest : BaseTest() {
         assertInternationalEventWillExpireSoon(EventType.PositiveTest, daysLeft = 9)
         assertQrButtonIsEnabled(EventType.PositiveTest)
 
-        viewQR(EventType.PositiveTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -179,7 +179,7 @@ class FutureEventQRCodeTest : BaseTest() {
         assertInternationalEventOnOverview(neg)
         assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(EventType.NegativeTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -220,7 +220,7 @@ class FutureEventQRCodeTest : BaseTest() {
         assertInternationalEventOnOverview(token)
         assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(EventType.NegativeTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }

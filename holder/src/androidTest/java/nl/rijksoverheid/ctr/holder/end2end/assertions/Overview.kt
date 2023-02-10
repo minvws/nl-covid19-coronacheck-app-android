@@ -44,7 +44,7 @@ object Overview {
     fun assertInternationalEventOnOverview(event: Event, position: Int = 0, dose: String? = null) {
         val card = card(event.eventType, position)
 
-        scrollToBottomOfOverview()
+        scrollToBottomOfOverview(position)
         waitUntilViewIsShown(card)
         when (event) {
             is VaccinationEvent -> {
@@ -64,7 +64,7 @@ object Overview {
     fun assertNotYetValidInternationalEventOnOverview(event: Event, position: Int = 0) {
         val card = card(event.eventType, position)
 
-        scrollToBottomOfOverview()
+        scrollToBottomOfOverview(position)
         waitUntilViewIsShown(card(event.eventType, position))
         when (event) {
             is PositiveTest -> {

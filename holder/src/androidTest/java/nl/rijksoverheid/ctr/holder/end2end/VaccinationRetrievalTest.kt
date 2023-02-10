@@ -47,7 +47,7 @@ class VaccinationRetrievalTest : BaseTest() {
         assertInternationalEventOnOverview(vac1, dose = "1/2")
         assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(EventType.Vaccination)
+        viewQR()
         assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/2")
         viewPreviousQR()
@@ -74,7 +74,7 @@ class VaccinationRetrievalTest : BaseTest() {
         assertInternationalEventOnOverview(vac1, dose = "1/2")
         assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(EventType.Vaccination)
+        viewQR()
         assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/2")
         viewPreviousQR()
@@ -101,7 +101,7 @@ class VaccinationRetrievalTest : BaseTest() {
         assertInternationalEventOnOverview(vac1, dose = "1/1")
         assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(EventType.Vaccination)
+        viewQR()
         assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/1")
         viewPreviousQR()

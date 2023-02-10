@@ -85,4 +85,9 @@ object Barista {
         Timber.tag("end2end").d("Writing text '$text' on edit text ID '$editTextId'")
         BaristaEditTextInteractions.writeTo(editTextId, text)
     }
+
+    fun clickListItemChild(@IdRes id: Int, position: Int, @IdRes childId: Int) {
+        Timber.tag("end2end").d("Clicking on '$childId' at position '$position' of list '$id'")
+        BaristaListInteractions.clickListItemChild(id, position, childId)
+    }
 }

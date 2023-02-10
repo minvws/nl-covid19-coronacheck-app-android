@@ -60,7 +60,7 @@ class TokenTest : BaseTest() {
         assertInternationalEventOnOverview(token)
         assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(EventType.NegativeTest)
+        viewQR()
         assertInternationalQRDetails(person, token)
         assertNoPreviousQR()
     }
@@ -81,7 +81,7 @@ class TokenTest : BaseTest() {
         assertInternationalEventOnOverview(token)
         assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(EventType.NegativeTest)
+        viewQR()
         assertInternationalQRDetails(person, token)
         assertNoPreviousQR()
     }

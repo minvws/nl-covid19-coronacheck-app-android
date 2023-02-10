@@ -51,7 +51,7 @@ class TestsRetrievalTest : BaseTest() {
         assertInternationalEventOnOverview(pos)
         assertQrButtonIsEnabled(EventType.PositiveTest)
 
-        viewQR(EventType.PositiveTest)
+        viewQR()
         assertQRisShown()
         assertInternationalQRDetails(person, pos)
         assertNoPreviousQR()
@@ -70,7 +70,7 @@ class TestsRetrievalTest : BaseTest() {
         assertInternationalEventOnOverview(neg)
         assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(EventType.NegativeTest)
+        viewQR()
         assertQRisShown()
         assertInternationalQRDetails(person, neg)
         assertNoPreviousQR()
@@ -92,13 +92,13 @@ class TestsRetrievalTest : BaseTest() {
         assertInternationalEventOnOverview(rat, 1)
         assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(EventType.NegativeTest, 0)
+        viewQR(0)
         assertQRisShown()
         assertInternationalQRDetails(person, pcr)
         assertNoPreviousQR()
         backToOverview()
 
-        viewQR(EventType.NegativeTest, 1)
+        viewQR(1)
         assertQRisShown()
         assertInternationalQRDetails(person, rat)
         assertNoPreviousQR()

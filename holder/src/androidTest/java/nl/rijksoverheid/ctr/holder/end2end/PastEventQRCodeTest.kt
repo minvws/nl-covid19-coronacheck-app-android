@@ -84,7 +84,7 @@ class PastEventQRCodeTest : BaseTest() {
         assertInternationalEventWillBecomeValid(EventType.Vaccination)
         assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(EventType.Vaccination)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
