@@ -113,7 +113,7 @@ class TestsRetrievalTest : BaseTest() {
     }
 
     @Test
-    fun retrieveTwoNegativeTest_assertOverview() {
+    fun retrieveTwoNegativeTest_assertOverviewAndQRDetails() {
         val person = Person(bsn = "999994268")
         val rat = NegativeTest(eventDate = today, testType = TestType.Rat)
         val pcr = NegativeTest(eventDate = today, testType = TestType.Pcr)
@@ -141,7 +141,7 @@ class TestsRetrievalTest : BaseTest() {
     }
 
     @Test
-    fun retrievePositiveTestAndVaccination_assertEndScreen() {
+    fun retrievePositiveTestAndVaccination_assertEndScreenAndOverview() {
         val person = Person(bsn = "999991772")
         val vac1 =
             VaccinationEvent(today.offsetDays(-90), vaccine = VaccineType.Pfizer)
