@@ -36,7 +36,7 @@ import org.junit.Test
 
 @SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
 @RunFirebaseTestOnDemand
-class TokenTest : BaseTest() {
+class TokenRetrievalTest : BaseTest() {
 
     private val person = Person(name = "de Beer, Boris", birthDate = LocalDate.of(1971, 7, 31))
 
