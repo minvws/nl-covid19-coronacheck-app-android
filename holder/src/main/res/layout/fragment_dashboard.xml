@@ -1,5 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~ Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~
+  ~ SPDX-License-Identifier: EUPL-1.2
+  -->
+<nl.rijksoverheid.ctr.design.widgets.AnimatorCoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="?colorSurface"
@@ -65,4 +70,4 @@
 
     </androidx.cardview.widget.CardView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</nl.rijksoverheid.ctr.design.widgets.AnimatorCoordinatorLayout>

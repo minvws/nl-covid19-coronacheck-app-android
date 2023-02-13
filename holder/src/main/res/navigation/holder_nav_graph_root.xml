@@ -13,8 +13,8 @@
     <action
         android:id="@+id/action_main"
         app:destination="@id/nav_main"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:exitAnim="@anim/fragment_open_exit"
+        app:enterAnim="@animator/fragment_open_enter"
+        app:exitAnim="@animator/fragment_open_exit"
         app:popEnterAnim="@anim/fragment_close_enter"
         app:popExitAnim="@anim/fragment_close_exit"
         app:popUpTo="@+id/root_nav"
@@ -24,7 +24,7 @@
         android:id="@+id/action_introduction"
         app:destination="@id/nav_introduction"
         app:enterAnim="@anim/no_animation"
-        app:exitAnim="@anim/fragment_open_exit"
+        app:exitAnim="@animator/fragment_open_exit"
         app:popEnterAnim="@anim/fragment_close_enter"
         app:popExitAnim="@anim/fragment_close_exit"
         app:popUpTo="@+id/root_nav"
@@ -35,8 +35,8 @@
     <action
         android:id="@+id/action_app_status"
         app:destination="@id/nav_status"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:exitAnim="@anim/fragment_open_exit"
+        app:enterAnim="@animator/fragment_open_enter"
+        app:exitAnim="@animator/fragment_open_exit"
         app:popEnterAnim="@anim/fragment_close_enter"
         app:popExitAnim="@anim/fragment_close_exit"
         app:popUpTo="@+id/root_nav"
@@ -51,8 +51,8 @@
     <action
         android:id="@+id/action_paper_proof_qr_scanner"
         app:destination="@id/nav_paper_proof_qr_scanner"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:exitAnim="@anim/fragment_open_exit"
+        app:enterAnim="@animator/fragment_open_enter"
+        app:exitAnim="@animator/fragment_open_exit"
         app:popEnterAnim="@anim/fragment_close_enter"
         app:popExitAnim="@anim/fragment_close_exit" />
 
@@ -63,10 +63,10 @@
         <action
             android:id="@+id/action_paper_proof_code"
             app:destination="@id/nav_paper_proof_code"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
 
     </fragment>
 

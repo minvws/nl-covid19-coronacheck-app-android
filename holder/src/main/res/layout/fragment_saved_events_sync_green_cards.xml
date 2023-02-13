@@ -5,7 +5,7 @@
   ~ SPDX-License-Identifier: EUPL-1.2
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<nl.rijksoverheid.ctr.design.widgets.AnimatorFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,4 +16,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-</FrameLayout>
+</nl.rijksoverheid.ctr.design.widgets.AnimatorFrameLayout>

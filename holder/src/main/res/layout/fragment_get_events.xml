@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<nl.rijksoverheid.ctr.design.widgets.AnimatorFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -93,4 +93,4 @@
         android:id="@+id/loading_overlay"
         layout="@layout/include_loading_indicator" />
 
-</FrameLayout>
+</nl.rijksoverheid.ctr.design.widgets.AnimatorFrameLayout>

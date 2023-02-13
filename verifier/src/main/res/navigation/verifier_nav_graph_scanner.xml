@@ -19,24 +19,24 @@
         <action
             android:id="@+id/action_scan_result_invalid"
             app:destination="@id/nav_scan_result_invalid"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
+            app:enterAnim="@animator/fragment_open_enter"
+            app:exitAnim="@animator/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
         <action
             android:id="@+id/action_scan_instructions"
             app:destination="@id/nav_scan_instructions_with_toolbar"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
+            app:enterAnim="@animator/fragment_open_enter"
+            app:exitAnim="@animator/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
         <action
             android:id="@+id/action_scan_result_personal_details"
             app:destination="@id/nav_scan_result_personal_details"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
+            app:enterAnim="@animator/fragment_open_enter"
+            app:exitAnim="@animator/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
 
@@ -60,8 +60,8 @@
         <action
             android:id="@+id/action_nav_qr_scanner"
             app:destination="@id/nav_qr_scanner"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
+            app:enterAnim="@animator/fragment_open_enter"
+            app:exitAnim="@animator/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_qr_scanner"
@@ -81,8 +81,8 @@
         <action
             android:id="@+id/action_nav_qr_scanner"
             app:destination="@id/nav_qr_scanner"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
+            app:enterAnim="@animator/fragment_open_enter"
+            app:exitAnim="@animator/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_qr_scanner"
@@ -102,8 +102,8 @@
         <action
             android:id="@+id/action_nav_main"
             app:destination="@id/nav_main"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
+            app:enterAnim="@animator/fragment_open_enter"
+            app:exitAnim="@animator/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_main"
@@ -119,10 +119,10 @@
         <action
             android:id="@+id/action_nav_details_wrong"
             app:destination="@id/nav_scan_result_personal_details_wrong"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
 
     </fragment>
 
@@ -145,8 +145,8 @@
         <action
             android:id="@+id/action_nav_qr_scanner"
             app:destination="@id/nav_qr_scanner"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
+            app:enterAnim="@animator/fragment_open_enter"
+            app:exitAnim="@animator/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/nav_qr_scanner"
