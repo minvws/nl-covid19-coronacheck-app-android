@@ -77,6 +77,42 @@ class TestsRetrievalTest : BaseTest() {
     }
 
     @Test
+    fun retrieveTwoPositiveTest_assertOverviewAndQRDetails() {
+        val person = Person(bsn = "999994086")
+        val pcr = PositiveTest(
+            eventDate = today.offsetDays(-30),
+            testType = TestType.Pcr,
+            validUntil = today.offsetDays(150)
+        )
+        val rat = PositiveTest(
+            eventDate = today.offsetDays(-60),
+            testType = TestType.Rat,
+            validUntil = today.offsetDays(120)
+        )
+
+        addRecoveryCertificate()
+        device.retrieveCertificateFromServer(person.bsn)
+        assertRetrievalDetails(person, pcr, 0)
+        assertRetrievalDetails(person, rat, 1)
+        addRetrievedCertificateToApp()
+
+        assertInternationalEventOnOverview(rat, 0)
+        assertInternationalEventOnOverview(pcr, 1)
+        assertQrButtonIsEnabled(EventType.PositiveTest)
+
+        viewQR(0)
+        assertQRisShown()
+        assertInternationalQRDetails(person, rat)
+        assertNoPreviousQR()
+        backToOverview()
+
+        viewQR(1)
+        assertQRisShown()
+        assertInternationalQRDetails(person, pcr)
+        assertNoPreviousQR()
+    }
+
+    @Test
     fun retrieveTwoNegativeTest_assertOverview() {
         val person = Person(bsn = "999994268")
         val rat = NegativeTest(eventDate = today, testType = TestType.Rat)
