@@ -54,6 +54,7 @@ object Add {
         verificationCode: String
     ) {
         retrieveCertificateWithToken(retrievalCode)
+        waitUntilTextIsShown("Geen verificatiecode gekregen?")
         writeTo(R.id.verification_code_input, verificationCode)
         clickOn("Haal testuitslag op")
     }
