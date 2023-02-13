@@ -6,11 +6,11 @@
   -->
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <objectAnimator
-        android:duration="300"
+        android:duration="50"
+        android:startOffset="66"
         android:interpolator="@android:anim/linear_interpolator">
         <propertyValuesHolder
             android:propertyName="alpha"
-            android:startOffset="35"
             android:valueFrom="0"
             android:valueTo="1.0"
             android:valueType="floatType" />
@@ -20,12 +20,12 @@
         android:interpolator="@anim/fragment_fast_out_extra_slow_in">
         <propertyValuesHolder
             android:propertyName="scaleX"
-            android:valueFrom="0.85"
+            android:valueFrom="1.1"
             android:valueTo="1.0"
             android:valueType="floatType" />
         <propertyValuesHolder
             android:propertyName="scaleY"
-            android:valueFrom="0.85"
+            android:valueFrom="1.1"
             android:valueTo="1.0"
             android:valueType="floatType" />
     </objectAnimator>

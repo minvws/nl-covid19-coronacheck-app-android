@@ -31,8 +31,8 @@
             app:destination="@id/nav_holder_name_selection"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit" />
 
     </fragment>
 

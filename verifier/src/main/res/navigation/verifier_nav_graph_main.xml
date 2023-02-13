@@ -35,8 +35,8 @@
             app:destination="@id/nav_scan_instructions"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit" />
 
         <action
             android:id="@+id/action_policy_selection"
@@ -169,8 +169,8 @@
             app:destination="@+id/nav_policy_selection"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit" />
 
         <action
             android:id="@+id/action_new_policy_rules"

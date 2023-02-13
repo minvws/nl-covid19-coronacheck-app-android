@@ -39,16 +39,16 @@
                 app:destination="@id/nav_choose_proof_type"
                 app:enterAnim="@animator/fragment_open_enter"
                 app:exitAnim="@animator/fragment_open_exit"
-                app:popEnterAnim="@anim/fragment_close_enter"
-                app:popExitAnim="@anim/fragment_close_exit" />
+                app:popEnterAnim="@animator/fragment_close_enter"
+                app:popExitAnim="@animator/fragment_close_exit" />
 
             <action
                 android:id="@+id/action_qr_code"
                 app:destination="@id/nav_qr_codes"
                 app:enterAnim="@animator/fragment_open_enter"
                 app:exitAnim="@animator/fragment_open_exit"
-                app:popEnterAnim="@anim/fragment_close_enter"
-                app:popExitAnim="@anim/fragment_close_exit" />
+                app:popEnterAnim="@animator/fragment_close_enter"
+                app:popExitAnim="@animator/fragment_close_exit" />
 
             <action android:id="@+id/action_input_token"
                 app:destination="@id/nav_commercial_test_input_token"
@@ -80,8 +80,8 @@
             app:destination="@id/nav_holder_fuzzy_matching"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit">
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit">
             <argument
                 android:name="matchingBlobIds"
                 app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
@@ -100,16 +100,16 @@
             app:destination="@id/nav_choose_provider"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit" />
 
         <action
             android:id="@+id/action_qr_code"
             app:destination="@id/nav_qr_codes"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit" />
 
         <action
             android:id="@+id/action_choose_proof_type"
@@ -136,8 +136,8 @@
             app:destination="@id/nav_saved_events"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit"
             app:popUpTo="@id/nav_saved_events"
             app:popUpToInclusive="true" />
 
@@ -146,8 +146,8 @@
             app:destination="@id/nav_holder_fuzzy_matching"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit"
             app:popUpTo="@id/nav_dashboard">
             <argument
                 android:name="matchingBlobIds"
@@ -475,8 +475,8 @@
             app:destination="@id/nav_graph_overview"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit"
             app:popUpTo="@id/nav_graph_overview"
             app:popUpToInclusive="true" />
 
@@ -493,8 +493,8 @@
             app:destination="@id/nav_certificate_created"
             app:enterAnim="@animator/slide_in_right"
             app:exitAnim="@animator/slide_out_left"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit"
             app:popUpTo="@id/nav_dashboard"
             app:popUpToInclusive="false" />
 
@@ -502,8 +502,8 @@
             app:destination="@id/nav_info_fragment"
             app:enterAnim="@animator/slide_in_right"
             app:exitAnim="@animator/slide_out_left"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit"
             app:popUpTo="@id/nav_dashboard"
             app:popUpToInclusive="false" />
 
@@ -512,8 +512,8 @@
             app:destination="@id/nav_holder_fuzzy_matching"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit">
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit">
             <argument
                 android:name="matchingBlobIds"
                 app:argType="nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds" />
@@ -617,8 +617,8 @@
             app:destination="@id/nav_graph_overview"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit"
             app:popUpTo="@id/nav_graph_overview"
             app:popUpToInclusive="true" />
 
@@ -659,8 +659,8 @@
         app:destination="@id/nav_graph_overview"
         app:enterAnim="@animator/fragment_open_enter"
         app:exitAnim="@animator/fragment_open_exit"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit"
+        app:popEnterAnim="@animator/fragment_close_enter"
+        app:popExitAnim="@animator/fragment_close_exit"
         app:popUpTo="@id/nav_graph_overview"
         app:popUpToInclusive="true" />
 
@@ -702,8 +702,8 @@
             app:destination="@id/nav_visitor_pass_input_token"
             app:enterAnim="@animator/slide_in_right"
             app:exitAnim="@animator/slide_out_left"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit"
             app:popUpTo="@id/nav_dashboard"
             app:popUpToInclusive="false" />
 
@@ -712,8 +712,8 @@
             app:destination="@id/nav_graph_overview"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit"
             app:popUpTo="@id/nav_graph_overview"
             app:popUpToInclusive="true" />
 
@@ -722,8 +722,8 @@
             app:destination="@id/nav_paper_proof"
             app:enterAnim="@animator/fragment_open_enter"
             app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit"
             app:popUpTo="@id/nav_paper_proof"
             app:popUpToInclusive="true"/>
 
@@ -750,8 +750,8 @@
         app:destination="@+id/nav_get_events"
         app:enterAnim="@animator/fragment_open_enter"
         app:exitAnim="@animator/fragment_open_exit"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit" />
+        app:popEnterAnim="@animator/fragment_close_enter"
+        app:popExitAnim="@animator/fragment_close_exit" />
 
     <fragment
         android:id="@+id/nav_certificate_created"
