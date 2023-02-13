@@ -52,30 +52,25 @@ object QR {
                 labelValuePairExist("Vaccin / Vaccine:", event.vaccine.value)
                 labelValuePairExist("Type vaccin / Vaccine type:", event.vaccine.type)
                 labelValuePairExist(
-                    "Vaccinproducent / Vaccine manufacturer:",
-                    event.vaccine.manufacturer
+                    "Vaccinproducent / Vaccine manufacturer:", event.vaccine.manufacturer
                 )
                 labelValuePairExist("Dosis / Number in series of doses:", split)
                 labelValuePairExist("Vaccinatiedatum / Vaccination date*:", event.eventDate.dutch())
                 val dateDiff = ChronoUnit.DAYS.between(event.eventDate, deviceDate)
                 labelValuePairExist(
-                    "Dagen sinds vaccinatie / Days since vaccination:",
-                    "$dateDiff dagen"
+                    "Dagen sinds vaccinatie / Days since vaccination:", "$dateDiff dagen"
                 )
                 labelValuePairExist(
-                    "Gevaccineerd in / Vaccinated in:",
-                    event.country.internationalName
+                    "Gevaccineerd in / Vaccinated in:", event.country.internationalName
                 )
             }
             is PositiveTest -> {
                 labelValuePairExist(
-                    "Ziekte waarvan hersteld / Disease recovered from:",
-                    event.disease
+                    "Ziekte waarvan hersteld / Disease recovered from:", event.disease
                 )
                 event.validFrom?.let {
                     labelValuePairExist(
-                        "Geldig vanaf / Valid from*:",
-                        it.dutch()
+                        "Geldig vanaf / Valid from*:", it.dutch()
                     )
                 }
                 event.validUntil?.let { labelValuePairExist("Geldig tot / Valid to*:", it.dutch()) }

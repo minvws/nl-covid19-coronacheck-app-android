@@ -49,6 +49,7 @@ class FutureEventQRCodeTest : BaseTest() {
     }
 
     // region Vaccinations
+
     @Test
     fun whenDeviceDateIsBeforeExpiry_vaccinationCertificatesAreValid() {
         val person = Person(bsn = "999990020")
@@ -98,7 +99,9 @@ class FutureEventQRCodeTest : BaseTest() {
     }
 
     // endregion
+
     // region Recovery
+
     @Test
     fun whenDeviceDateIsBeforeExpiry_recoveryCertificateIsValid() {
         val person = Person(bsn = "999993033")
@@ -163,7 +166,9 @@ class FutureEventQRCodeTest : BaseTest() {
     }
 
     // endregion
+
     // region Negative test
+
     @Test
     fun whenDeviceDateIsBeforeExpiry_negativeTestCertificateIsValid() {
         val person = Person(bsn = "999992004")
@@ -199,7 +204,9 @@ class FutureEventQRCodeTest : BaseTest() {
     }
 
     // endregion
+
     // region Tokens
+
     @Test
     fun whenDeviceDateIsBeforeExpiry_negativeTokenCertificateIsValid() {
         val person = Person(name = "de Beer, Boris", birthDate = LocalDate.of(1971, 7, 31))
