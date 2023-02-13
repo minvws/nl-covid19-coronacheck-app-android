@@ -36,6 +36,10 @@ object Espresso {
         viewInteraction.perform(ViewActions.click())
     }
 
+    fun firstMatch(matcher: Matcher<View?>): Matcher<View?> {
+        return withIndex(matcher, 0)
+    }
+
     // Based on: https://stackoverflow.com/a/41967652
     private fun withIndex(matcher: Matcher<View?>, index: Int): Matcher<View?> {
         return object : TypeSafeMatcher<View>() {

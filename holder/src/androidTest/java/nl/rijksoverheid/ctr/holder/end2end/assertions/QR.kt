@@ -7,17 +7,21 @@
 
 package nl.rijksoverheid.ctr.holder.end2end.assertions
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertContains
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertNotDisplayed
-import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertNotExist
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickBack
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.labelValuePairExist
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.firstMatch
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
+import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilViewIsShown
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
@@ -98,25 +102,33 @@ object QR {
     }
 
     fun assertQRisShown() {
-        // TODO: Not yet implemented
+        waitUntilViewIsShown(onView(firstMatch(withId(R.id.image))))
+        assertDisplayed(R.id.image)
+        assertNotDisplayed(R.id.overlay)
     }
 
     fun assertQRisHidden() {
         waitUntilTextIsShown("QR-code is verborgen")
+        assertDisplayed(R.id.overlay)
         assertDisplayed("Wat betekent dit?")
+        clickOn("Wat betekent dit?")
+        assertDisplayed("Verborgen QR-code")
+        clickBack()
         assertDisplayed("Laat toch zien")
-    }
-
-    fun assertQRisNotHidden() {
-        assertNotExist("QR-code is verborgen")
-        assertNotDisplayed("Wat betekent dit?")
-        assertNotDisplayed("Laat toch zien")
+        clickOn("Laat toch zien")
+        assertQRisShown()
     }
 
     fun assertQRisExpired() {
         waitUntilTextIsShown("QR-code is verlopen")
+        assertDisplayed(R.id.overlay)
         assertDisplayed("Wat betekent dit?")
+        clickOn("Wat betekent dit?")
+        assertDisplayed("Verlopen QR-code")
+        clickBack()
         assertDisplayed("Laat toch zien")
+        clickOn("Laat toch zien")
+        assertQRisShown()
     }
 
     fun assertNoPreviousQR() {
