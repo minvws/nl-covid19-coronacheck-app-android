@@ -17,7 +17,9 @@ class HelpdeskFragment : Fragment(R.layout.fragment_helpdesk) {
             ?: throw IllegalStateException("HelpdeskData should be set")
 
         binding.contactTitle.text = helpdeskData.contactTitle
-        binding.contactMessage.setHtmlText(helpdeskData.contactMessage, true)
+        binding.contactMessageLine1.setHtmlText(helpdeskData.contactMessageLines[0], true)
+        binding.contactMessageLine2.setHtmlText(helpdeskData.contactMessageLines[1], true)
+        binding.contactMessageLine3.setHtmlText(helpdeskData.contactMessageLines[2], true)
         binding.supportTitle.text = helpdeskData.supportTitle
         binding.supportMessage.setHtmlText(helpdeskData.supportMessage, true)
         binding.appVersionTitle.text = helpdeskData.appVersionTitle
