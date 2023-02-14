@@ -45,6 +45,7 @@ class PastEventQRCodeTest : BaseTest() {
     }
 
     // region Vaccinations
+
     @Test
     fun whenDeviceDateIsBeforeEvents_vaccinationCertificatesAreNotYetValid() {
         val person = Person(bsn = "999990020")
@@ -90,6 +91,7 @@ class PastEventQRCodeTest : BaseTest() {
     }
 
     // endregion
+
     @Test
     fun whenDeviceDateIsBeforeEvent_recoveryCertificateIsNotYetValid() {
         val person = Person(bsn = "999993033")
