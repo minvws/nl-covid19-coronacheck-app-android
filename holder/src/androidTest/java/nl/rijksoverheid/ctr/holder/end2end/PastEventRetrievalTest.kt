@@ -18,10 +18,10 @@ import nl.rijksoverheid.ctr.holder.end2end.actions.retrieveCertificateFromServer
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertNotYetValidInternationalEventOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertQrButtonIsDisabled
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalError
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
-import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
 import org.junit.After
@@ -68,7 +68,7 @@ class PastEventRetrievalTest : BaseTest() {
         val token = NegativeToken(
             eventDate = today,
             validFrom = today,
-            testType = TestEvent.TestType.Pcr,
+            testType = TestType.Pcr,
             couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2"
         )
 
@@ -77,6 +77,6 @@ class PastEventRetrievalTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         assertNotYetValidInternationalEventOnOverview(token)
-        assertQrButtonIsDisabled(Event.Type.NegativeTest)
+        assertQrButtonIsDisabled(EventType.NegativeTest)
     }
 }

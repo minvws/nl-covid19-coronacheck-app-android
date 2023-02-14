@@ -23,14 +23,14 @@ import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertQrButtonIsD
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertQrButtonIsEnabled
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
-import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent.TestType
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
-import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent.VaccineType
+import nl.rijksoverheid.ctr.holder.end2end.model.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
 import org.junit.After
@@ -61,8 +61,8 @@ class PastEventQRCodeTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertInternationalEventWillBecomeValid(Event.Type.Vaccination)
-        assertQrButtonIsDisabled(Event.Type.Vaccination)
+        assertInternationalEventWillBecomeValid(EventType.Vaccination)
+        assertQrButtonIsDisabled(EventType.Vaccination)
     }
 
     @Test
@@ -81,10 +81,10 @@ class PastEventQRCodeTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertInternationalEventWillBecomeValid(Event.Type.Vaccination)
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertInternationalEventWillBecomeValid(EventType.Vaccination)
+        assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(Event.Type.Vaccination)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -108,7 +108,7 @@ class PastEventQRCodeTest : BaseTest() {
         relaunchApp()
 
         assertNotYetValidInternationalEventOnOverview(pos)
-        assertQrButtonIsDisabled(Event.Type.PositiveTest)
+        assertQrButtonIsDisabled(EventType.PositiveTest)
     }
 
     @Test
@@ -124,7 +124,7 @@ class PastEventQRCodeTest : BaseTest() {
         relaunchApp()
 
         assertNotYetValidInternationalEventOnOverview(neg)
-        assertQrButtonIsDisabled(Event.Type.NegativeTest)
+        assertQrButtonIsDisabled(EventType.NegativeTest)
     }
 
     @Test
@@ -144,6 +144,6 @@ class PastEventQRCodeTest : BaseTest() {
         relaunchApp()
 
         assertNotYetValidInternationalEventOnOverview(token)
-        assertQrButtonIsDisabled(Event.Type.NegativeTest)
+        assertQrButtonIsDisabled(EventType.NegativeTest)
     }
 }

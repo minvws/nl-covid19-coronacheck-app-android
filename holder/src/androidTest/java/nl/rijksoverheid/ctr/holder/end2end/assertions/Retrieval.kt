@@ -7,18 +7,19 @@
 
 package nl.rijksoverheid.ctr.holder.end2end.assertions
 
-import nl.rijksoverheid.ctr.holder.end2end.interaction.assertContains
-import nl.rijksoverheid.ctr.holder.end2end.interaction.assertDisplayed
-import nl.rijksoverheid.ctr.holder.end2end.interaction.clickBack
-import nl.rijksoverheid.ctr.holder.end2end.interaction.labelValuePairExist
-import nl.rijksoverheid.ctr.holder.end2end.interaction.scrollTo
-import nl.rijksoverheid.ctr.holder.end2end.interaction.tapButton
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertContains
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickBack
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.labelValuePairExist
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.scrollTo
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
 import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
 import nl.rijksoverheid.ctr.holder.end2end.model.written
 import nl.rijksoverheid.ctr.holder.end2end.utils.recently
@@ -43,7 +44,7 @@ object Retrieval {
             else -> {
                 event as TestEvent
                 assertContains("Type test: " + event.testType.value)
-                assertContains("Testnaam: " + event.testName)
+                if (event.testType != TestType.Rat) assertContains("Testnaam: " + event.testName)
                 assertContains("Testdatum: " + event.eventDate.recently())
                 assertContains("Testproducent: " + event.testProducer)
                 assertContains("Testlocatie: " + event.testLocation.realName)

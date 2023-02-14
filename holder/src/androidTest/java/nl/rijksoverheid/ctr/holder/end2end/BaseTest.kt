@@ -58,7 +58,8 @@ abstract class BaseTest : AutoCloseKoinTest() {
 
     companion object {
 
-        val authPassword: String = InstrumentationRegistry.getArguments().getString("authPassword", "")
+        val authPassword: String =
+            InstrumentationRegistry.getArguments().getString("authPassword", "")
 
         fun logVersions() {
             val appVersion = BuildConfig.VERSION_NAME

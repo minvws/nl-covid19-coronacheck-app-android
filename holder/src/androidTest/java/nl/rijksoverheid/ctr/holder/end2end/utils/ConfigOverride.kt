@@ -122,6 +122,16 @@ fun overrideModules(modules: List<Module>, instrumentation: Instrumentation) {
                                 AppConfig.Code(
                                     code = "LP6464-4",
                                     name = "PCR (NAAT)"
+                                ),
+                                AppConfig.Code(
+                                    code = "LP217198-3",
+                                    name = "Sneltest (RAT)"
+                                )
+                            ),
+                            euTestNames = listOf(
+                                AppConfig.Code(
+                                    code = "RAT Manufacturer",
+                                    name = "RAT Name"
                                 )
                             )
                         )

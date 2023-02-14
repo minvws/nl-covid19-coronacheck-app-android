@@ -8,7 +8,7 @@
 package nl.rijksoverheid.ctr.holder.end2end.actions
 
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.end2end.interaction.clickOn
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilViewIsShown
 
 object QR {

@@ -21,10 +21,9 @@ import nl.rijksoverheid.ctr.holder.end2end.actions.setAirplaneMode
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
-import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import org.junit.After
 import org.junit.Test
 
@@ -47,7 +46,7 @@ class OfflineQrTest : BaseTest() {
         instrumentation.setAirplaneMode(true)
         relaunchApp()
 
-        viewQR(Event.Type.Vaccination)
+        viewQR()
         assertQRisShown()
         viewPreviousQR()
         assertQRisHidden()
@@ -65,7 +64,7 @@ class OfflineQrTest : BaseTest() {
         instrumentation.setAirplaneMode(true)
         relaunchApp()
 
-        viewQR(Event.Type.PositiveTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -81,7 +80,7 @@ class OfflineQrTest : BaseTest() {
         instrumentation.setAirplaneMode(true)
         relaunchApp()
 
-        viewQR(Event.Type.NegativeTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -90,7 +89,7 @@ class OfflineQrTest : BaseTest() {
     fun whenDeviceIsOffline_negativeTokenCertificateShowsQr() {
         val token = NegativeToken(
             eventDate = today,
-            testType = TestEvent.TestType.Pcr,
+            testType = TestType.Pcr,
             couplingCode = "ZZZ-FZB3CUYL55U7ZT-R2"
         )
 
@@ -101,7 +100,7 @@ class OfflineQrTest : BaseTest() {
         instrumentation.setAirplaneMode(true)
         relaunchApp()
 
-        viewQR(Event.Type.NegativeTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }

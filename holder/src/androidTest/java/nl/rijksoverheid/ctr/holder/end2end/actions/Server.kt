@@ -45,6 +45,6 @@ private fun UiDevice.acceptChromeOnboarding() {
     if (checkForText("Inloggen bij Chrome")) tapButtonElement("Nee, bedankt")
     if (checkForText("Toestaan dat Chrome je meldingen stuurt?")) tapButtonElement("Niet toestaan")
     if (checkForText("meldingen")) tapButtonElement("Nee, bedankt")
-    if (checkForText("Wil je dat Google Chrome je wachtwoord voor deze site opslaat?")) tapButtonElement("Nooit")
+    if (checkForText("Wil je dat Google Chrome je wachtwoord voor deze site")) tapButtonElement("Nooit")
     if (checkForText("Wachtwoord opslaan?")) tapButtonElement("Opslaan")
 }

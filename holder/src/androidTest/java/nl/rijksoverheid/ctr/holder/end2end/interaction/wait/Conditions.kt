@@ -15,7 +15,8 @@ import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers
 import org.hamcrest.Matcher
 
-class ButtonInState(private val viewInteraction: ViewInteraction, private val enabled: Boolean) : Condition() {
+class ButtonInState(private val viewInteraction: ViewInteraction, private val enabled: Boolean) :
+    Condition() {
 
     override val description = "view is " + if (enabled) "enabled" else "disabled"
 
@@ -28,7 +29,8 @@ class ButtonInState(private val viewInteraction: ViewInteraction, private val en
     }
 }
 
-class ViewIsShown(private val viewInteraction: ViewInteraction, private val shown: Boolean) : Condition() {
+class ViewIsShown(private val viewInteraction: ViewInteraction, private val shown: Boolean) :
+    Condition() {
 
     override val description = "text is " + if (shown) "shown" else "not shown"
 
