@@ -112,10 +112,10 @@
         <action
             android:id="@+id/action_nav_scan_result_valid"
             app:destination="@id/nav_scan_result_valid"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
+            app:enterAnim="@animator/fade_in"
+            app:exitAnim="@animator/fade_out"
+            app:popEnterAnim="@animator/fade_in"
+            app:popExitAnim="@animator/fade_out" />
         <action
             android:id="@+id/action_nav_details_wrong"
             app:destination="@id/nav_scan_result_personal_details_wrong"
