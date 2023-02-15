@@ -6,7 +6,7 @@
   ~
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -186,4 +186,4 @@
         app:layout_constraintTop_toBottomOf="@+id/aboutThisAppScrollview"
         app:secondaryButtonText="@string/holder_menu_resetApp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout>
