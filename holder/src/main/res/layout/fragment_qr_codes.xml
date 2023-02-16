@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
+                android:textIsSelectable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/nextQrButton"
                 app:layout_constraintStart_toEndOf="@+id/previousQrButton"
@@ -132,6 +133,7 @@
                 android:background="@color/white_80"
                 android:gravity="center"
                 android:visibility="gone"
+                android:textIsSelectable="true"
                 tools:text="@string/qr_code_over_vaccinated"
                 tools:visibility="visible" />
 

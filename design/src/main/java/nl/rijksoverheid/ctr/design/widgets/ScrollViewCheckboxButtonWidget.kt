@@ -104,7 +104,10 @@ class ScrollViewCheckboxButtonWidget @JvmOverloads constructor(
     }
 
     fun header(@StringRes textId: Int) {
-        binding.headerTitle.setHtmlText(textId)
+        binding.headerTitle.setHtmlText(
+            htmlText = textId,
+            textIsSelectable = false
+        )
         binding.headerTitle.visibility = View.VISIBLE
         binding.checkboxContainer.background = AppCompatResources.getDrawable(context, R.drawable.shape_add_vaccination_checkbox_background)
     }

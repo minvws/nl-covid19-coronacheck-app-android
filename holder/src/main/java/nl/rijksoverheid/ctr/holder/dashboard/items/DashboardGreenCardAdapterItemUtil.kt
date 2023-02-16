@@ -390,6 +390,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
             TextView(descriptionLayout.context).apply {
                 setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
                 text = title
+                setTextIsSelectable(true)
             },
             LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -410,6 +411,7 @@ class DashboardGreenCardAdapterItemUtilImpl(
     ) {
         val textView = TextView(descriptionLayout.context).apply {
             setTextAppearance(R.style.App_TextAppearance_MaterialComponents_Body1)
+            setTextIsSelectable(true)
         }
 
         when (originState) {

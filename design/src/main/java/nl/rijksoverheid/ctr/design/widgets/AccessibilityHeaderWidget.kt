@@ -22,6 +22,7 @@ class AccessibilityHeaderWidget @JvmOverloads constructor(
 ) : MaterialTextView(context, attrs, defStyle, defStyleRes) {
 
     init {
+        setTextIsSelectable(true)
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.AccessibilityHeaderWidget,

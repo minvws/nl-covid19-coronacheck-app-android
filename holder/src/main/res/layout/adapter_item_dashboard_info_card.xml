@@ -28,6 +28,7 @@
             app:layout_goneMarginBottom="24dp"
             android:textAppearance="?attr/textAppearanceBody1"
             android:focusable="true"
+            android:textIsSelectable="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/button"
             app:layout_constraintStart_toStartOf="parent"
