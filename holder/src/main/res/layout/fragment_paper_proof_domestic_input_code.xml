@@ -30,6 +30,7 @@
                 android:labelFor="@id/unique_code_text"
                 android:text="@string/add_paper_proof_description"
                 android:textAppearance="?attr/textAppearanceBody1"
+                android:textIsSelectable="true"
                 app:layout_constraintBottom_toTopOf="@id/code_input"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

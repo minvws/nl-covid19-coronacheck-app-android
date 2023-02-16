@@ -112,11 +112,11 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             "${context.getString(R.string.qr_card_test_eu)} $testType",
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             "${context.getString(R.string.qr_card_test_title_eu)} dinsdag 27 juli 11:10",
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
     }
 
@@ -142,11 +142,11 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             context.getString(R.string.qr_card_test_domestic),
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_valid, "woensdag 28 juli 21:06"),
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
     }
 
@@ -177,10 +177,10 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             )
         )
 
-        assertEquals(dosisString, (viewBinding.description.getChildAt(0) as TextView).text)
+        assertEquals(dosisString, ((viewBinding.description.getChildAt(0) as TextView).text).toString())
         assertEquals(
             "${context.getString(R.string.qr_card_vaccination_title_eu)} 27 juli 2021",
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
     }
 
@@ -211,10 +211,10 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             )
         )
 
-        assertEquals(dosisString, (viewBinding.description.getChildAt(0) as TextView).text)
+        assertEquals(dosisString, ((viewBinding.description.getChildAt(0) as TextView).text).toString())
         assertEquals(
             "${context.getString(R.string.qr_card_vaccination_title_eu)} 27 juli 2021",
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
@@ -249,13 +249,13 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             context.getString(R.string.qr_card_vaccination_title_domestic),
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_future_from, "27 juli 2021", ""),
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
-        assertEquals(View.GONE, viewBinding.expiresIn.visibility)
+        (assertEquals(View.GONE, viewBinding.expiresIn.visibility)).toString()
     }
 
     @Test
@@ -288,11 +288,11 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             context.getString(R.string.qr_card_vaccination_title_domestic),
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_future_from, "27 juli 2021", ""),
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
@@ -327,11 +327,11 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             context.getString(R.string.qr_card_vaccination_title_domestic),
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_valid, "1 januari 2022"),
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
@@ -366,15 +366,15 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             context.getString(R.string.qr_card_vaccination_title_domestic),
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_future_from, "27 juli 11:11", ""),
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_future),
-            viewBinding.expiresIn.text
+            (viewBinding.expiresIn.text).toString()
         )
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
@@ -409,7 +409,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             context.getString(R.string.qr_card_vaccination_title_domestic),
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             "${
@@ -419,11 +419,11 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                     ""
                 )
             }${context.getString(R.string.qr_card_validity_future_until, "1 januari 2023")}",
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_future),
-            viewBinding.expiresIn.text
+            (viewBinding.expiresIn.text).toString()
         )
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
@@ -450,7 +450,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             context.getString(R.string.qr_card_validity_valid, "28 juli 2021"),
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
@@ -483,7 +483,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                     ""
                 )
             }${context.getString(R.string.qr_card_validity_future_until, "28 juli 2021")}",
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
@@ -510,11 +510,11 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             context.getString(R.string.qr_card_recovery_title_domestic),
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_valid, "28 juli 2021"),
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
@@ -541,7 +541,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             context.getString(R.string.qr_card_recovery_title_domestic),
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             "${
@@ -551,7 +551,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                     ""
                 )
             }${context.getString(R.string.qr_card_validity_future_until, "28 juli 2021")}",
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
@@ -590,18 +590,18 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             context.getString(R.string.qr_card_test_domestic),
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_valid, "woensdag 28 juli 21:06"),
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(
             context.getString(
                 R.string.my_overview_test_result_expires_in_hours_minutes,
                 "1 uur",
                 "0 minuten"
-            ), viewBinding.expiresIn.text
+            ), (viewBinding.expiresIn.text).toString()
         )
     }
 
@@ -838,27 +838,27 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             dosisString,
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             "${context.getString(R.string.qr_card_vaccination_title_eu)} 27 juli 2021",
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(
             dosisString,
-            (viewBinding.description.getChildAt(2) as TextView).text
+            ((viewBinding.description.getChildAt(2) as TextView).text).toString()
         )
         assertEquals(
             "${context.getString(R.string.qr_card_vaccination_title_eu)} 27 juli 2021",
-            (viewBinding.description.getChildAt(3) as TextView).text
+            ((viewBinding.description.getChildAt(3) as TextView).text).toString()
         )
         assertEquals(
             dosisString,
-            (viewBinding.description.getChildAt(4) as TextView).text
+            ((viewBinding.description.getChildAt(4) as TextView).text).toString()
         )
         assertEquals(
             "${context.getString(R.string.qr_card_vaccination_title_eu)} 27 juli 2021",
-            (viewBinding.description.getChildAt(5) as TextView).text
+            ((viewBinding.description.getChildAt(5) as TextView).text).toString()
         )
     }
 
@@ -884,11 +884,11 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             "${context.getString(R.string.general_visitorPass).capitalize()}:",
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_valid, "woensdag 28 juli 21:06"),
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
     }
@@ -919,19 +919,19 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(
             "${context.getString(R.string.general_visitorPass).capitalize()}:",
-            (viewBinding.description.getChildAt(0) as TextView).text
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_valid, "woensdag 28 juli 21:06"),
-            (viewBinding.description.getChildAt(1) as TextView).text
+            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_test_domestic).capitalize(),
-            (viewBinding.description.getChildAt(2) as TextView).text
+            ((viewBinding.description.getChildAt(2) as TextView).text).toString()
         )
         assertEquals(
             context.getString(R.string.qr_card_validity_valid, "woensdag 28 juli 21:06"),
-            (viewBinding.description.getChildAt(3) as TextView).text
+            ((viewBinding.description.getChildAt(3) as TextView).text).toString()
         )
     }
 

@@ -61,6 +61,7 @@
             android:layout_marginTop="48dp"
             android:gravity="center"
             android:text="@string/qr_code_hidden_title"
+            android:textIsSelectable="true"
             app:drawableTopCompat="@drawable/ic_visibility_off"
             app:layout_constraintEnd_toEndOf="@id/overlayBackground"
             app:layout_constraintStart_toStartOf="@id/overlayBackground"
