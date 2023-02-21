@@ -10,7 +10,7 @@ def appVersionCode =  1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("VERSION_NUMBER") != null ? System.getenv("VERSION_NUMBER").toInteger() : 1000000
 }
-version = "3.0.2"
+version = "3.0.3"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
