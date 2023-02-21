@@ -35,10 +35,10 @@
             @style/App.TextAppearance.MaterialComponents.Headline4.Montserrat
         </item>
         <item name="textAppearanceHeadline5">
-            @style/App.TextAppearance.MaterialComponents.Headline5.Montserrat
+            @style/App.TextAppearance.MaterialComponents.Headline5.Montserrat.DayNight
         </item>
         <item name="textAppearanceHeadline6">
-            @style/App.TextAppearance.MaterialComponents.Headline6.Montserrat
+            @style/App.TextAppearance.MaterialComponents.Headline6.Montserrat.DayNight
         </item>
 
         <!-- Component Styles -->
@@ -47,6 +47,7 @@
         <item name="toolbarStyle">@style/Widget.App.Toolbar.Surface.DayNight</item>
 
         <item name="android:splitMotionEvents">false</item>
+        <item name="materialCardViewStyle">@style/App.CardView.DayNight</item>
     </style>
 
     <style name="ThemeOverlay.App.NavigationView" parent="">

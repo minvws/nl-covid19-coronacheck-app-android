@@ -7,14 +7,29 @@
         <item name="titleTextColor">@color/neutral_black</item>
     </style>
 
-    <style name="Widget.App.NavigationView.DayNight" parent="Widget.App.NavigationView.Dark" />
-    <style name="Widget.App.NavigationView.Dark" parent="Widget.MaterialComponents.NavigationView">
+    <style name="Widget.App.NavigationView.DayNight" parent="Widget.App.NavigationView.Night" />
+    <style name="Widget.App.NavigationView.Night" parent="Widget.MaterialComponents.NavigationView">
         <item name="itemTextColor">@color/neutral_white</item>
         <item name="insetForeground">@color/primary_blue_night</item>
     </style>
 
-    <style name="Widget.App.TextInputLayout.DayNight" parent="Widget.App.TextInputLayout.Dark" />
-    <style name="Widget.App.TextInputLayout.Dark" parent="Widget.App.TextInputLayout">
+    <style name="Widget.App.TextInputLayout.DayNight" parent="Widget.App.TextInputLayout.Night" />
+    <style name="Widget.App.TextInputLayout.Night" parent="Widget.App.TextInputLayout">
         <item name="boxBackgroundColor">@color/neutral_white</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat.DayNight" parent="App.TextAppearance.MaterialComponents.Headline5.Montserrat.Night" />
+    <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat.Night" parent="App.TextAppearance.MaterialComponents.Headline5.Montserrat">
+        <item name="android:textColor">@color/neutral_black</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Headline6.Montserrat.DayNight" parent="App.TextAppearance.MaterialComponents.Headline6.Montserrat.Night" />
+    <style name="App.TextAppearance.MaterialComponents.Headline6.Montserrat.Night" parent="App.TextAppearance.MaterialComponents.Headline6.Montserrat">
+        <item name="android:textColor">@color/neutral_black</item>
+    </style>
+
+    <style name="App.CardView.DayNight" parent="App.CardView.Night"/>
+    <style name="App.CardView.Night" parent="">
+        <item name="cardBackgroundColor">@color/neutral_grey_5</item>
     </style>
 </resources>

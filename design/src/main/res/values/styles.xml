@@ -86,6 +86,7 @@
     <!-- Text Styles -->
     <style name="App.TextAppearance.MaterialComponents.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="lineHeight">26sp</item>
+        <item name="android:textColor">@color/neutral_black</item>
     </style>
 
     <style name="App.TextAppearance.MaterialComponents.Body2" parent="TextAppearance.MaterialComponents.Body2">
@@ -102,12 +103,14 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
+    <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat.DayNight" parent="App.TextAppearance.MaterialComponents.Headline5.Montserrat" />
     <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">26sp</item>
         <item name="android:textColor">@color/primary_text</item>
     </style>
 
+    <style name="App.TextAppearance.MaterialComponents.Headline6.Montserrat.DayNight" parent="App.TextAppearance.MaterialComponents.Headline6.Montserrat" />
     <style name="App.TextAppearance.MaterialComponents.Headline6.Montserrat" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">20sp</item>
@@ -135,5 +138,11 @@
         <item name="android:fontFamily">@font/montserrat_semibold</item>
         <item name="android:textSize">15sp</item>
     </style>
+
+    <style name="App.CardView.DayNight" parent="App.CardView.Day"/>
+    <style name="App.CardView.Day" parent="">
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
 
 </resources>
