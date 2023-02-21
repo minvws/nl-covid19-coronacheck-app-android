@@ -30,6 +30,6 @@
 
     <style name="App.CardView.DayNight" parent="App.CardView.Night"/>
     <style name="App.CardView.Night" parent="">
-        <item name="cardBackgroundColor">@color/neutral_grey_5</item>
+        <item name="cardBackgroundColor">@color/blue_5_percent_night</item>
     </style>
 </resources>

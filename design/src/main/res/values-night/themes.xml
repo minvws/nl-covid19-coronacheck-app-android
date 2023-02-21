@@ -17,6 +17,10 @@
         <!-- Text Styles -->
         <item name="android:textColorPrimary">@color/text_color</item>
         <item name="android:textColorSecondary">@color/secondary_text</item>
+
+<!--        <item name="android:background">@color/neutral_white</item>-->
+        <item name="android:windowBackground">@color/neutral_white</item>
+<!--        <item name="android:colorBackground">@color/neutral_white</item>-->
     </style>
 
     <style name="ThemeOverlay.App.NavigationView" parent="">
