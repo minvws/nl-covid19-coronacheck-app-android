@@ -6,4 +6,15 @@
     <style name="Widget.App.Toolbar.Surface.Night" parent="Widget.App.Toolbar.Surface">
         <item name="titleTextColor">@color/neutral_black</item>
     </style>
+
+    <style name="Widget.App.NavigationView.DayNight" parent="Widget.App.NavigationView.Dark" />
+    <style name="Widget.App.NavigationView.Dark" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextColor">@color/neutral_white</item>
+        <item name="insetForeground">@color/primary_blue_night</item>
+    </style>
+
+    <style name="Widget.App.TextInputLayout.DayNight" parent="Widget.App.TextInputLayout.Dark" />
+    <style name="Widget.App.TextInputLayout.Dark" parent="Widget.App.TextInputLayout">
+        <item name="boxBackgroundColor">@color/neutral_white</item>
+    </style>
 </resources>

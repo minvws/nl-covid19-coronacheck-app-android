@@ -42,8 +42,8 @@
         </item>
 
         <!-- Component Styles -->
-        <item name="navigationViewStyle">@style/Widget.App.NavigationView</item>
-        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+        <item name="navigationViewStyle">@style/Widget.App.NavigationView.DayNight</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout.DayNight</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar.Surface.DayNight</item>
 
         <item name="android:splitMotionEvents">false</item>

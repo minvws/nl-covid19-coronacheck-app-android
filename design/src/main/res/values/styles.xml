@@ -2,11 +2,13 @@
 <resources>
 
     <!-- Component Styles -->
+    <style name="Widget.App.NavigationView.DayNight" parent="Widget.MaterialComponents.NavigationView" />
     <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
         <item name="itemTextColor">@color/white</item>
         <item name="insetForeground">@color/primary_blue</item>
     </style>
 
+    <style name="Widget.App.TextInputLayout.DayNight" parent="Widget.App.TextInputLayout" />
     <style name="Widget.App.TextInputLayout" parent="Widget.Design.TextInputLayout">
         <item name="boxBackgroundColor">@color/white</item>
     </style>
