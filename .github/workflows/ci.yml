@@ -129,6 +129,12 @@ jobs:
           --app 1:168257592968:android:aaa5afb416536fdb26493d \
           --groups testers
 
+      - name: Distribute verifier test variant
+        run: |
+          firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/tst/release/verifier-*.apk` \
+          --app 1:168257592968:android:ed609f228437d86f26493d \
+          --groups testers
+
       - name: Distribute verifier acc variant
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/acc/release/verifier-*.apk` \
