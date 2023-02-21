@@ -60,6 +60,7 @@
         <item name="android:paddingEnd">32dp</item>
     </style>
 
+    <style name="Widget.App.Toolbar.Surface.DayNight" parent="Widget.App.Toolbar.Surface" />
     <style name="Widget.App.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
         <item name="android:elevation">4dp</item>
         <item name="titleTextColor">@color/primary_text</item>

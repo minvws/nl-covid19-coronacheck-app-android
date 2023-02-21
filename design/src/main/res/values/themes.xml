@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="AppTheme.DayNight" parent="AppTheme" />
+
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary_blue</item>
         <item name="colorSecondary">@color/primary_blue</item>
@@ -42,7 +44,7 @@
         <!-- Component Styles -->
         <item name="navigationViewStyle">@style/Widget.App.NavigationView</item>
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
-        <item name="toolbarStyle">@style/Widget.App.Toolbar.Surface</item>
+        <item name="toolbarStyle">@style/Widget.App.Toolbar.Surface.DayNight</item>
 
         <item name="android:splitMotionEvents">false</item>
     </style>

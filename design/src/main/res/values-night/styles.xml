@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.App.Toolbar.Surface.DayNight" parent="Widget.App.Toolbar.Surface.Night" />
+
+    <style name="Widget.App.Toolbar.Surface.Night" parent="Widget.App.Toolbar.Surface">
+        <item name="titleTextColor">@color/neutral_black</item>
+    </style>
+</resources>
