@@ -46,4 +46,10 @@
     <style name="Widget.App.Button.Night" parent="Widget.App.Button">
         <item name="android:textColor">@color/neutral_white</item>
     </style>
+
+    <style name="App.Widget.Design.TabLayout.DayNight" parent="App.Widget.Design.TabLayout.Night" />
+    <style name="App.Widget.Design.TabLayout.Night" parent="Widget.Design.TabLayout">
+        <item name="tabSelectedTextColor">@color/neutral_black</item>
+        <item name="tabIndicatorColor">@color/neutral_black</item>
+    </style>
 </resources>

@@ -151,4 +151,10 @@
         <item name="android:background">@color/primary_blue</item>
     </style>
 
+    <style name="App.Widget.Design.TabLayout.DayNight" parent="App.Widget.Design.TabLayout.Day" />
+    <style name="App.Widget.Design.TabLayout.Day" parent="Widget.Design.TabLayout">
+        <item name="tabSelectedTextColor">@color/black</item>
+        <item name="tabIndicatorColor">@color/black</item>
+    </style>
+
 </resources>

@@ -102,7 +102,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:textColor="@color/primary_blue"
+                                android:textColor="@color/link"
                                 android:layout_marginStart="16dp"
                                 android:includeFontPadding="false"
                                 android:textIsSelectable="true"
