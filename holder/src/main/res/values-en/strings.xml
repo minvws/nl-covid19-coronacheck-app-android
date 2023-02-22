@@ -713,7 +713,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Add booster vaccination</string>
   <string name="holder_showqr_eu_about_vaccination_dosage_message"><![CDATA[<a href=\"https://coronacheck.nl/en/dose\">Read more about the dose</a>]]></string>
   <string name="holder_menu_storedEvents">Stored data</string>
-  <string name="holder_menu_resetApp">Reset the app</string>
   <string name="holder_storedEvents_title">My stored data</string>
   <string name="holder_storedEvents_message">The data below is stored on your phone and is used by CoronaCheck to create your coronavirus pass.</string>
   <string name="holder_storedEvents_button_handleData">How does Coronacheck handle my data?</string>
@@ -915,4 +914,5 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_helpdesk_contact_message_line1"><![CDATA[If you have any questions or experience problems, you can contact the CoronaCheck helpdesk.<br/><br/><b>Call the helpdesk:</b><br /><a href=\"tel:%1$s\">%2$s</a> (free).]]></string>
   <string name="holder_helpdesk_contact_message_line2"><![CDATA[Or, if you are calling from abroad: <a href=\"tel:%1$s\">%2$s</a>.<br />]]></string>
   <string name="holder_helpdesk_contact_message_line3"><![CDATA[Open from %1$s till %2$s, between %3$s - %4$s<br /><br /><b>Or send an email to:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
+  <string name="general_menu_resetApp">Reset the app</string>
 </resources>

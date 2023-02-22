@@ -714,7 +714,6 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_expiredDomesticVaccinationModal_button_addBoosterVaccination">Boostervaccinatie toevoegen</string>
   <string name="holder_showqr_eu_about_vaccination_dosage_message"><![CDATA[<a href=\"https://coronacheck.nl/nl/dosis\">Lees meer over de dosis</a>]]></string>
   <string name="holder_menu_storedEvents">Opgeslagen gegevens</string>
-  <string name="holder_menu_resetApp">App resetten</string>
   <string name="holder_storedEvents_title">Mijn opgeslagen gegevens</string>
   <string name="holder_storedEvents_message">De gegevens hieronder staan opgeslagen op je telefoon en worden gebruikt door CoronaCheck om je coronabewijs te maken.</string>
   <string name="holder_storedEvents_button_handleData">Hoe gaat CoronaCheck met gegevens om?</string>
@@ -916,4 +915,5 @@ Lees meer op <a href=\"https://www.rijksoverheid.nl/ctb-bezoekers-cc\">www.rijks
   <string name="holder_helpdesk_contact_message_line1"><![CDATA[Bij vragen of problemen kun je contact opnemen met de CoronaCheck helpdesk.<br/><br/><b>Bel de helpdesk:</b><br />Op <a href=\"tel:%1$s\">%2$s</a> (gratis).]]></string>
   <string name="holder_helpdesk_contact_message_line2"><![CDATA[Of als je vanuit het buitenland belt: <a href=\"tel:%1$s\">%2$s</a>.<br />]]></string>
   <string name="holder_helpdesk_contact_message_line3"><![CDATA[Telefonisch bereikbaar van %1$s t/m %2$s %3$s - %4$s uur.<br /><br /><b>Of stuur een e-mail naar:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
+  <string name="general_menu_resetApp">App resetten</string>
 </resources>

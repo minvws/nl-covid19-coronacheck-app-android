@@ -44,5 +44,5 @@
     <item name="holder_helpdesk_support_message" type="string" />
     <item name="holder_helpdesk_appVersion" type="string" />
     <item name="holder_helpdesk_configuration" type="string" />
-    <item name="holder_menu_resetApp" type="string" />
+    <item name="general_menu_resetApp" type="string" />
 </resources>

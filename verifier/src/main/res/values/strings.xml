@@ -214,4 +214,5 @@
   <string name="verifier_helpdesk_contact_message_line1"><![CDATA[Bij vragen of problemen kun je contact opnemen met de CoronaCheck helpdesk.<br/><br/><b>Bel de helpdesk:</b><br />Op <a href=\"tel:%1$s\">%2$s</a> (gratis).]]></string>
   <string name="verifier_helpdesk_contact_message_line2"><![CDATA[Of als je vanuit het buitenland belt: <a href=\"tel:%1$s\">%2$s</a>.<br />]]></string>
   <string name="verifier_helpdesk_contact_message_line3"><![CDATA[Telefonisch bereikbaar van %1$s t/m %2$s %3$s - %4$s uur.<br /><br /><b>Of stuur een e-mail naar:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
+  <string name="general_menu_resetApp">App resetten</string>
 </resources>

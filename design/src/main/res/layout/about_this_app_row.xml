@@ -16,7 +16,6 @@
         android:padding="16dp"
         android:text="@string/about_this_app_description"
         android:focusable="false"
-        android:textIsSelectable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
