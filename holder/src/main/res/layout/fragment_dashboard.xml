@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         android:visibility="visible"
         app:layout_anchor="@id/tabsContent"
+        style="@style/CardView.DayNight"
         app:cardElevation="0dp"
         app:layout_anchorGravity="end|bottom">
 

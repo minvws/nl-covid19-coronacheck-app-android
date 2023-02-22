@@ -28,8 +28,17 @@
         <item name="android:textColor">@color/neutral_black</item>
     </style>
 
+    <style name="App.TextAppearance.MaterialComponents.Body1.DayNight" parent="App.TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/neutral_black</item>
+    </style>
+
     <style name="App.MaterialCardView.DayNight" parent="App.CardView.Night"/>
     <style name="App.CardView.Night" parent="">
         <item name="cardBackgroundColor">@color/blue_5_percent_night</item>
+    </style>
+
+    <style name="App.Placeholder.Background.DayNight" parent="App.Placeholder.Background.Night"/>
+    <style name="App.Placeholder.Background.Night" parent="App.Placeholder.Background">
+        <item name="android:background">@color/neutral_white</item>
     </style>
 </resources>

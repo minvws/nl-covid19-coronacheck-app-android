@@ -84,9 +84,9 @@
     </style>
 
     <!-- Text Styles -->
+    <style name="App.TextAppearance.MaterialComponents.Body1.DayNight" parent="App.TextAppearance.MaterialComponents.Body1" />
     <style name="App.TextAppearance.MaterialComponents.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="lineHeight">26sp</item>
-        <item name="android:textColor">@color/neutral_black</item>
     </style>
 
     <style name="App.TextAppearance.MaterialComponents.Body2" parent="TextAppearance.MaterialComponents.Body2">
@@ -141,8 +141,13 @@
 
     <style name="App.MaterialCardView.DayNight" parent="App.CardView.Day"/>
     <style name="App.CardView.Day" parent="">
-        <item name="cardBackgroundColor">@color/blue_5_percent</item>
+        <item name="cardBackgroundColor">@color/white</item>
     </style>
 
+    <style name="App.Placeholder.Background.DayNight" parent="App.Placeholder.Background"/>
+    <style name="App.Placeholder.Background" parent="">
+        <item name="android:alpha">0.05</item>
+        <item name="android:background">@color/primary_blue</item>
+    </style>
 
 </resources>
