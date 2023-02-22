@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.DayNight" parent="AppTheme.Dark" />
+    <style name="AppTheme.DayNight" parent="AppTheme.Night" />
 
-    <style name="AppTheme.Dark" parent="AppTheme">
+    <style name="AppTheme.Night" parent="AppTheme">
         <item name="colorPrimary">@color/primary_blue_night</item>
         <item name="colorSecondary">@color/primary_blue_night</item>
         <item name="colorAccent">@color/primary_blue_night</item>
@@ -25,6 +25,8 @@
 
         <!-- uncomment the following for global cardview style -->
 <!--        <item name="cardViewStyle">@style/CardViewStyle</item>-->
+
+        <item name="checkboxStyle">@style/Theme.Checkbox</item>
     </style>
 
     <style name="ThemeOverlay.App.NavigationView" parent="">
@@ -50,6 +52,11 @@
 
     <style name="CardView.DayNight" parent="CardView">
         <item name="cardBackgroundColor">@color/neutral_white</item>
+    </style>
+
+    <style name="Theme.Checkbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:buttonTint">@color/neutral_black</item>
+        <item name="android:textColor">@color/neutral_black</item>
     </style>
 
 </resources>

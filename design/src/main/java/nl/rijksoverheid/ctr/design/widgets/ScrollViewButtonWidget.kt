@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.design.widgets
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +43,7 @@ class ScrollViewButtonWidget @JvmOverloads constructor(
         binding = WidgetScrollViewButtonBinding.bind(this)
         isFocusable = false
         importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        background = ColorDrawable(Color.TRANSPARENT)
 
         context.theme.obtainStyledAttributes(
             attrs,

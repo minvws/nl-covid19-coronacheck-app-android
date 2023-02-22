@@ -13,7 +13,8 @@
     <color name="white_50_night">#80141415</color>
     <color name="white_60">#99FFFFFF</color>
     <color name="white_80">#CCFFFFFF</color>
-    <color name="message_container">#F2F7FF</color>
+    <color name="message_container">@color/white</color>
+    <color name="message_container_border">@color/grey_4</color>
     <color name="primary_text">#383836</color>
     <color name="secondary_text">#727679</color>
     <color name="grey_1">#666666</color>
