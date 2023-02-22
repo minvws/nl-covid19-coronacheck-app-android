@@ -171,7 +171,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/policy_buttons"
-                app:secondaryButtonText="@string/holder_menu_resetApp" />
+                app:secondaryButtonText="@string/general_menu_resetApp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -186,6 +186,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/aboutThisAppScrollview"
-        app:secondaryButtonText="@string/holder_menu_resetApp" />
+        app:secondaryButtonText="@string/general_menu_resetApp" />
 
 </nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout>
