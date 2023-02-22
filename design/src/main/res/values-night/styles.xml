@@ -28,7 +28,7 @@
         <item name="android:textColor">@color/neutral_black</item>
     </style>
 
-    <style name="App.CardView.DayNight" parent="App.CardView.Night"/>
+    <style name="App.MaterialCardView.DayNight" parent="App.CardView.Night"/>
     <style name="App.CardView.Night" parent="">
         <item name="cardBackgroundColor">@color/blue_5_percent_night</item>
     </style>

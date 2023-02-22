@@ -47,7 +47,7 @@
         <item name="toolbarStyle">@style/Widget.App.Toolbar.Surface.DayNight</item>
 
         <item name="android:splitMotionEvents">false</item>
-        <item name="materialCardViewStyle">@style/App.CardView.DayNight</item>
+        <item name="materialCardViewStyle">@style/App.MaterialCardView.DayNight</item>
     </style>
 
     <style name="ThemeOverlay.App.NavigationView" parent="">
@@ -82,4 +82,5 @@
         <item name="colorPrimary">@color/link</item>
     </style>
 
+    <style name="CardView.DayNight" parent="CardView" />
 </resources>

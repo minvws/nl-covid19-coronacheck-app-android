@@ -139,7 +139,7 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="App.CardView.DayNight" parent="App.CardView.Day"/>
+    <style name="App.MaterialCardView.DayNight" parent="App.CardView.Day"/>
     <style name="App.CardView.Day" parent="">
         <item name="cardBackgroundColor">@color/blue_5_percent</item>
     </style>

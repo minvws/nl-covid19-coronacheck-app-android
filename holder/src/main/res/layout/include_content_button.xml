@@ -18,7 +18,7 @@
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
     android:importantForAccessibility="yes"
-    style="@style/App.CardView.DayNight"
+    style="@style/App.MaterialCardView.DayNight"
     app:cardCornerRadius="@dimen/test_button_corner_radius"
     app:cardElevation="2dp"
     tools:showIn="@layout/fragment_choose_provider">

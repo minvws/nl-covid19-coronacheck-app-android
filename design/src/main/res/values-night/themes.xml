@@ -21,6 +21,9 @@
 <!--        <item name="android:background">@color/neutral_white</item>-->
         <item name="android:windowBackground">@color/neutral_white</item>
 <!--        <item name="android:colorBackground">@color/neutral_white</item>-->
+
+        <!-- uncomment the following for global cardview style -->
+<!--        <item name="cardViewStyle">@style/CardViewStyle</item>-->
     </style>
 
     <style name="ThemeOverlay.App.NavigationView" parent="">
@@ -42,6 +45,10 @@
 
     <style name="ThemeOverlay.Link" parent="">
         <item name="colorPrimary">@color/primary_blue_night</item>
+    </style>
+
+    <style name="CardView.DayNight" parent="CardView">
+        <item name="cardBackgroundColor">@color/neutral_white</item>
     </style>
 
 </resources>
