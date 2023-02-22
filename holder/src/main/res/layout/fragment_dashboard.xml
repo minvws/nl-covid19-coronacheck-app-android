@@ -25,7 +25,6 @@
             app:tabMaxWidth="0dp"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            style="@style/App.Widget.Design.TabLayout.DayNight"
             app:tabTextColor="@color/secondary_text"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             android:layout_width="match_parent"

@@ -48,6 +48,7 @@
 
         <item name="android:splitMotionEvents">false</item>
         <item name="materialCardViewStyle">@style/App.MaterialCardView.DayNight</item>
+        <item name="tabStyle">@style/App.Widget.Design.TabLayout.DayNight</item>
     </style>
 
     <style name="ThemeOverlay.App.NavigationView" parent="">
