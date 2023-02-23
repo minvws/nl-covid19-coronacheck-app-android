@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.shared.ext
 
 import android.content.Context
 import android.os.Bundle
+import android.provider.Settings
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
@@ -95,4 +96,11 @@ fun Fragment.showKeyboard(editText: EditText) {
 fun Fragment.hideKeyboard() {
     val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(requireView().windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+}
+
+fun Fragment.animationsEnabled(): Boolean {
+    return Settings.Global.getFloat(
+        requireContext().contentResolver,
+        Settings.Global.ANIMATOR_DURATION_SCALE, 1.0f
+    ) > 0
 }
