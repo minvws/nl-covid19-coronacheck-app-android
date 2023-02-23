@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
+import nl.rijksoverheid.ctr.shared.ext.animationsEnabled
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -57,7 +58,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         adapter: OnboardingPagerAdapter
     ) {
         binding.toolbar.setNavigationOnClickListener {
-            binding.viewPager.currentItem = binding.viewPager.currentItem - 1
+            binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, animationsEnabled())
         }
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
@@ -68,7 +69,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                     )
                 )
             } else {
-                binding.viewPager.currentItem = currentItem + 1
+                binding.viewPager.setCurrentItem(currentItem + 1, animationsEnabled())
                 binding.toolbar.getNavigationIconView()?.setAccessibilityFocus()
             }
         }
@@ -89,7 +90,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                         requireActivity().finish()
                     }
                 } else {
-                    binding.viewPager.currentItem = binding.viewPager.currentItem - 1
+                    binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, animationsEnabled())
                 }
             }
         })
