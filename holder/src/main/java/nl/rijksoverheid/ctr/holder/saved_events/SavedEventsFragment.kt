@@ -46,41 +46,43 @@ class SavedEventsFragment : Fragment(R.layout.fragment_saved_events) {
         val adapter = GroupAdapter<GroupieViewHolder>().also {
             it.add(section)
         }
-        binding.recyclerView.adapter = adapter
-        binding.recyclerView.itemAnimator = null
+        binding.savedEventsRecyclerView.adapter = adapter
+        binding.savedEventsRecyclerView.itemAnimator = null
     }
 
     private fun listenToSavedEvents() {
-        savedEventsViewModel.savedEventsLiveData.observe(viewLifecycleOwner, EventObserver { savedEvents ->
-            val items = mutableListOf<BindableItem<*>>()
-            items.add(SavedEventsHeaderAdapterItem())
+        savedEventsViewModel.savedEventsLiveData.observe(
+            viewLifecycleOwner,
+            EventObserver { savedEvents ->
+                val items = mutableListOf<BindableItem<*>>()
+                items.add(SavedEventsHeaderAdapterItem())
 
-            if (savedEvents.isEmpty()) {
-                items.add(SavedEventsNoSavedEventsItem())
-            } else {
-                savedEvents.forEach {
-                    items.add(
-                        SavedEventsSectionAdapterItem(
-                            savedEvents = it,
-                            onClickEvent = { toolbarTitle, infoScreen ->
-                                navigateSafety(
-                                    SavedEventsFragmentDirections.actionYourEventExplanation(
-                                        toolbarTitle = toolbarTitle,
-                                        data = arrayOf(infoScreen)
+                if (savedEvents.isEmpty()) {
+                    items.add(SavedEventsNoSavedEventsItem())
+                } else {
+                    savedEvents.forEach {
+                        items.add(
+                            SavedEventsSectionAdapterItem(
+                                savedEvents = it,
+                                onClickEvent = { toolbarTitle, infoScreen ->
+                                    navigateSafety(
+                                        SavedEventsFragmentDirections.actionYourEventExplanation(
+                                            toolbarTitle = toolbarTitle,
+                                            data = arrayOf(infoScreen)
+                                        )
                                     )
-                                )
-                            },
-                            onClickClearData = { eventGroupEntity ->
-                                presentClearDataDialog {
-                                    savedEventsViewModel.removeSavedEvents(eventGroupEntity)
+                                },
+                                onClickClearData = { eventGroupEntity ->
+                                    presentClearDataDialog {
+                                        savedEventsViewModel.removeSavedEvents(eventGroupEntity)
+                                    }
                                 }
-                            }
+                            )
                         )
-                    )
+                    }
                 }
-            }
-            section.addAll(items)
-        })
+                section.addAll(items)
+            })
     }
 
     private fun listenToRemoveSavedEvents() {
