@@ -33,6 +33,7 @@ import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.shared.isHolderApp
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.Environment
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
@@ -141,9 +142,11 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         }
 
         // On test and acceptance builds show buttons to set policy locally
-        if (BuildConfig.DEBUG || Environment.get(requireContext()) is Environment.Acc || Environment.get(
-                requireContext()
-            ) is Environment.Tst
+        if ((BuildConfig.DEBUG ||
+                    Environment.get(requireContext()) is Environment.Acc ||
+                    Environment.get(requireContext()) is Environment.Tst
+                    ) &&
+            isHolderApp(requireContext())
         ) {
             bindDebugPolicyButtons(binding)
         }
