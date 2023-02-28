@@ -52,6 +52,8 @@ class SavedEventsFragment : Fragment(R.layout.fragment_saved_events) {
         savedEventsViewModel.savedEventsLiveData.observe(
             viewLifecycleOwner,
             EventObserver { savedEvents ->
+                sections.clear()
+                adapter.clear()
                 val headerSection = Section()
                 headerSection.add(SavedEventsHeaderAdapterItem())
                 sections.add(headerSection)
