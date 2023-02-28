@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
-import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentSavedEventsBinding
@@ -27,7 +26,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SavedEventsFragment : Fragment(R.layout.fragment_saved_events) {
 
-    private val section = Section()
+    private val sections: MutableList<Section> = mutableListOf()
+    private val adapter = GroupAdapter<GroupieViewHolder>()
     private val savedEventsViewModel: SavedEventsViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
 
@@ -42,10 +42,8 @@ class SavedEventsFragment : Fragment(R.layout.fragment_saved_events) {
     }
 
     private fun initRecyclerView(binding: FragmentSavedEventsBinding) {
-        section.clear()
-        val adapter = GroupAdapter<GroupieViewHolder>().also {
-            it.add(section)
-        }
+        sections.clear()
+
         binding.savedEventsRecyclerView.adapter = adapter
         binding.savedEventsRecyclerView.itemAnimator = null
     }
@@ -54,34 +52,40 @@ class SavedEventsFragment : Fragment(R.layout.fragment_saved_events) {
         savedEventsViewModel.savedEventsLiveData.observe(
             viewLifecycleOwner,
             EventObserver { savedEvents ->
-                val items = mutableListOf<BindableItem<*>>()
-                items.add(SavedEventsHeaderAdapterItem())
+                sections.clear()
+                adapter.clear()
+                val headerSection = Section()
+                headerSection.add(SavedEventsHeaderAdapterItem())
+                sections.add(headerSection)
 
                 if (savedEvents.isEmpty()) {
-                    items.add(SavedEventsNoSavedEventsItem())
+                    val emptyItemsSection = Section()
+                    emptyItemsSection.add(SavedEventsNoSavedEventsItem())
+                    sections.add(emptyItemsSection)
                 } else {
                     savedEvents.forEach {
-                        items.add(
-                            SavedEventsSectionAdapterItem(
-                                savedEvents = it,
-                                onClickEvent = { toolbarTitle, infoScreen ->
-                                    navigateSafety(
-                                        SavedEventsFragmentDirections.actionYourEventExplanation(
-                                            toolbarTitle = toolbarTitle,
-                                            data = arrayOf(infoScreen)
-                                        )
+                        val item = SavedEventsSectionAdapterItem(
+                            savedEvents = it,
+                            onClickEvent = { toolbarTitle, infoScreen ->
+                                navigateSafety(
+                                    SavedEventsFragmentDirections.actionYourEventExplanation(
+                                        toolbarTitle = toolbarTitle,
+                                        data = arrayOf(infoScreen)
                                     )
-                                },
-                                onClickClearData = { eventGroupEntity ->
-                                    presentClearDataDialog {
-                                        savedEventsViewModel.removeSavedEvents(eventGroupEntity)
-                                    }
+                                )
+                            },
+                            onClickClearData = { eventGroupEntity ->
+                                presentClearDataDialog {
+                                    savedEventsViewModel.removeSavedEvents(eventGroupEntity)
                                 }
-                            )
+                            }
                         )
+                        val itemSection = item.section(it)
+                        itemSection.setHeader(item)
+                        sections.add(itemSection)
                     }
                 }
-                section.addAll(items)
+                adapter.addAll(sections)
             })
     }
 
