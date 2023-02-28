@@ -134,12 +134,12 @@ class DashboardGreenCardAdapterItem(
             is GreenCardType.Eu -> {
                 viewBinding.internationalImageContainer.visibility = View.VISIBLE
                 viewBinding.domesticImageContainer.visibility = View.GONE
-                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
+                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.link)
             }
             is GreenCardType.Domestic -> {
                 viewBinding.internationalImageContainer.visibility = View.GONE
                 viewBinding.domesticImageContainer.visibility = View.VISIBLE
-                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.primary_blue)
+                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.link)
             }
         }
 
