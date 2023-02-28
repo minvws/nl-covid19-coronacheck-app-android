@@ -6,4 +6,6 @@
     <color name="message_container_border">@color/neutral_grey_4</color>
     <color name="message_shape_background">@color/neutral_grey_4</color>
     <color name="tabs_separator">@color/neutral_grey_4</color>
+    <color name="error">@color/error_night</color>
+    <color name="menu_icon_color">@color/neutral_black</color>
 </resources>
