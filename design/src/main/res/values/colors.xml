@@ -43,4 +43,6 @@
     <color name="message_shape_background">@color/blue_5_percent</color>
     <color name="tabs_separator">@color/grey_4</color>
     <color name="menu_icon_color">@color/black</color>
+    <color name="saved_events_section_background">@color/white</color>
+    <color name="divider_color">@color/grey_4</color>
 </resources>
