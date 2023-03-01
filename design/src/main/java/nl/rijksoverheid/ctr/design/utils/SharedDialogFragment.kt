@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 
 @Parcelize
 data class DialogFragmentData(
@@ -25,7 +26,7 @@ class SharedDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        arguments?.getParcelable<DialogFragmentData>(argumentsDataKey)?.let {
+        arguments?.getParcelableCompat<DialogFragmentData>(argumentsDataKey)?.let {
             val builder = MaterialAlertDialogBuilder(requireContext())
                 .setTitle(it.title)
                 .setMessage(it.message)

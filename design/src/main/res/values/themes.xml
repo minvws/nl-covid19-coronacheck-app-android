@@ -84,4 +84,13 @@
     </style>
 
     <style name="CardView.DayNight" parent="CardView" />
+
+    <style name="App.Dialog.DayNight" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="buttonBarNegativeButtonStyle">@style/App.Dialog.Button.DayNight</item>
+        <item name="buttonBarPositiveButtonStyle">@style/App.Dialog.Button.DayNight</item>
+    </style>
+
+    <style name="App.Dialog.Button.DayNight" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/link</item>
+    </style>
 </resources>

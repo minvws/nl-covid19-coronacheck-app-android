@@ -3,6 +3,7 @@ package nl.rijksoverheid.ctr.design.utils
 import android.content.Context
 import androidx.annotation.StringRes
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import nl.rijksoverheid.ctr.design.R
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -36,7 +37,7 @@ class DialogUtilImpl : DialogUtil {
         negativeButtonCallback: (() -> Unit)?,
         onDismissCallback: (() -> Unit)?
     ) {
-        val builder = MaterialAlertDialogBuilder(context)
+        val builder = MaterialAlertDialogBuilder(context, R.style.App_Dialog_DayNight)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveButtonText) { dialog, _ ->
