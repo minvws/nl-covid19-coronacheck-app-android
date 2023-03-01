@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.shared
 
+import android.content.Context
 import java.time.Clock
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtilImpl
@@ -34,3 +35,6 @@ val sharedModule = module {
     }
     factory<DebugDisclosurePolicyPersistenceManager> { DebugDisclosurePolicyPersistenceManagerImpl(get()) }
 }
+
+fun isHolderApp(applicationContext: Context): Boolean =
+    applicationContext.packageName.contains("holder")
