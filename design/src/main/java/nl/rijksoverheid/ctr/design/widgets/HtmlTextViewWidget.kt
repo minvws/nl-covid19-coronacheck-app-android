@@ -198,10 +198,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
             addView(textView)
         }
 
-        // Step 4: Enable links if requested
-        if (htmlLinksEnabled) {
-            enableHtmlLinks()
-        }
+        enableHtmlLinks()
     }
 
     /**
