@@ -167,6 +167,6 @@ class AppConfigViewModelTest {
             val viewModel = appConfigViewModel(true)
             viewModel.refresh(mobileCoreWrapper)
 
-            assertTrue(viewModel.appStatusLiveData.value is AppStatus.Error)
+            assertTrue(viewModel.appStatusLiveData.value is AppStatus.LaunchError)
         }
 }

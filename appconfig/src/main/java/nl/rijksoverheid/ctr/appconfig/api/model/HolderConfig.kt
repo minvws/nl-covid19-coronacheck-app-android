@@ -153,7 +153,7 @@ data class HolderConfig(
             backendTLSCertificates = backendTLSCertificates,
             papEnabled = false,
             contactInformation =
-            ContactInformation("08001421", "+31 70 750 37 20", 1, "08:00", 7, "18:00")
+            ContactInformation("0800-1421", "+31 70 750 37 20", 1, "08:00", 7, "18:00")
         )
     }
 }

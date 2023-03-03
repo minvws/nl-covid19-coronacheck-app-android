@@ -11,7 +11,7 @@ package nl.rijksoverheid.ctr.appconfig
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import java.io.IOException
+import java.net.UnknownHostException
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
@@ -85,7 +85,7 @@ class AppConfigViewModelImpl(
             val configFilesArePresentInFilesFolder =
                 appConfigStorageManager.areConfigFilesPresentInFilesFolder()
             if (!configFilesArePresentInFilesFolder || !cachedAppConfigUseCase.isCachedAppConfigValid()) {
-                if (configResult is ConfigResult.Error && !(configResult.error.e is IOException)) {
+                if (configResult is ConfigResult.Error && configResult.error.e !is UnknownHostException) {
                     return@launch appStatusLiveData.postValue(
                         AppStatus.LaunchError(
                             errorCodeStringFactory.get(
