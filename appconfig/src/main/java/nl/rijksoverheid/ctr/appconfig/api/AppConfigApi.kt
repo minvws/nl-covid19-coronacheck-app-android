@@ -9,6 +9,7 @@
 package nl.rijksoverheid.ctr.appconfig.api
 
 import nl.rijksoverheid.ctr.api.signing.http.SignedRequest
+import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.http.GET
@@ -16,7 +17,7 @@ import retrofit2.http.GET
 interface AppConfigApi {
     @GET("config")
     @SignedRequest
-    suspend fun getConfig(): Response<JSONObject>
+    suspend fun getConfig(): Response<ResponseBody>
 
     @GET("public_keys")
     @SignedRequest
