@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.holder.end2end
 
 import androidx.test.filters.SdkSuppress
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add
 import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addNegativeTestCertificateFromGGD
 import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRetrievedCertificateToApp
@@ -141,12 +142,10 @@ class TestsRetrievalTest : BaseTest() {
     }
 
     @Test
-    fun retrievePositiveTestAndVaccination_assertEndScreenAndOverview() {
+    fun retrievePositiveTestAndVaccination_assertEndScreenAndDetails() {
         val person = Person(bsn = "999991772")
-        val vac1 =
-            VaccinationEvent(today.offsetDays(-90), vaccine = VaccineType.Pfizer)
-        val vac2 =
-            VaccinationEvent(today.offsetDays(-120), vaccine = VaccineType.Pfizer)
+        val vac1 = VaccinationEvent(today.offsetDays(-90), vaccine = VaccineType.Pfizer)
+        val vac2 = VaccinationEvent(today.offsetDays(-120), vaccine = VaccineType.Pfizer)
         val pos = PositiveTest(
             eventDate = today.offsetDays(-30),
             testType = TestType.Pcr,
@@ -158,7 +157,7 @@ class TestsRetrievalTest : BaseTest() {
         assertRetrievalDetails(person, pos, 0)
         assertRetrievalDetails(person, vac1, 1)
         assertRetrievalDetails(person, vac2, 2)
-        addRetrievedCertificateToApp("Vaccinatiebewijs en herstelbewijs gemaakt")
+        addRetrievedCertificateToApp(Add.EndScreen.VaccinationAndRecoveryEventCreated)
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")

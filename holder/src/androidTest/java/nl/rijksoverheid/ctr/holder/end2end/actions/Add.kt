@@ -66,13 +66,32 @@ object Add {
         clickOn("Log in met DigiD")
     }
 
-    fun addRetrievedCertificateToApp(endScreen: String? = null) {
+    fun addRetrievedCertificateToApp(endScreen: EndScreen? = null, replace: Boolean? = null) {
         waitUntilTextIsShown("Kloppen de gegevens?", 30)
-        tapButton("Bewijs toevoegen")
+        waitUntilButtonEnabled("Bewijs toevoegen")
+        tapButtonPosition("Bewijs toevoegen", 0)
         endScreen?.let {
-            waitUntilTextIsShown(it)
             tapButton("Naar mijn bewijzen")
+            waitUntilTextIsShown(endScreen.message)
         }
+        if (replace != null) replaceExistingCertificate(replace)
         waitUntilTextIsShown("Mijn bewijzen", 60)
+    }
+
+    enum class EndScreen(val message: String) {
+        VaccinationAndRecoveryEventCreated("Vaccinatiebewijs en herstelbewijs gemaakt"),
+        OnlyInternationalEventCreated("Er is alleen een internationaal bewijs gemaakt")
+    }
+
+    private fun replaceExistingCertificate(replace: Boolean) {
+        waitUntilTextIsShown("Wil je je bewijs vervangen?")
+        if (replace) {
+            clickOn("Vervang")
+        } else {
+            clickOn("Stoppen")
+            clickBack()
+            clickBack()
+            clickBack()
+        }
     }
 }
