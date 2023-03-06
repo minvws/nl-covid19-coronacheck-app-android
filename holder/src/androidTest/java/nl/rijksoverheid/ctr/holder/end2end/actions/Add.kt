@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.holder.end2end.actions
 
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.end2end.actions.MenuItems.addEvent
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickOn
@@ -18,11 +19,6 @@ import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilButtonEnabled
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 
 object Add {
-
-    private fun addEvent() {
-        tapButton("Menu")
-        tapButton("Vaccinatie of test toevoegen")
-    }
 
     fun addRecoveryCertificate() {
         addEvent()

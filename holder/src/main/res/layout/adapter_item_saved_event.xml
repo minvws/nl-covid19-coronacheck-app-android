@@ -11,8 +11,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground"
-    android:background="@color/saved_events_section_background">
+    android:foreground="?attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/title"
