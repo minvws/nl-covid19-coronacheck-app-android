@@ -12,7 +12,6 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
@@ -134,8 +133,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                 hints = databaseSyncerResult.hints,
                                 blockedEvents = databaseSyncerResult.blockedEvents,
                                 newEvents = when (fragmentType) {
-                                    is YourEventsFragmentType.DCC -> fragmentType.remoteEvent.events ?: listOf()
-                                    is YourEventsFragmentType.RemoteProtocol3Type -> fragmentType.remoteEvents.keys.toList().map { it.events ?: listOf() }.flatten()
+                                    is YourEventsFragmentType.DCC -> fragmentType.remoteEvent.events
+                                        ?: listOf()
+                                    is YourEventsFragmentType.RemoteProtocol3Type -> fragmentType.remoteEvents.keys.toList()
+                                        .map { it.events ?: listOf() }.flatten()
                                 }
                             )
                         )
@@ -146,9 +147,11 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         )
                     }
                     is DatabaseSyncerResult.FuzzyMatchingError -> {
-                        navigateSafety(YourEventsFragmentDirections.actionFuzzyMatching(
-                            MatchingBlobIds(databaseSyncerResult.matchingBlobIds)
-                        ))
+                        navigateSafety(
+                            YourEventsFragmentDirections.actionFuzzyMatching(
+                                MatchingBlobIds(databaseSyncerResult.matchingBlobIds)
+                            )
+                        )
                     }
                 }
             })
@@ -191,7 +194,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
     private fun handleEndState(endState: YourEventsEndState) {
         when (endState) {
             is YourEventsEndState.BlockedEvent -> {
-                val helpdeskPhoneNumber = cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber
+                val helpdeskPhoneNumber =
+                    cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
                     toolbarTitle = getString(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title),
@@ -202,7 +206,15 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                 R.string.holder_listRemoteEvents_endStateNoValidCertificate_body,
                                 helpdeskPhoneNumber,
                                 helpdeskPhoneNumber,
-                                errorCodeStringFactory.get(getFlow(), listOf(AppErrorResult(HolderStep.GetCredentialsNetworkRequest, BlockedEventException())))
+                                errorCodeStringFactory.get(
+                                    getFlow(),
+                                    listOf(
+                                        AppErrorResult(
+                                            HolderStep.GetCredentialsNetworkRequest,
+                                            BlockedEventException()
+                                        )
+                                    )
+                                )
                             ),
                             htmlLinksEnabled = true
                         ),
@@ -260,7 +272,10 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         title = getString(R.string.holder_listRemoteEvents_endStateCantCreateCertificate_title),
                         description = getString(
                             R.string.holder_listRemoteEvents_endStateCantCreateCertificate_message,
-                            yourEventsEndStateUtil.getErrorStateSubstring(requireContext(), getFlow()),
+                            yourEventsEndStateUtil.getErrorStateSubstring(
+                                requireContext(),
+                                getFlow()
+                            ),
                             errorCode
                         ),
                         buttonTitle = getString(R.string.general_toMyOverview),
@@ -272,11 +287,13 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
                     toolbarTitle = if (endState is YourEventsEndStateWithCustomTitle.RecoveryTooOld ||
-                                endState is YourEventsEndStateWithCustomTitle.NoRecoveryButDosisCorrection ||
-                                endState is YourEventsEndStateWithCustomTitle.RecoveryAndDosisCorrection
-                ) { getString(R.string.your_positive_test_toolbar_title) } else {
-                    getString(R.string.certificate_created_toolbar_title)
-                },
+                        endState is YourEventsEndStateWithCustomTitle.NoRecoveryButDosisCorrection ||
+                        endState is YourEventsEndStateWithCustomTitle.RecoveryAndDosisCorrection
+                    ) {
+                        getString(R.string.your_positive_test_toolbar_title)
+                    } else {
+                        getString(R.string.certificate_created_toolbar_title)
+                    },
                     data = InfoFragmentData.TitleDescriptionWithButton(
                         title = getString(endState.title),
                         descriptionData = DescriptionData(
@@ -426,7 +443,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             birthDate = birthDate,
             providerIdentifier = allEventsInformation.first().providerIdentifier,
             europeanCredential = if (type is YourEventsFragmentType.DCC) {
-                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential")
+                    .toByteArray()
             } else {
                 null
             }
@@ -463,7 +481,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                         providerIdentifier = it.providerIdentifier
                                     ),
                                     europeanCredential = if (type is YourEventsFragmentType.DCC) {
-                                        JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+                                        JSONObject(type.eventGroupJsonData.decodeToString()).getString(
+                                            "credential"
+                                        ).toByteArray()
                                     } else {
                                         null
                                     }
@@ -494,7 +514,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             testDate = testDate,
             birthDate = birthDate,
             europeanCredential = if (type is YourEventsFragmentType.DCC) {
-                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential")
+                    .toByteArray()
             } else {
                 null
             }
@@ -612,7 +633,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             testDate = testDate,
             birthDate = birthDate,
             europeanCredential = if (type is YourEventsFragmentType.DCC) {
-                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential").toByteArray()
+                JSONObject(type.eventGroupJsonData.decodeToString()).getString("credential")
+                    .toByteArray()
             } else {
                 null
             }
@@ -714,18 +736,20 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (isAdded) {
-                    MaterialAlertDialogBuilder(requireContext())
-                        .setTitle(R.string.your_events_block_back_dialog_title)
-                        .setMessage(
+                    dialogUtil.presentDialog(
+                        context = requireContext(),
+                        title = R.string.your_events_block_back_dialog_title,
+                        message = getString(
                             yourEventsFragmentUtil.getCancelDialogDescription(
                                 type = args.type
                             )
-                        )
-                        .setPositiveButton(R.string.your_events_block_back_dialog_positive_button) { _, _ ->
+                        ),
+                        positiveButtonText = R.string.your_events_block_back_dialog_positive_button,
+                        positiveButtonCallback = {
                             findNavControllerSafety()?.popBackStack()
-                        }
-                        .setNegativeButton(R.string.your_events_block_back_dialog_negative_button) { _, _ -> }
-                        .show()
+                        },
+                        negativeButtonText = R.string.your_events_block_back_dialog_negative_button
+                    )
                 }
             }
         })

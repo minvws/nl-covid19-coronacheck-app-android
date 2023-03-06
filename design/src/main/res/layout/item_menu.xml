@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="74dp"
-    android:background="?colorSurface"
+    android:background="@color/menu_item_section_background"
     android:foreground="?attr/selectableItemBackground"
     android:paddingHorizontal="30dp"
     android:paddingVertical="16dp">

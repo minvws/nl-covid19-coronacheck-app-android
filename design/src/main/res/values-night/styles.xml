@@ -52,4 +52,10 @@
         <item name="tabSelectedTextColor">@color/neutral_black</item>
         <item name="tabIndicatorColor">@color/neutral_black</item>
     </style>
+
+    <style name="Widget.App.Button.Outlined.DayNight" parent="Widget.App.Button.Outlined.Night" />
+    <style name="Widget.App.Button.Outlined.Night" parent="Widget.App.Button.Outlined">
+        <item name="android:textColor">@color/white</item>
+        <item name="strokeColor">@color/white</item>
+    </style>
 </resources>

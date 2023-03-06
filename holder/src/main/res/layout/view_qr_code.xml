@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:alpha="0.5"
-            android:background="?colorSurface"
+            android:background="@color/grey_4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,10 +58,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="45dp"
             android:gravity="center"
             android:text="@string/qr_code_hidden_title"
             android:textIsSelectable="true"
+            android:drawablePadding="20dp"
             app:drawableTopCompat="@drawable/ic_visibility_off"
             app:layout_constraintEnd_toEndOf="@id/overlayBackground"
             app:layout_constraintStart_toStartOf="@id/overlayBackground"
@@ -83,14 +84,14 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/overlayShowQrButton"
-            style="@style/Widget.App.Button.Outlined"
+            style="@style/Widget.App.Button.Outlined.DayNight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="48dp"
+            android:layout_marginTop="20dp"
             android:text="@string/qr_code_hidden_button"
             app:layout_constraintEnd_toEndOf="@id/overlayBackground"
             app:layout_constraintStart_toStartOf="@id/overlayBackground"
-            app:layout_constraintBottom_toBottomOf="@id/overlayBackground"/>
+            app:layout_constraintTop_toBottomOf="@id/overlayButton"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

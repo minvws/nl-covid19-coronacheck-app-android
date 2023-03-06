@@ -8,6 +8,7 @@ import android.os.Parcelable
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 
@@ -27,7 +28,7 @@ class SharedDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         arguments?.getParcelableCompat<DialogFragmentData>(argumentsDataKey)?.let {
-            val builder = MaterialAlertDialogBuilder(requireContext())
+            val builder = MaterialAlertDialogBuilder(requireContext(), R.style.App_Dialog_DayNight)
                 .setTitle(it.title)
                 .setMessage(it.message)
 

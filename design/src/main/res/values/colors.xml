@@ -43,6 +43,10 @@
     <color name="message_shape_background">@color/blue_5_percent</color>
     <color name="tabs_separator">@color/grey_4</color>
     <color name="menu_icon_color">@color/black</color>
-    <color name="saved_events_section_background">@color/white</color>
+    <color name="menu_item_section_background">@color/white</color>
     <color name="divider_color">@color/grey_4</color>
+    <color name="earth">#1BC1D7</color>
+    <color name="html_secondary_text">@color/secondary_text</color>
+    <color name="hidden_qr_eye_icon">@color/black</color>
+    <color name="hidden_qr_eye_icon_line">@color/white</color>
 </resources>

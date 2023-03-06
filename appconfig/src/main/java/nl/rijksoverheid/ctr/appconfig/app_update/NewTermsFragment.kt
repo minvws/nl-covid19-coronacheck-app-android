@@ -6,10 +6,11 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.R
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentNewTermsBinding
+import nl.rijksoverheid.ctr.design.utils.DialogUtil
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /*
@@ -23,6 +24,7 @@ class NewTermsFragment : Fragment(R.layout.fragment_new_terms) {
 
     private val args: NewTermsFragmentArgs by navArgs()
     private val appConfigViewModel: AppConfigViewModel by sharedViewModel()
+    private val dialogUtil: DialogUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,12 +65,12 @@ class NewTermsFragment : Fragment(R.layout.fragment_new_terms) {
     }
 
     private fun presentNeedToConsentDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.new_terms_no_consent_dialog_title)
-            .setMessage(R.string.new_terms_no_consent_dialog_message)
-            .setPositiveButton(
-                R.string.new_terms_no_consent_dialog_button
-            ) { _, _ -> }
-            .show()
+        dialogUtil.presentDialog(
+            context = requireContext(),
+            title = R.string.new_terms_no_consent_dialog_title,
+            message = getString(R.string.new_terms_no_consent_dialog_message),
+            positiveButtonText = R.string.new_terms_no_consent_dialog_button,
+            positiveButtonCallback = {}
+        )
     }
 }

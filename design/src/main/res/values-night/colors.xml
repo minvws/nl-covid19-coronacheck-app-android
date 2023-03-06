@@ -8,6 +8,10 @@
     <color name="tabs_separator">@color/neutral_grey_4</color>
     <color name="error">@color/error_night</color>
     <color name="menu_icon_color">@color/neutral_black</color>
-    <color name="saved_events_section_background">@color/neutral_grey_5</color>
+    <color name="menu_item_section_background">@color/neutral_grey_5</color>
     <color name="divider_color">@color/neutral_grey_4</color>
+    <color name="earth">#106870</color>
+    <color name="html_secondary_text">@color/neutral_grey_3</color>
+    <color name="hidden_qr_eye_icon">@color/white</color>
+    <color name="hidden_qr_eye_icon_line">@color/neutral_white</color>
 </resources>
