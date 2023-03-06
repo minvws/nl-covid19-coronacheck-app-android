@@ -7,8 +7,7 @@
  */
 package nl.rijksoverheid.ctr.appconfig.repositories
 
-import org.json.JSONObject
 import retrofit2.HttpException
 import retrofit2.Response
 
-class ConfigHttpException(response: Response<JSONObject>) : HttpException(response)
+class ConfigHttpException(response: Response<*>) : HttpException(response)

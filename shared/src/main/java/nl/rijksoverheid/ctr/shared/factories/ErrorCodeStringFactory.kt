@@ -62,8 +62,8 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
                 is OpenIdAuthorizationException -> "07${exception.type}-${exception.code}"
                 is SignatureException -> "020"
                 is SocketTimeoutException -> "004"
-                is UnknownHostException -> "002"
-                is ConnectException -> "005"
+                is UnknownHostException -> "005"
+                is ConnectException -> "002"
                 is NoProvidersException -> exception.errorCode
                 is ActivityNotFoundException -> "070-14"
                 is MissingOriginException -> "058"
