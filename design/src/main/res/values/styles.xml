@@ -60,6 +60,7 @@
 
     <style name="Widget.App.Button.Outlined.DayNight" parent="Widget.App.Button.Outlined" />
 
+    <style name="Widget.App.Button.Small.DayNight" parent="Widget.App.Button.Small" />
     <style name="Widget.App.Button.Small" parent="Widget.App.Button">
         <item name="android:paddingStart">32dp</item>
         <item name="android:paddingEnd">32dp</item>

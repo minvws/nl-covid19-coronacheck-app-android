@@ -42,6 +42,12 @@
         <item name="android:background">@color/neutral_white</item>
     </style>
 
+    <style name="Widget.App.Button.Small.DayNight" parent="Widget.App.Button.Small.Night" />
+    <style name="Widget.App.Button.Small.Night" parent="Widget.App.Button.Small">
+        <item name="android:textColor">@color/neutral_white</item>
+        <item name="android:backgroundTint">@color/neutral_white</item>
+    </style>
+
     <style name="Widget.App.Button.DayNight" parent="Widget.App.Button.Night" />
     <style name="Widget.App.Button.Night" parent="Widget.App.Button">
         <item name="android:textColor">@color/neutral_white</item>
