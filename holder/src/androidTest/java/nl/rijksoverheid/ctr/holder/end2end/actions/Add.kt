@@ -9,10 +9,12 @@ package nl.rijksoverheid.ctr.holder.end2end.actions
 
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.scrollTo
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.writeTo
-import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButton
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButtonPosition
+import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilButtonEnabled
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 
 object Add {
@@ -24,23 +26,23 @@ object Add {
 
     fun addRecoveryCertificate() {
         addEvent()
-        tapButton("Positieve test")
+        clickOn("Positieve test")
         clickOn("Log in met DigiD")
     }
 
     fun addNegativeTestCertificateFromGGD() {
         addEvent()
         scrollTo("Negatieve test")
-        tapButton("Negatieve test")
-        tapButton("GGD")
+        clickOn("Negatieve test")
+        clickOn("GGD")
         clickOn("Log in met DigiD")
     }
 
     fun addNegativeTestCertificateFromOtherLocation() {
         addEvent()
         scrollTo("Negatieve test")
-        tapButton("Negatieve test")
-        tapButton("Andere testlocatie")
+        clickOn("Negatieve test")
+        clickOn("Andere testlocatie")
     }
 
     fun retrieveCertificateWithToken(retrievalCode: String) {
@@ -61,7 +63,7 @@ object Add {
 
     fun addVaccinationCertificate(combinedWithPositiveTest: Boolean = false) {
         addEvent()
-        tapButton("Vaccinatie")
+        clickOn("Vaccinatie")
         if (combinedWithPositiveTest) clickOn(R.id.checkbox)
         clickOn("Log in met DigiD")
     }
@@ -71,8 +73,8 @@ object Add {
         waitUntilButtonEnabled("Bewijs toevoegen")
         tapButtonPosition("Bewijs toevoegen", 0)
         endScreen?.let {
-            tapButton("Naar mijn bewijzen")
             waitUntilTextIsShown(endScreen.message)
+            clickOn("Naar mijn bewijzen")
         }
         if (replace != null) replaceExistingCertificate(replace)
         waitUntilTextIsShown("Mijn bewijzen", 60)

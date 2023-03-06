@@ -19,7 +19,6 @@ import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickOn
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.labelValuePairExist
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.firstMatch
-import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilViewIsShown
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
@@ -41,7 +40,7 @@ object QR {
     ) {
         if (event is VaccinationEvent) waitUntilTextIsShown("Dosis $dose")
         waitUntilTextIsShown("Details")
-        tapButton("Details")
+        clickOn("Details")
         labelValuePairExist("Naam / Name:", person.name)
         labelValuePairExist("Geboortedatum / Date of birth*:", person.birthDate.dutch())
         when (event) {
