@@ -148,6 +148,11 @@
         <item name="cardBackgroundColor">@color/white</item>
     </style>
 
+    <style name="App.MaterialCardView.ChooseProofType.DayNight" parent="App.CardView.ChooseProofType.Day"/>
+    <style name="App.CardView.ChooseProofType.Day" parent="">
+        <item name="cardBackgroundColor">@color/blue_5_percent</item>
+    </style>
+
     <style name="App.Placeholder.Background.DayNight" parent="App.Placeholder.Background"/>
     <style name="App.Placeholder.Background" parent="">
         <item name="android:alpha">0.05</item>
