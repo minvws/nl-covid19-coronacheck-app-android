@@ -8,7 +8,7 @@
   ~  */
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<nl.rijksoverheid.ctr.design.widgets.AnimatorLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -61,4 +61,4 @@
         app:attachToScrollView="@+id/scroll"
         app:buttonText="@string/scan_result_something_wrong_finished_check_button"
         app:cardElevation="0dp" />
-</LinearLayout>
+</nl.rijksoverheid.ctr.design.widgets.AnimatorLinearLayout>

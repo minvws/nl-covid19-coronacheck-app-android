@@ -18,7 +18,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import nl.rijksoverheid.ctr.holder.databinding.FragmentMainBinding
+import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.makeIndeterminateAccessible
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 
 class HolderMainFragment : Fragment(R.layout.fragment_main) {
 
@@ -38,6 +40,9 @@ class HolderMainFragment : Fragment(R.layout.fragment_main) {
 
         val defaultToolbarElevation = resources.getDimension(R.dimen.toolbar_elevation)
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            // loading a new screen should automatically update the accessibility tree so Talkback knows what is on the screen.
+            binding.toolbar.getNavigationIconView()?.setAccessibilityFocus()
+
             binding.toolbar.elevation = if (destination.id == R.id.nav_dashboard) {
                 0f
             } else {

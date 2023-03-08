@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addNegativeTestCertificat
 import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRecoveryCertificate
 import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRetrievedCertificateToApp
 import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addVaccinationCertificate
+import nl.rijksoverheid.ctr.holder.end2end.actions.Overview.backToOverview
 import nl.rijksoverheid.ctr.holder.end2end.actions.Overview.viewQR
 import nl.rijksoverheid.ctr.holder.end2end.actions.retrieveCertificateFromServer
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertInternationalEventOnOverview
@@ -20,12 +21,13 @@ import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertInternationalQRDe
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalDetails
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
-import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent.TestType
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
+import nl.rijksoverheid.ctr.holder.end2end.model.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import org.junit.Test
 
@@ -47,9 +49,9 @@ class TestsRetrievalTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         assertInternationalEventOnOverview(pos)
-        assertQrButtonIsEnabled(Event.Type.PositiveTest)
+        assertQrButtonIsEnabled(EventType.PositiveTest)
 
-        viewQR(Event.Type.PositiveTest)
+        viewQR()
         assertQRisShown()
         assertInternationalQRDetails(person, pos)
         assertNoPreviousQR()
@@ -66,21 +68,85 @@ class TestsRetrievalTest : BaseTest() {
         addRetrievedCertificateToApp()
 
         assertInternationalEventOnOverview(neg)
-        assertQrButtonIsEnabled(Event.Type.NegativeTest)
+        assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(Event.Type.NegativeTest)
+        viewQR()
         assertQRisShown()
         assertInternationalQRDetails(person, neg)
         assertNoPreviousQR()
     }
 
     @Test
-    fun retrievePositiveTestAndVaccination_assertEndScreen() {
+    fun retrieveTwoPositiveTest_assertOverviewAndQRDetails() {
+        val person = Person(bsn = "999994086")
+        val pcr = PositiveTest(
+            eventDate = today.offsetDays(-30),
+            testType = TestType.Pcr,
+            validUntil = today.offsetDays(150)
+        )
+        val rat = PositiveTest(
+            eventDate = today.offsetDays(-60),
+            testType = TestType.Rat,
+            validUntil = today.offsetDays(120)
+        )
+
+        addRecoveryCertificate()
+        device.retrieveCertificateFromServer(person.bsn)
+        assertRetrievalDetails(person, pcr, 0)
+        assertRetrievalDetails(person, rat, 1)
+        addRetrievedCertificateToApp()
+
+        assertInternationalEventOnOverview(rat, 0)
+        assertInternationalEventOnOverview(pcr, 1)
+        assertQrButtonIsEnabled(EventType.PositiveTest)
+
+        viewQR(0)
+        assertQRisShown()
+        assertInternationalQRDetails(person, rat)
+        assertNoPreviousQR()
+        backToOverview()
+
+        viewQR(1)
+        assertQRisShown()
+        assertInternationalQRDetails(person, pcr)
+        assertNoPreviousQR()
+    }
+
+    @Test
+    fun retrieveTwoNegativeTest_assertOverviewAndQRDetails() {
+        val person = Person(bsn = "999994268")
+        val rat = NegativeTest(eventDate = today, testType = TestType.Rat)
+        val pcr = NegativeTest(eventDate = today, testType = TestType.Pcr)
+
+        addNegativeTestCertificateFromGGD()
+        device.retrieveCertificateFromServer(person.bsn)
+        assertRetrievalDetails(person, rat, 0)
+        assertRetrievalDetails(person, pcr, 1)
+        addRetrievedCertificateToApp()
+
+        assertInternationalEventOnOverview(pcr, 0)
+        assertInternationalEventOnOverview(rat, 1)
+        assertQrButtonIsEnabled(EventType.NegativeTest)
+
+        viewQR(0)
+        assertQRisShown()
+        assertInternationalQRDetails(person, pcr)
+        assertNoPreviousQR()
+        backToOverview()
+
+        viewQR(1)
+        assertQRisShown()
+        assertInternationalQRDetails(person, rat)
+        assertNoPreviousQR()
+    }
+
+    @Test
+    fun retrievePositiveTestAndVaccination_assertEndScreenAndOverview() {
         val person = Person(bsn = "999991772")
         val vac1 =
-            VaccinationEvent(today.offsetDays(-90), vaccine = VaccinationEvent.VaccineType.Pfizer)
+            VaccinationEvent(today.offsetDays(-90), vaccine = VaccineType.Pfizer)
         val vac2 =
-            VaccinationEvent(today.offsetDays(-120), vaccine = VaccinationEvent.VaccineType.Pfizer)
+            VaccinationEvent(today.offsetDays(-120), vaccine = VaccineType.Pfizer)
         val pos = PositiveTest(
             eventDate = today.offsetDays(-30),
             testType = TestType.Pcr,
@@ -97,7 +163,7 @@ class TestsRetrievalTest : BaseTest() {
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
         assertInternationalEventOnOverview(pos)
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
-        assertQrButtonIsEnabled(Event.Type.PositiveTest)
+        assertQrButtonIsEnabled(EventType.Vaccination)
+        assertQrButtonIsEnabled(EventType.PositiveTest)
     }
 }

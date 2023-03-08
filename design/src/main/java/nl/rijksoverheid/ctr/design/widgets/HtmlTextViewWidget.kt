@@ -78,6 +78,10 @@ class HtmlTextViewWidget @JvmOverloads constructor(
                 if (htmlText?.isNotEmpty() == true) {
                     setHtmlText(
                         htmlText = htmlText.toString(),
+                        textIsSelectable = getBoolean(
+                            R.styleable.HtmlTextViewWidget_textIsSelectable,
+                            true
+                        ),
                         htmlTextColor = getColor(
                             R.styleable.HtmlTextViewWidget_htmlTextColor,
                             textColor
@@ -122,11 +126,12 @@ class HtmlTextViewWidget @JvmOverloads constructor(
      */
     fun setHtmlText(
         htmlText: Int,
+        textIsSelectable: Boolean = true,
         htmlLinksEnabled: Boolean = false,
         splitHtmlText: Boolean = false
     ) {
         val text = context.getString(htmlText)
-        setHtmlText(text, htmlLinksEnabled = htmlLinksEnabled, splitHtmlText = splitHtmlText)
+        setHtmlText(text, htmlLinksEnabled = htmlLinksEnabled, splitHtmlText = splitHtmlText, textIsSelectable = textIsSelectable)
     }
 
     /**
@@ -137,6 +142,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     @Suppress("UNUSED_PARAMETER") // false positive for margin multipliers
     fun setHtmlText(
         htmlText: String,
+        textIsSelectable: Boolean = true,
         htmlLinksEnabled: Boolean = HTML_LINKS_ENABLED,
         @ColorInt htmlTextColor: Int = textColor,
         @ColorInt htmlTextColorLink: Int = textColorLink,
@@ -171,6 +177,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
             textView.setTextColor(htmlTextColor)
             textView.setLinkTextColor(htmlTextColorLink)
             textView.text = part
+            textView.setTextIsSelectable(textIsSelectable)
 
             // Mark as heading?
             if (part.isHeading) {
@@ -191,10 +198,7 @@ class HtmlTextViewWidget @JvmOverloads constructor(
             addView(textView)
         }
 
-        // Step 4: Enable links if requested
-        if (htmlLinksEnabled) {
-            enableHtmlLinks()
-        }
+        enableHtmlLinks()
     }
 
     /**

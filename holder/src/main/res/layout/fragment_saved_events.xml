@@ -5,9 +5,9 @@
   ~ SPDX-License-Identifier: EUPL-1.2
   -->
 
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<nl.rijksoverheid.ctr.design.widgets.AnimatorRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/recyclerView"
+    android:id="@+id/savedEventsRecyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"

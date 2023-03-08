@@ -5,7 +5,7 @@
   ~ SPDX-License-Identifier: EUPL-1.2
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -34,4 +34,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_menu"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout>

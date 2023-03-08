@@ -10,7 +10,7 @@ def appVersionCode =  1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("VERSION_NUMBER") != null ? System.getenv("VERSION_NUMBER").toInteger() : 1000000
 }
-version = "3.0.2"
+version = "3.0.3"
 archivesBaseName = "verifier-v${version}-${appVersionCode}"
 
 android {
@@ -58,6 +58,18 @@ android {
 
     flavorDimensions "environment"
     productFlavors {
+        tst {
+            dimension "environment"
+            versionNameSuffix "-test"
+            applicationIdSuffix ".test"
+            manifestPlaceholders = [appLabel: "@string/app_name_test"]
+            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.test.coronacheck.nl/v8/\""
+            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.test.coronacheck.nl/v8/\""
+            apply plugin: 'com.google.gms.google-services'
+            apply plugin: 'com.google.firebase.crashlytics'
+            manifestPlaceholders = [appLabel: "@string/app_name_test", deepLinkHost: "web.test.coronacheck.nl"]
+            matchingFallbacks = ['mlkit']
+        }
         acc {
             dimension "environment"
             versionNameSuffix "-acc"
@@ -94,6 +106,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            productFlavors.tst.signingConfig signingConfigs.release
             productFlavors.acc.signingConfig signingConfigs.release
             productFlavors.prod.signingConfig signingConfigs.release
         }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+  ~ Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+  ~
+  ~ SPDX-License-Identifier: EUPL-1.2
+  -->
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator
+        android:duration="50"
+        android:startOffset="66"
+        android:interpolator="@android:anim/linear_interpolator">
+        <propertyValuesHolder
+            android:propertyName="alpha"
+            android:valueFrom="1"
+            android:valueTo="0.0" />
+    </objectAnimator>
+    <objectAnimator
+        android:duration="250"
+        android:interpolator="@anim/fragment_fast_out_extra_slow_in">
+        <propertyValuesHolder
+            android:propertyName="scaleX"
+            android:valueFrom="1"
+            android:valueTo="0.9" />
+        <propertyValuesHolder
+            android:propertyName="scaleY"
+            android:valueFrom="1"
+            android:valueTo="0.9" />
+    </objectAnimator>
+</set>

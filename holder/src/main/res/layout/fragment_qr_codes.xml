@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<nl.rijksoverheid.ctr.design.widgets.AnimatorLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
+                android:textIsSelectable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/nextQrButton"
                 app:layout_constraintStart_toEndOf="@+id/previousQrButton"
@@ -132,6 +133,7 @@
                 android:background="@color/white_80"
                 android:gravity="center"
                 android:visibility="gone"
+                android:textIsSelectable="true"
                 tools:text="@string/qr_code_over_vaccinated"
                 tools:visibility="visible" />
 
@@ -139,4 +141,4 @@
 
     </FrameLayout>
 
-</LinearLayout>
+</nl.rijksoverheid.ctr.design.widgets.AnimatorLinearLayout>

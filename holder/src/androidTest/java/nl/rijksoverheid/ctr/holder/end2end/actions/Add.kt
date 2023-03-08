@@ -8,12 +8,12 @@
 package nl.rijksoverheid.ctr.holder.end2end.actions
 
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.end2end.interaction.assertDisplayed
-import nl.rijksoverheid.ctr.holder.end2end.interaction.clickOn
-import nl.rijksoverheid.ctr.holder.end2end.interaction.scrollTo
-import nl.rijksoverheid.ctr.holder.end2end.interaction.tapButton
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertDisplayed
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickOn
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.scrollTo
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.writeTo
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButton
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
-import nl.rijksoverheid.ctr.holder.end2end.interaction.writeTo
 
 object Add {
 
@@ -54,6 +54,7 @@ object Add {
         verificationCode: String
     ) {
         retrieveCertificateWithToken(retrievalCode)
+        waitUntilTextIsShown("Geen verificatiecode gekregen?")
         writeTo(R.id.verification_code_input, verificationCode)
         clickOn("Haal testuitslag op")
     }

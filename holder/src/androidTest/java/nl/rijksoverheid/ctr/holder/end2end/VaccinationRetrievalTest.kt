@@ -18,13 +18,12 @@ import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertQrButtonIsE
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertInternationalQRDetails
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertNoPreviousQR
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisHidden
-import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisNotHidden
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalDetails
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
-import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent.VaccineType
+import nl.rijksoverheid.ctr.holder.end2end.model.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import org.junit.Test
 
@@ -45,9 +44,9 @@ class VaccinationRetrievalTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(Event.Type.Vaccination)
+        viewQR()
         assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/2")
         viewPreviousQR()
@@ -59,8 +58,10 @@ class VaccinationRetrievalTest : BaseTest() {
     @Test
     fun retrieveVaccinationWith2Moderna_assertOverviewAndQRDetails() {
         val person = Person("999990159")
-        val vac1 = VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccineType.Moderna)
-        val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Moderna)
+        val vac1 =
+            VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccineType.Moderna)
+        val vac2 =
+            VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Moderna)
 
         addVaccinationCertificate()
         device.retrieveCertificateFromServer(person.bsn)
@@ -70,9 +71,9 @@ class VaccinationRetrievalTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(Event.Type.Vaccination)
+        viewQR()
         assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/2")
         viewPreviousQR()
@@ -84,8 +85,10 @@ class VaccinationRetrievalTest : BaseTest() {
     @Test
     fun retrieveVaccinationWith2Janssen_assertOverviewAndQRDetails() {
         val person = Person("999990093")
-        val vac1 = VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccineType.Janssen)
-        val vac2 = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Janssen)
+        val vac1 =
+            VaccinationEvent(eventDate = today.offsetDays(-60), vaccine = VaccineType.Janssen)
+        val vac2 =
+            VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Janssen)
 
         addVaccinationCertificate()
         device.retrieveCertificateFromServer(person.bsn)
@@ -95,13 +98,13 @@ class VaccinationRetrievalTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/1")
         assertInternationalEventOnOverview(vac1, dose = "1/1")
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(Event.Type.Vaccination)
+        viewQR()
         assertQRisShown()
         assertInternationalQRDetails(person, vac2, dose = "2/1")
         viewPreviousQR()
-        assertQRisNotHidden()
+        assertQRisShown()
         assertInternationalQRDetails(person, vac1, dose = "1/1")
         assertNoPreviousQR()
     }

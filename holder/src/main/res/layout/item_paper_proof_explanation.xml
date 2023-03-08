@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:duplicateParentState="true"
         android:focusable="false"
+        android:textIsSelectable="true"
         android:textAppearance="?attr/textAppearanceBody2"
         android:textColor="@color/secondary_text"
         android:layout_marginStart="24dp"

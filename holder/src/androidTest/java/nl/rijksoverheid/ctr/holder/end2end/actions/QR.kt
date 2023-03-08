@@ -8,13 +8,11 @@
 package nl.rijksoverheid.ctr.holder.end2end.actions
 
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.end2end.interaction.clickOn
-import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilViewIsShown
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickOn
 
 object QR {
 
     fun viewPreviousQR() {
-        waitUntilViewIsShown(R.id.previousQrButton)
         clickOn(R.id.previousQrButton)
     }
 }

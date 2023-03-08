@@ -10,6 +10,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:textIsSelectable="true"
     android:textAppearance="@style/App.TextAppearance.MaterialComponents.Body1"
     tools:text="@string/qr_card_validity_valid"
     android:paddingBottom="24dp"/>

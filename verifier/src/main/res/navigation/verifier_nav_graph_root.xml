@@ -22,10 +22,10 @@
     <action
         android:id="@+id/action_main"
         app:destination="@id/nav_main"
-        app:exitAnim="@anim/fragment_open_exit"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit"
+        app:exitAnim="@animator/fragment_open_exit"
+        app:enterAnim="@animator/fragment_open_enter"
+        app:popEnterAnim="@animator/fragment_close_enter"
+        app:popExitAnim="@animator/fragment_close_exit"
         app:popUpTo="@+id/root_nav"
         app:popUpToInclusive="true" />
 
@@ -33,9 +33,9 @@
         android:id="@+id/action_introduction"
         app:destination="@id/nav_introduction"
         app:enterAnim="@anim/no_animation"
-        app:exitAnim="@anim/fragment_open_exit"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit"
+        app:exitAnim="@animator/fragment_open_exit"
+        app:popEnterAnim="@animator/fragment_close_enter"
+        app:popExitAnim="@animator/fragment_close_exit"
         app:popUpTo="@+id/root_nav"
         app:popUpToInclusive="true">
 
@@ -44,10 +44,10 @@
     <action
         android:id="@+id/action_app_status"
         app:destination="@id/nav_status"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:exitAnim="@anim/fragment_open_exit"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit"
+        app:enterAnim="@animator/fragment_open_enter"
+        app:exitAnim="@animator/fragment_open_exit"
+        app:popEnterAnim="@animator/fragment_close_enter"
+        app:popExitAnim="@animator/fragment_close_exit"
         app:popUpTo="@+id/root_nav"
         app:popUpToInclusive="true">
 
@@ -60,10 +60,10 @@
     <action
         android:id="@+id/action_scanner"
         app:destination="@id/nav_scanner"
-        app:enterAnim="@anim/fragment_open_enter"
-        app:exitAnim="@anim/fragment_open_exit"
-        app:popEnterAnim="@anim/fragment_close_enter"
-        app:popExitAnim="@anim/fragment_close_exit"
+        app:enterAnim="@animator/fragment_open_enter"
+        app:exitAnim="@animator/fragment_open_exit"
+        app:popEnterAnim="@animator/fragment_close_enter"
+        app:popExitAnim="@animator/fragment_close_exit"
         app:popUpTo="@id/nav_scanner" />
 
     <include app:graph="@navigation/verifier_nav_graph_scanner" />

@@ -122,7 +122,7 @@ class MenuViewModelImpl(
                         MenuSection.MenuItem(
                             icon = R.drawable.ic_warning,
                             color = R.color.error,
-                            title = R.string.holder_menu_resetApp,
+                            title = R.string.general_menu_resetApp,
                             onClick = MenuSection.MenuItem.OnClick.Navigate(dialogDirection.actionId, dialogDirection.arguments)
                         )
                     )

@@ -27,6 +27,7 @@ class HtmlTextView @JvmOverloads constructor(
 ) : MaterialTextView(context, attrs, defStyle, defStyleRes) {
 
     init {
+        setTextIsSelectable(true)
         TextViewCompat.setTextAppearance(this, R.style.App_TextAppearance_MaterialComponents_Body1)
     }
 

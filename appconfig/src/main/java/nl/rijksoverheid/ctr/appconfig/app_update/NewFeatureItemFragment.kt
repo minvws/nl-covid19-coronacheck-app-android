@@ -51,7 +51,7 @@ class NewFeatureItemFragment : Fragment(R.layout.fragment_new_feature_item) {
         item.subTitleColor?.let {
             binding.subTitle.setTextColor(ContextCompat.getColor(requireContext(), it))
         }
-        binding.description.setHtmlText(getString(item.description), false)
+        binding.description.setHtmlText(getString(item.description))
 
         if (androidUtil.isSmallScreen()) {
             binding.image.visibility = View.GONE

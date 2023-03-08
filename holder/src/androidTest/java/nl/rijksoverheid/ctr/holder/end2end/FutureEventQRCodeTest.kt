@@ -27,14 +27,14 @@ import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisExpired
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisHidden
 import nl.rijksoverheid.ctr.holder.end2end.assertions.QR.assertQRisShown
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Retrieval.assertRetrievalDetails
-import nl.rijksoverheid.ctr.holder.end2end.model.Event
+import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.PositiveTest
-import nl.rijksoverheid.ctr.holder.end2end.model.TestEvent.TestType
+import nl.rijksoverheid.ctr.holder.end2end.model.TestType
 import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent
-import nl.rijksoverheid.ctr.holder.end2end.model.VaccinationEvent.VaccineType
+import nl.rijksoverheid.ctr.holder.end2end.model.VaccineType
 import nl.rijksoverheid.ctr.holder.end2end.model.offsetDays
 import nl.rijksoverheid.ctr.holder.end2end.utils.DateTimeUtils
 import org.junit.After
@@ -49,6 +49,7 @@ class FutureEventQRCodeTest : BaseTest() {
     }
 
     // region Vaccinations
+
     @Test
     fun whenDeviceDateIsBeforeExpiry_vaccinationCertificatesAreValid() {
         val person = Person(bsn = "999990020")
@@ -65,9 +66,9 @@ class FutureEventQRCodeTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(Event.Type.Vaccination)
+        viewQR()
         assertQRisShown()
         viewPreviousQR()
         assertQRisHidden()
@@ -89,16 +90,18 @@ class FutureEventQRCodeTest : BaseTest() {
 
         assertInternationalEventOnOverview(vac2, dose = "2/2")
         assertInternationalEventOnOverview(vac1, dose = "1/2")
-        assertQrButtonIsEnabled(Event.Type.Vaccination)
+        assertQrButtonIsEnabled(EventType.Vaccination)
 
-        viewQR(Event.Type.Vaccination)
+        viewQR()
         assertQRisExpired()
         viewPreviousQR()
         assertQRisHidden()
     }
 
     // endregion
+
     // region Recovery
+
     @Test
     fun whenDeviceDateIsBeforeExpiry_recoveryCertificateIsValid() {
         val person = Person(bsn = "999993033")
@@ -116,9 +119,9 @@ class FutureEventQRCodeTest : BaseTest() {
         relaunchApp()
 
         assertInternationalEventOnOverview(pos)
-        assertQrButtonIsEnabled(Event.Type.PositiveTest)
+        assertQrButtonIsEnabled(EventType.PositiveTest)
 
-        viewQR(Event.Type.PositiveTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -140,10 +143,10 @@ class FutureEventQRCodeTest : BaseTest() {
         relaunchApp()
 
         assertInternationalEventOnOverview(pos)
-        assertInternationalEventWillExpireSoon(Event.Type.PositiveTest, daysLeft = 9)
-        assertQrButtonIsEnabled(Event.Type.PositiveTest)
+        assertInternationalEventWillExpireSoon(EventType.PositiveTest, daysLeft = 9)
+        assertQrButtonIsEnabled(EventType.PositiveTest)
 
-        viewQR(Event.Type.PositiveTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -159,11 +162,13 @@ class FutureEventQRCodeTest : BaseTest() {
         DateTimeUtils(device).setDate(today.offsetDays(150))
         relaunchApp()
 
-        assertInternationalEventIsExpired(Event.Type.PositiveTest)
+        assertInternationalEventIsExpired(EventType.PositiveTest)
     }
 
     // endregion
+
     // region Negative test
+
     @Test
     fun whenDeviceDateIsBeforeExpiry_negativeTestCertificateIsValid() {
         val person = Person(bsn = "999992004")
@@ -177,9 +182,9 @@ class FutureEventQRCodeTest : BaseTest() {
         relaunchApp()
 
         assertInternationalEventOnOverview(neg)
-        assertQrButtonIsEnabled(Event.Type.NegativeTest)
+        assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(Event.Type.NegativeTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -195,11 +200,13 @@ class FutureEventQRCodeTest : BaseTest() {
         DateTimeUtils(device).setDate(today.offsetDays(60))
         relaunchApp()
 
-        assertInternationalEventIsExpired(Event.Type.NegativeTest)
+        assertInternationalEventIsExpired(EventType.NegativeTest)
     }
 
     // endregion
+
     // region Tokens
+
     @Test
     fun whenDeviceDateIsBeforeExpiry_negativeTokenCertificateIsValid() {
         val person = Person(name = "de Beer, Boris", birthDate = LocalDate.of(1971, 7, 31))
@@ -218,9 +225,9 @@ class FutureEventQRCodeTest : BaseTest() {
         relaunchApp()
 
         assertInternationalEventOnOverview(token)
-        assertQrButtonIsEnabled(Event.Type.NegativeTest)
+        assertQrButtonIsEnabled(EventType.NegativeTest)
 
-        viewQR(Event.Type.NegativeTest)
+        viewQR()
         assertQRisShown()
         assertNoPreviousQR()
     }
@@ -242,7 +249,7 @@ class FutureEventQRCodeTest : BaseTest() {
         DateTimeUtils(device).setDate(today.offsetDays(60))
         relaunchApp()
 
-        assertInternationalEventIsExpired(Event.Type.NegativeTest)
+        assertInternationalEventIsExpired(EventType.NegativeTest)
     }
     // endregion
 }
