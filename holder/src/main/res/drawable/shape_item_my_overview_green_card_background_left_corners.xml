@@ -11,5 +11,5 @@
     <corners
         android:topLeftRadius="6dp"
         android:bottomLeftRadius="6dp"/>
-    <solid android:color="@color/blue_5_percent"  />
+    <solid android:color="@color/message_shape_background"  />
 </shape>

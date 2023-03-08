@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_text">@color/neutral_black</color>
+    <color name="link">@color/primary_blue_night</color>
+    <color name="message_container">@color/neutral_white</color>
+    <color name="message_container_border">@color/neutral_grey_4</color>
+    <color name="message_shape_background">@color/neutral_grey_4</color>
+    <color name="tabs_separator">@color/neutral_grey_4</color>
+    <color name="error">@color/error_night</color>
+    <color name="menu_icon_color">@color/neutral_black</color>
+    <color name="menu_item_section_background">@color/neutral_grey_5</color>
+    <color name="divider_color">@color/neutral_grey_4</color>
+    <color name="earth">#106870</color>
+    <color name="html_secondary_text">@color/neutral_grey_3</color>
+    <color name="hidden_qr_eye_icon">@color/white</color>
+    <color name="hidden_qr_eye_icon_line">@color/neutral_white</color>
+</resources>

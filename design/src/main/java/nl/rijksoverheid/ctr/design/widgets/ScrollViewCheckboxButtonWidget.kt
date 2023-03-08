@@ -11,6 +11,7 @@
 package nl.rijksoverheid.ctr.design.widgets
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,6 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import androidx.annotation.StringRes
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import nl.rijksoverheid.ctr.design.R
@@ -64,6 +64,10 @@ class ScrollViewCheckboxButtonWidget @JvmOverloads constructor(
                     ?.let { binding.errorText.text = it }
                 getText(R.styleable.ScrollViewCheckboxButtonWidget_checkboxButtonText)?.toString()
                     ?.let { binding.checkboxButton.text = it }
+                getDrawable(R.styleable.ScrollViewCheckboxButtonWidget_src)?.let {
+                    binding.checkboxContainer.background = it
+                    background = ColorDrawable(android.graphics.Color.TRANSPARENT)
+                }
                 binding.checkboxButton.isVisible =
                     !getBoolean(R.styleable.ScrollViewCheckboxButtonWidget_buttonHidden, false)
                 setOnClickListener {
@@ -108,7 +112,6 @@ class ScrollViewCheckboxButtonWidget @JvmOverloads constructor(
             htmlText = textId,
             textIsSelectable = false
         )
-        binding.headerTitle.visibility = View.VISIBLE
-        binding.checkboxContainer.background = AppCompatResources.getDrawable(context, R.drawable.shape_add_vaccination_checkbox_background)
+        binding.headerTitle.visibility = VISIBLE
     }
 }

@@ -14,6 +14,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
+import nl.rijksoverheid.ctr.design.R
 
 @Parcelize
 data class MenuSection(
@@ -25,7 +26,8 @@ data class MenuSection(
         @DrawableRes val icon: Int,
         @StringRes val title: Int,
         @StringRes val subtitle: Int? = null,
-        @ColorRes val color: Int = -1,
+        @ColorRes val titleColor: Int = R.color.primary_text,
+        @ColorRes val iconColor: Int = R.color.menu_icon_color,
         val onClick: OnClick
     ) : Parcelable {
 

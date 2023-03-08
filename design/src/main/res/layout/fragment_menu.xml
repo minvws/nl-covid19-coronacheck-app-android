@@ -15,8 +15,7 @@
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:alpha="0.05"
-        android:background="@color/primary_blue"
+        android:background="@color/message_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

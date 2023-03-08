@@ -33,7 +33,7 @@ class NewFeaturesFragmentTest : AutoCloseKoinTest() {
         imageResource = R.drawable.illustration_new_disclosure_policy,
         titleResource = R.string.holder_newintheapp_content_3Gand1G_title,
         description = R.string.holder_newintheapp_content_3Gand1G_body,
-        subTitleColor = R.color.primary_blue,
+        subTitleColor = R.color.link,
         subtitleResource = R.string.new_in_app_subtitle
     )
 

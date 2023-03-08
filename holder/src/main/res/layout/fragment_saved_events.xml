@@ -15,6 +15,6 @@
     android:fillViewport="true"
     android:importantForAccessibility="no"
     android:scrollbars="vertical"
-    android:background="@color/blue_5_percent"
+    android:background="@color/message_container"
     android:paddingBottom="40dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

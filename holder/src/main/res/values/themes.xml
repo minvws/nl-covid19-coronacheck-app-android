@@ -2,9 +2,9 @@
 <resources>
 
     <!-- androidTest cannot access AppTheme since it's in a different module. Use this instead -->
-    <style name="TestAppTheme" parent ="AppTheme" />
+    <style name="TestAppTheme" parent="AppTheme.DayNight" />
 
-    <style name="AppTheme.Launcher" parent="AppTheme">
+    <style name="AppTheme.Launcher" parent="AppTheme.DayNight">
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 </resources>

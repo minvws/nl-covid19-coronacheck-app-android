@@ -75,7 +75,7 @@ class HolderMainActivity : AppCompatActivity() {
         NetworkRequest.Builder().build() // blank filter for all networks
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
+        setTheme(R.style.AppTheme_DayNight)
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
