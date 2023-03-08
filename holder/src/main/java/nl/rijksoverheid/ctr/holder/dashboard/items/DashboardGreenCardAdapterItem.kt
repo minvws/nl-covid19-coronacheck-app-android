@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.xwray.groupie.viewbinding.BindableItem
+import java.time.Clock
 import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.R
@@ -45,6 +46,7 @@ class DashboardGreenCardAdapterItem(
     private val dashboardGreenCardAdapterItemUtil: DashboardGreenCardAdapterItemUtil by inject()
     private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
+    private val clock: Clock by inject()
 
     private val runnable = Runnable {
         notifyChanged()
@@ -191,7 +193,12 @@ class DashboardGreenCardAdapterItem(
 
     private fun showError(viewBinding: AdapterItemDashboardGreenCardBinding) {
         val context = viewBinding.root.context
-        if (cards.first().credentialState is DashboardItem.CardsItem.CredentialState.NoCredential) {
+        val credentialState = cards.first().credentialState
+        val noCredential = credentialState is DashboardItem.CardsItem.CredentialState.NoCredential
+        val credentialExpired = credentialState is DashboardItem.CardsItem.CredentialState.HasCredential && credentialState.credential.expirationTime.isBefore(
+            OffsetDateTime.now(clock)
+        )
+        if (noCredential || credentialExpired) {
             when (cards.first().databaseSyncerResult) {
                 is DatabaseSyncerResult.Failed.NetworkError -> {
                     viewBinding.errorText.setHtmlText(

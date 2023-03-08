@@ -61,7 +61,7 @@
 
     <nl.rijksoverheid.ctr.design.widgets.ScrollViewButtonWidget
         android:id="@+id/bottom"
-        style="@style/Widget.App.Button"
+        style="@style/Widget.App.Button.DayNight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:attachToScrollView="@+id/scroll"

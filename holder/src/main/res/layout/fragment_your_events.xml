@@ -53,7 +53,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginHorizontal="@dimen/divider_padding"
-                android:background="@color/grey_4"
+                android:background="@color/divider_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description" />
@@ -89,7 +89,7 @@
 
     <nl.rijksoverheid.ctr.design.widgets.ScrollViewButtonWidget
         android:id="@+id/bottom"
-        style="@style/Widget.App.Button"
+        style="@style/Widget.App.Button.DayNight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:attachToScrollView="@+id/scroll"

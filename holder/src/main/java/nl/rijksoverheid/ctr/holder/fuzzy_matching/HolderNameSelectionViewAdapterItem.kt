@@ -29,6 +29,10 @@ class HolderNameSelectionViewAdapterItem(
                 ColorStateList.valueOf(viewBinding.radioButton.context.getColor(R.color.error))
         } else {
             viewBinding.radioButton.isUseMaterialThemeColors = true
+            if (!item.isSelected) {
+                viewBinding.radioButton.buttonTintList =
+                    ColorStateList.valueOf(viewBinding.radioButton.context.getColor(R.color.menu_icon_color))
+            }
         }
         viewBinding.nameTextView.text = item.name
         viewBinding.eventsTextView.text = item.events

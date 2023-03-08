@@ -19,7 +19,7 @@ interface ConfigRepository {
 class ConfigRepositoryImpl(private val api: AppConfigApi) : ConfigRepository {
     override suspend fun getConfig(): ConfigResponse {
         val response = api.getConfig()
-        val responseBody = response.body()
+        val responseBody = response.body()?.string()
 
         if (!response.isSuccessful || responseBody == null) {
             throw ConfigHttpException(response)
