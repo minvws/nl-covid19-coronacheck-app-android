@@ -8,8 +8,6 @@
 package nl.rijksoverheid.ctr.holder.saved_events.items
 
 import android.view.View
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Section
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
@@ -34,23 +32,13 @@ class SavedEventsSectionAdapterItem(
             viewBinding = viewBinding,
             providerName = savedEvents.providerName
         )
-        initRecyclerView(
-            viewBinding = viewBinding,
-            savedEvents = savedEvents
-        )
     }
 
-    private fun initRecyclerView(
-        viewBinding: AdapterItemSavedEventsSectionBinding,
+    fun section(
         savedEvents: SavedEvents
-    ) {
+    ): Section {
 
         val section = Section()
-        val adapter = GroupAdapter<GroupieViewHolder>().also {
-            it.add(section)
-        }
-        viewBinding.recyclerView.adapter = adapter
-        viewBinding.recyclerView.itemAnimator = null
 
         val items = savedEvents.events.map {
             SavedEventAdapterItem(
@@ -66,6 +54,8 @@ class SavedEventsSectionAdapterItem(
                 onClick = onClickClearData
             )
         )
+
+        return section
     }
 
     private fun setReceivedAt(
