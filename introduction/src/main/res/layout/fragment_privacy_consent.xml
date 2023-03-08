@@ -78,6 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/horizontal_padding"
         android:layout_marginBottom="16dp"
+        style="@style/CardView.DayNight"
         app:attachCheckboxToScrollView="@id/scroll"
         app:checkboxText="@string/privacy_policy_checkbox_text"
         app:checkboxButtonText="@string/onboarding_finish"

@@ -25,8 +25,6 @@
             app:tabMaxWidth="0dp"
             app:tabGravity="fill"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/black"
-            app:tabIndicatorColor="@color/black"
             app:tabTextColor="@color/secondary_text"
             app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             android:layout_width="match_parent"
@@ -37,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginHorizontal="16dp"
-            android:background="@color/grey_4" />
+            android:background="@color/tabs_separator" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
@@ -53,12 +51,13 @@
         android:layout_height="wrap_content"
         android:visibility="visible"
         app:layout_anchor="@id/tabsContent"
+        style="@style/CardView.DayNight"
         app:cardElevation="0dp"
         app:layout_anchorGravity="end|bottom">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addQrButton"
-            style="@style/Widget.App.Button"
+            style="@style/Widget.App.Button.DayNight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

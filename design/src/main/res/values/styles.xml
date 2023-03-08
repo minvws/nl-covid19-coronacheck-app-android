@@ -2,11 +2,13 @@
 <resources>
 
     <!-- Component Styles -->
+    <style name="Widget.App.NavigationView.DayNight" parent="Widget.MaterialComponents.NavigationView" />
     <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
         <item name="itemTextColor">@color/white</item>
         <item name="insetForeground">@color/primary_blue</item>
     </style>
 
+    <style name="Widget.App.TextInputLayout.DayNight" parent="Widget.App.TextInputLayout" />
     <style name="Widget.App.TextInputLayout" parent="Widget.Design.TextInputLayout">
         <item name="boxBackgroundColor">@color/white</item>
     </style>
@@ -21,6 +23,7 @@
         <item name="android:textColor">?colorOnSurface</item>
     </style>
 
+    <style name="Widget.App.Button.DayNight" parent="Widget.App.Button" />
     <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -55,11 +58,15 @@
         <item name="strokeWidth">1dp</item>
     </style>
 
+    <style name="Widget.App.Button.Outlined.DayNight" parent="Widget.App.Button.Outlined" />
+
+    <style name="Widget.App.Button.Small.DayNight" parent="Widget.App.Button.Small" />
     <style name="Widget.App.Button.Small" parent="Widget.App.Button">
         <item name="android:paddingStart">32dp</item>
         <item name="android:paddingEnd">32dp</item>
     </style>
 
+    <style name="Widget.App.Toolbar.Surface.DayNight" parent="Widget.App.Toolbar.Surface" />
     <style name="Widget.App.Toolbar.Surface" parent="Widget.MaterialComponents.Toolbar.Surface">
         <item name="android:elevation">4dp</item>
         <item name="titleTextColor">@color/primary_text</item>
@@ -81,6 +88,7 @@
     </style>
 
     <!-- Text Styles -->
+    <style name="App.TextAppearance.MaterialComponents.Body1.DayNight" parent="App.TextAppearance.MaterialComponents.Body1" />
     <style name="App.TextAppearance.MaterialComponents.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="lineHeight">26sp</item>
     </style>
@@ -99,12 +107,14 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
+    <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat.DayNight" parent="App.TextAppearance.MaterialComponents.Headline5.Montserrat" />
     <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">26sp</item>
         <item name="android:textColor">@color/primary_text</item>
     </style>
 
+    <style name="App.TextAppearance.MaterialComponents.Headline6.Montserrat.DayNight" parent="App.TextAppearance.MaterialComponents.Headline6.Montserrat" />
     <style name="App.TextAppearance.MaterialComponents.Headline6.Montserrat" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">20sp</item>
@@ -132,6 +142,28 @@
         <item name="android:fontFamily">@font/montserrat_bold</item>
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/primary_text</item>
+    </style>
+
+    <style name="App.MaterialCardView.DayNight" parent="App.CardView.Day"/>
+    <style name="App.CardView.Day" parent="">
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="App.MaterialCardView.ChooseProofType.DayNight" parent="App.CardView.ChooseProofType.Day"/>
+    <style name="App.CardView.ChooseProofType.Day" parent="">
+        <item name="cardBackgroundColor">@color/blue_5_percent</item>
+    </style>
+
+    <style name="App.Placeholder.Background.DayNight" parent="App.Placeholder.Background"/>
+    <style name="App.Placeholder.Background" parent="">
+        <item name="android:alpha">0.05</item>
+        <item name="android:background">@color/primary_blue</item>
+    </style>
+
+    <style name="App.Widget.Design.TabLayout.DayNight" parent="App.Widget.Design.TabLayout.Day" />
+    <style name="App.Widget.Design.TabLayout.Day" parent="Widget.Design.TabLayout">
+        <item name="tabSelectedTextColor">@color/black</item>
+        <item name="tabIndicatorColor">@color/black</item>
     </style>
 
 </resources>

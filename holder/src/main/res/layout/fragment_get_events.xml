@@ -50,13 +50,14 @@
                 android:visibility="gone"
                 app:buttonHidden="true"
                 app:checkboxText="@string/holder_addVaccine_alsoCollectPositiveTestResults_checkbox"
+                app:src="@drawable/shape_add_vaccination_checkbox_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/description" />
 
             <Button
                 android:id="@+id/button"
-                style="@style/Widget.App.Button"
+                style="@style/Widget.App.Button.DayNight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"

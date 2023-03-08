@@ -36,6 +36,7 @@
         <attr name="checkboxButtonText" format="string" />
         <attr name="buttonHidden" format="boolean" />
         <attr name="attachCheckboxToScrollView" format="reference" />
+        <attr name="src" format="reference|color" />
     </declare-styleable>
     <declare-styleable name="RecyclerViewButtonWidget">
         <attr name="attachToRecyclerView" format="reference" />

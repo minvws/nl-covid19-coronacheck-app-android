@@ -13,7 +13,7 @@
     android:paddingHorizontal="16dp"
     android:paddingTop="8dp"
     android:paddingBottom="16dp"
-    android:background="@color/white">
+    android:background="@color/menu_item_section_background">
 
     <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
         android:id="@+id/text"

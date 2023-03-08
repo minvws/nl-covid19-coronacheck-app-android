@@ -12,7 +12,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
+import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ItemYourEventBinding
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.addAccessibilityAction
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityLabel
@@ -30,7 +32,7 @@ class YourEventWidget @JvmOverloads constructor(
 
     fun setContent(title: String, subtitle: String, infoClickListener: () -> Unit) {
         binding.rowTitle.text = title
-        binding.rowSubtitle.setHtmlText(subtitle)
+        binding.rowSubtitle.setHtmlText(subtitle, htmlTextColor = ContextCompat.getColor(context, R.color.html_secondary_text))
         binding.detailsButton.setOnClickListener { infoClickListener.invoke() }
         binding.detailsButton.contentDescription = "${binding.detailsButton.text}, $title"
 
