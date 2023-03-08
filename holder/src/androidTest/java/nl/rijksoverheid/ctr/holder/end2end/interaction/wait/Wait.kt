@@ -18,7 +18,7 @@ object Wait {
     }
 
     @Throws
-    fun until(condition: Condition, timeoutLimit: Long, watchInterval: Long = 200) {
+    fun until(condition: Condition, timeoutLimit: Long, watchInterval: Long = 50) {
         var status = State.ConditionNotMet
         var elapsedTime: Long = 0
         do {
