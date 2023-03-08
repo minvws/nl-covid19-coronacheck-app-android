@@ -208,7 +208,7 @@ class WalletTest : BaseTest() {
         viewWallet()
         assertAmountOfWalletItemsPerSection(arrayOf(1, 1))
 
-        deleteItemFromWallet(position = 0)
+        deleteItemFromWallet()
         assertAmountOfWalletItemsPerSection(arrayOf(1))
 
         deleteItemFromWallet()

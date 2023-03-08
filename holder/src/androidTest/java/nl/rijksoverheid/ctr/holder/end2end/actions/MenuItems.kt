@@ -30,7 +30,7 @@ object MenuItems {
         tapButtonPosition("Uit de app verwijderen", position)
         assertDisplayed("Deze gegevens verwijderen?")
         clickOn(if (confirm) "Verwijderen" else "Annuleer")
-        waitUntilTextIsShown("Mijn opgeslagen gegevens")
+        waitUntilTextIsShown("Hoe gaat CoronaCheck met gegevens om?")
     }
 
     fun returnFromWalletToOverview() {
