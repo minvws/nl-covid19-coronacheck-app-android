@@ -32,6 +32,7 @@ androidx-preference = { module = "androidx.preference:preference-ktx", version.r
 androidx-security-crypto = "androidx.security:security-crypto:1.0.0"
 androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "androidx-test" }
 androidx-test-junit = "androidx.test.ext:junit-ktx:1.1.5"
+androidx-test-monitor = "androidx.test:monitor:1.6.0"
 androidx-test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "androidx-orchestrator" }
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
 androidx-test-runner = "androidx.test:runner:1.5.2"
