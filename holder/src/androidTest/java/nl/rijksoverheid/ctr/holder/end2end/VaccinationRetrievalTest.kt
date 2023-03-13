@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.holder.end2end
 
 import androidx.test.filters.SdkSuppress
+import nl.rijksoverheid.ctr.holder.end2end.actions.Add
 import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addRetrievedCertificateToApp
 import nl.rijksoverheid.ctr.holder.end2end.actions.Add.addVaccinationCertificate
 import nl.rijksoverheid.ctr.holder.end2end.actions.Overview.viewQR
@@ -106,6 +107,25 @@ class VaccinationRetrievalTest : BaseTest() {
         viewPreviousQR()
         assertQRisShown()
         assertInternationalQRDetails(person, vac1, dose = "1/1")
+        assertNoPreviousQR()
+    }
+
+    @Test
+    fun retrieveVaccination_assertEndScreenOnlyInternational() {
+        val person = Person(bsn = "999990019")
+        val vac = VaccinationEvent(eventDate = today.offsetDays(-30), vaccine = VaccineType.Pfizer)
+
+        addVaccinationCertificate()
+        device.retrieveCertificateFromServer(person.bsn)
+        assertRetrievalDetails(person, vac)
+        addRetrievedCertificateToApp(Add.EndScreen.OnlyInternationalEventCreated)
+
+        assertInternationalEventOnOverview(vac, dose = "1/2")
+        assertQrButtonIsEnabled(EventType.Vaccination)
+
+        viewQR()
+        assertQRisShown()
+        assertInternationalQRDetails(person, vac, dose = "1/2")
         assertNoPreviousQR()
     }
 }

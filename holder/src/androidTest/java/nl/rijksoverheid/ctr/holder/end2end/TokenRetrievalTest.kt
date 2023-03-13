@@ -31,11 +31,9 @@ import nl.rijksoverheid.ctr.holder.end2end.model.EventType
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeToken
 import nl.rijksoverheid.ctr.holder.end2end.model.Person
 import nl.rijksoverheid.ctr.holder.end2end.model.TestType
-import nl.rijksoverheid.ctr.holder.end2end.utils.RunFirebaseTestOnDemand
 import org.junit.Test
 
 @SdkSuppress(minSdkVersion = 33, maxSdkVersion = 33)
-@RunFirebaseTestOnDemand
 class TokenRetrievalTest : BaseTest() {
 
     private val person = Person(name = "de Beer, Boris", birthDate = LocalDate.of(1971, 7, 31))
