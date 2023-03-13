@@ -224,6 +224,7 @@ dependencies {
     implementation libs.timber
     implementation libs.lottie
     debugImplementation libs.fragment.testing
+    debugImplementation libs.androidx.test.monitor
     implementation libs.zxing.core
     implementation(platform(libs.okhttp.bom))
     implementation libs.okhttp.logging.interceptor
