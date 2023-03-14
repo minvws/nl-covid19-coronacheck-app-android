@@ -3,6 +3,10 @@ package nl.rijksoverheid.ctr.holder.saved_events.usecases
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verify
+import java.time.Clock
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneId
 import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
@@ -22,7 +26,8 @@ class GetSavedEventsUseCaseImplTest {
     private val holderDatabase: HolderDatabase = mockk()
     private val remoteEventUtil: RemoteEventUtil = mockk()
     private val eventGroupEntityUtil: EventGroupEntityUtil = mockk()
-    private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase = mockk()
+    private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase =
+        mockk()
     private val infoScreenUtil: InfoScreenUtil = mockk(relaxed = true)
     private val yourEventsFragmentUtil: YourEventsFragmentUtil = mockk()
 
@@ -50,13 +55,17 @@ class GetSavedEventsUseCaseImplTest {
 
     @Test
     fun `getSavedEvents return correct list of SavedEvents`() = runTest {
-        val vaccinationEvent = mockk<RemoteEventVaccination>()
+        val clock = Clock.fixed(Instant.parse("2022-08-01T09:00:00.00Z"), ZoneId.of("UTC"))
+        val vaccinationEvent = mockk<RemoteEventVaccination>().apply {
+            coEvery { getDate() } returns OffsetDateTime.now(clock)
+        }
         val vaccinationProtocol = mockk<RemoteProtocol>().apply {
             coEvery { events } returns listOf(vaccinationEvent)
             coEvery { holder } returns mockk()
         }
         val recoveryEvent = mockk<RemoteEventRecovery>().apply {
             coEvery { recovery?.sampleDate } returns null
+            coEvery { getDate() } returns OffsetDateTime.now(clock).plusDays(30)
         }
         val recoveryProtocol = mockk<RemoteProtocol>().apply {
             coEvery { events } returns listOf(recoveryEvent)
@@ -69,17 +78,95 @@ class GetSavedEventsUseCaseImplTest {
         coEvery { yourEventsFragmentUtil.getFullName(any()) } returns "Onoma Epitheto"
         coEvery { yourEventsFragmentUtil.getBirthDate(any()) } returns "01-08-1990"
         coEvery { eventGroupEntityUtil.getProviderName(any()) } returns "MVWS-TEST"
-        val getSavedEventsUseCase = GetSavedEventsUseCaseImpl(mockk(), holderDatabase, remoteEventUtil, eventGroupEntityUtil, getRemoteProtocolFromEventGroupUseCase, infoScreenUtil, yourEventsFragmentUtil)
+        val getSavedEventsUseCase = GetSavedEventsUseCaseImpl(
+            mockk(),
+            holderDatabase,
+            remoteEventUtil,
+            eventGroupEntityUtil,
+            getRemoteProtocolFromEventGroupUseCase,
+            infoScreenUtil,
+            yourEventsFragmentUtil
+        )
 
         val savedEvents = getSavedEventsUseCase.getSavedEvents()
 
         assertEquals(vaccination, savedEvents[1].eventGroupEntity)
         assertEquals(recovery, savedEvents[0].eventGroupEntity)
         verify {
-            infoScreenUtil.getForVaccination(vaccinationEvent, "Onoma Epitheto", "01-08-1990", "MVWS-TEST", null, false)
+            infoScreenUtil.getForVaccination(
+                vaccinationEvent,
+                "Onoma Epitheto",
+                "01-08-1990",
+                "MVWS-TEST",
+                null,
+                false
+            )
         }
         verify {
-            infoScreenUtil.getForRecovery(recoveryEvent, "", "Onoma Epitheto", "01-08-1990", null, false)
+            infoScreenUtil.getForRecovery(
+                recoveryEvent,
+                "",
+                "Onoma Epitheto",
+                "01-08-1990",
+                null,
+                false
+            )
         }
     }
+
+    @Test
+    fun `getSavedEvents return correct list of SavedEvents with correct order (newer first)`() =
+        runTest {
+            val clock = Clock.fixed(Instant.parse("2022-08-01T09:00:00.00Z"), ZoneId.of("UTC"))
+            val vaccinationEvent1 = mockk<RemoteEventVaccination>().apply {
+                coEvery { getDate() } returns OffsetDateTime.now(clock)
+            }
+            val vaccinationEvent2 = mockk<RemoteEventVaccination>().apply {
+                coEvery { getDate() } returns OffsetDateTime.now(clock).plusDays(120)
+            }
+            val vaccinationProtocol = mockk<RemoteProtocol>().apply {
+                coEvery { events } returns listOf(vaccinationEvent1, vaccinationEvent2)
+                coEvery { holder } returns mockk()
+            }
+            val recoveryEvent1 = mockk<RemoteEventRecovery>().apply {
+                coEvery { recovery?.sampleDate } returns null
+                coEvery { getDate() } returns OffsetDateTime.now(clock).plusDays(30)
+            }
+            val recoveryEvent2 = mockk<RemoteEventRecovery>().apply {
+                coEvery { recovery?.sampleDate } returns null
+                coEvery { getDate() } returns OffsetDateTime.now(clock).plusDays(90)
+            }
+            val recoveryProtocol = mockk<RemoteProtocol>().apply {
+                coEvery { events } returns listOf(recoveryEvent1, recoveryEvent2)
+                coEvery { holder } returns mockk()
+            }
+            coEvery { holderDatabase.eventGroupDao().getAll() } returns listOf(
+                vaccination,
+                recovery
+            )
+            coEvery { remoteEventUtil.isDccEvent(any()) } returns false
+            coEvery { getRemoteProtocolFromEventGroupUseCase.get(vaccination) } returns vaccinationProtocol
+            coEvery { getRemoteProtocolFromEventGroupUseCase.get(recovery) } returns recoveryProtocol
+            coEvery { yourEventsFragmentUtil.getFullName(any()) } returns "Onoma Epitheto"
+            coEvery { yourEventsFragmentUtil.getBirthDate(any()) } returns "01-08-1990"
+            coEvery { eventGroupEntityUtil.getProviderName(any()) } returns "MVWS-TEST"
+            val getSavedEventsUseCase = GetSavedEventsUseCaseImpl(
+                mockk(),
+                holderDatabase,
+                remoteEventUtil,
+                eventGroupEntityUtil,
+                getRemoteProtocolFromEventGroupUseCase,
+                infoScreenUtil,
+                yourEventsFragmentUtil
+            )
+
+            val savedEvents = getSavedEventsUseCase.getSavedEvents()
+
+            assertEquals(vaccination, savedEvents[0].eventGroupEntity)
+            assertEquals(vaccinationEvent2, savedEvents[0].events[0].remoteEvent)
+            assertEquals(vaccinationEvent1, savedEvents[0].events[1].remoteEvent)
+            assertEquals(recovery, savedEvents[1].eventGroupEntity)
+            assertEquals(recoveryEvent2, savedEvents[1].events[0].remoteEvent)
+            assertEquals(recoveryEvent1, savedEvents[1].events[1].remoteEvent)
+        }
 }

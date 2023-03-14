@@ -40,7 +40,7 @@ class GetSavedEventsUseCaseImpl(
 ) : GetSavedEventsUseCase {
 
     override suspend fun getSavedEvents(): List<SavedEvents> {
-        val eventGroups = holderDatabase.eventGroupDao().getAll().asReversed()
+        val eventGroups = holderDatabase.eventGroupDao().getAll()
 
         return eventGroups.map { eventGroupEntity ->
             val isDccEvent = remoteEventUtil.isDccEvent(
@@ -57,77 +57,79 @@ class GetSavedEventsUseCaseImpl(
             SavedEvents(
                 providerName = providerName,
                 eventGroupEntity = eventGroupEntity,
-                events = remoteProtocol?.events?.mapNotNull { remoteEvent ->
-                    val europeanCredential = if (isDccEvent) {
-                        JSONObject(eventGroupEntity.jsonData.decodeToString()).getString("credential").toByteArray()
-                    } else null
+                events = remoteProtocol?.events?.sortedByDescending { it.getDate() }
+                    ?.mapNotNull { remoteEvent ->
+                        val europeanCredential = if (isDccEvent) {
+                            JSONObject(eventGroupEntity.jsonData.decodeToString()).getString("credential")
+                                .toByteArray()
+                        } else null
 
-                    val infoScreen = when (remoteEvent) {
-                        is RemoteEventVaccination -> {
-                            infoScreenUtil.getForVaccination(
-                                event = remoteEvent,
-                                fullName = fullName,
-                                birthDate = birthDate,
-                                providerIdentifier = providerName,
-                                europeanCredential = europeanCredential,
-                                addExplanation = false
-                            )
+                        val infoScreen = when (remoteEvent) {
+                            is RemoteEventVaccination -> {
+                                infoScreenUtil.getForVaccination(
+                                    event = remoteEvent,
+                                    fullName = fullName,
+                                    birthDate = birthDate,
+                                    providerIdentifier = providerName,
+                                    europeanCredential = europeanCredential,
+                                    addExplanation = false
+                                )
+                            }
+                            is RemoteEventRecovery -> {
+                                infoScreenUtil.getForRecovery(
+                                    event = remoteEvent,
+                                    testDate = remoteEvent.recovery?.sampleDate?.formatDayMonthYear()
+                                        ?: "",
+                                    fullName = fullName,
+                                    birthDate = birthDate,
+                                    europeanCredential = europeanCredential,
+                                    addExplanation = false
+                                )
+                            }
+                            is RemoteEventPositiveTest -> {
+                                infoScreenUtil.getForPositiveTest(
+                                    event = remoteEvent,
+                                    testDate = remoteEvent.positiveTest?.sampleDate?.formatDayMonthYearTime(
+                                        application
+                                    ) ?: "",
+                                    fullName = fullName,
+                                    birthDate = birthDate
+                                )
+                            }
+                            is RemoteEventNegativeTest -> {
+                                infoScreenUtil.getForNegativeTest(
+                                    event = remoteEvent,
+                                    fullName = fullName,
+                                    testDate = remoteEvent.negativeTest?.sampleDate?.formatDateTime(
+                                        application
+                                    ) ?: "",
+                                    birthDate = birthDate,
+                                    europeanCredential = europeanCredential,
+                                    addExplanation = false
+                                )
+                            }
+                            is RemoteEventVaccinationAssessment -> {
+                                infoScreenUtil.getForVaccinationAssessment(
+                                    event = remoteEvent,
+                                    fullName = fullName,
+                                    birthDate = birthDate
+                                )
+                            }
+                            else -> {
+                                null
+                            }
                         }
-                        is RemoteEventRecovery -> {
-                            infoScreenUtil.getForRecovery(
-                                event = remoteEvent,
-                                testDate = remoteEvent.recovery?.sampleDate?.formatDayMonthYear()
-                                    ?: "",
-                                fullName = fullName,
-                                birthDate = birthDate,
-                                europeanCredential = europeanCredential,
-                                addExplanation = false
+
+                        if (infoScreen != null) {
+                            SavedEvents.SavedEvent(
+                                remoteEvent = remoteEvent,
+                                infoScreen = infoScreen
                             )
-                        }
-                        is RemoteEventPositiveTest -> {
-                            infoScreenUtil.getForPositiveTest(
-                                event = remoteEvent,
-                                testDate = remoteEvent.positiveTest?.sampleDate?.formatDayMonthYearTime(
-                                    application
-                                ) ?: "",
-                                fullName = fullName,
-                                birthDate = birthDate
-                            )
-                        }
-                        is RemoteEventNegativeTest -> {
-                            infoScreenUtil.getForNegativeTest(
-                                event = remoteEvent,
-                                fullName = fullName,
-                                testDate = remoteEvent.negativeTest?.sampleDate?.formatDateTime(
-                                    application
-                                ) ?: "",
-                                birthDate = birthDate,
-                                europeanCredential = europeanCredential,
-                                addExplanation = false
-                            )
-                        }
-                        is RemoteEventVaccinationAssessment -> {
-                            infoScreenUtil.getForVaccinationAssessment(
-                                event = remoteEvent,
-                                fullName = fullName,
-                                birthDate = birthDate
-                            )
-                        }
-                        else -> {
+                        } else {
                             null
                         }
-                    }
-
-                    if (infoScreen != null) {
-                        SavedEvents.SavedEvent(
-                            remoteEvent = remoteEvent,
-                            infoScreen = infoScreen
-                        )
-                    } else {
-                        null
-                    }
-                }?.asReversed() ?: listOf()
+                    } ?: listOf()
             )
-        }
+        }.sortedByDescending { it.events.firstOrNull()?.remoteEvent?.getDate() }
     }
 }
