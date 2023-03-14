@@ -55,7 +55,7 @@
 
     <style name="Widget.App.Button.DayNight" parent="Widget.App.Button.Night" />
     <style name="Widget.App.Button.Night" parent="Widget.App.Button">
-        <item name="android:textColor">@color/neutral_white</item>
+        <item name="android:textColor">@color/text_color</item>
     </style>
 
     <style name="App.Widget.Design.TabLayout.DayNight" parent="App.Widget.Design.TabLayout.Night" />
