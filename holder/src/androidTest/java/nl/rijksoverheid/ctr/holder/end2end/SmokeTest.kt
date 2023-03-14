@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.end2end
 
+import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertNoCertificatesOnOverview
 import nl.rijksoverheid.ctr.holder.end2end.assertions.Overview.assertOverview
 import org.junit.Test
 
@@ -14,7 +15,8 @@ class SmokeTest : BaseTest() {
 
     @Test
     fun startApp_logVersions() {
-        assertOverview()
         logVersions()
+        assertOverview()
+        assertNoCertificatesOnOverview()
     }
 }
