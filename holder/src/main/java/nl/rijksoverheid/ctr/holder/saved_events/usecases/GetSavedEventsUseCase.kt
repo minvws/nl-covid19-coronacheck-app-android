@@ -130,6 +130,6 @@ class GetSavedEventsUseCaseImpl(
                         }
                     } ?: listOf()
             )
-        }
+        }.sortedByDescending { it.events.firstOrNull()?.remoteEvent?.getDate() }
     }
 }
