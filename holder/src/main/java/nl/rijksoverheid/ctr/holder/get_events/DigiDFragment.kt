@@ -237,6 +237,8 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
                     dialogPresented()
                 }
             }
+            onDigidLoading(false)
+            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
         })
 
         getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {

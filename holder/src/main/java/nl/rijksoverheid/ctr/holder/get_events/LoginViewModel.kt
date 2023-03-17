@@ -68,8 +68,8 @@ class LoginViewModel(
                 digidAuthenticationRepository.requestAuthorization(issuerUrl, activityResultLauncher, authService)
             } catch (e: Exception) {
                 postExceptionResult(e)
+                loading.value = Event(false)
             }
-            loading.value = Event(false)
         }
     }
 
