@@ -73,7 +73,7 @@ jobs:
         run: ./gradlew assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
       - name: Build fdroid
         if: ${{ env.GENERATE_FDROID_BUILDS == 'true' }}
-        run: /gradlew assemFdroidAccRelease
+        run: ./gradlew assemFdroidAccRelease assemFdroidProdRelease
       - name: Clean up key store
         run: rm keystore.jks
       - name: Archive apks
