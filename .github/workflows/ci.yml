@@ -55,6 +55,7 @@ jobs:
       KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       GENERATE_FDROID_BUILDS: ${{ contains(github.event.pull_request.labels.*.name, 'generate-fdroid-builds') }}
+      GENERATE_VERIFIER_BUILDS: ${{ contains(github.event.pull_request.labels.*.name, 'generate-verifier-builds') }}
       KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
     runs-on: ubuntu-latest
     needs: [ "build-and-test" ]
@@ -70,10 +71,13 @@ jobs:
           version=$(( $GITHUB_RUN_NUMBER ))
           echo VERSION_NUMBER=$version >> $GITHUB_ENV
       - name: Build
-        run: ./gradlew assemTstRelease assemAccRelease assemProdRelease bundleProdRelease
+        run: ./gradlew :holder:assemTstRelease :holder:assemAccRelease :holder:assemProdRelease :holder:bundleProdRelease
       - name: Build fdroid
         if: ${{ env.GENERATE_FDROID_BUILDS == 'true' }}
         run: ./gradlew assemFdroidAccRelease assemFdroidProdRelease
+      - name: Build verifier
+        if: ${{ env.GENERATE_VERIFIER_BUILDS == 'true' }}
+        run: ./gradlew :verifier:assemTstRelease :verifier:assemAccRelease :verifier:assemProdRelease :verifier:bundleProdRelease
       - name: Clean up key store
         run: rm keystore.jks
       - name: Archive apks
