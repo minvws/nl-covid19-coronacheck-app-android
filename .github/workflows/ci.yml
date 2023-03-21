@@ -134,12 +134,14 @@ jobs:
           --groups testers
 
       - name: Distribute verifier test variant
+        if: ${{ env.GENERATE_VERIFIER_BUILDS == 'true' }}
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/tst/release/verifier-*.apk` \
           --app 1:168257592968:android:ed609f228437d86f26493d \
           --groups testers
 
       - name: Distribute verifier acc variant
+        if: ${{ env.GENERATE_VERIFIER_BUILDS == 'true' }}
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/acc/release/verifier-*.apk` \
           --app 1:168257592968:android:e9d445c4115a5c9d26493d \
@@ -153,6 +155,7 @@ jobs:
           --groups testers
 
       - name: Distribute verifier prod variant
+        if: ${{ env.GENERATE_VERIFIER_BUILDS == 'true' }}
         run: |
           firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/prod/release/verifier-*.apk` \
           --app 1:168257592968:android:79363a1282863aac26493d \
