@@ -32,7 +32,7 @@ class GetSavedEventsUseCaseImplTest {
     private val yourEventsFragmentUtil: YourEventsFragmentUtil = mockk()
 
     private val vaccination = EventGroupEntity(
-        id = 1,
+        id = 2,
         walletId = 1,
         providerIdentifier = "ZZZ_dewd3d33",
         type = OriginType.Vaccination,
@@ -43,7 +43,7 @@ class GetSavedEventsUseCaseImplTest {
     )
 
     private val recovery = EventGroupEntity(
-        id = 2,
+        id = 1,
         walletId = 1,
         providerIdentifier = "ZZZ_dewd3d33",
         type = OriginType.Recovery,
@@ -90,8 +90,8 @@ class GetSavedEventsUseCaseImplTest {
 
         val savedEvents = getSavedEventsUseCase.getSavedEvents()
 
-        assertEquals(vaccination, savedEvents[1].eventGroupEntity)
-        assertEquals(recovery, savedEvents[0].eventGroupEntity)
+        assertEquals(vaccination, savedEvents[0].eventGroupEntity)
+        assertEquals(recovery, savedEvents[1].eventGroupEntity)
         verify {
             infoScreenUtil.getForVaccination(
                 vaccinationEvent,
