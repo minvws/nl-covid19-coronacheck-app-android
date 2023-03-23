@@ -392,6 +392,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     is RemoteEventNegativeTest -> {
                         presentNegativeTestEvent(
                             binding = binding,
+                            providerIdentifiers = providerIdentifiers.toSet()
+                                .joinToString(" ${getString(R.string.your_events_and)} "),
                             fullName = yourEventsFragmentUtil.getFullName(holder),
                             birthDate = yourEventsFragmentUtil.getBirthDate(holder),
                             event = remoteEvent
@@ -400,6 +402,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     is RemoteEventPositiveTest -> {
                         presentPositiveTestEvent(
                             binding = binding,
+                            providerIdentifiers = providerIdentifiers.toSet()
+                                .joinToString(" ${getString(R.string.your_events_and)} "),
                             fullName = yourEventsFragmentUtil.getFullName(holder),
                             birthDate = yourEventsFragmentUtil.getBirthDate(holder),
                             event = remoteEvent
@@ -408,6 +412,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     is RemoteEventRecovery -> {
                         presentRecoveryEvent(
                             binding = binding,
+                            providerIdentifiers = providerIdentifiers.toSet()
+                                .joinToString(" ${getString(R.string.your_events_and)} "),
                             fullName = yourEventsFragmentUtil.getFullName(holder),
                             birthDate = yourEventsFragmentUtil.getBirthDate(holder),
                             event = remoteEvent
@@ -499,6 +505,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun presentNegativeTestEvent(
         binding: FragmentYourEventsBinding,
+        providerIdentifiers: String,
         fullName: String,
         birthDate: String,
         event: RemoteEventNegativeTest
@@ -528,7 +535,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     R.string.your_negative_test_3_0_results_row_subtitle,
                     testDate,
                     fullName,
-                    birthDate
+                    birthDate,
+                    providerIdentifiers
                 ),
                 infoClickListener = {
                     navigateSafety(
@@ -582,6 +590,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun presentPositiveTestEvent(
         binding: FragmentYourEventsBinding,
+        providerIdentifiers: String,
         fullName: String,
         birthDate: String,
         event: RemoteEventPositiveTest
@@ -603,7 +612,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     R.string.your_negative_test_3_0_results_row_subtitle,
                     testDate,
                     fullName,
-                    birthDate
+                    birthDate,
+                    providerIdentifiers
                 ),
                 infoClickListener = {
                     navigateSafety(
@@ -620,6 +630,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun presentRecoveryEvent(
         binding: FragmentYourEventsBinding,
+        providerIdentifiers: String,
         fullName: String,
         birthDate: String,
         event: RemoteEventRecovery
@@ -647,7 +658,8 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     R.string.your_negative_test_3_0_results_row_subtitle,
                     testDate,
                     fullName,
-                    birthDate
+                    birthDate,
+                    providerIdentifiers
                 ),
                 infoClickListener = {
                     navigateSafety(

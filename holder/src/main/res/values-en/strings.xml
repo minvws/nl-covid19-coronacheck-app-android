@@ -108,7 +108,7 @@
   <string name="your_negative_test_results_description"><![CDATA[Are the details correct? This test result is retrieved from the test location. If the details are correct, you can create a certificate.]]></string>
   <string name="your_negative_test_results_header">Retrieved test result</string>
   <string name="your_negative_test_results_row_title">Negative test result</string>
-  <string name="your_negative_test_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Your details: %2$s]]></string>
+  <string name="your_negative_test_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Your details: %2$s<br/>Data retrieved from: %4$s]]></string>
   <string name="your_negative_test_results_something_wrong_button">Is something wrong?</string>
   <string name="your_negative_test_results_row_personal_details">Identification details: %1$s</string>
   <string name="your_negative_test_results_row_button">Make certificate</string>
@@ -293,7 +293,7 @@
   <string name="your_test_result_explanation_description_test_result">Test result:</string>
   <string name="your_test_result_explanation_description_test_location">Test location:</string>
   <string name="your_test_result_explanation_description_test_manufacturer">Test manufacturer:</string>
-  <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
+  <string name="your_negative_test_3.0_results_row_subtitle"><![CDATA[Test date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s<br/>Data retrieved from: %4$s]]></string>
   <string name="your_vaccination_row_subtitle"><![CDATA[Vaccination date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s<br/>Data retrieved from: %4$s]]></string>
   <string name="your_vaccination_explanation_toolbar_title">Details</string>
   <string name="your_vaccination_explanation_description"><![CDATA[The following details about your vaccination were retrieved:<br/><br/>Name: <b>%1$s</b><br/>Date of birth*: <b>%2$s</b><br/><br/>Disease targeted: <b>%3$s</b><br/>Vaccine: <b>%4$s</b><br/>Vaccine medicinal product: <b>%5$s</b><br/>Vaccine manufacturer: <b>%6$s</b><br/>Number in series of doses: <b>%7$s</b><br/>Is this the last dose of your vaccination? <b>%8$s</b><br/>Vaccination date*: <b>%9$s</b><br/>Vaccinated in: <b>%10$s</b><br/>Unique certificate identifier: <b>%11$s</b>]]></string>
