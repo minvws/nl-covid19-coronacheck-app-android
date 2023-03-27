@@ -68,7 +68,7 @@ class WorkerManagerUtilImpl(
             WorkManager.getInstance(context)
                 .enqueueUniquePeriodicWork(
                     CredentialRefreshWorker.uniqueWorkNameTag,
-                    ExistingPeriodicWorkPolicy.REPLACE,
+                    ExistingPeriodicWorkPolicy.UPDATE,
                     request
                 )
             return request
