@@ -130,11 +130,6 @@ class HolderMainActivity : AppCompatActivity() {
         })
 
         disableSplashscreenExitAnimation()
-
-        // schedule background refresh for existing greencards
-        lifecycleScope.launchWhenCreated {
-            workerManagerUtil.scheduleRefreshCredentialsJob()
-        }
     }
 
     private fun navigateToIntroduction(
@@ -147,6 +142,16 @@ class HolderMainActivity : AppCompatActivity() {
         appStatus: AppStatus,
         navController: NavController
     ) {
+
+        if (appStatus == AppStatus.Deactivated) {
+            workerManagerUtil.cancelRefreshCredentialsJob(this)
+        } else {
+            // schedule background refresh for existing greencards
+            lifecycleScope.launchWhenCreated {
+                workerManagerUtil.scheduleRefreshCredentialsJob()
+            }
+        }
+
         if (appStatus is AppStatus.UpdateRecommended) {
             showRecommendedUpdateDialog()
             return

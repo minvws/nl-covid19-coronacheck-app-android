@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
 
@@ -16,6 +17,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
  */
 class HolderWorkerFactory(
     private val configResultUseCase: ConfigResultUseCase,
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val holderDatabaseSyncer: HolderDatabaseSyncer
 ) : WorkerFactory() {
     override fun createWorker(
@@ -27,12 +29,14 @@ class HolderWorkerFactory(
             ConfigFetchWorker::class.java.name -> ConfigFetchWorker(
                 appContext,
                 workerParameters,
+                cachedAppConfigUseCase,
                 configResultUseCase
             )
             CredentialRefreshWorker::class.java.name -> CredentialRefreshWorker(
                 appContext,
                 workerParameters,
                 configResultUseCase,
+                cachedAppConfigUseCase,
                 holderDatabaseSyncer
             )
             else -> null

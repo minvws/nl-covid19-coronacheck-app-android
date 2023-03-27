@@ -50,7 +50,9 @@ class WorkerManagerUtilImpl(
 
     override suspend fun scheduleRefreshCredentialsJob(): PeriodicWorkRequest? {
         val refreshState = greenCardRefreshUtil.refreshState()
-        if (refreshState is RefreshState.Refreshable) {
+        val appDeactivated = appConfigUseCase.getCachedAppConfig().appDeactivated
+
+        if (refreshState is RefreshState.Refreshable && !appDeactivated) {
             val credentialsRefreshInDays = refreshState.days
 
             val constraints = Constraints.Builder()

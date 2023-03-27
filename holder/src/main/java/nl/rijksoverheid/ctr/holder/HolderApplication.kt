@@ -129,10 +129,11 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
     override fun getWorkManagerConfiguration(): Configuration {
         return Configuration.Builder().apply {
             setMinimumLoggingLevel(if (BuildConfig.DEBUG) {
-                Log.DEBUG
-            } else {
-                Log.ERROR
-            })
+                    Log.DEBUG
+                } else {
+                    Log.ERROR
+                }
+            )
             setWorkerFactory(holderWorkerFactory)
         }.build()
     }
