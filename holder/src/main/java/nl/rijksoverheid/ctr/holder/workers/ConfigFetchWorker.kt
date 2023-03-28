@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.workers
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -17,7 +18,7 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
  *
  */
 open class ConfigFetchWorker(
-    context: Context,
+    private val context: Context,
     params: WorkerParameters,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val configResultUseCase: ConfigResultUseCase
@@ -29,6 +30,7 @@ open class ConfigFetchWorker(
             is ConfigResult.Success -> {
                 val appDeactivated = cachedAppConfigUseCase.getCachedAppConfig().appDeactivated
                 if (appDeactivated) {
+                    WorkManager.getInstance(context).cancelAllWork()
                     Result.failure()
                 } else {
                     Result.success()
