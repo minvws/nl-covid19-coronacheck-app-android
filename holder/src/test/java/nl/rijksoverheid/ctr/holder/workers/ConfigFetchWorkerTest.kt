@@ -2,12 +2,14 @@ package nl.rijksoverheid.ctr.holder.workers
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import androidx.work.ListenableWorker.Result.Failure
 import androidx.work.ListenableWorker.Result.Retry
 import androidx.work.ListenableWorker.Result.Success
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -34,7 +36,16 @@ class ConfigFetchWorkerTest : AutoCloseKoinTest() {
             coEvery { fetch() } returns ConfigResult.Error(mockk(relaxed = true))
         }
 
-        val worker = ConfigFetchWorker(context, mockk(relaxed = true), configResultUseCase)
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>().apply {
+            coEvery { getCachedAppConfig().appDeactivated } returns false
+        }
+
+        val worker = ConfigFetchWorker(
+            context,
+            mockk(relaxed = true),
+            cachedAppConfigUseCase,
+            configResultUseCase
+        )
 
         assertTrue(worker.doWork() is Retry)
     }
@@ -45,8 +56,37 @@ class ConfigFetchWorkerTest : AutoCloseKoinTest() {
             coEvery { fetch() } returns ConfigResult.Success("", "")
         }
 
-        val worker = ConfigFetchWorker(context, mockk(relaxed = true), configResultUseCase)
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>().apply {
+            coEvery { getCachedAppConfig().appDeactivated } returns false
+        }
+
+        val worker = ConfigFetchWorker(
+            context,
+            mockk(relaxed = true),
+            cachedAppConfigUseCase,
+            configResultUseCase
+        )
 
         assertTrue(worker.doWork() is Success)
+    }
+
+    @Test
+    fun `when app is deactivated, config fetch worker fails`() = runBlocking {
+        val configResultUseCase = mockk<ConfigResultUseCase>().apply {
+            coEvery { fetch() } returns ConfigResult.Success("", "")
+        }
+
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>().apply {
+            coEvery { getCachedAppConfig().appDeactivated } returns true
+        }
+
+        val worker = ConfigFetchWorker(
+            context,
+            mockk(relaxed = true),
+            cachedAppConfigUseCase,
+            configResultUseCase
+        )
+
+        assertTrue(worker.doWork() is Failure)
     }
 }
