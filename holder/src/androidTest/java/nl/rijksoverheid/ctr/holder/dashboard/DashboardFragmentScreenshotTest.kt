@@ -374,7 +374,7 @@ class DashboardFragmentScreenshotTest : ScreenshotTest {
         )
 
         loadKoinModules(
-            module(override = true) {
+            module {
                 viewModel { fakeDashboardViewModel(listOf(tabItem)) }
                 factory { fakeMobileCoreWrapper }
             }
