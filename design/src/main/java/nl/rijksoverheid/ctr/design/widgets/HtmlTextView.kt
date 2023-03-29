@@ -22,9 +22,8 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility
 class HtmlTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyle: Int = 0,
-    defStyleRes: Int = 0
-) : MaterialTextView(context, attrs, defStyle, defStyleRes) {
+    defStyle: Int = 0
+) : MaterialTextView(context, attrs, defStyle) {
 
     init {
         setTextIsSelectable(true)
