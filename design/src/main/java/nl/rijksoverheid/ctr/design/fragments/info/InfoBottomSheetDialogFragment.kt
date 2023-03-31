@@ -12,10 +12,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import nl.rijksoverheid.ctr.design.databinding.FragmentInfoBottomsheetBinding
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.utils.Accessibility
+import org.koin.android.ext.android.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -25,6 +26,8 @@ import nl.rijksoverheid.ctr.shared.utils.Accessibility
  *
  */
 open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
+
+    private val intentUtil: IntentUtil by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +60,8 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
         })
 
         val expandedBottomSheetData =
-            arguments?.getParcelableCompat<InfoFragmentData>(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA) ?: return
+            arguments?.getParcelableCompat<InfoFragmentData>(InfoFragmentUtil.EXTRA_INFO_FRAGMENT_DATA)
+                ?: return
         binding.title.text = expandedBottomSheetData.title
         binding.description.apply {
             // split html text in parts per paragraph for Talkback users only
@@ -87,7 +91,7 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     is ButtonData.LinkButton -> {
                         binding.linkButton.run {
                             text = buttonData.text
-                            setOnClickListener { buttonData.link.launchUrl(context) }
+                            setOnClickListener { intentUtil.openUrl(context, buttonData.link) }
                             binding.linkButton.visibility = View.VISIBLE
                         }
                     }
@@ -112,7 +116,7 @@ open class InfoBottomSheetDialogFragment : BottomSheetDialogFragment() {
                         text = buttonData.text
                         setOnClickListener {
                             when (buttonData) {
-                                is ButtonData.LinkButton -> buttonData.link.launchUrl(context)
+                                is ButtonData.LinkButton -> intentUtil.openUrl(context, buttonData.link)
                                 is ButtonData.NavigationButton -> findNavControllerSafety()?.navigate(
                                     buttonData.navigationActionId,
                                     buttonData.navigationArguments
