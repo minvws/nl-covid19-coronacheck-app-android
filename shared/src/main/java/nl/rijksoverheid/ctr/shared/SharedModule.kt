@@ -8,6 +8,8 @@ import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtilImpl
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtil
 import nl.rijksoverheid.ctr.shared.utils.TestResultUtilImpl
+import nl.rijksoverheid.ctr.shared.utils.WebsiteEnvironmentUtil
+import nl.rijksoverheid.ctr.shared.utils.WebsiteEnvironmentUtilImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -33,6 +35,7 @@ val sharedModule = module {
             ).toList()
         )
     }
+    factory<WebsiteEnvironmentUtil> { WebsiteEnvironmentUtilImpl(androidContext()) }
     factory<DebugDisclosurePolicyPersistenceManager> { DebugDisclosurePolicyPersistenceManagerImpl(get()) }
 }
 

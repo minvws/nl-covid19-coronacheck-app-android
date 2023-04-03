@@ -5,15 +5,18 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.FragmentErrorResultBinding
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
+import org.koin.android.ext.android.inject
 
 /**
  * Fragment to show errors
  */
 class ErrorResultFragment : Fragment(R.layout.fragment_error_result) {
+
+    private val intentUtil: IntentUtil by inject()
 
     companion object {
 
@@ -26,7 +29,10 @@ class ErrorResultFragment : Fragment(R.layout.fragment_error_result) {
         }
     }
 
-    private val data by lazy { arguments?.getParcelableCompat<ErrorResultFragmentData>(EXTRA_DATA) ?: error("ErrorResultFragmentData cannot be null") }
+    private val data by lazy {
+        arguments?.getParcelableCompat<ErrorResultFragmentData>(EXTRA_DATA)
+            ?: error("ErrorResultFragmentData cannot be null")
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +45,7 @@ class ErrorResultFragment : Fragment(R.layout.fragment_error_result) {
             binding.urlButton.visibility = View.VISIBLE
             binding.urlButton.text = urlData.urlButtonTitle
             binding.urlButton.setOnClickListener {
-                urlData.urlButtonUrl.launchUrl(requireActivity())
+                intentUtil.openUrl(requireActivity(), urlData.urlButtonUrl)
             }
         }
 

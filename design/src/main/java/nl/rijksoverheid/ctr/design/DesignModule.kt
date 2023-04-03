@@ -18,5 +18,5 @@ import org.koin.dsl.module
 val designModule = module {
     factory<DialogUtil> { DialogUtilImpl() }
     factory<InfoFragmentUtil> { InfoFragmentUtilImpl() }
-    factory<IntentUtil> { IntentUtilImpl(get()) }
+    factory<IntentUtil> { IntentUtilImpl(get(), get()) }
 }
