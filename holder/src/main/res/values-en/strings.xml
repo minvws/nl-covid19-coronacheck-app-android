@@ -326,9 +326,9 @@
   <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_vaccination"><![CDATA[Your vaccination certificate isn\'t valid internationally. That\'s why only a Dutch certificate was made.<br/><br/>It\'s possible your type of vaccination isn\'t accepted abroad.]]></string>
   <string name="back_to_overview">To my certificates</string>
   <string name="no_vaccinations_title">No vaccinations available</string>
-  <string name="no_vaccinations_description"><![CDATA[There are no available vaccination details. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/>Got vaccinated recently? It can take a few hours until your details are available.]]></string>
+  <string name="no_vaccinations_description"><![CDATA[There are no available vaccination details. This can have various causes. Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/>Got vaccinated recently? It can take a few hours until your details are available.]]></string>
   <string name="no_test_results_title">No test result available</string>
-  <string name="no_test_results_description"><![CDATA[There is no available data of your test result. This can have various causes. Read the <a href=\"https://www.coronacheck.nl/en/guidepost\"> Guidepost</a> for more information.<br/><br/>Already got a test result from the GGD? It can take a few hours until your details are available. Try again later.]]></string>
+  <string name="no_test_results_description"><![CDATA[There is no available data of your test result. This can have various causes. Read the <a href=\"https://coronacheck.nl/en/guidepost\"> Guidepost</a> for more information.<br/><br/>Already got a test result from the GGD? It can take a few hours until your details are available. Try again later.]]></string>
   <string name="not_yet_tested_title">Were you not tested yet?</string>
   <string name="not_yet_tested_description"><![CDATA[For a test certificate, you must take a test first at an affiliated test location. Does the test prove you don\'t have coronavirus? Then you can make a certificate.]]></string>
   <string name="not_yet_tested_button">Make an appointment</string>
@@ -381,7 +381,7 @@
   <string name="qr_explanation_description_eu_recovery_footer">*Date noted in day-month-year.</string>
   <string name="my_overview_green_card_not_valid_title_recovery">Recovery certificate not valid internationally</string>
   <string name="my_overview_green_card_not_valid_domestic_but_is_in_eu_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid in the Netherlands. You’ve only got an international certificate.]]></string>
-  <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason could be that the type of test is not accepted, or that the test is no longer valid abroad. An international recovery certificate can only be made with a PCR-test that is less than 180 days old. Read more about the possible causes on the <a href=\"https://www.coronacheck.nl//en/guidepost\">Guidepost</a>.]]></string>
+  <string name="my_overview_green_card_not_valid_eu_but_is_in_domestic_bottom_sheet_description_recovery"><![CDATA[Your recovery certificate isn\'t valid internationally. You\'ve only got a Dutch certificate.<br/><br/>The reason could be that the type of test is not accepted, or that the test is no longer valid abroad. An international recovery certificate can only be made with a PCR-test that is less than 180 days old. Read more about the possible causes on the <a href=\"https://coronacheck.nl//en/guidepost\">Guidepost</a>.]]></string>
   <string name="my_overview_green_card_server_error"><![CDATA[The app periodically needs a connection to the server to refresh your QR codes. We failed to reach the server because of an error. <a href=\"#\">Try again</a>]]></string>
   <string name="my_overview_green_card_server_error_after_retry"><![CDATA[Sorry, we weren’t able to refresh your QR code. Open the app again in 10 minutes.<br/><br/>Still not working? Please call the helpdesk at %s (free) and provide the following error code: A 075]]></string>
   <string name="my_overview_green_card_internet_error"><![CDATA[Connect to the internet to make sure your QR code works again.<br/><a href=\"#\">Try again</a>]]></string>
@@ -394,7 +394,7 @@
   <string name="my_overview_qr_placeholder_description"><![CDATA[You can add a certificate if you\'re vaccinated, if you\'ve had coronavirus or by taking a test at an <a href=\"https://coronacheck.nl/en/testafspraak-in-app\">affiliated test location</a>.]]></string>
   <string name="my_overview_qr_placeholder_description_eu">Are you abroad, or planning to cross the border? Then always use your international certificate. Please check before leaving which certificate you need.</string>
   <string name="my_overview_qr_placeholder_button_eu">Which certificate is needed where I\'m heading?</string>
-  <string name="my_overview_qr_placeholder_button_link_eu">https://www.coronacheck.nl/en/wegwijzer</string>
+  <string name="my_overview_qr_placeholder_button_link_eu">https://coronacheck.nl/en/guidepost</string>
   <string name="my_overview_add_qr_button">Add certificate</string>
   <string name="add_paper_proof">Scan to add certificate</string>
   <string name="add_paper_proof_title">Enter your letter combination</string>
@@ -509,7 +509,7 @@
   <string name="accessibility_flash_off">Turn the flashlight off.</string>
   <string name="accessibility_flash_on">Turn the flashlight on.</string>
   <string name="recover_domestic_recovery_green_card_button">Restore certificate</string>
-  <string name="holder_listRemoteEvents_endStateRecoveryTooOld_message"><![CDATA[It has been too long ago since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
+  <string name="holder_listRemoteEvents_endStateRecoveryTooOld_message"><![CDATA[It has been too long ago since you tested positive for coronavirus. Therefore, your test result is no longer valid. Unfortunately, you cannot create a recovery certificate.<br/><br/>Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
   <string name="your_vaccination_dcc_row_subtitle"><![CDATA[Vaccination date: %1$s<br/>Name: %2$s<br/>Date of birth: %3$s]]></string>
   <string name="qr_card_vaccination_title_domestic_with_doses">Vaccination certificate (%1$s doses):</string>
   <string name="add_paper_proof_why_only_international_title">Why the international QR code?</string>
@@ -686,7 +686,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_listRemoteEvents_listElement_vaccination_title">Vaccination %s</string>
   <string name="holder_listRemoteEvents_endStateVaccinationsAndRecovery_message"><![CDATA[A vaccination certificate has been created from your retrieved vaccinations.<br/><br/>Your positive test result was suitable for creating a recovery certificate as well.]]></string>
   <string name="holder_listRemoteEvents_endStateRecoveryOnly_message"><![CDATA[Only a recovery certificate could be created from your retrieved details. Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.]]></string>
-  <string name="holder_listRemoteEvents_endStateCantCreateCertificate_message"><![CDATA[At this moment, we can\'t create a certificate from your %1$s. This can have various causes. Find more information on the <a href=\"https://www.coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/><b>Error code:</b><br/>%2$s]]></string>
+  <string name="holder_listRemoteEvents_endStateCantCreateCertificate_message"><![CDATA[At this moment, we can\'t create a certificate from your %1$s. This can have various causes. Find more information on the <a href=\"https://coronacheck.nl/en/guidepost\">Guidepost</a>.<br/><br/><b>Error code:</b><br/>%2$s]]></string>
   <string name="holder_onboarding_disclosurePolicyChanged_only3GAccess_title">3G access in the Netherlands</string>
   <string name="holder_onboarding_disclosurePolicyChanged_only3GAccess_message">Visiting a place in the Netherlands where a coronavirus pass is required? 3G access currently applies everywhere. This means you can enter with a vaccination or recovery certificate, or a negative test.</string>
   <string name="holder_onboarding_disclosurePolicyChanged_3Gand1GAccess_title">Check the access rules</string>
@@ -763,9 +763,9 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_qr_code_expired_explanation_title">Expired QR code</string>
   <string name="holder_qr_code_expired_explanation_description"><![CDATA[If your QR code has expired it means your vaccination is still valid, but the certificate that you’ve added isn\'t. You can request a new certificate with QR code and add it to the app again.<br/><br/>Do you have a more recent vaccination in the app? Then you can also use that QR code.]]></string>
   <string name="holder_qr_code_expired_explanation_action">Read more on CoronaCheck.nl</string>
-  <string name="holder_qr_code_expired_explanation_url">https://www.coronacheck.nl/en/faq/1-12-de-qr-code-van-mijn-vaccinatie-is-verlopen-wat-moet-ik-doen/</string>
+  <string name="holder_qr_code_expired_explanation_url">https://coronacheck.nl/en/faq/1-12-de-qr-code-van-mijn-vaccinatie-is-verlopen-wat-moet-ik-doen/</string>
   <string name="holder_qr_code_hidden_explanation_action">Read more on CoronaCheck.nl</string>
-  <string name="holder_qr_code_hidden_explanation_url">https://www.coronacheck.nl/en/faq/1-11-mijn-qr-code-is-verborgen-wat-betekent-dit/</string>
+  <string name="holder_qr_code_hidden_explanation_url">https://coronacheck.nl/en/faq/1-11-mijn-qr-code-is-verborgen-wat-betekent-dit/</string>
   <string name="holder_showQR_euAboutVaccination_daysSince">Days since vaccination:</string>
   <plurals name="general_days">
     <item quantity="one">day</item>
@@ -788,7 +788,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_checkForBSN_buttonTitle_doesNotHaveBSN">No, I don’t have a BSN</string>
   <string name="holder_checkForBSN_buttonSubTitle_doesNotHaveBSN_testFlow">Get your certificate from the GGD</string>
   <string name="holder_contactCoronaCheckHelpdesk_title">Request your certificate via the helpdesk</string>
-  <string name="holder_contactCoronaCheckHelpdesk_message" formatted="false"><![CDATA[Request your certificate at the CoronaCheck helpdesk. You can call them %s between %s and %s at: <a href=\"tel:%s\">%s</a> (free).<br/><br/>Or if you’re calling from abroad: <a href=\"tel:%s\">%s</a>. In the menu you can choose “request a certificate”.<br/><br/>Please provide the following:<ul><li>your citizen service number (BSN)</li><li>your zipcode</li></ul><br/><br/>Your certificate with QR code will be sent by post. This can take up to 7 working days.]]></string>
+  <string name="holder_contactCoronaCheckHelpdesk_message" formatted="false"><![CDATA[Request your certificate at the CoronaCheck helpdesk. You can call them %s between %s and %s at: <a href=\"tel:%s\">%s</a> (free, closed on public holidays).<br/><br/>Or if you’re calling from abroad: <a href=\"tel:%s\">%s</a>. In the menu you can choose “request a certificate”.<br/><br/>Please provide the following:<ul><li>your citizen service number (BSN)</li><li>your zipcode</li></ul><br/><br/>Your certificate with QR code will be sent by post. This can take up to 7 working days.]]></string>
   <string name="holder_contactProviderHelpdesk_vaccinationFlow_title">Request your certificate from your healthcare provider</string>
   <string name="holder_contactProviderHelpdesk_message"><![CDATA[Request your certificate at the location where you were %s.<br/><br/><ul><li>Was this at the GGD? Call the GGD on <a href=\"tel:0888-5090\">0800 - 5090</a> to request your certificate. </li><li>Was this somewhere else? For example with your GP or another healthcare provider? Contact them directly.</li></ul><br/><br/>You can request your certificate on paper or as a PDF file.]]></string>
   <string name="holder_contactProviderHelpdesk_message_ggdPortalEnabled">Please contact the care provider who vaccinated you. Here you can request your certificate on paper or as a PDF file.</string>
@@ -913,6 +913,6 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_contactCoronaCheckHelpdesk_message_until" formatted="false">%s until %s</string>
   <string name="holder_helpdesk_contact_message_line1"><![CDATA[If you have any questions or experience problems, you can contact the CoronaCheck helpdesk.<br/><br/><b>Call the helpdesk:</b><br /><a href=\"tel:%1$s\">%2$s</a> (free).]]></string>
   <string name="holder_helpdesk_contact_message_line2"><![CDATA[Or, if you are calling from abroad: <a href=\"tel:%1$s\">%2$s</a>.<br />]]></string>
-  <string name="holder_helpdesk_contact_message_line3"><![CDATA[Open from %1$s till %2$s, between %3$s - %4$s<br /><br /><b>Or send an email to:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
+  <string name="holder_helpdesk_contact_message_line3"><![CDATA[Open from %1$s till %2$s, between %3$s - %4$s (closed on public holidays)<br /><br /><b>Or send an email to:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
   <string name="general_menu_resetApp">Reset the app</string>
 </resources>
