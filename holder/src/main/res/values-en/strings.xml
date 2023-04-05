@@ -496,7 +496,7 @@
   <string name="refresh_eu_items_toolbar_title">Renew vaccination certificate</string>
   <string name="dashboard_item_refreshed_eu_vaccinations_text">Your international vaccination certificate has been renewed</string>
   <string name="refreshed_eu_items_title">Renewed vaccination certificate</string>
-  <string name="refreshed_eu_items_description"><![CDATA[We have renewed everyone\'s vaccination certificate. From now on, you have access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/><a href=\"https://coronacheck.nl/en/faq/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/\">Read more about your renewed vaccination certificate here</a>.]]></string>
+  <string name="refreshed_eu_items_description"><![CDATA[We have renewed everyone\'s vaccination certificate. From now on, you have access to QR codes of earlier vaccinations.<br/><br/>This can be useful for people who want to go to a place where their latest vaccination is not yet valid.<br/><br/><a href=\"https://coronacheck.nl/en/faq-in-app/3-5-waarom-heb-ik-voor-elke-prik-een-internationale-QR-code/\">Read more about your renewed vaccination certificate here</a>.]]></string>
   <string name="config_warning_card_message">Please connect to the internet soon</string>
   <string name="config_warning_page_title">Please connect to the internet</string>
   <string name="config_warning_page_message"><![CDATA[Every now and then, the CoronaCheck app needs an internet connection to keep working. Without internet, your app will keep working until %1s. Open the app once you have an internet connection. It will automatically work again.<br/><br/>Please connect regularly to prevent any problems.]]></string>
@@ -529,9 +529,9 @@
   <string name="certificate_created_toolbar_title">Certificate created</string>
   <string name="certificate_created_vaccination_recovery_description"><![CDATA[A Dutch vaccination certificate has been created.<br><br>Your positive test result was suitable for creating a recovery certificate as well.]]></string>
   <string name="certificate_created_recovery_title">Created only a recovery certificate</string>
-  <string name="certificate_created_recovery_description"><![CDATA[You tested positive after your first vaccination. Your test result is therefore not suitable for creating a Dutch vaccination certificate. However, a recovery certificate has been created.<br><br>Check the <a href=\"https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/\">the frequently asked questions</a> for more information.]]></string>
+  <string name="certificate_created_recovery_description"><![CDATA[You tested positive after your first vaccination. Your test result is therefore not suitable for creating a Dutch vaccination certificate. However, a recovery certificate has been created.<br><br>Check the <a href=\"https://coronacheck.nl/en/faq-in-app/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/\">the frequently asked questions</a> for more information.]]></string>
   <string name="certificate_created_recovery_unsuitable_title">Positive test result is not suitable</string>
-  <string name="certificate_created_recovery_unsuitable_description"><![CDATA[You were tested positive after your first vaccination. Your test result is therefore not suitable for creating a Dutch certificate.<br><br>Check the <a href=\"https://coronacheck.nl/en/faq/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/\">frequently asked questions</a> for more information.]]></string>
+  <string name="certificate_created_recovery_unsuitable_description"><![CDATA[You were tested positive after your first vaccination. Your test result is therefore not suitable for creating a Dutch certificate.<br><br>Check the <a href=\"https://coronacheck.nl/en/faq-in-app/2-4-ik-heb-wel-een-internationale-qr-code-maar-geen-nederlandse/\">frequently asked questions</a> for more information.]]></string>
   <string name="retrieve_test_result_toolbar_title">Retrieve test result</string>
   <string name="retrieve_test_result_title">Retrieve details about your positive test</string>
   <string name="retrieve_test_result_description">Log in with DigiD. Details about your positive test will be retrieved automatically.</string>
@@ -716,7 +716,7 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_storedEvents_title">My stored data</string>
   <string name="holder_storedEvents_message">The data below is stored on your phone and is used by CoronaCheck to create your coronavirus pass.</string>
   <string name="holder_storedEvents_button_handleData">How does Coronacheck handle my data?</string>
-  <string name="holder_storedEvents_url">https://coronacheck.nl/en/privacy</string>
+  <string name="holder_storedEvents_url">https://coronacheck.nl/en/privacy-in-app</string>
   <string name="holder_storedEvents_button_removeEvents">Remove from the app</string>
   <string name="holder_storedEvents_list_noEvents">No stored data</string>
   <string name="holder_storedEvents_listHeader_fetchedFromProvider">Retrieved at %s</string>
@@ -763,9 +763,9 @@ Read more on <a href=\"https://www.government.nl/entry-pass-visitors-cc\">www.go
   <string name="holder_qr_code_expired_explanation_title">Expired QR code</string>
   <string name="holder_qr_code_expired_explanation_description"><![CDATA[If your QR code has expired it means your vaccination is still valid, but the certificate that you’ve added isn\'t. You can request a new certificate with QR code and add it to the app again.<br/><br/>Do you have a more recent vaccination in the app? Then you can also use that QR code.]]></string>
   <string name="holder_qr_code_expired_explanation_action">Read more on CoronaCheck.nl</string>
-  <string name="holder_qr_code_expired_explanation_url">https://coronacheck.nl/en/faq/1-12-de-qr-code-van-mijn-vaccinatie-is-verlopen-wat-moet-ik-doen/</string>
+  <string name="holder_qr_code_expired_explanation_url">https://coronacheck.nl/en/faq-in-app/1-12-de-qr-code-van-mijn-vaccinatie-is-verlopen-wat-moet-ik-doen/</string>
   <string name="holder_qr_code_hidden_explanation_action">Read more on CoronaCheck.nl</string>
-  <string name="holder_qr_code_hidden_explanation_url">https://coronacheck.nl/en/faq/1-11-mijn-qr-code-is-verborgen-wat-betekent-dit/</string>
+  <string name="holder_qr_code_hidden_explanation_url">https://coronacheck.nl/en/faq-in-app/1-11-mijn-qr-code-is-verborgen-wat-betekent-dit/</string>
   <string name="holder_showQR_euAboutVaccination_daysSince">Days since vaccination:</string>
   <plurals name="general_days">
     <item quantity="one">day</item>
