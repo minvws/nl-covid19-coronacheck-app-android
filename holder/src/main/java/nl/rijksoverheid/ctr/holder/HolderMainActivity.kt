@@ -170,7 +170,7 @@ class HolderMainActivity : AppCompatActivity() {
         val isAppStatusFragment =
             navController.currentBackStackEntry?.destination?.id == R.id.nav_app_locked
         if (isAppStatusFragment) {
-            navController.popBackStack()
+            navController.navigate(RootNavDirections.actionMain())
         }
     }
 
