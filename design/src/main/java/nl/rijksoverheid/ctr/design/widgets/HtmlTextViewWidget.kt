@@ -169,7 +169,6 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         }
 
         val adjustedHtmlText = websiteEnvironmentUtil.adjust(htmlText)
-        this.text = websiteEnvironmentUtil.adjust(adjustedHtmlText)
 
         // Step 1: Parse the given String into a Spannable
         val spannable = getSpannableFromHtml(adjustedHtmlText)
