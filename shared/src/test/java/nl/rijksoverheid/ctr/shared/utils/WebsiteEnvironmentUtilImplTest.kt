@@ -38,4 +38,12 @@ class WebsiteEnvironmentUtilImplTest {
 
         assert(websiteEnvironmentUtil.adjust(url) == "https://www.coronacheck.nl/en/faq-in-app.html")
     }
+
+    @Test
+    fun `given a link in html text, when acc, then return acc web link`() {
+        every { context.packageName } returns "nl.rijksoverheid.ctr.holder.acc"
+
+        val adjustedUrlText = websiteEnvironmentUtil.adjust("In de <a href=\"https://coronacheck.nl/nl/privacy-in-app\">privacyverklaring</a> staat hoe de app omgaat met jouw gegevens. Dit zijn de belangrijkste punten:")
+        assert(adjustedUrlText.contains("acc"))
+    }
 }
