@@ -33,6 +33,7 @@ import nl.rijksoverheid.ctr.holder.modules.viewModels
 import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
+import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveCTBUseCase
 import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
@@ -56,6 +57,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
     private val holderWorkerFactory: WorkerFactory by inject()
     private val appConfigStorageManager: AppConfigStorageManager by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
+    private val remoteCTBUseCase: RemoveCTBUseCase by inject()
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     open fun coroutineScopeBlock(block: suspend () -> Unit) {
@@ -115,6 +117,7 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
                     )
                 )
             }
+            remoteCTBUseCase.execute()
         }
 
         if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {

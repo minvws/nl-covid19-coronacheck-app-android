@@ -43,4 +43,7 @@ interface GreenCardDao {
 
     @Query("DELETE FROM green_card")
     suspend fun deleteAll()
+
+    @Query("DELETE FROM green_card WHERE type NOT IN (:types)")
+    suspend fun deleteAllOfNotTypes(types: List<GreenCardType>)
 }
