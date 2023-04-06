@@ -405,10 +405,6 @@ fun fakeGreenCardUtil(
         return hasNoActiveCredentials
     }
 
-    override fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean {
-        return true
-    }
-
     override fun isEventFromDcc(greenCard: GreenCard, hints: List<OriginHintEntity>): Boolean {
         return false
     }
@@ -487,7 +483,7 @@ fun fakeQrCodeUsecase() = object : QrCodeUseCase {
 val fakeGreenCardEntity = GreenCardEntity(
     id = 0,
     walletId = 1,
-    type = GreenCardType.Domestic
+    type = GreenCardType.Eu
 )
 
 fun fakeRemoteEventVaccination(unique: String = "", date: LocalDate) =
@@ -510,7 +506,7 @@ fun fakeRemoteEventVaccination(unique: String = "", date: LocalDate) =
     )
 
 fun fakeGreenCard(
-    greenCardType: GreenCardType = GreenCardType.Domestic,
+    greenCardType: GreenCardType = GreenCardType.Eu,
     originType: OriginType = OriginType.Vaccination,
     eventTime: OffsetDateTime = OffsetDateTime.now(),
     expirationTime: OffsetDateTime = OffsetDateTime.now(),
@@ -547,7 +543,7 @@ fun fakeGreenCard(
 )
 
 fun fakeGreenCardWithOrigins(
-    greenCardType: GreenCardType = GreenCardType.Domestic,
+    greenCardType: GreenCardType = GreenCardType.Eu,
     originTypes: List<OriginType> = listOf(OriginType.Vaccination),
     eventTime: OffsetDateTime = OffsetDateTime.now(),
     expirationTime: OffsetDateTime = OffsetDateTime.now(),
@@ -605,7 +601,7 @@ fun fakeAppConfigFreshnessUseCase(shouldShowWarning: Boolean = false) = object :
 
 val fakeDashboardTabItem = DashboardTabItem(
     title = R.string.travel_button_domestic,
-    greenCardType = GreenCardType.Domestic,
+    greenCardType = GreenCardType.Eu,
     items = listOf()
 )
 

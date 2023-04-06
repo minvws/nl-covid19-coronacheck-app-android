@@ -168,7 +168,7 @@ class DashboardItemUtilImpl(
                 )
 
                 // We do not show the origin info item for a domestic test if there is a vaccination assessment green card active (this causes some confusion in the UI)
-                !(hasVaccinationAssessmentOrigin && originType == OriginType.Test && greenCardType == GreenCardType.Domestic)
+                !(hasVaccinationAssessmentOrigin && originType == OriginType.Test)
             }
         }
     }
@@ -184,9 +184,6 @@ class DashboardItemUtilImpl(
     ): Boolean {
         return if (persistenceManager.getPolicyBannerDismissed() != disclosurePolicy) {
             when (tabType) {
-                is GreenCardType.Domestic -> {
-                    disclosurePolicy !is DisclosurePolicy.ZeroG
-                }
                 is GreenCardType.Eu -> {
                     disclosurePolicy is DisclosurePolicy.ZeroG
                 }

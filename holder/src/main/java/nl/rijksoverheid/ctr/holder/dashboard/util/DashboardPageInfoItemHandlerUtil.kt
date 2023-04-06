@@ -72,12 +72,6 @@ class DashboardPageInfoItemHandlerUtilImpl(
                 onOriginInfoClicked(dashboardPageFragment, infoItem)
             is DashboardItem.InfoItem.MissingDutchVaccinationItem ->
                 onMissingDutchVaccinationItemClicked(dashboardPageFragment)
-            is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
-                onDomesticVaccinationExpiredItemClicked(dashboardPageFragment)
-            }
-            is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
-                onDomesticVaccinationAssessmentExpiredClicked(dashboardPageFragment)
-            }
             is DashboardItem.InfoItem.AppUpdate -> openPlayStore(dashboardPageFragment)
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
                 onVisitorPassIncompleteClicked(dashboardPageFragment)
@@ -252,9 +246,6 @@ class DashboardPageInfoItemHandlerUtilImpl(
         item: DashboardItem.InfoItem.OriginInfoItem
     ) {
         when (item.greenCardType) {
-            is GreenCardType.Domestic -> presentOriginInfoForDomesticQr(
-                item.originType, dashboardPageFragment
-            )
             is GreenCardType.Eu -> presentOriginInfoForEuQr(
                 item.originType, dashboardPageFragment
             )
@@ -347,12 +338,6 @@ class DashboardPageInfoItemHandlerUtilImpl(
         // Clear preference so it doesn't show again
         when (infoItem) {
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
-                dashboardPageFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
-            }
-            is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
-                dashboardPageFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
-            }
-            is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
                 dashboardPageFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
             }
             is DashboardItem.InfoItem.DisclosurePolicyItem -> {

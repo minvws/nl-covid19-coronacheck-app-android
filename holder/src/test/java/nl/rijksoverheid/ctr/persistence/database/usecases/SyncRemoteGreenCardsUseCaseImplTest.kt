@@ -37,73 +37,74 @@ class SyncRemoteGreenCardsUseCaseImplTest {
         every { originHintDao() } returns originHintDao
     }
     private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
-    private val createDomesticGreenCardUseCase: CreateDomesticGreenCardUseCase = mockk(relaxed = true)
     private val createEuGreenCardUseCase: CreateEuGreenCardUseCase = mockk(relaxed = true)
     private val usecase: SyncRemoteGreenCardsUseCaseImpl = SyncRemoteGreenCardsUseCaseImpl(
         holderDatabase = holderDatabase,
-        createDomesticGreenCardUseCase = createDomesticGreenCardUseCase,
         createEuGreenCardsUseCase = createEuGreenCardUseCase,
         mobileCoreWrapper = mobileCoreWrapper
     )
 
     @Test
-    fun `execute only creates european green cards if there is only a remote european green card`() = runBlocking {
-        val euGreenCard = RemoteGreenCards.EuGreenCard(
-            origins = listOf(),
-            credential = ""
-        )
+    fun `execute only creates european green cards if there is only a remote european green card`() =
+        runBlocking {
+            val euGreenCard = RemoteGreenCards.EuGreenCard(
+                origins = listOf(),
+                credential = ""
+            )
 
-        usecase.execute(
-            remoteGreenCards = RemoteGreenCards(
-                domesticGreencard = null,
-                euGreencards = listOf(euGreenCard),
-                blobExpireDates = listOf()
-            ),
-            secretKey = ""
-        )
+            usecase.execute(
+                remoteGreenCards = RemoteGreenCards(
+                    domesticGreencard = null,
+                    euGreencards = listOf(euGreenCard),
+                    blobExpireDates = listOf()
+                ),
+                secretKey = ""
+            )
 
-        coVerify(exactly = 0) { createDomesticGreenCardUseCase.create(any(), any(), any()) }
-        coVerify(exactly = 1) { createEuGreenCardUseCase.create(euGreenCard) }
-    }
+            coVerify(exactly = 1) { createEuGreenCardUseCase.create(euGreenCard) }
+        }
 
     @Test
-    fun `execute only creates domestic green card if there is only a remote domestic green card`() = runBlocking {
-        val createCredentials = "".toByteArray()
+    fun `execute only creates domestic green card if there is only a remote domestic green card`() =
+        runBlocking {
+            val createCredentials = "".toByteArray()
 
-        val domesticCredentials = listOf(DomesticCredential(
-            credential = JSONObject(),
-            attributes = DomesticCredentialAttributes(
-            birthDay = "",
-            birthMonth = "",
-            credentialVersion = 1,
-            firstNameInitial = "",
-            isSpecimen = "",
-            lastNameInitial = "",
-            isPaperProof = "",
-            validFrom = 1,
-            validForHours = 1,
-            category = "2"
-        )))
+            val domesticCredentials = listOf(
+                DomesticCredential(
+                    credential = JSONObject(),
+                    attributes = DomesticCredentialAttributes(
+                        birthDay = "",
+                        birthMonth = "",
+                        credentialVersion = 1,
+                        firstNameInitial = "",
+                        isSpecimen = "",
+                        lastNameInitial = "",
+                        isPaperProof = "",
+                        validFrom = 1,
+                        validForHours = 1,
+                        category = "2"
+                    )
+                )
+            )
 
-        val domesticGreenCard = RemoteGreenCards.DomesticGreenCard(
-            origins = listOf(),
-            createCredentialMessages = createCredentials
-        )
+            val domesticGreenCard = RemoteGreenCards.DomesticGreenCard(
+                origins = listOf(),
+                createCredentialMessages = createCredentials
+            )
 
-        coEvery { mobileCoreWrapper.createDomesticCredentials(createCredentials) } answers { domesticCredentials }
+            coEvery { mobileCoreWrapper.createDomesticCredentials(createCredentials) } answers { domesticCredentials }
 
-        usecase.execute(
-            remoteGreenCards = RemoteGreenCards(
-                domesticGreencard = domesticGreenCard,
-                euGreencards = listOf(),
-                blobExpireDates = listOf()
-            ),
-            secretKey = ""
-        )
+            usecase.execute(
+                remoteGreenCards = RemoteGreenCards(
+                    domesticGreencard = domesticGreenCard,
+                    euGreencards = listOf(),
+                    blobExpireDates = listOf()
+                ),
+                secretKey = ""
+            )
 
-        coVerify(exactly = 1) { createDomesticGreenCardUseCase.create(domesticGreenCard, domesticCredentials, any()) }
-        coVerify(exactly = 0) { createEuGreenCardUseCase.create(any()) }
-    }
+            coVerify(exactly = 0) { createEuGreenCardUseCase.create(any()) }
+        }
 
     @Test
     fun `execute cleans up database`() = runBlocking {

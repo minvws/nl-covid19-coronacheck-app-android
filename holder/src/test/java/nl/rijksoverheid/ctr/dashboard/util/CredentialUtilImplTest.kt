@@ -72,7 +72,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         )
 
         val activeCredential = credentialUtil.getActiveCredential(
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             entities = listOf(credential1, credential2)
         )
 
@@ -103,7 +103,7 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         )
 
         val activeCredential = credentialUtil.getActiveCredential(
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             entities = listOf(credential1, credential2)
         )
 

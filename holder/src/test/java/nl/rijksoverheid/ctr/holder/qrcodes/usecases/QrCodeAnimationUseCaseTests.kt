@@ -32,7 +32,7 @@ class QrCodeAnimationUseCaseTests {
             val animationUseCase = QrCodeAnimationUseCaseImpl(clock)
             assertEquals(
                 R.raw.summer_domestic,
-                animationUseCase.get(GreenCardType.Domestic).animationResource
+                animationUseCase.get(GreenCardType.Eu).animationResource
             )
             assertEquals(
                 R.raw.summer_international,
@@ -55,7 +55,7 @@ class QrCodeAnimationUseCaseTests {
             val animationUseCase = QrCodeAnimationUseCaseImpl(clock)
             assertEquals(
                 R.raw.winter_domestic,
-                animationUseCase.get(GreenCardType.Domestic).animationResource
+                animationUseCase.get(GreenCardType.Eu).animationResource
             )
             assertEquals(
                 R.raw.winter_international,

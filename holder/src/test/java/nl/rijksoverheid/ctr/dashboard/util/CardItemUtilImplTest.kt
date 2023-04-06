@@ -45,7 +45,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
         val greenCardDisclosurePolicy = util.getDisclosurePolicy(
             greenCard = fakeGreenCard(
                 originType = OriginType.Vaccination,
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             ),
             greenCardIndex = 0
         )
@@ -62,7 +62,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
         val greenCardDisclosurePolicy = util.getDisclosurePolicy(
             greenCard = fakeGreenCard(
                 originType = OriginType.Test,
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             ),
             greenCardIndex = 0
         )
@@ -79,7 +79,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
         val greenCardDisclosurePolicy = util.getDisclosurePolicy(
             greenCard = fakeGreenCard(
                 originType = OriginType.Vaccination,
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             ),
             greenCardIndex = 0
         )
@@ -96,7 +96,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
         val greenCardDisclosurePolicy = util.getDisclosurePolicy(
             greenCard = fakeGreenCard(
                 originType = OriginType.Test,
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             ),
             greenCardIndex = 0
         )
@@ -130,7 +130,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
         val greenCardDisclosurePolicy = util.getDisclosurePolicy(
             greenCard = fakeGreenCard(
                 originType = OriginType.Test,
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             ),
             greenCardIndex = 0
         )
@@ -147,7 +147,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
         val greenCardDisclosurePolicy = util.getDisclosurePolicy(
             greenCard = fakeGreenCard(
                 originType = OriginType.Test,
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             ),
             greenCardIndex = 1
         )
@@ -163,7 +163,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
 
         val greenCardMultipleTestOrigins = util.getDisclosurePolicy(
             greenCard = fakeGreenCard(
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             ).copy(
                 origins = listOf(
                     fakeOriginEntity(type = OriginType.Test),
@@ -185,7 +185,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
 
         val greenCardMultipleOrigins = util.getDisclosurePolicy(
             greenCard = fakeGreenCard(
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             ).copy(
                 origins = listOf(
                     fakeOriginEntity(type = OriginType.Vaccination),
@@ -207,7 +207,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
         val getEnabledState = util.getEnabledState(
             greenCard = fakeGreenCard(
                 originType = OriginType.Test,
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             )
         )
 
@@ -223,7 +223,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
         val getEnabledState = util.getEnabledState(
             greenCard = fakeGreenCard(
                 originType = OriginType.Vaccination,
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             )
         )
 
@@ -239,7 +239,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
         val getEnabledState = util.getEnabledState(
             greenCard = fakeGreenCard(
                 originType = OriginType.Vaccination,
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             )
         )
 
@@ -250,7 +250,7 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
     fun `shouldDisclose returns Disclose if domestic green card`() {
         val cardItem = fakeCardsItem(
             greenCard = fakeGreenCard(
-                greenCardType = GreenCardType.Domestic
+                greenCardType = GreenCardType.Eu
             ),
             originType = OriginType.Vaccination
         ).cards.first()

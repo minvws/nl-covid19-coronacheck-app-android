@@ -203,9 +203,6 @@ class DashboardPageFragment : Fragment(R.layout.fragment_dashboard_page) {
                     navigateSafety(
                         DashboardPageFragmentDirections.actionQrCode(
                             toolbarTitle = when (cardItem.greenCard.greenCardEntity.type) {
-                                is GreenCardType.Domestic -> {
-                                    getString(cardItemUtil.getQrCodesFragmentToolbarTitle(cardItem))
-                                }
                                 is GreenCardType.Eu -> {
                                     getString(R.string.my_overview_test_result_international_title)
                                 }

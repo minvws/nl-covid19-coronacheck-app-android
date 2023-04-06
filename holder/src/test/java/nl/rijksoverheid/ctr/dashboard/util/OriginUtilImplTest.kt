@@ -8,7 +8,6 @@ import java.time.ZoneOffset
 import nl.rijksoverheid.ctr.fakeOriginEntity
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtilImpl
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import org.junit.Assert.assertEquals
@@ -57,75 +56,6 @@ class OriginUtilImplTest {
         assertEquals(validOrigins[0], OriginState.Valid(originEntity1))
         assertEquals(validOrigins[1], OriginState.Future(originEntity2))
         assertEquals(validOrigins[2], OriginState.Expired(originEntity3))
-    }
-
-    @Test
-    fun `hideSubtitle returns false if green card type is Domestic and origin will expire in less than 3 years`() {
-        val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
-        val originUtil = OriginUtilImpl(clock)
-
-        val originState = OriginState.Valid(
-            origin = OriginEntity(
-                id = 0,
-                greenCardId = 0,
-                type = OriginType.Test,
-                eventTime = OffsetDateTime.now(clock),
-                expirationTime = OffsetDateTime.now(clock),
-                validFrom = OffsetDateTime.now(clock).plusYears(2)
-            )
-        )
-
-        assertFalse(
-            originUtil.hideSubtitle(
-                greenCardType = GreenCardType.Domestic,
-                originState = originState
-            )
-        )
-    }
-
-    @Test
-    fun `hideSubtitle returns true if green card type is Domestic and origin will expire in 3 years`() {
-        val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
-        val originUtil = OriginUtilImpl(clock)
-
-        val originState = OriginState.Valid(
-            origin = OriginEntity(
-                id = 0,
-                greenCardId = 0,
-                type = OriginType.Test,
-                eventTime = OffsetDateTime.now(clock),
-                expirationTime = OffsetDateTime.now(clock).plusYears(3),
-                validFrom = OffsetDateTime.now(clock)
-            )
-        )
-
-        assertTrue(
-            originUtil.hideSubtitle(
-                greenCardType = GreenCardType.Domestic,
-                originState = originState
-            )
-        )
-    }
-
-    @Test
-    fun `hideSubtitle returns false if green card type is Eu and origin will expire in 3 years`() {
-        val clock = Clock.fixed(Instant.ofEpochSecond(0), ZoneId.of("UTC"))
-        val originUtil = OriginUtilImpl(clock)
-
-        val originState = OriginState.Valid(
-            origin = OriginEntity(
-                id = 0,
-                greenCardId = 0,
-                type = OriginType.Test,
-                eventTime = OffsetDateTime.now(clock),
-                expirationTime = OffsetDateTime.now(clock),
-                validFrom = OffsetDateTime.now(clock).plusYears(3)
-            ))
-
-        assertFalse(originUtil.hideSubtitle(
-            greenCardType = GreenCardType.Eu,
-            originState = originState
-        ))
     }
 
     @Test

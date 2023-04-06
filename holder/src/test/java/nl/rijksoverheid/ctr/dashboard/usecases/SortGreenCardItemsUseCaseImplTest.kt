@@ -113,14 +113,14 @@ class SortGreenCardItemsUseCaseImplTest : AutoCloseKoinTest() {
         val items = listOf(
             DashboardItem.HeaderItem(1, null),
             DashboardItem.InfoItem.ClockDeviationItem,
-            DashboardItem.InfoItem.OriginInfoItem(GreenCardType.Domestic, OriginType.Test),
+            DashboardItem.InfoItem.OriginInfoItem(GreenCardType.Eu, OriginType.Test),
             DashboardItem.InfoItem.AppUpdate,
             DashboardItem.InfoItem.ConfigFreshnessWarning(1L),
             DashboardItem.AddQrButtonItem,
             DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.OneG),
-            DashboardItem.PlaceholderCardItem(GreenCardType.Domestic),
+            DashboardItem.PlaceholderCardItem(GreenCardType.Eu),
             DashboardItem.InfoItem.VisitorPassIncompleteItem,
-            DashboardItem.InfoItem.GreenCardExpiredItem(GreenCardType.Domestic, fakeOriginEntity()),
+            DashboardItem.InfoItem.GreenCardExpiredItem(GreenCardType.Eu, fakeOriginEntity()),
             fakeCardsItem()
         )
 

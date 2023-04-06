@@ -50,32 +50,6 @@ class DashboardHeaderAdapterItemUtilImpl(
         tabType: GreenCardType,
         emptyState: Boolean
     ) = when (tabType) {
-        is GreenCardType.Domestic -> {
-            when (featureFlagUseCase.getDisclosurePolicy()) {
-                is DisclosurePolicy.OneG -> {
-                    if (emptyState) {
-                        R.string.holder_dashboard_empty_domestic_only1Gaccess_message
-                    } else {
-                        R.string.holder_dashboard_intro_domestic_only1Gaccess
-                    }
-                }
-                is DisclosurePolicy.OneAndThreeG -> {
-                    if (emptyState) {
-                        R.string.holder_dashboard_empty_domestic_3Gand1Gaccess_message
-                    } else {
-                        R.string.holder_dashboard_intro_domestic_3Gand1Gaccess
-                    }
-                }
-                is DisclosurePolicy.ThreeG -> {
-                    if (emptyState) {
-                        R.string.my_overview_qr_placeholder_description
-                    } else {
-                        R.string.my_overview_description
-                    }
-                }
-                is DisclosurePolicy.ZeroG -> R.string.app_name // Not applicable
-            }
-        }
         is GreenCardType.Eu -> {
             if (emptyState) {
                 when (featureFlagUseCase.getDisclosurePolicy()) {

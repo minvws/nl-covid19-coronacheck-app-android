@@ -16,7 +16,6 @@ interface SyncRemoteGreenCardsUseCase {
 
 class SyncRemoteGreenCardsUseCaseImpl(
     private val holderDatabase: HolderDatabase,
-    private val createDomesticGreenCardUseCase: CreateDomesticGreenCardUseCase,
     private val createEuGreenCardsUseCase: CreateEuGreenCardUseCase,
     private val mobileCoreWrapper: MobileCoreWrapper
 ) : SyncRemoteGreenCardsUseCase {
@@ -35,16 +34,6 @@ class SyncRemoteGreenCardsUseCaseImpl(
             holderDatabase.originDao().deleteAll()
             holderDatabase.credentialDao().deleteAll()
             holderDatabase.originHintDao().deleteAll()
-
-            domesticCredentials?.let { it ->
-                remoteGreenCards.domesticGreencard?.let { domesticGreenCard ->
-                    createDomesticGreenCardUseCase.create(
-                        greenCard = domesticGreenCard,
-                        domesticCredentials = it,
-                        secretKey = secretKey
-                    )
-                }
-            }
 
             remoteGreenCards.euGreencards?.let {
                 it.forEach { greenCard ->

@@ -55,7 +55,7 @@ class DashboardFragmentScreenshotTest : ScreenshotTest {
     fun Loading_DomesticGreenCardWithOneGPolicy_Screenshot() {
         val greenCardEntity = GreenCardEntity(
             walletId = 1,
-            type = GreenCardType.Domestic
+            type = GreenCardType.Eu
         )
 
         val vaccinationOriginEntity = fakeOriginEntity(
@@ -114,7 +114,7 @@ class DashboardFragmentScreenshotTest : ScreenshotTest {
     fun Invalid_ServerError_FirstTime_DomesticGreenCardWithOneGPolicy_Screenshot() {
         val greenCardEntity = GreenCardEntity(
             walletId = 1,
-            type = GreenCardType.Domestic
+            type = GreenCardType.Eu
         )
 
         val vaccinationOriginEntity = fakeOriginEntity(
@@ -178,7 +178,7 @@ class DashboardFragmentScreenshotTest : ScreenshotTest {
     fun Invalid_ServerError_MultipleTimes_DomesticGreenCardWithOneGPolicy_Screenshot() {
         val greenCardEntity = GreenCardEntity(
             walletId = 1,
-            type = GreenCardType.Domestic
+            type = GreenCardType.Eu
         )
 
         val vaccinationOriginEntity = fakeOriginEntity(
@@ -321,7 +321,7 @@ class DashboardFragmentScreenshotTest : ScreenshotTest {
     fun Future_DomesticGreenCardWithOneGPolicy_Screenshot() {
         val greenCardEntity = GreenCardEntity(
             walletId = 1,
-            type = GreenCardType.Domestic
+            type = GreenCardType.Eu
         )
 
         val vaccinationOriginEntity = fakeOriginEntity(

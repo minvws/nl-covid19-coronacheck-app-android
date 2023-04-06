@@ -51,16 +51,6 @@ class QrCodesResultUseCaseImpl(
         val originType = qrCodeFragmentData.originType
 
         return when (greenCardType) {
-            is GreenCardType.Domestic -> {
-                getQrCodesResultForDomestic(
-                    greenCardType = greenCardType,
-                    credentials = credentials,
-                    shouldDisclose = shouldDisclose,
-                    qrCodeWidth = qrCodeWidth,
-                    qrCodeHeight = qrCodeHeight
-                )
-            }
-
             is GreenCardType.Eu -> {
                 if (originType is OriginType.Vaccination) {
                     getQrCodesResultForEuropeanVaccination(

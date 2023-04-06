@@ -88,7 +88,6 @@ class DashboardGreenCardAdapterItem(
         )
         val imageContentDescription = viewBinding.root.context.getString(
             when (greenCardType) {
-                GreenCardType.Domestic -> R.string.validity_type_dutch_title
                 GreenCardType.Eu -> R.string.validity_type_european_title
             }
         )
@@ -136,11 +135,6 @@ class DashboardGreenCardAdapterItem(
             is GreenCardType.Eu -> {
                 viewBinding.internationalImageContainer.visibility = View.VISIBLE
                 viewBinding.domesticImageContainer.visibility = View.GONE
-                viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.link)
-            }
-            is GreenCardType.Domestic -> {
-                viewBinding.internationalImageContainer.visibility = View.GONE
-                viewBinding.domesticImageContainer.visibility = View.VISIBLE
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.link)
             }
         }

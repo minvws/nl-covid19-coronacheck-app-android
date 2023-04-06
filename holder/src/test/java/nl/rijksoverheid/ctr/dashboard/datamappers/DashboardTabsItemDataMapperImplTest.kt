@@ -64,7 +64,7 @@ class DashboardTabsItemDataMapperImplTest {
         )
 
         assertEquals(2, tabItems.size)
-        assertEquals(GreenCardType.Domestic, tabItems.first().greenCardType)
+        assertEquals(GreenCardType.Eu, tabItems.first().greenCardType)
         assertEquals(GreenCardType.Eu, tabItems[1].greenCardType)
     }
 }

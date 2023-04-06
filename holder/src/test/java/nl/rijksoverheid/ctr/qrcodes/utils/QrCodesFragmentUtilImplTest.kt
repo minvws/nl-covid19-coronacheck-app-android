@@ -24,7 +24,7 @@ class QrCodesFragmentUtilImplTest {
         val expiration = Instant.parse("2021-01-01T10:00:00.00Z")
 
         val util = QrCodesFragmentUtilImpl(now)
-        val shouldClose = util.shouldClose(expiration.epochSecond, GreenCardType.Domestic)
+        val shouldClose = util.shouldClose(expiration.epochSecond, GreenCardType.Eu)
 
         assertTrue(shouldClose)
     }
@@ -35,7 +35,7 @@ class QrCodesFragmentUtilImplTest {
         val expiration = Instant.parse("2021-01-01T11:00:00.00Z")
 
         val util = QrCodesFragmentUtilImpl(now)
-        val shouldClose = util.shouldClose(expiration.epochSecond, GreenCardType.Domestic)
+        val shouldClose = util.shouldClose(expiration.epochSecond, GreenCardType.Eu)
 
         assertFalse(shouldClose)
     }

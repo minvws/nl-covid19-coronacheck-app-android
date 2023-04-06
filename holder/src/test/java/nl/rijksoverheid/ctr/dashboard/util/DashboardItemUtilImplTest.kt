@@ -265,7 +265,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             originType = OriginType.Test,
             disclosurePolicy = DisclosurePolicy.ThreeG
         )
@@ -281,7 +281,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(),
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             originType = OriginType.Test,
             disclosurePolicy = DisclosurePolicy.ThreeG
         )
@@ -297,7 +297,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             originType = OriginType.Vaccination,
             disclosurePolicy = DisclosurePolicy.ThreeG
         )
@@ -313,7 +313,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             originType = OriginType.Vaccination,
             disclosurePolicy = DisclosurePolicy.ZeroG
         )
@@ -359,7 +359,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(true, util.shouldShowPolicyInfoItem(
             disclosurePolicy = DisclosurePolicy.ThreeG,
-            tabType = GreenCardType.Domestic
+            tabType = GreenCardType.Eu
         ))
     }
 
@@ -373,7 +373,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(false, util.shouldShowPolicyInfoItem(
             disclosurePolicy = DisclosurePolicy.ThreeG,
-            tabType = GreenCardType.Domestic
+            tabType = GreenCardType.Eu
         ))
     }
 
@@ -387,7 +387,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(false, util.shouldShowPolicyInfoItem(
             disclosurePolicy = DisclosurePolicy.ZeroG,
-            tabType = GreenCardType.Domestic
+            tabType = GreenCardType.Eu
         ))
     }
 

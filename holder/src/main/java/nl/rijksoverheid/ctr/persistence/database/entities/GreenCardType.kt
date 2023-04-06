@@ -13,12 +13,8 @@ import kotlinx.parcelize.Parcelize
 sealed class GreenCardType : Parcelable {
 
     companion object {
-        const val TYPE_DOMESTIC = "domestic"
         const val TYPE_EU = "eu"
     }
-
-    @Parcelize
-    object Domestic : GreenCardType(), Parcelable
 
     @Parcelize
     object Eu : GreenCardType(), Parcelable

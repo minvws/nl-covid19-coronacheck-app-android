@@ -32,7 +32,7 @@ import org.json.JSONObject
 fun fakeGreenCardEntity(
     id: Int = 0,
     walletId: Int = 0,
-    type: GreenCardType = GreenCardType.Domestic
+    type: GreenCardType = GreenCardType.Eu
 ) = GreenCardEntity(id, walletId, type)
 
 fun fakeOriginEntity(
@@ -97,7 +97,7 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
 val fakeDashboardTabItem = DashboardTabItem(
     title = R.string.travel_button_domestic,
-    greenCardType = GreenCardType.Domestic,
+    greenCardType = GreenCardType.Eu,
     items = listOf()
 )
 

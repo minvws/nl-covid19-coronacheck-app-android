@@ -30,7 +30,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val context = ApplicationProvider.getApplicationContext<Context>()
 
         val infoItem = DashboardItem.InfoItem.OriginInfoItem(
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             originType = OriginType.Vaccination
         )
 
@@ -49,7 +49,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val context = ApplicationProvider.getApplicationContext<Context>()
 
         val infoItem = DashboardItem.InfoItem.OriginInfoItem(
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             originType = OriginType.Recovery
         )
 
@@ -68,7 +68,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         val context = ApplicationProvider.getApplicationContext<Context>()
 
         val infoItem = DashboardItem.InfoItem.OriginInfoItem(
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             originType = OriginType.Test
         )
 
@@ -161,7 +161,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `getExpiredItemText returns correct copy for domestic vaccination`() {
         val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             originType = OriginType.Vaccination
         )
 
@@ -171,7 +171,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `getExpiredItemText returns correct copy for domestic recovery`() {
         val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             originType = OriginType.Recovery
         )
 
@@ -181,7 +181,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `getExpiredItemText returns correct copy for domestic test`() {
         val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             originType = OriginType.Test
         )
 
@@ -221,7 +221,7 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `getExpiredItemText returns correct copy for vaccination assessment`() {
         val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
-            greenCardType = GreenCardType.Domestic,
+            greenCardType = GreenCardType.Eu,
             originType = OriginType.VaccinationAssessment
         )
 

@@ -29,7 +29,6 @@ import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.ext.capitalize
 import nl.rijksoverheid.ctr.shared.ext.locale
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -117,41 +116,6 @@ class DashboardGreenCardAdapterItemUtilImpl(
                         is OriginType.VaccinationAssessment -> {
                             // Visitor pass is only for domestic
                         }
-                    }
-                }
-                is GreenCardType.Domestic -> {
-                    when (card.disclosurePolicy) {
-                        is GreenCardDisclosurePolicy.ThreeG -> {
-                            dashboardGreenCardAdapterItemBinding.title.text = context.getString(R.string.holder_dashboard_domesticQRCard_3G_title)
-                            dashboardGreenCardAdapterItemBinding.policyLabel.text = context.getString(R.string.holder_dashboard_domesticQRCard_3G_label)
-                        }
-                        is GreenCardDisclosurePolicy.OneG -> {
-                            dashboardGreenCardAdapterItemBinding.title.text = context.getString(R.string.holder_dashboard_domesticQRCard_1G_title)
-                            dashboardGreenCardAdapterItemBinding.policyLabel.text = context.getString(R.string.holder_dashboard_domesticQRCard_1G_label)
-                        }
-                    }
-                    card.originStates
-                        .sortedBy { state -> state.origin.type.order }
-                        .forEach { originState ->
-                            val origin = originState.origin
-                            when (origin.type) {
-                                is OriginType.Vaccination -> setDomesticVaccinationOrigin(
-                                    dashboardGreenCardAdapterItemBinding, originState, origin
-                                )
-                                is OriginType.Recovery -> setDomesticRecoveryOrigin(
-                                    dashboardGreenCardAdapterItemBinding, originState, origin
-                                )
-                                is OriginType.Test -> setDomesticTestOrigin(
-                                    dashboardGreenCardAdapterItemBinding, originState, origin
-                                )
-                                is OriginType.VaccinationAssessment -> setDomesticVaccinationAssessmentOrigin(
-                                    dashboardGreenCardAdapterItemBinding, originState, origin
-                                )
-                            }
-                        }
-                    // When there is only 1 valid origin set potential expiry countdown
-                    dashboardGreenCardAdapterItemExpiryUtil.getLastValidOrigin(it.origins)?.let {
-                        setExpiryText(it, dashboardGreenCardAdapterItemBinding)
                     }
                 }
             }

@@ -12,8 +12,6 @@ import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCreden
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCaseImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetPaperProofTypeUseCase
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetPaperProofTypeUseCaseImpl
-import nl.rijksoverheid.ctr.persistence.database.usecases.CreateDomesticGreenCardUseCase
-import nl.rijksoverheid.ctr.persistence.database.usecases.CreateDomesticGreenCardUseCaseImpl
 import nl.rijksoverheid.ctr.persistence.database.usecases.CreateEuGreenCardUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.CreateEuGreenCardUseCaseImpl
 import nl.rijksoverheid.ctr.persistence.database.usecases.GetRemoteGreenCardsUseCase
@@ -36,10 +34,7 @@ val greenCardUseCasesModule = module {
         GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }
     factory<SyncRemoteGreenCardsUseCase> {
-        SyncRemoteGreenCardsUseCaseImpl(get(), get(), get(), get())
-    }
-    factory<CreateDomesticGreenCardUseCase> {
-        CreateDomesticGreenCardUseCaseImpl(get())
+        SyncRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }
     factory<CreateEuGreenCardUseCase> {
         CreateEuGreenCardUseCaseImpl(get(), get())

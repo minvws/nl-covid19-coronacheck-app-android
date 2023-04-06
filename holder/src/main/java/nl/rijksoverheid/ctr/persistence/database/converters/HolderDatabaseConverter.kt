@@ -27,21 +27,13 @@ class HolderDatabaseConverter {
     }
 
     @TypeConverter
-    fun fromGreenCardType(value: String?): GreenCardType? {
-        return when (value) {
-            GreenCardType.TYPE_DOMESTIC -> GreenCardType.Domestic
-            GreenCardType.TYPE_EU -> GreenCardType.Eu
-            else -> null
-        }
+    fun fromGreenCardType(value: String?): GreenCardType {
+        return GreenCardType.Eu
     }
 
     @TypeConverter
-    fun greenCardTypeToString(type: GreenCardType?): String? {
-        return when (type) {
-            GreenCardType.Domestic -> GreenCardType.TYPE_DOMESTIC
-            GreenCardType.Eu -> GreenCardType.TYPE_EU
-            else -> null
-        }
+    fun greenCardTypeToString(type: GreenCardType?): String {
+        return GreenCardType.TYPE_EU
     }
 
     @TypeConverter

@@ -57,17 +57,6 @@ sealed class DashboardItem {
             hasButton = false
         )
 
-        data class DomesticVaccinationExpiredItem(val originEntity: OriginEntity) : InfoItem(
-            isDismissible = true,
-            hasButton = true
-        )
-
-        data class DomesticVaccinationAssessmentExpiredItem(val originEntity: OriginEntity) :
-            InfoItem(
-                isDismissible = true,
-                hasButton = true
-            )
-
         object AppUpdate : InfoItem(
             isDismissible = false,
             hasButton = true,

@@ -12,9 +12,6 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardInfoCardBinding
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType.Domestic
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType.Vaccination
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType.VaccinationAssessment
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -65,20 +62,6 @@ class DashboardInfoCardAdapterItem(
                 val expiredItemText = utilAdapter.getExpiredItemText(
                     greenCardType = infoItem.greenCardType,
                     originType = infoItem.originEntity.type
-                )
-                viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
-            }
-            is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
-                val expiredItemText = utilAdapter.getExpiredItemText(
-                    greenCardType = Domestic,
-                    originType = Vaccination
-                )
-                viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
-            }
-            is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
-                val expiredItemText = utilAdapter.getExpiredItemText(
-                    greenCardType = Domestic,
-                    originType = VaccinationAssessment
                 )
                 viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
             }
