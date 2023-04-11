@@ -58,11 +58,9 @@ import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsRe
 import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
 import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
 import nl.rijksoverheid.ctr.shared.models.Flow
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
@@ -105,9 +103,6 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
         }
 
         override fun removeOrigin(originEntity: OriginEntity) {
-        }
-
-        override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
         }
 
         override fun dismissBlockedEventsInfo() {
@@ -240,15 +235,6 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun disclose(
-            secretKey: ByteArray,
-            credential: ByteArray,
-            currentTimeMillis: Long,
-            disclosurePolicy: GreenCardDisclosurePolicy
-        ): String {
-            return ""
-        }
-
         override fun generateHolderSk(): String {
             return ""
         }
@@ -276,9 +262,10 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
         override fun readEuropeanCredential(credential: ByteArray): JSONObject {
             val jsonObject = JSONObject()
             val vaccinationJson = JSONObject()
-            vaccinationJson.put("dn", "1")
-            vaccinationJson.put("sd", "1")
+            vaccinationJson.put("dn", 1)
+            vaccinationJson.put("sd", 1)
             vaccinationJson.put("dt", "2021-01-22")
+            vaccinationJson.put("co", "NL")
             val dccValues = JSONArray()
             dccValues.put(0, vaccinationJson)
             dccValues.put(1, vaccinationJson)
@@ -669,7 +656,6 @@ fun fakeCardsItem(
                 originStates = listOf(OriginState.Valid(fakeOriginEntity(type = originType))),
                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                 databaseSyncerResult = DatabaseSyncerResult.Success(),
-                disclosurePolicy = GreenCardDisclosurePolicy.OneG,
                 greenCardEnabledState = GreenCardEnabledState.Enabled
             )
         )

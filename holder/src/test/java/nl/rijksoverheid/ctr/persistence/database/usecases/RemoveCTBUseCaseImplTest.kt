@@ -25,6 +25,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.koin.test.AutoCloseKoinTest
 import org.robolectric.RobolectricTestRunner
 
 /*
@@ -35,7 +36,7 @@ import org.robolectric.RobolectricTestRunner
  *
  */
 @RunWith(RobolectricTestRunner::class)
-class RemoveCTBUseCaseImplTest {
+class RemoveCTBUseCaseImplTest : AutoCloseKoinTest() {
 
     private lateinit var db: HolderDatabase
 

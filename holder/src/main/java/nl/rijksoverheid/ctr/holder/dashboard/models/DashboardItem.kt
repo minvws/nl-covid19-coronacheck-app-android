@@ -19,8 +19,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
 sealed class DashboardItem {
 
@@ -69,15 +67,6 @@ sealed class DashboardItem {
             buttonText = R.string.holder_dashboard_visitorpassincompletebanner_button_makecomplete
         )
 
-        data class DisclosurePolicyItem(
-            val disclosurePolicy: DisclosurePolicy,
-            @StringRes override val buttonText: Int = R.string.general_readmore
-        ) :
-            InfoItem(
-                isDismissible = true,
-                hasButton = true
-            )
-
         data class BlockedEvents(
             val blockedEvents: List<RemovedEventEntity>,
             @StringRes override val buttonText: Int = R.string.general_readmore
@@ -103,7 +92,6 @@ sealed class DashboardItem {
             val originStates: List<OriginState>,
             val credentialState: CredentialState,
             val databaseSyncerResult: DatabaseSyncerResult,
-            val disclosurePolicy: GreenCardDisclosurePolicy,
             val greenCardEnabledState: GreenCardEnabledState
         )
     }

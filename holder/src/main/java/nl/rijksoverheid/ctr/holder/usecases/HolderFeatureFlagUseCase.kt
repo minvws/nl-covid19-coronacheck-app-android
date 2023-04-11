@@ -8,10 +8,8 @@
 package nl.rijksoverheid.ctr.holder.usecases
 
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface HolderFeatureFlagUseCase {
-    fun getDisclosurePolicy(): DisclosurePolicy
     fun getGgdEnabled(): Boolean
     fun getMijnCnEnabled(): Boolean
     fun getVisitorPassEnabled(): Boolean
@@ -21,10 +19,6 @@ interface HolderFeatureFlagUseCase {
 class HolderFeatureFlagUseCaseImpl(
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : HolderFeatureFlagUseCase {
-
-    override fun getDisclosurePolicy(): DisclosurePolicy {
-        return cachedAppConfigUseCase.getCachedAppConfig().disclosurePolicy
-    }
 
     override fun getGgdEnabled(): Boolean {
         return cachedAppConfigUseCase.getCachedAppConfig().ggdEnabled

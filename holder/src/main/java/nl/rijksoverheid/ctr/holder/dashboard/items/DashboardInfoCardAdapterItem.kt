@@ -12,7 +12,6 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardInfoCardBinding
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -78,16 +77,6 @@ class DashboardInfoCardAdapterItem(
             }
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
                 viewBinding.text.setText(R.string.holder_dashboard_visitorpassincompletebanner_title)
-            }
-            is DashboardItem.InfoItem.DisclosurePolicyItem -> {
-                viewBinding.text.setText(
-                    when (infoItem.disclosurePolicy) {
-                        DisclosurePolicy.OneG -> R.string.holder_dashboard_only1GaccessBanner_title
-                        DisclosurePolicy.ThreeG -> R.string.holder_dashboard_only3GaccessBanner_title
-                        DisclosurePolicy.OneAndThreeG -> R.string.holder_dashboard_3Gand1GaccessBanner_title
-                        DisclosurePolicy.ZeroG -> R.string.holder_dashboard_noDomesticCertificatesBanner_0G_title
-                    }
-                )
             }
             is DashboardItem.InfoItem.BlockedEvents -> {
                 viewBinding.text.setText(

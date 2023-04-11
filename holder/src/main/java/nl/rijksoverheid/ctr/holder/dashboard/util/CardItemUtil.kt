@@ -12,17 +12,10 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
 interface CardItemUtil {
-    fun getDisclosurePolicy(
-        greenCard: GreenCard,
-        greenCardIndex: Int
-    ): GreenCardDisclosurePolicy
 
     fun getEnabledState(
         greenCard: GreenCard
@@ -36,21 +29,7 @@ interface CardItemUtil {
     fun getQrCodesFragmentToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int
 }
 
-class CardItemUtilImpl(
-    private val featureFlagUseCase: HolderFeatureFlagUseCase,
-    private val greenCardUtil: GreenCardUtil
-) : CardItemUtil {
-
-    override fun getDisclosurePolicy(
-        greenCard: GreenCard,
-        greenCardIndex: Int
-    ): GreenCardDisclosurePolicy {
-            return when (greenCard.greenCardEntity.type) {
-            is GreenCardType.Eu -> {
-                GreenCardDisclosurePolicy.ThreeG
-            }
-        }
-    }
+class CardItemUtilImpl : CardItemUtil {
 
     override fun getEnabledState(
         greenCard: GreenCard
@@ -71,17 +50,6 @@ class CardItemUtilImpl(
     }
 
     override fun getQrCodesFragmentToolbarTitle(cardItem: DashboardItem.CardsItem.CardItem): Int {
-        return when (featureFlagUseCase.getDisclosurePolicy()) {
-            DisclosurePolicy.OneAndThreeG -> {
-                getTitleFromCardDisclosurePolicy(cardItem.disclosurePolicy)
-            }
-            DisclosurePolicy.OneG -> getTitleFromCardDisclosurePolicy(cardItem.disclosurePolicy)
-            else -> R.string.domestic_qr_code_title
-        }
-    }
-
-    private fun getTitleFromCardDisclosurePolicy(policy: GreenCardDisclosurePolicy) = when (policy) {
-        GreenCardDisclosurePolicy.OneG -> R.string.holder_showQR_domestic_title_1g
-        GreenCardDisclosurePolicy.ThreeG -> R.string.holder_showQR_domestic_title_3g
+        return R.string.domestic_qr_code_title
     }
 }

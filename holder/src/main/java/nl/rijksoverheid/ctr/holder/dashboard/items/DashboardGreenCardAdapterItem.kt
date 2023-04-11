@@ -24,14 +24,12 @@ import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardGreenCardBind
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 data class AdapterCard(
     val greenCard: GreenCard,
-    val originStates: List<OriginState>,
-    val disclosurePolicy: GreenCardDisclosurePolicy
+    val originStates: List<OriginState>
 )
 
 class DashboardGreenCardAdapterItem(
@@ -57,7 +55,8 @@ class DashboardGreenCardAdapterItem(
             .map { Pair(it.origin.expirationTime, it.origin.type) }
             .maxByOrNull { it.first } ?: return
 
-        val expireCountDown = dashboardGreenCardAdapterItemExpiryUtil.getExpireCountdown(expireDate, type)
+        val expireCountDown =
+            dashboardGreenCardAdapterItemExpiryUtil.getExpireCountdown(expireDate, type)
 
         if (expireCountDown is DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show) {
             if (expireCountDown.expired()) {
@@ -82,7 +81,10 @@ class DashboardGreenCardAdapterItem(
         countdown(viewBinding)
     }
 
-    private fun accessibility(viewBinding: AdapterItemDashboardGreenCardBinding, greenCardType: GreenCardType) {
+    private fun accessibility(
+        viewBinding: AdapterItemDashboardGreenCardBinding,
+        greenCardType: GreenCardType
+    ) {
         viewBinding.buttonWithProgressWidgetContainer.accessibility(
             viewBinding.title.text.toString()
         )
@@ -91,12 +93,16 @@ class DashboardGreenCardAdapterItem(
                 GreenCardType.Eu -> R.string.validity_type_european_title
             }
         )
-        viewBinding.headerContainer.contentDescription = "${viewBinding.title.text} $imageContentDescription"
+        viewBinding.headerContainer.contentDescription =
+            "${viewBinding.title.text} $imageContentDescription"
         // Mark title of the cards as heading for accessibility
         ViewCompat.setAccessibilityHeading(viewBinding.title, true)
     }
 
-    private fun initButton(viewBinding: AdapterItemDashboardGreenCardBinding, card: DashboardItem.CardsItem.CardItem) {
+    private fun initButton(
+        viewBinding: AdapterItemDashboardGreenCardBinding,
+        card: DashboardItem.CardsItem.CardItem
+    ) {
         when (card.greenCardEnabledState) {
             is GreenCardEnabledState.Enabled -> {
                 viewBinding.buttonWithProgressWidgetContainer.visibility = View.VISIBLE
@@ -159,7 +165,7 @@ class DashboardGreenCardAdapterItem(
 
         dashboardGreenCardAdapterItemUtil.setContent(
             DashboardGreenCardAdapterItemBindingWrapperImpl(viewBinding),
-            cards.map { AdapterCard(it.greenCard, it.originStates, it.disclosurePolicy) }
+            cards.map { AdapterCard(it.greenCard, it.originStates) }
                 .sortedByDescending { it.originStates.first().origin.eventTime }
         )
 
@@ -176,11 +182,13 @@ class DashboardGreenCardAdapterItem(
     private fun stackAdditionalCards(viewBinding: AdapterItemDashboardGreenCardBinding) {
         viewBinding.apply {
             if (cards.size >= 2) {
-                (proof2.layoutParams as ViewGroup.MarginLayoutParams).height = viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_card_height)
+                (proof2.layoutParams as ViewGroup.MarginLayoutParams).height =
+                    viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_card_height)
             }
 
             if (cards.size >= 3) {
-                (proof3.layoutParams as ViewGroup.MarginLayoutParams).height = viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_card_height)
+                (proof3.layoutParams as ViewGroup.MarginLayoutParams).height =
+                    viewBinding.root.context.resources.getDimensionPixelSize(R.dimen.dashboard_card_additional_card_height)
             }
         }
     }
@@ -189,9 +197,10 @@ class DashboardGreenCardAdapterItem(
         val context = viewBinding.root.context
         val credentialState = cards.first().credentialState
         val noCredential = credentialState is DashboardItem.CardsItem.CredentialState.NoCredential
-        val credentialExpired = credentialState is DashboardItem.CardsItem.CredentialState.HasCredential && credentialState.credential.expirationTime.isBefore(
-            OffsetDateTime.now(clock)
-        )
+        val credentialExpired =
+            credentialState is DashboardItem.CardsItem.CredentialState.HasCredential && credentialState.credential.expirationTime.isBefore(
+                OffsetDateTime.now(clock)
+            )
         if (noCredential || credentialExpired) {
             when (cards.first().databaseSyncerResult) {
                 is DatabaseSyncerResult.Failed.NetworkError -> {
@@ -214,7 +223,10 @@ class DashboardGreenCardAdapterItem(
                 }
                 is DatabaseSyncerResult.Failed.ServerError.MultipleTimes -> {
                     viewBinding.errorText.setHtmlText(
-                        htmlText = context.getString(R.string.my_overview_green_card_server_error_after_retry, cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber),
+                        htmlText = context.getString(
+                            R.string.my_overview_green_card_server_error_after_retry,
+                            cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber
+                        ),
                         htmlTextColor = ContextCompat.getColor(context, R.color.error),
                         htmlTextColorLink = ContextCompat.getColor(context, R.color.error)
                     )

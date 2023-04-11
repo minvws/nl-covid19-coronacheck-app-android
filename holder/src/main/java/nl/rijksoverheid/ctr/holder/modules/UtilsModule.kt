@@ -96,8 +96,6 @@ val utilsModule = module {
             get(),
             get(),
             get(),
-            get(),
-            get(),
             get()
         )
     }
@@ -116,13 +114,13 @@ val utilsModule = module {
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
     factory<DashboardInfoCardAdapterItemUtil> { DashboardInfoCardAdapterItemUtilImpl() }
-    factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
+    factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl() }
     factory<AboutThisAppDataModel> { AboutThisAppDataModelImpl(get(), get()) }
     factory<HelpMenuDataModel> { HelpMenuDataModelImpl(get(), get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
     factory<LoginTypeUtil> { LoginTypeUtilImpl() }
     factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }
-    factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
+    factory<CardItemUtil> { CardItemUtilImpl() }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
     factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get(), get()) }

@@ -14,13 +14,10 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -41,18 +38,8 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
     fun setup() {
         loadKoinModules(module {
             factory {
-                mockk<PersistenceManager>(relaxed = true).apply {
-                    every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
-                }
-            }
-            factory {
                 mockk<BuildConfigUseCase>(relaxed = true).apply {
                     every { getVersionCode() } returns 99999
-                }
-            }
-            factory {
-                mockk<HolderCachedAppConfigUseCase>(relaxed = true).apply {
-                    every { getCachedAppConfig().disclosurePolicy } returns DisclosurePolicy.ThreeG
                 }
             }
         })
@@ -145,11 +132,10 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             allEventGroupEntities = listOf()
         )
 
-        assertEquals(4, dashboardItems.internationalItems.size)
+        assertEquals(3, dashboardItems.internationalItems.size)
         assertTrue(dashboardItems.internationalItems[0] is DashboardItem.HeaderItem)
         assertTrue(dashboardItems.internationalItems[1] is DashboardItem.InfoItem.GreenCardExpiredItem)
-        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.PlaceholderCardItem)
-        assertTrue(dashboardItems.internationalItems[3] is DashboardItem.AddQrButtonItem)
+        assertTrue(dashboardItems.internationalItems[2] is DashboardItem.AddQrCardItem)
     }
 
     @Test

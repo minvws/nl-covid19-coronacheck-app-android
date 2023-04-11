@@ -7,7 +7,6 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.usecases
 
-import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtil
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItems
@@ -18,7 +17,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
@@ -43,9 +41,7 @@ class GetDashboardItemsUseCaseImpl(
     private val dashboardItemEmptyStateUtil: DashboardItemEmptyStateUtil,
     private val dashboardHeaderAdapterItemUtil: DashboardHeaderAdapterItemUtil,
     private val cardItemUtil: CardItemUtil,
-    private val splitDomesticGreenCardsUseCase: SplitDomesticGreenCardsUseCase,
     private val sortGreenCardItemsUseCase: SortGreenCardItemsUseCase,
-    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase,
     private val holderDatabase: HolderDatabase
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
@@ -76,10 +72,8 @@ class GetDashboardItemsUseCaseImpl(
             allGreenCards.filter { it.greenCardEntity.type == GreenCardType.Eu }
 
         val hasEmptyState = dashboardItemEmptyStateUtil.hasEmptyState(
-            hasVisitorPassIncompleteItem = false,
             allGreenCards = allGreenCards,
-            greenCardsForTab = internationalGreenCards,
-            disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
+            greenCardsForTab = internationalGreenCards
         )
 
         val headerItem = dashboardHeaderAdapterItemUtil.getHeaderItem(
@@ -117,18 +111,6 @@ class GetDashboardItemsUseCaseImpl(
                     maxValidityDate = dashboardItemUtil.getConfigFreshnessMaxValidity()
                 )
             )
-        }
-
-        val selectedDisclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy()
-        if (dashboardItemUtil.shouldShowPolicyInfoItem(
-                disclosurePolicy = selectedDisclosurePolicy,
-                tabType = GreenCardType.Eu
-            )) {
-            dashboardItems.add(
-                DashboardItem.InfoItem.DisclosurePolicyItem(
-                    disclosurePolicy = selectedDisclosurePolicy,
-                    buttonText = R.string.holder_dashboard_noDomesticCertificatesBanner_0G_action_linkToRijksoverheid
-                ))
         }
 
         dashboardItems.addAll(
@@ -203,7 +185,6 @@ class GetDashboardItemsUseCaseImpl(
                     .contains(originForUnselectedType.type)) {
 
                 if (dashboardItemUtil.shouldShowOriginInfoItem(
-                        disclosurePolicy = holderFeatureFlagUseCase.getDisclosurePolicy(),
                         greenCards = greenCards,
                         greenCardType = greenCardType,
                         originType = originForUnselectedType.type
@@ -265,10 +246,6 @@ class GetDashboardItemsUseCaseImpl(
             originStates = nonExpiredOriginStates,
             credentialState = credentialState,
             databaseSyncerResult = databaseSyncerResult,
-            disclosurePolicy = cardItemUtil.getDisclosurePolicy(
-                greenCardIndex = greenCardIndex,
-                greenCard = greenCard
-            ),
             greenCardEnabledState = cardItemUtil.getEnabledState(
                 greenCard = greenCard
             )

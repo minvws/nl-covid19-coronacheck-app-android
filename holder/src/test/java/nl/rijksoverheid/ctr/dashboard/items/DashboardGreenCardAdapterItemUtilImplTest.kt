@@ -33,7 +33,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.ext.capitalize
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -103,7 +102,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 AdapterCard(
                     greenCard, listOf(
                         OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
+                    )
                 )
             )
         )
@@ -140,12 +139,15 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 AdapterCard(
                     greenCard, listOf(
                         OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
+                    )
                 )
             )
         )
 
-        assertEquals(dosisString, ((viewBinding.description.getChildAt(0) as TextView).text).toString())
+        assertEquals(
+            dosisString,
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
+        )
         assertEquals(
             "${context.getString(R.string.qr_card_vaccination_title_eu)} 27 juli 2021",
             ((viewBinding.description.getChildAt(1) as TextView).text).toString()
@@ -174,12 +176,15 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 AdapterCard(
                     greenCard, listOf(
                         OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
+                    )
                 )
             )
         )
 
-        assertEquals(dosisString, ((viewBinding.description.getChildAt(0) as TextView).text).toString())
+        assertEquals(
+            dosisString,
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
+        )
         assertEquals(
             "${context.getString(R.string.qr_card_vaccination_title_eu)} 27 juli 2021",
             ((viewBinding.description.getChildAt(1) as TextView).text).toString()
@@ -202,7 +207,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 AdapterCard(
                     greenCard, listOf(
                         OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
+                    )
                 )
             )
         )
@@ -229,7 +234,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 AdapterCard(
                     greenCard, listOf(
                         OriginState.Future(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
+                    )
                 )
             )
         )
@@ -265,14 +270,13 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             cards = listOf(
                 AdapterCard(
                     greenCard,
-                    listOf(OriginState.Valid(greenCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(greenCard.origins.first()))
                 )
             )
         )
 
         assertEquals(
-            context.getString(R.string.type_vaccination).capitalize(),
+            context.getString(R.string.general_vaccinationcertificate_0G).capitalize(),
             (viewBinding.title).text
         )
     }
@@ -293,12 +297,11 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             listOf(
                 AdapterCard(
                     testCard,
-                    listOf(OriginState.Valid(testCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(testCard.origins.first()))
                 )
             )
         )
-        assertEquals(context.getString(R.string.type_test).capitalize(), (viewBinding.title).text)
+        assertEquals(context.getString(R.string.general_testcertificate_0G).capitalize(), (viewBinding.title).text)
     }
 
     @Test
@@ -317,13 +320,12 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             listOf(
                 AdapterCard(
                     recoveryCard,
-                    listOf(OriginState.Valid(recoveryCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(recoveryCard.origins.first()))
                 )
             )
         )
         assertEquals(
-            context.getString(R.string.type_recovery).capitalize(),
+            context.getString(R.string.general_recoverycertificate_0G).capitalize(),
             (viewBinding.title).text
         )
     }
@@ -346,18 +348,15 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             cards = listOf(
                 AdapterCard(
                     greenCard,
-                    listOf(OriginState.Valid(greenCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(greenCard.origins.first()))
                 ),
                 AdapterCard(
                     greenCard,
-                    listOf(OriginState.Valid(greenCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(greenCard.origins.first()))
                 ),
                 AdapterCard(
                     greenCard,
-                    listOf(OriginState.Valid(greenCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(greenCard.origins.first()))
                 )
             )
         )

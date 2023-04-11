@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
@@ -155,10 +154,6 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
         }
 
         override fun createCommitmentMessage(secretKey: ByteArray, prepareIssueMessage: ByteArray): String {
-            return ""
-        }
-
-        override fun disclose(secretKey: ByteArray, credential: ByteArray, currentTimeMillis: Long, disclosurePolicy: GreenCardDisclosurePolicy): String {
             return ""
         }
 

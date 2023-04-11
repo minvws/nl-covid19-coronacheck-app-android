@@ -7,7 +7,6 @@
 
 package nl.rijksoverheid.ctr.dashboard.usecases
 
-import io.mockk.every
 import io.mockk.mockk
 import nl.rijksoverheid.ctr.fakeCardsItem
 import nl.rijksoverheid.ctr.fakeCardsItems
@@ -18,7 +17,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -41,23 +39,39 @@ class SortGreenCardItemsUseCaseImplTest : AutoCloseKoinTest() {
             )
         )
 
-        val util = getUtil(
-            disclosurePolicy = DisclosurePolicy.ThreeG
-        )
+        val util = getUtil()
 
         val sortedItems = util.sort(items)
 
         // First item is green card with single vaccination origin
-        assertEquals(1, (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.size)
-        assertEquals(OriginType.Vaccination, (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type)
+        assertEquals(
+            1,
+            (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.size
+        )
+        assertEquals(
+            OriginType.Vaccination,
+            (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type
+        )
 
         // Second item is green card with single recovery origin
-        assertEquals(1, (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.size)
-        assertEquals(OriginType.Recovery, (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type)
+        assertEquals(
+            1,
+            (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.size
+        )
+        assertEquals(
+            OriginType.Recovery,
+            (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type
+        )
 
         // Second item is green card with single recovery origin
-        assertEquals(1, (sortedItems[2] as DashboardItem.CardsItem).cards.first().greenCard.origins.size)
-        assertEquals(OriginType.Test, (sortedItems[2] as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type)
+        assertEquals(
+            1,
+            (sortedItems[2] as DashboardItem.CardsItem).cards.first().greenCard.origins.size
+        )
+        assertEquals(
+            OriginType.Test,
+            (sortedItems[2] as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type
+        )
     }
 
     @Test
@@ -69,19 +83,29 @@ class SortGreenCardItemsUseCaseImplTest : AutoCloseKoinTest() {
             )
         )
 
-        val util = getUtil(
-            disclosurePolicy = DisclosurePolicy.OneAndThreeG
-        )
+        val util = getUtil()
 
         val sortedItems = util.sort(items)
 
         // First item is green card with single vaccination origin
-        assertEquals(1, (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.size)
-        assertEquals(OriginType.Vaccination, (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type)
+        assertEquals(
+            1,
+            (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.size
+        )
+        assertEquals(
+            OriginType.Vaccination,
+            (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type
+        )
 
         // Second item is green card with single test origin
-        assertEquals(1, (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.size)
-        assertEquals(OriginType.Test, (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type)
+        assertEquals(
+            1,
+            (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.size
+        )
+        assertEquals(
+            OriginType.Test,
+            (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type
+        )
     }
 
     @Test
@@ -93,14 +117,13 @@ class SortGreenCardItemsUseCaseImplTest : AutoCloseKoinTest() {
             DashboardItem.InfoItem.AppUpdate,
             DashboardItem.InfoItem.ConfigFreshnessWarning(1L),
             DashboardItem.AddQrButtonItem,
-            DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.OneG),
             DashboardItem.PlaceholderCardItem(GreenCardType.Eu),
             DashboardItem.InfoItem.VisitorPassIncompleteItem,
             DashboardItem.InfoItem.GreenCardExpiredItem(GreenCardType.Eu, fakeOriginEntity()),
             fakeCardsItem()
         )
 
-        val sortedItems = getUtil(DisclosurePolicy.OneG).sort(items)
+        val sortedItems = getUtil().sort(items)
 
         assert(sortedItems[0] is DashboardItem.HeaderItem)
         assert(sortedItems[1] is DashboardItem.InfoItem.ClockDeviationItem)
@@ -108,18 +131,14 @@ class SortGreenCardItemsUseCaseImplTest : AutoCloseKoinTest() {
         assert(sortedItems[3] is DashboardItem.InfoItem.AppUpdate)
         assert(sortedItems[4] is DashboardItem.InfoItem.VisitorPassIncompleteItem)
         assert(sortedItems[5] is DashboardItem.InfoItem.GreenCardExpiredItem)
-        assert(sortedItems[6] is DashboardItem.InfoItem.DisclosurePolicyItem)
-        assert(sortedItems[7] is DashboardItem.InfoItem.OriginInfoItem)
-        assert(sortedItems[8] is DashboardItem.PlaceholderCardItem)
-        assert(sortedItems[9] is DashboardItem.CardsItem)
-        assert(sortedItems[10] is DashboardItem.AddQrButtonItem)
+        assert(sortedItems[6] is DashboardItem.InfoItem.OriginInfoItem)
+        assert(sortedItems[7] is DashboardItem.PlaceholderCardItem)
+        assert(sortedItems[8] is DashboardItem.CardsItem)
+        assert(sortedItems[9] is DashboardItem.AddQrButtonItem)
     }
 
-    private fun getUtil(
-        disclosurePolicy: DisclosurePolicy
-    ): SortGreenCardItemsUseCaseImpl {
+    private fun getUtil(): SortGreenCardItemsUseCaseImpl {
         val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>()
-        every { featureFlagUseCase.getDisclosurePolicy() } answers { disclosurePolicy }
 
         return SortGreenCardItemsUseCaseImpl(
             featureFlagUseCase = featureFlagUseCase,

@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.dashboardModule
 import nl.rijksoverheid.ctr.holder.fuzzy_matching.fuzzyMatchingModule
 import nl.rijksoverheid.ctr.holder.modules.appModule
 import nl.rijksoverheid.ctr.holder.modules.cardUtilsModule
-import nl.rijksoverheid.ctr.holder.modules.disclosurePolicyModule
 import nl.rijksoverheid.ctr.holder.modules.errorsModule
 import nl.rijksoverheid.ctr.holder.modules.eventsUseCasesModule
 import nl.rijksoverheid.ctr.holder.modules.greenCardUseCasesModule
@@ -79,7 +78,6 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         retrofitModule(BuildConfig.BASE_API_URL, BuildConfig.CDN_API_URL),
         responsesModule,
         qrScannerModule,
-        disclosurePolicyModule,
         fuzzyMatchingModule,
         dashboardModule
     ).toTypedArray()
@@ -131,7 +129,8 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
 
     override fun getWorkManagerConfiguration(): Configuration {
         return Configuration.Builder().apply {
-            setMinimumLoggingLevel(if (BuildConfig.DEBUG) {
+            setMinimumLoggingLevel(
+                if (BuildConfig.DEBUG) {
                     Log.DEBUG
                 } else {
                     Log.ERROR

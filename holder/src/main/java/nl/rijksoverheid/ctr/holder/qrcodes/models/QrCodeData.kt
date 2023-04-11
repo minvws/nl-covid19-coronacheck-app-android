@@ -1,17 +1,11 @@
 package nl.rijksoverheid.ctr.holder.qrcodes.models
 
 import android.graphics.Bitmap
-import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import org.json.JSONObject
 
 sealed class QrCodeData(
     open val bitmap: Bitmap
 ) {
-
-    data class Domestic(
-        override val bitmap: Bitmap,
-        val readDomesticCredential: ReadDomesticCredential
-    ) : QrCodeData(bitmap)
 
     sealed class European(
         override val bitmap: Bitmap,

@@ -19,7 +19,6 @@ import nl.rijksoverheid.ctr.holder.HolderMainActivity
 import nl.rijksoverheid.ctr.holder.end2end.utils.overrideModules
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Before
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.inject
@@ -50,7 +49,6 @@ abstract class BaseTest : AutoCloseKoinTest() {
         introductionPersistenceManager.saveIntroductionFinished()
         appUpdatePersistenceManager.saveNewFeaturesSeen(3)
         appUpdatePersistenceManager.saveNewTermsSeen(2)
-        persistenceManager.setPolicyScreenSeen(DisclosurePolicy.ZeroG)
         persistenceManager.setSelectedDashboardTab(1)
 
         scenario = ActivityScenario.launch(HolderMainActivity::class.java)

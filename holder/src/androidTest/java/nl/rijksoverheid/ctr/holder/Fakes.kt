@@ -20,9 +20,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
@@ -82,9 +80,6 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
         override fun removeOrigin(originEntity: OriginEntity) {
         }
 
-        override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
-        }
-
         override fun dismissBlockedEventsInfo() {
         }
 
@@ -117,15 +112,6 @@ val fakeMobileCoreWrapper = object : MobileCoreWrapper {
     override fun createCommitmentMessage(
         secretKey: ByteArray,
         prepareIssueMessage: ByteArray
-    ): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun disclose(
-        secretKey: ByteArray,
-        credential: ByteArray,
-        currentTimeMillis: Long,
-        disclosurePolicy: GreenCardDisclosurePolicy
     ): String {
         TODO("Not yet implemented")
     }

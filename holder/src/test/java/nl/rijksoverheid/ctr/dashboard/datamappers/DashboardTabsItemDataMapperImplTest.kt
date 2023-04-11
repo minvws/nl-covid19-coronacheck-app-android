@@ -15,7 +15,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.datamappers.DashboardTabsItemDataMa
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItems
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -25,9 +24,7 @@ class DashboardTabsItemDataMapperImplTest {
     fun `Only one international tab is returned if 0G policy`() = runBlocking {
         val cachedAppConfigUseCase = mockk<HolderCachedAppConfigUseCase>()
         coEvery { cachedAppConfigUseCase.getCachedAppConfig() } answers {
-            HolderConfig.default(
-                disclosurePolicy = DisclosurePolicy.ZeroG
-            )
+            HolderConfig.default()
         }
         val usecase = DashboardTabsItemDataMapperImpl(
             cachedAppConfigUseCase = cachedAppConfigUseCase

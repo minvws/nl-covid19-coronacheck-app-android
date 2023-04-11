@@ -38,7 +38,6 @@ import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.persistence.database.usecases.DraftEventUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 abstract class DashboardViewModel : ViewModel() {
     val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
@@ -49,7 +48,6 @@ abstract class DashboardViewModel : ViewModel() {
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
-    abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
     abstract fun dismissBlockedEventsInfo()
     abstract fun dismissFuzzyMatchedEventsInfo()
 
@@ -209,10 +207,6 @@ class DashboardViewModelImpl(
         (dashboardTabItemsLiveData as MutableLiveData<List<DashboardTabItem>>).postValue(
             tabItems
         )
-    }
-
-    override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
-        persistenceManager.setPolicyBannerDismissed(disclosurePolicy)
     }
 
     override fun dismissBlockedEventsInfo() {

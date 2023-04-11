@@ -34,7 +34,6 @@ class SortGreenCardItemsUseCaseImpl(
                 DashboardItem.InfoItem.AppUpdate -> 50
                 DashboardItem.InfoItem.VisitorPassIncompleteItem -> 60
                 is DashboardItem.InfoItem.GreenCardExpiredItem -> 70
-                is DashboardItem.InfoItem.DisclosurePolicyItem -> 100
                 DashboardItem.InfoItem.MissingDutchVaccinationItem -> 110
                 is DashboardItem.InfoItem.OriginInfoItem -> 120
                 is DashboardItem.PlaceholderCardItem -> 130

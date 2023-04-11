@@ -11,7 +11,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface DashboardHeaderAdapterItemUtil {
     fun getHeaderItem(
@@ -52,30 +51,16 @@ class DashboardHeaderAdapterItemUtilImpl(
     ) = when (tabType) {
         is GreenCardType.Eu -> {
             if (emptyState) {
-                when (featureFlagUseCase.getDisclosurePolicy()) {
-                    is DisclosurePolicy.ZeroG -> {
-                        R.string.holder_dashboard_emptyState_international_0G_message
-                    }
-                    else -> {
-                        R.string.my_overview_qr_placeholder_description_eu
-                    }
-                }
+                R.string.holder_dashboard_emptyState_international_0G_message
             } else {
-                when (featureFlagUseCase.getDisclosurePolicy()) {
-                    is DisclosurePolicy.ZeroG -> {
-                        R.string.holder_dashboard_filledState_international_0G_message
-                    }
-                    else -> {
-                        R.string.my_overview_description_eu
-                    }
-                }
+                R.string.holder_dashboard_filledState_international_0G_message
             }
         }
     }
 
     private fun getButtonInfo(tabType: GreenCardType, empty: Boolean) =
         if (tabType == GreenCardType.Eu) {
-            if (featureFlagUseCase.getDisclosurePolicy() is DisclosurePolicy.ZeroG && empty) {
+            if (empty) {
                 ButtonInfo(
                     R.string.holder_dashboard_international_0G_action_certificateNeeded,
                     R.string.my_overview_description_eu_button_link

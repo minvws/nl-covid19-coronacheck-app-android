@@ -7,7 +7,6 @@
 
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
-import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import java.time.Instant
@@ -20,18 +19,15 @@ import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentDirections
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
-import nl.rijksoverheid.ctr.holder.MainNavDirections
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardPageFragment
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 /**
  * Handles [DashboardInfoCardAdapterItem] actions
@@ -76,74 +72,12 @@ class DashboardPageInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
                 onVisitorPassIncompleteClicked(dashboardPageFragment)
             }
-            is DashboardItem.InfoItem.DisclosurePolicyItem -> {
-                onDisclosurePolicyItemClicked(
-                    dashboardPageFragment.requireContext(),
-                    infoItem.disclosurePolicy
-                )
-            }
             is DashboardItem.InfoItem.BlockedEvents -> onBlockedEventsClick(dashboardPageFragment, infoItem.blockedEvents)
             is DashboardItem.InfoItem.FuzzyMatchedEvents -> onFuzzyMatchedEventsClick(dashboardPageFragment, infoItem.storedEvent, infoItem.events)
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 /* nothing, DashboardPageFragment.setItems never creates a card for this */
             }
         }
-    }
-
-    private fun onDisclosurePolicyItemClicked(
-        context: Context,
-        disclosurePolicy: DisclosurePolicy
-    ) {
-        val urlResource = when (disclosurePolicy) {
-            DisclosurePolicy.OneG -> R.string.holder_dashboard_only1GaccessBanner_link
-            DisclosurePolicy.ThreeG -> R.string.holder_dashboard_only3GaccessBanner_link
-            DisclosurePolicy.OneAndThreeG -> R.string.holder_dashboard_3Gand1GaccessBanner_link
-            DisclosurePolicy.ZeroG -> R.string.holder_dashboard_noDomesticCertificatesBanner_url
-        }
-        intentUtil.openUrl(context, context.getString(urlResource))
-    }
-
-    private fun onDomesticVaccinationExpiredItemClicked(
-        dashboardPageFragment: DashboardPageFragment
-    ) {
-        val navigationDirection = MainNavDirections.actionGetEvents(
-            toolbarTitle = dashboardPageFragment.getString(R.string.holder_addVaccination_title),
-            originType = RemoteOriginType.Vaccination
-        )
-
-        infoFragmentUtil.presentAsBottomSheet(
-            dashboardPageFragment.parentFragmentManager,
-            InfoFragmentData.TitleDescriptionWithButton(
-                title = dashboardPageFragment.getString(R.string.holder_expiredDomesticVaccinationModal_title),
-                descriptionData = DescriptionData(
-                    R.string.holder_expiredDomesticVaccinationModal_body,
-                    htmlLinksEnabled = true
-                ),
-                secondaryButtonData = ButtonData.NavigationButton(
-                    text = dashboardPageFragment.getString(R.string.holder_expiredDomesticVaccinationModal_button_addBoosterVaccination),
-                    navigationActionId = navigationDirection.actionId,
-                    navigationArguments = navigationDirection.arguments
-                )
-            )
-        )
-    }
-
-    private fun onDomesticVaccinationAssessmentExpiredClicked(
-        dashboardPageFragment: DashboardPageFragment
-    ) {
-        val descriptionText = dashboardPageFragment.getString(R.string.holder_dashboard_visitorpassexpired_body,
-            cachedAppConfigUseCase.getCachedAppConfig().vaccinationAssessmentEventValidityDays)
-
-        infoFragmentUtil.presentAsBottomSheet(
-            dashboardPageFragment.parentFragmentManager,
-            InfoFragmentData.TitleDescriptionWithButton(
-                title = dashboardPageFragment.getString(R.string.holder_dashboard_visitorpassexpired_title),
-                descriptionData = DescriptionData(
-                    htmlTextString = descriptionText,
-                    htmlLinksEnabled = true
-                )
-            )
-        )
     }
 
     private fun openPlayStore(dashboardPageFragment: DashboardPageFragment) {
@@ -339,9 +273,6 @@ class DashboardPageInfoItemHandlerUtilImpl(
         when (infoItem) {
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 dashboardPageFragment.dashboardViewModel.removeOrigin(infoItem.originEntity)
-            }
-            is DashboardItem.InfoItem.DisclosurePolicyItem -> {
-                dashboardPageFragment.dashboardViewModel.dismissPolicyInfo(infoItem.disclosurePolicy)
             }
             is DashboardItem.InfoItem.BlockedEvents -> {
                 dashboardPageFragment.dashboardViewModel.dismissBlockedEventsInfo()

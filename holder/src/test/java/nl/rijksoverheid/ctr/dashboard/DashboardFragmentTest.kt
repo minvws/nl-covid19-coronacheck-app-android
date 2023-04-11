@@ -30,12 +30,9 @@ import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
-import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -199,59 +196,6 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
         assertListItemCount(listId = R.id.recyclerView, expectedItemCount = 0)
     }
 
-    @Test
-    fun `A single card should be displayed when 1 card item is presented`() {
-        startFragment(
-            listOf(
-                DashboardTabItem(
-                    title = R.string.travel_button_domestic,
-                    greenCardType = GreenCardType.Eu,
-                    items = listOf(
-                        DashboardItem.CardsItem(
-                            listOf(
-                                DashboardItem.CardsItem.CardItem(
-                                    greenCard = fakeGreenCard(),
-                                    originStates = listOf(
-                                        OriginState.Valid(origin = fakeOriginEntity())
-                                    ),
-                                    credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
-                                    databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                    disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
-                                    greenCardEnabledState = GreenCardEnabledState.Enabled
-                                )
-                            )
-                        )
-                    )
-                )
-            )
-        )
-
-        assertCustomAssertionAtPosition(
-            listId = R.id.recyclerView,
-            position = 0,
-            targetViewId = R.id.proof_1,
-            viewAssertion = ViewAssertion { view, _ ->
-                assertTrue { view is MaterialCardView }
-            }
-        )
-        assertCustomAssertionAtPosition(
-            listId = R.id.recyclerView,
-            position = 0,
-            targetViewId = R.id.proof_2,
-            viewAssertion = ViewAssertion { view, _ ->
-                assertTrue { view.height == 0 }
-            }
-        )
-        assertCustomAssertionAtPosition(
-            listId = R.id.recyclerView,
-            position = 0,
-            targetViewId = R.id.proof_3,
-            viewAssertion = ViewAssertion { view, _ ->
-                assertTrue { view.height == 0 }
-            }
-        )
-    }
-
     fun `Multiple cards should be displayed when the cards item has multiple cards`() {
         startFragment(
             listOf(
@@ -266,7 +210,6 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                                     originStates = listOf(),
                                     credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                     databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                    disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
                                     greenCardEnabledState = GreenCardEnabledState.Enabled
                                 ),
                                 DashboardItem.CardsItem.CardItem(
@@ -274,7 +217,6 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                                     originStates = listOf(),
                                     credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                     databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                    disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
                                     greenCardEnabledState = GreenCardEnabledState.Enabled
                                 ),
                                 DashboardItem.CardsItem.CardItem(
@@ -282,7 +224,6 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                                     originStates = listOf(),
                                     credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                     databaseSyncerResult = DatabaseSyncerResult.Success(),
-                                    disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
                                     greenCardEnabledState = GreenCardEnabledState.Enabled
                                 )
                             )
@@ -457,83 +398,6 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
         performActionOnView(ViewMatchers.withId(R.id.text), ViewActions.click())
 
         Assert.assertEquals(navController.currentDestination?.id, R.id.nav_choose_proof_type)
-    }
-
-    @Test
-    fun `policy info card can be dismissed and should have a read more`() {
-        startFragment(
-            listOf(
-                DashboardTabItem(
-                    title = R.string.travel_button_domestic,
-                    greenCardType = GreenCardType.Eu,
-                    items = listOf(
-                        DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.ThreeG)
-                    )
-                )
-            )
-        )
-
-        assertCustomAssertionAtPosition(
-            listId = R.id.recyclerView,
-            position = 0,
-            targetViewId = R.id.dashboardItemInfoRoot,
-            viewAssertion = ViewAssertion { view, _ ->
-                assertTrue { view is CardView }
-            }
-        )
-        assertDisplayed(R.id.close)
-        assertDisplayed(R.id.button)
-    }
-
-    @Test
-    fun `policy info for 3G should be shown on 3G disclosure policy`() {
-        startFragment(
-            listOf(
-                DashboardTabItem(
-                    title = R.string.travel_button_domestic,
-                    greenCardType = GreenCardType.Eu,
-                    items = listOf(
-                        DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.ThreeG)
-                    )
-                )
-            )
-        )
-
-        assertDisplayed(R.id.text, R.string.holder_dashboard_only3GaccessBanner_title)
-    }
-
-    @Test
-    fun `policy info for 1G should be shown on 1G disclosure policy`() {
-        startFragment(
-            listOf(
-                DashboardTabItem(
-                    title = R.string.travel_button_domestic,
-                    greenCardType = GreenCardType.Eu,
-                    items = listOf(
-                        DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.OneG)
-                    )
-                )
-            )
-        )
-
-        assertDisplayed(R.id.text, R.string.holder_dashboard_only1GaccessBanner_title)
-    }
-
-    @Test
-    fun `policy info for 1G+3G should be shown on 1G+3G disclosure policy`() {
-        startFragment(
-            listOf(
-                DashboardTabItem(
-                    title = R.string.travel_button_domestic,
-                    greenCardType = GreenCardType.Eu,
-                    items = listOf(
-                        DashboardItem.InfoItem.DisclosurePolicyItem(DisclosurePolicy.OneAndThreeG)
-                    )
-                )
-            )
-        )
-
-        assertDisplayed(R.id.text, R.string.holder_dashboard_3Gand1GaccessBanner_title)
     }
 
     @Test

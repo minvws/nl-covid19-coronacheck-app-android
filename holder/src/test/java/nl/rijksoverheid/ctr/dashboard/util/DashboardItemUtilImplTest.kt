@@ -21,9 +21,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem.CardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtilImpl
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.dao.RemovedEventDao
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
@@ -33,21 +31,16 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.AutoCloseKoinTest
-import org.koin.test.inject
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class DashboardItemUtilImplTest : AutoCloseKoinTest() {
-
-    private val greenCardUtil: GreenCardUtil by inject()
 
     @Test
     fun `shouldShowClockDeviationItem returns true if has deviation and no empty state`() {
@@ -259,63 +252,25 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `shouldShowOriginInfoItem returns false if vaccination assessment green card exists and card is for domestic test`() {
-        val util = getUtil(
-            greenCardUtil = greenCardUtil
-        )
+        val util = getUtil()
 
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
             greenCardType = GreenCardType.Eu,
-            originType = OriginType.Test,
-            disclosurePolicy = DisclosurePolicy.ThreeG
+            originType = OriginType.Test
         )
 
         assertFalse(shouldShowOriginInfoItem)
     }
 
     @Test
-    fun `shouldShowOriginInfoItem returns true if no vaccination assessment green card exists and card is for domestic test`() {
-        val util = getUtil(
-            greenCardUtil = greenCardUtil
-        )
-
-        val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
-            greenCards = listOf(),
-            greenCardType = GreenCardType.Eu,
-            originType = OriginType.Test,
-            disclosurePolicy = DisclosurePolicy.ThreeG
-        )
-
-        assertTrue(shouldShowOriginInfoItem)
-    }
-
-    @Test
-    fun `shouldShowOriginInfoItem returns true if vaccination assessment green card exists and card is for domestic vaccination`() {
-        val util = getUtil(
-            greenCardUtil = greenCardUtil
-        )
-
-        val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
-            greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
-            greenCardType = GreenCardType.Eu,
-            originType = OriginType.Vaccination,
-            disclosurePolicy = DisclosurePolicy.ThreeG
-        )
-
-        assertTrue(shouldShowOriginInfoItem)
-    }
-
-    @Test
     fun `shouldShowOriginInfoItem returns false if 0G green card exists and card is for domestic vaccination`() {
-        val util = getUtil(
-            greenCardUtil = greenCardUtil
-        )
+        val util = getUtil()
 
         val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
             greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
             greenCardType = GreenCardType.Eu,
-            originType = OriginType.Vaccination,
-            disclosurePolicy = DisclosurePolicy.ZeroG
+            originType = OriginType.Vaccination
         )
 
         assertFalse(shouldShowOriginInfoItem)
@@ -323,9 +278,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `shouldShowAddQrCardItem returns true if no empty state`() {
-        val util = getUtil(
-            greenCardUtil = greenCardUtil
-        )
+        val util = getUtil()
 
         val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
             hasVisitorPassIncompleteItem = false,
@@ -337,9 +290,7 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     @Test
     fun `shouldShowAddQrCardItem returns false when empty state`() {
-        val util = getUtil(
-            greenCardUtil = greenCardUtil
-        )
+        val util = getUtil()
 
         val shouldShowAddQrItem = util.shouldShowAddQrCardItem(
             hasVisitorPassIncompleteItem = false,
@@ -350,47 +301,20 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `showPolicyInfoItem returns false when the config policy is the same as the one dismissed`() {
-        val util = getUtil(
-            persistenceManager = mockk {
-                every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
+    fun `shouldShowBlockedEventsItem return false when no blocked events in database`() =
+        runBlocking {
+            val removedEventDao = mockk<RemovedEventDao>(relaxed = true)
+            val holderDatabase = mockk<HolderDatabase>(relaxed = true).apply {
+                coEvery { removedEventDao() } returns removedEventDao
             }
-        )
+            coEvery { removedEventDao.getAll(reason = RemovedEventReason.Blocked) } answers { listOf() }
 
-        assertEquals(false, util.shouldShowPolicyInfoItem(
-            disclosurePolicy = DisclosurePolicy.ThreeG,
-            tabType = GreenCardType.Eu
-        ))
-    }
+            val util = getUtil(
+                holderDatabase = holderDatabase
+            )
 
-    @Test
-    fun `showPolicyInfoItem returns true when the config policy is 0G and eu tab is selected`() {
-        val util = getUtil(
-            persistenceManager = mockk {
-                every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
-            }
-        )
-
-        assertEquals(true, util.shouldShowPolicyInfoItem(
-            disclosurePolicy = DisclosurePolicy.ZeroG,
-            tabType = GreenCardType.Eu
-        ))
-    }
-
-    @Test
-    fun `shouldShowBlockedEventsItem return false when no blocked events in database`() = runBlocking {
-        val removedEventDao = mockk<RemovedEventDao>(relaxed = true)
-        val holderDatabase = mockk<HolderDatabase>(relaxed = true).apply {
-            coEvery { removedEventDao() } returns removedEventDao
+            assertFalse(util.shouldShowBlockedEventsItem())
         }
-        coEvery { removedEventDao.getAll(reason = RemovedEventReason.Blocked) } answers { listOf() }
-
-        val util = getUtil(
-            holderDatabase = holderDatabase
-        )
-
-        assertFalse(util.shouldShowBlockedEventsItem())
-    }
 
     private fun createCardItem(originType: OriginType) = CardItem(
         greenCard = GreenCard(
@@ -409,7 +333,6 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         originStates = listOf(),
         credentialState = CardsItem.CredentialState.HasCredential(mockk()),
         databaseSyncerResult = mockk(),
-        disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,
         greenCardEnabledState = GreenCardEnabledState.Enabled
     )
 
@@ -441,19 +364,15 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
     private fun getUtil(
         clockDeviationUseCase: ClockDeviationUseCase = mockk(relaxed = true),
-        persistenceManager: PersistenceManager = mockk(relaxed = true),
         appConfigFreshnessUseCase: AppConfigFreshnessUseCase = mockk(relaxed = true),
         appConfigUseCase: HolderCachedAppConfigUseCase = mockk(relaxed = true),
         buildConfigUseCase: BuildConfigUseCase = mockk(relaxed = true),
-        greenCardUtil: GreenCardUtil = mockk(relaxed = true),
         holderDatabase: HolderDatabase = mockk(relaxed = true)
     ) = DashboardItemUtilImpl(
         clockDeviationUseCase = clockDeviationUseCase,
-        persistenceManager = persistenceManager,
         appConfigFreshnessUseCase = appConfigFreshnessUseCase,
         appConfigUseCase = appConfigUseCase,
         buildConfigUseCase = buildConfigUseCase,
-        greenCardUtil = greenCardUtil,
         holderDatabase = holderDatabase
     )
 }

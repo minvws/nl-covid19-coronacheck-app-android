@@ -21,15 +21,9 @@ import nl.rijksoverheid.ctr.holder.utils.LocalDateUtil
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.shared.ext.getStringOrNull
 import nl.rijksoverheid.ctr.shared.ext.locale
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.PersonalDetails
 import org.json.JSONObject
 
 interface QrInfoScreenUtil {
-    fun getForDomesticQr(
-        personalDetails: PersonalDetails,
-        disclosurePolicy: GreenCardDisclosurePolicy
-    ): QrInfoScreen
 
     fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): QrInfoScreen
     fun getForEuropeanVaccinationQr(readEuropeanCredential: JSONObject): QrInfoScreen
@@ -45,30 +39,6 @@ class QrInfoScreenUtilImpl(
 ) : QrInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
-
-    override fun getForDomesticQr(
-        personalDetails: PersonalDetails,
-        disclosurePolicy: GreenCardDisclosurePolicy
-    ): QrInfoScreen {
-        val title = application.getString(R.string.qr_explanation_title_domestic)
-
-        val description = application.getString(
-            when (disclosurePolicy) {
-                is GreenCardDisclosurePolicy.OneG -> {
-                    R.string.holder_qr_explanation_description_domestic_1G
-                }
-                is GreenCardDisclosurePolicy.ThreeG -> {
-                    R.string.qr_explanation_description_domestic
-                }
-            },
-            "${personalDetails.firstNameInitial} ${personalDetails.lastNameInitial} ${personalDetails.birthDay} ${personalDetails.birthMonth}"
-        )
-
-        return QrInfoScreen(
-            title = title,
-            description = description
-        )
-    }
 
     override fun getForEuropeanTestQr(readEuropeanCredential: JSONObject): QrInfoScreen {
         val dcc = requireNotNull(readEuropeanCredential.optJSONObject("dcc"))

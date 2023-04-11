@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.persistence
 
 import android.content.SharedPreferences
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -32,10 +31,6 @@ interface PersistenceManager {
     fun getCheckNewValidityInfoCard(): Boolean
     fun setCheckNewValidityInfoCard(check: Boolean)
     fun getHasDismissedNewValidityInfoCard(): Boolean
-    fun getPolicyBannerDismissed(): DisclosurePolicy?
-    fun setPolicyBannerDismissed(policy: DisclosurePolicy)
-    fun getPolicyScreenSeen(): DisclosurePolicy?
-    fun setPolicyScreenSeen(policy: DisclosurePolicy)
     fun setCheckCanOpenDatabase(check: Boolean)
     fun getCheckCanOpenDatabase(): Boolean
 }
@@ -144,24 +139,6 @@ class SharedPreferencesPersistenceManager(
 
     override fun getHasDismissedNewValidityInfoCard(): Boolean {
         return sharedPreferences.getBoolean(HAS_DISMISSED_VALIDITY_INFO_CARD, true)
-    }
-
-    override fun getPolicyBannerDismissed(): DisclosurePolicy? {
-        val value = sharedPreferences.getString(POLICY_BANNER_DISMISSED, "") ?: ""
-        return DisclosurePolicy.fromString(value)
-    }
-
-    override fun setPolicyBannerDismissed(policy: DisclosurePolicy) {
-        sharedPreferences.edit().putString(POLICY_BANNER_DISMISSED, policy.stringValue).apply()
-    }
-
-    override fun getPolicyScreenSeen(): DisclosurePolicy? {
-        val value = sharedPreferences.getString(POLICY_SCREEN_SEEN, "") ?: ""
-        return if (value.isNotEmpty()) DisclosurePolicy.fromString(value) else null
-    }
-
-    override fun setPolicyScreenSeen(policy: DisclosurePolicy) {
-        sharedPreferences.edit().putString(POLICY_SCREEN_SEEN, policy.stringValue).apply()
     }
 
     override fun setCheckCanOpenDatabase(check: Boolean) {
