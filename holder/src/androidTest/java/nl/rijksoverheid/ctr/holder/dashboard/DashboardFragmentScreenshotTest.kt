@@ -37,7 +37,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -50,65 +49,6 @@ class DashboardFragmentScreenshotTest : ScreenshotTest {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
-
-    @Test
-    fun Loading_DomesticGreenCardWithOneGPolicy_Screenshot() {
-        val greenCardEntity = GreenCardEntity(
-            walletId = 1,
-            type = GreenCardType.Eu
-        )
-
-        val vaccinationOriginEntity = fakeOriginEntity(
-            type = OriginType.Vaccination,
-            validFrom = AndroidTestUtils.getOffsetDateTime("2020-01-01T00:00:00.00Z"),
-            expirationTime = AndroidTestUtils.getOffsetDateTime("2030-01-01T00:00:00.00Z")
-        )
-
-        val recoveryOriginEntity = fakeOriginEntity(
-            type = OriginType.Recovery,
-            validFrom = AndroidTestUtils.getOffsetDateTime("2020-01-01T00:00:00.00Z"),
-            expirationTime = AndroidTestUtils.getOffsetDateTime("2030-01-01T00:00:00.00Z")
-        )
-
-        val testOriginEntity = fakeOriginEntity(
-            type = OriginType.Test,
-            validFrom = AndroidTestUtils.getOffsetDateTime("2030-01-01T00:00:00.00Z"),
-            expirationTime = AndroidTestUtils.getOffsetDateTime("2030-01-01T00:00:00.00Z")
-        )
-
-        val credentialEntity = fakeCredentialEntity()
-
-        val cardItem = DashboardItem.CardsItem(
-            cards = listOf(
-                DashboardItem.CardsItem.CardItem(
-                    greenCard = GreenCard(
-                        greenCardEntity = greenCardEntity,
-                        origins = listOf(
-                            vaccinationOriginEntity,
-                            recoveryOriginEntity,
-                            testOriginEntity
-                        ),
-                        credentialEntities = listOf(credentialEntity)
-                    ),
-                    originStates = listOf(
-                        OriginState.Valid(vaccinationOriginEntity),
-                        OriginState.Valid(recoveryOriginEntity),
-                        OriginState.Valid(testOriginEntity)
-                    ),
-                    credentialState = DashboardItem.CardsItem.CredentialState.LoadingCredential,
-                    databaseSyncerResult = DatabaseSyncerResult.Success(),
-                    disclosurePolicy = GreenCardDisclosurePolicy.OneG,
-                    greenCardEnabledState = GreenCardEnabledState.Enabled
-                )
-            )
-        )
-
-        val fragmentScenario = startFragment(
-            items = listOf(cardItem)
-        )
-
-        compareScreenshot(fragmentScenario.waitForFragment())
-    }
 
     @Test
     fun Invalid_ServerError_FirstTime_DomesticGreenCardWithOneGPolicy_Screenshot() {
@@ -161,7 +101,6 @@ class DashboardFragmentScreenshotTest : ScreenshotTest {
                             IllegalStateException("")
                         )
                     ),
-                    disclosurePolicy = GreenCardDisclosurePolicy.OneG,
                     greenCardEnabledState = GreenCardEnabledState.Enabled
                 )
             )
@@ -225,7 +164,6 @@ class DashboardFragmentScreenshotTest : ScreenshotTest {
                             IllegalStateException("")
                         )
                     ),
-                    disclosurePolicy = GreenCardDisclosurePolicy.OneG,
                     greenCardEnabledState = GreenCardEnabledState.Enabled
                 )
             )
@@ -277,7 +215,6 @@ class DashboardFragmentScreenshotTest : ScreenshotTest {
                             IllegalStateException("")
                         )
                     ),
-                    disclosurePolicy = GreenCardDisclosurePolicy.OneG,
                     greenCardEnabledState = GreenCardEnabledState.Enabled
                 )
             )
@@ -304,7 +241,6 @@ class DashboardFragmentScreenshotTest : ScreenshotTest {
                                 IllegalStateException("")
                             )
                         ),
-                        disclosurePolicy = GreenCardDisclosurePolicy.OneG,
                         greenCardEnabledState = GreenCardEnabledState.Enabled
                     )
                 )
@@ -312,45 +248,6 @@ class DashboardFragmentScreenshotTest : ScreenshotTest {
 
         val fragmentScenario = startFragment(
             items = listOf(vaccinationCardItem, recoveryCardItem)
-        )
-
-        compareScreenshot(fragmentScenario.waitForFragment())
-    }
-
-    @Test
-    fun Future_DomesticGreenCardWithOneGPolicy_Screenshot() {
-        val greenCardEntity = GreenCardEntity(
-            walletId = 1,
-            type = GreenCardType.Eu
-        )
-
-        val vaccinationOriginEntity = fakeOriginEntity(
-            type = OriginType.Vaccination,
-            validFrom = AndroidTestUtils.getOffsetDateTime("2020-01-01T00:00:00.00Z"),
-            expirationTime = AndroidTestUtils.getOffsetDateTime("2030-01-01T00:00:00.00Z")
-        )
-
-        val cardItem = DashboardItem.CardsItem(
-            cards = listOf(
-                DashboardItem.CardsItem.CardItem(
-                    greenCard = GreenCard(
-                        greenCardEntity = greenCardEntity,
-                        origins = listOf(vaccinationOriginEntity),
-                        credentialEntities = listOf()
-                    ),
-                    originStates = listOf(
-                        OriginState.Future(vaccinationOriginEntity)
-                    ),
-                    credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
-                    databaseSyncerResult = DatabaseSyncerResult.Success(),
-                    disclosurePolicy = GreenCardDisclosurePolicy.OneG,
-                    greenCardEnabledState = GreenCardEnabledState.Enabled
-                )
-            )
-        )
-
-        val fragmentScenario = startFragment(
-            items = listOf(cardItem)
         )
 
         compareScreenshot(fragmentScenario.waitForFragment())
