@@ -54,7 +54,6 @@ class SyncRemoteGreenCardsUseCaseImplTest {
 
             usecase.execute(
                 remoteGreenCards = RemoteGreenCards(
-                    domesticGreencard = null,
                     euGreencards = listOf(euGreenCard),
                     blobExpireDates = listOf()
                 ),
@@ -87,16 +86,10 @@ class SyncRemoteGreenCardsUseCaseImplTest {
                 )
             )
 
-            val domesticGreenCard = RemoteGreenCards.DomesticGreenCard(
-                origins = listOf(),
-                createCredentialMessages = createCredentials
-            )
-
             coEvery { mobileCoreWrapper.createDomesticCredentials(createCredentials) } answers { domesticCredentials }
 
             usecase.execute(
                 remoteGreenCards = RemoteGreenCards(
-                    domesticGreencard = domesticGreenCard,
                     euGreencards = listOf(),
                     blobExpireDates = listOf()
                 ),
@@ -110,7 +103,6 @@ class SyncRemoteGreenCardsUseCaseImplTest {
     fun `execute cleans up database`() = runBlocking {
         usecase.execute(
             RemoteGreenCards(
-                domesticGreencard = null,
                 euGreencards = listOf(),
                 blobExpireDates = listOf()
             ),

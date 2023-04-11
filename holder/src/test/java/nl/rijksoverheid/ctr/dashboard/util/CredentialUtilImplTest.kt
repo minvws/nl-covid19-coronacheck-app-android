@@ -18,7 +18,6 @@ import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -77,37 +76,6 @@ class CredentialUtilImplTest : AutoCloseKoinTest() {
         )
 
         assertEquals(credential2, activeCredential)
-    }
-
-    @Test
-    fun `domestic getActiveCredential returns no active credential if not in window`() {
-        val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val credentialUtil = CredentialUtilImpl(clock, mobileCoreWrapper, mockk(), countryUtil, mockk(relaxed = true))
-
-        val credential1 = CredentialEntity(
-            id = 0,
-            greenCardId = 0,
-            data = "".toByteArray(),
-            credentialVersion = 1,
-            validFrom = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1), ZoneOffset.UTC),
-            expirationTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(49), ZoneOffset.UTC)
-        )
-
-        val credential2 = CredentialEntity(
-            id = 0,
-            greenCardId = 0,
-            data = "".toByteArray(),
-            credentialVersion = 1,
-            validFrom = OffsetDateTime.ofInstant(Instant.ofEpochSecond(100), ZoneOffset.UTC),
-            expirationTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1000), ZoneOffset.UTC)
-        )
-
-        val activeCredential = credentialUtil.getActiveCredential(
-            greenCardType = GreenCardType.Eu,
-            entities = listOf(credential1, credential2)
-        )
-
-        assertNull(null, activeCredential)
     }
 
     @Test

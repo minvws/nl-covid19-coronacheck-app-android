@@ -225,14 +225,6 @@ class GreenCardUtilImplTest {
     }
 
     @Test
-    fun `getErrorCorrectionLevel returns correct levels for domestic green card type`() {
-        val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
-
-        assertEquals(ErrorCorrectionLevel.M, greenCardUtil.getErrorCorrectionLevel(GreenCardType.Eu))
-    }
-
-    @Test
     fun `getErrorCorrectionLevel returns correct levels for eu green card type`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
         val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())

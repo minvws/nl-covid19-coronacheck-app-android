@@ -54,23 +54,6 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getDisclosurePolicy returns 1G if disclosure policy is 1G and green card is in domestic tab and green card has test origin`() {
-        val util = getUtil(
-            disclosurePolicy = DisclosurePolicy.OneG
-        )
-
-        val greenCardDisclosurePolicy = util.getDisclosurePolicy(
-            greenCard = fakeGreenCard(
-                originType = OriginType.Test,
-                greenCardType = GreenCardType.Eu
-            ),
-            greenCardIndex = 0
-        )
-
-        assertEquals(GreenCardDisclosurePolicy.OneG, greenCardDisclosurePolicy)
-    }
-
-    @Test
     fun `getDisclosurePolicy returns 3G if disclosure policy is 3G and green card is in domestic tab and green card has vaccination origin`() {
         val util = getUtil(
             disclosurePolicy = DisclosurePolicy.ThreeG
@@ -139,45 +122,6 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getDisclosurePolicy returns 1G if disclosure policy is 3G-1G and green card is in domestic tab and second index`() {
-        val util = getUtil(
-            disclosurePolicy = DisclosurePolicy.OneAndThreeG
-        )
-
-        val greenCardDisclosurePolicy = util.getDisclosurePolicy(
-            greenCard = fakeGreenCard(
-                originType = OriginType.Test,
-                greenCardType = GreenCardType.Eu
-            ),
-            greenCardIndex = 1
-        )
-
-        assertEquals(GreenCardDisclosurePolicy.OneG, greenCardDisclosurePolicy)
-    }
-
-    @Test
-    fun `getDisclosurePolicy returns 1G if disclosure policy is 1G and green card is in domestic tab and green card has all test origins`() {
-        val util = getUtil(
-            disclosurePolicy = DisclosurePolicy.OneG
-        )
-
-        val greenCardMultipleTestOrigins = util.getDisclosurePolicy(
-            greenCard = fakeGreenCard(
-                greenCardType = GreenCardType.Eu
-            ).copy(
-                origins = listOf(
-                    fakeOriginEntity(type = OriginType.Test),
-                    fakeOriginEntity(type = OriginType.Test),
-                    fakeOriginEntity(type = OriginType.Test)
-                )
-            ),
-            greenCardIndex = 0
-        )
-
-        assertEquals(GreenCardDisclosurePolicy.OneG, greenCardMultipleTestOrigins)
-    }
-
-    @Test
     fun `getDisclosurePolicy returns 3G if disclosure policy is 1G and green card is in domestic tab and green card has multiple origin types`() {
         val util = getUtil(
             disclosurePolicy = DisclosurePolicy.OneG
@@ -215,22 +159,6 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getEnabledState returns Disabled if disclosure policy is 1G and green card has vaccination origin`() {
-        val util = getUtil(
-            disclosurePolicy = DisclosurePolicy.OneG
-        )
-
-        val getEnabledState = util.getEnabledState(
-            greenCard = fakeGreenCard(
-                originType = OriginType.Vaccination,
-                greenCardType = GreenCardType.Eu
-            )
-        )
-
-        assertEquals(GreenCardEnabledState.Disabled(), getEnabledState)
-    }
-
-    @Test
     fun `getEnabledState returns Enabled if disclosure policy is 3G and green card has vaccination origin`() {
         val util = getUtil(
             disclosurePolicy = DisclosurePolicy.ThreeG
@@ -244,22 +172,6 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
         )
 
         assertEquals(GreenCardEnabledState.Enabled, getEnabledState)
-    }
-
-    @Test
-    fun `shouldDisclose returns Disclose if domestic green card`() {
-        val cardItem = fakeCardsItem(
-            greenCard = fakeGreenCard(
-                greenCardType = GreenCardType.Eu
-            ),
-            originType = OriginType.Vaccination
-        ).cards.first()
-
-        val util = getUtil(
-            disclosurePolicy = DisclosurePolicy.ThreeG
-        )
-
-        assertTrue(util.shouldDisclose(cardItem) is QrCodeFragmentData.ShouldDisclose.Disclose)
     }
 
     @Test

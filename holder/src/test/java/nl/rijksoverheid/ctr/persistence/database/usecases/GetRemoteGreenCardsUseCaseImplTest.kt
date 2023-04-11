@@ -52,7 +52,6 @@ class GetRemoteGreenCardsUseCaseImplTest : AutoCloseKoinTest() {
         coEvery { coronaCheckRepository.getGreenCards(any(), any(), any(), any()) } answers {
             NetworkRequestResult.Success(
                 RemoteGreenCards(
-                    domesticGreencard = null,
                     euGreencards = listOf(),
                     blobExpireDates = listOf(
                         RemoteGreenCards.BlobExpiry(
@@ -106,7 +105,7 @@ class GetRemoteGreenCardsUseCaseImplTest : AutoCloseKoinTest() {
 
         coEvery { coronaCheckRepository.getGreenCards(any(), any(), any(), any()) } answers {
             NetworkRequestResult.Success(
-                RemoteGreenCards(null, null, null,
+                RemoteGreenCards(null, null,
                     RemoteGreenCards.Context(
                         listOf(
                             listOf(firstEvent.id, secondEvent.id),

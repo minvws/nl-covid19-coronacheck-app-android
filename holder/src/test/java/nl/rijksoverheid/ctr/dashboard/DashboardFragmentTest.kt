@@ -30,6 +30,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
+import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
@@ -210,7 +211,9 @@ class DashboardFragmentTest : AutoCloseKoinTest() {
                             listOf(
                                 DashboardItem.CardsItem.CardItem(
                                     greenCard = fakeGreenCard(),
-                                    originStates = listOf(),
+                                    originStates = listOf(
+                                        OriginState.Valid(origin = fakeOriginEntity())
+                                    ),
                                     credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                                     databaseSyncerResult = DatabaseSyncerResult.Success(),
                                     disclosurePolicy = GreenCardDisclosurePolicy.ThreeG,

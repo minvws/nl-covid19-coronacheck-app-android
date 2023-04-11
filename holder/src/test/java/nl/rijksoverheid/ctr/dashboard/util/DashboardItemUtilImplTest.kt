@@ -350,20 +350,6 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `showPolicyInfoItem returns true when it's not the same as the one dismissed`() {
-        val util = getUtil(
-            persistenceManager = mockk {
-                every { getPolicyBannerDismissed() } returns DisclosurePolicy.OneG
-            }
-        )
-
-        assertEquals(true, util.shouldShowPolicyInfoItem(
-            disclosurePolicy = DisclosurePolicy.ThreeG,
-            tabType = GreenCardType.Eu
-        ))
-    }
-
-    @Test
     fun `showPolicyInfoItem returns false when the config policy is the same as the one dismissed`() {
         val util = getUtil(
             persistenceManager = mockk {
@@ -373,20 +359,6 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
 
         assertEquals(false, util.shouldShowPolicyInfoItem(
             disclosurePolicy = DisclosurePolicy.ThreeG,
-            tabType = GreenCardType.Eu
-        ))
-    }
-
-    @Test
-    fun `showPolicyInfoItem returns false when the config policy is 0G and domestic tab is selected`() {
-        val util = getUtil(
-            persistenceManager = mockk {
-                every { getPolicyBannerDismissed() } returns DisclosurePolicy.ThreeG
-            }
-        )
-
-        assertEquals(false, util.shouldShowPolicyInfoItem(
-            disclosurePolicy = DisclosurePolicy.ZeroG,
             tabType = GreenCardType.Eu
         ))
     }

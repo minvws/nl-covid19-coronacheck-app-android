@@ -61,30 +61,6 @@ class SortGreenCardItemsUseCaseImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `Domestic green card with single test origin is always on top if policy is set to 1G`() {
-        val items = fakeCardsItems(
-            originTypes = listOf(
-                OriginType.Vaccination,
-                OriginType.Test
-            )
-        )
-
-        val util = getUtil(
-            disclosurePolicy = DisclosurePolicy.OneG
-        )
-
-        val sortedItems = util.sort(items)
-
-        // First item is green card with single test origin
-        assertEquals(1, (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.size)
-        assertEquals(OriginType.Test, (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type)
-
-        // Second item is green card with single vaccination origin
-        assertEquals(1, (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.size)
-        assertEquals(OriginType.Vaccination, (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type)
-    }
-
-    @Test
     fun `Domestic green card with single test origin is always on bottom if policy is set to 1G-3G`() {
         val items = fakeCardsItems(
             originTypes = listOf(

@@ -22,13 +22,6 @@ class SyncRemoteGreenCardsUseCaseImpl(
 
     override suspend fun execute(remoteGreenCards: RemoteGreenCards, secretKey: String): SyncRemoteGreenCardsResult {
         try {
-            // Create credentials
-            val domesticCredentials = if (remoteGreenCards.domesticGreencard != null) {
-                mobileCoreWrapper.createDomesticCredentials(
-                    createCredentials = remoteGreenCards.domesticGreencard.createCredentialMessages
-                )
-            } else null
-
             // Clear everything from the database
             holderDatabase.greenCardDao().deleteAll()
             holderDatabase.originDao().deleteAll()
