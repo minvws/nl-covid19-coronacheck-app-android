@@ -8,7 +8,6 @@ import java.time.Clock
 import java.time.Instant
 import java.time.ZoneId
 import kotlinx.coroutines.runBlocking
-import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
@@ -42,7 +41,6 @@ class VerifierAppStatusUseCaseImplTest {
 
     private val moshi = Moshi
         .Builder()
-        .add(DisclosurePolicyJsonAdapter())
         .build()
 
     private val publicKeys =
