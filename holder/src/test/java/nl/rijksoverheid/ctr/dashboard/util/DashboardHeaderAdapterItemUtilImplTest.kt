@@ -7,10 +7,8 @@
 
 package nl.rijksoverheid.ctr.dashboard.util
 
-import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtilImpl
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import org.junit.Assert
 import org.junit.Test
@@ -23,8 +21,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
         val headerItem = util.getHeaderItem(
             greenCardType = GreenCardType.Eu,
-            emptyState = false,
-            hasVisitorPassIncompleteItem = false
+            emptyState = false
         )
 
         Assert.assertEquals(
@@ -43,8 +40,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
         val headerItem = util.getHeaderItem(
             greenCardType = GreenCardType.Eu,
-            emptyState = true,
-            hasVisitorPassIncompleteItem = false
+            emptyState = true
         )
 
         Assert.assertEquals(
@@ -63,8 +59,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
         val headerItem = util.getHeaderItem(
             greenCardType = GreenCardType.Eu,
-            emptyState = false,
-            hasVisitorPassIncompleteItem = false
+            emptyState = false
         )
 
         Assert.assertEquals(
@@ -78,10 +73,6 @@ class DashboardHeaderAdapterItemUtilImplTest {
     }
 
     private fun getUtil(): DashboardHeaderAdapterItemUtilImpl {
-        val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>()
-
-        return DashboardHeaderAdapterItemUtilImpl(
-            featureFlagUseCase = featureFlagUseCase
-        )
+        return DashboardHeaderAdapterItemUtilImpl()
     }
 }
