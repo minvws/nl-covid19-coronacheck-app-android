@@ -12,7 +12,7 @@ def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("VERSION_NUMBER") != null ? System.getenv("VERSION_NUMBER").toInteger() : 1000000
 }
-version = "4.11"
+version = "4.12"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
@@ -224,6 +224,7 @@ dependencies {
     implementation libs.timber
     implementation libs.lottie
     debugImplementation libs.fragment.testing
+    debugImplementation libs.androidx.test.monitor
     implementation libs.zxing.core
     implementation(platform(libs.okhttp.bom))
     implementation libs.okhttp.logging.interceptor

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.DayNight" parent="AppTheme.Night" />
+
+    <style name="AppTheme.Night" parent="AppTheme">
+        <item name="colorPrimary">@color/primary_blue_night</item>
+        <item name="colorSecondary">@color/primary_blue_night</item>
+        <item name="colorAccent">@color/primary_blue_night</item>
+        <item name="colorSurface">@color/neutral_white</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorControlNormal">@color/neutral_black</item>
+        <item name="android:textColorHint">@color/neutral_grey_3</item>
+        <item name="colorError">@color/error_night</item>
+        <item name="actionMenuTextColor">@color/primary_blue_night</item>
+
+        <!-- Text Styles -->
+        <item name="android:textColorPrimary">@color/text_color</item>
+        <item name="android:textColorSecondary">@color/neutral_grey_3</item>
+
+<!--        <item name="android:background">@color/neutral_white</item>-->
+        <item name="android:windowBackground">@color/neutral_white</item>
+<!--        <item name="android:colorBackground">@color/neutral_white</item>-->
+
+        <!-- uncomment the following for global cardview style -->
+<!--        <item name="cardViewStyle">@style/CardViewStyle</item>-->
+
+        <item name="checkboxStyle">@style/Theme.Checkbox</item>
+    </style>
+
+    <style name="ThemeOverlay.App.NavigationView" parent="">
+        <item name="android:textColorPrimary">@color/neutral_white</item>
+        <item name="colorControlNormal">@color/neutral_white</item>
+        <item name="colorSurface">@color/primary_blue_night</item>
+        <item name="colorOnSurface">@color/neutral_white</item>
+        <item name="android:textColorSecondary">@color/neutral_white</item>
+        <item name="android:listDivider">@drawable/menu_divider</item>
+    </style>
+
+    <style name="ThemeOverlay.AppTheme.Splash" parent="">
+        <item name="android:textColorPrimary">@color/neutral_grey_1</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Menu" parent="">
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="ThemeOverlay.Link" parent="">
+        <item name="colorPrimary">@color/primary_blue_night</item>
+    </style>
+
+    <style name="CardView.DayNight" parent="CardView">
+        <item name="cardBackgroundColor">@color/neutral_white</item>
+    </style>
+
+    <style name="Theme.Checkbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:buttonTint">@color/neutral_black</item>
+        <item name="android:textColor">@color/neutral_black</item>
+    </style>
+
+</resources>

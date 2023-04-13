@@ -26,9 +26,12 @@ class MenuItemAdapterItem(
 
         viewBinding.icon.setImageResource(menuItem.icon)
         viewBinding.title.setText(menuItem.title)
-        if (menuItem.color > 0) {
-            val color = ContextCompat.getColor(viewBinding.title.context, R.color.error)
+        if (menuItem.iconColor > 0) {
+            val color = ContextCompat.getColor(viewBinding.title.context, menuItem.iconColor)
             viewBinding.icon.setColorFilter(color)
+        }
+        if (menuItem.titleColor > 0) {
+            val color = ContextCompat.getColor(viewBinding.title.context, menuItem.titleColor)
             viewBinding.title.setTextColor(color)
         }
         menuItem.subtitle?.let {

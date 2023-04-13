@@ -11,7 +11,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/menu_item_section_background"
     android:layout_marginTop="40dp">
 
     <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
@@ -19,7 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceCaption"
-        android:textColor="@color/black"
+        android:textColor="@color/primary_text"
         android:padding="16dp"
         tools:text="@string/holder_storedEvents_listHeader_paperFlow"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,28 +30,12 @@
         android:id="@+id/divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/grey_4"
+        android:background="@color/divider_color"
         android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/retrievedAt"
         app:layout_constraintVertical_bias="0" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:fillViewport="true"
-        android:importantForAccessibility="auto"
-        android:scrollbars="none"
-        tools:itemCount="2"
-        tools:listitem="@layout/adapter_item_saved_event"
-        app:layout_constraintTop_toBottomOf="@id/divider"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

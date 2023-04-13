@@ -75,7 +75,7 @@ class HolderMainActivity : AppCompatActivity() {
         NetworkRequest.Builder().build() // blank filter for all networks
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
+        setTheme(R.style.AppTheme_DayNight)
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -130,11 +130,6 @@ class HolderMainActivity : AppCompatActivity() {
         })
 
         disableSplashscreenExitAnimation()
-
-        // schedule background refresh for existing greencards
-        lifecycleScope.launchWhenCreated {
-            workerManagerUtil.scheduleRefreshCredentialsJob()
-        }
     }
 
     private fun navigateToIntroduction(
@@ -147,6 +142,16 @@ class HolderMainActivity : AppCompatActivity() {
         appStatus: AppStatus,
         navController: NavController
     ) {
+
+        if (appStatus == AppStatus.Deactivated) {
+            workerManagerUtil.cancelRefreshCredentialsJob(this)
+        } else {
+            // schedule background refresh for existing greencards
+            lifecycleScope.launchWhenCreated {
+                workerManagerUtil.scheduleRefreshCredentialsJob()
+            }
+        }
+
         if (appStatus is AppStatus.UpdateRecommended) {
             showRecommendedUpdateDialog()
             return
@@ -165,7 +170,7 @@ class HolderMainActivity : AppCompatActivity() {
         val isAppStatusFragment =
             navController.currentBackStackEntry?.destination?.id == R.id.nav_app_locked
         if (isAppStatusFragment) {
-            navController.popBackStack()
+            navController.navigate(RootNavDirections.actionMain())
         }
     }
 

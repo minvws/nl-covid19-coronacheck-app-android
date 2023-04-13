@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.App.Toolbar.Surface.DayNight" parent="Widget.App.Toolbar.Surface.Night" />
+
+    <style name="Widget.App.Toolbar.Surface.Night" parent="Widget.App.Toolbar.Surface">
+        <item name="titleTextColor">@color/neutral_black</item>
+    </style>
+
+    <style name="Widget.App.NavigationView.DayNight" parent="Widget.App.NavigationView.Night" />
+    <style name="Widget.App.NavigationView.Night" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextColor">@color/neutral_white</item>
+        <item name="insetForeground">@color/primary_blue_night</item>
+    </style>
+
+    <style name="Widget.App.TextInputLayout.DayNight" parent="Widget.App.TextInputLayout.Night" />
+    <style name="Widget.App.TextInputLayout.Night" parent="Widget.App.TextInputLayout">
+        <item name="boxBackgroundColor">@color/neutral_white</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat.DayNight" parent="App.TextAppearance.MaterialComponents.Headline5.Montserrat.Night" />
+    <style name="App.TextAppearance.MaterialComponents.Headline5.Montserrat.Night" parent="App.TextAppearance.MaterialComponents.Headline5.Montserrat">
+        <item name="android:textColor">@color/neutral_black</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Headline6.Montserrat.DayNight" parent="App.TextAppearance.MaterialComponents.Headline6.Montserrat.Night" />
+    <style name="App.TextAppearance.MaterialComponents.Headline6.Montserrat.Night" parent="App.TextAppearance.MaterialComponents.Headline6.Montserrat">
+        <item name="android:textColor">@color/neutral_black</item>
+    </style>
+
+    <style name="App.TextAppearance.MaterialComponents.Body1.DayNight" parent="App.TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/neutral_black</item>
+    </style>
+
+    <style name="App.MaterialCardView.DayNight" parent="App.CardView.Night"/>
+    <style name="App.CardView.Night" parent="">
+        <item name="cardBackgroundColor">@color/blue_5_percent_night</item>
+    </style>
+
+    <style name="App.MaterialCardView.ChooseProofType.DayNight" parent="App.CardView.ChooseProofType.Night"/>
+    <style name="App.CardView.ChooseProofType.Night" parent="">
+        <item name="cardBackgroundColor">@color/blue_5_percent_night</item>
+    </style>
+
+    <style name="App.Placeholder.Background.DayNight" parent="App.Placeholder.Background.Night"/>
+    <style name="App.Placeholder.Background.Night" parent="App.Placeholder.Background">
+        <item name="android:background">@color/neutral_white</item>
+    </style>
+
+    <style name="Widget.App.Button.Small.DayNight" parent="Widget.App.Button.Small.Night" />
+    <style name="Widget.App.Button.Small.Night" parent="Widget.App.Button.Small">
+        <item name="android:textColor">@color/cta_text_color</item>
+    </style>
+
+    <style name="Widget.App.Button.DayNight" parent="Widget.App.Button.Night" />
+    <style name="Widget.App.Button.Night" parent="Widget.App.Button">
+        <item name="android:textColor">@color/cta_text_color</item>
+    </style>
+
+    <style name="App.Widget.Design.TabLayout.DayNight" parent="App.Widget.Design.TabLayout.Night" />
+    <style name="App.Widget.Design.TabLayout.Night" parent="Widget.Design.TabLayout">
+        <item name="tabSelectedTextColor">@color/neutral_black</item>
+        <item name="tabIndicatorColor">@color/neutral_black</item>
+    </style>
+
+    <style name="Widget.App.Button.Outlined.DayNight" parent="Widget.App.Button.Outlined.Night" />
+    <style name="Widget.App.Button.Outlined.Night" parent="Widget.App.Button.Outlined">
+        <item name="android:textColor">@color/white</item>
+        <item name="strokeColor">@color/white</item>
+    </style>
+</resources>

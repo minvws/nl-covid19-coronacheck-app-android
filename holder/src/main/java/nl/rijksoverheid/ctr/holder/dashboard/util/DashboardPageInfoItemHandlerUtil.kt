@@ -31,7 +31,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 /**
@@ -107,7 +106,7 @@ class DashboardPageInfoItemHandlerUtilImpl(
             DisclosurePolicy.OneAndThreeG -> R.string.holder_dashboard_3Gand1GaccessBanner_link
             DisclosurePolicy.ZeroG -> R.string.holder_dashboard_noDomesticCertificatesBanner_url
         }
-        context.getString(urlResource).launchUrl(context)
+        intentUtil.openUrl(context, context.getString(urlResource))
     }
 
     private fun onDomesticVaccinationExpiredItemClicked(

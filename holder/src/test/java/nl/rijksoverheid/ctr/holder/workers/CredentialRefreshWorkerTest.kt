@@ -9,6 +9,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
@@ -32,6 +33,10 @@ class CredentialRefreshWorkerTest : AutoCloseKoinTest() {
         ApplicationProvider.getApplicationContext()
     }
 
+    private val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>().apply {
+        coEvery { getCachedAppConfig().appDeactivated } returns false
+    }
+
     @Test
     fun `when config fetch fails, credentials refresh worker should retry`() = runBlocking {
         val configResultUseCase = mockk<ConfigResultUseCase>().apply {
@@ -39,9 +44,35 @@ class CredentialRefreshWorkerTest : AutoCloseKoinTest() {
         }
         val holderDatabaseSyncer = mockk<HolderDatabaseSyncer>()
 
-        val worker = CredentialRefreshWorker(context, mockk(relaxed = true), configResultUseCase, holderDatabaseSyncer)
+        val worker = CredentialRefreshWorker(
+            context,
+            mockk(relaxed = true),
+            configResultUseCase,
+            cachedAppConfigUseCase,
+            holderDatabaseSyncer
+        )
 
         assertTrue(worker.doWork() is Retry)
+    }
+
+    @Test
+    fun `when app is deactivated, credentials refresh worker should not retry`() = runBlocking {
+        val configResultUseCase = mockk<ConfigResultUseCase>().apply {
+            coEvery { fetch() } returns ConfigResult.Success("", "")
+        }
+        val holderDatabaseSyncer = mockk<HolderDatabaseSyncer>()
+
+        val worker = CredentialRefreshWorker(
+            context,
+            mockk(relaxed = true),
+            configResultUseCase,
+            mockk<CachedAppConfigUseCase>().apply {
+                coEvery { getCachedAppConfig().appDeactivated } returns true
+            },
+            holderDatabaseSyncer
+        )
+
+        assertTrue(worker.doWork() !is Retry)
     }
 
     private fun succesfullConfigFetchWithSync(
@@ -52,34 +83,49 @@ class CredentialRefreshWorkerTest : AutoCloseKoinTest() {
         mockk<ConfigResultUseCase>().apply {
             coEvery { fetch() } returns ConfigResult.Success("", "")
         },
+        cachedAppConfigUseCase,
         mockk<HolderDatabaseSyncer>().apply {
-            coEvery { sync(
-                flow = HolderFlow.SyncGreenCards,
-                syncWithRemote = true
-            ) } returns holderDatabaseSyncerResult
+            coEvery {
+                sync(
+                    flow = HolderFlow.SyncGreenCards,
+                    syncWithRemote = true
+                )
+            } returns holderDatabaseSyncerResult
         }
     )
 
     @Test
-    fun `when sync fails due to network error, credentials refresh worker should retry`() = runBlocking {
-        val worker = succesfullConfigFetchWithSync(DatabaseSyncerResult.Failed.NetworkError(mockk(), true))
+    fun `when sync fails due to network error, credentials refresh worker should retry`() =
+        runBlocking {
+            val worker = succesfullConfigFetchWithSync(
+                DatabaseSyncerResult.Failed.NetworkError(
+                    mockk(),
+                    true
+                )
+            )
 
-        assertTrue(worker.doWork() is Retry)
-    }
+            assertTrue(worker.doWork() is Retry)
+        }
 
     @Test
-    fun `when sync fails once due to server error, credentials refresh worker should retry`() = runBlocking {
-        val worker = succesfullConfigFetchWithSync(DatabaseSyncerResult.Failed.ServerError.FirstTime(mockk()))
+    fun `when sync fails once due to server error, credentials refresh worker should retry`() =
+        runBlocking {
+            val worker = succesfullConfigFetchWithSync(
+                DatabaseSyncerResult.Failed.ServerError.FirstTime(mockk())
+            )
 
-        assertTrue(worker.doWork() is Retry)
-    }
+            assertTrue(worker.doWork() is Retry)
+        }
 
     @Test
-    fun `when sync fails many times due to server error, credentials refresh worker should fail`() = runBlocking {
-        val worker = succesfullConfigFetchWithSync(DatabaseSyncerResult.Failed.ServerError.MultipleTimes(mockk()))
+    fun `when sync fails many times due to server error, credentials refresh worker should fail`() =
+        runBlocking {
+            val worker = succesfullConfigFetchWithSync(
+                DatabaseSyncerResult.Failed.ServerError.MultipleTimes(mockk())
+            )
 
-        assertTrue(worker.doWork() is Failure)
-    }
+            assertTrue(worker.doWork() is Failure)
+        }
 
     @Test
     fun `when sync fails, credentials refresh worker should fail`() = runBlocking {

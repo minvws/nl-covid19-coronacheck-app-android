@@ -14,7 +14,9 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.EventType
+import nl.rijksoverheid.ctr.holder.end2end.model.written
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -22,9 +24,8 @@ import org.hamcrest.TypeSafeMatcher
 import timber.log.Timber
 
 object Espresso {
-    fun tapButton(label: String, position: Int = 0) {
-        Timber.tag("end2end")
-            .d("Tapping button with label '$label'${if (position > 0) " on position $position" else ""}")
+    fun tapButtonPosition(label: String, position: Int) {
+        Timber.tag("end2end").d("Tapping button with label '$label' on position $position")
         val viewInteraction = Espresso.onView(
             withIndex(
                 ViewMatchers.withText(
@@ -33,6 +34,28 @@ object Espresso {
             )
         )
         waitUntilViewIsShown(viewInteraction)
+        viewInteraction.perform(ViewActions.click())
+    }
+
+    fun tapWalletEvent(event: Event) {
+        Timber.tag("end2end")
+            .d("Tapping wallet event of type ${event.eventType.value} with date ${event.eventDate.written()}")
+        val viewInteraction = Espresso.onView(
+            CoreMatchers.allOf(
+                ViewMatchers.withChild(
+                    CoreMatchers.allOf(
+                        ViewMatchers.withId(R.id.title),
+                        ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(event.eventType.value))
+                    )
+                ),
+                ViewMatchers.withChild(
+                    CoreMatchers.allOf(
+                        ViewMatchers.withId(R.id.subtitle),
+                        ViewMatchers.withText(event.eventDate.written())
+                    )
+                )
+            )
+        )
         viewInteraction.perform(ViewActions.click())
     }
 
@@ -108,17 +131,5 @@ object Espresso {
                 )
             )
         )
-    }
-
-    fun Matcher<View>.tapButton(label: String) {
-        Timber.tag("end2end").d("Tapping button with label '$label' on a view")
-        val viewInteraction = Espresso.onView(
-            CoreMatchers.allOf(
-                ViewMatchers.isDescendantOfA(this),
-                ViewMatchers.withText(CoreMatchers.containsStringIgnoringCase(label))
-            )
-        )
-        waitUntilButtonEnabled(viewInteraction, true)
-        viewInteraction.perform(ViewActions.click())
     }
 }

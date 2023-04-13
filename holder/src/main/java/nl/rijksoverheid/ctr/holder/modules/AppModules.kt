@@ -52,7 +52,7 @@ val appModule = module {
     }
 
     factory<WorkerManagerUtil> { WorkerManagerUtilImpl(androidContext(), get(), get()) }
-    factory<WorkerFactory> { HolderWorkerFactory(get(), get()) }
+    factory<WorkerFactory> { HolderWorkerFactory(get(), get(), get()) }
 }
 
 private fun isDebugApp(androidContext: Context) =

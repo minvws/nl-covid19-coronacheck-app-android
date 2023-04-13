@@ -10,7 +10,6 @@ package nl.rijksoverheid.ctr.appconfig
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.DrawableRes
@@ -52,17 +51,13 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
                     R.string.app_status_deactivated_action,
                     R.drawable.illustration_app_status_deactivated
                 ) {
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW, Uri.parse(
-                                getString(
-                                    if (isVerifierApp(requireContext())) {
-                                        R.string.verifier_deactivation_url
-                                    } else {
-                                        R.string.holder_deactivation_url
-                                    }
-                                )
-                            )
+                    intentUtil.openUrl(
+                        requireContext(), getString(
+                            if (isVerifierApp(requireContext())) {
+                                R.string.verifier_deactivation_url
+                            } else {
+                                R.string.holder_deactivation_url
+                            }
                         )
                     )
                 }
@@ -78,10 +73,16 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
                 }
             }
             is AppStatus.LaunchError -> {
-                val helpdeskPhoneNumber = cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber
+                val helpdeskPhoneNumber =
+                    cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber
                 binding.bind(
                     R.string.appstatus_launchError_title,
-                    getString(R.string.appstatus_launchError_body, helpdeskPhoneNumber, helpdeskPhoneNumber, appStatus.errorMessage),
+                    getString(
+                        R.string.appstatus_launchError_body,
+                        helpdeskPhoneNumber,
+                        helpdeskPhoneNumber,
+                        appStatus.errorMessage
+                    ),
                     R.string.appstatus_launchError_button,
                     R.drawable.illustration_app_status_launch_error
                 ) {

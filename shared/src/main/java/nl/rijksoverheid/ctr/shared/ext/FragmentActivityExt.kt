@@ -1,6 +1,8 @@
 package nl.rijksoverheid.ctr.shared.ext
 
 import android.animation.ObjectAnimator
+import android.content.res.Configuration.UI_MODE_NIGHT_MASK
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Build
 import android.view.View
 import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
@@ -40,8 +42,16 @@ fun FragmentActivity.disableSplashscreenExitAnimation() {
             anim.duration = 100
             anim.doOnEnd {
                 splashScreenView.remove()
+                val isNightTheme =
+                    (resources.configuration.uiMode and UI_MODE_NIGHT_MASK) == UI_MODE_NIGHT_YES
                 // the new splashscreen resets the system bar color (in SplashScreenView#restoreSystemUIColors, so have to set it again
-                window.insetsController?.setSystemBarsAppearance(APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS)
+                window.insetsController?.setSystemBarsAppearance(
+                    if (isNightTheme) {
+                        0
+                    } else {
+                        APPEARANCE_LIGHT_STATUS_BARS
+                    }, APPEARANCE_LIGHT_STATUS_BARS
+                )
             }
             anim.start()
         }

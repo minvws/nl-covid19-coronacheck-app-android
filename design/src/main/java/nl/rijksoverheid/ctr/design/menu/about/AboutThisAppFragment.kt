@@ -29,10 +29,10 @@ import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppSectionBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTimeNumerical
+import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
-import nl.rijksoverheid.ctr.shared.ext.launchUrl
 import nl.rijksoverheid.ctr.shared.isHolderApp
 import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.Environment
@@ -42,6 +42,7 @@ import org.koin.android.ext.android.inject
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
     private val policyPersistenceManager: DebugDisclosurePolicyPersistenceManager by inject()
+    private val intentUtil: IntentUtil by inject()
 
     companion object {
         private const val EXTRA_ABOUT_THIS_APP_DATA = "data"
@@ -77,7 +78,7 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
                 itemView.root.setOnClickListener {
                     when (item) {
-                        is AboutThisAppData.Url -> item.url.launchUrl(requireContext())
+                        is AboutThisAppData.Url -> intentUtil.openUrl(requireContext(), item.url)
                         is AboutThisAppData.Destination -> findNavControllerSafety()?.navigate(
                             item.destinationId,
                             item.arguments

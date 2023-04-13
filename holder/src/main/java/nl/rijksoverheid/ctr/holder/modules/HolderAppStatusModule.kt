@@ -21,7 +21,7 @@ val holderAppStatusModule = module {
             newFeatures = listOf(
                 NewFeatureItem(
                     imageResource = R.drawable.ic_paper_proof_international_qr,
-                    subTitleColor = R.color.primary_blue,
+                    subTitleColor = R.color.link,
                     titleResource = R.string.holder_newintheapp_foreignproofs_title,
                     description = R.string.holder_newintheapp_foreignproofs_body
                 )

@@ -155,7 +155,7 @@ class HolderAppStatusUseCaseImpl(
                 imageResource = R.drawable.illustration_new_dutch_and_international_certificate,
                 titleResource = R.string.holder_newintheapp_content_dutchAndInternationalCertificates_title,
                 description = R.string.holder_newintheapp_content_dutchAndInternationalCertificates_body,
-                subTitleColor = R.color.primary_blue,
+                subTitleColor = R.color.link,
                 subtitleResource = R.string.new_in_app_subtitle,
                 buttonResource = R.string.onboarding_next
             )
@@ -171,7 +171,7 @@ class HolderAppStatusUseCaseImpl(
             imageResource = R.drawable.illustration_new_disclosure_policy,
             titleResource = getPolicyFeatureTitle(newPolicy),
             description = getPolicyFeatureBody(newPolicy),
-            subTitleColor = R.color.primary_blue,
+            subTitleColor = R.color.link,
             subtitleResource = getNewPolicySubtitle(newPolicy)
         )
     }

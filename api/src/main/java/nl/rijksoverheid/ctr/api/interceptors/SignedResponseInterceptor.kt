@@ -13,6 +13,7 @@ import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.ByteArrayInputStream
+import java.io.IOException
 import java.security.SignatureException
 import java.time.Clock
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
@@ -59,7 +60,11 @@ class SignedResponseInterceptor(
             ?.method()
             ?.getAnnotation(SignedRequest::class.java) ?: return response
 
-        val body = response.body?.bytes() ?: return response
+        val body = try {
+            response.body?.bytes() ?: return response
+        } catch (exception: IOException) {
+            return response
+        }
 
         try {
             val signedResponse = responseAdapter.fromJson(Buffer().apply { write(body) })

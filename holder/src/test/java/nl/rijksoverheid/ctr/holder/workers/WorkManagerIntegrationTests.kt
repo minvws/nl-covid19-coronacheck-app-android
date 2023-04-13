@@ -15,7 +15,9 @@ import io.mockk.every
 import io.mockk.mockk
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertEquals
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
@@ -61,6 +63,7 @@ class WorkManagerIntegrationTests : AutoCloseKoinTest() {
 
     private val appConfigUseCase = mockk<HolderCachedAppConfigUseCase>().apply {
         every { getCachedAppConfig().internationalQRRelevancyDays } returns internationalQRRelevancyDays.toInt()
+        every { getCachedAppConfig().appDeactivated } returns false
     }
 
     @Before
@@ -104,14 +107,19 @@ class WorkManagerIntegrationTests : AutoCloseKoinTest() {
 
         // test work setup
         val workSpec = request.workSpec
-        assertEquals(internationalQRRelevancyDays, TimeUnit.MILLISECONDS.toDays(workSpec.intervalDuration))
+        assertEquals(
+            internationalQRRelevancyDays,
+            TimeUnit.MILLISECONDS.toDays(workSpec.intervalDuration)
+        )
         assertEquals(initialDelay, TimeUnit.MILLISECONDS.toDays(workSpec.initialDelay))
         assertEquals(BackoffPolicy.EXPONENTIAL, workSpec.backoffPolicy)
         assertTrue(workSpec.isPeriodic)
 
         // test work is enqueued
         val workManager = WorkManager.getInstance(context)
-        val workInfo = workManager.getWorkInfoById(request.id).get()
+        val workInfo = withContext(Dispatchers.IO) {
+            workManager.getWorkInfoById(request.id).get()
+        }
 
         assertThat(workInfo.state, `is`(WorkInfo.State.ENQUEUED))
     }

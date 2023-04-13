@@ -23,6 +23,9 @@ import nl.rijksoverheid.ctr.design.ext.getAttrColor
 import nl.rijksoverheid.ctr.design.ext.isHeading
 import nl.rijksoverheid.ctr.design.ext.separated
 import nl.rijksoverheid.ctr.design.spans.BulletPointSpan
+import nl.rijksoverheid.ctr.shared.utils.WebsiteEnvironmentUtil
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 private const val HTML_LINKS_ENABLED = false
 private const val PARAGRAPH_MARGIN_MULTIPLIER = 1.0f
@@ -45,7 +48,9 @@ class HtmlTextViewWidget @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
     defStyleRes: Int = 0
-) : LinearLayout(context, attrs, defStyle, defStyleRes) {
+) : LinearLayout(context, attrs, defStyle, defStyleRes), KoinComponent {
+
+    private val websiteEnvironmentUtil: WebsiteEnvironmentUtil by inject()
 
     private val textColor by lazy {
         context.getColor(R.color.primary_text)
@@ -131,7 +136,12 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         splitHtmlText: Boolean = false
     ) {
         val text = context.getString(htmlText)
-        setHtmlText(text, htmlLinksEnabled = htmlLinksEnabled, splitHtmlText = splitHtmlText, textIsSelectable = textIsSelectable)
+        setHtmlText(
+            text,
+            htmlLinksEnabled = htmlLinksEnabled,
+            splitHtmlText = splitHtmlText,
+            textIsSelectable = textIsSelectable
+        )
     }
 
     /**
@@ -157,10 +167,11 @@ class HtmlTextViewWidget @JvmOverloads constructor(
         if (htmlText.isEmpty()) {
             return
         }
-        this.text = htmlText
+
+        val adjustedHtmlText = websiteEnvironmentUtil.adjust(htmlText)
 
         // Step 1: Parse the given String into a Spannable
-        val spannable = getSpannableFromHtml(htmlText)
+        val spannable = getSpannableFromHtml(adjustedHtmlText)
         this.spannable = spannable
 
         // Step 2: Separate the Spannable on each paragraph if

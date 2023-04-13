@@ -14,6 +14,7 @@ import android.content.Intent
 import android.net.Uri
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.shared.ext.launchUrl
+import nl.rijksoverheid.ctr.shared.utils.WebsiteEnvironmentUtil
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -27,10 +28,13 @@ interface IntentUtil {
     fun openPlayStore(context: Context)
 }
 
-class IntentUtilImpl(private val dialogUtil: DialogUtil) : IntentUtil {
+class IntentUtilImpl(
+    private val dialogUtil: DialogUtil,
+    private val websiteEnvironmentUtil: WebsiteEnvironmentUtil
+) : IntentUtil {
     @SuppressLint("StringFormatInvalid")
     override fun openUrl(context: Context, url: String) {
-        url.launchUrl(context) {
+        websiteEnvironmentUtil.adjust(url).launchUrl(context) {
             dialogUtil.presentDialog(
                 context = context,
                 title = R.string.dialog_no_browser_title,

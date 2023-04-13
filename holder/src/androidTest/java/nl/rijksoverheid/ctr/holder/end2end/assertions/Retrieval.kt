@@ -12,7 +12,7 @@ import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.assertDisplayed
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.clickBack
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.labelValuePairExist
 import nl.rijksoverheid.ctr.holder.end2end.interaction.Barista.scrollTo
-import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButton
+import nl.rijksoverheid.ctr.holder.end2end.interaction.Espresso.tapButtonPosition
 import nl.rijksoverheid.ctr.holder.end2end.interaction.waitUntilTextIsShown
 import nl.rijksoverheid.ctr.holder.end2end.model.Event
 import nl.rijksoverheid.ctr.holder.end2end.model.NegativeTest
@@ -29,7 +29,12 @@ object Retrieval {
     fun assertRetrievalDetails(person: Person, event: Event, position: Int = 0) {
         waitUntilTextIsShown("Kloppen de gegevens?", 30)
         scrollTo("Klopt er iets niet?")
-        tapButton("Details", position)
+        tapButtonPosition("Details", position)
+        assertDetails(person, event)
+        clickBack()
+    }
+
+    fun assertDetails(person: Person, event: Event) {
         assertContains("Naam: " + person.name)
         assertContains("Geboortedatum: " + person.birthDate.written())
         when (event) {
@@ -59,7 +64,6 @@ object Retrieval {
                 assertContains("Testuitslag: negatief (geen coronavirus vastgesteld)")
             }
         }
-        clickBack()
     }
 
     fun assertSomethingWentWrong() {

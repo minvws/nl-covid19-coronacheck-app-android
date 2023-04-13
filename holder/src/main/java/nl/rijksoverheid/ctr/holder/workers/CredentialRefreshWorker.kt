@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
@@ -20,8 +21,9 @@ class CredentialRefreshWorker(
     context: Context,
     params: WorkerParameters,
     configResultUseCase: ConfigResultUseCase,
+    cachedAppConfigUseCase: CachedAppConfigUseCase,
     private val holderDatabaseSyncer: HolderDatabaseSyncer
-) : ConfigFetchWorker(context, params, configResultUseCase) {
+) : ConfigFetchWorker(context, params, cachedAppConfigUseCase, configResultUseCase) {
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         when (val configWorkResult = super.doWork()) {

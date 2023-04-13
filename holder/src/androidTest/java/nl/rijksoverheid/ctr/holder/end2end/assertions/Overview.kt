@@ -33,6 +33,10 @@ object Overview {
         assertDisplayed("Menu")
     }
 
+    fun assertNoCertificatesOnOverview() {
+        assertDisplayed("Hier komt jouw internationale bewijs")
+    }
+
     fun assertQrButtonIsEnabled(eventType: EventType, position: Int = 0) {
         card(eventType, position).buttonIsEnabled(qrButton, true)
     }

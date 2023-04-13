@@ -20,11 +20,11 @@ val holderIntroductionModule = module {
             onboardingItems = listOf(),
             privacyPolicyItems = listOf(
                 PrivacyPolicyItem(
-                    R.drawable.shield,
+                    R.drawable.ic_shield,
                     R.string.privacy_policy_1
                 ),
                 PrivacyPolicyItem(
-                    R.drawable.shield,
+                    R.drawable.ic_shield,
                     R.string.privacy_policy_2
                 )
             ),

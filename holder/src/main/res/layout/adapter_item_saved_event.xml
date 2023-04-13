@@ -5,48 +5,48 @@
   ~ SPDX-License-Identifier: EUPL-1.2
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground">
+    android:background="@color/menu_item_section_background"
+    android:foreground="?attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="false"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="24dp"
         android:textAppearance="?attr/textAppearanceBody1"
         android:textStyle="bold"
-        android:focusable="false"
-        android:paddingTop="24dp"
-        android:paddingHorizontal="16dp"
-        tools:text="@string/general_negativeTest"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/general_negativeTest" />
 
     <TextView
         android:id="@+id/subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceBody1"
-        android:focusable="false"
-        android:textColor="@color/secondary_text"
         android:layout_marginTop="8dp"
+        android:focusable="false"
         android:paddingHorizontal="16dp"
-        tools:text="17 juli 2021"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="@color/secondary_text"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:text="17 juli 2021" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="24dp"
-        android:background="@color/grey_4"
+        android:background="@color/divider_color"
         android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
