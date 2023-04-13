@@ -83,25 +83,6 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getOriginInfoText returns correct copy for eu vaccination assessment`() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-
-        val infoItem = DashboardItem.InfoItem.OriginInfoItem(
-            greenCardType = GreenCardType.Eu,
-            originType = OriginType.VaccinationAssessment
-        )
-
-        val util = DashboardInfoCardAdapterItemUtilImpl()
-        val copy = util.getOriginInfoText(
-            context = context,
-            infoItem = infoItem
-        )
-
-        val expectedCopy = context.getString(R.string.holder_dashboard_visitorPassInvalidOutsideNLBanner_title)
-        assertEquals(expectedCopy, copy)
-    }
-
-    @Test
     fun `getExpiredItemText returns correct copy for eu vaccination`() {
         val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
             greenCardType = GreenCardType.Eu,
@@ -129,15 +110,5 @@ class DashboardInfoCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         )
 
         assertEquals(R.string.holder_dashboard_originExpiredBanner_internationalTest_title, text)
-    }
-
-    @Test
-    fun `getExpiredItemText returns correct copy for vaccination assessment`() {
-        val text = DashboardInfoCardAdapterItemUtilImpl().getExpiredItemText(
-            greenCardType = GreenCardType.Eu,
-            originType = OriginType.VaccinationAssessment
-        )
-
-        assertEquals(R.string.holder_dashboard_originExpiredBanner_visitorPass_title, text)
     }
 }

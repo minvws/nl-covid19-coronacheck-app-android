@@ -223,23 +223,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            is YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment -> {
-                infoFragmentUtil.presentFullScreen(
-                    currentFragment = this,
-                    toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
-                    data = InfoFragmentData.TitleDescriptionWithButton(
-                        title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
-                        descriptionData = DescriptionData(
-                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body,
-                            htmlLinksEnabled = true
-                        ),
-                        primaryButtonData = ButtonData.NavigationButton(
-                            text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
-                            navigationActionId = R.id.action_visitor_pass_input_token
-                        )
-                    )
-                )
-            }
             is YourEventsEndState.Hints -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
@@ -634,16 +617,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             )
         }
         binding.bottom.setButtonText(
-            getString(
-                when (getFlow()) {
-                    HolderFlow.VaccinationAssessment -> {
-                        R.string.holder_event_vaccination_assessment_action_title
-                    }
-                    else -> {
-                        R.string.my_overview_add_qr_button
-                    }
-                }
-            )
+            getString(R.string.my_overview_add_qr_button)
         )
     }
 
@@ -671,9 +645,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                         } else {
                                             R.string.holder_listRemoteEvents_somethingWrong_vaccination_body
                                         }
-                                    }
-                                    origins.all { it == OriginType.VaccinationAssessment } -> {
-                                        R.string.holder_event_vaccination_assessment_wrong_body
                                     }
                                     origins.all { it == OriginType.Recovery } -> {
                                         R.string.dialog_negative_test_result_something_wrong_description

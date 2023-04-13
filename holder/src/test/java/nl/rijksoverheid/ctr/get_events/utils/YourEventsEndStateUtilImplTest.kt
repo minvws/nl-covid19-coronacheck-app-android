@@ -34,16 +34,6 @@ class YourEventsEndStateUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `If negativetest_without_vaccinationassessment hint exists return correct end state`() {
-        val util = YourEventsEndStateUtilImpl(mockk())
-        val endState = util.getEndState(
-            context = ApplicationProvider.getApplicationContext(),
-            hints = listOf("negativetest_without_vaccinationassessment")
-        )
-        assertEquals(YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment, endState)
-    }
-
-    @Test
     fun `If hints exists but nothing can be mapped to string resource return correct end state`() {
         val stringUtil = object : StringUtil {
             override fun getStringFromResourceName(resourceName: String): String {
@@ -292,48 +282,6 @@ class YourEventsEndStateUtilImplTest : AutoCloseKoinTest() {
                     "international_negativetest_rejected"
                 )
             ) is YourEventsEndState.WeCouldntMakeACertificateError
-        )
-    }
-
-    @Test
-    fun `additional vaccination assessment endstates`() {
-        // Visitor Flow
-        /* 022 */ assertEquals(
-            getEndState(listOf("negativetest_without_vaccinationassessment")),
-            YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment
-        )
-        /* 023 */ assertEquals(
-            getEndState(listOf("vaccinationassessment_missing_supporting_negative_test")),
-            YourEventsEndState.None
-        )
-        /* 024 */ assertEquals(
-            getEndState(listOf("domestic_vaccinationassessment_created")),
-            YourEventsEndState.None
-        )
-        /* 025 */ assertTrue(
-            getEndState(
-                listOf(
-                    "domestic_vaccinationassessment_rejected"
-                )
-            ) is YourEventsEndState.WeCouldntMakeACertificateError
-        )
-
-        // negative test without vaccination assessment
-        assertTrue(
-            getEndState(listOf(
-                "domestic_vaccinationassessment_rejected",
-                "international_vaccinationassessment_rejected",
-                "negativetest_without_vaccinationassessment"
-            )) is YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment
-        )
-
-        // vaccination assessment without negative test
-        assertTrue(
-            getEndState(listOf(
-                "domestic_vaccinationassessment_rejected",
-                "international_vaccinationassessment_rejected",
-                "vaccinationassessment_missing_supporting_negativetest"
-            )) is YourEventsEndState.None
         )
     }
 }

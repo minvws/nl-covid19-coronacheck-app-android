@@ -78,8 +78,7 @@ class GetDashboardItemsUseCaseImpl(
 
         val headerItem = dashboardHeaderAdapterItemUtil.getHeaderItem(
             emptyState = hasEmptyState,
-            greenCardType = GreenCardType.Eu,
-            hasVisitorPassIncompleteItem = false
+            greenCardType = GreenCardType.Eu
         )
 
         dashboardItems.add(headerItem)
@@ -89,16 +88,22 @@ class GetDashboardItemsUseCaseImpl(
         }
 
         if (dashboardItemUtil.shouldShowBlockedEventsItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.BlockedEvents(
-                blockedEvents = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.Blocked)
-            ))
+            dashboardItems.add(
+                DashboardItem.InfoItem.BlockedEvents(
+                    blockedEvents = holderDatabase.removedEventDao()
+                        .getAll(reason = RemovedEventReason.Blocked)
+                )
+            )
         }
 
         if (dashboardItemUtil.shouldShowFuzzyMatchedEventsItem()) {
-            dashboardItems.add(DashboardItem.InfoItem.FuzzyMatchedEvents(
-                storedEvent = holderDatabase.eventGroupDao().getAll().first(),
-                events = holderDatabase.removedEventDao().getAll(reason = RemovedEventReason.FuzzyMatched)
-            ))
+            dashboardItems.add(
+                DashboardItem.InfoItem.FuzzyMatchedEvents(
+                    storedEvent = holderDatabase.eventGroupDao().getAll().first(),
+                    events = holderDatabase.removedEventDao()
+                        .getAll(reason = RemovedEventReason.FuzzyMatched)
+                )
+            )
         }
 
         if (dashboardItemUtil.shouldShowClockDeviationItem(hasEmptyState, allGreenCards)) {
@@ -188,7 +193,8 @@ class GetDashboardItemsUseCaseImpl(
                         greenCards = greenCards,
                         greenCardType = greenCardType,
                         originType = originForUnselectedType.type
-                    )) {
+                    )
+                ) {
                     items.add(
                         DashboardItem.InfoItem.OriginInfoItem(
                             greenCardType = greenCardType,

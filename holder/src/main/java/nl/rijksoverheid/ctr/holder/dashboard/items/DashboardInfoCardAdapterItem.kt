@@ -68,15 +68,8 @@ class DashboardInfoCardAdapterItem(
                 viewBinding.text.text =
                     utilAdapter.getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
             }
-            is DashboardItem.InfoItem.MissingDutchVaccinationItem -> {
-                viewBinding.text.text =
-                    viewBinding.text.context.getString(R.string.missing_dutch_certificate_info_card_text)
-            }
             is DashboardItem.InfoItem.AppUpdate -> {
                 viewBinding.text.setText(R.string.recommended_update_card_description)
-            }
-            is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
-                viewBinding.text.setText(R.string.holder_dashboard_visitorpassincompletebanner_title)
             }
             is DashboardItem.InfoItem.BlockedEvents -> {
                 viewBinding.text.setText(

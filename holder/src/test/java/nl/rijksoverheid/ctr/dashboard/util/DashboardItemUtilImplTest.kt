@@ -14,7 +14,6 @@ import java.time.OffsetDateTime
 import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
-import nl.rijksoverheid.ctr.fakeEuropeanVaccinationGreenCard
 import nl.rijksoverheid.ctr.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem
@@ -25,7 +24,6 @@ import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.dao.RemovedEventDao
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
@@ -143,42 +141,6 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `shouldShowMissingDutchVaccinationItem returns true if no nl vaccination card and there is a eu vaccination card`() {
-        val util = getUtil()
-
-        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
-            domesticGreenCards = listOf(),
-            euGreenCards = listOf(fakeGreenCard(originType = OriginType.Vaccination))
-        )
-
-        assertTrue(shouldShowMissingDutchVaccinationItem)
-    }
-
-    @Test
-    fun `shouldShowMissingDutchVaccinationItem returns false if there is a nl vaccination card`() {
-        val util = getUtil()
-
-        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
-            domesticGreenCards = listOf(fakeGreenCard(originType = OriginType.Vaccination)),
-            euGreenCards = listOf(fakeEuropeanVaccinationGreenCard)
-        )
-
-        assertFalse(shouldShowMissingDutchVaccinationItem)
-    }
-
-    @Test
-    fun `shouldShowMissingDutchVaccinationItem returns false if there is no eu vaccination card`() {
-        val util = getUtil()
-
-        val shouldShowMissingDutchVaccinationItem = util.shouldShowMissingDutchVaccinationItem(
-            domesticGreenCards = listOf(),
-            euGreenCards = listOf()
-        )
-
-        assertFalse(shouldShowMissingDutchVaccinationItem)
-    }
-
-    @Test
     fun `App update is available when the recommended version is higher than current version`() {
         val appConfigUseCase: HolderCachedAppConfigUseCase = mockk()
         every { appConfigUseCase.getCachedAppConfig().recommendedVersion } answers { 2 }
@@ -224,56 +186,6 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         )
 
         assertFalse(util.isAppUpdateAvailable())
-    }
-
-    @Test
-    fun `shouldShowVisitorPassIncompleteItem returns true if has vaccination assessment event and no vaccination assessment origin`() {
-        val util = getUtil()
-
-        val shouldShowVisitorPassIncompleteItem = util.shouldShowVisitorPassIncompleteItem(
-            events = listOf(getEvent(originType = OriginType.VaccinationAssessment)),
-            domesticGreenCards = listOf()
-        )
-
-        assertTrue(shouldShowVisitorPassIncompleteItem)
-    }
-
-    @Test
-    fun `shouldShowVisitorPassIncompleteItem returns false if has vaccination assessment event and vaccination assessment origin`() {
-        val util = getUtil()
-
-        val shouldShowVisitorPassIncompleteItem = util.shouldShowVisitorPassIncompleteItem(
-            events = listOf(getEvent(originType = OriginType.VaccinationAssessment)),
-            domesticGreenCards = listOf(getGreenCard(originType = OriginType.VaccinationAssessment))
-        )
-
-        assertFalse(shouldShowVisitorPassIncompleteItem)
-    }
-
-    @Test
-    fun `shouldShowOriginInfoItem returns false if vaccination assessment green card exists and card is for domestic test`() {
-        val util = getUtil()
-
-        val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
-            greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
-            greenCardType = GreenCardType.Eu,
-            originType = OriginType.Test
-        )
-
-        assertFalse(shouldShowOriginInfoItem)
-    }
-
-    @Test
-    fun `shouldShowOriginInfoItem returns false if 0G green card exists and card is for domestic vaccination`() {
-        val util = getUtil()
-
-        val shouldShowOriginInfoItem = util.shouldShowOriginInfoItem(
-            greenCards = listOf(fakeGreenCard(originType = OriginType.VaccinationAssessment)),
-            greenCardType = GreenCardType.Eu,
-            originType = OriginType.Vaccination
-        )
-
-        assertFalse(shouldShowOriginInfoItem)
     }
 
     @Test

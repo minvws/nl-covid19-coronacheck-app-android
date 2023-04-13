@@ -43,8 +43,6 @@ sealed class DashboardItem {
             val originType: OriginType
         ) : InfoItem(isDismissible = false, hasButton = true)
 
-        object MissingDutchVaccinationItem : InfoItem(isDismissible = false, hasButton = true)
-
         object ClockDeviationItem : InfoItem(isDismissible = false, hasButton = true)
 
         data class GreenCardExpiredItem(
@@ -59,12 +57,6 @@ sealed class DashboardItem {
             isDismissible = false,
             hasButton = true,
             buttonText = R.string.recommended_update_card_action
-        )
-
-        object VisitorPassIncompleteItem : InfoItem(
-            isDismissible = false,
-            hasButton = true,
-            buttonText = R.string.holder_dashboard_visitorpassincompletebanner_button_makecomplete
         )
 
         data class BlockedEvents(

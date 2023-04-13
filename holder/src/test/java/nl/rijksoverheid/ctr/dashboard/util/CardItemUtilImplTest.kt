@@ -39,20 +39,6 @@ class CardItemUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getEnabledState returns Enabled if disclosure policy is 3G and green card has vaccination origin`() {
-        val util = getUtil()
-
-        val getEnabledState = util.getEnabledState(
-            greenCard = fakeGreenCard(
-                originType = OriginType.Vaccination,
-                greenCardType = GreenCardType.Eu
-            )
-        )
-
-        assertEquals(GreenCardEnabledState.Enabled, getEnabledState)
-    }
-
-    @Test
     fun `shouldDisclose returns DoNotDisclose if international green card`() {
         val cardItem = fakeCardsItem(
             greenCard = fakeGreenCard(

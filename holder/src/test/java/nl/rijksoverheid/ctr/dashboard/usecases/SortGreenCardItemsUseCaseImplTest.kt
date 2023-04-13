@@ -75,40 +75,6 @@ class SortGreenCardItemsUseCaseImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `Domestic green card with single test origin is always on bottom if policy is set to 1G-3G`() {
-        val items = fakeCardsItems(
-            originTypes = listOf(
-                OriginType.Vaccination,
-                OriginType.Test
-            )
-        )
-
-        val util = getUtil()
-
-        val sortedItems = util.sort(items)
-
-        // First item is green card with single vaccination origin
-        assertEquals(
-            1,
-            (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.size
-        )
-        assertEquals(
-            OriginType.Vaccination,
-            (sortedItems.first() as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type
-        )
-
-        // Second item is green card with single test origin
-        assertEquals(
-            1,
-            (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.size
-        )
-        assertEquals(
-            OriginType.Test,
-            (sortedItems[1] as DashboardItem.CardsItem).cards.first().greenCard.origins.first().type
-        )
-    }
-
-    @Test
     fun `Items have correct order`() {
         val items = listOf(
             DashboardItem.HeaderItem(1, null),
@@ -118,7 +84,6 @@ class SortGreenCardItemsUseCaseImplTest : AutoCloseKoinTest() {
             DashboardItem.InfoItem.ConfigFreshnessWarning(1L),
             DashboardItem.AddQrButtonItem,
             DashboardItem.PlaceholderCardItem(GreenCardType.Eu),
-            DashboardItem.InfoItem.VisitorPassIncompleteItem,
             DashboardItem.InfoItem.GreenCardExpiredItem(GreenCardType.Eu, fakeOriginEntity()),
             fakeCardsItem()
         )
@@ -129,12 +94,11 @@ class SortGreenCardItemsUseCaseImplTest : AutoCloseKoinTest() {
         assert(sortedItems[1] is DashboardItem.InfoItem.ClockDeviationItem)
         assert(sortedItems[2] is DashboardItem.InfoItem.ConfigFreshnessWarning)
         assert(sortedItems[3] is DashboardItem.InfoItem.AppUpdate)
-        assert(sortedItems[4] is DashboardItem.InfoItem.VisitorPassIncompleteItem)
-        assert(sortedItems[5] is DashboardItem.InfoItem.GreenCardExpiredItem)
-        assert(sortedItems[6] is DashboardItem.InfoItem.OriginInfoItem)
-        assert(sortedItems[7] is DashboardItem.PlaceholderCardItem)
-        assert(sortedItems[8] is DashboardItem.CardsItem)
-        assert(sortedItems[9] is DashboardItem.AddQrButtonItem)
+        assert(sortedItems[4] is DashboardItem.InfoItem.GreenCardExpiredItem)
+        assert(sortedItems[5] is DashboardItem.InfoItem.OriginInfoItem)
+        assert(sortedItems[6] is DashboardItem.PlaceholderCardItem)
+        assert(sortedItems[7] is DashboardItem.CardsItem)
+        assert(sortedItems[8] is DashboardItem.AddQrButtonItem)
     }
 
     private fun getUtil(): SortGreenCardItemsUseCaseImpl {

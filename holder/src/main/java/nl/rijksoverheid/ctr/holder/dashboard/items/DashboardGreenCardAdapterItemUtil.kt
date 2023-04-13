@@ -88,9 +88,6 @@ class DashboardGreenCardAdapterItemUtilImpl(
                             setEuRecoveryOrigin(dashboardGreenCardAdapterItemBinding, originState, origin)
                             setExpiryText(origin, dashboardGreenCardAdapterItemBinding)
                         }
-                        is OriginType.VaccinationAssessment -> {
-                            // Visitor pass is only for domestic
-                        }
                     }
                 }
             }

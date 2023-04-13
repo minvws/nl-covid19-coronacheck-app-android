@@ -5,7 +5,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,7 +31,6 @@ class RemoteEventStringUtilImplTest(
         @ParameterizedRobolectricTestRunner.Parameters
         fun data() = listOf(
             arrayOf(RemoteEventVaccination::class.java, "Vaccinatie"),
-            arrayOf(RemoteEventVaccinationAssessment::class.java, "Bezoekersbewijs"),
             arrayOf(RemoteEventNegativeTest::class.java, "Negatieve testuitslag"),
             arrayOf(RemoteEventPositiveTest::class.java, "Positieve testuitslag"),
             arrayOf(RemoteEventRecovery::class.java, "Herstelbewijs"),

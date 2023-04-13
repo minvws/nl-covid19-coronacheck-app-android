@@ -106,7 +106,6 @@ val utilsModule = module {
         DashboardPageInfoItemHandlerUtilImpl(
             get(),
             get(),
-            get(),
             get()
         )
     }
@@ -119,7 +118,7 @@ val utilsModule = module {
     factory<HelpMenuDataModel> { HelpMenuDataModelImpl(get(), get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
     factory<LoginTypeUtil> { LoginTypeUtilImpl() }
-    factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }
+    factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl() }
     factory<CardItemUtil> { CardItemUtilImpl() }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }

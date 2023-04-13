@@ -20,14 +20,12 @@ sealed class OriginType(val order: Int) : Parcelable {
         const val TYPE_VACCINATION = "vaccination"
         const val TYPE_RECOVERY = "recovery"
         const val TYPE_TEST = "test"
-        const val TYPE_VACCINATION_ASSESSMENT = "vaccinationassessment"
 
         fun fromTypeString(typeString: String): OriginType {
             return when (typeString) {
                 TYPE_VACCINATION -> Vaccination
                 TYPE_RECOVERY -> Recovery
                 TYPE_TEST -> Test
-                TYPE_VACCINATION_ASSESSMENT -> VaccinationAssessment
                 else -> throw IllegalStateException("Type not known")
             }
         }
@@ -40,9 +38,6 @@ sealed class OriginType(val order: Int) : Parcelable {
     object Recovery : OriginType(2)
 
     @Parcelize
-    object VaccinationAssessment : OriginType(3)
-
-    @Parcelize
     object Test : OriginType(4)
 
     fun getTypeString(): String {
@@ -50,7 +45,6 @@ sealed class OriginType(val order: Int) : Parcelable {
             is Vaccination -> TYPE_VACCINATION
             is Recovery -> TYPE_RECOVERY
             is Test -> TYPE_TEST
-            is VaccinationAssessment -> TYPE_VACCINATION_ASSESSMENT
         }
     }
 }

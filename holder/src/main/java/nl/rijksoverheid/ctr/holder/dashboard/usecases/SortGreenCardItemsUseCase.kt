@@ -32,9 +32,7 @@ class SortGreenCardItemsUseCaseImpl(
                 is DashboardItem.InfoItem.BlockedEvents -> 40
                 is DashboardItem.InfoItem.FuzzyMatchedEvents -> 45
                 DashboardItem.InfoItem.AppUpdate -> 50
-                DashboardItem.InfoItem.VisitorPassIncompleteItem -> 60
                 is DashboardItem.InfoItem.GreenCardExpiredItem -> 70
-                DashboardItem.InfoItem.MissingDutchVaccinationItem -> 110
                 is DashboardItem.InfoItem.OriginInfoItem -> 120
                 is DashboardItem.PlaceholderCardItem -> 130
                 is DashboardItem.CardsItem -> {

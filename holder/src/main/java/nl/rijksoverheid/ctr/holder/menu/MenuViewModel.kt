@@ -31,14 +31,11 @@ class MenuViewModelImpl(
     private fun menuSections(context: Context): Array<MenuSection> {
         val actionChooseProofType = MenuFragmentDirections.actionChooseProofType()
         val actionPaperProof = MenuFragmentDirections.actionPaperProof()
-        val actionVisitorPass = MenuFragmentDirections.actionVisitorPass()
         val actionSavedEvents = MenuFragmentDirections.actionSavedEvents()
         val actionHelpInfo = MenuFragmentDirections.actionMenu(
             toolbarTitle = context.getString(R.string.holder_helpInfo_title),
             menuSections = helpMenuDataModel.get(context)
         )
-
-        val isVisitorPassEnabled = featureFlagUseCase.getVisitorPassEnabled()
 
         val addVaccinationOrTestMenuItem = MenuSection.MenuItem(
             icon = R.drawable.ic_menu_add,
@@ -56,15 +53,6 @@ class MenuViewModelImpl(
             onClick = MenuSection.MenuItem.OnClick.Navigate(
                 navigationActionId = actionPaperProof.actionId,
                 navigationArguments = actionPaperProof.arguments
-            )
-        )
-
-        val addVisitorPassMenuItem = MenuSection.MenuItem(
-            icon = R.drawable.ic_menu_briefcase,
-            title = R.string.holder_menu_visitorpass,
-            onClick = MenuSection.MenuItem.OnClick.Navigate(
-                navigationActionId = actionVisitorPass.actionId,
-                navigationArguments = actionVisitorPass.arguments
             )
         )
 
@@ -88,11 +76,7 @@ class MenuViewModelImpl(
         val firstSectionItems = listOf(
             addVaccinationOrTestMenuItem,
             addPaperProofMenuItem
-        ) + if (isVisitorPassEnabled) {
-            listOf(addVisitorPassMenuItem)
-        } else {
-            emptyList()
-        }
+        )
 
         val menuSections: List<MenuSection> = listOfNotNull(
             MenuSection(

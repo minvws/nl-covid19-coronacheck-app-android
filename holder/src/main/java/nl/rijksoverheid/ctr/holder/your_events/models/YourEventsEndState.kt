@@ -15,8 +15,6 @@ sealed class YourEventsEndState {
     object None : YourEventsEndState()
     object BlockedEvent : YourEventsEndState()
     data class Hints(val localisedHints: List<String>) : YourEventsEndState()
-    // endstate with additional action to complete to visitor assessment
-    object NegativeTestResultAddedAndNowAddVisitorAssessment : YourEventsEndState()
     // endstate showing an error code
     data class WeCouldntMakeACertificateError(val exception: WeCouldntCreateCertificateException) : YourEventsEndState()
 }

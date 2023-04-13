@@ -172,23 +172,6 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getCancelDialogDescription returns correct copy for RemoteProtocol3Type with origin vaccination assessment`() {
-        val remoteEventUtil: RemoteEventUtil = mockk()
-        val util = YourEventsFragmentUtilImpl(remoteEventUtil)
-
-        val remoteEvent = RemoteEventNegativeTest(null, null, null, null)
-        every { remoteEventUtil.getOriginType(remoteEvent) } returns OriginType.VaccinationAssessment
-        val type = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
-        every { type.remoteEvents } returns getRemoteProtocol3(remoteEvent)
-
-        val copy = util.getCancelDialogDescription(
-            type = type
-        )
-
-        assertEquals(copy, R.string.holder_event_vaccination_assessment_alert_message)
-    }
-
-    @Test
     fun `getFullName returns correct concatted name when no infix`() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
@@ -288,21 +271,6 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         )
 
         assertEquals(R.string.holder_listRemoteEvents_recovery_message, copy)
-    }
-
-    @Test
-    fun `getHeaderCopy returns correct copy when type is RemoteProtocol3Type vaccinationassessment`() {
-        val util = YourEventsFragmentUtilImpl(mockk<RemoteEventUtil>().apply {
-            every { getOriginType(any()) } returns OriginType.VaccinationAssessment
-        })
-
-        val copy = util.getHeaderCopy(
-            type = YourEventsFragmentType.RemoteProtocol3Type(getRemoteProtocol3(mockk<RemoteEvent>().apply {
-                every { type } returns "vaccinationassessment"
-            }), listOf())
-        )
-
-        assertEquals(R.string.holder_listRemoteEvents_vaccinationAssessment_message, copy)
     }
 
     private fun getRemoteProtocol3(event: RemoteEvent) =

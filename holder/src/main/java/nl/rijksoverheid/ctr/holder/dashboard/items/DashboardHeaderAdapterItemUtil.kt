@@ -9,20 +9,16 @@ package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 
 interface DashboardHeaderAdapterItemUtil {
     fun getHeaderItem(
         greenCardType: GreenCardType,
-        emptyState: Boolean,
-        hasVisitorPassIncompleteItem: Boolean
+        emptyState: Boolean
     ): DashboardItem.HeaderItem
 }
 
-class DashboardHeaderAdapterItemUtilImpl(
-    private val featureFlagUseCase: HolderFeatureFlagUseCase
-) : DashboardHeaderAdapterItemUtil {
+class DashboardHeaderAdapterItemUtilImpl : DashboardHeaderAdapterItemUtil {
 
     /**
      * Get the header item text to display in the domestic tab on the dashboard screen
@@ -32,16 +28,10 @@ class DashboardHeaderAdapterItemUtilImpl(
      */
     override fun getHeaderItem(
         greenCardType: GreenCardType,
-        emptyState: Boolean,
-        hasVisitorPassIncompleteItem: Boolean
+        emptyState: Boolean
     ): DashboardItem.HeaderItem {
-        val empty = emptyState || hasVisitorPassIncompleteItem
-        val text = if (hasVisitorPassIncompleteItem) {
-            R.string.holder_dashboard_incompleteVisitorPass_message
-        } else {
-            getHeaderText(greenCardType, empty)
-        }
-        val buttonInfo = getButtonInfo(greenCardType, empty)
+        val text = getHeaderText(greenCardType, emptyState)
+        val buttonInfo = getButtonInfo(greenCardType, emptyState)
         return DashboardItem.HeaderItem(text, buttonInfo)
     }
 

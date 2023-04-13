@@ -12,7 +12,6 @@ import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 interface HolderFeatureFlagUseCase {
     fun getGgdEnabled(): Boolean
     fun getMijnCnEnabled(): Boolean
-    fun getVisitorPassEnabled(): Boolean
     fun getPapEnabled(): Boolean
 }
 
@@ -26,10 +25,6 @@ class HolderFeatureFlagUseCaseImpl(
 
     override fun getMijnCnEnabled(): Boolean {
         return cachedAppConfigUseCase.getCachedAppConfig().mijnCnEnabled
-    }
-
-    override fun getVisitorPassEnabled(): Boolean {
-        return cachedAppConfigUseCase.getCachedAppConfig().visitorPassEnabled
     }
 
     override fun getPapEnabled(): Boolean {

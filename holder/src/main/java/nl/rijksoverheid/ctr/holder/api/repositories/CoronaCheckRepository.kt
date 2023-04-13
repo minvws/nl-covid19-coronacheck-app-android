@@ -54,7 +54,6 @@ private const val FUZZY_MATCHING_ERROR = 99790
 private const val VACCINATION_BACKEND_FLOW = "vaccination"
 private const val POSITIVE_TEST_BACKEND_FLOW = "positivetest"
 private const val NEGATIVE_TEST_BACKEND_FLOW = "negativetest"
-private const val VACCINATION_ASSESSMENT_BACKEND_FLOW = "vaccinationassessment"
 private const val REFRESH_BACKEND_FLOW = "refresh"
 
 open class CoronaCheckRepositoryImpl(
@@ -121,9 +120,6 @@ open class CoronaCheckRepositoryImpl(
                             is HolderFlow.VaccinationAndPositiveTest -> listOf(
                                 VACCINATION_BACKEND_FLOW,
                                 POSITIVE_TEST_BACKEND_FLOW
-                            )
-                            is HolderFlow.VaccinationAssessment -> listOf(
-                                VACCINATION_ASSESSMENT_BACKEND_FLOW
                             )
                             is HolderFlow.Refresh -> listOf(REFRESH_BACKEND_FLOW)
                             is HolderFlow.HkviScanned -> {

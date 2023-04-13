@@ -47,8 +47,6 @@ data class HolderConfig(
     @Json(name = "configAlmostOutOfDateWarningSeconds") val holderConfigAlmostOutOfDateWarningSeconds: Int,
     @Json(name = "showNewValidityInfoCard") val showNewValidityInfoCard: Boolean,
     @Json(name = "androidEnableVerificationPolicyVersion") val holderEnableVerificationPolicyVersion: Int,
-    @Json(name = "visitorPassEnabled") val visitorPassEnabled: Boolean,
-    @Json(name = "vaccinationAssessmentEventValidityDays") val vaccinationAssessmentEventValidityDays: Int,
     @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean,
     @Json(name = "backendTLSCertificates") val backendTLSCertificates: List<String>,
     @Json(name = "papEnabled") val papEnabled: Boolean,
@@ -103,8 +101,6 @@ data class HolderConfig(
             internationalQRRelevancyDays: Int = 28,
             holderConfigAlmostOutOfDateWarningSeconds: Int = 300,
             showNewValidityInfoCard: Boolean = false,
-            visitorPassEnabled: Boolean = false,
-            vaccinationAssessmentEventValidityDays: Int = 14,
             mijnCnEnabled: Boolean = false,
             backendTLSCertificates: List<String> = listOf()
         ) = HolderConfig(
@@ -143,8 +139,6 @@ data class HolderConfig(
             holderConfigAlmostOutOfDateWarningSeconds = holderConfigAlmostOutOfDateWarningSeconds,
             showNewValidityInfoCard = showNewValidityInfoCard,
             holderEnableVerificationPolicyVersion = 0,
-            visitorPassEnabled = visitorPassEnabled,
-            vaccinationAssessmentEventValidityDays = vaccinationAssessmentEventValidityDays,
             mijnCnEnabled = mijnCnEnabled,
             backendTLSCertificates = backendTLSCertificates,
             papEnabled = false,

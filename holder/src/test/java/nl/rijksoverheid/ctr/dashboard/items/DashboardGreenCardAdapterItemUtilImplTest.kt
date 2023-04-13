@@ -24,7 +24,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtil
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
@@ -59,7 +58,6 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
     private val credentialUtil = mockk<CredentialUtil>(relaxed = true)
     private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil =
         mockk(relaxed = true)
-    private val greenCardUtil: GreenCardUtil = mockk(relaxed = true)
 
     private val viewBinding = object : DashboardGreenCardAdapterItemBindingWrapper {
 

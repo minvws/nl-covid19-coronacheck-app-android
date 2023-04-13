@@ -12,7 +12,6 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
@@ -37,15 +36,6 @@ interface DashboardItemUtil {
 
     fun shouldShowConfigFreshnessWarning(): Boolean
     fun getConfigFreshnessMaxValidity(): Long
-    fun shouldShowMissingDutchVaccinationItem(
-        domesticGreenCards: List<GreenCard>,
-        euGreenCards: List<GreenCard>
-    ): Boolean
-
-    fun shouldShowVisitorPassIncompleteItem(
-        events: List<EventGroupEntity>,
-        domesticGreenCards: List<GreenCard>
-    ): Boolean
 
     fun shouldShowOriginInfoItem(
         greenCards: List<GreenCard>,
@@ -125,29 +115,6 @@ class DashboardItemUtilImpl(
 
     override fun getConfigFreshnessMaxValidity(): Long {
         return appConfigFreshnessUseCase.getAppConfigMaxValidityTimestamp()
-    }
-
-    override fun shouldShowMissingDutchVaccinationItem(
-        domesticGreenCards: List<GreenCard>,
-        euGreenCards: List<GreenCard>
-    ): Boolean {
-        // if a user has a european vaccination certificate but not dutch one,
-        // we inform him that he can get a dutch one by either retrieving a
-        // second vaccination result or a positive test result
-        return domesticGreenCards.none { it.origins.any { it.type == OriginType.Vaccination } } &&
-                euGreenCards.any { it.origins.any { it.type == OriginType.Vaccination } }
-    }
-
-    override fun shouldShowVisitorPassIncompleteItem(
-        events: List<EventGroupEntity>,
-        domesticGreenCards: List<GreenCard>
-    ): Boolean {
-        val hasVaccinationAssessmentEvent =
-            events.map { it.type }.contains(OriginType.VaccinationAssessment)
-        val hasVaccinationAssessmentOrigin =
-            domesticGreenCards.map { it.origins.map { origin -> origin.type } }.flatten()
-                .contains(OriginType.VaccinationAssessment)
-        return hasVaccinationAssessmentEvent && !hasVaccinationAssessmentOrigin
     }
 
     override fun shouldShowOriginInfoItem(
