@@ -58,11 +58,8 @@ import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsRe
 import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
 import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
-import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import nl.rijksoverheid.rdo.modules.luhncheck.TokenValidator
@@ -239,26 +236,6 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
-            return listOf(
-                DomesticCredential(
-                    credential = JSONObject(),
-                    attributes = DomesticCredentialAttributes(
-                        birthDay = "",
-                        birthMonth = "6",
-                        credentialVersion = 2,
-                        firstNameInitial = "B",
-                        isSpecimen = "0",
-                        lastNameInitial = "",
-                        isPaperProof = "0",
-                        validForHours = 24,
-                        validFrom = 1622731645L,
-                        category = "2"
-                    )
-                )
-            )
-        }
-
         override fun readEuropeanCredential(credential: ByteArray): JSONObject {
             val jsonObject = JSONObject()
             val vaccinationJson = JSONObject()
@@ -289,25 +266,6 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun isForeignDcc(credential: ByteArray): Boolean {
             return false
-        }
-
-        override fun hasDomesticPrefix(credential: ByteArray): Boolean {
-            return false
-        }
-
-        override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
-            return ReadDomesticCredential(
-                "",
-                "",
-                "1",
-                "",
-                "",
-                "",
-                "",
-                "24",
-                "1622731645",
-                "2"
-            )
         }
     }
 }

@@ -140,7 +140,6 @@ class DashboardGreenCardAdapterItem(
         when (card.greenCard.greenCardEntity.type) {
             is GreenCardType.Eu -> {
                 viewBinding.internationalImageContainer.visibility = View.VISIBLE
-                viewBinding.domesticImageContainer.visibility = View.GONE
                 viewBinding.buttonWithProgressWidgetContainer.setEnabledButtonColor(R.color.link)
             }
         }
