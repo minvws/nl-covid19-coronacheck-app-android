@@ -21,7 +21,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
@@ -69,11 +68,6 @@ class RemovedEventsBottomSheetUtilImpl(
                 }"
                 RemoteEventRecovery::class.java -> "${context.getString(R.string.qr_card_recovery_title_eu)} ${
                     blockedEvent.eventTime?.toLocalDate()?.formatDayMonthYear()
-                }"
-                RemoteEventVaccinationAssessment::class.java -> "${context.getString(R.string.holder_event_vaccination_assessment_about_date)} ${
-                    blockedEvent.eventTime?.formatDateTime(
-                        context
-                    )
                 }"
                 else -> ""
             }

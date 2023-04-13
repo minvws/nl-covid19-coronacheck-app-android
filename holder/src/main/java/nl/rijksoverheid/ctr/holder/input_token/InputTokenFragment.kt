@@ -22,10 +22,7 @@ import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentInputTokenBinding
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.input_token.usecases.TestResult
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.hideKeyboard
 import nl.rijksoverheid.ctr.shared.ext.showKeyboard
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
@@ -225,22 +222,6 @@ abstract class InputTokenFragment : BaseFragment(R.layout.fragment_input_token) 
         binding.verificationCodeInput.error = null
         binding.uniqueCodeInput.error = null
         viewModel.getTestResult(fromDeeplink)
-    }
-
-    fun getOriginType(remoteProtocol: RemoteProtocol): OriginType {
-        return if (remoteProtocol.events?.any { it is RemoteEventVaccinationAssessment } == true) {
-            OriginType.VaccinationAssessment
-        } else {
-            OriginType.Test
-        }
-    }
-
-    fun getYourEventsToolbarTitle(remoteProtocol: RemoteProtocol): Int {
-        return if (remoteProtocol.events?.any { it is RemoteEventVaccinationAssessment } == true) {
-            R.string.holder_event_vaccination_assessment_toolbar_title
-        } else {
-            R.string.your_negative_test_results_toolbar
-        }
     }
 
     abstract fun getFragmentData(): InputTokenFragmentData

@@ -12,7 +12,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingResponse
@@ -133,9 +132,6 @@ open class CoronaCheckRepositoryImpl(
                                     is RemoteEventVaccination -> listOf(VACCINATION_BACKEND_FLOW)
                                     is RemoteEventNegativeTest -> listOf(NEGATIVE_TEST_BACKEND_FLOW)
                                     is RemoteEventPositiveTest -> listOf(POSITIVE_TEST_BACKEND_FLOW)
-                                    is RemoteEventVaccinationAssessment -> listOf(
-                                        VACCINATION_ASSESSMENT_BACKEND_FLOW
-                                    )
                                     else -> listOf(REFRESH_BACKEND_FLOW)
                                 }
                             }

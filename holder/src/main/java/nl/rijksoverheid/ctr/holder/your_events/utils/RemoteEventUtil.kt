@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
@@ -152,7 +151,6 @@ class RemoteEventUtilImpl(
             is RemoteEventRecovery -> OriginType.Recovery
             is RemoteEventPositiveTest -> OriginType.Recovery
             is RemoteEventNegativeTest -> OriginType.Test
-            is RemoteEventVaccinationAssessment -> OriginType.VaccinationAssessment
             else -> error("remote event not supported as origin type")
         }
     }

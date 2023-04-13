@@ -11,11 +11,9 @@ abstract class RemoteEvent(open val unique: String?, open val type: String?) : P
         const val TYPE_POSITIVE_TEST = "positivetest"
         const val TYPE_RECOVERY = "recovery"
         const val TYPE_TEST = "test"
-        const val TYPE_VACCINATION_ASSESSMENT = "vaccinationassessment"
 
         fun getRemoteEventClassFromType(type: String): Class<out RemoteEvent> {
             return when (type) {
-                "vaccinationassessment" -> RemoteEventVaccinationAssessment::class.java
                 "positivetest" -> RemoteEventPositiveTest::class.java
                 "recovery" -> RemoteEventRecovery::class.java
                 "negativetest" -> RemoteEventNegativeTest::class.java
