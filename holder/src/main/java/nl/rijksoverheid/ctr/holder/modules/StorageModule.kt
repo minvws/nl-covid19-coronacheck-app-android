@@ -50,6 +50,6 @@ val storageModule = module {
     }
 
     factory<RemoveCTBUseCase> {
-        RemoveCTBUseCaseImpl(get())
+        RemoveCTBUseCaseImpl(get(), get())
     }
 }

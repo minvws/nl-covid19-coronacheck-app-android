@@ -51,7 +51,6 @@ class GetRemoteEventsUseCaseImpl(private val eventProviderRepository: EventProvi
             is NetworkRequestResult.Success<SignedResponseWithModel<RemoteProtocol>> ->
                 RemoteEventsResult.Success(eventsResult.response)
             is NetworkRequestResult.Failed -> {
-                println(eventsResult.e)
                 RemoteEventsResult.Error(eventsResult)
             }
         }
