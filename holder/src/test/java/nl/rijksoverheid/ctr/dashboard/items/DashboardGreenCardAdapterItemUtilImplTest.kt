@@ -64,7 +64,6 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         private val titleText: TextView = TextView(context)
         private val layout = LinearLayout(context)
         private val lastText = TextView(context)
-        private val policyLabelText = TextView(context)
 
         override val title: TextView
             get() = titleText
@@ -72,8 +71,6 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             get() = layout
         override val expiresIn: TextView
             get() = lastText
-        override val policyLabel: TextView
-            get() = policyLabelText
     }
 
     private val dosisString = "dosis 2 van 2"

@@ -49,36 +49,4 @@ class GetPaperProofTypeUseCaseImplTest {
         val paperProofType = usecase.get("")
         assertTrue(paperProofType is PaperProofType.DCC.Dutch)
     }
-
-    @Test
-    fun `get returns CTB if qr is CTB`() = runBlocking {
-        val mobileCoreWrapper: MobileCoreWrapper = mockk()
-        val usecase = GetPaperProofTypeUseCaseImpl(
-            getEventsFromPaperProofQrUseCase = mockk(relaxed = true),
-            paperProofUtil = mockk(relaxed = true),
-            mobileCoreWrapper = mobileCoreWrapper
-        )
-
-        every { mobileCoreWrapper.isDcc("".toByteArray()) } answers { false }
-        every { mobileCoreWrapper.hasDomesticPrefix("".toByteArray()) } answers { true }
-
-        val paperProofType = usecase.get("")
-        assertTrue(paperProofType is PaperProofType.CTB)
-    }
-
-    @Test
-    fun `get returns unknown if qr not CTB and not DCC`() = runBlocking {
-        val mobileCoreWrapper: MobileCoreWrapper = mockk()
-        val usecase = GetPaperProofTypeUseCaseImpl(
-            getEventsFromPaperProofQrUseCase = mockk(relaxed = true),
-            paperProofUtil = mockk(relaxed = true),
-            mobileCoreWrapper = mobileCoreWrapper
-        )
-
-        every { mobileCoreWrapper.isDcc("".toByteArray()) } answers { false }
-        every { mobileCoreWrapper.hasDomesticPrefix("".toByteArray()) } answers { false }
-
-        val paperProofType = usecase.get("")
-        assertTrue(paperProofType is PaperProofType.Unknown)
-    }
 }

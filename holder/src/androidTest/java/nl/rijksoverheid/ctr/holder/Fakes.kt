@@ -20,8 +20,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import org.json.JSONArray
@@ -101,10 +99,6 @@ val fakeMobileCoreWrapper = object : MobileCoreWrapper {
         TODO("Not yet implemented")
     }
 
-    override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
-        TODO("Not yet implemented")
-    }
-
     override fun readCredential(credentials: ByteArray): ByteArray {
         TODO("Not yet implemented")
     }
@@ -117,10 +111,6 @@ val fakeMobileCoreWrapper = object : MobileCoreWrapper {
     }
 
     override fun generateHolderSk(): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
         TODO("Not yet implemented")
     }
 
@@ -157,10 +147,6 @@ val fakeMobileCoreWrapper = object : MobileCoreWrapper {
     }
 
     override fun isForeignDcc(credential: ByteArray): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun hasDomesticPrefix(credential: ByteArray): Boolean {
         TODO("Not yet implemented")
     }
 }

@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.persistence.database.usecases
 
-import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -12,9 +11,6 @@ import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
 import nl.rijksoverheid.ctr.persistence.database.dao.OriginDao
 import nl.rijksoverheid.ctr.persistence.database.dao.OriginHintDao
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
-import org.json.JSONObject
 import org.junit.Test
 
 /*
@@ -61,42 +57,6 @@ class SyncRemoteGreenCardsUseCaseImplTest {
             )
 
             coVerify(exactly = 1) { createEuGreenCardUseCase.create(euGreenCard) }
-        }
-
-    @Test
-    fun `execute only creates domestic green card if there is only a remote domestic green card`() =
-        runBlocking {
-            val createCredentials = "".toByteArray()
-
-            val domesticCredentials = listOf(
-                DomesticCredential(
-                    credential = JSONObject(),
-                    attributes = DomesticCredentialAttributes(
-                        birthDay = "",
-                        birthMonth = "",
-                        credentialVersion = 1,
-                        firstNameInitial = "",
-                        isSpecimen = "",
-                        lastNameInitial = "",
-                        isPaperProof = "",
-                        validFrom = 1,
-                        validForHours = 1,
-                        category = "2"
-                    )
-                )
-            )
-
-            coEvery { mobileCoreWrapper.createDomesticCredentials(createCredentials) } answers { domesticCredentials }
-
-            usecase.execute(
-                remoteGreenCards = RemoteGreenCards(
-                    euGreencards = listOf(),
-                    blobExpireDates = listOf()
-                ),
-                secretKey = ""
-            )
-
-            coVerify(exactly = 0) { createEuGreenCardUseCase.create(any()) }
         }
 
     @Test
