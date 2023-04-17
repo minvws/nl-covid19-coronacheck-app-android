@@ -127,166 +127,170 @@ class SaveEventsUseCaseImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `saveRemoteProtocols3 removes previous events if removePreviousEvents is true`() = runBlocking {
-        // Insert event into database
-        val db: HolderDatabase by inject()
-        val eventGroupEntity = EventGroupEntity(
-            id = 0,
-            walletId = 1,
-            providerIdentifier = "ggd",
-            type = OriginType.Test,
-            scope = "",
-            expiryDate = OffsetDateTime.now(),
-            jsonData = "".toByteArray(),
-            draft = false
-        )
-        db.eventGroupDao().insertAll(listOf(eventGroupEntity))
-        val eventGroups = db.eventGroupDao().getAll()
-        assertEquals(1, eventGroups.size)
-        assertEquals("ggd", eventGroups.first().providerIdentifier)
-
-        // When calling usecase with removePreviousEvents to true, it should remove previous events
-        val usecase: SaveEventsUseCase by inject()
-        usecase.saveRemoteProtocols3(
-            remoteProtocols = mapOf(),
-            removePreviousEvents = true,
-            flow = HolderFlow.SyncGreenCards
-        )
-        val newEventGroups = db.eventGroupDao().getAll()
-        assertEquals(0, newEventGroups.size)
-    }
-
-    @Test
-    fun `remoteProtocols3AreConflicting returns ConflictingEventResultHolder if holders are conflicting`() = runBlocking {
-        // Mock remoteEventHolderUtil because of signed json blob
-        val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
-        coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { true }
-        loadKoinModules(
-            module {
-                factory {
-                    remoteEventHolderUtil
-                }
-            }
-        )
-
-        // Insert event into database
-        val db: HolderDatabase by inject()
-        val eventGroupEntity1 = EventGroupEntity(
-            id = 0,
-            walletId = 1,
-            providerIdentifier = "ggd",
-            type = OriginType.Vaccination,
-            scope = "",
-            expiryDate = OffsetDateTime.now(),
-            jsonData = "".toByteArray(),
-            draft = false
-        )
-        db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
-
-        // Check with remote protocol
-        val usecase: SaveEventsUseCase by inject()
-        val conflicting = usecase.remoteProtocols3AreConflicting(
-            remoteProtocols = mapOf(
-                RemoteProtocol(
-                    providerIdentifier = "ggd",
-                    protocolVersion = "1",
-                    status = RemoteProtocol.Status.COMPLETE,
-                    holder = null,
-                    events = listOf()
-                ) to "".toByteArray()
+    fun `saveRemoteProtocols3 removes previous events if removePreviousEvents is true`() =
+        runBlocking {
+            // Insert event into database
+            val db: HolderDatabase by inject()
+            val eventGroupEntity = EventGroupEntity(
+                id = 0,
+                walletId = 1,
+                providerIdentifier = "ggd",
+                type = OriginType.Test,
+                scope = "",
+                expiryDate = OffsetDateTime.now(),
+                jsonData = "".toByteArray(),
+                draft = false
             )
-        )
-        assertEquals(ConflictingEventResult.Holder, conflicting)
-    }
+            db.eventGroupDao().insertAll(listOf(eventGroupEntity))
+            val eventGroups = db.eventGroupDao().getAll()
+            assertEquals(1, eventGroups.size)
+            assertEquals("ggd", eventGroups.first().providerIdentifier)
 
-    @Test
-    fun `remoteProtocols3AreConflicting returns ConflictingEventResultNone if remote protocols are not conflicting`() = runBlocking {
-        // Mock remoteEventHolderUtil because of signed json blob
-        val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
-        coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { false }
-        loadKoinModules(
-            module {
-                factory {
-                    remoteEventHolderUtil
-                }
-            }
-        )
-
-        // Insert event into database
-        val db: HolderDatabase by inject()
-        val eventGroupEntity1 = EventGroupEntity(
-            id = 0,
-            walletId = 1,
-            providerIdentifier = "ggd",
-            type = OriginType.Vaccination,
-            scope = "",
-            expiryDate = OffsetDateTime.now(),
-            jsonData = "".toByteArray(),
-            draft = false
-        )
-        db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
-
-        // Check with remote protocol
-        val usecase: SaveEventsUseCase by inject()
-        val conflicting = usecase.remoteProtocols3AreConflicting(
-            remoteProtocols = mapOf(
-                RemoteProtocol(
-                    providerIdentifier = "ggd",
-                    protocolVersion = "1",
-                    status = RemoteProtocol.Status.COMPLETE,
-                    holder = null,
-                    events = listOf()
-                ) to "".toByteArray()
+            // When calling usecase with removePreviousEvents to true, it should remove previous events
+            val usecase: SaveEventsUseCase by inject()
+            usecase.saveRemoteProtocols3(
+                remoteProtocols = mapOf(),
+                removePreviousEvents = true,
+                flow = HolderFlow.SyncGreenCards
             )
-        )
-        assertEquals(ConflictingEventResult.None, conflicting)
-    }
+            val newEventGroups = db.eventGroupDao().getAll()
+            assertEquals(0, newEventGroups.size)
+        }
 
     @Test
-    fun `remoteProtocols3AreConflicting returns ConflictingEventResultExisting if remote protocols are conflicting`() = runBlocking {
-        // Mock remoteEventHolderUtil because of signed json blob
-        val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
-        coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { false }
-        loadKoinModules(
-            module {
-                factory {
-                    remoteEventHolderUtil
+    fun `remoteProtocols3AreConflicting returns ConflictingEventResultHolder if holders are conflicting`() =
+        runBlocking {
+            // Mock remoteEventHolderUtil because of signed json blob
+            val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
+            coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { true }
+            loadKoinModules(
+                module {
+                    factory {
+                        remoteEventHolderUtil
+                    }
                 }
-            }
-        )
+            )
 
-        // Insert event into database
-        val db: HolderDatabase by inject()
-        val eventGroupEntity1 = EventGroupEntity(
-            id = 0,
-            walletId = 1,
-            providerIdentifier = "dcc_unique",
-            type = OriginType.Vaccination,
-            scope = "",
-            expiryDate = OffsetDateTime.now(),
-            jsonData = "".toByteArray(),
-            draft = false
-        )
-        db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
+            // Insert event into database
+            val db: HolderDatabase by inject()
+            val eventGroupEntity1 = EventGroupEntity(
+                id = 0,
+                walletId = 1,
+                providerIdentifier = "ggd",
+                type = OriginType.Vaccination,
+                scope = "",
+                expiryDate = OffsetDateTime.now(),
+                jsonData = "".toByteArray(),
+                draft = false
+            )
+            db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
 
-        // Check with remote protocol
-        val usecase: SaveEventsUseCase by inject()
-        val conflicting = usecase.remoteProtocols3AreConflicting(
-            remoteProtocols = mapOf(
-                RemoteProtocol(
-                    providerIdentifier = "dcc",
-                    protocolVersion = "1",
-                    status = RemoteProtocol.Status.COMPLETE,
-                    holder = null,
-                    events = listOf(
-                        RemoteEventVaccination(
-                            "vaccination", "unique",
-                            vaccination = null
+            // Check with remote protocol
+            val usecase: SaveEventsUseCase by inject()
+            val conflicting = usecase.remoteProtocols3AreConflicting(
+                remoteProtocols = mapOf(
+                    RemoteProtocol(
+                        providerIdentifier = "ggd",
+                        protocolVersion = "1",
+                        status = RemoteProtocol.Status.COMPLETE,
+                        holder = null,
+                        events = listOf()
+                    ) to "".toByteArray()
+                )
+            )
+            assertEquals(ConflictingEventResult.Holder, conflicting)
+        }
+
+    @Test
+    fun `remoteProtocols3AreConflicting returns ConflictingEventResultNone if remote protocols are not conflicting`() =
+        runBlocking {
+            // Mock remoteEventHolderUtil because of signed json blob
+            val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
+            coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { false }
+            loadKoinModules(
+                module {
+                    factory {
+                        remoteEventHolderUtil
+                    }
+                }
+            )
+
+            // Insert event into database
+            val db: HolderDatabase by inject()
+            val eventGroupEntity1 = EventGroupEntity(
+                id = 0,
+                walletId = 1,
+                providerIdentifier = "ggd",
+                type = OriginType.Vaccination,
+                scope = "",
+                expiryDate = OffsetDateTime.now(),
+                jsonData = "".toByteArray(),
+                draft = false
+            )
+            db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
+
+            // Check with remote protocol
+            val usecase: SaveEventsUseCase by inject()
+            val conflicting = usecase.remoteProtocols3AreConflicting(
+                remoteProtocols = mapOf(
+                    RemoteProtocol(
+                        providerIdentifier = "ggd",
+                        protocolVersion = "1",
+                        status = RemoteProtocol.Status.COMPLETE,
+                        holder = null,
+                        events = listOf()
+                    ) to "".toByteArray()
+                )
+            )
+            assertEquals(ConflictingEventResult.None, conflicting)
+        }
+
+    @Test
+    fun `remoteProtocols3AreConflicting returns ConflictingEventResultExisting if remote protocols are conflicting`() =
+        runBlocking {
+            // Mock remoteEventHolderUtil because of signed json blob
+            val remoteEventHolderUtil: RemoteEventHolderUtil = mockk(relaxed = true)
+            coEvery { remoteEventHolderUtil.conflicting(any(), any()) } answers { false }
+            loadKoinModules(
+                module {
+                    factory {
+                        remoteEventHolderUtil
+                    }
+                }
+            )
+
+            // Insert event into database
+            val db: HolderDatabase by inject()
+            val eventGroupEntity1 = EventGroupEntity(
+                id = 0,
+                walletId = 1,
+                providerIdentifier = "dcc_unique",
+                type = OriginType.Vaccination,
+                scope = "",
+                expiryDate = OffsetDateTime.now(),
+                jsonData = "".toByteArray(),
+                draft = false
+            )
+            db.eventGroupDao().insertAll(listOf(eventGroupEntity1))
+
+            // Check with remote protocol
+            val usecase: SaveEventsUseCase by inject()
+            val conflicting = usecase.remoteProtocols3AreConflicting(
+                remoteProtocols = mapOf(
+                    RemoteProtocol(
+                        providerIdentifier = "dcc",
+                        protocolVersion = "1",
+                        status = RemoteProtocol.Status.COMPLETE,
+                        holder = null,
+                        events = listOf(
+                            RemoteEventVaccination(
+                                "vaccination", "unique",
+                                vaccination = null
+                            )
                         )
-                    )
-                ) to "".toByteArray()
+                    ) to "".toByteArray()
+                )
             )
-        )
-        assertEquals(ConflictingEventResult.Existing, conflicting)
-    }
+            assertEquals(ConflictingEventResult.Existing, conflicting)
+        }
 }

@@ -58,13 +58,8 @@ import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsRe
 import nl.rijksoverheid.ctr.persistence.database.usecases.SyncRemoteGreenCardsUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.DomesticCredentialAttributes
 import nl.rijksoverheid.ctr.shared.models.Flow
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
-import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import nl.rijksoverheid.rdo.modules.luhncheck.TokenValidator
@@ -105,9 +100,6 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
         }
 
         override fun removeOrigin(originEntity: OriginEntity) {
-        }
-
-        override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
         }
 
         override fun dismissBlockedEventsInfo() {
@@ -240,45 +232,17 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun disclose(
-            secretKey: ByteArray,
-            credential: ByteArray,
-            currentTimeMillis: Long,
-            disclosurePolicy: GreenCardDisclosurePolicy
-        ): String {
-            return ""
-        }
-
         override fun generateHolderSk(): String {
             return ""
-        }
-
-        override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
-            return listOf(
-                DomesticCredential(
-                    credential = JSONObject(),
-                    attributes = DomesticCredentialAttributes(
-                        birthDay = "",
-                        birthMonth = "6",
-                        credentialVersion = 2,
-                        firstNameInitial = "B",
-                        isSpecimen = "0",
-                        lastNameInitial = "",
-                        isPaperProof = "0",
-                        validForHours = 24,
-                        validFrom = 1622731645L,
-                        category = "2"
-                    )
-                )
-            )
         }
 
         override fun readEuropeanCredential(credential: ByteArray): JSONObject {
             val jsonObject = JSONObject()
             val vaccinationJson = JSONObject()
-            vaccinationJson.put("dn", "1")
-            vaccinationJson.put("sd", "1")
+            vaccinationJson.put("dn", 1)
+            vaccinationJson.put("sd", 1)
             vaccinationJson.put("dt", "2021-01-22")
+            vaccinationJson.put("co", "NL")
             val dccValues = JSONArray()
             dccValues.put(0, vaccinationJson)
             dccValues.put(1, vaccinationJson)
@@ -302,25 +266,6 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun isForeignDcc(credential: ByteArray): Boolean {
             return false
-        }
-
-        override fun hasDomesticPrefix(credential: ByteArray): Boolean {
-            return false
-        }
-
-        override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
-            return ReadDomesticCredential(
-                "",
-                "",
-                "1",
-                "",
-                "",
-                "",
-                "",
-                "24",
-                "1622731645",
-                "2"
-            )
         }
     }
 }
@@ -405,10 +350,6 @@ fun fakeGreenCardUtil(
         return hasNoActiveCredentials
     }
 
-    override fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean {
-        return true
-    }
-
     override fun isEventFromDcc(greenCard: GreenCard, hints: List<OriginHintEntity>): Boolean {
         return false
     }
@@ -416,7 +357,7 @@ fun fakeGreenCardUtil(
 
 fun fakeGetRemoteGreenCardUseCase(
     result: RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
-        RemoteGreenCards(null, null, listOf(), null)
+        RemoteGreenCards(null, null, null)
     )
 ) = object : GetRemoteGreenCardsUseCase {
     override suspend fun get(
@@ -487,7 +428,7 @@ fun fakeQrCodeUsecase() = object : QrCodeUseCase {
 val fakeGreenCardEntity = GreenCardEntity(
     id = 0,
     walletId = 1,
-    type = GreenCardType.Domestic
+    type = GreenCardType.Eu
 )
 
 fun fakeRemoteEventVaccination(unique: String = "", date: LocalDate) =
@@ -510,7 +451,7 @@ fun fakeRemoteEventVaccination(unique: String = "", date: LocalDate) =
     )
 
 fun fakeGreenCard(
-    greenCardType: GreenCardType = GreenCardType.Domestic,
+    greenCardType: GreenCardType = GreenCardType.Eu,
     originType: OriginType = OriginType.Vaccination,
     eventTime: OffsetDateTime = OffsetDateTime.now(),
     expirationTime: OffsetDateTime = OffsetDateTime.now(),
@@ -547,7 +488,7 @@ fun fakeGreenCard(
 )
 
 fun fakeGreenCardWithOrigins(
-    greenCardType: GreenCardType = GreenCardType.Domestic,
+    greenCardType: GreenCardType = GreenCardType.Eu,
     originTypes: List<OriginType> = listOf(OriginType.Vaccination),
     eventTime: OffsetDateTime = OffsetDateTime.now(),
     expirationTime: OffsetDateTime = OffsetDateTime.now(),
@@ -605,7 +546,7 @@ fun fakeAppConfigFreshnessUseCase(shouldShowWarning: Boolean = false) = object :
 
 val fakeDashboardTabItem = DashboardTabItem(
     title = R.string.travel_button_domestic,
-    greenCardType = GreenCardType.Domestic,
+    greenCardType = GreenCardType.Eu,
     items = listOf()
 )
 
@@ -622,14 +563,8 @@ fun fakeEventGroupEntity(
 ) = EventGroupEntity(id, walletId, providerIdentifier, type, scope, maxIssuedAt, false, jsonData)
 
 fun fakeRemoteGreenCards(
-    domesticGreencard: RemoteGreenCards.DomesticGreenCard? = fakeDomesticGreenCard(),
     euGreencards: List<RemoteGreenCards.EuGreenCard>? = listOf(fakeEuGreenCard())
-) = RemoteGreenCards(domesticGreencard, euGreencards, listOf(), null)
-
-fun fakeDomesticGreenCard(
-    origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),
-    createCredentialMessages: ByteArray = ByteArray(1)
-) = RemoteGreenCards.DomesticGreenCard(origins, createCredentialMessages)
+) = RemoteGreenCards(euGreencards, listOf(), null)
 
 fun fakeEuGreenCard(
     origins: List<RemoteGreenCards.Origin> = listOf(fakeOrigin()),
@@ -679,7 +614,6 @@ fun fakeCardsItem(
                 originStates = listOf(OriginState.Valid(fakeOriginEntity(type = originType))),
                 credentialState = DashboardItem.CardsItem.CredentialState.NoCredential,
                 databaseSyncerResult = DatabaseSyncerResult.Success(),
-                disclosurePolicy = GreenCardDisclosurePolicy.OneG,
                 greenCardEnabledState = GreenCardEnabledState.Enabled
             )
         )

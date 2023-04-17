@@ -9,7 +9,6 @@ package nl.rijksoverheid.ctr.holder.qrcodes.usecases
 
 import android.graphics.Bitmap
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import java.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
@@ -44,20 +43,7 @@ class QrCodeUseCaseImpl(
         errorCorrectionLevel: ErrorCorrectionLevel
     ): Bitmap =
         withContext(Dispatchers.IO) {
-            val qrCodeContent = when (shouldDisclose) {
-                is QrCodeFragmentData.ShouldDisclose.Disclose -> {
-                    val secretKey = holderDatabase.secretKeyDao().get(shouldDisclose.greenCardId).secretKey
-                    mobileCoreWrapper.disclose(
-                        secretKey.toByteArray(),
-                        credential,
-                        Clock.systemDefaultZone().millis() - clockDeviationUseCase.calculateServerTimeOffsetMillis(),
-                        shouldDisclose.disclosurePolicy
-                    )
-                }
-                is QrCodeFragmentData.ShouldDisclose.DoNotDisclose -> {
-                    String(credential)
-                }
-            }
+            val qrCodeContent = String(credential)
 
             qrCodeUtil.createQrCode(
                 qrCodeContent = qrCodeContent,

@@ -12,10 +12,6 @@ import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardInfoCardBinding
-import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType.Domestic
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType.Vaccination
-import nl.rijksoverheid.ctr.persistence.database.entities.OriginType.VaccinationAssessment
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -68,43 +64,12 @@ class DashboardInfoCardAdapterItem(
                 )
                 viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
             }
-            is DashboardItem.InfoItem.DomesticVaccinationExpiredItem -> {
-                val expiredItemText = utilAdapter.getExpiredItemText(
-                    greenCardType = Domestic,
-                    originType = Vaccination
-                )
-                viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
-            }
-            is DashboardItem.InfoItem.DomesticVaccinationAssessmentExpiredItem -> {
-                val expiredItemText = utilAdapter.getExpiredItemText(
-                    greenCardType = Domestic,
-                    originType = VaccinationAssessment
-                )
-                viewBinding.text.text = viewBinding.root.context.getString(expiredItemText)
-            }
             is DashboardItem.InfoItem.OriginInfoItem -> {
                 viewBinding.text.text =
                     utilAdapter.getOriginInfoText(infoItem, viewBinding.dashboardItemInfoRoot.context)
             }
-            is DashboardItem.InfoItem.MissingDutchVaccinationItem -> {
-                viewBinding.text.text =
-                    viewBinding.text.context.getString(R.string.missing_dutch_certificate_info_card_text)
-            }
             is DashboardItem.InfoItem.AppUpdate -> {
                 viewBinding.text.setText(R.string.recommended_update_card_description)
-            }
-            is DashboardItem.InfoItem.VisitorPassIncompleteItem -> {
-                viewBinding.text.setText(R.string.holder_dashboard_visitorpassincompletebanner_title)
-            }
-            is DashboardItem.InfoItem.DisclosurePolicyItem -> {
-                viewBinding.text.setText(
-                    when (infoItem.disclosurePolicy) {
-                        DisclosurePolicy.OneG -> R.string.holder_dashboard_only1GaccessBanner_title
-                        DisclosurePolicy.ThreeG -> R.string.holder_dashboard_only3GaccessBanner_title
-                        DisclosurePolicy.OneAndThreeG -> R.string.holder_dashboard_3Gand1GaccessBanner_title
-                        DisclosurePolicy.ZeroG -> R.string.holder_dashboard_noDomesticCertificatesBanner_0G_title
-                    }
-                )
             }
             is DashboardItem.InfoItem.BlockedEvents -> {
                 viewBinding.text.setText(

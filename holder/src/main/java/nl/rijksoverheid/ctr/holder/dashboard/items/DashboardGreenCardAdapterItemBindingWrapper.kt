@@ -22,7 +22,6 @@ interface DashboardGreenCardAdapterItemBindingWrapper {
     val title: TextView
     val description: LinearLayout
     val expiresIn: TextView
-    val policyLabel: TextView
 }
 
 class DashboardGreenCardAdapterItemBindingWrapperImpl(private val viewBinding: AdapterItemDashboardGreenCardBinding) :
@@ -36,7 +35,4 @@ class DashboardGreenCardAdapterItemBindingWrapperImpl(private val viewBinding: A
 
     override val expiresIn: TextView
         get() = viewBinding.expiresIn
-
-    override val policyLabel: TextView
-        get() = viewBinding.domesticPolicyLabel
 }

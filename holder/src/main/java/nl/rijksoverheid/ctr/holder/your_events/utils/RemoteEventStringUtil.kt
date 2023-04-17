@@ -6,7 +6,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.shared.ext.capitalize
 
 /*
@@ -26,7 +25,6 @@ class RemoteEventStringUtilImpl(
     override fun remoteEventTitle(remoteEventClass: Class<out RemoteEvent>): String {
         return when (remoteEventClass) {
             RemoteEventVaccination::class.java -> getString(R.string.general_vaccination)
-            RemoteEventVaccinationAssessment::class.java -> getString(R.string.general_visitorPass)
             RemoteEventNegativeTest::class.java -> getString(R.string.general_negativeTest)
             RemoteEventPositiveTest::class.java -> getString(R.string.general_positiveTest)
             RemoteEventRecovery::class.java -> getString(R.string.general_recoverycertificate)

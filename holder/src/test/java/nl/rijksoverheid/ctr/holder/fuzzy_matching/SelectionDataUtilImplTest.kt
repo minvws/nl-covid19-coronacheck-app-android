@@ -12,7 +12,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventStringUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
 import org.junit.Test
@@ -57,9 +56,6 @@ class SelectionDataUtilImplTest : AutoCloseKoinTest() {
         RemoteEventNegativeTest(RemoteEvent.TYPE_NEGATIVE_TEST, "", false, mockk {
             every { sampleDate } returns OffsetDateTime.now()
         }),
-        RemoteEventVaccinationAssessment(RemoteEvent.TYPE_VACCINATION_ASSESSMENT, null, mockk {
-            every { assessmentDate } returns OffsetDateTime.now()
-        }),
         RemoteEventVaccination(RemoteEvent.TYPE_VACCINATION, "", mockk {
             every { date } returns LocalDate.now()
         }),
@@ -83,7 +79,7 @@ class SelectionDataUtilImplTest : AutoCloseKoinTest() {
     @Test
     fun `events string`() {
         val actual = selectionDataUtil.events(remoteEvents)
-        val expected = "3 vaccinaties en 4 testuitslagen en 1 vaccinatiebeoordeling"
+        val expected = "3 vaccinaties en 4 testuitslagen"
         assertEquals(expected, actual)
     }
 
@@ -92,7 +88,6 @@ class SelectionDataUtilImplTest : AutoCloseKoinTest() {
         val actualData = selectionDataUtil.details("code1", remoteEvents)
         val expectedData = listOf(
             "Negatieve testuitslag",
-            "Bezoekersbewijs",
             "Vaccinatie",
             "Vaccinatie",
             "Positieve testuitslag",

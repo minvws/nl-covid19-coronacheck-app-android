@@ -31,10 +31,6 @@ class QrCodeAnimationUseCaseTests {
             val clock = Clock.fixed(calendar.toInstant(), ZoneId.of("UTC"))
             val animationUseCase = QrCodeAnimationUseCaseImpl(clock)
             assertEquals(
-                R.raw.summer_domestic,
-                animationUseCase.get(GreenCardType.Domestic).animationResource
-            )
-            assertEquals(
                 R.raw.summer_international,
                 animationUseCase.get(GreenCardType.Eu).animationResource
             )
@@ -53,10 +49,6 @@ class QrCodeAnimationUseCaseTests {
             calendar.add(Calendar.DAY_OF_YEAR, 1)
             val clock = Clock.fixed(calendar.toInstant(), ZoneId.of("UTC"))
             val animationUseCase = QrCodeAnimationUseCaseImpl(clock)
-            assertEquals(
-                R.raw.winter_domestic,
-                animationUseCase.get(GreenCardType.Domestic).animationResource
-            )
             assertEquals(
                 R.raw.winter_international,
                 animationUseCase.get(GreenCardType.Eu).animationResource

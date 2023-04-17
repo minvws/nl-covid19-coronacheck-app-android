@@ -11,13 +11,11 @@ import android.app.Instrumentation
 import androidx.preference.PreferenceManager
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.model.AppConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResponse
 import nl.rijksoverheid.ctr.appconfig.repositories.ConfigRepository
 import nl.rijksoverheid.ctr.holder.end2end.res.TestKeys
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import okhttp3.Headers
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
@@ -32,13 +30,11 @@ fun overrideModules(modules: List<Module>, instrumentation: Instrumentation) {
         factory<ConfigRepository> {
             object : ConfigRepository {
                 override suspend fun getConfig(): ConfigResponse {
-                    val moshi = Moshi.Builder()
-                        .add(DisclosurePolicyJsonAdapter()).build()
+                    val moshi = Moshi.Builder().build()
                     val jsonAdapter: JsonAdapter<HolderConfig> =
                         moshi.adapter(HolderConfig::class.java)
                     val holderConfigString = jsonAdapter.toJson(
                         HolderConfig.default(
-                            disclosurePolicy = DisclosurePolicy.ZeroG,
                             configTTL = 1_000_000_000,
                             backendTLSCertificates = listOf(
                                 TestKeys.backendTLSCertificate1,

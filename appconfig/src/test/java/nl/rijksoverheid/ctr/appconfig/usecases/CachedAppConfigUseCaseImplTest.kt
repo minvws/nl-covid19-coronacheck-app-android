@@ -5,7 +5,6 @@ import io.mockk.every
 import io.mockk.mockk
 import java.io.File
 import java.nio.file.Paths
-import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.api.model.VerifierConfig
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
@@ -16,7 +15,7 @@ import org.junit.Test
 
 class CachedAppConfigUseCaseImplTest {
 
-    private val moshi = Moshi.Builder().add(DisclosurePolicyJsonAdapter()).build()
+    private val moshi = Moshi.Builder().build()
     private val appConfigStorageManager = mockk<AppConfigStorageManager>(relaxed = true)
 
     private fun mockWithFileContents(fileContents: String) {

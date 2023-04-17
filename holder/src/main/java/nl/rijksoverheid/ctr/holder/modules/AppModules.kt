@@ -33,8 +33,6 @@ val appModule = module {
     factory<DeviceSecureUseCase> { DeviceSecureUseCaseImpl(androidContext()) }
     factory<HolderCachedAppConfigUseCase> {
         HolderCachedAppConfigUseCaseImpl(
-            get(),
-            isDebugApp(androidContext()),
             get()
         )
     }

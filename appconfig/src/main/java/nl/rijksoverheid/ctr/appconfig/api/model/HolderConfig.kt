@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -48,10 +47,7 @@ data class HolderConfig(
     @Json(name = "configAlmostOutOfDateWarningSeconds") val holderConfigAlmostOutOfDateWarningSeconds: Int,
     @Json(name = "showNewValidityInfoCard") val showNewValidityInfoCard: Boolean,
     @Json(name = "androidEnableVerificationPolicyVersion") val holderEnableVerificationPolicyVersion: Int,
-    @Json(name = "visitorPassEnabled") val visitorPassEnabled: Boolean,
-    @Json(name = "vaccinationAssessmentEventValidityDays") val vaccinationAssessmentEventValidityDays: Int,
     @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean,
-    @Json(name = "disclosurePolicies") val disclosurePolicy: DisclosurePolicy,
     @Json(name = "backendTLSCertificates") val backendTLSCertificates: List<String>,
     @Json(name = "papEnabled") val papEnabled: Boolean,
     @Json(name = "contactInformation") val contactInformation: ContactInformation
@@ -105,10 +101,7 @@ data class HolderConfig(
             internationalQRRelevancyDays: Int = 28,
             holderConfigAlmostOutOfDateWarningSeconds: Int = 300,
             showNewValidityInfoCard: Boolean = false,
-            visitorPassEnabled: Boolean = false,
-            vaccinationAssessmentEventValidityDays: Int = 14,
             mijnCnEnabled: Boolean = false,
-            disclosurePolicy: DisclosurePolicy = DisclosurePolicy.ThreeG,
             backendTLSCertificates: List<String> = listOf()
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
@@ -146,10 +139,7 @@ data class HolderConfig(
             holderConfigAlmostOutOfDateWarningSeconds = holderConfigAlmostOutOfDateWarningSeconds,
             showNewValidityInfoCard = showNewValidityInfoCard,
             holderEnableVerificationPolicyVersion = 0,
-            visitorPassEnabled = visitorPassEnabled,
-            vaccinationAssessmentEventValidityDays = vaccinationAssessmentEventValidityDays,
             mijnCnEnabled = mijnCnEnabled,
-            disclosurePolicy = disclosurePolicy,
             backendTLSCertificates = backendTLSCertificates,
             papEnabled = false,
             contactInformation =

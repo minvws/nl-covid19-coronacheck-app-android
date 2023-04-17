@@ -7,133 +7,21 @@
 
 package nl.rijksoverheid.ctr.dashboard.util
 
-import io.mockk.every
-import io.mockk.mockk
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardHeaderAdapterItemUtilImpl
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 import org.junit.Assert
 import org.junit.Test
 
 class DashboardHeaderAdapterItemUtilImplTest {
 
     @Test
-    fun `Correct copy for domestic tab and empty state with policy 1G`() {
-        val util = getUtil(
-            policy = DisclosurePolicy.OneG
-        )
-
-        Assert.assertEquals(R.string.holder_dashboard_empty_domestic_only1Gaccess_message,
-            util.getHeaderItem(
-                greenCardType = GreenCardType.Domestic,
-                emptyState = true,
-                hasVisitorPassIncompleteItem = false
-            ).text
-        )
-    }
-
-    @Test
-    fun `Correct copy for domestic tab with empty state with policy 3G`() {
-        val util = getUtil(
-            policy = DisclosurePolicy.ThreeG
-        )
-
-        Assert.assertEquals(R.string.my_overview_qr_placeholder_description,
-            util.getHeaderItem(
-                greenCardType = GreenCardType.Domestic,
-                emptyState = true,
-                hasVisitorPassIncompleteItem = false
-            ).text
-        )
-    }
-
-    @Test
-    fun `Correct copy for domestic tab with empty state with policy 1G,3G`() {
-        val util = getUtil(
-            policy = DisclosurePolicy.OneAndThreeG
-        )
-
-        Assert.assertEquals(R.string.holder_dashboard_empty_domestic_3Gand1Gaccess_message,
-            util.getHeaderItem(
-                greenCardType = GreenCardType.Domestic,
-                emptyState = true,
-                hasVisitorPassIncompleteItem = false
-            ).text
-        )
-    }
-
-    @Test
-    fun `Correct copy for domestic tab with non empty state with policy 1G`() {
-        val util = getUtil(
-            policy = DisclosurePolicy.OneG
-        )
-
-        Assert.assertEquals(R.string.holder_dashboard_intro_domestic_only1Gaccess,
-            util.getHeaderItem(
-                greenCardType = GreenCardType.Domestic,
-                emptyState = false,
-                hasVisitorPassIncompleteItem = false
-            ).text
-        )
-    }
-
-    @Test
-    fun `Correct copy for domestic tab with non empty state with policy 3G`() {
-        val util = getUtil(
-            policy = DisclosurePolicy.ThreeG
-        )
-
-        Assert.assertEquals(R.string.my_overview_description,
-            util.getHeaderItem(
-                greenCardType = GreenCardType.Domestic,
-                emptyState = false,
-                hasVisitorPassIncompleteItem = false
-            ).text
-        )
-    }
-
-    @Test
-    fun `Correct copy for domestic tab with non empty state with policy 1G,3G`() {
-        val util = getUtil(
-            policy = DisclosurePolicy.OneAndThreeG
-        )
-
-        Assert.assertEquals(R.string.holder_dashboard_intro_domestic_3Gand1Gaccess,
-            util.getHeaderItem(
-                greenCardType = GreenCardType.Domestic,
-                emptyState = false,
-                hasVisitorPassIncompleteItem = false
-            ).text
-        )
-    }
-
-    @Test
-    fun `Correct button info for domestic tab`() {
-        val util = getUtil(
-            policy = DisclosurePolicy.OneG
-        )
-
-        Assert.assertEquals(null,
-            util.getHeaderItem(
-                greenCardType = GreenCardType.Domestic,
-                emptyState = true,
-                hasVisitorPassIncompleteItem = false
-            ).buttonInfo
-        )
-    }
-
-    @Test
     fun `Correct button info for EU tab with 0G and not empty`() {
-        val util = getUtil(
-            policy = DisclosurePolicy.ZeroG
-        )
+        val util = getUtil()
 
         val headerItem = util.getHeaderItem(
             greenCardType = GreenCardType.Eu,
-            emptyState = false,
-            hasVisitorPassIncompleteItem = false
+            emptyState = false
         )
 
         Assert.assertEquals(
@@ -148,14 +36,11 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
     @Test
     fun `Correct button info for EU tab with 0G and empty`() {
-        val util = getUtil(
-            policy = DisclosurePolicy.ZeroG
-        )
+        val util = getUtil()
 
         val headerItem = util.getHeaderItem(
             greenCardType = GreenCardType.Eu,
-            emptyState = true,
-            hasVisitorPassIncompleteItem = false
+            emptyState = true
         )
 
         Assert.assertEquals(
@@ -170,14 +55,11 @@ class DashboardHeaderAdapterItemUtilImplTest {
 
     @Test
     fun `Correct button info for EU tab with not 0G`() {
-        val util = getUtil(
-            policy = DisclosurePolicy.OneG
-        )
+        val util = getUtil()
 
         val headerItem = util.getHeaderItem(
             greenCardType = GreenCardType.Eu,
-            emptyState = false,
-            hasVisitorPassIncompleteItem = false
+            emptyState = false
         )
 
         Assert.assertEquals(
@@ -190,33 +72,7 @@ class DashboardHeaderAdapterItemUtilImplTest {
         )
     }
 
-    @Test
-    fun `Correct copy for domestic tab and with incomplete visitor pass`() {
-        listOf(
-            DisclosurePolicy.OneG,
-            DisclosurePolicy.OneAndThreeG,
-            DisclosurePolicy.ThreeG,
-            DisclosurePolicy.ZeroG).forEach {
-                val util = getUtil(
-                    policy = it
-                )
-
-                Assert.assertEquals(R.string.holder_dashboard_incompleteVisitorPass_message,
-                    util.getHeaderItem(
-                        greenCardType = GreenCardType.Domestic,
-                        emptyState = true,
-                        hasVisitorPassIncompleteItem = true
-                    ).text
-                )
-        }
-    }
-
-    private fun getUtil(policy: DisclosurePolicy): DashboardHeaderAdapterItemUtilImpl {
-        val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>()
-        every { featureFlagUseCase.getDisclosurePolicy() } answers { policy }
-
-        return DashboardHeaderAdapterItemUtilImpl(
-            featureFlagUseCase = featureFlagUseCase
-        )
+    private fun getUtil(): DashboardHeaderAdapterItemUtilImpl {
+        return DashboardHeaderAdapterItemUtilImpl()
     }
 }

@@ -13,7 +13,6 @@ import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodesResultUseCaseImpl
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,58 +34,18 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
     )
 
     @Test
-    fun `getQrCodesResult returns SingleQrCode for domestic vaccination QR`() = runBlocking {
-        val result = usecase.getQrCodesResult(
-            qrCodeFragmentData = QrCodeFragmentData(
-                type = GreenCardType.Domestic,
-                originType = OriginType.Vaccination,
-                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG)
-            ),
-            qrCodeHeight = 0,
-            qrCodeWidth = 0
-        )
-        assertTrue(result is QrCodesResult.SingleQrCode)
-    }
-
-    @Test
-    fun `getQrCodesResult returns SingleQrCode for domestic recovery QR`() = runBlocking {
-        val result = usecase.getQrCodesResult(
-            qrCodeFragmentData = QrCodeFragmentData(
-                type = GreenCardType.Domestic,
-                originType = OriginType.Vaccination,
-                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG)
-            ),
-            qrCodeHeight = 0,
-            qrCodeWidth = 0
-        )
-        assertTrue(result is QrCodesResult.SingleQrCode)
-    }
-
-    @Test
-    fun `getQrCodesResult returns SingleQrCode for domestic test QR`() = runBlocking {
-        val result = usecase.getQrCodesResult(
-            qrCodeFragmentData = QrCodeFragmentData(
-                type = GreenCardType.Domestic,
-                originType = OriginType.Vaccination,
-                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG)
-            ),
-            qrCodeHeight = 0,
-            qrCodeWidth = 0
-        )
-        assertTrue(result is QrCodesResult.SingleQrCode)
-    }
-
-    @Test
     fun `getQrCodesResult returns SingleQrCode for european recovery QR`() = runBlocking {
         val result = usecase.getQrCodesResult(
             qrCodeFragmentData = QrCodeFragmentData(
-                type = GreenCardType.Domestic,
-                originType = OriginType.Vaccination,
-                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG)
+                type = GreenCardType.Eu,
+                originType = OriginType.Recovery,
+                credentialsWithExpirationTime = listOf(
+                    Pair(
+                        "".toByteArray(),
+                        OffsetDateTime.now()
+                    )
+                ),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1)
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
@@ -98,10 +57,15 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
     fun `getQrCodesResult returns SingleQrCode for european test QR`() = runBlocking {
         val result = usecase.getQrCodesResult(
             qrCodeFragmentData = QrCodeFragmentData(
-                type = GreenCardType.Domestic,
-                originType = OriginType.Vaccination,
-                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG)
+                type = GreenCardType.Eu,
+                originType = OriginType.Test,
+                credentialsWithExpirationTime = listOf(
+                    Pair(
+                        "".toByteArray(),
+                        OffsetDateTime.now()
+                    )
+                ),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1)
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0
@@ -115,8 +79,13 @@ class QrCodesResultUseCaseImplTest : AutoCloseKoinTest() {
             qrCodeFragmentData = QrCodeFragmentData(
                 type = GreenCardType.Eu,
                 originType = OriginType.Vaccination,
-                credentialsWithExpirationTime = listOf(Pair("".toByteArray(), OffsetDateTime.now())),
-                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1, GreenCardDisclosurePolicy.ThreeG)
+                credentialsWithExpirationTime = listOf(
+                    Pair(
+                        "".toByteArray(),
+                        OffsetDateTime.now()
+                    )
+                ),
+                shouldDisclose = QrCodeFragmentData.ShouldDisclose.Disclose(1)
             ),
             qrCodeHeight = 0,
             qrCodeWidth = 0

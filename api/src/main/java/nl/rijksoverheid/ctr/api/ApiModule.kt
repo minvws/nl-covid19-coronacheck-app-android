@@ -10,7 +10,6 @@ import javax.net.ssl.X509TrustManager
 import nl.rijksoverheid.ctr.api.interceptors.CacheOverrideInterceptor
 import nl.rijksoverheid.ctr.api.interceptors.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
-import nl.rijksoverheid.ctr.api.json.DisclosurePolicyJsonAdapter
 import nl.rijksoverheid.ctr.api.json.JsonObjectJsonAdapter
 import nl.rijksoverheid.ctr.api.json.LocalDateJsonAdapter
 import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
@@ -88,7 +87,6 @@ fun apiModule(
             .add(JsonObjectJsonAdapter())
             .add(OffsetDateTimeJsonAdapter())
             .add(LocalDateJsonAdapter())
-            .add(DisclosurePolicyJsonAdapter())
     }
 }
 

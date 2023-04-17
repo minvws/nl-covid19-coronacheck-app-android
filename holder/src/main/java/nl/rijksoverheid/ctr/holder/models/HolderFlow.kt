@@ -42,9 +42,6 @@ sealed class HolderFlow(code: Int) : Flow(code), Parcelable {
     object VaccinationAndPositiveTest : HolderFlow(8)
 
     @Parcelize
-    object VaccinationAssessment : HolderFlow(9)
-
-    @Parcelize
     object VaccinationBesIslands : HolderFlow(10)
 
     @Parcelize

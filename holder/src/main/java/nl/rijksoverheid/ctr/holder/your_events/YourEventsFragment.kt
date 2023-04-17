@@ -13,7 +13,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
@@ -30,7 +29,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
@@ -225,23 +223,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                     )
                 )
             }
-            is YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment -> {
-                infoFragmentUtil.presentFullScreen(
-                    currentFragment = this,
-                    toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
-                    data = InfoFragmentData.TitleDescriptionWithButton(
-                        title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
-                        descriptionData = DescriptionData(
-                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body,
-                            htmlLinksEnabled = true
-                        ),
-                        primaryButtonData = ButtonData.NavigationButton(
-                            text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
-                            navigationActionId = R.id.action_visitor_pass_input_token
-                        )
-                    )
-                )
-            }
             is YourEventsEndState.Hints -> {
                 infoFragmentUtil.presentFullScreen(
                     currentFragment = this,
@@ -419,14 +400,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             event = remoteEvent
                         )
                     }
-                    is RemoteEventVaccinationAssessment -> {
-                        presentVaccinationAssessmentEvent(
-                            binding = binding,
-                            fullName = yourEventsFragmentUtil.getFullName(holder),
-                            birthDate = yourEventsFragmentUtil.getBirthDate(holder),
-                            event = remoteEvent
-                        )
-                    }
                 }
             }
         }
@@ -551,43 +524,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         binding.eventsGroup.addView(eventWidget)
     }
 
-    private fun presentVaccinationAssessmentEvent(
-        binding: FragmentYourEventsBinding,
-        fullName: String,
-        birthDate: String,
-        event: RemoteEventVaccinationAssessment
-    ) {
-        val assessmentDate =
-            event.vaccinationAssessment.assessmentDate?.toLocalDate()?.formatDayMonth()
-
-        val infoScreen = infoScreenUtil.getForVaccinationAssessment(
-            event = event,
-            fullName = fullName,
-            birthDate = birthDate
-        )
-
-        val eventWidget = YourEventWidget(requireContext()).apply {
-            setContent(
-                title = getString(R.string.holder_event_vaccination_assessment_element_title),
-                subtitle = getString(
-                    R.string.holder_event_vaccination_assessment_element_subtitle,
-                    assessmentDate,
-                    fullName,
-                    birthDate
-                ),
-                infoClickListener = {
-                    navigateSafety(
-                        YourEventsFragmentDirections.actionShowExplanation(
-                            toolbarTitle = infoScreen.title,
-                            data = arrayOf(infoScreen)
-                        )
-                    )
-                }
-            )
-        }
-        binding.eventsGroup.addView(eventWidget)
-    }
-
     private fun presentPositiveTestEvent(
         binding: FragmentYourEventsBinding,
         providerIdentifiers: String,
@@ -681,16 +617,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             )
         }
         binding.bottom.setButtonText(
-            getString(
-                when (getFlow()) {
-                    HolderFlow.VaccinationAssessment -> {
-                        R.string.holder_event_vaccination_assessment_action_title
-                    }
-                    else -> {
-                        R.string.my_overview_add_qr_button
-                    }
-                }
-            )
+            getString(R.string.my_overview_add_qr_button)
         )
     }
 
@@ -718,9 +645,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                         } else {
                                             R.string.holder_listRemoteEvents_somethingWrong_vaccination_body
                                         }
-                                    }
-                                    origins.all { it == OriginType.VaccinationAssessment } -> {
-                                        R.string.holder_event_vaccination_assessment_wrong_body
                                     }
                                     origins.all { it == OriginType.Recovery } -> {
                                         R.string.dialog_negative_test_result_something_wrong_description

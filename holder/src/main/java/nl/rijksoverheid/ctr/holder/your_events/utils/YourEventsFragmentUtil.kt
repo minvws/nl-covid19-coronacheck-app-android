@@ -37,9 +37,6 @@ class YourEventsFragmentUtilImpl(
             type is YourEventsFragmentType.DCC -> {
                 R.string.holder_listRemoteEvents_paperflow_message
             }
-            isVaccinationAssessment(type) -> {
-                R.string.holder_listRemoteEvents_vaccinationAssessment_message
-            }
             isRecovery(type) -> {
                 R.string.holder_listRemoteEvents_recovery_message
             }
@@ -50,12 +47,6 @@ class YourEventsFragmentUtilImpl(
                 R.string.holder_listRemoteEvents_vaccination_message
             }
         }
-    }
-
-    private fun isVaccinationAssessment(yourEventsFragmentType: YourEventsFragmentType): Boolean {
-        val type = yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
-        val remoteEvent = type.remoteEvents.keys.firstOrNull()?.events?.first() ?: return false
-        return remoteEventUtil.getOriginType(remoteEvent) == OriginType.VaccinationAssessment
     }
 
     private fun isRecovery(yourEventsFragmentType: YourEventsFragmentType): Boolean {
@@ -90,9 +81,6 @@ class YourEventsFragmentUtilImpl(
                             R.string.rule_engine_no_test_origin_description_vaccination
                         }
                     }
-                    is OriginType.VaccinationAssessment -> {
-                        R.string.rule_engine_no_test_origin_description_vaccination_approval
-                    }
                 }
             }
         }
@@ -112,7 +100,6 @@ class YourEventsFragmentUtilImpl(
                     is OriginType.Test -> R.string.holder_test_alert_message
                     is OriginType.Recovery -> R.string.holder_recovery_alert_message
                     is OriginType.Vaccination -> R.string.holder_vaccination_alert_message
-                    is OriginType.VaccinationAssessment -> R.string.holder_event_vaccination_assessment_alert_message
                 }
             }
         }

@@ -32,11 +32,6 @@ class QrCodeAnimationUseCaseImpl(
                     (dayOfMonth <= endDay && month == Calendar.DECEMBER)
 
         return when (greenCardType) {
-            GreenCardType.Domestic -> if (isSummer) {
-                QrCodeAnimation.DomesticSummer
-            } else {
-                QrCodeAnimation.DomesticWinter
-            }
             GreenCardType.Eu -> if (isSummer) {
                 QrCodeAnimation.EuSummer
             } else {

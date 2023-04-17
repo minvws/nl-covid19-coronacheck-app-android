@@ -9,7 +9,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_RECOVERY
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_TEST
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_VACCINATION
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent.Companion.TYPE_VACCINATION_ASSESSMENT
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
 import nl.rijksoverheid.ctr.holder.your_events.utils.RemoteEventStringUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.YourEventsFragmentUtil
@@ -42,8 +41,6 @@ class SelectionDataUtilImpl(
         val testResultTypes = listOf(TYPE_NEGATIVE_TEST, TYPE_POSITIVE_TEST, TYPE_RECOVERY, TYPE_TEST)
         val vaccinationCount = remoteEvents.filter { it.type == TYPE_VACCINATION }.size
         val testCount = remoteEvents.filter { testResultTypes.contains(it.type) }.size
-        val vaccinationAssessment =
-            remoteEvents.filter { it.type == TYPE_VACCINATION_ASSESSMENT }.size
 
         val eventsString = StringBuilder()
 
@@ -66,19 +63,6 @@ class SelectionDataUtilImpl(
                     getQuantityString(
                         R.plurals.general_testresults,
                         testCount
-                    )
-                }"
-            )
-        }
-        if (vaccinationAssessment > 0) {
-            if (eventsString.isNotEmpty()) {
-                eventsString.append(" ${getString(R.string.general_and)} ")
-            }
-            eventsString.append(
-                "$vaccinationAssessment ${
-                    getQuantityString(
-                        R.plurals.general_vaccinationAssessments,
-                        vaccinationAssessment
                     )
                 }"
             )

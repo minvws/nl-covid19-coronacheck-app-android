@@ -20,10 +20,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import org.json.JSONArray
@@ -32,7 +28,7 @@ import org.json.JSONObject
 fun fakeGreenCardEntity(
     id: Int = 0,
     walletId: Int = 0,
-    type: GreenCardType = GreenCardType.Domestic
+    type: GreenCardType = GreenCardType.Eu
 ) = GreenCardEntity(id, walletId, type)
 
 fun fakeOriginEntity(
@@ -82,9 +78,6 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
         override fun removeOrigin(originEntity: OriginEntity) {
         }
 
-        override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
-        }
-
         override fun dismissBlockedEventsInfo() {
         }
 
@@ -97,16 +90,12 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
 val fakeDashboardTabItem = DashboardTabItem(
     title = R.string.travel_button_domestic,
-    greenCardType = GreenCardType.Domestic,
+    greenCardType = GreenCardType.Eu,
     items = listOf()
 )
 
 val fakeMobileCoreWrapper = object : MobileCoreWrapper {
     override fun createCredentials(body: ByteArray): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
         TODO("Not yet implemented")
     }
 
@@ -121,20 +110,7 @@ val fakeMobileCoreWrapper = object : MobileCoreWrapper {
         TODO("Not yet implemented")
     }
 
-    override fun disclose(
-        secretKey: ByteArray,
-        credential: ByteArray,
-        currentTimeMillis: Long,
-        disclosurePolicy: GreenCardDisclosurePolicy
-    ): String {
-        TODO("Not yet implemented")
-    }
-
     override fun generateHolderSk(): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
         TODO("Not yet implemented")
     }
 
@@ -171,10 +147,6 @@ val fakeMobileCoreWrapper = object : MobileCoreWrapper {
     }
 
     override fun isForeignDcc(credential: ByteArray): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun hasDomesticPrefix(credential: ByteArray): Boolean {
         TODO("Not yet implemented")
     }
 }

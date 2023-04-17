@@ -13,9 +13,6 @@ import nl.rijksoverheid.ctr.introduction.setup.SetupViewModel
 import nl.rijksoverheid.ctr.introduction.status.models.IntroductionData
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.DomesticCredential
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.ReadDomesticCredential
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
 import nl.rijksoverheid.ctr.shared.models.VerificationResultDetails
@@ -158,16 +155,8 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
             return ""
         }
 
-        override fun disclose(secretKey: ByteArray, credential: ByteArray, currentTimeMillis: Long, disclosurePolicy: GreenCardDisclosurePolicy): String {
-            return ""
-        }
-
         override fun generateHolderSk(): String {
             return ""
-        }
-
-        override fun createDomesticCredentials(createCredentials: ByteArray): List<DomesticCredential> {
-            return listOf()
         }
 
         override fun readEuropeanCredential(credential: ByteArray): JSONObject {
@@ -188,25 +177,6 @@ fun fakeMobileCoreWrapper(): MobileCoreWrapper {
 
         override fun isForeignDcc(credential: ByteArray): Boolean {
             return false
-        }
-
-        override fun hasDomesticPrefix(credential: ByteArray): Boolean {
-            return false
-        }
-
-        override fun readDomesticCredential(credential: ByteArray): ReadDomesticCredential {
-            return ReadDomesticCredential(
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "2"
-            )
         }
     }
 }
