@@ -772,6 +772,14 @@
             app:popExitAnim="@animator/slide_out_right" />
 
         <action
+            android:id="@+id/action_data_migration"
+            app:destination="@+id/nav_data_migration"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
+
+        <action
             android:id="@+id/action_menu"
             app:destination="@id/nav_menu"
             app:enterAnim="@animator/slide_in_right"
@@ -790,6 +798,15 @@
         <action
             android:id="@+id/action_dialog"
             app:destination="@+id/nav_dialog" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_data_migration"
+        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationStartFragment"
+        android:label="@string/holder_startMigration_onboarding_toolbar">
+
+        <!-- TODO add the onboarding fragment action -->
 
     </fragment>
 

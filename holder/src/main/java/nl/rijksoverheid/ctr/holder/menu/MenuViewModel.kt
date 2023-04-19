@@ -32,6 +32,7 @@ class MenuViewModelImpl(
         val actionChooseProofType = MenuFragmentDirections.actionChooseProofType()
         val actionPaperProof = MenuFragmentDirections.actionPaperProof()
         val actionSavedEvents = MenuFragmentDirections.actionSavedEvents()
+        val actionDataMigration = MenuFragmentDirections.actionDataMigration()
         val actionHelpInfo = MenuFragmentDirections.actionMenu(
             toolbarTitle = context.getString(R.string.holder_helpInfo_title),
             menuSections = helpMenuDataModel.get(context)
@@ -64,6 +65,15 @@ class MenuViewModelImpl(
             )
         )
 
+        val dataMigrationMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_data_migration,
+            iconColor = -1,
+            title = R.string.holder_menu_migration,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionDataMigration.actionId
+            )
+        )
+
         val helpInfoMenuItem = MenuSection.MenuItem(
             icon = R.drawable.ic_menu_info,
             title = R.string.holder_menu_helpInfo,
@@ -85,6 +95,11 @@ class MenuViewModelImpl(
             MenuSection(
                 menuItems = listOf(
                     savedEventsMenuItem,
+                    dataMigrationMenuItem
+                )
+            ),
+            MenuSection(
+                menuItems = listOf(
                     helpInfoMenuItem
                 )
             ),
@@ -108,7 +123,10 @@ class MenuViewModelImpl(
                             iconColor = R.color.error,
                             titleColor = R.color.error,
                             title = R.string.general_menu_resetApp,
-                            onClick = MenuSection.MenuItem.OnClick.Navigate(dialogDirection.actionId, dialogDirection.arguments)
+                            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                                dialogDirection.actionId,
+                                dialogDirection.arguments
+                            )
                         )
                     )
                 )

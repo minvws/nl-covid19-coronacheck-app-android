@@ -637,4 +637,44 @@
   <string name="holder_helpdesk_contact_message_line2"><![CDATA[Of als je vanuit het buitenland belt: <a href=\"tel:%1$s\">%2$s</a>.<br />]]></string>
   <string name="holder_helpdesk_contact_message_line3"><![CDATA[Telefonisch bereikbaar van %1$s t/m %2$s %3$s - %4$s uur (gesloten op feestdagen).<br /><br /><b>Of stuur een e-mail naar:</b><br /><a href=\"mailto:helpdesk@coronacheck.nl\">helpdesk@coronacheck.nl</a>]]></string>
   <string name="general_menu_resetApp">App resetten</string>
+  <string name="holder_menu_migration">Mijn bewijzen overzetten</string>
+  <string name="holder_startMigration_title">Naar welke telefoon wil je overzetten?</string>
+  <string name="holder_startMigration_option_toOtherDevice_title">Naar mijn andere telefoon</string>
+  <string name="holder_startMigration_option_toThisDevice_title">Naar deze telefoon</string>
+  <string name="holder_startMigration_message">Zorg dat je op beide telefoons de CoronaCheck app hebt staan.</string>
+  <string name="holder_startMigration_onboarding_toolbar">Bewijzen overzetten</string>
+  <string name="holder_startMigration_onboarding_title">Bewijzen overzetten</string>
+  <string name="holder_startMigration_onboarding_message">Heb je een andere telefoon waar je jouw bewijzen (ook) op wilt gebruiken? Dan kun je jouw gegevens in één keer overzetten.</string>
+  <string name="holder_startMigration_onboarding_nextButton">Volgende</string>
+  <string name="holder_startMigration_onboarding_step">Stap %s</string>
+  <string name="holder_startMigration_toOtherDevice_onboarding_step1_title">Pak ook je andere telefoon erbij</string>
+  <string name="holder_startMigration_toOtherDevice_onboarding_step1_message">Pak de telefoon waar je jouw gegevens naar wilt overzetten. Ga op dat toestel ook naar ‘Mijn bewijzen overzetten’ en doorloop de stappen.</string>
+  <string name="holder_startMigration_toOtherDevice_onboarding_nextButton">Volgende</string>
+  <string name="holder_startMigration_toOtherDevice_onboarding_step2_title">Scan de QR-code met die telefoon</string>
+  <string name="holder_startMigration_toOtherDevice_onboarding_step2_message">Er wordt een speciale QR-code met je gegevens gemaakt. Deze vind je in de volgende stap.</string>
+  <string name="holder_startMigration_toOtherDevice_onboarding_step3_title">Scan deze QR-code met je andere telefoon</string>
+  <string name="holder_startMigration_toOtherDevice_onboarding_step3_message">Ga op je andere telefoon ook naar Stap 3.</string>
+  <string name="holder_startMigration_onboarding_doneButton">Klaar</string>
+  <string name="holder_migrationFlow_deleteDetails_dialog_title">Gegevens hier verwijderen?</string>
+  <string name="holder_migrationFlow_deleteDetails_dialog_message">Wil je al jouw gegevens van deze telefoon verwijderen?</string>
+  <string name="holder_migrationFlow_deleteDetails_dialog_deleteButton">Ja, verwijderen</string>
+  <string name="holder_migrationFlow_deleteDetails_dialog_retainButton">Nee, behouden</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_step1_title">Pak ook je andere telefoon erbij</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_step1_message">Pak de telefoon waarop de gegevens staan die je wilt overzetten. Ga daar ook naar ‘Mijn bewijzen overzetten’ en doorloop de bijbehorende stappen.</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_nextButton">Volgende</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_step2_title">Scan de QR-code op je andere telefoon</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_step2_message">Op je andere telefoon wordt een speciale QR-code gemaakt met je gegevens. Scan die in de volgende stap met deze telefoon.</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_step3_title">Richt je camera op de QR-code</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_step3_message">Ga op je andere telefoon ook naar Stap 3.</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_step3_titleScanning">Bezig met scannen...</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_step3_messageKeepPointing">Blijf je camera op de QR-code richten.</string>
+  <string name="holder_migrationFlow_loadingDetails">Gegevens laden</string>
+  <string name="holder_migrationFlow_scannedDetailsOverview_message">Als onderstaande gegevens kloppen kun je ze overzetten naar deze telefoon.</string>
+  <string name="holder_migrationFlow_scannedDetailsOverview_transferButton">Overzetten</string>
+  <string name="holder_migrationFlow_migrationSuccessful_title">Overzetten gelukt!</string>
+  <string name="holder_migrationFlow_migrationSuccessful_message">Je kunt je bewijzen nu ook op deze telefoon gebruiken.</string>
+  <string name="holder_migrationFlow_goBack_dialog_title">Weet je zeker dat je terug wilt?</string>
+  <string name="holder_migrationFlow_goBack_dialog_message">Hierdoor stop je het overzetten van je bewijzen en moet je later opnieuw de QR-code scannen.</string>
+  <string name="holder_migrationFlow_goBack_dialog_yesButton">Ja, terug</string>
+  <string name="holder_migrationFlow_goBack_dialog_noButton">Nee</string>
 </resources>
