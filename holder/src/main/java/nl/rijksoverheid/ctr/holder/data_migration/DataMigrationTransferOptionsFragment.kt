@@ -60,7 +60,8 @@ class DataMigrationTransferOptionsFragment : Fragment(R.layout.fragment_data_mig
         binding.transferOutButton.root.setOnClickListener {
             navigateSafety(
                 DataMigrationTransferOptionsFragmentDirections.actionDataMigrationInstructions(
-                    instructionItems = transferOutOnboardingItems
+                    instructionItems = transferOutOnboardingItems,
+                    destination = DataMigrationOnboardingItem.ShowQrCode
                 )
             )
         }
@@ -68,7 +69,8 @@ class DataMigrationTransferOptionsFragment : Fragment(R.layout.fragment_data_mig
         binding.transferInButton.root.setOnClickListener {
             navigateSafety(
                 DataMigrationTransferOptionsFragmentDirections.actionDataMigrationInstructions(
-                    instructionItems = transferInOnboardingItems
+                    instructionItems = transferInOnboardingItems,
+                    destination = DataMigrationOnboardingItem.ScanQrCode
                 )
             )
         }

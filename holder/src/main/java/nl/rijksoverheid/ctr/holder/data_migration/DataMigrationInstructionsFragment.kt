@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
 class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding) {
 
@@ -53,6 +54,7 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
+                navigateSafety(args.destination.navigationActionId)
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }
