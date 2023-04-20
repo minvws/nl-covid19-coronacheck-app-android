@@ -806,9 +806,20 @@
         android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationStartFragment"
         android:label="@string/holder_startMigration_onboarding_toolbar">
 
-        <!-- TODO add the onboarding fragment action -->
+        <action
+            android:id="@+id/action_data_transfer_options"
+            app:destination="@id/nav_data_transfer_options"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_data_transfer_options"
+        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationTransferOptionsFragment" />
+
 
     <fragment
         android:id="@id/nav_saved_events"

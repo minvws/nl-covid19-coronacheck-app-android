@@ -5,6 +5,8 @@ import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModelImpl
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModelImpl
+import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationStartViewModel
+import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationStartViewModelImpl
 import nl.rijksoverheid.ctr.holder.get_events.GetEventsViewModel
 import nl.rijksoverheid.ctr.holder.get_events.GetEventsViewModelImpl
 import nl.rijksoverheid.ctr.holder.get_events.LoginViewModel
@@ -58,4 +60,5 @@ val viewModels = module {
     viewModel<SyncGreenCardsViewModel> { SyncGreenCardsViewModelImpl(get(), get()) }
     viewModel { SavedEventsViewModel(get(), get()) }
     viewModel<MenuViewModel> { MenuViewModelImpl(get(), get()) }
+    viewModel<DataMigrationStartViewModel> { DataMigrationStartViewModelImpl(get()) }
 }
