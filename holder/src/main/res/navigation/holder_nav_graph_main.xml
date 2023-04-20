@@ -818,7 +818,25 @@
 
     <fragment
         android:id="@+id/nav_data_transfer_options"
-        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationTransferOptionsFragment" />
+        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationTransferOptionsFragment">
+
+        <action
+            android:id="@+id/action_data_migration_instructions"
+            app:destination="@id/nav_data_migration_instructions"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
+
+    </fragment>
+
+    <fragment android:id="@+id/nav_data_migration_instructions"
+        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationInstructionsFragment">
+
+        <argument android:name="instructionItems"
+            app:argType="nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem[]" />
+
+    </fragment>
 
 
     <fragment

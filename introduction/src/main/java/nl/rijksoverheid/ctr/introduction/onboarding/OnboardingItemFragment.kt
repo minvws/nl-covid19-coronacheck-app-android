@@ -53,7 +53,7 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         if (item.position >= 0) {
             binding.step.apply {
                 visibility = View.VISIBLE
-                text = getString(R.string.onboarding_step, item.position)
+                text = getString(R.string.holder_startMigration_onboarding_step, item.position)
             }
         }
 
