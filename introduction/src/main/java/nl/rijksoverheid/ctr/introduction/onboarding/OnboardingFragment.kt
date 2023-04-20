@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
@@ -57,9 +58,11 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding: FragmentOnboardingBinding,
         adapter: OnboardingPagerAdapter
     ) {
+        binding.toolbar.isVisible = true
         binding.toolbar.setNavigationOnClickListener {
             binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, animationsEnabled())
         }
+        binding.logo.isVisible = true
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {

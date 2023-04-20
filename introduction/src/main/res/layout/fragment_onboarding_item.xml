@@ -10,7 +10,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="64dp"
         android:layout_marginHorizontal="@dimen/horizontal_padding">
 
         <com.airbnb.lottie.LottieAnimationView

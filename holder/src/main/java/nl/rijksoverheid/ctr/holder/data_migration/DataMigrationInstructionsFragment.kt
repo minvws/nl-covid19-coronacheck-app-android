@@ -5,6 +5,7 @@
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
+
 package nl.rijksoverheid.ctr.holder.data_migration
 
 import android.annotation.SuppressLint
@@ -16,13 +17,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentDataMigrationInstructionsBinding
+import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 
-class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_data_migration_instructions) {
+class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding) {
 
-    private var _binding: FragmentDataMigrationInstructionsBinding? = null
+    private var _binding: FragmentOnboardingBinding? = null
     private val binding get() = _binding!!
 
     private val args: DataMigrationInstructionsFragmentArgs by navArgs()
@@ -30,7 +31,7 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_data_migrat
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentDataMigrationInstructionsBinding.bind(view)
+        _binding = FragmentOnboardingBinding.bind(view)
 
         val adapter =
             OnboardingPagerAdapter(
@@ -112,6 +113,11 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_data_migrat
             }
         })
         startingItem?.let { binding.viewPager.currentItem = it }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

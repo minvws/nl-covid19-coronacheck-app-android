@@ -1,3 +1,11 @@
+/*
+ *  Copyright (c) 2023 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+
 package nl.rijksoverheid.ctr.holder.fuzzy_matching
 
 import android.annotation.SuppressLint
@@ -10,24 +18,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.databinding.FragmentFuzzyMatchingOnboardingBinding
 import nl.rijksoverheid.ctr.holder.hideNavigationIcon
 import nl.rijksoverheid.ctr.holder.showNavigationIcon
+import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/*
- *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
- *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
- *
- *   SPDX-License-Identifier: EUPL-1.2
- *
- */
-class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matching_onboarding) {
-    private var _binding: FragmentFuzzyMatchingOnboardingBinding? = null
+class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_onboarding) {
+    private var _binding: FragmentOnboardingBinding? = null
     private val binding get() = _binding!!
 
     private val fuzzyMatchingOnboardingFragmentArgs: FuzzyMatchingOnboardingFragmentArgs by navArgs()
@@ -57,7 +58,7 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_fuzzy_matchin
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _binding = FragmentFuzzyMatchingOnboardingBinding.bind(view)
+        _binding = FragmentOnboardingBinding.bind(view)
 
         val adapter =
             OnboardingPagerAdapter(
