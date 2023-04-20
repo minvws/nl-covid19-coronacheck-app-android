@@ -28,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textStyle="bold"
-                android:layout_marginHorizontal="16dp"
                 android:text="@string/holder_startMigration_onboarding_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

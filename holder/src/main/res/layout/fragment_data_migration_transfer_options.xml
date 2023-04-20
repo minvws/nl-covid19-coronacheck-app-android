@@ -16,7 +16,6 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
             android:text="@string/holder_startMigration_title"
             android:textAppearance="?attr/textAppearanceHeadline5"
             android:textStyle="bold"
