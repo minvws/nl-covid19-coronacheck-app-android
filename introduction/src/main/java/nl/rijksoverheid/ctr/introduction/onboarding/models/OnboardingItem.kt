@@ -14,7 +14,7 @@ import kotlinx.parcelize.Parcelize
  *
  */
 @Parcelize
-data class OnboardingItem(
+open class OnboardingItem(
     @DrawableRes val imageResource: Int = 0,
     @StringRes val titleResource: Int,
     @StringRes val description: Int,

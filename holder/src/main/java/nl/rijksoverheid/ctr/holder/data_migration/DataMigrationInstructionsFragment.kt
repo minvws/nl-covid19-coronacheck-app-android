@@ -6,54 +6,28 @@
  *
  */
 
-package nl.rijksoverheid.ctr.holder.fuzzy_matching
+package nl.rijksoverheid.ctr.holder.data_migration
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.hideNavigationIcon
-import nl.rijksoverheid.ctr.holder.showNavigationIcon
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter
-import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_onboarding) {
+class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding) {
+
     private var _binding: FragmentOnboardingBinding? = null
     private val binding get() = _binding!!
 
-    private val fuzzyMatchingOnboardingFragmentArgs: FuzzyMatchingOnboardingFragmentArgs by navArgs()
-
-    private val viewModel: FuzzyMatchingOnboardingViewModel by viewModel()
-
-    private val onboardingItems by lazy {
-        listOf(
-            OnboardingItem(
-                imageResource = R.drawable.ic_holder_fuzzymatching_onboarding_firstpage,
-                titleResource = R.string.holder_fuzzyMatching_onboarding_firstPage_title,
-                description = R.string.holder_fuzzyMatching_onboarding_firstPage_body
-            ),
-            OnboardingItem(
-                imageResource = R.drawable.ic_holder_fuzzymatching_onboarding_secondpage,
-                titleResource = R.string.holder_fuzzyMatching_onboarding_secondPage_title,
-                description = R.string.holder_fuzzyMatching_onboarding_secondPage_body
-            ),
-            OnboardingItem(
-                imageResource = R.drawable.ic_holder_fuzzymatching_onboarding_thirdpage,
-                titleResource = R.string.holder_fuzzyMatching_onboarding_thirdPage_title,
-                description = R.string.holder_fuzzyMatching_onboarding_thirdPage_body
-            )
-        )
-    }
+    private val args: DataMigrationInstructionsFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,23 +38,14 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             OnboardingPagerAdapter(
                 childFragmentManager,
                 lifecycle,
-                onboardingItems
+                args.instructionItems.toList()
             )
 
-        if (onboardingItems.isNotEmpty()) {
-            binding.indicators.initIndicator(adapter.itemCount)
-            initViewPager(adapter, savedInstanceState?.getInt(indicatorPositionKey))
-        }
+        binding.indicators.initIndicator(adapter.itemCount)
+        initViewPager(adapter, savedInstanceState?.getInt(indicatorPositionKey))
 
         setBackPressListener()
         setBindings(adapter)
-
-        viewModel.toolbarButtonsStateLiveData.observe(viewLifecycleOwner) { (canGoBack, _) ->
-            if (!canGoBack) {
-                hideNavigationIcon()
-            }
-        }
-        viewModel.canSkip(fuzzyMatchingOnboardingFragmentArgs.getEventsFlow)
     }
 
     private fun setBindings(
@@ -89,12 +54,7 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
-                navigateSafety(
-                    FuzzyMatchingOnboardingFragmentDirections.actionHolderNameSelection(
-                        matchingBlobIds = fuzzyMatchingOnboardingFragmentArgs.matchingBlobIds,
-                        getEventsFlow = fuzzyMatchingOnboardingFragmentArgs.getEventsFlow
-                    )
-                )
+                navigateSafety(args.destination.navigationActionId)
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }
@@ -126,28 +86,20 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         adapter: OnboardingPagerAdapter,
         startingItem: Int? = null
     ) {
-        binding.viewPager.offscreenPageLimit = onboardingItems.size
+        binding.viewPager.offscreenPageLimit = 2
         binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             @SuppressLint("StringFormatInvalid")
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+
                 binding.indicators.updateSelected(position)
 
                 binding.indicators.contentDescription = getString(
                     nl.rijksoverheid.ctr.introduction.R.string.onboarding_page_indicator_label,
                     (position + 1).toString(),
                     adapter.itemCount.toString()
-                )
-                val isFirstItem = position == 0
-                val isLastItem = position == adapter.itemCount - 1
-                binding.button.text = getString(
-                    if (isLastItem) {
-                        R.string.holder_fuzzyMatching_onboarding_thirdPage_action
-                    } else {
-                        R.string.onboarding_next
-                    }
                 )
 
                 // Apply bottom elevation if the view inside the viewpager is scrollable
@@ -159,17 +111,6 @@ class FuzzyMatchingOnboardingFragment : Fragment(R.layout.fragment_onboarding) {
                             .toFloat()
                 } else {
                     binding.bottom.cardElevation = 0f
-                }
-
-                if (viewModel.toolbarButtonsStateLiveData.value?.canGoBack == false) {
-                    if (isFirstItem) {
-                        hideNavigationIcon()
-                    } else {
-                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_back)?.let {
-                            it.setTint(ContextCompat.getColor(requireContext(), R.color.black))
-                            showNavigationIcon(it)
-                        }
-                    }
                 }
             }
         })
