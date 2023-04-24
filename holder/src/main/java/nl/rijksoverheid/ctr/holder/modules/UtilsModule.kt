@@ -21,6 +21,8 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.RemovedEventsBottomSheetUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.RemovedEventsBottomSheetUtilImpl
+import nl.rijksoverheid.ctr.holder.data_migration.StringDataZipper
+import nl.rijksoverheid.ctr.holder.data_migration.StringDataZipperImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
@@ -126,4 +128,5 @@ val utilsModule = module {
     factory<StringUtil> { StringUtilImpl(get()) }
     factory<YourEventsEndStateUtil> { YourEventsEndStateUtilImpl(get()) }
     factory<RemovedEventsBottomSheetUtil> { RemovedEventsBottomSheetUtilImpl(get(), get(), get(), get(), get(), get()) }
+    factory<StringDataZipper> { StringDataZipperImpl() }
 }

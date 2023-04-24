@@ -1,8 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<nl.rijksoverheid.ctr.design.widgets.AnimatorScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MissingDefaultResource">
+    android:fillViewport="true">
 
-</nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/horizontal_padding">
+
+        <ImageView
+            android:id="@+id/data_migration_qr_codes"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/qr_code_border"
+            android:padding="2dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:adjustViewBounds="false"
+            android:contentDescription="@string/accessibility_label_your_qr"
+            android:focusable="true"
+            android:scaleType="fitCenter"
+            tools:layout_height="400dp" />
+
+        <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
+            android:id="@+id/step"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/primary_blue"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/data_migration_qr_codes"
+            tools:text="Stap 3" />
+
+        <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_goneMarginTop="32dp"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:textStyle="bold"
+            android:text="@string/holder_startMigration_toOtherDevice_onboarding_step3_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step" />
+
+        <nl.rijksoverheid.ctr.design.widgets.HtmlTextViewWidget
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:htmlText="@string/holder_startMigration_toOtherDevice_onboarding_step3_message"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</nl.rijksoverheid.ctr.design.widgets.AnimatorScrollView>
