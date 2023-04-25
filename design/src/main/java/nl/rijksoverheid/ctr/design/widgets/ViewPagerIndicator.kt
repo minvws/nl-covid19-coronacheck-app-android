@@ -44,6 +44,12 @@ class ViewPagerIndicator @JvmOverloads constructor(
         this.selectedIndex = selectedIndex
     }
 
+    fun updateSelectedColor(color: Int) {
+        forEachIndexed { _, view ->
+            (view as ViewPagerIndicatorBubble).binding.selected.setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN)
+        }
+    }
+
     private class ViewPagerIndicatorBubble @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,

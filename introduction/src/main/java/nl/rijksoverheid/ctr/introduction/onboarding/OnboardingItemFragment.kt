@@ -3,8 +3,10 @@ package nl.rijksoverheid.ctr.introduction.onboarding
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
+import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter.Companion.EXTRA_ONBOARDING_ITEM
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
@@ -17,7 +19,7 @@ import org.koin.android.ext.android.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class OnboardingItemFragment : OnboardingBaseItemFragment(R.layout.fragment_onboarding_item) {
+class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
 
     private val androidUtil: AndroidUtil by inject()
 

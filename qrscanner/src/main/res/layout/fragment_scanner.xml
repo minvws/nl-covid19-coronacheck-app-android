@@ -5,7 +5,7 @@
   ~   SPDX-License-Identifier: EUPL-1.2
   ~
   -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -142,45 +142,59 @@
 
     </ScrollView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/policyRiskWidget"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/extra_content_widget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/header_guideline"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingBottom="55dp"
+        android:paddingHorizontal="26dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
-            android:orientation="horizontal">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textColor="@color/white"
+            android:id="@+id/extra_content_header" />
 
-            <View
-                android:id="@+id/policyIndicator"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/verification_policy_indicator_circle" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/extra_content_header"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:textColor="@color/white"
+            android:id="@+id/extra_content_title" />
 
-            <TextView
-                android:id="@+id/policyText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:textColor="@color/primary_text"
-                tools:text="3G-toegang" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/extra_content_title"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/white"
+            android:id="@+id/extra_content_message" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        <nl.rijksoverheid.ctr.design.widgets.ViewPagerIndicator
+            android:id="@+id/indicators"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:focusable="false"
+            android:gravity="center"
+            android:paddingBottom="55dp"
+            app:layout_constraintTop_toBottomOf="@id/extra_content_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
         android:id="@+id/progress"
@@ -193,4 +207,4 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout>

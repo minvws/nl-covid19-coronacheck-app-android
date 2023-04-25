@@ -41,6 +41,8 @@ import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.MultipleQrCodesUtilImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtilImpl
+import nl.rijksoverheid.ctr.holder.utils.CameraUtil
+import nl.rijksoverheid.ctr.holder.utils.CameraUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.LocalDateUtil
@@ -129,4 +131,5 @@ val utilsModule = module {
     factory<YourEventsEndStateUtil> { YourEventsEndStateUtilImpl(get()) }
     factory<RemovedEventsBottomSheetUtil> { RemovedEventsBottomSheetUtilImpl(get(), get(), get(), get(), get(), get()) }
     factory<StringDataZipper> { StringDataZipperImpl() }
+    factory<CameraUtil> { CameraUtilImpl() }
 }

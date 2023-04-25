@@ -13,7 +13,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Paint
 import android.hardware.display.DisplayManager
@@ -25,7 +24,6 @@ import android.view.Display
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.ColorRes
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -128,12 +126,12 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             set.applyTo(binding.root)
         }
 
-        getCopy().verificationPolicy?.let {
-            binding.policyRiskWidget.visibility = View.VISIBLE
-            binding.policyText.text = it.title
-            binding.policyIndicator.backgroundTintList =
-                ColorStateList.valueOf(requireContext().getColor(it.indicatorColor))
-        } ?: run { binding.policyRiskWidget.visibility = View.GONE }
+        getCopy().extraContent?.let {
+            binding.extraContentWidget.visibility = View.VISIBLE
+            binding.extraContentHeader.text = it.header
+            binding.extraContentTitle.text = it.title
+            binding.extraContentMessage.text = it.message
+        } ?: run { binding.extraContentWidget.visibility = View.GONE }
     }
 
     private fun setCopy() {
@@ -454,7 +452,7 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
         val message: String,
         val rationaleDialog: RationaleDialog? = null,
         val onMessageClicked: (() -> Unit)? = null,
-        val verificationPolicy: VerificationPolicy? = null
+        val extraContent: ExtraContent? = null
     ) {
         data class RationaleDialog(
             val title: Int,
@@ -462,9 +460,10 @@ abstract class QrCodeScannerFragment : Fragment(R.layout.fragment_scanner) {
             val okayButtonText: Int
         )
 
-        data class VerificationPolicy(
+        data class ExtraContent(
+            val header: String,
             val title: String,
-            @ColorRes val indicatorColor: Int
+            val message: String
         )
     }
 }
