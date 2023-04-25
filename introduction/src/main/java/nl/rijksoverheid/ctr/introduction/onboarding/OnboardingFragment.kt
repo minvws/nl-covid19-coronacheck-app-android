@@ -58,7 +58,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
         binding: FragmentOnboardingBinding,
         adapter: OnboardingPagerAdapter
     ) {
-        binding.toolbar.isVisible = true
+        binding.toolbar.visibility = View.VISIBLE
         binding.toolbar.setNavigationOnClickListener {
             binding.viewPager.setCurrentItem(binding.viewPager.currentItem - 1, animationsEnabled())
         }
@@ -118,7 +118,7 @@ class OnboardingFragment : Fragment(R.layout.fragment_onboarding) {
             @SuppressLint("StringFormatInvalid")
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                binding.toolbar.visibility = if (position == 0) View.GONE else View.VISIBLE
+                binding.toolbar.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
                 binding.logo.isFocusable = (position == 0)
                 binding.logo.importantForAccessibility = if (position == 0) {
                     View.IMPORTANT_FOR_ACCESSIBILITY_YES

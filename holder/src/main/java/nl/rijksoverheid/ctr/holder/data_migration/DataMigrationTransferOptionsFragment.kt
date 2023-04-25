@@ -27,6 +27,12 @@ val transferOutOnboardingItems = arrayOf(
         titleResource = R.string.holder_startMigration_toOtherDevice_onboarding_step2_title,
         description = R.string.holder_startMigration_toOtherDevice_onboarding_step2_message,
         position = 2
+    ),
+    OnboardingItem(
+        clazz = DataMigrationShowQrCodeFragment::class.java,
+        titleResource = R.string.holder_startMigration_toOtherDevice_onboarding_step3_title,
+        description = R.string.holder_startMigration_toOtherDevice_onboarding_step3_title,
+        position = 3
     )
 )
 

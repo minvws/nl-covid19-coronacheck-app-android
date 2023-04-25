@@ -94,6 +94,12 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
 
+                binding.button.text = if (position == 2) {
+                    getString(R.string.holder_startMigration_onboarding_doneButton)
+                } else {
+                    getString(R.string.holder_startMigration_onboarding_nextButton)
+                }
+
                 binding.indicators.updateSelected(position)
 
                 binding.indicators.contentDescription = getString(

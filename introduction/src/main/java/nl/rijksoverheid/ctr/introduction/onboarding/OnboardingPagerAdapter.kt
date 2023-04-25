@@ -25,6 +25,6 @@ class OnboardingPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         val item = items[position]
-        return OnboardingItemFragment.getInstance(item)
+        return OnboardingBaseItemFragment.getInstance(item)
     }
 }

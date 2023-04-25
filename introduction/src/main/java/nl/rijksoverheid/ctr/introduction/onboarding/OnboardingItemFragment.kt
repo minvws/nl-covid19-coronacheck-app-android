@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.introduction.onboarding
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
@@ -18,20 +17,7 @@ import org.koin.android.ext.android.inject
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
-
-    companion object {
-        private const val EXTRA_ONBOARDING_ITEM = "EXTRA_ONBOARDING_ITEM"
-
-        fun getInstance(onboardingItem: OnboardingItem): OnboardingItemFragment {
-            val fragment =
-                OnboardingItemFragment()
-            val bundle = Bundle()
-            bundle.putParcelable(EXTRA_ONBOARDING_ITEM, onboardingItem)
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
+class OnboardingItemFragment : OnboardingBaseItemFragment(R.layout.fragment_onboarding_item) {
 
     private val androidUtil: AndroidUtil by inject()
 
