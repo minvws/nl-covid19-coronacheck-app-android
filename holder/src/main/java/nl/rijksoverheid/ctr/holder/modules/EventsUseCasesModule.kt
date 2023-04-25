@@ -5,6 +5,8 @@ import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUse
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUseCaseImpl
 import nl.rijksoverheid.ctr.holder.data_migration.DataExportUseCase
 import nl.rijksoverheid.ctr.holder.data_migration.DataExportUseCaseImpl
+import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationImportUseCase
+import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationImportUseCaseImpl
 import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationUseCase
 import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationUseCaseImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithTokensUseCase
@@ -89,4 +91,5 @@ val eventsUseCasesModule = module {
     factory<DraftEventUseCase> { DraftEventUseCaseImpl(get()) }
     factory<DataMigrationUseCase> { DataMigrationUseCaseImpl(get()) }
     factory<DataExportUseCase> { DataExportUseCaseImpl(get(), get(), get()) }
+    factory<DataMigrationImportUseCase> { DataMigrationImportUseCaseImpl(get(), get()) }
 }

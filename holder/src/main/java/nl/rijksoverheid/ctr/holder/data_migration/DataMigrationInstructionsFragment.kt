@@ -60,7 +60,7 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
                 if (args.destination is DataMigrationOnboardingItem.ScanQrCode) {
-                    cameraUtil.openScanner(requireActivity(), R.id.action_data_migration_qr_scanner, ::showNoCameraError)
+                    navigateSafety(DataMigrationInstructionsFragmentDirections.actionDataMigrationScanQr())
                 } else {
                     navigateSafety(args.destination.navigationActionId)
                 }

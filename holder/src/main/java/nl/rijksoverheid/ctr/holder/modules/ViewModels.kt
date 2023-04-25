@@ -5,6 +5,8 @@ import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModelImpl
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModel
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardViewModelImpl
+import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationScanQrViewModel
+import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationScanQrViewModelImpl
 import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationShowQrCodeViewModel
 import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationShowQrCodeViewModelImpl
 import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationStartViewModel
@@ -64,4 +66,5 @@ val viewModels = module {
     viewModel<MenuViewModel> { MenuViewModelImpl(get(), get()) }
     viewModel<DataMigrationStartViewModel> { DataMigrationStartViewModelImpl(get()) }
     viewModel<DataMigrationShowQrCodeViewModel> { DataMigrationShowQrCodeViewModelImpl(get(), get()) }
+    viewModel<DataMigrationScanQrViewModel> { DataMigrationScanQrViewModelImpl(get(), get(), get()) }
 }
