@@ -19,7 +19,7 @@ sealed class DataMigrationOnboardingItem(
     object ShowQrCode : DataMigrationOnboardingItem(
         title = R.string.holder_startMigration_toOtherDevice_onboarding_step3_title,
         descriptionResource = R.string.holder_startMigration_toOtherDevice_onboarding_step3_title,
-        navigationActionId = R.id.action_data_migration_show_qr
+        navigationActionId = R.id.action_my_overview
     ), Parcelable
 
     @Parcelize
