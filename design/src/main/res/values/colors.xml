@@ -49,4 +49,5 @@
     <color name="html_secondary_text">@color/secondary_text</color>
     <color name="hidden_qr_eye_icon">@color/black</color>
     <color name="hidden_qr_eye_icon_line">@color/white</color>
+    <color name="data_migration_drawable_background">#DCEEFD</color>
 </resources>
