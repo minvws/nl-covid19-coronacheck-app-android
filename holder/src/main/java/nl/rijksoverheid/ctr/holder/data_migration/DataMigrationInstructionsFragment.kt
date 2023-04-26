@@ -9,6 +9,9 @@
 package nl.rijksoverheid.ctr.holder.data_migration
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.hardware.camera2.CameraAccessException
+import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
@@ -60,7 +63,7 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
                 if (args.destination is DataMigrationOnboardingItem.ScanQrCode) {
-                    navigateSafety(DataMigrationInstructionsFragmentDirections.actionDataMigrationScanQr())
+                    openScanner()
                 } else {
                     navigateSafety(args.destination.navigationActionId)
                 }
@@ -70,8 +73,22 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
         }
     }
 
+    private fun openScanner() {
+        try {
+            val cameraManager =
+                requireActivity().getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            if (cameraManager.cameraIdList.isNotEmpty()) {
+                navigateSafety(DataMigrationInstructionsFragmentDirections.actionDataMigrationScanQr())
+            } else {
+                showNoCameraError()
+            }
+        } catch (exception: CameraAccessException) {
+            showNoCameraError()
+        }
+    }
+
     private fun showNoCameraError() {
-        findNavControllerSafety()?.navigate(
+        navigateSafety(
             R.id.action_error_result,
             ErrorResultFragment.getBundle(
                 ErrorResultFragmentData(
