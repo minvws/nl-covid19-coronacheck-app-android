@@ -59,9 +59,9 @@ class DataMigrationTransferOptionsFragment : Fragment(R.layout.fragment_data_mig
         val binding = FragmentDataMigrationTransferOptionsBinding.bind(view)
 
         binding.transferOutButton.transferOptionsButtonTitle.text = getString(R.string.holder_startMigration_option_toOtherDevice_title)
-        binding.transferOutButton.transferOptionsButtonIcon.setImageResource(R.drawable.transfer_out)
+        binding.transferOutButton.transferOptionsButtonIcon.setImageResource(R.drawable.illustration_data_migration_transfer_out)
         binding.transferInButton.transferOptionsButtonTitle.text = getString(R.string.holder_startMigration_option_toThisDevice_title)
-        binding.transferInButton.transferOptionsButtonIcon.setImageResource(R.drawable.transfer_in)
+        binding.transferInButton.transferOptionsButtonIcon.setImageResource(R.drawable.illustration_data_migration_transfer_in)
 
         binding.transferOutButton.root.setOnClickListener {
             navigateSafety(

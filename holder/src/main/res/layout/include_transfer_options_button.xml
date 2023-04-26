@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/holder_startMigration_option_toOtherDevice_title"
-            android:src="@drawable/transfer_out"
+            android:src="@drawable/illustration_data_migration_transfer_out"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
