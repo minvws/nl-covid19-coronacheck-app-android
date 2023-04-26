@@ -21,13 +21,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.holder.utils.CameraUtil
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
-import org.koin.android.ext.android.inject
 
 class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding) {
 
@@ -35,7 +33,6 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
     private val binding get() = _binding!!
 
     private val args: DataMigrationInstructionsFragmentArgs by navArgs()
-    private val cameraUtil: CameraUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

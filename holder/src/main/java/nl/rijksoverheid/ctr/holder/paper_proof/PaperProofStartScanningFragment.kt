@@ -7,9 +7,13 @@
 
 package nl.rijksoverheid.ctr.holder.paper_proof
 
+import android.content.Context
+import android.hardware.camera2.CameraAccessException
+import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -17,7 +21,6 @@ import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPaperProofStartScanningBinding
-import nl.rijksoverheid.ctr.holder.utils.CameraUtil
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -28,7 +31,6 @@ class PaperProofStartScanningFragment : Fragment(R.layout.fragment_paper_proof_s
 
     private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
-    private val cameraUtil: CameraUtil by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +53,22 @@ class PaperProofStartScanningFragment : Fragment(R.layout.fragment_paper_proof_s
         }
 
         binding.bottom.setButtonClick {
-            cameraUtil.openScanner(requireActivity(), R.id.action_paper_proof_qr_scanner, ::showNoCameraError)
+            openScanner()
+        }
+    }
+
+    private fun openScanner() {
+        try {
+            val cameraManager =
+                requireActivity().getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            if (cameraManager.cameraIdList.isNotEmpty()) {
+                Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
+                    .navigate(R.id.action_paper_proof_qr_scanner)
+            } else {
+                showNoCameraError()
+            }
+        } catch (exception: CameraAccessException) {
+            showNoCameraError()
         }
     }
 
