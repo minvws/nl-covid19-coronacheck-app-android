@@ -9,6 +9,9 @@
 package nl.rijksoverheid.ctr.holder.data_migration
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.hardware.camera2.CameraAccessException
+import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.view.View
 import android.widget.ScrollView
@@ -16,11 +19,13 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
+import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 
 class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding) {
 
@@ -54,11 +59,43 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
         binding.button.setOnClickListener {
             val currentItem = binding.viewPager.currentItem
             if (currentItem == adapter.itemCount - 1) {
-                navigateSafety(args.destination.navigationActionId)
+                if (args.destination is DataMigrationOnboardingItem.ScanQrCode) {
+                    openScanner()
+                } else {
+                    navigateSafety(args.destination.navigationActionId)
+                }
             } else {
                 binding.viewPager.currentItem = currentItem + 1
             }
         }
+    }
+
+    private fun openScanner() {
+        try {
+            val cameraManager =
+                requireActivity().getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            if (cameraManager.cameraIdList.isNotEmpty()) {
+                navigateSafety(DataMigrationInstructionsFragmentDirections.actionDataMigrationScanQr())
+            } else {
+                showNoCameraError()
+            }
+        } catch (exception: CameraAccessException) {
+            showNoCameraError()
+        }
+    }
+
+    private fun showNoCameraError() {
+        navigateSafety(
+            R.id.action_error_result,
+            ErrorResultFragment.getBundle(
+                ErrorResultFragmentData(
+                    title = getString(R.string.add_paper_proof_no_camera_error_header),
+                    description = getString(R.string.add_paper_proof_no_camera_error_description),
+                    buttonTitle = getString(R.string.back_to_overview),
+                    buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                )
+            )
+        )
     }
 
     private fun setBackPressListener() {
@@ -93,6 +130,12 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
             @SuppressLint("StringFormatInvalid")
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+
+                binding.button.text = if (position == 2) {
+                    getString(R.string.holder_startMigration_onboarding_doneButton)
+                } else {
+                    getString(R.string.holder_startMigration_onboarding_nextButton)
+                }
 
                 binding.indicators.updateSelected(position)
 

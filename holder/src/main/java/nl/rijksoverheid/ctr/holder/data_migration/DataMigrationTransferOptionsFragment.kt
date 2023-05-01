@@ -27,6 +27,12 @@ val transferOutOnboardingItems = arrayOf(
         titleResource = R.string.holder_startMigration_toOtherDevice_onboarding_step2_title,
         description = R.string.holder_startMigration_toOtherDevice_onboarding_step2_message,
         position = 2
+    ),
+    OnboardingItem(
+        clazz = DataMigrationShowQrCodeFragment::class.java,
+        titleResource = R.string.holder_startMigration_toOtherDevice_onboarding_step3_title,
+        description = R.string.holder_startMigration_toOtherDevice_onboarding_step3_title,
+        position = 3
     )
 )
 
@@ -53,9 +59,9 @@ class DataMigrationTransferOptionsFragment : Fragment(R.layout.fragment_data_mig
         val binding = FragmentDataMigrationTransferOptionsBinding.bind(view)
 
         binding.transferOutButton.transferOptionsButtonTitle.text = getString(R.string.holder_startMigration_option_toOtherDevice_title)
-        binding.transferOutButton.transferOptionsButtonIcon.setImageResource(R.drawable.transfer_out)
+        binding.transferOutButton.transferOptionsButtonIcon.setImageResource(R.drawable.illustration_data_migration_transfer_out)
         binding.transferInButton.transferOptionsButtonTitle.text = getString(R.string.holder_startMigration_option_toThisDevice_title)
-        binding.transferInButton.transferOptionsButtonIcon.setImageResource(R.drawable.transfer_in)
+        binding.transferInButton.transferOptionsButtonIcon.setImageResource(R.drawable.illustration_data_migration_transfer_in)
 
         binding.transferOutButton.root.setOnClickListener {
             navigateSafety(

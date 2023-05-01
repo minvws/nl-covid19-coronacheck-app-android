@@ -1,3 +1,11 @@
+/*
+ *  Copyright (c) 2023 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ *   SPDX-License-Identifier: EUPL-1.2
+ *
+ */
+
 package nl.rijksoverheid.ctr.holder.data_migration
 
 import android.os.Parcelable
@@ -19,7 +27,7 @@ sealed class DataMigrationOnboardingItem(
     object ShowQrCode : DataMigrationOnboardingItem(
         title = R.string.holder_startMigration_toOtherDevice_onboarding_step3_title,
         descriptionResource = R.string.holder_startMigration_toOtherDevice_onboarding_step3_title,
-        navigationActionId = R.id.action_data_migration_show_qr
+        navigationActionId = R.id.action_my_overview
     ), Parcelable
 
     @Parcelize

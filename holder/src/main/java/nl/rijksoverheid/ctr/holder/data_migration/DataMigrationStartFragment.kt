@@ -10,7 +10,6 @@ package nl.rijksoverheid.ctr.holder.data_migration
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentDataMigrationStartTransferringBinding
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
@@ -31,7 +30,12 @@ class DataMigrationStartFragment : Fragment(R.layout.fragment_data_migration_sta
                 if (it) {
                     navigateSafety(DataMigrationStartFragmentDirections.actionDataTransferOptions())
                 } else {
-                    Snackbar.make(binding.description, "No data to transfer", Snackbar.LENGTH_LONG).show()
+                    navigateSafety(
+                        DataMigrationTransferOptionsFragmentDirections.actionDataMigrationInstructions(
+                            instructionItems = transferInOnboardingItems,
+                            destination = DataMigrationOnboardingItem.ScanQrCode
+                        )
+                    )
                 }
             }
         })

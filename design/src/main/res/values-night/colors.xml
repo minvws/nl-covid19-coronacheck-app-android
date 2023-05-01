@@ -14,4 +14,5 @@
     <color name="html_secondary_text">@color/neutral_grey_3</color>
     <color name="hidden_qr_eye_icon">@color/white</color>
     <color name="hidden_qr_eye_icon_line">@color/neutral_white</color>
+    <color name="data_migration_drawable_background">#053057</color>
 </resources>
