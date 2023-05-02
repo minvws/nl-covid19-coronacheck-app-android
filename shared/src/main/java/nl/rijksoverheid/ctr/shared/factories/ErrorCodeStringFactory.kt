@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2023 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 package nl.rijksoverheid.ctr.shared.factories
 
 import android.content.ActivityNotFoundException
@@ -13,6 +20,8 @@ import javax.net.ssl.SSLKeyException
 import javax.net.ssl.SSLPeerUnverifiedException
 import javax.net.ssl.SSLProtocolException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
+import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationCompressionException
+import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationOtherException
 import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
 import nl.rijksoverheid.ctr.shared.models.BlockedEventException
@@ -69,6 +78,8 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
                 is MissingOriginException -> "058"
                 is WeCouldntCreateCertificateException -> exception.errorCode
                 is BlockedEventException -> "0514"
+                is DataMigrationCompressionException -> "110"
+                is DataMigrationOtherException -> "111"
                 else -> throw it.getException()
             }
 

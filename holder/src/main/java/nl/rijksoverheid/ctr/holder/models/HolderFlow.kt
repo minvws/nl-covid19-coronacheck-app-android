@@ -52,4 +52,7 @@ sealed class HolderFlow(code: Int) : Flow(code), Parcelable {
 
     @Parcelize
     object FuzzyMatching : HolderFlow(13)
+
+    @Parcelize
+    object Migration : HolderFlow(14)
 }

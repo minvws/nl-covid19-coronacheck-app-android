@@ -643,12 +643,12 @@
   <string name="holder_startMigration_option_toThisDevice_title">To this phone</string>
   <string name="holder_startMigration_message">Make sure you have the CoronaCheck app installed on both phones.</string>
   <string name="holder_startMigration_onboarding_toolbar">Transfer certificates</string>
-  <string name="holder_startMigration_onboarding_title">Transfer certificates</string>
+  <string name="holder_startMigration_onboarding_title">Transferring certificates in one go</string>
   <string name="holder_startMigration_onboarding_message">Do you have another phone you want to use your certificates on (too)? Then you can transfer your details in one go.</string>
   <string name="holder_startMigration_onboarding_nextButton">Next</string>
   <string name="holder_startMigration_onboarding_step">Step %s</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_step1_title">Grab your other phone too</string>
-  <string name="holder_startMigration_toOtherDevice_onboarding_step1_message">Take the phone you want to transfer your details to. From there, also go to \'Transfer my certificate\' and go through the corresponding steps.</string>
+  <string name="holder_startMigration_toOtherDevice_onboarding_step1_message">Take the phone you want to transfer your details to. From there, also go to \'Transfer my certificates\' and go through the corresponding steps.</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_nextButton">Next</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_step2_title">Scan the QR code with that phone</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_step2_message">A special QR code will be created with your details. You’ll find this in the next step.</string>
@@ -660,7 +660,7 @@
   <string name="holder_migrationFlow_deleteDetails_dialog_deleteButton">Yes, remove</string>
   <string name="holder_migrationFlow_deleteDetails_dialog_retainButton">No, retain</string>
   <string name="holder_startMigration_toThisDevice_onboarding_step1_title">Grab your other phone too</string>
-  <string name="holder_startMigration_toThisDevice_onboarding_step1_message">Take the phone that holds the details you want to transfer. From there, also go to \'Transfer my certificate\' and go through the corresponding steps.</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_step1_message">Take the phone that holds the details you want to transfer. From there, also go to \'Transfer my certificates\' and go through the corresponding steps.</string>
   <string name="holder_startMigration_toThisDevice_onboarding_nextButton">Next</string>
   <string name="holder_startMigration_toThisDevice_onboarding_step2_title">Scan the QR code on your other phone</string>
   <string name="holder_startMigration_toThisDevice_onboarding_step2_message">On your other phone, a special QR code will be created with your details. Scan it in the next step with this phone.</string>
@@ -677,4 +677,5 @@
   <string name="holder_migrationFlow_goBack_dialog_message">Doing so will stop transferring your certificates. You will have to scan the QR code again later.</string>
   <string name="holder_migrationFlow_goBack_dialog_yesButton">Yes, back</string>
   <string name="holder_migrationFlow_goBack_dialog_noButton">No</string>
+  <string name="holder_migration_errorcode_message"><![CDATA[<p>Something is going wrong while exporting your details.</p><br /><p><b>Error code:</b><br /> %s </p>]]></string>
 </resources>
