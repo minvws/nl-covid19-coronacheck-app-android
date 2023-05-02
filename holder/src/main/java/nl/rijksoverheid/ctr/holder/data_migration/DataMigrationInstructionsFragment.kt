@@ -10,16 +10,19 @@ package nl.rijksoverheid.ctr.holder.data_migration
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraManager
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
+import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter
@@ -34,8 +37,24 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
 
     private val args: DataMigrationInstructionsFragmentArgs by navArgs()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (BuildConfig.FLAVOR.lowercase().contains("prod")) {
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_SECURE,
+                WindowManager.LayoutParams.FLAG_SECURE
+            )
+        }
+
+        increaseBrightness()
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         _binding = FragmentOnboardingBinding.bind(view)
 
@@ -155,14 +174,37 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
                 } else {
                     binding.bottom.cardElevation = 0f
                 }
+
+                if (args.instructionItems[position].clazz == DataMigrationShowQrCodeFragment::class.java) {
+                    increaseBrightness()
+                } else {
+                    resetBrightness()
+                }
             }
         })
         startingItem?.let { binding.viewPager.currentItem = it }
     }
 
+    fun increaseBrightness() {
+        val params = requireActivity().window.attributes
+        params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL
+        requireActivity().window.attributes = params
+    }
+
+    private fun resetBrightness() {
+        val params = requireActivity().window.attributes
+        params?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+        requireActivity().window.attributes = params
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
+        resetBrightness()
+
+        requireActivity().requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
     companion object {
