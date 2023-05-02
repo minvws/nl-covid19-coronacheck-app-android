@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.holder.models.MissingOriginErrorResult
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
@@ -144,7 +144,7 @@ abstract class BaseFragment(contentLayoutId: Int) : Fragment(contentLayoutId) {
         errorResult is NetworkRequestResult.Failed.CoronaCheckHttpError && errorResult.e.code() == 429
 
     fun presentError(data: ErrorResultFragmentData) {
-        findNavControllerSafety()?.navigate(
+        navigateSafety(
             R.id.action_error_result,
             ErrorResultFragment.getBundle(data)
         )

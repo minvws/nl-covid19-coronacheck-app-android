@@ -30,7 +30,7 @@ class DataMigrationScanQrFragment : QrCodeScannerFragment() {
                 DataMigrationScanQrFragmentDirections.actionYourEvents(
                     type = it,
                     toolbarTitle = "",
-                    flow = HolderFlow.VaccinationAndPositiveTest
+                    flow = HolderFlow.Migration
                 )
             )
         })

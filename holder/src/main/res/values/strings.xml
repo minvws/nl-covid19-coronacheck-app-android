@@ -643,7 +643,7 @@
   <string name="holder_startMigration_option_toThisDevice_title">Naar deze telefoon</string>
   <string name="holder_startMigration_message">Zorg dat je op beide telefoons de CoronaCheck app hebt staan.</string>
   <string name="holder_startMigration_onboarding_toolbar">Bewijzen overzetten</string>
-  <string name="holder_startMigration_onboarding_title">Bewijzen overzetten</string>
+  <string name="holder_startMigration_onboarding_title">Bewijzen in één keer overzetten</string>
   <string name="holder_startMigration_onboarding_message">Heb je een andere telefoon waar je jouw bewijzen (ook) op wilt gebruiken? Dan kun je jouw gegevens in één keer overzetten.</string>
   <string name="holder_startMigration_onboarding_nextButton">Volgende</string>
   <string name="holder_startMigration_onboarding_step">Stap %s</string>
@@ -677,4 +677,5 @@
   <string name="holder_migrationFlow_goBack_dialog_message">Hierdoor stop je het overzetten van je bewijzen en moet je later opnieuw de QR-code scannen.</string>
   <string name="holder_migrationFlow_goBack_dialog_yesButton">Ja, terug</string>
   <string name="holder_migrationFlow_goBack_dialog_noButton">Nee</string>
+  <string name="holder_migration_errorcode_message"><![CDATA[<p>Er gaat iets mis met het exporteren van je gegevens.</p><br /><p><b>Foutcode:</b><br /> %s </p>]]></string>
 </resources>
