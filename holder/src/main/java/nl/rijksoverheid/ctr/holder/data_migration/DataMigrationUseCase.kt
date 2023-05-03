@@ -17,7 +17,7 @@ class DataMigrationUseCaseImpl(
 ) : DataMigrationUseCase {
 
     override suspend fun canTransferData(): Boolean {
-        val events = holderDatabase.eventGroupDao().getAll()
+        val events = holderDatabase.eventGroupDao().getAll().filter { !it.draft }
         return events.isNotEmpty()
     }
 }
