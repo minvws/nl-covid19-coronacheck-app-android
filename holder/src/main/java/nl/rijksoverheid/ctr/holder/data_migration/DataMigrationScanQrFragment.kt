@@ -47,7 +47,6 @@ class DataMigrationScanQrFragment : QrCodeScannerFragment() {
         binding.extraContentMessage.text =
             getString(R.string.holder_startMigration_toThisDevice_onboarding_step3_messageKeepPointing)
         viewModel.onQrScanned(content)
-        setupScanner()
     }
 
     override fun getCopy(): Copy {
