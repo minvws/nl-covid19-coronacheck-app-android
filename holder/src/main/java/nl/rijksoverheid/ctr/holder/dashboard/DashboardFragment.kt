@@ -77,6 +77,29 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         observeAppConfig()
         observeBottomElevation()
         observeMenuItem()
+        observeDialogs()
+        pendingDialogs()
+    }
+
+    private fun observeDialogs() {
+        dashboardViewModel.showMigrationDialogLiveData.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                dialogUtil.presentDialog(
+                    context = requireContext(),
+                    title = R.string.holder_migrationFlow_deleteDetails_dialog_title,
+                    message = getString(R.string.holder_migrationFlow_deleteDetails_dialog_message),
+                    positiveButtonText = R.string.holder_migrationFlow_deleteDetails_dialog_deleteButton,
+                    negativeButtonText = R.string.holder_migrationFlow_deleteDetails_dialog_retainButton,
+                    positiveButtonCallback = {
+                        dashboardViewModel.deleteMigrationData()
+                    }
+                )
+            })
+    }
+
+    private fun pendingDialogs() {
+        dashboardViewModel.showMigrationDialog()
     }
 
     private fun observeBottomElevation() {
@@ -194,9 +217,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                         }
                     }
                     is DatabaseSyncerResult.FuzzyMatchingError -> {
-                        navigateSafety(NavGraphOverviewDirections.actionFuzzyMatching(
-                            MatchingBlobIds(it.matchingBlobIds)
-                        ))
+                        navigateSafety(
+                            NavGraphOverviewDirections.actionFuzzyMatching(
+                                MatchingBlobIds(it.matchingBlobIds)
+                            )
+                        )
                     }
                     is DatabaseSyncerResult.Success -> {
                         // no extra action needed
