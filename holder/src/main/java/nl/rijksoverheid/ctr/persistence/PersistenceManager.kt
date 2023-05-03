@@ -33,6 +33,8 @@ interface PersistenceManager {
     fun getHasDismissedNewValidityInfoCard(): Boolean
     fun setCheckCanOpenDatabase(check: Boolean)
     fun getCheckCanOpenDatabase(): Boolean
+    fun getShowMigrationDialog(): Boolean
+    fun setShowMigrationDialog(show: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -51,10 +53,8 @@ class SharedPreferencesPersistenceManager(
         const val SHOW_SYNC_GREEN_CARDS_ITEM = "SHOW_SYNC_GREEN_CARDS_ITEM"
         const val CHECK_VALIDITY_INFO_CARD = "CHECK_VALIDITY_INFO_CARD"
         const val HAS_DISMISSED_VALIDITY_INFO_CARD = "HAS_DISMISSED_VALIDITY_INFO_CARD"
-        const val POLICY_BANNER_DISMISSED = "POLICY_BANNER_DISMISSED"
-        const val POLICY_SCREEN_SEEN = "POLICY_SCREEN_SEEN"
         const val CHECK_CAN_OPEN_DATABASE = "CHECK_CAN_OPEN_DATABASE"
-        const val CAN_SHOW_BLOCKED_EVENTS_DIALOG = "CAN_SHOW_BLOCKED_EVENTS_DIALOG"
+        const val SHOW_MIGRATION_DIALOG = "SHOW_MIGRATION_DIALOG"
     }
 
     override fun saveDatabasePassPhrase(passPhrase: String) {
@@ -147,5 +147,13 @@ class SharedPreferencesPersistenceManager(
 
     override fun getCheckCanOpenDatabase(): Boolean {
         return sharedPreferences.getBoolean(CHECK_CAN_OPEN_DATABASE, true)
+    }
+
+    override fun getShowMigrationDialog(): Boolean {
+        return sharedPreferences.getBoolean(CHECK_CAN_OPEN_DATABASE, false)
+    }
+
+    override fun setShowMigrationDialog(show: Boolean) {
+        sharedPreferences.edit().putBoolean(CHECK_CAN_OPEN_DATABASE, show).commit()
     }
 }
