@@ -11,6 +11,7 @@ package nl.rijksoverheid.ctr.holder.data_migration
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
@@ -39,6 +40,14 @@ class DataMigrationScanQrFragment : QrCodeScannerFragment() {
             binding.progressBar.isVisible = true
             binding.progressBar.progress = it.calculateProgressPercentage()
         }
+
+        (parentFragment?.parentFragment as? HolderMainFragment)?.getToolbar()?.isVisible = false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        (parentFragment?.parentFragment as? HolderMainFragment)?.getToolbar()?.isVisible = true
     }
 
     override fun onQrScanned(content: String) {
