@@ -247,8 +247,7 @@ class DashboardViewModelImpl(
         viewModelScope.launch {
             holderDatabase.eventGroupDao().deleteAll()
             holderDatabase.greenCardDao().deleteAll()
-            holderDatabase.originDao().deleteAll()
-            holderDatabase.credentialDao().deleteAll()
+            holderDatabase.removedEventDao().deleteAll()
             refresh(DashboardSync.ForceSync)
         }
     }

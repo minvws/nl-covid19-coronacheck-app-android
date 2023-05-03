@@ -24,6 +24,9 @@ interface RemovedEventDao {
     @Query("DELETE FROM removed_event WHERE reason = :reason")
     suspend fun deleteAll(reason: RemovedEventReason)
 
+    @Query("DELETE FROM removed_event")
+    suspend fun deleteAll()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entity: RemovedEventEntity)
 }
