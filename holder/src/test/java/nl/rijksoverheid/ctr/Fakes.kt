@@ -110,6 +110,12 @@ fun fakeDashboardViewModel(tabItems: List<DashboardTabItem> = listOf(fakeDashboa
 
         override fun scrollUpdate(canScrollVertically: Boolean, greenCardType: GreenCardType) {
         }
+
+        override fun showMigrationDialog() {
+        }
+
+        override fun deleteMigrationData() {
+        }
     }
 
 fun fakeRemoveExpiredEventsUseCase() = object : RemoveExpiredEventsUseCase {
