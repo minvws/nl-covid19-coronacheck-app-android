@@ -22,6 +22,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
+import nl.rijksoverheid.ctr.holder.MainNavDirections
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds
@@ -125,19 +126,38 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
                 when (databaseSyncerResult) {
                     is DatabaseSyncerResult.Success -> {
-                        handleEndState(
-                            endState = yourEventsEndStateUtil.getEndState(
-                                context = requireContext(),
-                                hints = databaseSyncerResult.hints,
-                                blockedEvents = databaseSyncerResult.blockedEvents,
-                                newEvents = when (fragmentType) {
-                                    is YourEventsFragmentType.DCC -> fragmentType.remoteEvent.events
-                                        ?: listOf()
-                                    is YourEventsFragmentType.RemoteProtocol3Type -> fragmentType.remoteEvents.keys.toList()
-                                        .map { it.events ?: listOf() }.flatten()
-                                }
+                        if (getFlow() == HolderFlow.Migration) {
+                            infoFragmentUtil.presentFullScreen(
+                                currentFragment = this,
+                                toolbarTitle = "",
+                                data = InfoFragmentData.TitleDescriptionWithButton(
+                                    title = getString(R.string.holder_migrationFlow_migrationSuccessful_title),
+                                    descriptionData = DescriptionData(
+                                        htmlText = R.string.holder_migrationFlow_migrationSuccessful_message,
+                                        htmlLinksEnabled = true
+                                    ),
+                                    primaryButtonData = ButtonData.NavigationButton(
+                                        text = getString(R.string.back_to_overview),
+                                        navigationActionId = MainNavDirections.actionMyOverview().actionId
+                                    )
+                                ),
+                                hideNavigationIcon = true
                             )
-                        )
+                        } else {
+                            handleEndState(
+                                endState = yourEventsEndStateUtil.getEndState(
+                                    context = requireContext(),
+                                    hints = databaseSyncerResult.hints,
+                                    blockedEvents = databaseSyncerResult.blockedEvents,
+                                    newEvents = when (fragmentType) {
+                                        is YourEventsFragmentType.DCC -> fragmentType.remoteEvent.events
+                                            ?: listOf()
+                                        is YourEventsFragmentType.RemoteProtocol3Type -> fragmentType.remoteEvents.keys.toList()
+                                            .map { it.events ?: listOf() }.flatten()
+                                    }
+                                )
+                            )
+                        }
                     }
                     is DatabaseSyncerResult.Failed -> {
                         presentError(
