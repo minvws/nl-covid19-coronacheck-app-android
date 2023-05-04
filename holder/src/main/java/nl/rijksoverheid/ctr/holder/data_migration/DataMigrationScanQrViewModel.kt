@@ -51,7 +51,6 @@ class DataMigrationScanQrViewModelImpl(
                 val currentProgress = currentState?.progress ?: 0
                 if (!scannedChunks.map { it.payload }.contains(migrationParcel.payload)) {
                     scannedChunks.add(migrationParcel)
-                    println("Scanned ${scannedChunks.size} out of ${migrationParcel.numberOfPackages} parcels")
                     (progressBarLiveData as MutableLiveData).postValue(
                         ProgressBarState(
                             progress = currentProgress + 1,
