@@ -23,7 +23,7 @@ class DataExportUseCaseImpl(
     private val stringDataZipper: StringDataZipper
 ) : DataExportUseCase {
     override suspend fun export(): List<String> {
-        val eventsGroups = holderDatabase.eventGroupDao().getAll()
+        val eventsGroups = holderDatabase.eventGroupDao().getAll().filter { !it.draft }
         val eventGroupParcels = eventsGroups.map {
             EventGroupParcel(
                 expiryDate = it.expiryDate,
