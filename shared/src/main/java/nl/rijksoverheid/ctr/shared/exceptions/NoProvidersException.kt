@@ -11,4 +11,5 @@ sealed class NoProvidersException(val errorCode: String) : Exception(errorCode) 
     object Test : NoProvidersException("080")
     object Recovery : NoProvidersException("081")
     object Vaccination : NoProvidersException("082")
+    object Migration : NoProvidersException("084")
 }
