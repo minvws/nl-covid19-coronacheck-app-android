@@ -12,7 +12,6 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
-import timber.log.Timber
 
 interface DataMigrationImportUseCase {
     suspend fun import(content: String): MigrationParcel?
@@ -40,8 +39,6 @@ class DataMigrationImportUseCaseImpl(
                 .reduce { acc, bytes -> acc + bytes }
 
         val uncompressed = stringDataZipper.unzip(mergedMigrationParcel)
-
-        Timber.tag("migration").d(uncompressed)
 
         val parameterizedType =
             Types.newParameterizedType(List::class.java, EventGroupParcel::class.java)
