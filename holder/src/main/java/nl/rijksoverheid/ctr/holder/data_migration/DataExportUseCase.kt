@@ -26,9 +26,6 @@ class DataExportUseCaseImpl(
         val eventsGroups = holderDatabase.eventGroupDao().getAll().filter { !it.draft }
         val eventGroupParcels = eventsGroups.map {
             EventGroupParcel(
-                expiryDate = it.expiryDate,
-                providerIdentifier = it.providerIdentifier,
-                type = it.type,
                 jsonData = it.jsonData
             )
         }
