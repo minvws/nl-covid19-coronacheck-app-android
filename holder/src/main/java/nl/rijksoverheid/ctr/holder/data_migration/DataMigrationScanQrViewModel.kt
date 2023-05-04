@@ -17,9 +17,7 @@ import nl.rijksoverheid.ctr.holder.get_events.models.EventProvider
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.get_events.usecases.ConfigProvidersUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.EventProvidersResult
-import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
-import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.shared.livedata.Event
 
 data class ProgressBarState(val progress: Int, val max: Int) {
@@ -38,7 +36,7 @@ abstract class DataMigrationScanQrViewModel : ViewModel() {
 
 class DataMigrationScanQrViewModelImpl(
     private val dataMigrationImportUseCase: DataMigrationImportUseCase,
-    private val getRemoteProtocolFromEventGroupUseCase: GetRemoteProtocolFromEventGroupUseCase,
+    private val dataMigrationPayloadUseCase: DataMigrationPayloadUseCase,
     private val configProvidersUseCase: ConfigProvidersUseCase
 ) : DataMigrationScanQrViewModel() {
 
@@ -65,17 +63,7 @@ class DataMigrationScanQrViewModelImpl(
                 if (scannedChunks.size == migrationParcel.numberOfPackages) {
                     val eventGroupParcels = dataMigrationImportUseCase.merge(scannedChunks)
                     val remoteEventsMap = eventGroupParcels.mapNotNull {
-                        val remoteProtocol = getRemoteProtocolFromEventGroupUseCase.get(
-                            eventGroup = EventGroupEntity(
-                                walletId = 1,
-                                providerIdentifier = it.providerIdentifier,
-                                type = it.type,
-                                scope = "",
-                                expiryDate = it.expiryDate,
-                                draft = false,
-                                jsonData = it.jsonData
-                            )
-                        )
+                        val remoteProtocol = dataMigrationPayloadUseCase.parsePayload(it.jsonData)
 
                         if (remoteProtocol != null) {
                             mapOf(remoteProtocol to it.jsonData)

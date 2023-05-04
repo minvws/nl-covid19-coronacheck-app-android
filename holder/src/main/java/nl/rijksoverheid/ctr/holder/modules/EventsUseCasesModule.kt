@@ -7,6 +7,8 @@ import nl.rijksoverheid.ctr.holder.data_migration.DataExportUseCase
 import nl.rijksoverheid.ctr.holder.data_migration.DataExportUseCaseImpl
 import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationImportUseCase
 import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationImportUseCaseImpl
+import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationPayloadUseCase
+import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationPayloadUseCaseImpl
 import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationUseCase
 import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationUseCaseImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithTokensUseCase
@@ -92,4 +94,5 @@ val eventsUseCasesModule = module {
     factory<DataMigrationUseCase> { DataMigrationUseCaseImpl(get()) }
     factory<DataExportUseCase> { DataExportUseCaseImpl(get(), get(), get()) }
     factory<DataMigrationImportUseCase> { DataMigrationImportUseCaseImpl(get(), get()) }
+    factory<DataMigrationPayloadUseCase> { DataMigrationPayloadUseCaseImpl(get(), get()) }
 }
