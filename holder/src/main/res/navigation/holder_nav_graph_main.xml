@@ -878,7 +878,19 @@
             app:enterAnim="@animator/slide_in_right"
             app:exitAnim="@animator/slide_out_left"
             app:popEnterAnim="@animator/slide_in_left"
-            app:popExitAnim="@animator/slide_out_right" />
+            app:popExitAnim="@animator/slide_out_right"
+            app:popUpTo="@id/nav_data_migration_scan_qr"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_error_result"
+            app:destination="@id/nav_error_result"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right"
+            app:popUpTo="@id/nav_data_migration_scan_qr"
+            app:popUpToInclusive="true" />
 
     </fragment>
 

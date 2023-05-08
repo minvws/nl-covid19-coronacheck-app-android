@@ -21,6 +21,9 @@ import javax.net.ssl.SSLPeerUnverifiedException
 import javax.net.ssl.SSLProtocolException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
 import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationCompressionException
+import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationDecodingErrorException
+import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationInvalidNumberOfPackagesException
+import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationInvalidVersionException
 import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationOtherException
 import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
@@ -80,6 +83,9 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
                 is BlockedEventException -> "0514"
                 is DataMigrationCompressionException -> "110"
                 is DataMigrationOtherException -> "111"
+                is DataMigrationInvalidVersionException -> "112"
+                is DataMigrationInvalidNumberOfPackagesException -> "113"
+                is DataMigrationDecodingErrorException -> "114"
                 else -> throw it.getException()
             }
 

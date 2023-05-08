@@ -11,29 +11,54 @@ package nl.rijksoverheid.ctr.holder.data_migration
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DataMigrationScanQrFragment : QrCodeScannerFragment() {
 
     private val viewModel: DataMigrationScanQrViewModel by viewModel()
 
+    private val errorCodeStringFactory: ErrorCodeStringFactory by inject()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.scanFinishedLiveData.observe(viewLifecycleOwner, EventObserver {
-            navigateSafety(
-                DataMigrationScanQrFragmentDirections.actionYourEvents(
-                    type = it,
-                    toolbarTitle = "",
-                    flow = HolderFlow.Migration
+            when (it) {
+                is DataMigrationScanQrState.Error -> navigateSafety(
+                    DataMigrationScanQrFragmentDirections.actionErrorResult().actionId,
+                    ErrorResultFragment.getBundle(
+                        ErrorResultFragmentData(
+                            title = getString(R.string.error_something_went_wrong_title),
+                            description = getString(
+                                R.string.holder_migration_errorcode_message,
+                                errorCodeStringFactory.get(
+                                    HolderFlow.Migration,
+                                    listOf(it.errorResult)
+                                )
+                            ),
+                            buttonTitle = getString(R.string.general_toMyOverview),
+                            buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                        )
+                    )
                 )
-            )
+                is DataMigrationScanQrState.Success -> navigateSafety(
+                    DataMigrationScanQrFragmentDirections.actionYourEvents(
+                        type = it.type,
+                        toolbarTitle = "",
+                        flow = HolderFlow.Migration
+                    )
+                )
+            }
         })
 
         viewModel.progressBarLiveData.observe(viewLifecycleOwner) {

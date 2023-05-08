@@ -24,4 +24,6 @@ sealed class HolderStep(override val code: Int) : Step(code) {
     object PrepareIssueNetworkRequest : HolderStep(70)
     object GetCredentialsNetworkRequest : HolderStep(80)
     object StoringCredentials : HolderStep(90)
+    object DataMigrationImport : HolderStep(10)
+    object DataMigrationExport : HolderStep(20)
 }
