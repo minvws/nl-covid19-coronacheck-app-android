@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import java.io.IOException
 import kotlinx.coroutines.launch
+import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
 import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationCompressionException
@@ -55,7 +56,7 @@ class DataMigrationShowQrCodeViewModelImpl(
                     } else {
                         DataMigrationOtherException()
                     },
-                    step = MigrationHolderStep.Export
+                    step = HolderStep.DataMigrationExport
                 )
                 (qrCodesLiveData as MutableLiveData).postValue(
                     DataMigrationShowQrViewState.ShowError(
