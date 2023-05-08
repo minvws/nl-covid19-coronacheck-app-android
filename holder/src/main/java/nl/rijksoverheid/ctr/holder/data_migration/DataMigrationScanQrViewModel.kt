@@ -5,7 +5,6 @@
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-
 package nl.rijksoverheid.ctr.holder.data_migration
 
 import androidx.lifecycle.LiveData
@@ -77,7 +76,7 @@ class DataMigrationScanQrViewModelImpl(
                 dataMigrationImportUseCase.import(content)
             } catch (exception: Exception) {
                 scanFinishedWithError(DataMigrationDecodingErrorException())
-                null
+                return@launch
             }
 
             when {
@@ -96,57 +95,16 @@ class DataMigrationScanQrViewModelImpl(
 
     private suspend fun next(migrationParcel: MigrationParcel) {
         when {
-            scannedChunks.size > migrationParcel.numberOfPackages -> {
+            scannedChunks.size >= migrationParcel.numberOfPackages -> {
                 scanFinishedWithError(DataMigrationInvalidNumberOfPackagesException())
-            }
-            scannedChunks.size == migrationParcel.numberOfPackages -> {
-                updateProgress(migrationParcel)
-                val eventGroupParcels = try {
-                    dataMigrationImportUseCase.merge(scannedChunks)
-                } catch (exception: Exception) {
-                    scanFinishedWithError(DataMigrationDecodingErrorException())
-                    null
-                }
-                if (eventGroupParcels != null) {
-                    val remoteEventsMap = eventGroupParcels.mapNotNull {
-                        val remoteProtocol =
-                            dataMigrationPayloadUseCase.parsePayload(it.jsonData)
-
-                        if (remoteProtocol != null) {
-                            mapOf(remoteProtocol to it.jsonData)
-                        } else {
-                            null
-                        }
-                    }
-                        .fold(mapOf<RemoteProtocol, ByteArray>()) { protocol, byteArray -> protocol + byteArray }
-
-                    val eventProvidersResult = configProvidersUseCase.eventProviders()
-
-                    if (eventProvidersResult is EventProvidersResult.Success) {
-                        scanFinished(
-                            state = DataMigrationScanQrState.Success(
-                                type = YourEventsFragmentType.RemoteProtocol3Type(
-                                    remoteEvents = remoteEventsMap,
-                                    eventProviders = eventProvidersResult.eventProviders.map {
-                                        EventProvider(
-                                            it.providerIdentifier,
-                                            it.name
-                                        )
-                                    }
-                                )
-                            )
-                        )
-                    } else {
-                        scanFinishedWithError(NoProvidersException.Migration)
-                    }
-                }
             }
             else -> {
                 updateProgress(migrationParcel)
             }
         }
     }
-    private fun updateProgress(migrationParcel: MigrationParcel) {
+
+    private suspend fun updateProgress(migrationParcel: MigrationParcel) {
         val currentState = progressBarLiveData.value
         val currentProgress = currentState?.progress ?: 0
         if (!scannedChunks.map { it.payload }.contains(migrationParcel.payload)) {
@@ -157,6 +115,49 @@ class DataMigrationScanQrViewModelImpl(
                     max = migrationParcel.numberOfPackages
                 )
             )
+            if (scannedChunks.size == migrationParcel.numberOfPackages) {
+                scanFinished()
+            }
+        }
+    }
+
+    private suspend fun scanFinished() {
+        val eventGroupParcels = try {
+            dataMigrationImportUseCase.merge(scannedChunks)
+        } catch (exception: Exception) {
+            scanFinishedWithError(DataMigrationDecodingErrorException())
+            return
+        }
+        val remoteEventsMap = eventGroupParcels.mapNotNull {
+            val remoteProtocol =
+                dataMigrationPayloadUseCase.parsePayload(it.jsonData)
+
+            if (remoteProtocol != null) {
+                mapOf(remoteProtocol to it.jsonData)
+            } else {
+                null
+            }
+        }
+            .fold(mapOf<RemoteProtocol, ByteArray>()) { protocol, byteArray -> protocol + byteArray }
+
+        val eventProvidersResult = configProvidersUseCase.eventProviders()
+
+        if (eventProvidersResult is EventProvidersResult.Success) {
+            scanFinished(
+                state = DataMigrationScanQrState.Success(
+                    type = YourEventsFragmentType.RemoteProtocol3Type(
+                        remoteEvents = remoteEventsMap,
+                        eventProviders = eventProvidersResult.eventProviders.map {
+                            EventProvider(
+                                it.providerIdentifier,
+                                it.name
+                            )
+                        }
+                    )
+                )
+            )
+        } else {
+            scanFinishedWithError(NoProvidersException.Migration)
         }
     }
 }
