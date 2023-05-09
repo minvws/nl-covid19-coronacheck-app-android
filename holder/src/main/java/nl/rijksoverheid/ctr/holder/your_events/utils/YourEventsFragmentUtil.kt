@@ -20,7 +20,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.models.Flow
 
 interface YourEventsFragmentUtil {
-    fun getHeaderCopy(type: YourEventsFragmentType): Int
+    fun getHeaderCopy(type: YourEventsFragmentType, flow: Flow): Int
     fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int
     fun getProviderName(providers: List<AppConfig.Code>, providerIdentifier: String): String
     fun getCancelDialogDescription(type: YourEventsFragmentType): Int
@@ -32,8 +32,11 @@ interface YourEventsFragmentUtil {
 class YourEventsFragmentUtilImpl(
     private val remoteEventUtil: RemoteEventUtil
 ) : YourEventsFragmentUtil {
-    override fun getHeaderCopy(type: YourEventsFragmentType): Int {
+    override fun getHeaderCopy(type: YourEventsFragmentType, flow: Flow): Int {
         return when {
+            flow == HolderFlow.Migration -> {
+                R.string.holder_migrationFlow_scannedDetailsOverview_message
+            }
             type is YourEventsFragmentType.DCC -> {
                 R.string.holder_listRemoteEvents_paperflow_message
             }

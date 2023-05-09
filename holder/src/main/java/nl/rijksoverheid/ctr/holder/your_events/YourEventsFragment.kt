@@ -637,12 +637,18 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             )
         }
         binding.bottom.setButtonText(
-            getString(R.string.my_overview_add_qr_button)
+            getString(
+                if (getFlow() == HolderFlow.Migration) {
+                    R.string.holder_migrationFlow_scannedDetailsOverview_transferButton
+                } else {
+                    R.string.my_overview_add_qr_button
+                }
+            )
         )
     }
 
     private fun presentHeader(binding: FragmentYourEventsBinding) {
-        binding.description.setText(yourEventsFragmentUtil.getHeaderCopy(args.type))
+        binding.description.setText(yourEventsFragmentUtil.getHeaderCopy(args.type, args.flow))
     }
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {
@@ -692,20 +698,33 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (isAdded) {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.your_events_block_back_dialog_title,
-                        message = getString(
-                            yourEventsFragmentUtil.getCancelDialogDescription(
-                                type = args.type
-                            )
-                        ),
-                        positiveButtonText = R.string.your_events_block_back_dialog_positive_button,
-                        positiveButtonCallback = {
-                            findNavControllerSafety()?.popBackStack()
-                        },
-                        negativeButtonText = R.string.your_events_block_back_dialog_negative_button
-                    )
+                    if (getFlow() == HolderFlow.Migration) {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.holder_migrationFlow_goBack_dialog_title,
+                            message = getString(R.string.holder_migrationFlow_goBack_dialog_message),
+                            positiveButtonText = R.string.holder_migrationFlow_goBack_dialog_yesButton,
+                            positiveButtonCallback = {
+                                findNavControllerSafety()?.popBackStack()
+                            },
+                            negativeButtonText = R.string.holder_migrationFlow_goBack_dialog_noButton
+                        )
+                    } else {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.your_events_block_back_dialog_title,
+                            message = getString(
+                                yourEventsFragmentUtil.getCancelDialogDescription(
+                                    type = args.type
+                                )
+                            ),
+                            positiveButtonText = R.string.your_events_block_back_dialog_positive_button,
+                            positiveButtonCallback = {
+                                findNavControllerSafety()?.popBackStack()
+                            },
+                            negativeButtonText = R.string.your_events_block_back_dialog_negative_button
+                        )
+                    }
                 }
             }
         })
