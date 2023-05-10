@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import android.content.Context
+import androidx.core.text.HtmlCompat
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
@@ -136,7 +137,7 @@ class RemovedEventsBottomSheetUtilImpl(
                 descriptionData = DescriptionData(
                     htmlTextString = context.getString(
                         R.string.holder_identityRemoved_moreinfo_body,
-                        name,
+                        HtmlCompat.fromHtml(name, HtmlCompat.FROM_HTML_MODE_LEGACY),
                         removedEventsHtml
                     ),
                     htmlLinksEnabled = true
