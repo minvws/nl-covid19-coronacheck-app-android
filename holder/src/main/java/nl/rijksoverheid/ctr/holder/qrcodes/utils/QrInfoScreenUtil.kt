@@ -8,6 +8,7 @@ package nl.rijksoverheid.ctr.holder.qrcodes.utils
 
 import android.app.Application
 import android.text.TextUtils
+import androidx.core.text.HtmlCompat
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -386,8 +387,12 @@ class QrInfoScreenUtilImpl(
         )
     }
 
-    private fun createQrAnswer(answer: String, answerDescription: String = ""): String =
-        "<br/><b>$answer</b><br/>${if (answerDescription.isEmpty()) "<br/>" else "$answerDescription<br/><br/>"}"
+    private fun createQrAnswer(answer: String, answerDescription: String = ""): String {
+        val sanitizedAnswer = HtmlCompat.fromHtml(answer, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+        val sanitizedAnswerDescription =
+            HtmlCompat.fromHtml(answerDescription, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
+        return "<br/><b>$sanitizedAnswer</b><br/>${if (answerDescription.isEmpty()) "<br/>" else "$sanitizedAnswerDescription<br/><br/>"}"
+    }
 
     companion object {
         private const val issuerVWS = "Ministry of Health Welfare and Sport"
