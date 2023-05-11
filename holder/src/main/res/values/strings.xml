@@ -380,7 +380,6 @@
   <string name="rule_engine_no_test_origin_description_negative_test">negatieve testuitslag</string>
   <string name="rule_engine_no_test_origin_description_vaccination">vaccinatie</string>
   <string name="rule_engine_no_test_origin_description_positive_test">positieve testuitslag</string>
-  <string name="mijncn_error_missing_data_description"><![CDATA[Op dit moment kunnen we geen bewijs maken omdat er gegevens ontbreken.<br/><br/>Neem contact op met je openbaar lichaam en geef de foutcode door. Zij kunnen dan de gegevens controleren.<br/><br/><b>Foutcode:</b><br/>%1s<br/><br/><a href=“#”>Openbaar lichaam Sint Bonaire</a><br/><br/><a href=“#”>Openbaar lichaam Sint Eustatius</a><br/><br/><a href=“#”>Openbaar lichaam Sint Saba</a><br/><br/>]]></string>
   <string name="your_negative_test_results_toolbar">Opgehaalde testuitslag</string>
   <string name="holder_negativetest_ggd_title">Gegevens van je test ophalen</string>
   <string name="holder_negativetest_ggd_message">Is je uitslag bekend? Log in met DigiD om je testuitslag bij de GGD op te halen.</string>
@@ -648,7 +647,7 @@
   <string name="holder_startMigration_onboarding_nextButton">Volgende</string>
   <string name="holder_startMigration_onboarding_step">Stap %s</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_step1_title">Pak ook je andere telefoon erbij</string>
-  <string name="holder_startMigration_toOtherDevice_onboarding_step1_message">Pak de telefoon waar je jouw gegevens naar wilt overzetten. Ga op dat toestel ook naar ‘Mijn bewijzen overzetten’ en doorloop de stappen.</string>
+  <string name="holder_startMigration_toOtherDevice_onboarding_step1_message">Pak de telefoon waar je jouw gegevens naar wilt overzetten. Ga daar ook naar ‘Mijn bewijzen overzetten’ en doorloop de bijbehorende stappen.</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_nextButton">Volgende</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_step2_title">Scan de QR-code met die telefoon</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_step2_message">Er wordt een speciale QR-code met je gegevens gemaakt. Deze vind je in de volgende stap.</string>
@@ -678,4 +677,5 @@
   <string name="holder_migrationFlow_goBack_dialog_yesButton">Ja, terug</string>
   <string name="holder_migrationFlow_goBack_dialog_noButton">Nee</string>
   <string name="holder_migration_errorcode_message"><![CDATA[<p>Er gaat iets mis met het exporteren van je gegevens.</p><br /><p><b>Foutcode:</b><br /> %s </p>]]></string>
+  <string name="holder_migration_import_errorcode_message"><![CDATA[<p>Er gaat iets mis met het importeren van je gegevens.</p><p><b>Foutcode:</b><br /> %s </p>]]></string>
 </resources>

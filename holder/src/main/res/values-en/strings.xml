@@ -380,7 +380,6 @@
   <string name="rule_engine_no_test_origin_description_negative_test">negative test result</string>
   <string name="rule_engine_no_test_origin_description_vaccination">vaccination</string>
   <string name="rule_engine_no_test_origin_description_positive_test">positive test result</string>
-  <string name="mijncn_error_missing_data_description"><![CDATA[Op dit moment kunnen we geen bewijs maken omdat er gegevens ontbreken.<br/><br/>Neem contact op met je openbaar lichaam en geef de foutcode door. Zij kunnen dan de gegevens controleren.<br/><br/><b>Foutcode:</b><br/>%1s<br/><br/><a href=“#”>Openbaar lichaam Sint Bonaire</a><br/><br/><a href=“#”>Openbaar lichaam Sint Eustatius</a><br/><br/><a href=“#”>Openbaar lichaam Sint Saba</a><br/><br/>]]></string>
   <string name="your_negative_test_results_toolbar">Retrieved test result</string>
   <string name="holder_negativetest_ggd_title">Retrieve your test details</string>
   <string name="holder_negativetest_ggd_message">Is your result in? Log in with DigiD to retrieve your test result from the GGD.</string>
@@ -648,7 +647,7 @@
   <string name="holder_startMigration_onboarding_nextButton">Next</string>
   <string name="holder_startMigration_onboarding_step">Step %s</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_step1_title">Grab your other phone too</string>
-  <string name="holder_startMigration_toOtherDevice_onboarding_step1_message">Take the phone you want to transfer your details to. From there, also go to \'Transfer my certificates\' and go through the corresponding steps.</string>
+  <string name="holder_startMigration_toOtherDevice_onboarding_step1_message">Take the phone you want to transfer your details to. From there, also go to \'Transfer my certificate\' and go through the corresponding steps.</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_nextButton">Next</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_step2_title">Scan the QR code with that phone</string>
   <string name="holder_startMigration_toOtherDevice_onboarding_step2_message">A special QR code will be created with your details. You’ll find this in the next step.</string>
@@ -678,4 +677,5 @@
   <string name="holder_migrationFlow_goBack_dialog_yesButton">Yes, back</string>
   <string name="holder_migrationFlow_goBack_dialog_noButton">No</string>
   <string name="holder_migration_errorcode_message"><![CDATA[<p>Something is going wrong while exporting your details.</p><br /><p><b>Error code:</b><br /> %s </p>]]></string>
+  <string name="holder_migration_import_errorcode_message"><![CDATA[<p>Something is going wrong while importing your details.</p><p><b>Error code:</b><br /> %s </p>]]></string>
 </resources>
