@@ -19,18 +19,22 @@ import android.view.WindowManager
 import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
 import nl.rijksoverheid.ctr.holder.BuildConfig
+import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingBinding
 import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding) {
 
@@ -39,6 +43,8 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
 
     private val args: DataMigrationInstructionsFragmentArgs by navArgs()
     private val persistenceManager: PersistenceManager by inject()
+
+    private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +79,16 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
 
         setBackPressListener()
         setBindings(adapter)
+
+        holderMainActivityViewModel.navigateLiveData.observe(viewLifecycleOwner, EventObserver {
+            findNavControllerSafety()?.navigate(it)
+        })
+
+        holderMainActivityViewModel.navigateWithBundleLiveData.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                navigateSafety(it.first, it.second)
+            })
     }
 
     private fun setBindings(
@@ -98,7 +114,8 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
             val cameraManager =
                 requireActivity().getSystemService(Context.CAMERA_SERVICE) as CameraManager
             if (cameraManager.cameraIdList.isNotEmpty()) {
-                navigateSafety(DataMigrationInstructionsFragmentDirections.actionDataMigrationScanQr())
+                Navigation.findNavController(requireActivity(), R.id.main_nav_host_fragment)
+                    .navigate(R.id.action_data_migration_scan_qr)
             } else {
                 showNoCameraError()
             }
