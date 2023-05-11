@@ -862,25 +862,13 @@
             app:popEnterAnim="@animator/slide_in_left"
             app:popExitAnim="@animator/slide_out_right" />
 
-    </fragment>
-
-    <fragment android:id="@+id/nav_data_migration_show_qr"
-        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationShowQrCodeFragment"
-        android:label="@string/holder_startMigration_onboarding_toolbar"/>
-
-    <fragment android:id="@+id/nav_data_migration_scan_qr"
-        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationScanQrFragment"
-        android:label="@string/add_paper_proof_qr_scanner_title">
-
         <action
             android:id="@+id/action_your_events"
             app:destination="@id/nav_your_events"
             app:enterAnim="@animator/slide_in_right"
             app:exitAnim="@animator/slide_out_left"
             app:popEnterAnim="@animator/slide_in_left"
-            app:popExitAnim="@animator/slide_out_right"
-            app:popUpTo="@id/nav_data_migration_scan_qr"
-            app:popUpToInclusive="true" />
+            app:popExitAnim="@animator/slide_out_right" />
 
         <action
             android:id="@+id/action_error_result"
@@ -889,10 +877,13 @@
             app:exitAnim="@animator/slide_out_left"
             app:popEnterAnim="@animator/slide_in_left"
             app:popExitAnim="@animator/slide_out_right"
-            app:popUpTo="@id/nav_data_migration_scan_qr"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/nav_data_migration_scan_qr" />
 
     </fragment>
+
+    <fragment android:id="@+id/nav_data_migration_show_qr"
+        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationShowQrCodeFragment"
+        android:label="@string/holder_startMigration_onboarding_toolbar"/>
 
     <fragment
         android:id="@id/nav_saved_events"

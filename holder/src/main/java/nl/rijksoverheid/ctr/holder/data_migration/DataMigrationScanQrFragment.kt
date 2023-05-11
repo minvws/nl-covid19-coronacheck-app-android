@@ -12,18 +12,22 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import nl.rijksoverheid.ctr.design.fragments.ErrorResultFragment
+import nl.rijksoverheid.ctr.holder.HolderMainActivityViewModel
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.qrscanner.QrCodeScannerFragment
-import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DataMigrationScanQrFragment : QrCodeScannerFragment() {
+
+    private val holderMainActivityViewModel: HolderMainActivityViewModel by sharedViewModel()
 
     private val viewModel: DataMigrationScanQrViewModel by viewModel()
 
@@ -33,9 +37,11 @@ class DataMigrationScanQrFragment : QrCodeScannerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.scanFinishedLiveData.observe(viewLifecycleOwner, EventObserver {
+            findNavControllerSafety()?.popBackStack()
+
             when (it) {
-                is DataMigrationScanQrState.Error -> navigateSafety(
-                    DataMigrationScanQrFragmentDirections.actionErrorResult().actionId,
+                is DataMigrationScanQrState.Error -> holderMainActivityViewModel.navigateWithBundle(
+                    DataMigrationInstructionsFragmentDirections.actionErrorResult().actionId,
                     ErrorResultFragment.getBundle(
                         ErrorResultFragmentData(
                             title = getString(R.string.error_something_went_wrong_title),
@@ -47,12 +53,14 @@ class DataMigrationScanQrFragment : QrCodeScannerFragment() {
                                 )
                             ),
                             buttonTitle = getString(R.string.general_toMyOverview),
-                            buttonAction = ErrorResultFragmentData.ButtonAction.Destination(R.id.action_my_overview)
+                            buttonAction = ErrorResultFragmentData.ButtonAction.Destination(
+                                R.id.action_my_overview
+                            )
                         )
                     )
                 )
-                is DataMigrationScanQrState.Success -> navigateSafety(
-                    DataMigrationScanQrFragmentDirections.actionYourEvents(
+                is DataMigrationScanQrState.Success -> holderMainActivityViewModel.navigate(
+                    navDirections = DataMigrationInstructionsFragmentDirections.actionYourEvents(
                         type = it.type,
                         toolbarTitle = "",
                         flow = HolderFlow.Migration
