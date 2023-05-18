@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.your_events.utils
 
+import androidx.core.text.HtmlCompat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -53,13 +54,15 @@ class YourEventsFragmentUtilImpl(
     }
 
     private fun isRecovery(yourEventsFragmentType: YourEventsFragmentType): Boolean {
-        val type = yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
+        val type =
+            yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
         val remoteEvent = type.remoteEvents.keys.firstOrNull()?.events?.first() ?: return false
         return remoteEventUtil.getOriginType(remoteEvent) == OriginType.Recovery
     }
 
     private fun isTest(yourEventsFragmentType: YourEventsFragmentType): Boolean {
-        val type = yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
+        val type =
+            yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
         val remoteEvent = type.remoteEvents.keys.firstOrNull()?.events?.first() ?: return false
         return remoteEventUtil.getOriginType(remoteEvent) == OriginType.Test
     }
@@ -89,7 +92,10 @@ class YourEventsFragmentUtilImpl(
         }
     }
 
-    override fun getProviderName(providers: List<AppConfig.Code>, providerIdentifier: String): String {
+    override fun getProviderName(
+        providers: List<AppConfig.Code>,
+        providerIdentifier: String
+    ): String {
         return providers.firstOrNull { it.code == providerIdentifier }
             ?.name
             ?: providerIdentifier
@@ -110,16 +116,19 @@ class YourEventsFragmentUtilImpl(
 
     override fun getFullName(holder: RemoteProtocol.Holder?): String {
         return holder?.let {
-            return if (it.infix.isNullOrEmpty()) {
-                "${it.lastName}, ${it.firstName}"
-            } else {
-                "${it.infix} ${it.lastName}, ${it.firstName}"
-            }
+            return HtmlCompat.fromHtml(
+                if (it.infix.isNullOrEmpty()) {
+                    "${it.lastName}, ${it.firstName}"
+                } else {
+                    "${it.infix} ${it.lastName}, ${it.firstName}"
+                }, HtmlCompat.FROM_HTML_MODE_LEGACY
+            ).toString()
         } ?: ""
     }
 
     override fun getBirthDate(holder: RemoteProtocol.Holder?): String {
-        return holder?.birthDate?.let { birthDate ->
+        return holder?.birthDate?.let {
+            val birthDate = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
             try {
                 LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
             } catch (e: DateTimeParseException) {
