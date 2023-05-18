@@ -74,7 +74,7 @@ class DataMigrationInstructionsFragment : Fragment(R.layout.fragment_onboarding)
                 args.instructionItems.toList()
             )
 
-        binding.indicators.initIndicator(adapter.itemCount)
+        binding.indicators.initIndicator(3)
         initViewPager(adapter, savedInstanceState?.getInt(indicatorPositionKey))
 
         setBackPressListener()
