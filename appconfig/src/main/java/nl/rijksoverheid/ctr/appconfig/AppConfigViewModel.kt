@@ -23,7 +23,6 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.ext.initialisationException
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.factories.OnboardingFlow
 
@@ -106,7 +105,7 @@ class AppConfigViewModelImpl(
             }
 
             if (initializationError != null) {
-                throw initialisationException(initializationError)
+                return@launch appStatusLiveData.postValue(AppStatus.Error)
             }
 
             updateAppStatus(appStatus)
