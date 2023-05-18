@@ -54,6 +54,7 @@ class DataMigrationScanQrViewModelImpl(
 ) : DataMigrationScanQrViewModel() {
 
     private val scannedChunks = mutableListOf<MigrationParcel>()
+    private val scannedQRs = mutableListOf<String>()
 
     private fun scanFinished(state: DataMigrationScanQrState) {
         (scanFinishedLiveData as MutableLiveData).postValue(Event(state))
@@ -71,6 +72,10 @@ class DataMigrationScanQrViewModelImpl(
     }
 
     override fun onQrScanned(content: String) {
+        if (scannedQRs.contains(content)) {
+            return
+        }
+        scannedQRs.add(content)
         viewModelScope.launch {
             val migrationParcel = try {
                 dataMigrationImportUseCase.import(content)
