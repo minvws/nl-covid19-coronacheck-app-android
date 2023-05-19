@@ -110,7 +110,7 @@ class VaccinationInfoScreenUtilImpl(
         val uniqueCode = resources.getString(R.string.your_vaccination_explanation_unique_code)
         val uniqueCodeAnswer = event.unique ?: ""
 
-        val header = if (europeanCredential != null) {
+        val header = if (europeanCredential != null || providerIdentifier.contains("dcc")) {
             resources.getString(R.string.paper_proof_event_explanation_header)
         } else {
             resources.getString(R.string.your_vaccination_explanation_header, providerIdentifier)

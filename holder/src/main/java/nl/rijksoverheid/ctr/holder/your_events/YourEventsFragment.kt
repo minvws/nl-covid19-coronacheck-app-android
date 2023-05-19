@@ -387,7 +387,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             birthDate = yourEventsFragmentUtil.getBirthDate(holder),
                             currentEvent = remoteEvent,
                             allEventsInformation = allEventsInformation,
-                            isDccEvent = isDccEvent
+                            isDccEvent = isDccEvent || providerIdentifiers.any { it.contains("dcc") }
                         )
                     }
                     is RemoteEventNegativeTest -> {

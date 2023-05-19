@@ -678,4 +678,6 @@
   <string name="holder_migrationFlow_goBack_dialog_noButton">Nee</string>
   <string name="holder_migration_errorcode_message"><![CDATA[<p>Er gaat iets mis met het exporteren van je gegevens.</p><br /><p><b>Foutcode:</b><br /> %s </p>]]></string>
   <string name="holder_migration_import_errorcode_message"><![CDATA[<p>Er gaat iets mis met het importeren van je gegevens.</p><p><b>Foutcode:</b><br /> %s </p>]]></string>
+  <string name="holder_startMigration_toOtherDevice_accessiblityQR">Je export QR-code wordt hier getoond</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_step3_messageKeepPointing_longer">Het scannen kan soms even duren...</string>
 </resources>

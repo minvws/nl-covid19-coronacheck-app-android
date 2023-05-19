@@ -60,7 +60,7 @@ class SignedResponseInterceptor(
             ?.getAnnotation(SignedRequest::class.java) ?: return response
 
         val body = try {
-            response.body?.bytes() ?: return response
+            response.peekBody(Long.MAX_VALUE).bytes()
         } catch (exception: IOException) {
             return response
         }

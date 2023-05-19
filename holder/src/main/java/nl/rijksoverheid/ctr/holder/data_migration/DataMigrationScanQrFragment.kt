@@ -75,6 +75,18 @@ class DataMigrationScanQrFragment : QrCodeScannerFragment() {
         }
 
         (parentFragment?.parentFragment as? HolderMainFragment)?.getToolbar()?.isVisible = false
+
+        binding.extraContentMessage.postDelayed({
+            if (isAdded) {
+                val defaultMessage = getString(R.string.holder_startMigration_toThisDevice_onboarding_step3_messageKeepPointing)
+                val extraMessage = getString(R.string.holder_startMigration_toThisDevice_onboarding_step3_messageKeepPointing_longer)
+                val message = "$defaultMessage $extraMessage"
+                binding.extraContentMessage.animate().setDuration(150).alpha(0f).withEndAction {
+                    binding.extraContentMessage.text = message
+                    binding.extraContentMessage.animate().setDuration(150).alpha(1f)
+                }
+            }
+        }, 10000)
     }
 
     override fun onDestroyView() {
