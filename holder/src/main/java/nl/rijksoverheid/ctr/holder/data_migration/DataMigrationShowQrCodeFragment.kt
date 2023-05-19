@@ -45,19 +45,23 @@ class DataMigrationShowQrCodeFragment : BaseFragment(R.layout.fragment_data_migr
                 }
                 is DataMigrationShowQrViewState.ShowQrs -> {
                     val bitmaps = it.bitmaps
-                    binding.dataMigrationQrCodes.setImageBitmap(bitmaps.first())
-                    var nextIndex = 2
-                    val runnable = object : Runnable {
-                        override fun run() {
-                            binding.dataMigrationQrCodes.setImageBitmap(bitmaps[nextIndex])
-                            nextIndex++
-                            if (nextIndex == bitmaps.size) {
-                                nextIndex = 0
+                    val firstBitmap = bitmaps.firstOrNull() ?: return@observe
+                    binding.dataMigrationQrCodes.setImageBitmap(firstBitmap)
+                    if (bitmaps.size > 1) {
+                        var nextIndex = 1
+                        val runnable = object : Runnable {
+                            override fun run() {
+                                if (!isAdded) return
+                                binding.dataMigrationQrCodes.setImageBitmap(bitmaps[nextIndex])
+                                nextIndex++
+                                if (nextIndex == bitmaps.size) {
+                                    nextIndex = 0
+                                }
+                                binding.dataMigrationQrCodes.postDelayed(this, 200)
                             }
-                            binding.dataMigrationQrCodes.postDelayed(this, 200)
                         }
+                        binding.dataMigrationQrCodes.postDelayed(runnable, 200)
                     }
-                    binding.dataMigrationQrCodes.postDelayed(runnable, 200)
                 }
             }
         }

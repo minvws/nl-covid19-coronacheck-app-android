@@ -32,9 +32,13 @@ class RemoveCTBUseCaseImpl(
         )
         val remainingEventGroups = holderDatabase.eventGroupDao().getAll()
         val eventGroupsWithVaccinationAssessmentEvents = remainingEventGroups.filter {
-            val payload = moshi.adapter(SignedResponse::class.java)
-                .fromJson(String(it.jsonData))?.payload
-            String(Base64.decode(payload, Base64.DEFAULT)).contains("vaccinationassessment")
+            try {
+                val payload = moshi.adapter(SignedResponse::class.java)
+                    .fromJson(String(it.jsonData))?.payload
+                String(Base64.decode(payload, Base64.DEFAULT)).contains("vaccinationassessment")
+            } catch (exception: Exception) {
+                false
+            }
         }
         if (eventGroupsWithVaccinationAssessmentEvents.isNotEmpty()) {
             holderDatabase.eventGroupDao().deleteAllOfIds(eventGroupsWithVaccinationAssessmentEvents.map { it.id })
