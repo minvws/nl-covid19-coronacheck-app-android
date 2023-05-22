@@ -653,7 +653,9 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {
         binding.somethingWrongButton.run {
-            visibility = if (args.type is YourEventsFragmentType.DCC) View.GONE else View.VISIBLE
+            visibility = if (
+                args.type is YourEventsFragmentType.DCC || args.flow is HolderFlow.Migration
+            ) View.GONE else View.VISIBLE
             setOnClickListener {
                 val type = args.type
                 infoFragmentUtil.presentAsBottomSheet(
