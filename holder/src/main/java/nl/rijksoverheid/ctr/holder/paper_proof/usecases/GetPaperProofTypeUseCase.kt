@@ -25,7 +25,11 @@ class GetPaperProofTypeUseCaseImpl(
     override suspend fun get(qrContent: String): PaperProofType {
         return withContext(Dispatchers.IO) {
             val isForeign = mobileCoreWrapper.isForeignDcc(qrContent.toByteArray())
-            val event = getEventsFromPaperProofQrUseCase.get(qrContent)
+            val event = try {
+                getEventsFromPaperProofQrUseCase.get(qrContent)
+            } catch (exception: Exception) {
+                return@withContext PaperProofType.Unknown
+            }
 
             if (isForeign) {
                 PaperProofType.DCC.Foreign(

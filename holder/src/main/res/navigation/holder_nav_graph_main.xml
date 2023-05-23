@@ -203,6 +203,14 @@
                 app:popEnterAnim="@animator/slide_in_left"
                 app:popExitAnim="@animator/slide_out_right" />
 
+            <action
+                android:id="@+id/action_info_fragment"
+                app:destination="@id/nav_info_fragment"
+                app:enterAnim="@animator/slide_in_right"
+                app:exitAnim="@animator/slide_out_left"
+                app:popEnterAnim="@animator/slide_in_left"
+                app:popExitAnim="@animator/slide_out_right" />
+
         </fragment>
 
         <fragment

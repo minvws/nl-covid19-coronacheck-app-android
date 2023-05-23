@@ -472,7 +472,7 @@
   <string name="holder_newintheapp_foreignproofs_body">Do you have a coronavirus certificate with QR code of a test or vaccination from abroad? Now you can add your certificate to CoronaCheck. Choose “Scan to add certificate” in the menu.</string>
   <string name="holder_listRemoteEvents_somethingWrong_foreignDCC_body"><![CDATA[<br /><b>Are your details incorrect?</b><br />Please check in the country where you were tested or vaccinated how you can adjust your details.]]></string>
   <string name="holder_dcc_issuer">Certificate issuer:</string>
-  <string name="holder_scanner_error_action">Close</string>
+  <string name="holder_scanner_error_action">Scan again</string>
   <string name="holder_scanner_error_message_ctb">Scan the QR code on your international certificate. It contains the information needed to add your certificate to the app. You don’t need to scan your Dutch QR code.</string>
   <string name="holder_scanner_error_title_ctb">Scan the international QR code</string>
   <string name="holder_scanner_error_message_unknown">The QR code you are trying to scan is not recognised as a coronavirus pass. Make sure you are holding the correct QR code in front of the camera.</string>

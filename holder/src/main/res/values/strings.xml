@@ -472,7 +472,7 @@
   <string name="holder_newintheapp_foreignproofs_body">Heb je een coronabewijs met QR-code van een test of vaccinatie uit het buitenland? Dan kun je jouw bewijs nu toevoegen aan CoronaCheck. Kies in het menu voor “Coronabewijs inscannen”.</string>
   <string name="holder_listRemoteEvents_somethingWrong_foreignDCC_body"><![CDATA[<br /><b>Kloppen er gegevens niet?</b><br />Check in het land waar je getest of gevaccineerd bent hoe je jouw gegevens kunt aanpassen.]]></string>
   <string name="holder_dcc_issuer">Afgever certificaat:</string>
-  <string name="holder_scanner_error_action">Sluiten</string>
+  <string name="holder_scanner_error_action">Opnieuw scannen</string>
   <string name="holder_scanner_error_message_ctb">Scan de QR-code op je internationale bewijs. Hierin staan alle gegevens die nodig zijn om je bewijs in de app te zetten. Je hoeft je Nederlandse QR-code niet te scannen.</string>
   <string name="holder_scanner_error_title_ctb">Scan de internationale QR-code</string>
   <string name="holder_scanner_error_message_unknown">De QR-code die je probeert te scannen wordt niet herkend als die van een coronabewijs. Controleer of je de goede QR-code voor de camera houdt.</string>
