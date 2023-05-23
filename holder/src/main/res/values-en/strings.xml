@@ -678,6 +678,6 @@
   <string name="holder_migrationFlow_goBack_dialog_noButton">No</string>
   <string name="holder_migration_errorcode_message"><![CDATA[<p>Something is going wrong while exporting your details.</p><br /><p><b>Error code:</b><br /> %s </p>]]></string>
   <string name="holder_migration_import_errorcode_message"><![CDATA[<p>Something is going wrong while importing your details.</p><p><b>Error code:</b><br /> %s </p>]]></string>
-  <string name="holder_startMigration_toOtherDevice_accessiblityQR">Your export QR code is displayed here</string>
-  <string name="holder_startMigration_toThisDevice_onboarding_step3_messageKeepPointing_longer">Scanning can take a bit longer sometimes...</string>
+  <string name="holder_startMigration_toOtherDevice_accessiblityQR">Your special QR code is displayed here</string>
+  <string name="holder_startMigration_toThisDevice_onboarding_step3_messageKeepPointing_longer">Scanning may sometimes take a while...</string>
 </resources>
