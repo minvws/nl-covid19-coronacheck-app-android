@@ -27,6 +27,7 @@ import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
+import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotificationViewModel
 import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -49,6 +50,7 @@ class HolderMainActivity : AppCompatActivity() {
     private val appConfigViewModel: AppConfigViewModel by viewModel()
     private val deviceRootedViewModel: DeviceRootedViewModel by viewModel()
     private val deviceSecureViewModel: DeviceSecureViewModel by viewModel()
+    private val priorityNotificationViewModel: PriorityNotificationViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val intentUtil: IntentUtil by inject()
@@ -127,6 +129,15 @@ class HolderMainActivity : AppCompatActivity() {
                     }
                 )
             }
+        })
+
+        priorityNotificationViewModel.showPriorityNotificationLiveData.observe(this, EventObserver {
+            dialogUtil.presentDialog(
+                context = this,
+                message = it,
+                positiveButtonCallback = {},
+                positiveButtonText = R.string.ok
+            )
         })
 
         disableSplashscreenExitAnimation()
