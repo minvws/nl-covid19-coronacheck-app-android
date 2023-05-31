@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.design.R
 interface DialogUtil {
     fun presentDialog(
         context: Context,
-        @StringRes title: Int? = null,
+        @StringRes title: Int,
         message: String,
         @StringRes positiveButtonText: Int,
         positiveButtonCallback: () -> Unit,
@@ -29,7 +29,7 @@ class DialogUtilImpl : DialogUtil {
 
     override fun presentDialog(
         context: Context,
-        @StringRes title: Int?,
+        @StringRes title: Int,
         message: String,
         @StringRes positiveButtonText: Int,
         positiveButtonCallback: () -> Unit,
@@ -38,15 +38,12 @@ class DialogUtilImpl : DialogUtil {
         onDismissCallback: (() -> Unit)?
     ) {
         val builder = MaterialAlertDialogBuilder(context, R.style.App_Dialog_DayNight)
+            .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveButtonText) { dialog, _ ->
                 positiveButtonCallback()
                 dialog.dismiss()
             }
-
-        title?.let {
-            builder.setTitle(title)
-        }
 
         negativeButtonText?.let {
             builder.setNegativeButton(it) { dialog, _ ->

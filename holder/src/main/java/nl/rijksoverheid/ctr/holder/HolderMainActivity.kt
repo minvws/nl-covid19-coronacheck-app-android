@@ -21,8 +21,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.design.utils.DialogButtonData
+import nl.rijksoverheid.ctr.design.utils.DialogFragmentData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.design.utils.SharedDialogFragment
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
@@ -132,11 +135,11 @@ class HolderMainActivity : AppCompatActivity() {
         })
 
         priorityNotificationViewModel.showPriorityNotificationLiveData.observe(this, EventObserver {
-            dialogUtil.presentDialog(
-                context = this,
-                message = it,
-                positiveButtonCallback = {},
-                positiveButtonText = R.string.ok
+            SharedDialogFragment.show(
+                supportFragmentManager, DialogFragmentData(
+                    text = it,
+                    positiveButtonData = DialogButtonData.Dismiss(R.string.ok)
+                )
             )
         })
 
