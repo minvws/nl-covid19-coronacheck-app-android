@@ -21,12 +21,16 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import nl.rijksoverheid.ctr.appconfig.AppConfigViewModel
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
+import nl.rijksoverheid.ctr.design.utils.DialogButtonData
+import nl.rijksoverheid.ctr.design.utils.DialogFragmentData
 import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
+import nl.rijksoverheid.ctr.design.utils.SharedDialogFragment
 import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
 import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
+import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotificationViewModel
 import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -49,6 +53,7 @@ class HolderMainActivity : AppCompatActivity() {
     private val appConfigViewModel: AppConfigViewModel by viewModel()
     private val deviceRootedViewModel: DeviceRootedViewModel by viewModel()
     private val deviceSecureViewModel: DeviceSecureViewModel by viewModel()
+    private val priorityNotificationViewModel: PriorityNotificationViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
     private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val intentUtil: IntentUtil by inject()
@@ -127,6 +132,15 @@ class HolderMainActivity : AppCompatActivity() {
                     }
                 )
             }
+        })
+
+        priorityNotificationViewModel.showPriorityNotificationLiveData.observe(this, EventObserver {
+            SharedDialogFragment.show(
+                supportFragmentManager, DialogFragmentData(
+                    text = it,
+                    positiveButtonData = DialogButtonData.Dismiss(R.string.ok)
+                )
+            )
         })
 
         disableSplashscreenExitAnimation()
