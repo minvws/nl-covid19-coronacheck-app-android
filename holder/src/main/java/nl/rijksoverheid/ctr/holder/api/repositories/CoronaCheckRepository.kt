@@ -12,7 +12,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteConfigProviders
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
 import nl.rijksoverheid.ctr.holder.paper_proof.models.RemoteCouplingResponse
@@ -55,7 +54,6 @@ private const val FUZZY_MATCHING_ERROR = 99790
 private const val VACCINATION_BACKEND_FLOW = "vaccination"
 private const val POSITIVE_TEST_BACKEND_FLOW = "positivetest"
 private const val NEGATIVE_TEST_BACKEND_FLOW = "negativetest"
-private const val VACCINATION_ASSESSMENT_BACKEND_FLOW = "vaccinationassessment"
 private const val REFRESH_BACKEND_FLOW = "refresh"
 
 open class CoronaCheckRepositoryImpl(
@@ -123,9 +121,6 @@ open class CoronaCheckRepositoryImpl(
                                 VACCINATION_BACKEND_FLOW,
                                 POSITIVE_TEST_BACKEND_FLOW
                             )
-                            is HolderFlow.VaccinationAssessment -> listOf(
-                                VACCINATION_ASSESSMENT_BACKEND_FLOW
-                            )
                             is HolderFlow.Refresh -> listOf(REFRESH_BACKEND_FLOW)
                             is HolderFlow.HkviScanned -> {
                                 // Hkvi is a flow where you scanned a paper qr which holds one event. That event determines the backend flow.
@@ -133,9 +128,6 @@ open class CoronaCheckRepositoryImpl(
                                     is RemoteEventVaccination -> listOf(VACCINATION_BACKEND_FLOW)
                                     is RemoteEventNegativeTest -> listOf(NEGATIVE_TEST_BACKEND_FLOW)
                                     is RemoteEventPositiveTest -> listOf(POSITIVE_TEST_BACKEND_FLOW)
-                                    is RemoteEventVaccinationAssessment -> listOf(
-                                        VACCINATION_ASSESSMENT_BACKEND_FLOW
-                                    )
                                     else -> listOf(REFRESH_BACKEND_FLOW)
                                 }
                             }

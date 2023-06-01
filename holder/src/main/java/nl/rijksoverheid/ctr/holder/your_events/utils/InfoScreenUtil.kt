@@ -12,7 +12,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 
 interface InfoScreenUtil {
 
@@ -49,19 +48,12 @@ interface InfoScreenUtil {
         europeanCredential: ByteArray?,
         addExplanation: Boolean = true
     ): InfoScreen
-
-    fun getForVaccinationAssessment(
-        event: RemoteEventVaccinationAssessment,
-        fullName: String,
-        birthDate: String
-    ): InfoScreen
 }
 
 class InfoScreenUtilImpl(
     private val vaccinationInfoScreenUtil: VaccinationInfoScreenUtil,
     private val testInfoScreenUtil: TestInfoScreenUtil,
-    private val recoveryInfoScreenUtil: RecoveryInfoScreenUtil,
-    private val vaccinationAssessmentInfoScreenUtil: VaccinationAssessmentInfoScreenUtil
+    private val recoveryInfoScreenUtil: RecoveryInfoScreenUtil
 ) : InfoScreenUtil {
 
     override fun getForNegativeTest(
@@ -97,12 +89,6 @@ class InfoScreenUtilImpl(
         europeanCredential: ByteArray?,
         addExplanation: Boolean
     ) = recoveryInfoScreenUtil.getForRecovery(event, testDate, fullName, birthDate, europeanCredential, addExplanation)
-
-    override fun getForVaccinationAssessment(
-        event: RemoteEventVaccinationAssessment,
-        fullName: String,
-        birthDate: String
-    ) = vaccinationAssessmentInfoScreenUtil.getForVaccinationAssessment(event, fullName, birthDate)
 }
 
 @Parcelize

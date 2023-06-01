@@ -5,7 +5,6 @@ import java.time.OffsetDateTime
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
 @Parcelize
 data class QrCodeFragmentData(
@@ -21,6 +20,6 @@ data class QrCodeFragmentData(
         object DoNotDisclose : ShouldDisclose(), Parcelable
 
         @Parcelize
-        data class Disclose(val greenCardId: Int, val disclosurePolicy: GreenCardDisclosurePolicy) : ShouldDisclose(), Parcelable
+        data class Disclose(val greenCardId: Int) : ShouldDisclose(), Parcelable
     }
 }

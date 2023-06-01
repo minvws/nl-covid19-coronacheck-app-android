@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/logo"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/accessibility_logo_label_ministry"
@@ -28,6 +29,7 @@
 
         <nl.rijksoverheid.ctr.design.widgets.Toolbar
             android:id="@+id/toolbar"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -42,12 +44,12 @@
             android:id="@+id/viewPager"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="16dp"
             android:descendantFocusability="blocksDescendants"
             app:layout_constraintBottom_toTopOf="@+id/bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
 
         <androidx.cardview.widget.CardView
@@ -98,4 +100,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout>

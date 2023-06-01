@@ -29,7 +29,8 @@ import org.robolectric.RobolectricTestRunner
 class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
 
     private val eventProviders = listOf(
-        AppConfig.Code(name = "MVWS-TEST", code = "ZZZ"), AppConfig.Code(name = "Test Provider", code = "test")
+        AppConfig.Code(name = "MVWS-TEST", code = "ZZZ"),
+        AppConfig.Code(name = "Test Provider", code = "test")
     )
 
     @Test
@@ -172,23 +173,6 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getCancelDialogDescription returns correct copy for RemoteProtocol3Type with origin vaccination assessment`() {
-        val remoteEventUtil: RemoteEventUtil = mockk()
-        val util = YourEventsFragmentUtilImpl(remoteEventUtil)
-
-        val remoteEvent = RemoteEventNegativeTest(null, null, null, null)
-        every { remoteEventUtil.getOriginType(remoteEvent) } returns OriginType.VaccinationAssessment
-        val type = mockk<YourEventsFragmentType.RemoteProtocol3Type>()
-        every { type.remoteEvents } returns getRemoteProtocol3(remoteEvent)
-
-        val copy = util.getCancelDialogDescription(
-            type = type
-        )
-
-        assertEquals(copy, R.string.holder_event_vaccination_assessment_alert_message)
-    }
-
-    @Test
     fun `getFullName returns correct concatted name when no infix`() {
         val remoteEventUtil: RemoteEventUtil = mockk()
         val util = YourEventsFragmentUtilImpl(remoteEventUtil)
@@ -269,7 +253,8 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val util = YourEventsFragmentUtilImpl(mockk())
 
         val copy = util.getHeaderCopy(
-            type = YourEventsFragmentType.DCC(mockk(), "".toByteArray(), mockk())
+            type = YourEventsFragmentType.DCC(mockk(), "".toByteArray(), mockk()),
+            flow = HolderFlow.Vaccination
         )
 
         assertEquals(R.string.holder_listRemoteEvents_paperflow_message, copy)
@@ -284,25 +269,27 @@ class YourEventsFragmentUtilImplTest : AutoCloseKoinTest() {
         val copy = util.getHeaderCopy(
             type = YourEventsFragmentType.RemoteProtocol3Type(getRemoteProtocol3(mockk<RemoteEvent>().apply {
                 every { type } returns "recovery"
-            }), listOf())
+            }), listOf()),
+            flow = HolderFlow.Recovery
         )
 
         assertEquals(R.string.holder_listRemoteEvents_recovery_message, copy)
     }
 
     @Test
-    fun `getHeaderCopy returns correct copy when type is RemoteProtocol3Type vaccinationassessment`() {
+    fun `getHeaderCopy returns correct copy when flow is Migration`() {
         val util = YourEventsFragmentUtilImpl(mockk<RemoteEventUtil>().apply {
-            every { getOriginType(any()) } returns OriginType.VaccinationAssessment
+            every { getOriginType(any()) } returns OriginType.Recovery
         })
 
         val copy = util.getHeaderCopy(
             type = YourEventsFragmentType.RemoteProtocol3Type(getRemoteProtocol3(mockk<RemoteEvent>().apply {
-                every { type } returns "vaccinationassessment"
-            }), listOf())
+                every { type } returns "recovery"
+            }), listOf()),
+            flow = HolderFlow.Migration
         )
 
-        assertEquals(R.string.holder_listRemoteEvents_vaccinationAssessment_message, copy)
+        assertEquals(R.string.holder_migrationFlow_scannedDetailsOverview_message, copy)
     }
 
     private fun getRemoteProtocol3(event: RemoteEvent) =

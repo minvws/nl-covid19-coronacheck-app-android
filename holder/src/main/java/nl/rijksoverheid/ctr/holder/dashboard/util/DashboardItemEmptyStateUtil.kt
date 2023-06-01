@@ -8,35 +8,22 @@
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface DashboardItemEmptyStateUtil {
     fun hasEmptyState(
-        disclosurePolicy: DisclosurePolicy,
-        hasVisitorPassIncompleteItem: Boolean,
         allGreenCards: List<GreenCard>,
         greenCardsForTab: List<GreenCard>
     ): Boolean
 }
 
-class DashboardItemEmptyStateUtilImpl(private val greenCardUtil: GreenCardUtil) :
+class DashboardItemEmptyStateUtilImpl :
     DashboardItemEmptyStateUtil {
 
     override fun hasEmptyState(
-        disclosurePolicy: DisclosurePolicy,
-        hasVisitorPassIncompleteItem: Boolean,
         allGreenCards: List<GreenCard>,
         greenCardsForTab: List<GreenCard>
     ): Boolean {
 
-        return when (disclosurePolicy) {
-            is DisclosurePolicy.ZeroG -> {
-                greenCardsForTab.isEmpty()
-            }
-            else -> {
-                val hasGreenCards = allGreenCards.isNotEmpty() && !allGreenCards.all { greenCardUtil.isExpired(it) }
-                !hasGreenCards && !hasVisitorPassIncompleteItem
-            }
-        }
+        return greenCardsForTab.isEmpty()
     }
 }

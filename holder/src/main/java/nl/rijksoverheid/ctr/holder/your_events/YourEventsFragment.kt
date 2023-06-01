@@ -13,7 +13,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.forEachIndexed
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.design.ext.formatDayMonth
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTime
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
@@ -23,6 +22,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogUtil
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.holder.BaseFragment
 import nl.rijksoverheid.ctr.holder.HolderMainFragment
+import nl.rijksoverheid.ctr.holder.MainNavDirections
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentYourEventsBinding
 import nl.rijksoverheid.ctr.holder.fuzzy_matching.MatchingBlobIds
@@ -30,7 +30,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
@@ -127,19 +126,38 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
 
                 when (databaseSyncerResult) {
                     is DatabaseSyncerResult.Success -> {
-                        handleEndState(
-                            endState = yourEventsEndStateUtil.getEndState(
-                                context = requireContext(),
-                                hints = databaseSyncerResult.hints,
-                                blockedEvents = databaseSyncerResult.blockedEvents,
-                                newEvents = when (fragmentType) {
-                                    is YourEventsFragmentType.DCC -> fragmentType.remoteEvent.events
-                                        ?: listOf()
-                                    is YourEventsFragmentType.RemoteProtocol3Type -> fragmentType.remoteEvents.keys.toList()
-                                        .map { it.events ?: listOf() }.flatten()
-                                }
+                        if (getFlow() == HolderFlow.Migration) {
+                            infoFragmentUtil.presentFullScreen(
+                                currentFragment = this,
+                                toolbarTitle = "",
+                                data = InfoFragmentData.TitleDescriptionWithButton(
+                                    title = getString(R.string.holder_migrationFlow_migrationSuccessful_title),
+                                    descriptionData = DescriptionData(
+                                        htmlText = R.string.holder_migrationFlow_migrationSuccessful_message,
+                                        htmlLinksEnabled = true
+                                    ),
+                                    primaryButtonData = ButtonData.NavigationButton(
+                                        text = getString(R.string.back_to_overview),
+                                        navigationActionId = MainNavDirections.actionMyOverview().actionId
+                                    )
+                                ),
+                                hideNavigationIcon = true
                             )
-                        )
+                        } else {
+                            handleEndState(
+                                endState = yourEventsEndStateUtil.getEndState(
+                                    context = requireContext(),
+                                    hints = databaseSyncerResult.hints,
+                                    blockedEvents = databaseSyncerResult.blockedEvents,
+                                    newEvents = when (fragmentType) {
+                                        is YourEventsFragmentType.DCC -> fragmentType.remoteEvent.events
+                                            ?: listOf()
+                                        is YourEventsFragmentType.RemoteProtocol3Type -> fragmentType.remoteEvents.keys.toList()
+                                            .map { it.events ?: listOf() }.flatten()
+                                    }
+                                )
+                            )
+                        }
                     }
                     is DatabaseSyncerResult.Failed -> {
                         presentError(
@@ -221,23 +239,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                         primaryButtonData = ButtonData.NavigationButton(
                             text = getString(R.string.general_toMyOverview),
                             navigationActionId = R.id.action_my_overview
-                        )
-                    )
-                )
-            }
-            is YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment -> {
-                infoFragmentUtil.presentFullScreen(
-                    currentFragment = this,
-                    toolbarTitle = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar),
-                    data = InfoFragmentData.TitleDescriptionWithButton(
-                        title = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
-                        descriptionData = DescriptionData(
-                            htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body,
-                            htmlLinksEnabled = true
-                        ),
-                        primaryButtonData = ButtonData.NavigationButton(
-                            text = getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
-                            navigationActionId = R.id.action_visitor_pass_input_token
                         )
                     )
                 )
@@ -386,7 +387,7 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             birthDate = yourEventsFragmentUtil.getBirthDate(holder),
                             currentEvent = remoteEvent,
                             allEventsInformation = allEventsInformation,
-                            isDccEvent = isDccEvent
+                            isDccEvent = isDccEvent || providerIdentifiers.any { it.contains("dcc") }
                         )
                     }
                     is RemoteEventNegativeTest -> {
@@ -414,14 +415,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                             binding = binding,
                             providerIdentifiers = providerIdentifiers.toSet()
                                 .joinToString(" ${getString(R.string.your_events_and)} "),
-                            fullName = yourEventsFragmentUtil.getFullName(holder),
-                            birthDate = yourEventsFragmentUtil.getBirthDate(holder),
-                            event = remoteEvent
-                        )
-                    }
-                    is RemoteEventVaccinationAssessment -> {
-                        presentVaccinationAssessmentEvent(
-                            binding = binding,
                             fullName = yourEventsFragmentUtil.getFullName(holder),
                             birthDate = yourEventsFragmentUtil.getBirthDate(holder),
                             event = remoteEvent
@@ -551,43 +544,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         binding.eventsGroup.addView(eventWidget)
     }
 
-    private fun presentVaccinationAssessmentEvent(
-        binding: FragmentYourEventsBinding,
-        fullName: String,
-        birthDate: String,
-        event: RemoteEventVaccinationAssessment
-    ) {
-        val assessmentDate =
-            event.vaccinationAssessment.assessmentDate?.toLocalDate()?.formatDayMonth()
-
-        val infoScreen = infoScreenUtil.getForVaccinationAssessment(
-            event = event,
-            fullName = fullName,
-            birthDate = birthDate
-        )
-
-        val eventWidget = YourEventWidget(requireContext()).apply {
-            setContent(
-                title = getString(R.string.holder_event_vaccination_assessment_element_title),
-                subtitle = getString(
-                    R.string.holder_event_vaccination_assessment_element_subtitle,
-                    assessmentDate,
-                    fullName,
-                    birthDate
-                ),
-                infoClickListener = {
-                    navigateSafety(
-                        YourEventsFragmentDirections.actionShowExplanation(
-                            toolbarTitle = infoScreen.title,
-                            data = arrayOf(infoScreen)
-                        )
-                    )
-                }
-            )
-        }
-        binding.eventsGroup.addView(eventWidget)
-    }
-
     private fun presentPositiveTestEvent(
         binding: FragmentYourEventsBinding,
         providerIdentifiers: String,
@@ -682,25 +638,24 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
         }
         binding.bottom.setButtonText(
             getString(
-                when (getFlow()) {
-                    HolderFlow.VaccinationAssessment -> {
-                        R.string.holder_event_vaccination_assessment_action_title
-                    }
-                    else -> {
-                        R.string.my_overview_add_qr_button
-                    }
+                if (getFlow() == HolderFlow.Migration) {
+                    R.string.holder_migrationFlow_scannedDetailsOverview_transferButton
+                } else {
+                    R.string.my_overview_add_qr_button
                 }
             )
         )
     }
 
     private fun presentHeader(binding: FragmentYourEventsBinding) {
-        binding.description.setText(yourEventsFragmentUtil.getHeaderCopy(args.type))
+        binding.description.setText(yourEventsFragmentUtil.getHeaderCopy(args.type, args.flow))
     }
 
     private fun presentFooter(binding: FragmentYourEventsBinding) {
         binding.somethingWrongButton.run {
-            visibility = if (args.type is YourEventsFragmentType.DCC) View.GONE else View.VISIBLE
+            visibility = if (
+                args.type is YourEventsFragmentType.DCC || args.flow is HolderFlow.Migration
+            ) View.GONE else View.VISIBLE
             setOnClickListener {
                 val type = args.type
                 infoFragmentUtil.presentAsBottomSheet(
@@ -718,9 +673,6 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
                                         } else {
                                             R.string.holder_listRemoteEvents_somethingWrong_vaccination_body
                                         }
-                                    }
-                                    origins.all { it == OriginType.VaccinationAssessment } -> {
-                                        R.string.holder_event_vaccination_assessment_wrong_body
                                     }
                                     origins.all { it == OriginType.Recovery } -> {
                                         R.string.dialog_negative_test_result_something_wrong_description
@@ -748,20 +700,33 @@ class YourEventsFragment : BaseFragment(R.layout.fragment_your_events) {
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (isAdded) {
-                    dialogUtil.presentDialog(
-                        context = requireContext(),
-                        title = R.string.your_events_block_back_dialog_title,
-                        message = getString(
-                            yourEventsFragmentUtil.getCancelDialogDescription(
-                                type = args.type
-                            )
-                        ),
-                        positiveButtonText = R.string.your_events_block_back_dialog_positive_button,
-                        positiveButtonCallback = {
-                            findNavControllerSafety()?.popBackStack()
-                        },
-                        negativeButtonText = R.string.your_events_block_back_dialog_negative_button
-                    )
+                    if (getFlow() == HolderFlow.Migration) {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.holder_migrationFlow_goBack_dialog_title,
+                            message = getString(R.string.holder_migrationFlow_goBack_dialog_message),
+                            positiveButtonText = R.string.holder_migrationFlow_goBack_dialog_yesButton,
+                            positiveButtonCallback = {
+                                findNavControllerSafety()?.popBackStack()
+                            },
+                            negativeButtonText = R.string.holder_migrationFlow_goBack_dialog_noButton
+                        )
+                    } else {
+                        dialogUtil.presentDialog(
+                            context = requireContext(),
+                            title = R.string.your_events_block_back_dialog_title,
+                            message = getString(
+                                yourEventsFragmentUtil.getCancelDialogDescription(
+                                    type = args.type
+                                )
+                            ),
+                            positiveButtonText = R.string.your_events_block_back_dialog_positive_button,
+                            positiveButtonCallback = {
+                                findNavControllerSafety()?.popBackStack()
+                            },
+                            negativeButtonText = R.string.your_events_block_back_dialog_negative_button
+                        )
+                    }
                 }
             }
         })

@@ -14,7 +14,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.ByteArrayInputStream
 import java.io.IOException
-import java.security.SignatureException
 import java.time.Clock
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.api.signing.certificates.PRIVATE_ROOT_CA
@@ -102,14 +101,10 @@ class SignedResponseInterceptor(
                 )
                 .build().also { response.close() }
         } catch (e: Exception) {
-            return if (response.isSuccessful) {
-                throw SignatureException("Invalid signature")
-            } else {
-                // When something is wrong in parsing a unsuccessful request, cascade down the
-                // request as usual (so that HttpExceptions get picked up for example)
-                response.newBuilder().body(body.toResponseBody())
-                    .code(response.code).build().also { response.close() }
-            }
+            // When something is wrong in parsing a unsuccessful request, cascade down the
+            // request as usual (so that HttpExceptions get picked up for example)
+            return response.newBuilder().body(body.toResponseBody())
+                .code(response.code).build().also { response.close() }
         }
     }
 

@@ -18,15 +18,12 @@ import java.time.Clock
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
-import nl.rijksoverheid.ctr.holder.HolderApplication
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.items.AdapterCard
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemBindingWrapper
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtil
-import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemExpiryUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardGreenCardAdapterItemUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
-import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.persistence.database.entities.CredentialEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardEntity
@@ -35,7 +32,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.ext.capitalize
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -62,14 +58,12 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
     private val credentialUtil = mockk<CredentialUtil>(relaxed = true)
     private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil =
         mockk(relaxed = true)
-    private val greenCardUtil: GreenCardUtil = mockk(relaxed = true)
 
     private val viewBinding = object : DashboardGreenCardAdapterItemBindingWrapper {
 
         private val titleText: TextView = TextView(context)
         private val layout = LinearLayout(context)
         private val lastText = TextView(context)
-        private val policyLabelText = TextView(context)
 
         override val title: TextView
             get() = titleText
@@ -77,8 +71,6 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             get() = layout
         override val expiresIn: TextView
             get() = lastText
-        override val policyLabel: TextView
-            get() = policyLabelText
     }
 
     private val dosisString = "dosis 2 van 2"
@@ -105,7 +97,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 AdapterCard(
                     greenCard, listOf(
                         OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
+                    )
                 )
             )
         )
@@ -116,36 +108,6 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         )
         assertEquals(
             "${context.getString(R.string.qr_card_test_title_eu)} dinsdag 27 juli 11:10",
-            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
-        )
-    }
-
-    @Test
-    fun domesticTest() {
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            Clock.systemUTC(),
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val greenCard = greenCard(GreenCardType.Domestic)
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(
-                AdapterCard(
-                    greenCard, listOf(
-                        OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-
-        assertEquals(
-            context.getString(R.string.qr_card_test_domestic),
-            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_valid, "woensdag 28 juli 21:06"),
             ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
     }
@@ -172,12 +134,15 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 AdapterCard(
                     greenCard, listOf(
                         OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
+                    )
                 )
             )
         )
 
-        assertEquals(dosisString, ((viewBinding.description.getChildAt(0) as TextView).text).toString())
+        assertEquals(
+            dosisString,
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
+        )
         assertEquals(
             "${context.getString(R.string.qr_card_vaccination_title_eu)} 27 juli 2021",
             ((viewBinding.description.getChildAt(1) as TextView).text).toString()
@@ -206,226 +171,20 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 AdapterCard(
                     greenCard, listOf(
                         OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
+                    )
                 )
             )
         )
 
-        assertEquals(dosisString, ((viewBinding.description.getChildAt(0) as TextView).text).toString())
+        assertEquals(
+            dosisString,
+            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
+        )
         assertEquals(
             "${context.getString(R.string.qr_card_vaccination_title_eu)} 27 juli 2021",
             ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(View.GONE, viewBinding.expiresIn.visibility)
-    }
-
-    @Test
-    fun `domesticVaccination that expires in 3 years`() {
-        // Today is 2021-01-01
-        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
-
-        // Expiration time is three years from today
-        val expirationTime =
-            OffsetDateTime.ofInstant(Instant.parse("2024-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
-
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            clock,
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val greenCard =
-            greenCard(GreenCardType.Domestic, listOf(OriginType.Vaccination), expirationTime)
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(
-                AdapterCard(
-                    greenCard, listOf(
-                        OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-
-        assertEquals(
-            context.getString(R.string.qr_card_vaccination_title_domestic),
-            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_future_from, "27 juli 2021", ""),
-            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
-        )
-        (assertEquals(View.GONE, viewBinding.expiresIn.visibility)).toString()
-    }
-
-    @Test
-    fun `domesticVaccination that has a validity of more than 3 years`() {
-        // Today is 2021-01-01
-        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
-
-        // Expiration time is four years from today
-        val expirationTime =
-            OffsetDateTime.ofInstant(Instant.parse("2025-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
-
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            clock,
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val greenCard =
-            greenCard(GreenCardType.Domestic, listOf(OriginType.Vaccination), expirationTime)
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(
-                AdapterCard(
-                    greenCard, listOf(
-                        OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-
-        assertEquals(
-            context.getString(R.string.qr_card_vaccination_title_domestic),
-            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_future_from, "27 juli 2021", ""),
-            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
-        )
-        assertEquals(View.GONE, viewBinding.expiresIn.visibility)
-    }
-
-    @Test
-    fun `domesticVaccination that has a validity of less than 3 years`() {
-        // Today is 2021-01-01
-        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
-
-        // Expiration time is two years from today
-        val expirationTime =
-            OffsetDateTime.ofInstant(Instant.parse("2022-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
-
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            clock,
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val greenCard =
-            greenCard(GreenCardType.Domestic, listOf(OriginType.Vaccination), expirationTime)
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(
-                AdapterCard(
-                    greenCard, listOf(
-                        OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-
-        assertEquals(
-            context.getString(R.string.qr_card_vaccination_title_domestic),
-            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_valid, "1 januari 2022"),
-            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
-        )
-        assertEquals(View.GONE, viewBinding.expiresIn.visibility)
-    }
-
-    @Test
-    fun `domesticVaccinationFuture that has a validity of more than 3 years`() {
-        // Today is 2021-01-01
-        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
-
-        // Expiration time is three years from today
-        val expirationTime =
-            OffsetDateTime.ofInstant(Instant.parse("2024-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
-
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            clock,
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val greenCard =
-            greenCard(GreenCardType.Domestic, listOf(OriginType.Vaccination), expirationTime)
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(
-                AdapterCard(
-                    greenCard, listOf(
-                        OriginState.Future(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-
-        assertEquals(
-            context.getString(R.string.qr_card_vaccination_title_domestic),
-            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_future_from, "27 juli 11:11", ""),
-            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_future),
-            (viewBinding.expiresIn.text).toString()
-        )
-        assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
-    }
-
-    @Test
-    fun `domesticVaccinationFuture that has a validity of 2 years`() {
-        // Today is 2021-01-01
-        val clock = Clock.fixed(Instant.parse("2021-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
-
-        // Expiration time is three years from today
-        val expirationTime =
-            OffsetDateTime.ofInstant(Instant.parse("2023-01-01T00:00:00.00Z"), ZoneId.of("UTC"))
-
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            clock,
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val greenCard =
-            greenCard(GreenCardType.Domestic, listOf(OriginType.Vaccination), expirationTime)
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(
-                AdapterCard(
-                    greenCard, listOf(
-                        OriginState.Future(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-
-        assertEquals(
-            context.getString(R.string.qr_card_vaccination_title_domestic),
-            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
-        )
-        assertEquals(
-            "${
-                context.getString(
-                    R.string.qr_card_validity_future_from,
-                    "27 juli 11:11",
-                    ""
-                )
-            }${context.getString(R.string.qr_card_validity_future_until, "1 januari 2023")}",
-            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_future),
-            (viewBinding.expiresIn.text).toString()
-        )
-        assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
     }
 
     @Test
@@ -443,7 +202,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 AdapterCard(
                     greenCard, listOf(
                         OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
+                    )
                 )
             )
         )
@@ -470,7 +229,7 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
                 AdapterCard(
                     greenCard, listOf(
                         OriginState.Future(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
+                    )
                 )
             )
         )
@@ -486,123 +245,6 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             ((viewBinding.description.getChildAt(1) as TextView).text).toString()
         )
         assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
-    }
-
-    @Test
-    fun domesticRecovery() {
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            Clock.systemUTC(),
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val greenCard = greenCard(GreenCardType.Domestic, listOf(OriginType.Recovery))
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(
-                AdapterCard(
-                    greenCard, listOf(
-                        OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-
-        assertEquals(
-            context.getString(R.string.qr_card_recovery_title_domestic),
-            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_valid, "28 juli 2021"),
-            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
-        )
-        assertEquals(View.GONE, viewBinding.expiresIn.visibility)
-    }
-
-    @Test
-    fun domesticRecoveryFuture() {
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            Clock.systemUTC(),
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val greenCard = greenCard(GreenCardType.Domestic, listOf(OriginType.Recovery))
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(
-                AdapterCard(
-                    greenCard, listOf(
-                        OriginState.Future(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-
-        assertEquals(
-            context.getString(R.string.qr_card_recovery_title_domestic),
-            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
-        )
-        assertEquals(
-            "${
-                context.getString(
-                    R.string.qr_card_validity_future_from,
-                    "27 juli 11:11",
-                    ""
-                )
-            }${context.getString(R.string.qr_card_validity_future_until, "28 juli 2021")}",
-            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
-        )
-        assertEquals(View.VISIBLE, viewBinding.expiresIn.visibility)
-    }
-
-    @Test
-    fun domesticTestExpiringIn6Minutes() {
-        val testResultAdapterItemUtil = DashboardGreenCardAdapterItemExpiryUtilImpl(
-            Clock.fixed(
-                Instant.ofEpochSecond(1627495600),
-                ZoneId.of("UTC")
-            ), context
-        )
-        val greenCard = greenCard(GreenCardType.Domestic)
-        every {
-            greenCardUtil.getExpireDate(
-                greenCard,
-                OriginType.Test
-            )
-        } returns greenCard.credentialEntities.first().expirationTime
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            Clock.systemUTC(),
-            context,
-            credentialUtil,
-            testResultAdapterItemUtil
-        )
-
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(
-                AdapterCard(
-                    greenCard, listOf(
-                        OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-
-        assertEquals(
-            context.getString(R.string.qr_card_test_domestic),
-            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_valid, "woensdag 28 juli 21:06"),
-            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(
-                R.string.my_overview_test_result_expires_in_hours_minutes,
-                "1 uur",
-                "0 minuten"
-            ), (viewBinding.expiresIn.text).toString()
-        )
     }
 
     @Test
@@ -623,14 +265,13 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             cards = listOf(
                 AdapterCard(
                     greenCard,
-                    listOf(OriginState.Valid(greenCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(greenCard.origins.first()))
                 )
             )
         )
 
         assertEquals(
-            context.getString(R.string.type_vaccination).capitalize(),
+            context.getString(R.string.general_vaccinationcertificate_0G).capitalize(),
             (viewBinding.title).text
         )
     }
@@ -651,12 +292,11 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             listOf(
                 AdapterCard(
                     testCard,
-                    listOf(OriginState.Valid(testCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(testCard.origins.first()))
                 )
             )
         )
-        assertEquals(context.getString(R.string.type_test).capitalize(), (viewBinding.title).text)
+        assertEquals(context.getString(R.string.general_testcertificate_0G).capitalize(), (viewBinding.title).text)
     }
 
     @Test
@@ -675,130 +315,13 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             listOf(
                 AdapterCard(
                     recoveryCard,
-                    listOf(OriginState.Valid(recoveryCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(recoveryCard.origins.first()))
                 )
             )
         )
         assertEquals(
-            context.getString(R.string.type_recovery).capitalize(),
+            context.getString(R.string.general_recoverycertificate_0G).capitalize(),
             (viewBinding.title).text
-        )
-    }
-
-    @Test
-    fun `Title should be specific for domestic 3g card`() {
-        val context = ApplicationProvider.getApplicationContext<HolderApplication>()
-
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            Clock.systemUTC(),
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val recoveryCard = greenCard(GreenCardType.Domestic, listOf(OriginType.Recovery))
-
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding,
-            listOf(
-                AdapterCard(
-                    recoveryCard,
-                    listOf(OriginState.Valid(recoveryCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-        assertEquals(
-            context.getString(R.string.holder_dashboard_domesticQRCard_3G_title),
-            (viewBinding.title).text
-        )
-    }
-
-    @Test
-    fun `Title should be specific for domestic 1g card`() {
-        val context = ApplicationProvider.getApplicationContext<HolderApplication>()
-
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            Clock.systemUTC(),
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val recoveryCard = greenCard(GreenCardType.Domestic, listOf(OriginType.Recovery))
-
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding,
-            listOf(
-                AdapterCard(
-                    recoveryCard,
-                    listOf(OriginState.Valid(recoveryCard.origins.first())),
-                    GreenCardDisclosurePolicy.OneG
-                )
-            )
-        )
-        assertEquals(
-            context.getString(R.string.holder_dashboard_domesticQRCard_1G_title),
-            (viewBinding.title).text
-        )
-    }
-
-    @Test
-    fun `Policy label should be specific for domestic 1g card`() {
-        val context = ApplicationProvider.getApplicationContext<HolderApplication>()
-
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            Clock.systemUTC(),
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val recoveryCard = greenCard(GreenCardType.Domestic, listOf(OriginType.Recovery))
-
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding,
-            listOf(
-                AdapterCard(
-                    recoveryCard,
-                    listOf(OriginState.Valid(recoveryCard.origins.first())),
-                    GreenCardDisclosurePolicy.OneG
-                )
-            )
-        )
-        assertEquals(
-            context.getString(R.string.holder_dashboard_domesticQRCard_1G_label),
-            (viewBinding.policyLabel).text
-        )
-    }
-
-    @Test
-    fun `Policy label should be specific for domestic 3g card`() {
-        val context = ApplicationProvider.getApplicationContext<HolderApplication>()
-
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            Clock.systemUTC(),
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val recoveryCard = greenCard(GreenCardType.Domestic, listOf(OriginType.Recovery))
-
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding,
-            listOf(
-                AdapterCard(
-                    recoveryCard,
-                    listOf(OriginState.Valid(recoveryCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-        assertEquals(
-            context.getString(R.string.holder_dashboard_domesticQRCard_3G_label),
-            (viewBinding.policyLabel).text
         )
     }
 
@@ -820,18 +343,15 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
             cards = listOf(
                 AdapterCard(
                     greenCard,
-                    listOf(OriginState.Valid(greenCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(greenCard.origins.first()))
                 ),
                 AdapterCard(
                     greenCard,
-                    listOf(OriginState.Valid(greenCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(greenCard.origins.first()))
                 ),
                 AdapterCard(
                     greenCard,
-                    listOf(OriginState.Valid(greenCard.origins.first())),
-                    GreenCardDisclosurePolicy.ThreeG
+                    listOf(OriginState.Valid(greenCard.origins.first()))
                 )
             )
         )
@@ -859,79 +379,6 @@ class DashboardGreenCardAdapterItemUtilImplTest : AutoCloseKoinTest() {
         assertEquals(
             "${context.getString(R.string.qr_card_vaccination_title_eu)} 27 juli 2021",
             ((viewBinding.description.getChildAt(5) as TextView).text).toString()
-        )
-    }
-
-    @Test
-    fun domesticVaccinationAssessment() {
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            Clock.systemUTC(),
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val greenCard = greenCard(GreenCardType.Domestic, listOf(OriginType.VaccinationAssessment))
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding, listOf(
-                AdapterCard(
-                    greenCard, listOf(
-                        OriginState.Valid(greenCard.origins.first())
-                    ), GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-
-        assertEquals(
-            "${context.getString(R.string.general_visitorPass).capitalize()}:",
-            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_valid, "woensdag 28 juli 21:06"),
-            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
-        )
-        assertEquals(View.GONE, viewBinding.expiresIn.visibility)
-    }
-
-    @Test
-    fun domesticVaccinationAssessmentAndTest() {
-        val myOverViewGreenCardAdapterUtil = DashboardGreenCardAdapterItemUtilImpl(
-            Clock.systemUTC(),
-            context,
-            credentialUtil,
-            dashboardGreenCardAdapterItemExpiryUtil
-        )
-
-        val greenCard = greenCard(
-            GreenCardType.Domestic,
-            listOf(OriginType.VaccinationAssessment, OriginType.Test)
-        )
-        myOverViewGreenCardAdapterUtil.setContent(
-            viewBinding,
-            listOf(
-                AdapterCard(
-                    greenCard,
-                    greenCard.origins.map { OriginState.Valid(it) },
-                    GreenCardDisclosurePolicy.ThreeG
-                )
-            )
-        )
-
-        assertEquals(
-            "${context.getString(R.string.general_visitorPass).capitalize()}:",
-            ((viewBinding.description.getChildAt(0) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_valid, "woensdag 28 juli 21:06"),
-            ((viewBinding.description.getChildAt(1) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_test_domestic).capitalize(),
-            ((viewBinding.description.getChildAt(2) as TextView).text).toString()
-        )
-        assertEquals(
-            context.getString(R.string.qr_card_validity_valid, "woensdag 28 juli 21:06"),
-            ((viewBinding.description.getChildAt(3) as TextView).text).toString()
         )
     }
 

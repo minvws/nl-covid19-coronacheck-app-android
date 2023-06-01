@@ -38,7 +38,6 @@ import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.persistence.database.usecases.DraftEventUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.shared.livedata.Event
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 abstract class DashboardViewModel : ViewModel() {
     val dashboardTabItemsLiveData: LiveData<List<DashboardTabItem>> = MutableLiveData()
@@ -46,10 +45,10 @@ abstract class DashboardViewModel : ViewModel() {
     val showBlockedEventsDialogLiveData: LiveData<Event<ShowBlockedEventsDialogResult>> =
         MutableLiveData()
     val bottomButtonElevationLiveData: LiveData<Boolean> = MutableLiveData()
+    val showMigrationDialogLiveData: LiveData<Event<Unit>> = MutableLiveData()
 
     abstract fun refresh(dashboardSync: DashboardSync = DashboardSync.CheckSync)
     abstract fun removeOrigin(originEntity: OriginEntity)
-    abstract fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy)
     abstract fun dismissBlockedEventsInfo()
     abstract fun dismissFuzzyMatchedEventsInfo()
 
@@ -62,6 +61,8 @@ abstract class DashboardViewModel : ViewModel() {
      * @param greenCardType which greencard's type recyclerview interacting with
      */
     abstract fun scrollUpdate(canScrollVertically: Boolean, greenCardType: GreenCardType)
+    abstract fun showMigrationDialog()
+    abstract fun deleteMigrationData()
 
     companion object {
         val RETRY_FAILED_REQUEST_AFTER_SECONDS =
@@ -98,8 +99,10 @@ class DashboardViewModelImpl(
     }
 
     private fun loading(): Boolean {
-        val cardItems = dashboardTabItemsLiveData.value?.flatMap { it.items }?.filterIsInstance<DashboardItem.CardsItem>() ?: return false
-        return cardItems.flatMap { it.cards }.any { it.credentialState is DashboardItem.CardsItem.CredentialState.LoadingCredential }
+        val cardItems = dashboardTabItemsLiveData.value?.flatMap { it.items }
+            ?.filterIsInstance<DashboardItem.CardsItem>() ?: return false
+        return cardItems.flatMap { it.cards }
+            .any { it.credentialState is DashboardItem.CardsItem.CredentialState.LoadingCredential }
     }
 
     private suspend fun refreshCredentials(dashboardSync: DashboardSync) {
@@ -166,8 +169,8 @@ class DashboardViewModelImpl(
         // If we loaded new credentials, we want to update our items again
         if (shouldLoadNewCredentials) {
             refreshDashboardTabItems(
-                allGreenCards = allGreenCards,
-                allEventGroupEntities = allEventGroupEntities,
+                allGreenCards = greenCardUtil.getAllGreenCards(),
+                allEventGroupEntities = holderDatabase.eventGroupDao().getAll(),
                 databaseSyncerResult = databaseSyncerResult,
                 isLoadingNewCredentials = false
             )
@@ -211,10 +214,6 @@ class DashboardViewModelImpl(
         )
     }
 
-    override fun dismissPolicyInfo(disclosurePolicy: DisclosurePolicy) {
-        persistenceManager.setPolicyBannerDismissed(disclosurePolicy)
-    }
-
     override fun dismissBlockedEventsInfo() {
         viewModelScope.launch {
             holderDatabase.removedEventDao().deleteAll(reason = RemovedEventReason.Blocked)
@@ -234,6 +233,22 @@ class DashboardViewModelImpl(
 
         if (currentTabItem.greenCardType == greenCardType) {
             (bottomButtonElevationLiveData as MutableLiveData).value = canScrollVertically
+        }
+    }
+
+    override fun showMigrationDialog() {
+        if (persistenceManager.getShowMigrationDialog()) {
+            persistenceManager.setShowMigrationDialog(false)
+            (showMigrationDialogLiveData as MutableLiveData).postValue(Event(Unit))
+        }
+    }
+
+    override fun deleteMigrationData() {
+        viewModelScope.launch {
+            holderDatabase.eventGroupDao().deleteAll()
+            holderDatabase.greenCardDao().deleteAll()
+            holderDatabase.removedEventDao().deleteAll()
+            refresh(DashboardSync.ForceSync)
         }
     }
 }

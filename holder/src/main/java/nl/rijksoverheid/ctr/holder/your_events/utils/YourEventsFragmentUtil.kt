@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.holder.your_events.utils
 
+import androidx.core.text.HtmlCompat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -20,7 +21,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.models.Flow
 
 interface YourEventsFragmentUtil {
-    fun getHeaderCopy(type: YourEventsFragmentType): Int
+    fun getHeaderCopy(type: YourEventsFragmentType, flow: Flow): Int
     fun getNoOriginTypeCopy(type: YourEventsFragmentType, flow: Flow): Int
     fun getProviderName(providers: List<AppConfig.Code>, providerIdentifier: String): String
     fun getCancelDialogDescription(type: YourEventsFragmentType): Int
@@ -32,13 +33,13 @@ interface YourEventsFragmentUtil {
 class YourEventsFragmentUtilImpl(
     private val remoteEventUtil: RemoteEventUtil
 ) : YourEventsFragmentUtil {
-    override fun getHeaderCopy(type: YourEventsFragmentType): Int {
+    override fun getHeaderCopy(type: YourEventsFragmentType, flow: Flow): Int {
         return when {
+            flow == HolderFlow.Migration -> {
+                R.string.holder_migrationFlow_scannedDetailsOverview_message
+            }
             type is YourEventsFragmentType.DCC -> {
                 R.string.holder_listRemoteEvents_paperflow_message
-            }
-            isVaccinationAssessment(type) -> {
-                R.string.holder_listRemoteEvents_vaccinationAssessment_message
             }
             isRecovery(type) -> {
                 R.string.holder_listRemoteEvents_recovery_message
@@ -52,20 +53,16 @@ class YourEventsFragmentUtilImpl(
         }
     }
 
-    private fun isVaccinationAssessment(yourEventsFragmentType: YourEventsFragmentType): Boolean {
-        val type = yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
-        val remoteEvent = type.remoteEvents.keys.firstOrNull()?.events?.first() ?: return false
-        return remoteEventUtil.getOriginType(remoteEvent) == OriginType.VaccinationAssessment
-    }
-
     private fun isRecovery(yourEventsFragmentType: YourEventsFragmentType): Boolean {
-        val type = yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
+        val type =
+            yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
         val remoteEvent = type.remoteEvents.keys.firstOrNull()?.events?.first() ?: return false
         return remoteEventUtil.getOriginType(remoteEvent) == OriginType.Recovery
     }
 
     private fun isTest(yourEventsFragmentType: YourEventsFragmentType): Boolean {
-        val type = yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
+        val type =
+            yourEventsFragmentType as? YourEventsFragmentType.RemoteProtocol3Type ?: return false
         val remoteEvent = type.remoteEvents.keys.firstOrNull()?.events?.first() ?: return false
         return remoteEventUtil.getOriginType(remoteEvent) == OriginType.Test
     }
@@ -90,15 +87,15 @@ class YourEventsFragmentUtilImpl(
                             R.string.rule_engine_no_test_origin_description_vaccination
                         }
                     }
-                    is OriginType.VaccinationAssessment -> {
-                        R.string.rule_engine_no_test_origin_description_vaccination_approval
-                    }
                 }
             }
         }
     }
 
-    override fun getProviderName(providers: List<AppConfig.Code>, providerIdentifier: String): String {
+    override fun getProviderName(
+        providers: List<AppConfig.Code>,
+        providerIdentifier: String
+    ): String {
         return providers.firstOrNull { it.code == providerIdentifier }
             ?.name
             ?: providerIdentifier
@@ -112,7 +109,6 @@ class YourEventsFragmentUtilImpl(
                     is OriginType.Test -> R.string.holder_test_alert_message
                     is OriginType.Recovery -> R.string.holder_recovery_alert_message
                     is OriginType.Vaccination -> R.string.holder_vaccination_alert_message
-                    is OriginType.VaccinationAssessment -> R.string.holder_event_vaccination_assessment_alert_message
                 }
             }
         }
@@ -120,16 +116,19 @@ class YourEventsFragmentUtilImpl(
 
     override fun getFullName(holder: RemoteProtocol.Holder?): String {
         return holder?.let {
-            return if (it.infix.isNullOrEmpty()) {
-                "${it.lastName}, ${it.firstName}"
-            } else {
-                "${it.infix} ${it.lastName}, ${it.firstName}"
-            }
+            return HtmlCompat.fromHtml(
+                if (it.infix.isNullOrEmpty()) {
+                    "${it.lastName}, ${it.firstName}"
+                } else {
+                    "${it.infix} ${it.lastName}, ${it.firstName}"
+                }, HtmlCompat.FROM_HTML_MODE_LEGACY
+            ).toString()
         } ?: ""
     }
 
     override fun getBirthDate(holder: RemoteProtocol.Holder?): String {
-        return holder?.birthDate?.let { birthDate ->
+        return holder?.birthDate?.let {
+            val birthDate = HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
             try {
                 LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE).formatDayMonthYear()
             } catch (e: DateTimeParseException) {

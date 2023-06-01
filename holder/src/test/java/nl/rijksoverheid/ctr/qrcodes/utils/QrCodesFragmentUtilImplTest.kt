@@ -13,21 +13,9 @@ import java.time.ZoneId
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtilImpl
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class QrCodesFragmentUtilImplTest {
-
-    @Test
-    fun `shouldClose for domestic returns true if credential has expired`() {
-        val now = Clock.fixed(Instant.parse("2021-01-01T11:00:00.00Z"), ZoneId.of("UTC"))
-        val expiration = Instant.parse("2021-01-01T10:00:00.00Z")
-
-        val util = QrCodesFragmentUtilImpl(now)
-        val shouldClose = util.shouldClose(expiration.epochSecond, GreenCardType.Domestic)
-
-        assertTrue(shouldClose)
-    }
 
     @Test
     fun `shouldClose for domestic returns false if credential has not expired`() {
@@ -35,7 +23,7 @@ class QrCodesFragmentUtilImplTest {
         val expiration = Instant.parse("2021-01-01T11:00:00.00Z")
 
         val util = QrCodesFragmentUtilImpl(now)
-        val shouldClose = util.shouldClose(expiration.epochSecond, GreenCardType.Domestic)
+        val shouldClose = util.shouldClose(expiration.epochSecond, GreenCardType.Eu)
 
         assertFalse(shouldClose)
     }

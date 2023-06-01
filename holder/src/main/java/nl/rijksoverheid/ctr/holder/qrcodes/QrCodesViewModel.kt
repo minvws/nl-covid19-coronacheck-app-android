@@ -56,12 +56,6 @@ class QrCodesViewModelImpl(
     }
 
     override fun onReturnUriGiven(uri: String, type: GreenCardType) {
-        if (type == GreenCardType.Domestic) {
-            val data = returnToExternalAppUseCase.get(uri)
-            data?.let {
-                returnAppLivedata.postValue(it)
-            }
-        }
     }
 
     override fun getAnimation(greenCardType: GreenCardType) {

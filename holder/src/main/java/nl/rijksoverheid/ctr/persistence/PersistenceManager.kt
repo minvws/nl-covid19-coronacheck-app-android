@@ -1,7 +1,6 @@
 package nl.rijksoverheid.ctr.persistence
 
 import android.content.SharedPreferences
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -32,12 +31,10 @@ interface PersistenceManager {
     fun getCheckNewValidityInfoCard(): Boolean
     fun setCheckNewValidityInfoCard(check: Boolean)
     fun getHasDismissedNewValidityInfoCard(): Boolean
-    fun getPolicyBannerDismissed(): DisclosurePolicy?
-    fun setPolicyBannerDismissed(policy: DisclosurePolicy)
-    fun getPolicyScreenSeen(): DisclosurePolicy?
-    fun setPolicyScreenSeen(policy: DisclosurePolicy)
     fun setCheckCanOpenDatabase(check: Boolean)
     fun getCheckCanOpenDatabase(): Boolean
+    fun getShowMigrationDialog(): Boolean
+    fun setShowMigrationDialog(show: Boolean)
 }
 
 class SharedPreferencesPersistenceManager(
@@ -56,10 +53,8 @@ class SharedPreferencesPersistenceManager(
         const val SHOW_SYNC_GREEN_CARDS_ITEM = "SHOW_SYNC_GREEN_CARDS_ITEM"
         const val CHECK_VALIDITY_INFO_CARD = "CHECK_VALIDITY_INFO_CARD"
         const val HAS_DISMISSED_VALIDITY_INFO_CARD = "HAS_DISMISSED_VALIDITY_INFO_CARD"
-        const val POLICY_BANNER_DISMISSED = "POLICY_BANNER_DISMISSED"
-        const val POLICY_SCREEN_SEEN = "POLICY_SCREEN_SEEN"
         const val CHECK_CAN_OPEN_DATABASE = "CHECK_CAN_OPEN_DATABASE"
-        const val CAN_SHOW_BLOCKED_EVENTS_DIALOG = "CAN_SHOW_BLOCKED_EVENTS_DIALOG"
+        const val SHOW_MIGRATION_DIALOG = "SHOW_MIGRATION_DIALOG"
     }
 
     override fun saveDatabasePassPhrase(passPhrase: String) {
@@ -146,29 +141,19 @@ class SharedPreferencesPersistenceManager(
         return sharedPreferences.getBoolean(HAS_DISMISSED_VALIDITY_INFO_CARD, true)
     }
 
-    override fun getPolicyBannerDismissed(): DisclosurePolicy? {
-        val value = sharedPreferences.getString(POLICY_BANNER_DISMISSED, "") ?: ""
-        return DisclosurePolicy.fromString(value)
-    }
-
-    override fun setPolicyBannerDismissed(policy: DisclosurePolicy) {
-        sharedPreferences.edit().putString(POLICY_BANNER_DISMISSED, policy.stringValue).apply()
-    }
-
-    override fun getPolicyScreenSeen(): DisclosurePolicy? {
-        val value = sharedPreferences.getString(POLICY_SCREEN_SEEN, "") ?: ""
-        return if (value.isNotEmpty()) DisclosurePolicy.fromString(value) else null
-    }
-
-    override fun setPolicyScreenSeen(policy: DisclosurePolicy) {
-        sharedPreferences.edit().putString(POLICY_SCREEN_SEEN, policy.stringValue).apply()
-    }
-
     override fun setCheckCanOpenDatabase(check: Boolean) {
         sharedPreferences.edit().putBoolean(CHECK_CAN_OPEN_DATABASE, check).commit()
     }
 
     override fun getCheckCanOpenDatabase(): Boolean {
         return sharedPreferences.getBoolean(CHECK_CAN_OPEN_DATABASE, true)
+    }
+
+    override fun getShowMigrationDialog(): Boolean {
+        return sharedPreferences.getBoolean(CHECK_CAN_OPEN_DATABASE, false)
+    }
+
+    override fun setShowMigrationDialog(show: Boolean) {
+        sharedPreferences.edit().putBoolean(CHECK_CAN_OPEN_DATABASE, show).commit()
     }
 }

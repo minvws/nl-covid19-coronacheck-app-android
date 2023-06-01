@@ -203,6 +203,14 @@
                 app:popEnterAnim="@animator/slide_in_left"
                 app:popExitAnim="@animator/slide_out_right" />
 
+            <action
+                android:id="@+id/action_info_fragment"
+                app:destination="@id/nav_info_fragment"
+                app:enterAnim="@animator/slide_in_right"
+                app:exitAnim="@animator/slide_out_left"
+                app:popEnterAnim="@animator/slide_in_left"
+                app:popExitAnim="@animator/slide_out_right" />
+
         </fragment>
 
         <fragment
@@ -225,23 +233,6 @@
 
         </fragment>
 
-    </navigation>
-
-    <navigation android:id="@+id/nav_visitor_pass"
-        app:startDestination="@+id/visitor_pass">
-        <fragment android:id="@+id/visitor_pass"
-            android:label="@string/visitorpass_start_toolbar_title"
-            android:name="nl.rijksoverheid.ctr.holder.visitor_pass.VisitorPassStartFragment"
-            tools:layout="@layout/fragment_visitor_pass_start">
-
-            <action android:id="@+id/action_input_token"
-                app:destination="@id/nav_visitor_pass_input_token"
-                app:enterAnim="@animator/slide_in_right"
-                app:exitAnim="@animator/slide_out_left"
-                app:popEnterAnim="@animator/slide_in_left"
-                app:popExitAnim="@animator/slide_out_right" />
-
-        </fragment>
     </navigation>
 
     <fragment
@@ -559,38 +550,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_visitor_pass_input_token"
-        android:name="nl.rijksoverheid.ctr.holder.input_token.VisitorPassInputTokenFragment"
-        android:label="@string/holder_event_vaccination_assessment_toolbar_title"
-        tools:layout="@layout/fragment_input_token">
-
-        <deepLink app:uri=".*/app/redeem-assessment#{token}"  />
-
-        <argument
-            android:name="token"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-
-        <action
-            android:id="@+id/action_your_events"
-            app:destination="@id/nav_your_events"
-            app:enterAnim="@animator/slide_in_right"
-            app:exitAnim="@animator/slide_out_left"
-            app:popEnterAnim="@animator/slide_in_left"
-            app:popExitAnim="@animator/slide_out_right" />
-
-        <action
-            android:id="@+id/action_could_not_create_qr"
-            app:destination="@id/nav_could_not_create_qr"
-            app:enterAnim="@animator/slide_in_right"
-            app:exitAnim="@animator/slide_out_left"
-            app:popEnterAnim="@animator/slide_in_left"
-            app:popExitAnim="@animator/slide_out_right" />
-
-    </fragment>
-
-    <fragment
         android:id="@+id/nav_could_not_create_qr"
         android:name="nl.rijksoverheid.ctr.holder.could_not_create_qr.CouldNotCreateQrFragment"
         android:label="{toolbarTitle}"
@@ -697,15 +656,6 @@
             app:exitAnim="@animator/slide_out_left"
             app:popEnterAnim="@animator/slide_in_left"
             app:popExitAnim="@animator/slide_out_right" />
-
-        <action android:id="@+id/action_visitor_pass_input_token"
-            app:destination="@id/nav_visitor_pass_input_token"
-            app:enterAnim="@animator/slide_in_right"
-            app:exitAnim="@animator/slide_out_left"
-            app:popEnterAnim="@animator/fragment_close_enter"
-            app:popExitAnim="@animator/fragment_close_exit"
-            app:popUpTo="@id/nav_dashboard"
-            app:popUpToInclusive="false" />
 
         <action
             android:id="@+id/action_my_overview"
@@ -814,14 +764,6 @@
             app:popExitAnim="@animator/slide_out_right" />
 
         <action
-            android:id="@+id/action_visitor_pass"
-            app:destination="@id/nav_visitor_pass"
-            app:enterAnim="@animator/slide_in_right"
-            app:exitAnim="@animator/slide_out_left"
-            app:popEnterAnim="@animator/slide_in_left"
-            app:popExitAnim="@animator/slide_out_right" />
-
-        <action
             android:id="@+id/action_about_this_app"
             app:destination="@id/nav_about_this_app"
             app:enterAnim="@animator/slide_in_right"
@@ -832,6 +774,14 @@
         <action
             android:id="@+id/action_saved_events"
             app:destination="@+id/nav_saved_events"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
+
+        <action
+            android:id="@+id/action_data_migration"
+            app:destination="@+id/nav_data_migration"
             app:enterAnim="@animator/slide_in_right"
             app:exitAnim="@animator/slide_out_left"
             app:popEnterAnim="@animator/slide_in_left"
@@ -858,6 +808,90 @@
             app:destination="@+id/nav_dialog" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_data_migration"
+        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationStartFragment"
+        android:label="@string/holder_startMigration_onboarding_toolbar">
+
+        <action
+            android:id="@+id/action_data_transfer_options"
+            app:destination="@id/nav_data_transfer_options"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
+
+        <action
+            android:id="@+id/action_data_migration_instructions"
+            app:destination="@id/nav_data_migration_instructions"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_data_transfer_options"
+        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationTransferOptionsFragment">
+
+        <action
+            android:id="@+id/action_data_migration_instructions"
+            app:destination="@id/nav_data_migration_instructions"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
+
+    </fragment>
+
+    <fragment android:id="@+id/nav_data_migration_instructions"
+        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationInstructionsFragment">
+
+        <argument android:name="instructionItems"
+            app:argType="nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem[]" />
+        <argument android:name="destination"
+            app:argType="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationOnboardingItem" />
+
+        <action
+            android:id="@+id/action_data_migration_show_qr"
+            app:destination="@id/nav_data_migration_show_qr"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
+
+        <action
+            android:id="@+id/action_data_migration_scan_qr"
+            app:destination="@id/nav_data_migration_scan_qr"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
+
+        <action
+            android:id="@+id/action_your_events"
+            app:destination="@id/nav_your_events"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
+
+        <action
+            android:id="@+id/action_error_result"
+            app:destination="@id/nav_error_result"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right"
+            app:popUpTo="@id/nav_data_migration_scan_qr" />
+
+    </fragment>
+
+    <fragment android:id="@+id/nav_data_migration_show_qr"
+        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationShowQrCodeFragment"
+        android:label="@string/holder_startMigration_onboarding_toolbar"/>
 
     <fragment
         android:id="@id/nav_saved_events"

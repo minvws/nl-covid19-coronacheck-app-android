@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.fuzzy_matching
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -165,7 +166,7 @@ class HolderNameSelectionFragment : Fragment(R.layout.fragment_holder_name_selec
                         item,
                         {
                             val nameText =
-                                getString(R.string.holder_identitySelection_details_body, item.name)
+                                getString(R.string.holder_identitySelection_details_body, HtmlCompat.fromHtml(item.name, HtmlCompat.FROM_HTML_MODE_LEGACY))
                             val eventsText = selectionDetailBottomSheetDescriptionUtil.get(
                                 selectionDetailData = item.detailData,
                                 separator = " ${getString(R.string.general_and)} "

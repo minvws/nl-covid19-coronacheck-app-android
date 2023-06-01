@@ -9,21 +9,16 @@ package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface DashboardHeaderAdapterItemUtil {
     fun getHeaderItem(
         greenCardType: GreenCardType,
-        emptyState: Boolean,
-        hasVisitorPassIncompleteItem: Boolean
+        emptyState: Boolean
     ): DashboardItem.HeaderItem
 }
 
-class DashboardHeaderAdapterItemUtilImpl(
-    private val featureFlagUseCase: HolderFeatureFlagUseCase
-) : DashboardHeaderAdapterItemUtil {
+class DashboardHeaderAdapterItemUtilImpl : DashboardHeaderAdapterItemUtil {
 
     /**
      * Get the header item text to display in the domestic tab on the dashboard screen
@@ -33,16 +28,10 @@ class DashboardHeaderAdapterItemUtilImpl(
      */
     override fun getHeaderItem(
         greenCardType: GreenCardType,
-        emptyState: Boolean,
-        hasVisitorPassIncompleteItem: Boolean
+        emptyState: Boolean
     ): DashboardItem.HeaderItem {
-        val empty = emptyState || hasVisitorPassIncompleteItem
-        val text = if (hasVisitorPassIncompleteItem) {
-            R.string.holder_dashboard_incompleteVisitorPass_message
-        } else {
-            getHeaderText(greenCardType, empty)
-        }
-        val buttonInfo = getButtonInfo(greenCardType, empty)
+        val text = getHeaderText(greenCardType, emptyState)
+        val buttonInfo = getButtonInfo(greenCardType, emptyState)
         return DashboardItem.HeaderItem(text, buttonInfo)
     }
 
@@ -50,58 +39,18 @@ class DashboardHeaderAdapterItemUtilImpl(
         tabType: GreenCardType,
         emptyState: Boolean
     ) = when (tabType) {
-        is GreenCardType.Domestic -> {
-            when (featureFlagUseCase.getDisclosurePolicy()) {
-                is DisclosurePolicy.OneG -> {
-                    if (emptyState) {
-                        R.string.holder_dashboard_empty_domestic_only1Gaccess_message
-                    } else {
-                        R.string.holder_dashboard_intro_domestic_only1Gaccess
-                    }
-                }
-                is DisclosurePolicy.OneAndThreeG -> {
-                    if (emptyState) {
-                        R.string.holder_dashboard_empty_domestic_3Gand1Gaccess_message
-                    } else {
-                        R.string.holder_dashboard_intro_domestic_3Gand1Gaccess
-                    }
-                }
-                is DisclosurePolicy.ThreeG -> {
-                    if (emptyState) {
-                        R.string.my_overview_qr_placeholder_description
-                    } else {
-                        R.string.my_overview_description
-                    }
-                }
-                is DisclosurePolicy.ZeroG -> R.string.app_name // Not applicable
-            }
-        }
         is GreenCardType.Eu -> {
             if (emptyState) {
-                when (featureFlagUseCase.getDisclosurePolicy()) {
-                    is DisclosurePolicy.ZeroG -> {
-                        R.string.holder_dashboard_emptyState_international_0G_message
-                    }
-                    else -> {
-                        R.string.my_overview_qr_placeholder_description_eu
-                    }
-                }
+                R.string.holder_dashboard_emptyState_international_0G_message
             } else {
-                when (featureFlagUseCase.getDisclosurePolicy()) {
-                    is DisclosurePolicy.ZeroG -> {
-                        R.string.holder_dashboard_filledState_international_0G_message
-                    }
-                    else -> {
-                        R.string.my_overview_description_eu
-                    }
-                }
+                R.string.holder_dashboard_filledState_international_0G_message
             }
         }
     }
 
     private fun getButtonInfo(tabType: GreenCardType, empty: Boolean) =
         if (tabType == GreenCardType.Eu) {
-            if (featureFlagUseCase.getDisclosurePolicy() is DisclosurePolicy.ZeroG && empty) {
+            if (empty) {
                 ButtonInfo(
                     R.string.holder_dashboard_international_0G_action_certificateNeeded,
                     R.string.my_overview_description_eu_button_link

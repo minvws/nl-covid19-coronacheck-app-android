@@ -46,6 +46,9 @@ interface EventGroupDao {
     @Query("DELETE FROM event_group WHERE type = :originType")
     suspend fun deleteAllOfType(originType: OriginType)
 
+    @Query("DELETE FROM event_group WHERE type NOT IN (:originTypes)")
+    suspend fun deleteAllOfNotTypes(originTypes: List<OriginType>)
+
     @Query("DELETE FROM event_group WHERE id IN (:ids)")
     suspend fun deleteAllOfIds(ids: List<Int>)
 

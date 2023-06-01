@@ -110,132 +110,6 @@ class HolderDatabaseSyncerImplTest {
     }
 
     @Test
-    fun `sync returns Success with missingOrigin if not 0G and expected origin is not in domestic and eu green cards`() = runBlocking {
-        coEvery { eventGroupDao.getAll() } answers { events }
-
-        val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
-            holderDatabase = holderDatabase,
-            workerManagerUtil = mockk(relaxed = true),
-            greenCardUtil = fakeGreenCardUtil(),
-            getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Success(
-                    remoteGreenCards = RemoteGreenCards(
-                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                            origins = listOf(
-                                RemoteGreenCards.Origin(
-                                type = OriginType.Vaccination,
-                                eventTime = OffsetDateTime.now(),
-                                expirationTime = OffsetDateTime.now(),
-                                validFrom = OffsetDateTime.now(),
-                                doseNumber = 1
-                            )),
-                            createCredentialMessages = "".toByteArray()
-                        ),
-                        euGreencards = null,
-                        blobExpireDates = listOf()
-                    )
-                )
-            ),
-            syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistBlockedEventsUseCase = mockk(relaxed = true),
-            draftEventUseCase = mockk(relaxed = true),
-            updateEventExpirationUseCase = mockk(relaxed = true),
-            mobileCoreWrapper = mobileCoreWrapper
-        )
-
-        val databaseSyncerResult = holderDatabaseSyncer.sync(
-            syncWithRemote = true
-        )
-
-        assertEquals(DatabaseSyncerResult.Success(listOf()), databaseSyncerResult)
-    }
-
-    @Test
-    fun `sync returns Success with missingOrigin if 0G and expected origin is not in eu green cards`() = runBlocking {
-        coEvery { eventGroupDao.getAll() } answers { events }
-
-        val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
-            holderDatabase = holderDatabase,
-            workerManagerUtil = mockk(relaxed = true),
-            greenCardUtil = fakeGreenCardUtil(),
-            getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Success(
-                    remoteGreenCards = RemoteGreenCards(
-                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                            origins = listOf(
-                                RemoteGreenCards.Origin(
-                                type = OriginType.Test,
-                                eventTime = OffsetDateTime.now(),
-                                expirationTime = OffsetDateTime.now(),
-                                validFrom = OffsetDateTime.now(),
-                                doseNumber = 1
-                            )),
-                            createCredentialMessages = "".toByteArray()
-                        ),
-                        euGreencards = null,
-                        blobExpireDates = listOf()
-                    )
-                )
-            ),
-            syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistBlockedEventsUseCase = mockk(relaxed = true),
-            draftEventUseCase = mockk(relaxed = true),
-            updateEventExpirationUseCase = mockk(relaxed = true),
-            mobileCoreWrapper = mobileCoreWrapper
-        )
-
-        val databaseSyncerResult = holderDatabaseSyncer.sync(
-            syncWithRemote = true
-        )
-
-        assertEquals(DatabaseSyncerResult.Success(listOf()), databaseSyncerResult)
-    }
-
-    @Test
-    fun `sync returns Success if returned origins is vaccination assessment and does not match`() = runBlocking {
-        coEvery { eventGroupDao.getAll() } answers { events }
-
-        val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
-            holderDatabase = holderDatabase,
-            workerManagerUtil = mockk(relaxed = true),
-            greenCardUtil = fakeGreenCardUtil(),
-            getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Success(
-                    remoteGreenCards = RemoteGreenCards(
-                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                            origins = listOf(
-                                RemoteGreenCards.Origin(
-                                type = OriginType.VaccinationAssessment,
-                                eventTime = OffsetDateTime.now(),
-                                expirationTime = OffsetDateTime.now(),
-                                validFrom = OffsetDateTime.now(),
-                                doseNumber = 1
-                            )),
-                            createCredentialMessages = "".toByteArray()
-                        ),
-                        euGreencards = null,
-                        blobExpireDates = listOf()
-                    )
-                )
-            ),
-            syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistBlockedEventsUseCase = mockk(relaxed = true),
-            draftEventUseCase = mockk(relaxed = true),
-            updateEventExpirationUseCase = mockk(relaxed = true),
-            mobileCoreWrapper = mobileCoreWrapper
-        )
-
-        val databaseSyncerResult = holderDatabaseSyncer.sync(
-            syncWithRemote = true
-        )
-
-        assertEquals(DatabaseSyncerResult.Success(listOf()), databaseSyncerResult)
-    }
-
-    @Test
     fun `sync returns NetworkError if getting remote green cards returns NetworkError`() = runBlocking {
         coEvery { eventGroupDao.getAll() } answers { events }
         coEvery { greenCardDao.getAll() } answers { listOf() }
@@ -343,17 +217,6 @@ class HolderDatabaseSyncerImplTest {
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
                     remoteGreenCards = RemoteGreenCards(
-                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                            origins = listOf(
-                                RemoteGreenCards.Origin(
-                                type = OriginType.Test,
-                                eventTime = OffsetDateTime.now(),
-                                expirationTime = OffsetDateTime.now(),
-                                validFrom = OffsetDateTime.now(),
-                                doseNumber = 1
-                            )),
-                            createCredentialMessages = "".toByteArray()
-                        ),
                         euGreencards = null,
                         blobExpireDates = listOf()
                     )
@@ -389,10 +252,6 @@ class HolderDatabaseSyncerImplTest {
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
                     remoteGreenCards = RemoteGreenCards(
-                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                            origins = listOf(),
-                            createCredentialMessages = "".toByteArray()
-                        ),
                         euGreencards = null,
                         blobExpireDates = listOf()
                     )
@@ -415,17 +274,6 @@ class HolderDatabaseSyncerImplTest {
 
     private fun successResult(originType: OriginType): RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
         remoteGreenCards = RemoteGreenCards(
-            domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                origins = listOf(
-                    RemoteGreenCards.Origin(
-                    type = originType,
-                    eventTime = OffsetDateTime.now(),
-                    expirationTime = OffsetDateTime.now(),
-                    validFrom = OffsetDateTime.now(),
-                    doseNumber = 1
-                )),
-                createCredentialMessages = "".toByteArray()
-            ),
             euGreencards = null,
             blobExpireDates = listOf()
         )

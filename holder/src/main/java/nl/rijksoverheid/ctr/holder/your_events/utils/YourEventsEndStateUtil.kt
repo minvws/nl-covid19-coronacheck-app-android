@@ -63,14 +63,6 @@ class YourEventsEndStateUtilImpl(
         val anyNegativeTestRejected =
             hints.contains("domestic_negativetest_rejected") || hints.contains("international_negativetest_rejected")
 
-        if (hints.contains("domestic_vaccinationassessment_rejected") &&
-            !hints.contains("negativetest_without_vaccinationassessment") &&
-            !hints.contains("vaccinationassessment_missing_supporting_negativetest")) {
-            return YourEventsEndState.WeCouldntMakeACertificateError(
-                WeCouldntCreateCertificateException("0513")
-            )
-        }
-
         if (allRecoveriesCreated && hints.contains("vaccination_dose_correction_applied")) {
             return if (allVaccinationsCreated) {
                 YourEventsEndStateWithCustomTitle.VaccinationsAndRecovery
@@ -80,13 +72,6 @@ class YourEventsEndStateUtilImpl(
         }
 
         if (!anyVaccinationCreated && !anyVaccinationRejected) {
-            if (hints.contains("negativetest_without_vaccinationassessment")) {
-                return YourEventsEndState.NegativeTestResultAddedAndNowAddVisitorAssessment
-            } else if (hints.contains("vaccinationassessment_missing_supporting_negativetest") ||
-                hints.contains("domestic_vaccinationassessment_created")
-            ) {
-                return YourEventsEndState.None
-            }
 
             if (anyNegativeTestCreated) {
                 return YourEventsEndState.None
@@ -112,10 +97,6 @@ class YourEventsEndStateUtilImpl(
             } else {
                 YourEventsEndState.None
             }
-        }
-
-        if (anyRecoveryCreated && !anyVaccinationCreated && !anyVaccinationRejected) {
-            return YourEventsEndState.None
         }
 
         if (!anyVaccinationRejected && !anyRecoveryCreated) {
@@ -169,7 +150,6 @@ class YourEventsEndStateUtilImpl(
                 HolderFlow.DigidTest -> R.string.general_negativeTest
                 HolderFlow.Recovery -> R.string.general_positiveTest
                 HolderFlow.Vaccination -> R.string.general_vaccination
-                HolderFlow.VaccinationAssessment -> R.string.rule_engine_no_test_origin_description_vaccination_approval
                 else -> R.string.general_retrievedDetails
             }
         ).lowercase()

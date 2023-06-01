@@ -167,7 +167,7 @@ class CoronaCheckRepositoryImplTest : AutoCloseKoinTest() {
     fun `when get_credentials request fails with error code 99790 then return matching blob ids`() =
         runTest {
             val matchingBlobIds = RemoteGreenCards(
-                null, null, null, context = RemoteGreenCards.Context(
+                null, null, RemoteGreenCards.Context(
                     matchingBlobIds = listOf(listOf(1), listOf(2))
                 )
             )

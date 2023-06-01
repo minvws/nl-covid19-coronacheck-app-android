@@ -33,7 +33,7 @@ val holderIntroductionModule = module {
     }
     factory<IntroductionStatusUseCase> {
         HolderIntroductionStatusUseCaseImpl(
-            get(), get(), get(), get()
+            get(), get()
         )
     }
 }

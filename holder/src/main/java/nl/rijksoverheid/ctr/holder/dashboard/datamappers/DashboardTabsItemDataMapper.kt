@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItems
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardTabItem
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface DashboardTabsItemDataMapper {
     suspend fun transform(dashboardItems: DashboardItems): List<DashboardTabItem>
@@ -27,16 +26,6 @@ class DashboardTabsItemDataMapperImpl(
     override suspend fun transform(dashboardItems: DashboardItems): List<DashboardTabItem> {
         return withContext(Dispatchers.IO) {
             val tabItems = mutableListOf<DashboardTabItem>()
-
-            if (cachedAppConfigUseCase.getCachedAppConfig().disclosurePolicy !is DisclosurePolicy.ZeroG) {
-                val domesticItem = DashboardTabItem(
-                    title = R.string.travel_button_domestic,
-                    greenCardType = GreenCardType.Domestic,
-                    items = dashboardItems.domesticItems
-                )
-
-                tabItems.add(domesticItem)
-            }
 
             val internationalItem = DashboardTabItem(
                 title = R.string.travel_button_europe,

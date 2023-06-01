@@ -1,5 +1,6 @@
 package nl.rijksoverheid.ctr.introduction.onboarding
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -25,6 +26,18 @@ class OnboardingPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         val item = items[position]
-        return OnboardingItemFragment.getInstance(item)
+        return getInstance(item)
+    }
+
+    companion object {
+        const val EXTRA_ONBOARDING_ITEM = "EXTRA_ONBOARDING_ITEM"
+        private fun getInstance(onboardingItem: OnboardingItem): Fragment {
+            val fragment =
+                onboardingItem.clazz.newInstance() as Fragment
+            val bundle = Bundle()
+            bundle.putParcelable(EXTRA_ONBOARDING_ITEM, onboardingItem)
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }

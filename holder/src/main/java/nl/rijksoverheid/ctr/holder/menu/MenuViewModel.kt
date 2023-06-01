@@ -31,14 +31,12 @@ class MenuViewModelImpl(
     private fun menuSections(context: Context): Array<MenuSection> {
         val actionChooseProofType = MenuFragmentDirections.actionChooseProofType()
         val actionPaperProof = MenuFragmentDirections.actionPaperProof()
-        val actionVisitorPass = MenuFragmentDirections.actionVisitorPass()
         val actionSavedEvents = MenuFragmentDirections.actionSavedEvents()
+        val actionDataMigration = MenuFragmentDirections.actionDataMigration()
         val actionHelpInfo = MenuFragmentDirections.actionMenu(
             toolbarTitle = context.getString(R.string.holder_helpInfo_title),
             menuSections = helpMenuDataModel.get(context)
         )
-
-        val isVisitorPassEnabled = featureFlagUseCase.getVisitorPassEnabled()
 
         val addVaccinationOrTestMenuItem = MenuSection.MenuItem(
             icon = R.drawable.ic_menu_add,
@@ -59,20 +57,20 @@ class MenuViewModelImpl(
             )
         )
 
-        val addVisitorPassMenuItem = MenuSection.MenuItem(
-            icon = R.drawable.ic_menu_briefcase,
-            title = R.string.holder_menu_visitorpass,
-            onClick = MenuSection.MenuItem.OnClick.Navigate(
-                navigationActionId = actionVisitorPass.actionId,
-                navigationArguments = actionVisitorPass.arguments
-            )
-        )
-
         val savedEventsMenuItem = MenuSection.MenuItem(
             icon = R.drawable.ic_menu_saved_events,
             title = R.string.holder_menu_storedEvents,
             onClick = MenuSection.MenuItem.OnClick.Navigate(
                 navigationActionId = actionSavedEvents.actionId
+            )
+        )
+
+        val dataMigrationMenuItem = MenuSection.MenuItem(
+            icon = R.drawable.ic_menu_data_migration,
+            iconColor = -1,
+            title = R.string.holder_menu_migration,
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionDataMigration.actionId
             )
         )
 
@@ -88,11 +86,7 @@ class MenuViewModelImpl(
         val firstSectionItems = listOf(
             addVaccinationOrTestMenuItem,
             addPaperProofMenuItem
-        ) + if (isVisitorPassEnabled) {
-            listOf(addVisitorPassMenuItem)
-        } else {
-            emptyList()
-        }
+        )
 
         val menuSections: List<MenuSection> = listOfNotNull(
             MenuSection(
@@ -101,6 +95,11 @@ class MenuViewModelImpl(
             MenuSection(
                 menuItems = listOf(
                     savedEventsMenuItem,
+                    dataMigrationMenuItem
+                )
+            ),
+            MenuSection(
+                menuItems = listOf(
                     helpInfoMenuItem
                 )
             ),
@@ -124,7 +123,10 @@ class MenuViewModelImpl(
                             iconColor = R.color.error,
                             titleColor = R.color.error,
                             title = R.string.general_menu_resetApp,
-                            onClick = MenuSection.MenuItem.OnClick.Navigate(dialogDirection.actionId, dialogDirection.arguments)
+                            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                                dialogDirection.actionId,
+                                dialogDirection.arguments
+                            )
                         )
                     )
                 )
