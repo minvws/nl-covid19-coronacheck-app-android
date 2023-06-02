@@ -31,6 +31,8 @@ import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModelImpl
+import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotificationViewModel
+import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotificationViewModelImpl
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsViewModel
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsViewModelImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -64,6 +66,7 @@ val viewModels = module {
     viewModel<SyncGreenCardsViewModel> { SyncGreenCardsViewModelImpl(get(), get()) }
     viewModel { SavedEventsViewModel(get(), get()) }
     viewModel<MenuViewModel> { MenuViewModelImpl(get(), get()) }
+    viewModel<PriorityNotificationViewModel> { PriorityNotificationViewModelImpl(get()) }
     viewModel<DataMigrationStartViewModel> { DataMigrationStartViewModelImpl(get()) }
     viewModel<DataMigrationShowQrCodeViewModel> { DataMigrationShowQrCodeViewModelImpl(get(), get()) }
     viewModel<DataMigrationScanQrViewModel> { DataMigrationScanQrViewModelImpl(get(), get(), get()) }

@@ -9,6 +9,8 @@ import nl.rijksoverheid.ctr.appconfig.usecases.ReturnToExternalAppUseCaseImpl
 import nl.rijksoverheid.ctr.design.BuildConfig
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCase
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureUseCaseImpl
+import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotificationUseCase
+import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotificationUseCaseImpl
 import nl.rijksoverheid.ctr.holder.usecases.BuildConfigUseCaseImpl
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCaseImpl
@@ -29,6 +31,7 @@ import org.koin.dsl.module
  *
  */
 val appModule = module {
+    factory<PriorityNotificationUseCase> { PriorityNotificationUseCaseImpl(get(), get()) }
     factory<DeviceRootedUseCase> { DeviceRootedUseCaseImpl(androidContext()) }
     factory<DeviceSecureUseCase> { DeviceSecureUseCaseImpl(androidContext()) }
     factory<HolderCachedAppConfigUseCase> {
