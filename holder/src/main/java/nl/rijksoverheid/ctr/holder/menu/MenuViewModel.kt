@@ -29,6 +29,7 @@ class MenuViewModelImpl(
     }
 
     private fun menuSections(context: Context): Array<MenuSection> {
+        val actionPdfWebview = MenuFragmentDirections.actionPdfWebview()
         val actionChooseProofType = MenuFragmentDirections.actionChooseProofType()
         val actionPaperProof = MenuFragmentDirections.actionPaperProof()
         val actionSavedEvents = MenuFragmentDirections.actionSavedEvents()

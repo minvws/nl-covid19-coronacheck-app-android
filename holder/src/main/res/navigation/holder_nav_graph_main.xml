@@ -236,6 +236,11 @@
     </navigation>
 
     <fragment
+        android:id="@+id/nav_pdf_webview"
+        android:name="nl.rijksoverheid.ctr.holder.pdf.PdfWebViewFragment"
+        android:label="" />
+
+    <fragment
         android:id="@+id/nav_choose_proof_type"
         android:name="nl.rijksoverheid.ctr.holder.choose_proof_type.ChooseProofTypeFragment"
         android:label="@string/choose_provider_toolbar"
@@ -746,6 +751,14 @@
         <argument
             android:name="menuSections"
             app:argType="nl.rijksoverheid.ctr.design.fragments.menu.MenuSection[]" />
+
+        <action
+            android:id="@+id/action_pdf_webview"
+            app:destination="@id/nav_pdf_webview"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
 
         <action
             android:id="@+id/action_choose_proof_type"
