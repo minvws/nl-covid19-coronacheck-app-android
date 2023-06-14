@@ -21,7 +21,7 @@ import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import timber.log.Timber
 
 abstract class PdfWebViewModel: ViewModel() {
-        abstract fun generatePdf(evaluateJavascript: (script: String, valueCallback: ValueCallback<String>) -> Unit)
+        abstract fun generatePdf(evaluateJavascript: (script: String, valueCallback: ValueCallback<String>?) -> Unit)
     abstract fun storePdf(fileOutputStream: FileOutputStream, contents: String)
 
     companion object {
@@ -33,22 +33,9 @@ class PdfWebViewModelImpl(
     private val filesDirPath: String,
     private val appConfigStorageManager: AppConfigStorageManager,
     private val printExportDccUseCase: PrintExportDccUseCase
-): PdfWebViewModel(), ValueCallback<String> {
+): PdfWebViewModel() {
 
-    override fun onReceiveValue(value: String?) {
-        if (value == null || value.startsWith(pdfMimeType)) return
-        viewModelScope.launch(Dispatchers.IO) {
-            val base64Content = value.replace(pdfMimeType, "")
-            val base64DecodedContent = Base64.decode(base64Content, Base64.DEFAULT)
-            val file = File(filesDirPath, "exportedCertificates.pdf")
-            file.outputStream().use {
-                it.write(base64DecodedContent)
-                it.flush()
-            }
-        }
-    }
-
-    override fun generatePdf(evaluateJavascript: (script: String, valueCallback: ValueCallback<String>) -> Unit) {
+    override fun generatePdf(evaluateJavascript: (script: String, valueCallback: ValueCallback<String>?) -> Unit) {
         val appConfig = appConfigStorageManager
             .getFileAsBufferedSource(File(filesDirPath, "config.json"))
 
@@ -59,13 +46,14 @@ class PdfWebViewModelImpl(
         viewModelScope.launch {
             val qrs = printExportDccUseCase.export()
             val script = "generatePdf($appConfig, $qrs);"
-            evaluateJavascript(script, this@PdfWebViewModelImpl)
+            evaluateJavascript(script, null)
         }
     }
 
     override fun storePdf(fileOutputStream: FileOutputStream, contents: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val base64Content = contents.replace("data:application/pdf;base64,", "")
+            println("Write: $base64Content")
             val base64DecodedContent = Base64.decode(base64Content, Base64.DEFAULT)
             fileOutputStream.use {
                 it.write(base64DecodedContent)
