@@ -13,7 +13,11 @@ import java.time.OffsetDateTime
 import org.json.JSONObject
 
 @JsonClass(generateAdapter = true)
-data class EUPrintAttributes(val dcc: JSONObject, val expirationTime: OffsetDateTime, val qr: String)
+data class EUPrintAttributes(
+    val dcc: JSONObject,
+    val expirationTime: OffsetDateTime,
+    val qr: String
+)
 
 @JsonClass(generateAdapter = true)
 data class PrintAttributes(val european: List<EUPrintAttributes>)

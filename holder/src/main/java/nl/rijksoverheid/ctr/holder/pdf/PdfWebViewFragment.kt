@@ -48,11 +48,10 @@ class PdfWebViewFragment : Fragment(R.layout.fragment_pdf_webview) {
 
     @JavascriptInterface
     fun onData(value: String) {
-        println(value)
         if (value.startsWith(PdfWebViewModel.pdfMimeType)) {
             pdfWebViewModel.storePdf(
                 requireContext().openFileOutput(
-                    "certificates.pdf",
+                    "certificate.pdf",
                     Context.MODE_PRIVATE
                 ), value
             )

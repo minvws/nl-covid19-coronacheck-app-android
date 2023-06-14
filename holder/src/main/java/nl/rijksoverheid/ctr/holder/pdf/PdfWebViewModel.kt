@@ -17,11 +17,9 @@ import java.io.FileOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
-import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import timber.log.Timber
 
-abstract class PdfWebViewModel: ViewModel() {
-        abstract fun generatePdf(evaluateJavascript: (script: String, valueCallback: ValueCallback<String>?) -> Unit)
+abstract class PdfWebViewModel : ViewModel() {
+    abstract fun generatePdf(evaluateJavascript: (script: String, valueCallback: ValueCallback<String>?) -> Unit)
     abstract fun storePdf(fileOutputStream: FileOutputStream, contents: String)
 
     companion object {
@@ -33,7 +31,7 @@ class PdfWebViewModelImpl(
     private val filesDirPath: String,
     private val appConfigStorageManager: AppConfigStorageManager,
     private val printExportDccUseCase: PrintExportDccUseCase
-): PdfWebViewModel() {
+) : PdfWebViewModel() {
 
     override fun generatePdf(evaluateJavascript: (script: String, valueCallback: ValueCallback<String>?) -> Unit) {
         val appConfig = appConfigStorageManager
@@ -53,7 +51,6 @@ class PdfWebViewModelImpl(
     override fun storePdf(fileOutputStream: FileOutputStream, contents: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val base64Content = contents.replace("data:application/pdf;base64,", "")
-            println("Write: $base64Content")
             val base64DecodedContent = Base64.decode(base64Content, Base64.DEFAULT)
             fileOutputStream.use {
                 it.write(base64DecodedContent)
