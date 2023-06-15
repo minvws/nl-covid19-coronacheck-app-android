@@ -19,6 +19,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPdfWebviewBinding
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,6 +36,7 @@ class PdfWebViewFragment : Fragment(R.layout.fragment_pdf_webview) {
 
         pdfWebViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
             binding.loading.isVisible = it
+            navigateSafety(PdfWebViewFragmentDirections.actionPdfExported())
         })
 
         binding.pdfWebView.webViewClient = object : WebViewClient() {
