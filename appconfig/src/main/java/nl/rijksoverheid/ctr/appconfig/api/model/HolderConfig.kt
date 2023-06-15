@@ -52,7 +52,7 @@ data class HolderConfig(
     @Json(name = "papEnabled") val papEnabled: Boolean,
     @Json(name = "priorityNotification") val priorityNotification: String?,
     @Json(name = "addEventsButtonEnabled") val addEventsButtonEnabled: Boolean?,
-    @Json(name = "scanCertificateButtonEnabled") val scanCertificateButtonEnabled: Boolean? = false,
+    @Json(name = "scanCertificateButtonEnabled") val scanCertificateButtonEnabled: Boolean?,
     @Json(name = "migrateButtonEnabled") val migrateButtonEnabled: Boolean?,
     @Json(name = "contactInformation") val contactInformation: ContactInformation
 ) : AppConfig(
