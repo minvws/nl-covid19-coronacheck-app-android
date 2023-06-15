@@ -68,6 +68,9 @@ class DashboardPageInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 /* nothing, DashboardPageFragment.setItems never creates a card for this */
             }
+            is DashboardItem.InfoItem.ExportPdf -> {
+
+            }
         }
     }
 

@@ -69,6 +69,10 @@ sealed class DashboardItem {
             val events: List<RemovedEventEntity>,
             @StringRes override val buttonText: Int = R.string.general_readmore
         ) : InfoItem(isDismissible = true, hasButton = true)
+
+        data class ExportPdf(
+            @StringRes override val buttonText: Int = R.string.holder_pdfExport_card_action
+        ) : InfoItem(isDismissible = false, hasButton = true)
     }
 
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {

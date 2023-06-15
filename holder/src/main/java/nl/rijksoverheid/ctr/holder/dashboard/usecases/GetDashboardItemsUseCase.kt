@@ -120,6 +120,12 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
+        if (dashboardItemUtil.shouldShowExportPdf()) {
+            dashboardItems.add(
+                DashboardItem.InfoItem.ExportPdf()
+            )
+        }
+
         dashboardItems.addAll(
             getGreenCardItems(
                 greenCards = allGreenCards,

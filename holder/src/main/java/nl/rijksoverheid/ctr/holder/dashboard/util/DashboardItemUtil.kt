@@ -47,6 +47,8 @@ interface DashboardItemUtil {
         hasVisitorPassIncompleteItem: Boolean,
         emptyState: Boolean
     ): Boolean
+
+    fun shouldShowExportPdf(): Boolean
 }
 
 class DashboardItemUtilImpl(
@@ -129,4 +131,8 @@ class DashboardItemUtilImpl(
         hasVisitorPassIncompleteItem: Boolean,
         emptyState: Boolean
     ) = !emptyState && !hasVisitorPassIncompleteItem
+
+    override fun shouldShowExportPdf(): Boolean {
+        return true
+    }
 }
