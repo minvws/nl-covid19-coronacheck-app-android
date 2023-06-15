@@ -21,6 +21,21 @@
         <include app:graph="@navigation/holder_fuzzy_matching" />
 
         <fragment
+            android:id="@+id/nav_export_introduction"
+            android:name="nl.rijksoverheid.ctr.holder.pdf.ExportIntroductionFragment"
+            android:label="">
+
+            <action
+                android:id="@+id/action_pdf_webview"
+                app:destination="@id/nav_pdf_webview"
+                app:enterAnim="@animator/fragment_open_enter"
+                app:exitAnim="@animator/fragment_open_exit"
+                app:popEnterAnim="@animator/fragment_close_enter"
+                app:popExitAnim="@animator/fragment_close_exit" />
+
+        </fragment>
+
+        <fragment
             android:id="@+id/nav_dashboard"
             android:name="nl.rijksoverheid.ctr.holder.dashboard.DashboardFragment"
             android:label="@string/my_overview"
@@ -33,6 +48,14 @@
                 android:defaultValue="@null"
                 app:argType="string"
                 app:nullable="true" />
+
+            <action
+                android:id="@+id/action_export_introduction"
+                app:destination="@id/nav_export_introduction"
+                app:enterAnim="@animator/fragment_open_enter"
+                app:exitAnim="@animator/fragment_open_exit"
+                app:popEnterAnim="@animator/fragment_close_enter"
+                app:popExitAnim="@animator/fragment_close_exit" />
 
             <action
                 android:id="@+id/action_choose_proof_type"
