@@ -26,7 +26,11 @@ class MenuViewModelImplTest : AutoCloseKoinTest() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         every { get(context) } returns emptyArray()
     }
-    private val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>()
+    private val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>().apply {
+        every { getAddEventsButtonEnabled() } returns true
+        every { getScanCertificateButtonEnabled() } returns true
+        every { getMigrateButtonEnabled() } returns true
+    }
 
     @Test
     fun `on menu click get correct menu items`() {
@@ -52,7 +56,10 @@ class MenuViewModelImplTest : AutoCloseKoinTest() {
         assertTrue(menuSections[1].menuItems[0].onClick is MenuSection.MenuItem.OnClick.Navigate)
         assertEquals(R.drawable.ic_menu_data_migration, menuSections[1].menuItems[1].icon)
         assertEquals(R.string.holder_menu_migration, menuSections[1].menuItems[1].title)
-        assertEquals(MenuFragmentDirections.actionDataMigration().actionId, (menuSections[1].menuItems[1].onClick as MenuSection.MenuItem.OnClick.Navigate).navigationActionId)
+        assertEquals(
+            MenuFragmentDirections.actionDataMigration().actionId,
+            (menuSections[1].menuItems[1].onClick as MenuSection.MenuItem.OnClick.Navigate).navigationActionId
+        )
 
         assertEquals(R.drawable.ic_menu_info, menuSections[2].menuItems[0].icon)
         assertEquals(R.string.holder_menu_helpInfo, menuSections[2].menuItems[0].title)

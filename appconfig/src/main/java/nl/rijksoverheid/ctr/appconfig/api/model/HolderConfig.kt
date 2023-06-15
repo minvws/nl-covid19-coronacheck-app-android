@@ -51,6 +51,9 @@ data class HolderConfig(
     @Json(name = "backendTLSCertificates") val backendTLSCertificates: List<String>,
     @Json(name = "papEnabled") val papEnabled: Boolean,
     @Json(name = "priorityNotification") val priorityNotification: String?,
+    @Json(name = "addEventsButtonEnabled") val addEventsButtonEnabled: Boolean?,
+    @Json(name = "scanCertificateButtonEnabled") val scanCertificateButtonEnabled: Boolean? = false,
+    @Json(name = "migrateButtonEnabled") val migrateButtonEnabled: Boolean?,
     @Json(name = "contactInformation") val contactInformation: ContactInformation
 ) : AppConfig(
     holderAppDeactivated,
@@ -144,6 +147,9 @@ data class HolderConfig(
             backendTLSCertificates = backendTLSCertificates,
             papEnabled = false,
             priorityNotification = "",
+            addEventsButtonEnabled = false,
+            scanCertificateButtonEnabled = false,
+            migrateButtonEnabled = false,
             contactInformation =
             ContactInformation("0800-1421", "+31 70 750 37 20", 1, "08:00", 7, "18:00")
         )
