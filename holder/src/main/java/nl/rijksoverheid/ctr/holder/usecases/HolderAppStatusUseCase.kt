@@ -48,7 +48,7 @@ class HolderAppStatusUseCaseImpl(
         withContext(Dispatchers.IO) {
             when (config) {
                 is ConfigResult.Success -> {
-                    if (isArchived()) {
+                    if (!isArchived()) {
                         AppStatus.Archived
                     } else {
                         checkIfActionRequired(
