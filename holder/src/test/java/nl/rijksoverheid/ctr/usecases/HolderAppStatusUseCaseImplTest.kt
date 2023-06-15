@@ -75,6 +75,8 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdateData = getAppUpdateData(),
                 appUpdatePersistenceManager = mockk(relaxed = true),
                 introductionPersistenceManager = mockk(relaxed = true),
+                featureFlagUseCase = mockk(relaxed = true),
+                holderDatabase = mockk(relaxed = true),
                 errorCodeStringFactory = mockk(relaxed = true)
             )
 

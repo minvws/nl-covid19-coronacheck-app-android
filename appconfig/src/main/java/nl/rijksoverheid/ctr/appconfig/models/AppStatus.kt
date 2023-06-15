@@ -23,6 +23,9 @@ sealed class AppStatus : Parcelable {
     object Deactivated : AppStatus(), Parcelable
 
     @Parcelize
+    object Archived : AppStatus(), Parcelable
+
+    @Parcelize
     object Error : AppStatus(), Parcelable
 
     @Parcelize

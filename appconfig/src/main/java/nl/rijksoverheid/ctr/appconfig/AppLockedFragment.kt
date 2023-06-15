@@ -62,6 +62,18 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
                     )
                 }
             }
+            is AppStatus.Archived -> {
+                binding.bind(
+                    R.string.holder_archiveMode_title,
+                    R.string.holder_archiveMode_description,
+                    R.string.holder_archiveMode_button,
+                    R.drawable.illustration_app_status_deactivated
+                ) {
+                    intentUtil.openUrl(
+                        requireContext(), getString(R.string.holder_deactivation_url)
+                    )
+                }
+            }
             is AppStatus.UpdateRequired -> {
                 binding.bind(
                     R.string.app_status_update_required_title,
