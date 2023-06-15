@@ -13,6 +13,9 @@ interface HolderFeatureFlagUseCase {
     fun getGgdEnabled(): Boolean
     fun getMijnCnEnabled(): Boolean
     fun getPapEnabled(): Boolean
+    fun getAddEventsButtonEnabled(): Boolean
+    fun getScanCertificateButtonEnabled(): Boolean
+    fun getMigrateButtonEnabled(): Boolean
 }
 
 class HolderFeatureFlagUseCaseImpl(
@@ -29,5 +32,17 @@ class HolderFeatureFlagUseCaseImpl(
 
     override fun getPapEnabled(): Boolean {
         return cachedAppConfigUseCase.getCachedAppConfig().papEnabled
+    }
+
+    override fun getAddEventsButtonEnabled(): Boolean {
+        return cachedAppConfigUseCase.getCachedAppConfig().addEventsButtonEnabled ?: true
+    }
+
+    override fun getScanCertificateButtonEnabled(): Boolean {
+        return cachedAppConfigUseCase.getCachedAppConfig().scanCertificateButtonEnabled ?: true
+    }
+
+    override fun getMigrateButtonEnabled(): Boolean {
+        return cachedAppConfigUseCase.getCachedAppConfig().migrateButtonEnabled ?: true
     }
 }
