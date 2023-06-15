@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.pdf
 
 import android.util.Base64
 import android.webkit.ValueCallback
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import java.io.File
@@ -17,8 +18,10 @@ import java.io.FileOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigStorageManager
+import nl.rijksoverheid.ctr.shared.livedata.Event
 
 abstract class PdfWebViewModel : ViewModel() {
+    val loadingLiveData = MutableLiveData<Event<Boolean>>()
     abstract fun generatePdf(evaluateJavascript: (script: String, valueCallback: ValueCallback<String>?) -> Unit)
     abstract fun storePdf(fileOutputStream: FileOutputStream, contents: String)
 
@@ -56,6 +59,7 @@ class PdfWebViewModelImpl(
                 it.write(base64DecodedContent)
                 it.flush()
             }
+            loadingLiveData.postValue(Event(false))
         }
     }
 }
