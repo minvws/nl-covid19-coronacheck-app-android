@@ -31,6 +31,7 @@ import nl.rijksoverheid.ctr.holder.databinding.ActivityMainBinding
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
 import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotificationViewModel
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
 import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
@@ -61,6 +62,7 @@ class HolderMainActivity : AppCompatActivity() {
     private val androidUtil: AndroidUtil by inject()
     private val workerManagerUtil: WorkerManagerUtil by inject()
     private val coronaCheckRepository: CoronaCheckRepository by inject()
+    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
 
     private val connectivityChangeCallback =
         object : ConnectivityManager.NetworkCallback() {
@@ -228,6 +230,8 @@ class HolderMainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
+        println("pame new intent")
+
         // Handle if an external app sets the launch mode of this activity to single top of single task.
         // In this case we need to set the graph again and handle the deeplink ourselves so that the entire
         // graph is traversed to find the deeplink
@@ -235,6 +239,8 @@ class HolderMainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.main_nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         navController.setGraph(R.navigation.holder_nav_graph_root)
-        navController.handleDeepLink(intent)
+        if (featureFlagUseCase.getAddEventsButtonEnabled()) {
+            navController.handleDeepLink(intent)
+        }
     }
 }

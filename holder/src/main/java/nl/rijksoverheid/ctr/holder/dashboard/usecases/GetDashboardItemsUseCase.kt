@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
@@ -42,6 +43,7 @@ class GetDashboardItemsUseCaseImpl(
     private val dashboardHeaderAdapterItemUtil: DashboardHeaderAdapterItemUtil,
     private val cardItemUtil: CardItemUtil,
     private val sortGreenCardItemsUseCase: SortGreenCardItemsUseCase,
+    private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val holderDatabase: HolderDatabase
 ) : GetDashboardItemsUseCase {
     override suspend fun getItems(
@@ -136,12 +138,16 @@ class GetDashboardItemsUseCaseImpl(
             )
         }
 
-        if (dashboardItemUtil.shouldShowAddQrCardItem(false, hasEmptyState)) {
-            dashboardItems.add(DashboardItem.AddQrCardItem)
-        }
+        val addEventsButtonEnabled = featureFlagUseCase.getAddEventsButtonEnabled()
 
-        if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
-            dashboardItems.add(DashboardItem.AddQrButtonItem)
+        if (addEventsButtonEnabled) {
+            if (dashboardItemUtil.shouldShowAddQrCardItem(false, hasEmptyState)) {
+                dashboardItems.add(DashboardItem.AddQrCardItem)
+            }
+
+            if (dashboardItemUtil.shouldAddQrButtonItem(hasEmptyState)) {
+                dashboardItems.add(DashboardItem.AddQrButtonItem)
+            }
         }
 
         return sortGreenCardItemsUseCase.sort(dashboardItems)

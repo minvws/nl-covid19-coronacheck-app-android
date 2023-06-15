@@ -14,6 +14,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.fakeGreenCard
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
@@ -40,6 +41,13 @@ class GetDashboardItemsUseCaseImplTest : AutoCloseKoinTest() {
             factory {
                 mockk<BuildConfigUseCase>(relaxed = true).apply {
                     every { getVersionCode() } returns 99999
+                }
+            }
+            factory {
+                mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                    every { getAddEventsButtonEnabled() } returns true
+                    every { getScanCertificateButtonEnabled() } returns true
+                    every { getMigrateButtonEnabled() } returns true
                 }
             }
         })
