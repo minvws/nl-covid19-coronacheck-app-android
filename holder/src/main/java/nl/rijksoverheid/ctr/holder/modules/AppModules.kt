@@ -49,7 +49,7 @@ val appModule = module {
     }
 
     factory<HolderFeatureFlagUseCase> {
-        HolderFeatureFlagUseCaseImpl(get())
+        HolderFeatureFlagUseCaseImpl(get(), get())
     }
 
     factory<WorkerManagerUtil> { WorkerManagerUtilImpl(androidContext(), get(), get()) }

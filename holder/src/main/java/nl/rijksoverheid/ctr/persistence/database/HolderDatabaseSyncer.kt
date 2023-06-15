@@ -9,6 +9,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEvent
 import nl.rijksoverheid.ctr.holder.get_events.usecases.PersistBlockedEventsUseCase
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventReason
 import nl.rijksoverheid.ctr.persistence.database.usecases.DraftEventUseCase
@@ -56,6 +57,7 @@ class HolderDatabaseSyncerImpl(
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
     private val updateEventExpirationUseCase: UpdateEventExpirationUseCase,
     private val draftEventUseCase: DraftEventUseCase,
+    private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val persistBlockedEventsUseCase: PersistBlockedEventsUseCase
 ) : HolderDatabaseSyncer {
 
@@ -71,7 +73,7 @@ class HolderDatabaseSyncerImpl(
             mutex.withLock {
                 val events = holderDatabase.eventGroupDao().getAll()
 
-                if (syncWithRemote) {
+                if (!featureFlagUseCase.isInArchiveMode() && syncWithRemote) {
                     if (events.isEmpty()) {
                         // Remote does not handle empty events, so we decide that empty events == no green cards
                         holderDatabase.greenCardDao().deleteAll()

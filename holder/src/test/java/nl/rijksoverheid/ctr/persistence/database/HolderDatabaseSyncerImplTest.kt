@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.persistence.database
 
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import java.time.OffsetDateTime
 import kotlinx.coroutines.runBlocking
@@ -9,6 +10,7 @@ import nl.rijksoverheid.ctr.fakeGetRemoteGreenCardUseCase
 import nl.rijksoverheid.ctr.fakeGreenCardUtil
 import nl.rijksoverheid.ctr.fakeRemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.fakeSyncRemoteGreenCardUseCase
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
@@ -69,6 +71,9 @@ class HolderDatabaseSyncerImplTest {
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper,
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             draftEventUseCase = mockk(relaxed = true)
         )
 
@@ -97,6 +102,9 @@ class HolderDatabaseSyncerImplTest {
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper,
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             draftEventUseCase = draftEventUseCase
         )
 
@@ -127,6 +135,9 @@ class HolderDatabaseSyncerImplTest {
             persistBlockedEventsUseCase = mockk(relaxed = true),
             draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             mobileCoreWrapper = mobileCoreWrapper
         )
 
@@ -164,6 +175,9 @@ class HolderDatabaseSyncerImplTest {
             persistBlockedEventsUseCase = mockk(relaxed = true),
             draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             mobileCoreWrapper = mobileCoreWrapper
         )
 
@@ -194,6 +208,9 @@ class HolderDatabaseSyncerImplTest {
             persistBlockedEventsUseCase = mockk(relaxed = true),
             draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             mobileCoreWrapper = mobileCoreWrapper
         )
 
@@ -229,6 +246,9 @@ class HolderDatabaseSyncerImplTest {
             persistBlockedEventsUseCase = mockk(relaxed = true),
             draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             mobileCoreWrapper = mobileCoreWrapper
         )
 
@@ -262,6 +282,9 @@ class HolderDatabaseSyncerImplTest {
             persistBlockedEventsUseCase = mockk(relaxed = true),
             draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             mobileCoreWrapper = mobileCoreWrapper
         )
 
