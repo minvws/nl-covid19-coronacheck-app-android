@@ -680,4 +680,23 @@
   <string name="holder_migration_import_errorcode_message"><![CDATA[<p>Er gaat iets mis met het importeren van je gegevens.</p><p><b>Foutcode:</b><br /> %s </p>]]></string>
   <string name="holder_startMigration_toOtherDevice_accessiblityQR">Je speciale QR-code wordt hier getoond</string>
   <string name="holder_startMigration_toThisDevice_onboarding_step3_messageKeepPointing_longer">Het scannen kan soms even duren...</string>
+  <string name="holder_dashboard_qrValidityDate_expired">Verlopen op</string>
+  <string name="holder_archiveMode_title">** Archive Mode **</string>
+  <string name="holder_archiveMode_description">** Archive Description **</string>
+  <string name="holder_archiveMode_button">Naar CoronaCheck.nl</string>
+  <string name="holder_newintheapp_archiveMode_title">** Whats new Archive Mode title **</string>
+  <string name="holder_newintheapp_archiveMode_body">** Whats new archive mode body **</string>
+  <string name="holder_pdfExport_start_title">Je bewijzen bewaren</string>
+  <string name="holder_pdfExport_start_message">Maak een PDF-bestand van je bewijzen die je kunt opslaan op je telefoon of uitprinten. Dit kan nog tot eind dit jaar (2023).</string>
+  <string name="holder_pdfExport_start_buttonTitle">Maak PDF-bestand</string>
+  <string name="holder_pdfExport_success_title">Jouw bewijzen</string>
+  <string name="holder_pdfExport_success_message">Open het bestand hieronder om je bewijs op te slaan of uit te printen.</string>
+  <string name="holder_pdfExport_card_description">Je kunt nog tot eind dit jaar je bewijzen bewaren. Nieuwe bewijzen maken kan niet meer.</string>
+  <string name="holder_menu_exportPDF">Bewijzen bewaren</string>
+  <string name="holder_pdfExport_card_action">Mijn bewijzen bewaren</string>
+  <string name="holder_pdfExport_generating_title">Bestand maken</string>
+  <string name="holder_pdfExport_success_card_message">Gebruik dit bewijs als je in het buitenland bent of de grens over gaat.</string>
+  <string name="holder_pdfExport_success_card_title">Internationaal bewijs</string>
+  <string name="holder_pdfExport_success_card_action_save">Bestand opslaan</string>
+  <string name="holder_pdfExport_success_card_action_view">Bekijk bestand</string>
 </resources>
