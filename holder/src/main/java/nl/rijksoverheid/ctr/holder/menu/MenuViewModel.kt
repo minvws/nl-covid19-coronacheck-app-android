@@ -29,7 +29,7 @@ class MenuViewModelImpl(
     }
 
     private fun menuSections(context: Context): Array<MenuSection> {
-        val actionPdfWebview = MenuFragmentDirections.actionPdfWebview()
+        val actionExportIntroduction = MenuFragmentDirections.actionExportIntroduction()
         val actionChooseProofType = MenuFragmentDirections.actionChooseProofType()
         val actionPaperProof = MenuFragmentDirections.actionPaperProof()
         val actionSavedEvents = MenuFragmentDirections.actionSavedEvents()
@@ -42,7 +42,10 @@ class MenuViewModelImpl(
         val exportPdfMenuItem = MenuSection.MenuItem(
             icon = R.drawable.ic_menu_export_pdf,
             title = R.string.holder_menu_exportPDF,
-            onClick = MenuSection.MenuItem.OnClick.OpenBrowser(url = "TODO")
+            onClick = MenuSection.MenuItem.OnClick.Navigate(
+                navigationActionId = actionExportIntroduction.actionId,
+                navigationArguments = actionExportIntroduction.arguments
+            )
         )
 
         val addVaccinationOrTestMenuItem = MenuSection.MenuItem(
@@ -91,6 +94,11 @@ class MenuViewModelImpl(
         )
 
         val firstSectionItems = listOfNotNull(
+            if (featureFlagUseCase.isInArchiveMode()) {
+                exportPdfMenuItem
+            } else {
+                null
+            },
             if (featureFlagUseCase.getAddEventsButtonEnabled()) {
                 addVaccinationOrTestMenuItem
             } else {
