@@ -13,7 +13,7 @@ import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
-import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearNumerical
+import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
@@ -70,7 +70,7 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
         type: OriginType
     ): DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown {
         if (expireDate.isBefore(OffsetDateTime.now(clock))) {
-            val date = expireDate.toLocalDate().formatDayMonthYearNumerical()
+            val date = expireDate.toLocalDate().formatDayMonthYear()
             return DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.ShowExpired(date)
         }
         val hoursBetweenExpiration =
