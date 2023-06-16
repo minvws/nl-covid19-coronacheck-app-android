@@ -32,26 +32,26 @@ class PdfWebViewFragment : Fragment(R.layout.fragment_pdf_webview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentPdfWebviewBinding.bind(view)
-
-        pdfWebViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
-            binding.loading.isVisible = it
-            navigateSafety(PdfWebViewFragmentDirections.actionPdfExported())
-        })
-
-        binding.pdfWebView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(webView: WebView?, url: String?) {
-                super.onPageFinished(webView, url)
-                webView?.let {
-                    pdfWebViewModel.generatePdf(it::evaluateJavascript)
-                }
-            }
-        }
-        binding.pdfWebView.addJavascriptInterface(this, "android")
-        binding.pdfWebView.settings.allowFileAccess = true
-        binding.pdfWebView.settings.javaScriptEnabled = true
-
-        binding.pdfWebView.loadUrl("file:///android_res/raw/print_portal.html")
+//        val binding = FragmentPdfWebviewBinding.bind(view)
+//
+//        pdfWebViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
+//            binding.loading.isVisible = it
+//            navigateSafety(PdfWebViewFragmentDirections.actionPdfExported())
+//        })
+//
+//        binding.pdfWebView.webViewClient = object : WebViewClient() {
+//            override fun onPageFinished(webView: WebView?, url: String?) {
+//                super.onPageFinished(webView, url)
+//                webView?.let {
+//                    pdfWebViewModel.generatePdf(it::evaluateJavascript)
+//                }
+//            }
+//        }
+//        binding.pdfWebView.addJavascriptInterface(this, "android")
+//        binding.pdfWebView.settings.allowFileAccess = true
+//        binding.pdfWebView.settings.javaScriptEnabled = true
+//
+//        binding.pdfWebView.loadUrl("file:///android_res/raw/print_portal.html")
     }
 
     @JavascriptInterface
@@ -59,10 +59,14 @@ class PdfWebViewFragment : Fragment(R.layout.fragment_pdf_webview) {
         if (value.startsWith(PdfWebViewModel.pdfMimeType)) {
             pdfWebViewModel.storePdf(
                 requireContext().openFileOutput(
-                    "certificate.pdf",
+                    pdfFileName,
                     Context.MODE_PRIVATE
                 ), value
             )
         }
+    }
+
+    companion object {
+        const val pdfFileName = "certificate.pdf"
     }
 }

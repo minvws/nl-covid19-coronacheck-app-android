@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.dashboard.util
 import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigFreshnessUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ClockDeviationUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
@@ -56,6 +57,7 @@ class DashboardItemUtilImpl(
     private val appConfigFreshnessUseCase: AppConfigFreshnessUseCase,
     private val appConfigUseCase: HolderCachedAppConfigUseCase,
     private val buildConfigUseCase: BuildConfigUseCase,
+    private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val holderDatabase: HolderDatabase
 ) : DashboardItemUtil {
 
@@ -133,6 +135,6 @@ class DashboardItemUtilImpl(
     ) = !emptyState && !hasVisitorPassIncompleteItem
 
     override fun shouldShowExportPdf(): Boolean {
-        return true
+        return featureFlagUseCase.isInArchiveMode()
     }
 }

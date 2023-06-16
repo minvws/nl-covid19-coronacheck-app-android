@@ -43,8 +43,7 @@ class MenuViewModelImpl(
             icon = R.drawable.ic_menu_export_pdf,
             title = R.string.holder_menu_exportPDF,
             onClick = MenuSection.MenuItem.OnClick.Navigate(
-                navigationActionId = actionExportIntroduction.actionId,
-                navigationArguments = actionExportIntroduction.arguments
+                navigationActionId = actionExportIntroduction.actionId
             )
         )
 

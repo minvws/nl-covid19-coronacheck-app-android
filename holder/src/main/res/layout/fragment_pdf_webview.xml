@@ -6,7 +6,7 @@
 
     <WebView
         android:id="@+id/pdfWebView"
-        android:layout_width="match_parent"
+        android:layout_width="10dp"
         android:layout_height="match_parent" />
 
     <ProgressBar
@@ -16,9 +16,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:foregroundGravity="center"
-        android:layout_gravity="center" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout>

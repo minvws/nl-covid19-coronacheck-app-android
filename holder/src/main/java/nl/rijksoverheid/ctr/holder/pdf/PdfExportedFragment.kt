@@ -13,6 +13,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPdfExportedBinding
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
 class PdfExportedFragment: Fragment(R.layout.fragment_pdf_exported) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -21,7 +22,7 @@ class PdfExportedFragment: Fragment(R.layout.fragment_pdf_exported) {
         val binding = FragmentPdfExportedBinding.bind(view)
 
         binding.previewPdfButton.setOnClickListener {
-
+            navigateSafety(PdfExportedFragmentDirections.actionPdfPreview())
         }
 
         binding.savePdfButton.setOnClickListener {
