@@ -166,7 +166,7 @@ class GetDashboardItemsUseCaseImpl(
         // Loop through all green cards that exists in the database and map them to UI models
         val items = greenCardsForSelectedType
             .mapIndexed { index, greenCard ->
-                if (greenCardUtil.isExpired(greenCard) && greenCard.origins.isNotEmpty()) {
+                if (!featureFlagUseCase.isInArchiveMode() && greenCardUtil.isExpired(greenCard) && greenCard.origins.isNotEmpty()) {
                     getExpiredBannerItem(
                         greenCard = greenCard
                     )
@@ -249,13 +249,17 @@ class GetDashboardItemsUseCaseImpl(
         val credentialState = when {
             isLoadingNewCredentials -> DashboardItem.CardsItem.CredentialState.LoadingCredential
             activeCredential == null -> DashboardItem.CardsItem.CredentialState.NoCredential
-            !hasValidOriginStates -> DashboardItem.CardsItem.CredentialState.NoCredential
+            !hasValidOriginStates && !featureFlagUseCase.isInArchiveMode() -> DashboardItem.CardsItem.CredentialState.NoCredential
             else -> DashboardItem.CardsItem.CredentialState.HasCredential(activeCredential)
         }
 
         val greenCardItem = DashboardItem.CardsItem.CardItem(
             greenCard = greenCard,
-            originStates = nonExpiredOriginStates,
+            originStates = if (featureFlagUseCase.isInArchiveMode()) {
+                originStates
+            } else {
+                nonExpiredOriginStates
+            },
             credentialState = credentialState,
             databaseSyncerResult = databaseSyncerResult,
             greenCardEnabledState = cardItemUtil.getEnabledState(

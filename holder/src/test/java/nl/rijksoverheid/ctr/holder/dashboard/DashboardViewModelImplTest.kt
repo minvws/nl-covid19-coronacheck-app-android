@@ -3,11 +3,13 @@ package nl.rijksoverheid.ctr.holder.dashboard
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.setMain
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardSync
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.usecases.DraftEventUseCase
@@ -35,6 +37,9 @@ class DashboardViewModelImplTest {
         },
         removeExpiredEventsUseCase,
         draftEventUseCase,
+        mockk<HolderFeatureFlagUseCase>().apply {
+            every { isInArchiveMode() } returns false
+        },
         mockk(relaxed = true)
     )
 
