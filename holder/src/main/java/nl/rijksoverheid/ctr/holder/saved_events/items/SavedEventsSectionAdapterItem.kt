@@ -20,6 +20,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class SavedEventsSectionAdapterItem(
+    private val isNotInArchiveMode: Boolean,
     private val savedEvents: SavedEvents,
     private val onClickEvent: (toolbarTitle: String, infoScreen: InfoScreen) -> Unit,
     private val onClickClearData: (eventGroupEntity: EventGroupEntity) -> Unit
@@ -48,12 +49,14 @@ class SavedEventsSectionAdapterItem(
         }
         section.addAll(items)
 
-        section.add(
-            SavedEventsClearDataAdapterItem(
-                eventGroupEntity = savedEvents.eventGroupEntity,
-                onClick = onClickClearData
+        if (isNotInArchiveMode) {
+            section.add(
+                SavedEventsClearDataAdapterItem(
+                    eventGroupEntity = savedEvents.eventGroupEntity,
+                    onClick = onClickClearData
+                )
             )
-        )
+        }
 
         return section
     }
