@@ -628,7 +628,7 @@
   <string name="holder_helpInfo_title">Help &amp; Information</string>
   <string name="appstatus_launchError_button">Close the app</string>
   <string name="appstatus_launchError_title">Something went wrong</string>
-  <string name="appstatus_launchError_body" formatted="false"><![CDATA[We can’t launch the app right now. For more information, contact the CoronaCheck helpdesk via <a href=\"tel:%s\">%s</a> and pass on the error code below.<br /><br /><b>Error code:</b><br /> %s]]></string>
+  <string name="appstatus_launchError_body" formatted="false"><![CDATA[We can’t launch the app right now. For more information, contact the helpdesk via <a href=\"tel:%s\">%s</a> and pass on the error code below.<br /><br /><b>Error code:</b><br /> %s]]></string>
   <string name="holder_dcc_test_identifier">Unique certificate identifier:</string>
   <string name="holder_contactCoronaCheckHelpdesk_message_every_day">every day</string>
   <string name="holder_contactCoronaCheckHelpdesk_message_until" formatted="false">%s until %s</string>
@@ -691,12 +691,14 @@
   <string name="holder_pdfExport_start_buttonTitle">Maak PDF-bestand</string>
   <string name="holder_pdfExport_success_title">Jouw bewijzen</string>
   <string name="holder_pdfExport_success_message">Open het bestand hieronder om je bewijs op te slaan of uit te printen.</string>
-  <string name="holder_pdfExport_card_description">Je kunt nog tot eind dit jaar je bewijzen bewaren. Nieuwe bewijzen maken kan niet meer.</string>
+  <string name="holder_pdfExport_card_description">You can still save your certificates until the end of this year. Creating new certificates is no longer possible.</string>
   <string name="holder_menu_exportPDF">Bewijzen bewaren</string>
-  <string name="holder_pdfExport_card_action">Mijn bewijzen bewaren</string>
+  <string name="holder_pdfExport_card_action">Save my certificates</string>
   <string name="holder_pdfExport_generating_title">Bestand maken</string>
   <string name="holder_pdfExport_success_card_message">Gebruik dit bewijs als je in het buitenland bent of de grens over gaat.</string>
   <string name="holder_pdfExport_success_card_title">Internationaal bewijs</string>
   <string name="holder_pdfExport_success_card_action_save">Bestand opslaan</string>
   <string name="holder_pdfExport_success_card_action_view">Bekijk bestand</string>
+  <string name="holder_qr_code_expired_explanation_description_archive_recovery"><![CDATA[Als de QR-code van je herstelbewijs is verlopen betekent dit dat je positieve testuitslag ouder dan 180 dagen is.<br/><br/>Met een verlopen QR-code kun je nog wel aantonen dat je ooit corona hebt gehad. Je kunt deze QR-code alleen niet meer als herstelbewijs gebruiken.]]></string>
+  <string name="holder_qr_code_expired_explanation_description_archive_vaccination"><![CDATA[Als je QR-code is verlopen betekent dit dat je vaccinatie nog geldig is, maar de QR-code in deze app niet meer. <br/><br/>Met verlopen QR-codes kun je nog wel aantonen dat je gevaccineerd bent. Je kunt deze QR-codes alleen niet overal meer als vaccinatiebewijs gebruiken.]]></string>
 </resources>
