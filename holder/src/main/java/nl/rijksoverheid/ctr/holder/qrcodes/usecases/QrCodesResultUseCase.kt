@@ -63,6 +63,7 @@ class QrCodesResultUseCaseImpl(
                 } else {
                     getQrCodesResultForNonVaccination(
                         greenCardType = greenCardType,
+                        credentialsWithExpirationTime = credentialsWithExpirationTime,
                         credentials = credentials,
                         shouldDisclose = shouldDisclose,
                         qrCodeWidth = qrCodeWidth,
@@ -135,6 +136,7 @@ class QrCodesResultUseCaseImpl(
 
     private suspend fun getQrCodesResultForNonVaccination(
         greenCardType: GreenCardType,
+        credentialsWithExpirationTime: List<Pair<ByteArray, OffsetDateTime>>,
         credentials: List<ByteArray>,
         shouldDisclose: QrCodeFragmentData.ShouldDisclose,
         qrCodeWidth: Int,
@@ -149,8 +151,16 @@ class QrCodesResultUseCaseImpl(
             errorCorrectionLevel = greenCardUtil.getErrorCorrectionLevel(greenCardType)
         )
 
+        val credentialsExpired = credentialsWithExpirationTime.mapIndexed { _, credentialWithExpirationTime ->
+            val credentialExpirationTimeSeconds =
+                credentialWithExpirationTime.second.toEpochSecond()
+
+            credentialUtil.europeanCredentialHasExpired(credentialExpirationTimeSeconds)
+        }
+
         return QrCodesResult.SingleQrCode(
             QrCodeData.European.NonVaccination(
+                isExpired = credentialsExpired.all { it },
                 bitmap = qrCodeBitmap,
                 readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential)
             )

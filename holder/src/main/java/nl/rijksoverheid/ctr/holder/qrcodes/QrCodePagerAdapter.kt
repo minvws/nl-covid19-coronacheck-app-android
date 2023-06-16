@@ -56,8 +56,8 @@ class QrCodePagerAdapter(private val onOverlayExplanationClick: (QrCodeViewHolde
     private fun isQrCodeHidden(data: QrCodeData): QrCodeViewHolder.QrCodeVisibility {
         val vaccinationData = data as? QrCodeData.European.Vaccination
         return when {
+            (data as? QrCodeData.European)?.isExpired == true -> QrCodeViewHolder.QrCodeVisibility.EXPIRED
             vaccinationData?.isDoseNumberSmallerThanTotalDose == true -> QrCodeViewHolder.QrCodeVisibility.HIDDEN
-            vaccinationData?.isExpired == true -> QrCodeViewHolder.QrCodeVisibility.EXPIRED
             else -> QrCodeViewHolder.QrCodeVisibility.VISIBLE
         }
     }

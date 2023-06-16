@@ -36,6 +36,7 @@ import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrInfoScreenUtil
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
@@ -64,7 +65,7 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     }
 
     private val args: QrCodesFragmentArgs by navArgs()
-    private val personalDetailsUtil: PersonalDetailsUtil by inject()
+    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
     private val infoScreenUtil: QrInfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
@@ -157,29 +158,41 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                 descriptionData = DescriptionData(
                     htmlTextString = getString(
                         if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
-                            R.string.holder_qr_code_expired_explanation_description
+                            if (featureFlagUseCase.isInArchiveMode()) {
+                                if (args.data.originType is OriginType.Vaccination) {
+                                    R.string.holder_qr_code_expired_explanation_description_archive_vaccination
+                                } else {
+                                    R.string.holder_qr_code_expired_explanation_description_archive_recovery
+                                }
+                            } else {
+                                R.string.holder_qr_code_expired_explanation_description
+                            }
                         } else {
                             R.string.holder_qr_code_hidden_explanation_description
                         }
                     ),
                     htmlLinksEnabled = true
                 ),
-                primaryButtonData = ButtonData.LinkButton(
-                    text = getString(
-                        if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
-                            R.string.holder_qr_code_expired_explanation_action
-                        } else {
-                            R.string.holder_qr_code_hidden_explanation_action
-                        }
-                    ),
-                    link = getString(
-                        if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
-                            R.string.holder_qr_code_expired_explanation_url
-                        } else {
-                            R.string.holder_qr_code_hidden_explanation_url
-                        }
+                primaryButtonData = if (featureFlagUseCase.isInArchiveMode()) {
+                    null
+                } else {
+                    ButtonData.LinkButton(
+                        text = getString(
+                            if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
+                                R.string.holder_qr_code_expired_explanation_action
+                            } else {
+                                R.string.holder_qr_code_hidden_explanation_action
+                            }
+                        ),
+                        link = getString(
+                            if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
+                                R.string.holder_qr_code_expired_explanation_url
+                            } else {
+                                R.string.holder_qr_code_hidden_explanation_url
+                            }
+                        )
                     )
-                )
+                }
             )
         )
     }
