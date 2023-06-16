@@ -2,6 +2,8 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -54,6 +56,7 @@ data class HolderConfig(
     @Json(name = "addEventsButtonEnabled") val addEventsButtonEnabled: Boolean?,
     @Json(name = "scanCertificateButtonEnabled") val scanCertificateButtonEnabled: Boolean?,
     @Json(name = "migrateButtonEnabled") val migrateButtonEnabled: Boolean?,
+    @Json(name = "archiveOnlyDate") val archiveOnlyDate: OffsetDateTime?,
     @Json(name = "contactInformation") val contactInformation: ContactInformation
 ) : AppConfig(
     holderAppDeactivated,
@@ -150,6 +153,7 @@ data class HolderConfig(
             addEventsButtonEnabled = false,
             scanCertificateButtonEnabled = false,
             migrateButtonEnabled = false,
+            archiveOnlyDate = OffsetDateTime.parse("2023-07-01T23:00:00Z", DateTimeFormatter.ISO_OFFSET_DATE_TIME),
             contactInformation =
             ContactInformation("0800-1421", "+31 70 750 37 20", 1, "08:00", 7, "18:00")
         )

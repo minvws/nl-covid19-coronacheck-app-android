@@ -159,7 +159,7 @@ class HolderMainActivity : AppCompatActivity() {
         navController: NavController
     ) {
 
-        if (appStatus == AppStatus.Deactivated) {
+        if (appStatus == AppStatus.Deactivated || featureFlagUseCase.isInArchiveMode()) {
             workerManagerUtil.cancelRefreshCredentialsJob(this)
         } else {
             // schedule background refresh for existing greencards

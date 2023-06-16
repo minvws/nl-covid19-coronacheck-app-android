@@ -7,6 +7,8 @@
 
 package nl.rijksoverheid.ctr.holder.usecases
 
+import java.time.Clock
+import java.time.OffsetDateTime
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 
 interface HolderFeatureFlagUseCase {
@@ -16,9 +18,11 @@ interface HolderFeatureFlagUseCase {
     fun getAddEventsButtonEnabled(): Boolean
     fun getScanCertificateButtonEnabled(): Boolean
     fun getMigrateButtonEnabled(): Boolean
+    fun isInArchiveMode(): Boolean
 }
 
 class HolderFeatureFlagUseCaseImpl(
+    private val clock: Clock,
     private val cachedAppConfigUseCase: HolderCachedAppConfigUseCase
 ) : HolderFeatureFlagUseCase {
 
@@ -44,5 +48,11 @@ class HolderFeatureFlagUseCaseImpl(
 
     override fun getMigrateButtonEnabled(): Boolean {
         return cachedAppConfigUseCase.getCachedAppConfig().migrateButtonEnabled ?: true
+    }
+
+    override fun isInArchiveMode(): Boolean {
+        val archiveOnlyDate = cachedAppConfigUseCase.getCachedAppConfig().archiveOnlyDate ?: return false
+        val now = OffsetDateTime.now(clock)
+        return now.isAfter(archiveOnlyDate)
     }
 }

@@ -10,6 +10,7 @@ import java.time.Instant
 import java.time.ZoneId
 import javax.net.ssl.SSLException
 import kotlinx.coroutines.test.runTest
+import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
@@ -43,6 +44,7 @@ class HolderAppStatusUseCaseImplTest {
 
     private val moshi = Moshi
         .Builder()
+        .add(OffsetDateTimeJsonAdapter())
         .build()
 
     private val publicKeys =
