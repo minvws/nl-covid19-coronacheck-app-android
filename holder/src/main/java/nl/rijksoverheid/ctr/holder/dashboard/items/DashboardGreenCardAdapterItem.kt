@@ -21,6 +21,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem.Cred
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
 import nl.rijksoverheid.ctr.holder.databinding.AdapterItemDashboardGreenCardBinding
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
@@ -45,6 +46,7 @@ class DashboardGreenCardAdapterItem(
     private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil by inject()
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
     private val clock: Clock by inject()
+    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
 
     private val runnable = Runnable {
         notifyChanged()
@@ -109,7 +111,7 @@ class DashboardGreenCardAdapterItem(
                 viewBinding.disabledState.visibility = View.GONE
                 viewBinding.buttonWithProgressWidgetContainer.setButtonOnClickListener {
                     val mainCredentialState = cards.first().credentialState
-                    if (mainCredentialState is HasCredential) {
+                    if (mainCredentialState is HasCredential || featureFlagUseCase.isInArchiveMode()) {
                         val credentialEntities = cards.mapNotNull {
                             (it.credentialState as? HasCredential)?.credential
                         }
@@ -148,7 +150,7 @@ class DashboardGreenCardAdapterItem(
             viewBinding.buttonWithProgressWidgetContainer.loading()
         } else {
             viewBinding.buttonWithProgressWidgetContainer.idle(
-                isEnabled = cards.first().credentialState is HasCredential
+                isEnabled = cards.first().credentialState is HasCredential || featureFlagUseCase.isInArchiveMode()
             )
         }
     }

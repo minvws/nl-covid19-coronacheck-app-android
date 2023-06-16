@@ -26,6 +26,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUse
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardRefreshUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.GreenCardUtil
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
@@ -83,6 +84,7 @@ class DashboardViewModelImpl(
     private val dashboardTabsItemDataMapper: DashboardTabsItemDataMapper,
     private val removeExpiredEventsUseCase: RemoveExpiredEventsUseCase,
     private val draftEventUseCase: DraftEventUseCase,
+    private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val showBlockedEventsDialogUseCase: ShowBlockedEventsDialogUseCase
 ) : DashboardViewModel() {
 
@@ -132,7 +134,7 @@ class DashboardViewModelImpl(
                         )
 
                 // Do the actual checks
-                shouldRefreshCredentials || shouldRetryFailedRequest
+                (shouldRefreshCredentials || shouldRetryFailedRequest) && !featureFlagUseCase.isInArchiveMode()
             }
         }
 

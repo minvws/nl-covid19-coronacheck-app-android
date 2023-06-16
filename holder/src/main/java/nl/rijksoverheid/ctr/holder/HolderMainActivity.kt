@@ -230,8 +230,6 @@ class HolderMainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
-        println("pame new intent")
-
         // Handle if an external app sets the launch mode of this activity to single top of single task.
         // In this case we need to set the graph again and handle the deeplink ourselves so that the entire
         // graph is traversed to find the deeplink

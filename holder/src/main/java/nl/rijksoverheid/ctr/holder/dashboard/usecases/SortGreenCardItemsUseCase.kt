@@ -37,7 +37,7 @@ class SortGreenCardItemsUseCaseImpl(
                 is DashboardItem.PlaceholderCardItem -> 130
                 is DashboardItem.CardsItem -> {
                     val cardsItemOrder = 140
-                    cardsItemOrder + it.cards.first().originStates.first().origin.type.order
+                    cardsItemOrder + (it.cards.firstOrNull()?.originStates?.firstOrNull()?.origin?.type?.order ?: 1)
                 }
                 DashboardItem.AddQrButtonItem -> 150
                 DashboardItem.AddQrCardItem -> 160

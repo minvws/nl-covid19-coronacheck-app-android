@@ -67,6 +67,9 @@ class DashboardGreenCardAdapterItemExpiryUtilImpl(
         expireDate: OffsetDateTime,
         type: OriginType
     ): DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown {
+        if (expireDate.isBefore(OffsetDateTime.now(clock))) {
+            return DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Hide
+        }
         val hoursBetweenExpiration =
             ChronoUnit.HOURS.between(OffsetDateTime.now(clock), expireDate)
         return if (hoursBetweenExpiration >= getExpiryHoursForType(type)) {
