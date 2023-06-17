@@ -25,7 +25,8 @@ sealed class QrCodeData(
         data class NonVaccination(
             override val isExpired: Boolean,
             override val bitmap: Bitmap,
-            override val readEuropeanCredential: JSONObject
+            override val readEuropeanCredential: JSONObject,
+            val explanationNeeded: Boolean
         ) : European(bitmap, isExpired, readEuropeanCredential)
     }
 }

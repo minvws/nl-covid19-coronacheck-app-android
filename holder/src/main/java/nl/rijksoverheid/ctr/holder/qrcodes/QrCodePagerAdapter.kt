@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.qrcodes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ViewQrCodeBinding
@@ -109,8 +110,13 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         binding.overlayShowQrButton.setOnClickListener {
             onOverlayButtonClick.invoke()
         }
-        binding.overlayButton.setOnClickListener {
-            onOverlayExplanationClick.invoke(qrCodeVisibility)
+
+        if (qrCodeData is QrCodeData.European.NonVaccination && qrCodeData.explanationNeeded) {
+            binding.overlayButton.setOnClickListener {
+                onOverlayExplanationClick.invoke(qrCodeVisibility)
+            }
+        } else {
+            binding.overlayButton.isVisible = false
         }
 
         // using View.INVISIBLE instead View.GONE cause the latter breaks
