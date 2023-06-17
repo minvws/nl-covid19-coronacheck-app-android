@@ -20,6 +20,7 @@ import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem.CardsItem.CardItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.GreenCardEnabledState
 import nl.rijksoverheid.ctr.holder.dashboard.util.DashboardItemUtilImpl
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.dao.RemovedEventDao
@@ -285,6 +286,9 @@ class DashboardItemUtilImplTest : AutoCloseKoinTest() {
         appConfigFreshnessUseCase = appConfigFreshnessUseCase,
         appConfigUseCase = appConfigUseCase,
         buildConfigUseCase = buildConfigUseCase,
+        featureFlagUseCase = mockk<HolderFeatureFlagUseCase>().apply {
+            every { isInArchiveMode() } returns false
+        },
         holderDatabase = holderDatabase
     )
 }

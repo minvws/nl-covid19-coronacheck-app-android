@@ -27,6 +27,7 @@ class SortGreenCardItemsUseCaseImpl(
         return items.sortedBy {
             when (it) {
                 is DashboardItem.HeaderItem -> 10
+                is DashboardItem.InfoItem.ExportPdf -> 15
                 DashboardItem.InfoItem.ClockDeviationItem -> 20
                 is DashboardItem.InfoItem.ConfigFreshnessWarning -> 30
                 is DashboardItem.InfoItem.BlockedEvents -> 40

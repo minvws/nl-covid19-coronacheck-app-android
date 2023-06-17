@@ -18,6 +18,7 @@ import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
 import nl.rijksoverheid.ctr.design.utils.InfoFragmentUtil
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.dashboard.DashboardFragmentDirections
 import nl.rijksoverheid.ctr.holder.dashboard.DashboardPageFragment
 import nl.rijksoverheid.ctr.holder.dashboard.items.DashboardInfoCardAdapterItem
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
@@ -25,6 +26,7 @@ import nl.rijksoverheid.ctr.persistence.database.entities.EventGroupEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
 /**
  * Handles [DashboardInfoCardAdapterItem] actions
@@ -67,6 +69,9 @@ class DashboardPageInfoItemHandlerUtilImpl(
             is DashboardItem.InfoItem.FuzzyMatchedEvents -> onFuzzyMatchedEventsClick(dashboardPageFragment, infoItem.storedEvent, infoItem.events)
             is DashboardItem.InfoItem.GreenCardExpiredItem -> {
                 /* nothing, DashboardPageFragment.setItems never creates a card for this */
+            }
+            is DashboardItem.InfoItem.ExportPdf -> {
+                dashboardPageFragment.navigateSafety(DashboardFragmentDirections.actionExportIntroduction())
             }
         }
     }

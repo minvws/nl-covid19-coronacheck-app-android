@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.holder.dashboard.items
 
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.xwray.groupie.viewbinding.BindableItem
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.models.DashboardItem
@@ -51,6 +52,11 @@ class DashboardInfoCardAdapterItem(
         }
 
         when (infoItem) {
+            is DashboardItem.InfoItem.ExportPdf -> {
+                viewBinding.text.setText(R.string.holder_pdfExport_card_description)
+                val context = viewBinding.dashboardItemInfoRoot.context
+                viewBinding.dashboardItemInfoRoot.setCardBackgroundColor(ContextCompat.getColor(context, R.color.export_pdf_info_item_background))
+            }
             is DashboardItem.InfoItem.ConfigFreshnessWarning -> {
                 viewBinding.text.setText(R.string.config_warning_card_message)
             }

@@ -35,6 +35,14 @@
                 app:nullable="true" />
 
             <action
+                android:id="@+id/action_export_introduction"
+                app:destination="@id/nav_export_introduction"
+                app:enterAnim="@animator/fragment_open_enter"
+                app:exitAnim="@animator/fragment_open_exit"
+                app:popEnterAnim="@animator/fragment_close_enter"
+                app:popExitAnim="@animator/fragment_close_exit" />
+
+            <action
                 android:id="@+id/action_choose_proof_type"
                 app:destination="@id/nav_choose_proof_type"
                 app:enterAnim="@animator/fragment_open_enter"
@@ -88,6 +96,59 @@
         </action>
 
     </navigation>
+
+
+
+    <fragment
+        android:id="@+id/nav_export_introduction"
+        android:name="nl.rijksoverheid.ctr.holder.pdf.ExportIntroductionFragment"
+        android:label="">
+
+        <action
+            android:id="@+id/action_pdf_webview"
+            app:destination="@id/nav_pdf_webview"
+            app:enterAnim="@animator/fragment_open_enter"
+            app:exitAnim="@animator/fragment_open_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_pdf_webview"
+        android:name="nl.rijksoverheid.ctr.holder.pdf.PdfWebViewFragment"
+        android:label="@string/holder_pdfExport_generating_title">
+
+        <action
+            android:id="@+id/action_pdf_exported"
+            app:destination="@id/nav_pdf_exported"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right"
+            app:popUpTo="@id/nav_dashboard" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_pdf_preview"
+        android:name="nl.rijksoverheid.ctr.holder.pdf.PdfPreviewFragment"
+        android:label="" />
+
+    <fragment
+        android:id="@+id/nav_pdf_exported"
+        android:name="nl.rijksoverheid.ctr.holder.pdf.PdfExportedFragment"
+        android:label="">
+
+        <action
+            android:id="@+id/action_pdf_preview"
+            app:destination="@id/nav_pdf_preview"
+            app:enterAnim="@animator/fragment_open_enter"
+            app:exitAnim="@animator/fragment_open_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_dashboard_page"
@@ -746,6 +807,14 @@
         <argument
             android:name="menuSections"
             app:argType="nl.rijksoverheid.ctr.design.fragments.menu.MenuSection[]" />
+
+        <action
+            android:id="@+id/action_export_introduction"
+            app:destination="@id/nav_export_introduction"
+            app:enterAnim="@animator/fragment_open_enter"
+            app:exitAnim="@animator/fragment_open_exit"
+            app:popEnterAnim="@animator/fragment_close_enter"
+            app:popExitAnim="@animator/fragment_close_exit" />
 
         <action
             android:id="@+id/action_choose_proof_type"

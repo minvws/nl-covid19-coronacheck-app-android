@@ -22,6 +22,8 @@ import nl.rijksoverheid.ctr.holder.paper_proof.PaperProofDomesticInputCodeViewMo
 import nl.rijksoverheid.ctr.holder.paper_proof.PaperProofDomesticInputCodeViewModelImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.PaperProofQrScannerViewModel
 import nl.rijksoverheid.ctr.holder.paper_proof.PaperProofQrScannerViewModelImpl
+import nl.rijksoverheid.ctr.holder.pdf.PdfWebViewModel
+import nl.rijksoverheid.ctr.holder.pdf.PdfWebViewModelImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.QrCodesViewModel
 import nl.rijksoverheid.ctr.holder.qrcodes.QrCodesViewModelImpl
 import nl.rijksoverheid.ctr.holder.saved_events.SavedEventsViewModel
@@ -35,6 +37,7 @@ import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotification
 import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotificationViewModelImpl
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsViewModel
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsViewModelImpl
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -70,4 +73,5 @@ val viewModels = module {
     viewModel<DataMigrationStartViewModel> { DataMigrationStartViewModelImpl(get()) }
     viewModel<DataMigrationShowQrCodeViewModel> { DataMigrationShowQrCodeViewModelImpl(get(), get()) }
     viewModel<DataMigrationScanQrViewModel> { DataMigrationScanQrViewModelImpl(get(), get(), get()) }
+    viewModel<PdfWebViewModel> { PdfWebViewModelImpl(androidContext().filesDir.path, get(), get()) }
 }
