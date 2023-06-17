@@ -38,6 +38,7 @@ class MenuViewModelImpl(
     }
 
     private fun getAboutThisAppData(context: Context): AboutThisAppData = AboutThisAppData(
+        description = "",
         configVersionHash = cachedAppConfigUseCase.getCachedAppConfigHash(),
         configVersionTimestamp = appConfigPersistenceManager.getAppConfigLastFetchedSeconds(),
         versionName = BuildConfig.VERSION_NAME,

@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.design.utils.DialogButtonData
 import nl.rijksoverheid.ctr.design.utils.DialogFragmentData
 import nl.rijksoverheid.ctr.holder.BuildConfig
 import nl.rijksoverheid.ctr.holder.R
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 
 interface AboutThisAppDataModel {
     fun get(context: Context): AboutThisAppData
@@ -24,6 +25,7 @@ interface AboutThisAppDataModel {
 
 class AboutThisAppDataModelImpl(
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val appConfigPersistenceManager: AppConfigPersistenceManager
 ) : AboutThisAppDataModel {
     override fun get(context: Context): AboutThisAppData {
@@ -39,6 +41,11 @@ class AboutThisAppDataModelImpl(
             )
         )
         return AboutThisAppData(
+            description = if (featureFlagUseCase.isInArchiveMode()) {
+                context.getString(R.string.holder_aboutThisApp_archiveMode_description)
+            } else {
+                context.getString(R.string.about_this_app_description)
+            },
             deeplinkScannerUrl = BuildConfig.DEEPLINK_SCANNER_TEST_URL,
             versionName = BuildConfig.VERSION_NAME,
             versionCode = BuildConfig.VERSION_CODE.toString(),

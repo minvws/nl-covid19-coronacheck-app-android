@@ -14,6 +14,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 data class AboutThisAppData(
+    val description: String,
     val versionName: String,
     val versionCode: String,
     val sections: List<AboutThisAppSection> = listOf(),
