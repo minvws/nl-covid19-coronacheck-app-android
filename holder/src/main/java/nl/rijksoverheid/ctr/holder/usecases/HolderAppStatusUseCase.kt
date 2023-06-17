@@ -124,7 +124,8 @@ class HolderAppStatusUseCaseImpl(
         val newFeatureVersion = appUpdateData.newFeatureVersion
         return appUpdateData.newFeatures.isNotEmpty() &&
                 newFeatureVersion != null &&
-                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion)
+                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion) &&
+                featureFlagUseCase.isInArchiveMode()
     }
 
     /**
