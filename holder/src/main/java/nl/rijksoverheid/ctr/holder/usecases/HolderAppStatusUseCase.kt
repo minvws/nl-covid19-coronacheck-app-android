@@ -17,6 +17,7 @@ import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceMa
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.factories.OnboardingFlow
@@ -38,6 +39,8 @@ class HolderAppStatusUseCaseImpl(
     private val appUpdateData: AppUpdateData,
     private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
     private val introductionPersistenceManager: IntroductionPersistenceManager,
+    private val featureFlagUseCase: HolderFeatureFlagUseCase,
+    private val holderDatabase: HolderDatabase,
     private val errorCodeStringFactory: ErrorCodeStringFactory
 ) : AppStatusUseCase {
 
@@ -45,11 +48,16 @@ class HolderAppStatusUseCaseImpl(
         withContext(Dispatchers.IO) {
             when (config) {
                 is ConfigResult.Success -> {
-                    checkIfActionRequired(
-                        currentVersionCode = currentVersionCode,
-                        appConfig = config.appConfig.toObject<HolderConfig>(moshi)
-                    )
+                    if (isArchived()) {
+                        AppStatus.Archived
+                    } else {
+                        checkIfActionRequired(
+                            currentVersionCode = currentVersionCode,
+                            appConfig = config.appConfig.toObject<HolderConfig>(moshi)
+                        )
+                    }
                 }
+
                 is ConfigResult.Error -> {
                     val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfigOrNull()
                     when {
@@ -60,9 +68,11 @@ class HolderAppStatusUseCaseImpl(
                                 appConfig = cachedAppConfig
                             )
                         }
+
                         config.error.e is UnknownHostException -> {
                             AppStatus.Error
                         }
+
                         else -> {
                             AppStatus.LaunchError(
                                 errorCodeStringFactory.get(
@@ -88,8 +98,14 @@ class HolderAppStatusUseCaseImpl(
             currentVersionCode < appConfig.recommendedVersion -> getHolderRecommendUpdateStatus(
                 appConfig
             )
+
             else -> AppStatus.NoActionRequired
         }
+    }
+
+    private suspend fun isArchived(): Boolean {
+        return featureFlagUseCase.isInArchiveMode() && holderDatabase.eventGroupDao().getAll()
+            .isEmpty()
     }
 
     private fun shouldShowNewFeatures() =
@@ -112,7 +128,8 @@ class HolderAppStatusUseCaseImpl(
         val newFeatureVersion = appUpdateData.newFeatureVersion
         return appUpdateData.newFeatures.isNotEmpty() &&
                 newFeatureVersion != null &&
-                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion)
+                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion) &&
+                featureFlagUseCase.isInArchiveMode()
     }
 
     /**
@@ -127,6 +144,7 @@ class HolderAppStatusUseCaseImpl(
                     newFeatures = appUpdateData.newFeatures
                 )
             )
+
             else -> AppStatus.NewFeatures(appUpdateData)
         }
     }

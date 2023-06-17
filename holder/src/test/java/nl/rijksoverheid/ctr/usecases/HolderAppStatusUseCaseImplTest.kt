@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr.usecases
 
 import com.squareup.moshi.Moshi
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -24,8 +25,10 @@ import nl.rijksoverheid.ctr.fakeAppConfig
 import nl.rijksoverheid.ctr.fakeAppConfigPersistenceManager
 import nl.rijksoverheid.ctr.fakeCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.holder.usecases.HolderAppStatusUseCaseImpl
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
@@ -63,6 +66,10 @@ class HolderAppStatusUseCaseImplTest {
         ).toJson(moshi).toResponseBody("application/json".toMediaType()).source()
             .readUtf8()
 
+    private val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+        every { isInArchiveMode() } returns false
+    }
+
     @Test
     fun `status returns Deactivated when app is deactivated remotely`() =
         runTest {
@@ -75,6 +82,8 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdateData = getAppUpdateData(),
                 appUpdatePersistenceManager = mockk(relaxed = true),
                 introductionPersistenceManager = mockk(relaxed = true),
+                featureFlagUseCase = featureFlagUseCase,
+                holderDatabase = mockk(relaxed = true),
                 errorCodeStringFactory = mockk(relaxed = true)
             )
 
@@ -100,6 +109,8 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdateData = getAppUpdateData(),
                 appUpdatePersistenceManager = mockk(relaxed = true),
                 introductionPersistenceManager = mockk(relaxed = true),
+                featureFlagUseCase = featureFlagUseCase,
+                holderDatabase = mockk(relaxed = true),
                 errorCodeStringFactory = mockk(relaxed = true)
             )
 
@@ -125,6 +136,8 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdateData = getAppUpdateData(),
                 appUpdatePersistenceManager = mockk(relaxed = true),
                 introductionPersistenceManager = mockk(relaxed = true),
+                featureFlagUseCase = featureFlagUseCase,
+                holderDatabase = mockk(relaxed = true),
                 errorCodeStringFactory = mockk(relaxed = true)
             )
 
@@ -159,6 +172,8 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdateData = mockk(),
                 appUpdatePersistenceManager = mockk(),
                 introductionPersistenceManager = mockk(),
+                featureFlagUseCase = featureFlagUseCase,
+                holderDatabase = mockk(relaxed = true),
                 errorCodeStringFactory = mockk(relaxed = true)
             )
 
@@ -193,6 +208,8 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdateData = mockk(),
                 appUpdatePersistenceManager = mockk(),
                 introductionPersistenceManager = mockk(),
+                featureFlagUseCase = featureFlagUseCase,
+                holderDatabase = mockk(relaxed = true),
                 errorCodeStringFactory = mockk(relaxed = true)
             )
 
@@ -227,6 +244,8 @@ class HolderAppStatusUseCaseImplTest {
                 appUpdateData = getAppUpdateData(),
                 appUpdatePersistenceManager = mockk(relaxed = true),
                 introductionPersistenceManager = mockk(relaxed = true),
+                featureFlagUseCase = featureFlagUseCase,
+                holderDatabase = mockk(relaxed = true),
                 errorCodeStringFactory = mockk(relaxed = true)
             )
 
@@ -258,6 +277,8 @@ class HolderAppStatusUseCaseImplTest {
                 introductionPersistenceManager = mockk {
                     every { getIntroductionFinished() } returns false
                 },
+                featureFlagUseCase = featureFlagUseCase,
+                holderDatabase = mockk(relaxed = true),
                 errorCodeStringFactory = mockk(relaxed = true)
             )
 
@@ -294,6 +315,8 @@ class HolderAppStatusUseCaseImplTest {
                 introductionPersistenceManager = mockk {
                     every { getIntroductionFinished() } returns false
                 },
+                featureFlagUseCase = featureFlagUseCase,
+                holderDatabase = mockk(relaxed = true),
                 errorCodeStringFactory = mockk(relaxed = true)
             )
 
@@ -336,7 +359,10 @@ class HolderAppStatusUseCaseImplTest {
         val persistenceManager: PersistenceManager = mockk()
         val appStatusUseCase = appStatusUseCase(
             false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
-            introductionPersistenceManager
+            introductionPersistenceManager,
+            defaultFeatureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns true
+            }
         )
 
         every { introductionPersistenceManager.getIntroductionFinished() } returns true
@@ -388,7 +414,10 @@ class HolderAppStatusUseCaseImplTest {
             val appUpdatePersistenceManager: AppUpdatePersistenceManager = mockk()
             val appStatusUseCase = appStatusUseCase(
                 false, 1000, getAppUpdateData(), appUpdatePersistenceManager,
-                introductionPersistenceManager
+                introductionPersistenceManager,
+                defaultFeatureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                    every { isInArchiveMode() } returns true
+                }
             )
 
             every { introductionPersistenceManager.getIntroductionFinished() } returns true
@@ -488,6 +517,7 @@ class HolderAppStatusUseCaseImplTest {
         cachedAppConfig: HolderConfig? = mockk(),
         configLastFetchedSeconds: Long = 0,
         configTtlSeconds: Int = 0,
+        defaultFeatureFlagUseCase: HolderFeatureFlagUseCase = featureFlagUseCase,
         clock: Clock = Clock.fixed(Instant.ofEpochSecond(10000), ZoneId.of("UTC"))
     ) =
         HolderAppStatusUseCaseImpl(
@@ -510,6 +540,10 @@ class HolderAppStatusUseCaseImplTest {
             appUpdateData = appUpdateData,
             appUpdatePersistenceManager = appUpdatePersistenceManager,
             introductionPersistenceManager = introductionPersistenceManager,
+            featureFlagUseCase = defaultFeatureFlagUseCase,
+            holderDatabase = mockk<HolderDatabase>(relaxed = true).apply {
+                coEvery { eventGroupDao().getAll() } returns listOf(mockk())
+            },
             errorCodeStringFactory = mockk(relaxed = true)
         )
 }
