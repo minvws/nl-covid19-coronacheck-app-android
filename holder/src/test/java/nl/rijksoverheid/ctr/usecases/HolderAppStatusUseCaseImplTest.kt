@@ -63,7 +63,7 @@ class HolderAppStatusUseCaseImplTest {
             holderRecommendedVersion = recommendedVersion
         ).toJson(moshi).toResponseBody("application/json".toMediaType()).source()
             .readUtf8()
-    
+
     private val featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
         every { isInArchiveMode() } returns false
     }

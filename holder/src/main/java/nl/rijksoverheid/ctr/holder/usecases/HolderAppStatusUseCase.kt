@@ -56,8 +56,8 @@ class HolderAppStatusUseCaseImpl(
                             appConfig = config.appConfig.toObject<HolderConfig>(moshi)
                         )
                     }
-
                 }
+
                 is ConfigResult.Error -> {
                     val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfigOrNull()
                     when {
@@ -68,9 +68,11 @@ class HolderAppStatusUseCaseImpl(
                                 appConfig = cachedAppConfig
                             )
                         }
+
                         config.error.e is UnknownHostException -> {
                             AppStatus.Error
                         }
+
                         else -> {
                             AppStatus.LaunchError(
                                 errorCodeStringFactory.get(
@@ -96,12 +98,14 @@ class HolderAppStatusUseCaseImpl(
             currentVersionCode < appConfig.recommendedVersion -> getHolderRecommendUpdateStatus(
                 appConfig
             )
+
             else -> AppStatus.NoActionRequired
         }
     }
 
     private suspend fun isArchived(): Boolean {
-        return featureFlagUseCase.isInArchiveMode() && holderDatabase.eventGroupDao().getAll().isEmpty()
+        return featureFlagUseCase.isInArchiveMode() && holderDatabase.eventGroupDao().getAll()
+            .isEmpty()
     }
 
     private fun shouldShowNewFeatures() =
@@ -140,6 +144,7 @@ class HolderAppStatusUseCaseImpl(
                     newFeatures = appUpdateData.newFeatures
                 )
             )
+
             else -> AppStatus.NewFeatures(appUpdateData)
         }
     }
