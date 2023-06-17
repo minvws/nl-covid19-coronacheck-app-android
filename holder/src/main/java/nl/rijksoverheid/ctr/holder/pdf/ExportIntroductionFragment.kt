@@ -15,7 +15,7 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentExportIntroductionBinding
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 
-class ExportIntroductionFragment: Fragment(R.layout.fragment_export_introduction) {
+class ExportIntroductionFragment : Fragment(R.layout.fragment_export_introduction) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

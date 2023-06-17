@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-	<head>
+    <head>
         <script type = "text/javascript" src = "coronacheck_web_pdf_tools.js"></script>
-		<script>
+        <script>
 			function generatePdf(holderConfig, vaccination) {
 			    let proofs = pdfTools.parseProofData(vaccination, holderConfig, 'nl');
                 let options = {
@@ -20,9 +20,10 @@
                     android.onData(err);
                 });
 			}
-		</script>
-	</head>
-	<body>
-		<div id="page"></div>
-	</body>
+
+        </script>
+    </head>
+    <body>
+        <div id="page"></div>
+    </body>
 </html>

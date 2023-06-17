@@ -9,7 +9,6 @@
 package nl.rijksoverheid.ctr.holder.pdf
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.FileProvider

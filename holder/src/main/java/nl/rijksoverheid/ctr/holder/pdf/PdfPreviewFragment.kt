@@ -36,7 +36,7 @@ class PdfPreviewFragment : Fragment(R.layout.fragment_pdf_preview) {
             )
             currentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
             binding.pdfImageView.setImageBitmap(bitmap)
-        } catch(exception: Exception) {
+        } catch (exception: Exception) {
             exception.printStackTrace()
         }
     }
