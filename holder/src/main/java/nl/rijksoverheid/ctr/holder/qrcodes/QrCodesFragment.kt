@@ -167,7 +167,11 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                                 R.string.holder_qr_code_expired_explanation_description
                             }
                         } else {
-                            R.string.holder_qr_code_hidden_explanation_description
+                            if (featureFlagUseCase.isInArchiveMode()) {
+                                R.string.holder_qr_code_hidden_explanation_description_archive_vaccination
+                            } else {
+                                R.string.holder_qr_code_hidden_explanation_description
+                            }
                         }
                     ),
                     htmlLinksEnabled = true
