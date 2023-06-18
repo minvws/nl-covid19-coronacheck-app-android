@@ -76,6 +76,7 @@ class PdfWebViewFragment : BaseFragment(R.layout.fragment_pdf_webview) {
         binding.pdfWebView.loadUrl("file:///android_res/raw/print_portal.html")
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun error(errorResult: ErrorResult) {
         val helpdeskNumber = cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber
         presentError(errorResult, getString(
