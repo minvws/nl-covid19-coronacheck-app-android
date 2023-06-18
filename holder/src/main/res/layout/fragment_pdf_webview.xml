@@ -6,6 +6,7 @@
 
     <WebView
         android:id="@+id/pdfWebView"
+        android:visibility="invisible"
         android:layout_width="10dp"
         android:layout_height="match_parent" />
 

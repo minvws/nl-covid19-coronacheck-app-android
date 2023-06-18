@@ -5,7 +5,7 @@
     android:viewportHeight="260">
   <path
       android:pathData="M173,126m-115,0a115,115 0,1 1,230 0a115,115 0,1 1,-230 0"
-      android:fillColor="#DCEEFD"/>
+      android:fillColor="@color/data_migration_drawable_background"/>
   <path
       android:pathData="M120.88,232.51L110.57,151.51C110.27,149.12 112.13,147 114.54,147H239.74C241.76,147 243.47,148.51 243.71,150.52L253.46,231.52C253.75,233.9 251.89,236 249.49,236H124.85C122.83,236 121.14,234.5 120.88,232.51Z"
       android:fillColor="#59ACF5"/>

@@ -67,6 +67,6 @@ class PdfWebViewFragment : Fragment(R.layout.fragment_pdf_webview) {
     }
 
     companion object {
-        const val pdfFileName = "certificate.pdf"
+        const val pdfFileName = "Coronacheck - International.pdf"
     }
 }
