@@ -63,6 +63,7 @@ class QrCodesResultUseCaseImpl(
                 } else {
                     getQrCodesResultForNonVaccination(
                         greenCardType = greenCardType,
+                        originType = originType,
                         credentialsWithExpirationTime = credentialsWithExpirationTime,
                         credentials = credentials,
                         shouldDisclose = shouldDisclose,
@@ -136,6 +137,7 @@ class QrCodesResultUseCaseImpl(
 
     private suspend fun getQrCodesResultForNonVaccination(
         greenCardType: GreenCardType,
+        originType: OriginType,
         credentialsWithExpirationTime: List<Pair<ByteArray, OffsetDateTime>>,
         credentials: List<ByteArray>,
         shouldDisclose: QrCodeFragmentData.ShouldDisclose,
@@ -162,7 +164,8 @@ class QrCodesResultUseCaseImpl(
             QrCodeData.European.NonVaccination(
                 isExpired = credentialsExpired.all { it },
                 bitmap = qrCodeBitmap,
-                readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential)
+                readEuropeanCredential = mobileCoreWrapper.readEuropeanCredential(credential),
+                explanationNeeded = originType != OriginType.Test
             )
         )
     }

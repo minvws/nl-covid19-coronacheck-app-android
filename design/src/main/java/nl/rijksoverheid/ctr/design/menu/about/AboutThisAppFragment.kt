@@ -97,6 +97,8 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             ).formatDayMonthYearTimeNumerical()
         )
 
+        binding.description.setHtmlText(aboutThisAppData.description)
+
         if (getString(R.string.general_menu_resetApp).isNotEmpty()) {
             // we have this button in the layout twice because of the design requirement
             // to align it to the bottom when the content is not scrollable
