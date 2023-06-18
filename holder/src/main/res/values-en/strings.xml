@@ -706,4 +706,5 @@
   <string name="holder_aboutThisApp_archiveMode_description"><![CDATA[CoronaCheck is the official app of the Netherlands for showing coronavirus entry passes.<br/><br/>The app is developed by the Ministry of Health, Welfare and Sport. You can use CoronaCheck to prove you have been vaccinated, tested negative, or recovered from coronavirus.]]></string>
   <string name="holder_pdfExport_start_toolbar">Save certificate</string>
   <string name="holder_pdfExport_success_toolbar">File created</string>
+  <string name="holder_pdfExport_error_body" formatted="false"><![CDATA[Er gaat iets mis met het maken van het PDF-bestand met jouw bewijzen.<br/><br/>Heb je vragen? Bel de CoronaCheck helpdesk op <a href=\\"tel:%s\\">%s</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br />%s]]></string>
 </resources>

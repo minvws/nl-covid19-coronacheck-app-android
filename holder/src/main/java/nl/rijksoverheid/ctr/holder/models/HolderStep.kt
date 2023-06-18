@@ -26,4 +26,5 @@ sealed class HolderStep(override val code: Int) : Step(code) {
     object StoringCredentials : HolderStep(90)
     object DataMigrationImport : HolderStep(10)
     object DataMigrationExport : HolderStep(20)
+    object PdfExport : HolderStep(10)
 }
