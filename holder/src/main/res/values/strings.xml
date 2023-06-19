@@ -706,4 +706,5 @@
   <string name="holder_aboutThisApp_archiveMode_description"><![CDATA[CoronaCheck is de officiële app van Nederland voor het tonen van coronatoegangsbewijzen.<br/><br/>De app is ontwikkeld door het ministerie van Volksgezondheid, Welzijn en Sport. Met CoronaCheck kun je aantonen dat je gevaccineerd, negatief getest, of hersteld van corona bent.]]></string>
   <string name="holder_pdfExport_start_toolbar">Bewijs bewaren</string>
   <string name="holder_pdfExport_success_toolbar">Bestand gemaakt</string>
+  <string name="holder_pdfExport_error_body" formatted="false"><![CDATA[Er gaat iets mis met het maken van het PDF-bestand met jouw bewijzen.<br/><br/>Heb je vragen? Bel de CoronaCheck helpdesk op <a href=\"tel:%s\">%s</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br/>%s]]></string>
 </resources>

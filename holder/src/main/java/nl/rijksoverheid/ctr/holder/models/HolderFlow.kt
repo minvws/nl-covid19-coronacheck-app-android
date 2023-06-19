@@ -55,4 +55,7 @@ sealed class HolderFlow(code: Int) : Flow(code), Parcelable {
 
     @Parcelize
     object Migration : HolderFlow(14)
+
+    @Parcelize
+    object Pdf : HolderFlow(15)
 }
