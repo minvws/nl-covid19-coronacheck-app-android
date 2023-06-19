@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import java.io.File
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPdfPreviewBinding
+import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 
 class PdfPreviewFragment : Fragment(R.layout.fragment_pdf_preview) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,7 +45,7 @@ class PdfPreviewFragment : Fragment(R.layout.fragment_pdf_preview) {
             pdfRenderer.close()
             binding.pdfImageView.setImageBitmap(pdfBitmap(bitmaps))
         } catch (exception: Exception) {
-            exception.printStackTrace()
+            findNavControllerSafety()?.popBackStack()
         }
     }
 
