@@ -116,7 +116,11 @@ class MenuViewModelImpl(
             ),
             MenuSection(
                 menuItems = listOfNotNull(
-                    savedEventsMenuItem,
+                    if (featureFlagUseCase.isInArchiveMode()) {
+                        null
+                    } else {
+                        savedEventsMenuItem
+                    },
                     if (featureFlagUseCase.getMigrateButtonEnabled()) {
                         dataMigrationMenuItem
                     } else {
@@ -125,7 +129,12 @@ class MenuViewModelImpl(
                 )
             ),
             MenuSection(
-                menuItems = listOf(
+                menuItems = listOfNotNull(
+                    if (featureFlagUseCase.isInArchiveMode()) {
+                        savedEventsMenuItem
+                    } else {
+                        null
+                    },
                     helpInfoMenuItem
                 )
             ),
