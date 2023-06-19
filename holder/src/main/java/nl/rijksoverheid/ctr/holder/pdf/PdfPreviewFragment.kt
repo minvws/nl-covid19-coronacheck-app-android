@@ -12,8 +12,10 @@ import android.graphics.Canvas
 import android.graphics.pdf.PdfRenderer
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
+import android.util.Base64
 import android.view.View
 import androidx.fragment.app.Fragment
+import java.io.ByteArrayOutputStream
 import java.io.File
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPdfPreviewBinding
@@ -44,15 +46,20 @@ class PdfPreviewFragment : Fragment(R.layout.fragment_pdf_preview) {
             }
             pdfRenderer.close()
 
+            val screenWidth = requireActivity().resources.displayMetrics.widthPixels
+            val bitmapWidth = bitmaps.first().width
+            val initialZoom = ((screenWidth.toFloat() / bitmapWidth.toFloat()) * 100).toInt()
             binding.pdfWebView.settings.builtInZoomControls = true
+            binding.pdfWebView.settings.displayZoomControls = false
             binding.pdfWebView.settings.allowFileAccess = true
-            binding.pdfWebView.loadUrl("${requireContext().filesDir.path}/${PdfWebViewFragment.pdfFileName}")
+            binding.pdfWebView.setInitialScale(initialZoom)
+            binding.pdfWebView.loadDataWithBaseURL("file:///android_asset/", "<html><body><img src='${pdfBitmap(bitmaps)}' /></body></html>", "text/html", "utf-8", "")
         } catch (exception: Exception) {
             findNavControllerSafety()
         }
     }
 
-    fun pdfBitmap(bitmaps: List<Bitmap>): Bitmap {
+    private fun pdfBitmap(bitmaps: List<Bitmap>): String {
         val width = bitmaps.first().width
         val pageHeight = bitmaps.first().height
         val height = bitmaps.first().height * bitmaps.size
@@ -62,6 +69,9 @@ class PdfPreviewFragment : Fragment(R.layout.fragment_pdf_preview) {
             comboImage.drawBitmap(bitmap, 0f, (index * pageHeight).toFloat(), null)
         }
 
-        return comboBitmap
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        comboBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return "data:image/png;base64,${Base64.encodeToString(byteArray, Base64.DEFAULT)}"
     }
 }

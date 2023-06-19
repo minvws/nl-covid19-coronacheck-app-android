@@ -3,19 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:id="@+id/scroll"
+    <WebView
+        android:id="@+id/pdfWebView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
-
-        <ImageView
-            android:id="@+id/pdfImageView"
-            android:background="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </ScrollView>
+        android:layout_height="match_parent" />
 
 </nl.rijksoverheid.ctr.design.widgets.AnimatorConstraintLayout>
