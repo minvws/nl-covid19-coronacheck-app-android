@@ -70,7 +70,7 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
                     R.drawable.illustration_app_status_deactivated
                 ) {
                     intentUtil.openUrl(
-                        requireContext(), getString(R.string.holder_deactivation_url)
+                        requireContext(), getString(R.string.holder_archiveMode_link)
                     )
                 }
             }

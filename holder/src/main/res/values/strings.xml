@@ -687,10 +687,10 @@
   <string name="holder_newintheapp_archiveMode_title">Alleen nog bewijzen bewaren</string>
   <string name="holder_newintheapp_archiveMode_body">Je kunt met deze app geen nieuwe coronabewijzen meer maken. De bewijzen die je al in de app had staan kun je nog wel als bestand bewaren.</string>
   <string name="holder_pdfExport_start_title">Je bewijzen bewaren</string>
-  <string name="holder_pdfExport_start_message">Maak een bestand van je bewijzen dat je kunt opslaan op je telefoon of tablet, of printen. Dit kan nog tot eind dit jaar (2023).</string>
+  <string name="holder_pdfExport_start_message">Maak een bestand van je bewijzen dat je kunt delen, opslaan op je telefoon of tablet, of printen. Dit kan nog tot eind dit jaar (2023).</string>
   <string name="holder_pdfExport_start_buttonTitle">Maak bestand</string>
   <string name="holder_pdfExport_success_title">Gelukt!</string>
-  <string name="holder_pdfExport_success_message">Het bestand met jouw bewijzen hieronder kun je opslaan, versturen of printen.</string>
+  <string name="holder_pdfExport_success_message">Het bestand met jouw bewijzen hieronder kun je delen, opslaan, versturen of printen.</string>
   <string name="holder_pdfExport_card_description">Je kunt nog tot eind dit jaar je bewijzen bewaren. Nieuwe bewijzen maken kan niet meer.</string>
   <string name="holder_menu_exportPDF">Mijn bewijzen bewaren</string>
   <string name="holder_pdfExport_card_action">Mijn bewijzen bewaren</string>

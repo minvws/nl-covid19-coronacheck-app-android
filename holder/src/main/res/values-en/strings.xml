@@ -687,10 +687,10 @@
   <string name="holder_newintheapp_archiveMode_title">Saving certificates only</string>
   <string name="holder_newintheapp_archiveMode_body">You can no longer create new coronavirus certificates with this app. However, the certificates you already had in the app can be saved as a file.</string>
   <string name="holder_pdfExport_start_title">Saving your certificates</string>
-  <string name="holder_pdfExport_start_message">Create a file from your certificates that you can save on your phone or tablet, or print. This can be done until the end of this year (2023).</string>
+  <string name="holder_pdfExport_start_message">Create a file from your certificates that you can share, save on your phone or tablet, or print. This can be done until the end of this year (2023).</string>
   <string name="holder_pdfExport_start_buttonTitle">Create certificate</string>
   <string name="holder_pdfExport_success_title">Success!</string>
-  <string name="holder_pdfExport_success_message">You can save, send or print the file with your certificates below.</string>
+  <string name="holder_pdfExport_success_message">You can share, save, send or print the file with your certificates below.</string>
   <string name="holder_pdfExport_card_description">You can still save your certificates until the end of this year. Creating new certificates is no longer possible.</string>
   <string name="holder_menu_exportPDF">Save my certificates</string>
   <string name="holder_pdfExport_card_action">Save my certificates</string>

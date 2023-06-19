@@ -17,6 +17,9 @@ class PrintExportDccUseCaseImpl(
     override suspend fun export(): String {
         val credentials = holderDatabase.greenCardDao().getAll()
             .filter { it.greenCardEntity.type == GreenCardType.Eu && it.credentialEntities.isNotEmpty() }
+            .sortedBy {
+                it.origins.firstOrNull()?.eventTime
+            }
             .map { it.credentialEntities.last() }
 
         val printAttributes = PrintAttributes(

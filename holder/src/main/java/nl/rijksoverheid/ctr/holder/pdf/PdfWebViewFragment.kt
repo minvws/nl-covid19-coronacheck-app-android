@@ -28,6 +28,7 @@ import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.AppErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
+import nl.rijksoverheid.ctr.shared.utils.Accessibility.makeIndeterminateAccessible
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -51,6 +52,12 @@ class PdfWebViewFragment : BaseFragment(R.layout.fragment_pdf_webview) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentPdfWebviewBinding.bind(view)
+
+        binding.loading.makeIndeterminateAccessible(
+            context = requireContext(),
+            isLoading = true,
+            message = R.string.general_loading_description
+        )
 
         pdfWebViewModel.loadingLiveData.observe(viewLifecycleOwner, EventObserver {
             binding.loading.isVisible = it

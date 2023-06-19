@@ -102,7 +102,7 @@
     <fragment
         android:id="@+id/nav_export_introduction"
         android:name="nl.rijksoverheid.ctr.holder.pdf.ExportIntroductionFragment"
-        android:label="">
+        android:label="@string/holder_pdfExport_start_toolbar">
 
         <action
             android:id="@+id/action_pdf_webview"
