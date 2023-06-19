@@ -43,9 +43,12 @@ class PdfPreviewFragment : Fragment(R.layout.fragment_pdf_preview) {
                 currentPage.close()
             }
             pdfRenderer.close()
-            binding.pdfImageView.setImageBitmap(pdfBitmap(bitmaps))
+
+            binding.pdfWebView.settings.builtInZoomControls = true
+            binding.pdfWebView.settings.allowFileAccess = true
+            binding.pdfWebView.loadUrl("${requireContext().filesDir.path}/${PdfWebViewFragment.pdfFileName}")
         } catch (exception: Exception) {
-            findNavControllerSafety()?.popBackStack()
+            findNavControllerSafety()
         }
     }
 
