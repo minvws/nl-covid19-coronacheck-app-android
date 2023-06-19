@@ -13,7 +13,6 @@ import androidx.core.view.AccessibilityDelegateCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.accessibility.AccessibilityEventCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
-import com.google.android.material.progressindicator.LinearProgressIndicator
 import nl.rijksoverheid.ctr.shared.R
 
 /*
@@ -226,12 +225,12 @@ object Accessibility {
     }
 
     /**
-     * Make the LinearProgressIndicator more accesible by:
+     * Make a progressbar more accesible by:
      * - Focusing on the progressbar when loading
      * - Unfocusing on the progressbar when no longer loading
      * - Override the default talkback. A indeterminate progress bar reads "0% progress" by default.
      */
-    fun LinearProgressIndicator.makeIndeterminateAccessible(
+    fun View.makeIndeterminateAccessible(
         context: Context,
         isLoading: Boolean,
         @StringRes message: Int = R.string.general_loading_description
