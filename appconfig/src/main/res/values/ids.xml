@@ -33,4 +33,5 @@
     <item name="holder_archiveMode_title" type="string" />
     <item name="holder_archiveMode_description" type="string" />
     <item name="holder_archiveMode_button" type="string" />
+    <item name="holder_archiveMode_link" type="string" />
 </resources>
