@@ -111,12 +111,12 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             onOverlayButtonClick.invoke()
         }
 
-        if (qrCodeData is QrCodeData.European.NonVaccination && qrCodeData.explanationNeeded) {
+        if (qrCodeData is QrCodeData.European.NonVaccination && !qrCodeData.explanationNeeded) {
+            binding.overlayButton.isVisible = false
+        } else {
             binding.overlayButton.setOnClickListener {
                 onOverlayExplanationClick.invoke(qrCodeVisibility)
             }
-        } else {
-            binding.overlayButton.isVisible = false
         }
 
         // using View.INVISIBLE instead View.GONE cause the latter breaks
