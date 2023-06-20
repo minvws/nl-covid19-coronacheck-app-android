@@ -697,7 +697,7 @@
   <string name="holder_pdfExport_generating_title">Bestand maken</string>
   <string name="holder_pdfExport_success_card_message">Gebruik dit bewijs als je in het buitenland bent of de grens over gaat.</string>
   <string name="holder_pdfExport_success_card_title">Internationaal bewijs</string>
-  <string name="holder_pdfExport_success_card_action_save">Bestand opslaan</string>
+  <string name="holder_pdfExport_success_card_action_save">Bestand bewaren</string>
   <string name="holder_pdfExport_success_card_action_view">Bekijk bestand</string>
   <string name="holder_qr_code_expired_explanation_description_archive_recovery"><![CDATA[Als de QR-code van je herstelbewijs is verlopen betekent dit dat je positieve testuitslag ouder dan 180 dagen is.<br/><br/>Met een verlopen QR-code kun je nog wel aantonen dat je ooit corona hebt gehad. Je kunt deze QR-code alleen niet meer als herstelbewijs gebruiken.]]></string>
   <string name="holder_qr_code_expired_explanation_description_archive_vaccination"><![CDATA[Als je QR-code is verlopen betekent dit dat je vaccinatie nog geldig is, maar de QR-code in deze app niet meer.<br/><br/>Met verlopen QR-codes kun je nog wel aantonen dat je gevaccineerd bent. Je kunt deze QR-codes alleen niet overal meer als vaccinatiebewijs gebruiken.]]></string>
