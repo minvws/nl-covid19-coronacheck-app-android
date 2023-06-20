@@ -126,19 +126,30 @@
             app:exitAnim="@animator/slide_out_left"
             app:popEnterAnim="@animator/slide_in_left"
             app:popExitAnim="@animator/slide_out_right"
-            app:popUpTo="@id/nav_dashboard" />
+            app:popUpTo="@id/nav_export_introduction" />
 
     </fragment>
 
     <fragment
         android:id="@+id/nav_pdf_preview"
         android:name="nl.rijksoverheid.ctr.holder.pdf.PdfPreviewFragment"
-        android:label="" />
+        android:label="{toolbarTitle}">
+
+        <argument
+            android:name="toolbarTitle"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/action_dialog"
+            app:destination="@+id/nav_dialog"
+            app:popUpTo="@id/nav_pdf_exported" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_pdf_exported"
         android:name="nl.rijksoverheid.ctr.holder.pdf.PdfExportedFragment"
-        android:label="">
+        android:label="@string/holder_pdfExport_success_toolbar">
 
         <action
             android:id="@+id/action_pdf_preview"

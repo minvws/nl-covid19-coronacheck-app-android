@@ -27,8 +27,6 @@ class PdfPreviewFragment : Fragment(R.layout.fragment_pdf_preview) {
 
         val binding = FragmentPdfPreviewBinding.bind(view)
 
-
-
         binding.pdfWebView.settings.builtInZoomControls = true
         binding.pdfWebView.settings.displayZoomControls = false
         binding.pdfWebView.settings.allowFileAccess = true
