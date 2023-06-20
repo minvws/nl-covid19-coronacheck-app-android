@@ -37,10 +37,10 @@
             <action
                 android:id="@+id/action_export_introduction"
                 app:destination="@id/nav_export_introduction"
-                app:enterAnim="@animator/fragment_open_enter"
-                app:exitAnim="@animator/fragment_open_exit"
-                app:popEnterAnim="@animator/fragment_close_enter"
-                app:popExitAnim="@animator/fragment_close_exit" />
+                app:enterAnim="@animator/slide_in_right"
+                app:exitAnim="@animator/slide_out_left"
+                app:popEnterAnim="@animator/slide_in_left"
+                app:popExitAnim="@animator/slide_out_right" />
 
             <action
                 android:id="@+id/action_choose_proof_type"
@@ -823,10 +823,10 @@
         <action
             android:id="@+id/action_export_introduction"
             app:destination="@id/nav_export_introduction"
-            app:enterAnim="@animator/fragment_open_enter"
-            app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@animator/fragment_close_enter"
-            app:popExitAnim="@animator/fragment_close_exit" />
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@animator/slide_in_left"
+            app:popExitAnim="@animator/slide_out_right" />
 
         <action
             android:id="@+id/action_choose_proof_type"
