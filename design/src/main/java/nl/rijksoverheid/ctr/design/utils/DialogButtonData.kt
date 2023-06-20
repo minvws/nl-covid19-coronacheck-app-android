@@ -22,4 +22,8 @@ sealed class DialogButtonData(open val textId: Int) : Parcelable {
     @Parcelize
     data class Dismiss(override val textId: Int) :
             DialogButtonData(textId), Parcelable
+
+    @Parcelize
+    data class NavigateUp(override val textId: Int) :
+    DialogButtonData(textId), Parcelable
 }

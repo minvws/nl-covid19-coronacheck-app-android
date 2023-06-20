@@ -22,6 +22,8 @@ import nl.rijksoverheid.ctr.holder.paper_proof.PaperProofDomesticInputCodeViewMo
 import nl.rijksoverheid.ctr.holder.paper_proof.PaperProofDomesticInputCodeViewModelImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.PaperProofQrScannerViewModel
 import nl.rijksoverheid.ctr.holder.paper_proof.PaperProofQrScannerViewModelImpl
+import nl.rijksoverheid.ctr.holder.pdf.PdfPreviewViewModel
+import nl.rijksoverheid.ctr.holder.pdf.PdfPreviewViewModelImpl
 import nl.rijksoverheid.ctr.holder.pdf.PdfWebViewModel
 import nl.rijksoverheid.ctr.holder.pdf.PdfWebViewModelImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.QrCodesViewModel
@@ -74,4 +76,5 @@ val viewModels = module {
     viewModel<DataMigrationShowQrCodeViewModel> { DataMigrationShowQrCodeViewModelImpl(get(), get()) }
     viewModel<DataMigrationScanQrViewModel> { DataMigrationScanQrViewModelImpl(get(), get(), get()) }
     viewModel<PdfWebViewModel> { PdfWebViewModelImpl(androidContext().filesDir.path, get(), get()) }
+    viewModel<PdfPreviewViewModel> { PdfPreviewViewModelImpl(get()) }
 }

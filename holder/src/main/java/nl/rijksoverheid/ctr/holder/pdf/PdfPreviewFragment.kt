@@ -7,58 +7,60 @@
  */
 package nl.rijksoverheid.ctr.holder.pdf
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.pdf.PdfRenderer
 import android.os.Bundle
-import android.os.ParcelFileDescriptor
 import android.view.View
 import androidx.fragment.app.Fragment
-import java.io.File
+import nl.rijksoverheid.ctr.design.utils.DialogButtonData
+import nl.rijksoverheid.ctr.design.utils.DialogFragmentData
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentPdfPreviewBinding
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
+import nl.rijksoverheid.ctr.shared.livedata.EventObserver
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PdfPreviewFragment : Fragment(R.layout.fragment_pdf_preview) {
+
+    private val viewModel: PdfPreviewViewModel by viewModel()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = FragmentPdfPreviewBinding.bind(view)
 
-        try {
-            val pdfFile = File(requireContext().filesDir, PdfWebViewFragment.pdfFileName)
-            val parcelFileDescriptor =
-                ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY)
-            val pdfRenderer = PdfRenderer(parcelFileDescriptor)
-            val bitmaps = mutableListOf<Bitmap>()
-            for (i in 0 until pdfRenderer.pageCount) {
-                val currentPage = pdfRenderer.openPage(i)
-                val bitmap = Bitmap.createBitmap(
-                    currentPage.width,
-                    currentPage.height,
-                    Bitmap.Config.ARGB_8888
-                )
-                currentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-                bitmaps.add(bitmap)
-                currentPage.close()
+        binding.pdfWebView.settings.builtInZoomControls = true
+        binding.pdfWebView.settings.displayZoomControls = false
+        binding.pdfWebView.settings.allowFileAccess = true
+
+        viewModel.previewLiveData.observe(viewLifecycleOwner, EventObserver {
+            when (it) {
+                is PdfPreview.Success -> {
+                    binding.pdfWebView.setInitialScale(it.info.initialZoom)
+                    binding.pdfWebView.loadDataWithBaseURL(
+                        "file:///android_asset/",
+                        "<html><body><img src='${it.info.content}' /></body></html>",
+                        "text/html",
+                        "utf-8",
+                        ""
+                    )
+                }
+
+                is PdfPreview.Error -> {
+                    navigateSafety(
+                        PdfPreviewFragmentDirections.actionDialog(
+                            data = DialogFragmentData(
+                                title = R.string.dialog_error_title,
+                                message = R.string.general_diskFull_body,
+                                positiveButtonData = DialogButtonData.NavigateUp(R.string.ok)
+                            )
+                        )
+                    )
+                }
             }
-            pdfRenderer.close()
-            binding.pdfImageView.setImageBitmap(pdfBitmap(bitmaps))
-        } catch (exception: Exception) {
-            findNavControllerSafety()?.popBackStack()
-        }
-    }
+        })
 
-    fun pdfBitmap(bitmaps: List<Bitmap>): Bitmap {
-        val width = bitmaps.first().width
-        val pageHeight = bitmaps.first().height
-        val height = bitmaps.first().height * bitmaps.size
-        val comboBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val comboImage = Canvas(comboBitmap)
-        bitmaps.forEachIndexed { index, bitmap ->
-            comboImage.drawBitmap(bitmap, 0f, (index * pageHeight).toFloat(), null)
-        }
-
-        return comboBitmap
+        viewModel.generatePreview(
+            screenWidth = resources.displayMetrics.widthPixels,
+            filesDir = requireContext().filesDir
+        )
     }
 }
