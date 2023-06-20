@@ -690,7 +690,7 @@
   <string name="holder_pdfExport_start_message">Maak een bestand van je bewijzen dat je kunt delen, opslaan op je telefoon of tablet, of printen. Dit kan nog tot eind dit jaar (2023).</string>
   <string name="holder_pdfExport_start_buttonTitle">Maak bestand</string>
   <string name="holder_pdfExport_success_title">Gelukt!</string>
-  <string name="holder_pdfExport_success_message">Het bestand met jouw bewijzen hieronder kun je delen, opslaan, versturen of printen.</string>
+  <string name="holder_pdfExport_success_message">Het bestand met jouw bewijzen hieronder kun je delen, opslaan of printen.</string>
   <string name="holder_pdfExport_card_description">Je kunt nog tot eind dit jaar je bewijzen bewaren. Nieuwe bewijzen maken kan niet meer.</string>
   <string name="holder_menu_exportPDF">Mijn bewijzen bewaren</string>
   <string name="holder_pdfExport_card_action">Mijn bewijzen bewaren</string>
@@ -707,4 +707,6 @@
   <string name="holder_pdfExport_start_toolbar">Bewijs bewaren</string>
   <string name="holder_pdfExport_success_toolbar">Bestand gemaakt</string>
   <string name="holder_pdfExport_error_body" formatted="false"><![CDATA[Er gaat iets mis met het maken van het bestand met je bewijzen.<br/><br/>Heb je vragen? Bel de helpdesk op <a href=\"tel:%s\">%s</a> en geef onderstaande foutcode door.<br/><br/><b>Foutcode:</b><br />%s]]></string>
+  <string name="holder_pdfExport_storageFull_errorDialog_title">Bestand bekijken niet mogelijk</string>
+  <string name="holder_pdfExport_storageFull_errorDialog_message">Momenteel kun je dit bestand niet bekijken. Je kunt wel kiezen voor ‘Bestand bewaren’ als je het wilt delen, opslaan of printen.</string>
 </resources>

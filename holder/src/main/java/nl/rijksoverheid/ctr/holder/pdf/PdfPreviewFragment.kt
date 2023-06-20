@@ -48,9 +48,9 @@ class PdfPreviewFragment : Fragment(R.layout.fragment_pdf_preview) {
                     navigateSafety(
                         PdfPreviewFragmentDirections.actionDialog(
                             data = DialogFragmentData(
-                                title = R.string.dialog_error_title,
-                                message = R.string.general_diskFull_body,
-                                positiveButtonData = DialogButtonData.NavigateUp(R.string.ok)
+                                title = R.string.holder_pdfExport_storageFull_errorDialog_title,
+                                message = R.string.holder_pdfExport_storageFull_errorDialog_message,
+                                positiveButtonData = DialogButtonData.NavigateUp(R.string.dialog_close)
                             )
                         )
                     )

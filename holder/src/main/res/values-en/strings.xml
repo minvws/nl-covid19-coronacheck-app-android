@@ -690,7 +690,7 @@
   <string name="holder_pdfExport_start_message">Create a file from your certificates that you can share, save on your phone or tablet, or print. This can be done until the end of this year (2023).</string>
   <string name="holder_pdfExport_start_buttonTitle">Create certificate</string>
   <string name="holder_pdfExport_success_title">Success!</string>
-  <string name="holder_pdfExport_success_message">You can share, save, send or print the file with your certificates below.</string>
+  <string name="holder_pdfExport_success_message">You can share, save or print the file with your certificates below.</string>
   <string name="holder_pdfExport_card_description">You can still save your certificates until the end of this year. Creating new certificates is no longer possible.</string>
   <string name="holder_menu_exportPDF">Save my certificates</string>
   <string name="holder_pdfExport_card_action">Save my certificates</string>
@@ -707,4 +707,6 @@
   <string name="holder_pdfExport_start_toolbar">Save certificate</string>
   <string name="holder_pdfExport_success_toolbar">File created</string>
   <string name="holder_pdfExport_error_body" formatted="false"><![CDATA[Something is going wrong while creating the file with your certificates.<br/><br/>Do you have questions about this? Please contact the helpdesk via <a href=\"tel:%s\">%s</a>and pass on the below error code.<br/><br/><b>Error code:</b><br />%s]]></string>
+  <string name="holder_pdfExport_storageFull_errorDialog_title">Not possible to preview file</string>
+  <string name="holder_pdfExport_storageFull_errorDialog_message">It’s currently not possible to preview this file. However, you can choose \'Save file\' if you want to share, save or print it.</string>
 </resources>
