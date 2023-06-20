@@ -50,7 +50,7 @@ class PdfPreviewFragment : Fragment(R.layout.fragment_pdf_preview) {
                             data = DialogFragmentData(
                                 title = R.string.dialog_error_title,
                                 message = R.string.general_diskFull_body,
-                                positiveButtonData = DialogButtonData.Dismiss(R.string.ok)
+                                positiveButtonData = DialogButtonData.NavigateUp(R.string.ok)
                             )
                         )
                     )

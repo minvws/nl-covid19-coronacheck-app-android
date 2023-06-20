@@ -69,6 +69,10 @@ class SharedDialogFragment : DialogFragment() {
                         }
 
                         is DialogButtonData.Dismiss -> {
+                            dialog.dismiss()
+                        }
+
+                        is DialogButtonData.NavigateUp -> {
                             findNavController().navigateUp()
                         }
                     }
