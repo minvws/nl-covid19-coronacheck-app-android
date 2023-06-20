@@ -29,6 +29,8 @@ import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofDomest
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofDomesticInputCodeUseCaseImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofDomesticUseCase
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.ValidatePaperProofDomesticUseCaseImpl
+import nl.rijksoverheid.ctr.holder.pdf.PreviewPdfUseCase
+import nl.rijksoverheid.ctr.holder.pdf.PreviewPdfUseCaseImpl
 import nl.rijksoverheid.ctr.holder.pdf.PrintExportDccUseCase
 import nl.rijksoverheid.ctr.holder.pdf.PrintExportDccUseCaseImpl
 import nl.rijksoverheid.ctr.holder.qrcodes.usecases.QrCodeUseCase
@@ -98,4 +100,5 @@ val eventsUseCasesModule = module {
     factory<DataMigrationImportUseCase> { DataMigrationImportUseCaseImpl(get(), get()) }
     factory<DataMigrationPayloadUseCase> { DataMigrationPayloadUseCaseImpl(get(), get()) }
     factory<PrintExportDccUseCase> { PrintExportDccUseCaseImpl(get(), get(), get()) }
+    factory<PreviewPdfUseCase> { PreviewPdfUseCaseImpl() }
 }

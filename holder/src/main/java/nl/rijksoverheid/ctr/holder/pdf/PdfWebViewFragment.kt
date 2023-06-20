@@ -39,7 +39,7 @@ class PdfWebViewFragment : BaseFragment(R.layout.fragment_pdf_webview) {
     private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
     override fun onButtonClickWithRetryAction() {
-        // no retry
+        // there is no action to retry in this screen
     }
 
     override fun getFlow(): Flow {

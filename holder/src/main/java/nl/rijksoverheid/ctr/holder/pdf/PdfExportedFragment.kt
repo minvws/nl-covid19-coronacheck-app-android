@@ -25,7 +25,11 @@ class PdfExportedFragment : Fragment(R.layout.fragment_pdf_exported) {
         val binding = FragmentPdfExportedBinding.bind(view)
 
         binding.previewPdfButton.setOnClickListener {
-            navigateSafety(PdfExportedFragmentDirections.actionPdfPreview())
+            navigateSafety(
+                PdfExportedFragmentDirections.actionPdfPreview(
+                    toolbarTitle = PdfWebViewFragment.pdfFileName
+                )
+            )
         }
 
         binding.savePdfButton.setOnClickListener {
