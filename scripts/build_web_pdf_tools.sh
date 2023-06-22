@@ -2,7 +2,7 @@
 
 set -eux
 
-commit_hash="1b03bb722b45970578854290a835e70069147257" # v4.1.5
+commit_hash="530e22f23d98dc41c1611b1ecfb18719e5ab2570" # v4.1.6
 destination_path="holder/src/main/res/raw/web_pdf_tools.js"
 temp_path="tmp-web-pdf-tools"
 
