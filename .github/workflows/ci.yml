@@ -6,6 +6,9 @@ on:
       - 'release/*'
   pull_request:
 
+env:
+  WEB_PDF_TOOLS_COMMIT_HASH: 530e22f23d98dc41c1611b1ecfb18719e5ab2570 # v4.1.6
+
 concurrency:
   group: build-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -24,6 +27,10 @@ jobs:
           path: |
             mobilecore/mobilecore.aar
           retention-days: 2
+      - name: Build pdf tools
+        uses: ./.github/actions/build-web-pdf-tools
+        with:
+          web_pdf_tools_commit_hash: ${{ env.WEB_PDF_TOOLS_COMMIT_HASH }}
       - name: Spotless
         run: ./gradlew spotlessCheck
       - name: Test

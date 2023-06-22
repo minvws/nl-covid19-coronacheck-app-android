@@ -1,0 +1,69 @@
+name: 'Build web pdf tools'
+description: 'Builds the web pdf tools'
+inputs:
+  web_pdf_tools_commit_hash:
+    type: string
+    required: true
+  node_version:
+    type: string
+    required: false
+    default: '16'
+  temp_path:
+    type: string
+    required: false
+    default: 'tmp-web-pdf-tools'
+  destination_path:
+    type: string
+    required: false
+    default: 'holder/src/main/res/raw/web_pdf_tools.js'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout web-pdf-tools
+      shell: bash
+      run: |
+        set -eux
+        git clone https://github.com/minvws/nl-covid19-coronacheck-web-pdf-tools.git "${{ inputs.temp_path }}"
+        cd "${{ inputs.temp_path }}"
+        git checkout ${{ inputs.web_pdf_tools_commit_hash }}
+
+    - name: Restore web-pdf-tools.js from cache
+      id: cachestep
+      uses: actions/cache@v3
+      with:
+        path: |
+          ${{ inputs.destination_path }}
+        key: web-pdf-tools-js-${{ inputs.web_pdf_tools_commit_hash }}-${{ inputs.node_version }}-v1
+
+    - name: "Setup node.js"
+      if: steps.cachestep.outputs.cache-hit != 'true'
+      uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # pin@v3
+      with:
+        node-version: ${{ inputs.node_version }}
+        cache: npm
+        cache-dependency-path: '${{ inputs.temp_path }}/package-lock.json'
+
+    - name: Compile web-pdf-tools.js
+      if: steps.cachestep.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        set -eux
+
+        pushd "${{ inputs.temp_path }}"
+        sed -i.bak 's/output: { file: pkg.main },/output: { file: pkg.main, format: "iife", name: "pdfTools" },/g' rollup.config.js
+        npm ci
+        npm run build
+        popd
+
+        rm -f "${{ inputs.destination_path }}"
+        cp "${{ inputs.temp_path }}/dist/index.js" "${{ inputs.destination_path }}"
+        rm -rf "${{ inputs.temp_path }}"
+
+    - name: Archive web-pdf-tools.js
+      uses: actions/upload-artifact@v3
+      with:
+        name: web-pdf-tools.js
+        path: |
+          ${{ inputs.destination_path }}
+        retention-days: 2
