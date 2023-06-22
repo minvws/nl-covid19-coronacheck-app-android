@@ -63,7 +63,7 @@ runs:
     - name: Archive web-pdf-tools.js
       uses: actions/upload-artifact@v3
       with:
-        name: web-pdf-tools.js
+        name: web_pdf_tools.js
         path: |
           ${{ inputs.destination_path }}
         retention-days: 2
