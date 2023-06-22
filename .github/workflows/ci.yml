@@ -27,10 +27,6 @@ jobs:
           path: |
             mobilecore/mobilecore.aar
           retention-days: 2
-      - name: Build pdf tools
-        uses: ./.github/actions/build-web-pdf-tools
-        with:
-          web_pdf_tools_commit_hash: ${{ env.WEB_PDF_TOOLS_COMMIT_HASH }}
       - name: Spotless
         run: ./gradlew spotlessCheck
       - name: Test
@@ -77,6 +73,10 @@ jobs:
         run: |
           version=$(( $GITHUB_RUN_NUMBER ))
           echo VERSION_NUMBER=$version >> $GITHUB_ENV
+      - name: Build pdf tools
+        uses: ./.github/actions/build-web-pdf-tools
+        with:
+          web_pdf_tools_commit_hash: ${{ env.WEB_PDF_TOOLS_COMMIT_HASH }}
       - name: Build
         run: ./gradlew :holder:assemTstRelease :holder:assemAccRelease :holder:assemProdRelease :holder:bundleProdRelease
       - name: Build fdroid
