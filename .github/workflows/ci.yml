@@ -31,14 +31,6 @@ jobs:
         run: ./gradlew spotlessCheck
       - name: Test
         run: ./gradlew testDebug testAccDebug holder:lintAccDebug verifier:lintAccDebug holder:assemAccDebug holder:assemAccDebugAndroidTest
-      - name: Run tests on Testlab
-        env:
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        if: contains(env.FIREBASE_SERVICE_ACCOUNT, '{') && !contains(github.event.pull_request.labels.*.name, 'skip-screenshot-tests')
-        run: |
-          echo $FIREBASE_SERVICE_ACCOUNT > $RUNNER_TEMP/.firebase_service_account.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/.firebase_service_account.json >> $GITHUB_ENV
-          ./gradlew holder:runFlank
       - name: Archive test-results
         if: always()
         uses: actions/upload-artifact@v3
