@@ -6,6 +6,9 @@ on:
       - 'release/*'
   pull_request:
 
+env:
+  WEB_PDF_TOOLS_COMMIT_HASH: 530e22f23d98dc41c1611b1ecfb18719e5ab2570 # v4.1.6
+
 concurrency:
   group: build-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -70,6 +73,10 @@ jobs:
         run: |
           version=$(( $GITHUB_RUN_NUMBER ))
           echo VERSION_NUMBER=$version >> $GITHUB_ENV
+      - name: Build pdf tools
+        uses: ./.github/actions/build-web-pdf-tools
+        with:
+          web_pdf_tools_commit_hash: ${{ env.WEB_PDF_TOOLS_COMMIT_HASH }}
       - name: Build
         run: ./gradlew :holder:assemTstRelease :holder:assemAccRelease :holder:assemProdRelease :holder:bundleProdRelease
       - name: Build fdroid
