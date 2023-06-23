@@ -5,3 +5,6 @@ local.properties
 .gradle
 keystore.jks
 *.li
+holder/src/main/res/raw/web_pdf_tools.js
+/tmp-web-pdf-tools
+/tmp

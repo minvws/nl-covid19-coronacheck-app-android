@@ -24,27 +24,22 @@ class GetPaperProofTypeUseCaseImpl(
 ) : GetPaperProofTypeUseCase {
     override suspend fun get(qrContent: String): PaperProofType {
         return withContext(Dispatchers.IO) {
-            if (mobileCoreWrapper.isDcc(qrContent.toByteArray())) {
-                val isForeign = mobileCoreWrapper.isForeignDcc(qrContent.toByteArray())
-                val event = getEventsFromPaperProofQrUseCase.get(qrContent)
+            val isForeign = mobileCoreWrapper.isForeignDcc(qrContent.toByteArray())
+            val event = try {
+                getEventsFromPaperProofQrUseCase.get(qrContent)
+            } catch (exception: Exception) {
+                return@withContext PaperProofType.Unknown
+            }
 
-                if (isForeign) {
-                    PaperProofType.DCC.Foreign(
-                        remoteProtocol = event,
-                        eventGroupJsonData = paperProofUtil.getEventGroupJsonData(qrContent = qrContent)
-                    )
-                } else {
-                    PaperProofType.DCC.Dutch(
-                        qrContent = qrContent
-                    )
-                }
+            if (isForeign) {
+                PaperProofType.DCC.Foreign(
+                    remoteProtocol = event,
+                    eventGroupJsonData = paperProofUtil.getEventGroupJsonData(qrContent = qrContent)
+                )
             } else {
-                val hasDomesticPrefix = mobileCoreWrapper.hasDomesticPrefix(qrContent.toByteArray())
-                if (hasDomesticPrefix) {
-                    PaperProofType.CTB
-                } else {
-                    PaperProofType.Unknown
-                }
+                PaperProofType.DCC.Dutch(
+                    qrContent = qrContent
+                )
             }
         }
     }

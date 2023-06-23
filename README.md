@@ -182,11 +182,17 @@ Dependencies management is handled with [Gradle's Version Catalog](https://docs.
 
 ### In house dependencies
 
-#### CLCore
+#### MobileCore
 
 The Android and iOS apps share a [core library](https://github.com/minvws/nl-covid19-coronacheck-mobile-core), written in Go, which is responsible for producing the QR-code image, and for validating scanned QR-codes. Build its .aar according to the [instructions](/mobilecore).
 
 The library is also built by the [project's GitHub actions workflow](/.github/workflows/ci.yml), to be transparent it is used uncompromised
+
+#### Web PDF Tools
+
+To export the certificates to PDF, we reuse the [web pdf tools library](https://github.com/minvws/nl-covid19-coronacheck-web-pdf-tools) from the CoronaCheck website.
+
+`scripts/build_web_pdf_tools.sh` builds, compacts and saves that library.
 
 #### RDO modules
 
@@ -206,6 +212,11 @@ Steps to add them:
 2. `git submodule update`
 3. Install the latest [go](https://go.dev/doc/install)
 4. `./gradlew :mobilecore:buildCore`
+
+Moreover, again like mentioned before, the project is dependent on javascript file to generate PDFs. Execute the `build_web_pdf_tools.sh` in scripts
+folder to build it from its repo. Execute the following command from the root of the project:
+`sh scripts/build_web_pdf_tools.sh`
+(npm installed is required)
 
 ### Project structure
 

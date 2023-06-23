@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.Space
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import java.time.Clock
 import java.time.Instant
 import java.util.concurrent.TimeUnit
@@ -21,17 +22,13 @@ import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.dashboard.util.CredentialUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginState
-import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.GreenCardType
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.ext.capitalize
 import nl.rijksoverheid.ctr.shared.ext.locale
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -54,8 +51,6 @@ class DashboardGreenCardAdapterItemUtilImpl(
     private val dashboardGreenCardAdapterItemExpiryUtil: DashboardGreenCardAdapterItemExpiryUtil
 ) : DashboardGreenCardAdapterItemUtil, KoinComponent {
 
-    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
-
     override fun setContent(
         dashboardGreenCardAdapterItemBinding: DashboardGreenCardAdapterItemBindingWrapper,
         cards: List<AdapterCard>
@@ -69,89 +64,35 @@ class DashboardGreenCardAdapterItemUtilImpl(
                     val origin = originState.origin
                     when (origin.type) {
                         is OriginType.Test -> {
-                            when (featureFlagUseCase.getDisclosurePolicy()) {
-                                is DisclosurePolicy.ZeroG -> {
-                                    dashboardGreenCardAdapterItemBinding.title.text =
-                                        context.getString(R.string.general_testcertificate_0G).capitalize()
-                                }
-                                else -> {
-                                    dashboardGreenCardAdapterItemBinding.title.text =
-                                        context.getString(R.string.general_testcertificate).capitalize()
-                                }
-                            }
+                            dashboardGreenCardAdapterItemBinding.title.text =
+                                context.getString(R.string.general_testcertificate_0G).capitalize()
                             setEuTestOrigin(
                                 dashboardGreenCardAdapterItemBinding, it, originState, origin
                             )
                             setExpiryText(origin, dashboardGreenCardAdapterItemBinding)
                         }
+
                         is OriginType.Vaccination -> {
-                            when (featureFlagUseCase.getDisclosurePolicy()) {
-                                is DisclosurePolicy.ZeroG -> {
-                                    dashboardGreenCardAdapterItemBinding.title.text =
-                                        context.getString(R.string.general_vaccinationcertificate_0G).capitalize()
-                                }
-                                else -> {
-                                    dashboardGreenCardAdapterItemBinding.title.text =
-                                        context.getString(R.string.general_vaccinationcertificate).capitalize()
-                                }
-                            }
+                            dashboardGreenCardAdapterItemBinding.title.text =
+                                context.getString(R.string.general_vaccinationcertificate_0G)
+                                    .capitalize()
                             setEuVaccinationOrigin(
                                 dashboardGreenCardAdapterItemBinding, it, origin
                             )
                             setExpiryText(origin, dashboardGreenCardAdapterItemBinding)
                         }
+
                         is OriginType.Recovery -> {
-                            when (featureFlagUseCase.getDisclosurePolicy()) {
-                                is DisclosurePolicy.ZeroG -> {
-                                    dashboardGreenCardAdapterItemBinding.title.text =
-                                        context.getString(R.string.general_recoverycertificate_0G).capitalize()
-                                }
-                                else -> {
-                                    dashboardGreenCardAdapterItemBinding.title.text =
-                                        context.getString(R.string.general_recoverycertificate).capitalize()
-                                }
-                            }
-                            setEuRecoveryOrigin(dashboardGreenCardAdapterItemBinding, originState, origin)
+                            dashboardGreenCardAdapterItemBinding.title.text =
+                                context.getString(R.string.general_recoverycertificate_0G)
+                                    .capitalize()
+                            setEuRecoveryOrigin(
+                                dashboardGreenCardAdapterItemBinding,
+                                originState,
+                                origin
+                            )
                             setExpiryText(origin, dashboardGreenCardAdapterItemBinding)
                         }
-                        is OriginType.VaccinationAssessment -> {
-                            // Visitor pass is only for domestic
-                        }
-                    }
-                }
-                is GreenCardType.Domestic -> {
-                    when (card.disclosurePolicy) {
-                        is GreenCardDisclosurePolicy.ThreeG -> {
-                            dashboardGreenCardAdapterItemBinding.title.text = context.getString(R.string.holder_dashboard_domesticQRCard_3G_title)
-                            dashboardGreenCardAdapterItemBinding.policyLabel.text = context.getString(R.string.holder_dashboard_domesticQRCard_3G_label)
-                        }
-                        is GreenCardDisclosurePolicy.OneG -> {
-                            dashboardGreenCardAdapterItemBinding.title.text = context.getString(R.string.holder_dashboard_domesticQRCard_1G_title)
-                            dashboardGreenCardAdapterItemBinding.policyLabel.text = context.getString(R.string.holder_dashboard_domesticQRCard_1G_label)
-                        }
-                    }
-                    card.originStates
-                        .sortedBy { state -> state.origin.type.order }
-                        .forEach { originState ->
-                            val origin = originState.origin
-                            when (origin.type) {
-                                is OriginType.Vaccination -> setDomesticVaccinationOrigin(
-                                    dashboardGreenCardAdapterItemBinding, originState, origin
-                                )
-                                is OriginType.Recovery -> setDomesticRecoveryOrigin(
-                                    dashboardGreenCardAdapterItemBinding, originState, origin
-                                )
-                                is OriginType.Test -> setDomesticTestOrigin(
-                                    dashboardGreenCardAdapterItemBinding, originState, origin
-                                )
-                                is OriginType.VaccinationAssessment -> setDomesticVaccinationAssessmentOrigin(
-                                    dashboardGreenCardAdapterItemBinding, originState, origin
-                                )
-                            }
-                        }
-                    // When there is only 1 valid origin set potential expiry countdown
-                    dashboardGreenCardAdapterItemExpiryUtil.getLastValidOrigin(it.origins)?.let {
-                        setExpiryText(it, dashboardGreenCardAdapterItemBinding)
                     }
                 }
             }
@@ -162,82 +103,9 @@ class DashboardGreenCardAdapterItemUtilImpl(
             originStates.size == 1 && originStates.first() is OriginState.Future
         if (becomesValidAutomatically) {
             dashboardGreenCardAdapterItemBinding.expiresIn.visibility = View.VISIBLE
-            dashboardGreenCardAdapterItemBinding.expiresIn.text = context.getString(R.string.qr_card_validity_future)
+            dashboardGreenCardAdapterItemBinding.expiresIn.text =
+                context.getString(R.string.qr_card_validity_future)
         }
-    }
-
-    private fun setDomesticTestOrigin(
-        dashboardGreenCardAdapterItemBinding: DashboardGreenCardAdapterItemBindingWrapper,
-        originState: OriginState,
-        origin: OriginEntity
-    ) {
-        setOriginTitle(
-            descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-            title = context.getString(R.string.qr_card_test_domestic)
-        )
-
-        setOriginSubtitle(
-            descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-            originState = originState,
-            showTime = false,
-            subtitle = context.getString(R.string.qr_card_validity_valid,
-                origin.expirationTime.formatDateTime(context)
-            )
-        )
-    }
-
-    private fun setDomesticVaccinationOrigin(
-        dashboardGreenCardAdapterItemBinding: DashboardGreenCardAdapterItemBindingWrapper,
-        originState: OriginState,
-        origin: OriginEntity
-    ) {
-        if (origin.doseNumber == null) {
-            setOriginTitle(
-                descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-                title = context.getString(R.string.qr_card_vaccination_title_domestic)
-            )
-        } else {
-            when (origin.doseNumber) {
-                1 -> {
-                    setOriginTitle(
-                        descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-                        title = context.getString(
-                            R.string.qr_card_vaccination_title_domestic_with_dosis,
-                            origin.doseNumber.toString()
-                        )
-                    )
-                }
-                else -> {
-                    setOriginTitle(
-                        descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-                        title = context.getString(
-                            R.string.qr_card_vaccination_title_domestic_with_doses,
-                            origin.doseNumber.toString()
-                        )
-                    )
-                }
-            }
-        }
-
-        val subtitle = if (originExpirationTimeThreeYearsFromNow(originState.origin)) {
-            context.getString(
-                R.string.qr_card_validity_future_from,
-                origin.validFrom.toLocalDate().formatDayMonthYear(),
-                ""
-            )
-        } else {
-            context.getString(
-                R.string.qr_card_validity_valid,
-                origin.expirationTime.toLocalDate().formatDayMonthYear()
-            )
-        }
-
-        setOriginSubtitle(
-            descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-            originState = originState,
-            showTime = true,
-            subtitle = subtitle
-        )
     }
 
     /**
@@ -251,60 +119,20 @@ class DashboardGreenCardAdapterItemUtilImpl(
         return expirationYearsFromNow >= 3
     }
 
-    private fun setDomesticRecoveryOrigin(
-        dashboardGreenCardAdapterItemBinding: DashboardGreenCardAdapterItemBindingWrapper,
-        originState: OriginState,
-        origin: OriginEntity
-    ) {
-        setOriginTitle(
-            descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-            title = context.getString(R.string.qr_card_recovery_title_domestic)
-        )
-
-        setOriginSubtitle(
-            descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-            originState = originState,
-            showTime = true,
-            subtitle = context.getString(
-                R.string.qr_card_validity_valid,
-                origin.expirationTime.toLocalDate().formatDayMonthYear()
-            )
-        )
-    }
-
-    private fun setDomesticVaccinationAssessmentOrigin(
-        dashboardGreenCardAdapterItemBinding: DashboardGreenCardAdapterItemBindingWrapper,
-        originState: OriginState,
-        origin: OriginEntity
-    ) {
-        setOriginTitle(
-            descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-            title = "${context.getString(R.string.general_visitorPass).capitalize()}:"
-        )
-
-        setOriginSubtitle(
-            descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
-            originState = originState,
-            showTime = false,
-            subtitle = context.getString(
-                R.string.qr_card_validity_valid,
-                origin.expirationTime.formatDateTime(context)
-            )
-        )
-    }
-
     private fun setEuRecoveryOrigin(
         dashboardGreenCardAdapterItemBinding: DashboardGreenCardAdapterItemBindingWrapper,
         originState: OriginState,
         origin: OriginEntity
     ) {
         // EU recovery description has no title so we put only the space in between for correct alignment
-        dashboardGreenCardAdapterItemBinding.description.addView(
-            Space(context), LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                context.resources.getDimensionPixelSize(R.dimen.green_card_item_proof_spacing)
+        if (originState !is OriginState.Expired) {
+            dashboardGreenCardAdapterItemBinding.description.addView(
+                Space(context), LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    context.resources.getDimensionPixelSize(R.dimen.green_card_item_proof_spacing)
+                )
             )
-        )
+        }
         setOriginSubtitle(
             descriptionLayout = dashboardGreenCardAdapterItemBinding.description,
             originState = originState,
@@ -438,10 +266,12 @@ class DashboardGreenCardAdapterItemUtilImpl(
                 )
                 textView.visibility = View.VISIBLE
             }
+
             is OriginState.Valid -> {
                 textView.text = subtitle
                 textView.visibility = View.VISIBLE
             }
+
             is OriginState.Expired -> {
                 // Should be filtered out and never reach here
             }
@@ -457,14 +287,27 @@ class DashboardGreenCardAdapterItemUtilImpl(
         val expireCountDownResult = dashboardGreenCardAdapterItemExpiryUtil.getExpireCountdown(
             origin.expirationTime, origin.type
         )
-        if (expireCountDownResult is DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show) {
-            dashboardGreenCardAdapterItemBinding.expiresIn.visibility = View.VISIBLE
-            dashboardGreenCardAdapterItemBinding.expiresIn.text =
-                dashboardGreenCardAdapterItemExpiryUtil.getExpiryText(
-                    expireCountDownResult
-                )
-        } else {
-            dashboardGreenCardAdapterItemBinding.expiresIn.visibility = View.GONE
+        when (expireCountDownResult) {
+            is DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.Show -> {
+                dashboardGreenCardAdapterItemBinding.expiresIn.visibility = View.VISIBLE
+                dashboardGreenCardAdapterItemBinding.expiresIn.text =
+                    dashboardGreenCardAdapterItemExpiryUtil.getExpiryText(
+                        expireCountDownResult
+                    )
+            }
+
+            is DashboardGreenCardAdapterItemExpiryUtil.ExpireCountDown.ShowExpired -> {
+                dashboardGreenCardAdapterItemBinding.expiresIn.visibility = View.VISIBLE
+                val context = dashboardGreenCardAdapterItemBinding.expiresIn.context
+                val expiredInText = context.getString(R.string.holder_dashboard_qrValidityDate_expired)
+                dashboardGreenCardAdapterItemBinding.expiresIn.setTextColor(ContextCompat.getColor(context, R.color.error))
+
+                dashboardGreenCardAdapterItemBinding.expiresIn.text = "$expiredInText ${expireCountDownResult.date}"
+            }
+
+            else -> {
+                dashboardGreenCardAdapterItemBinding.expiresIn.visibility = View.GONE
+            }
         }
     }
 }

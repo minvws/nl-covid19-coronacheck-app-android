@@ -32,9 +32,6 @@ class QrCodeProcessorImpl : QrCodeProcessor {
                 .addOnSuccessListener { barcodes ->
                     barcodes.firstOrNull()?.rawValue?.let {
                         qrCodeProcessed.invoke(it)
-                        cameraProvider.unbindAll()
-                        binding.toolbar.menu.findItem(R.id.flash)
-                            .setIcon(R.drawable.ic_torch)
                     }
                 }
                 .addOnFailureListener {

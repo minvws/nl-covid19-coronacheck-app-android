@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import nl.rijksoverheid.ctr.introduction.R
 import nl.rijksoverheid.ctr.introduction.databinding.FragmentOnboardingItemBinding
+import nl.rijksoverheid.ctr.introduction.onboarding.OnboardingPagerAdapter.Companion.EXTRA_ONBOARDING_ITEM
 import nl.rijksoverheid.ctr.introduction.onboarding.models.OnboardingItem
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
@@ -19,19 +20,6 @@ import org.koin.android.ext.android.inject
  *
  */
 class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
-
-    companion object {
-        private const val EXTRA_ONBOARDING_ITEM = "EXTRA_ONBOARDING_ITEM"
-
-        fun getInstance(onboardingItem: OnboardingItem): OnboardingItemFragment {
-            val fragment =
-                OnboardingItemFragment()
-            val bundle = Bundle()
-            bundle.putParcelable(EXTRA_ONBOARDING_ITEM, onboardingItem)
-            fragment.arguments = bundle
-            return fragment
-        }
-    }
 
     private val androidUtil: AndroidUtil by inject()
 
@@ -53,7 +41,7 @@ class OnboardingItemFragment : Fragment(R.layout.fragment_onboarding_item) {
         if (item.position >= 0) {
             binding.step.apply {
                 visibility = View.VISIBLE
-                text = getString(R.string.onboarding_step, item.position)
+                text = getString(R.string.holder_startMigration_onboarding_step, item.position)
             }
         }
 

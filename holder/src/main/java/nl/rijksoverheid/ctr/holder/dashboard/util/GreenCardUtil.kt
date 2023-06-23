@@ -16,7 +16,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginHintEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 interface GreenCardUtil {
     suspend fun getAllGreenCards(): List<GreenCard>
@@ -40,13 +39,6 @@ interface GreenCardUtil {
 
     fun hasNoActiveCredentials(greenCard: GreenCard, ignoreExpiredEuCredentials: Boolean = true): Boolean
 
-    /**
-     * When in 1G or 1G/3G [DisclosurePolicy] mode, this returns true if we are dealing with
-     * a green card that was splitted to represent a single green card that has a test origin
-     * @param greenCard The greencard to check
-     */
-    fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean
-
     fun isEventFromDcc(greenCard: GreenCard, hints: List<OriginHintEntity>): Boolean
 }
 
@@ -67,7 +59,6 @@ class GreenCardUtilImpl(
 
     override fun getErrorCorrectionLevel(greenCardType: GreenCardType): ErrorCorrectionLevel {
         return when (greenCardType) {
-            is GreenCardType.Domestic -> ErrorCorrectionLevel.M
             is GreenCardType.Eu -> ErrorCorrectionLevel.Q
         }
     }
@@ -97,16 +88,8 @@ class GreenCardUtilImpl(
         return credentialUtil.getActiveCredential(greenCard.greenCardEntity.type, greenCard.credentialEntities, ignoreExpiredEuCredentials) == null
     }
 
-    override fun isDomesticTestGreenCard(greenCard: GreenCard): Boolean {
-        return greenCard.greenCardEntity.type == GreenCardType.Domestic &&
-                greenCard.origins.size == 1 && hasOrigin(listOf(greenCard), OriginType.Test)
-    }
-
     override fun isEventFromDcc(greenCard: GreenCard, hints: List<OriginHintEntity>): Boolean {
         return when (greenCard.greenCardEntity.type) {
-            is GreenCardType.Domestic -> {
-                false
-            }
             is GreenCardType.Eu -> {
                 val eventFromDccHintOriginIds = hints.map { it.originId }
                 val greenCardOriginIds = greenCard.origins.map { it.id.toLong() }

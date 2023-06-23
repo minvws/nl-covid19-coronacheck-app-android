@@ -10,6 +10,7 @@ package nl.rijksoverheid.ctr.holder.qrcodes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.ViewQrCodeBinding
@@ -56,8 +57,8 @@ class QrCodePagerAdapter(private val onOverlayExplanationClick: (QrCodeViewHolde
     private fun isQrCodeHidden(data: QrCodeData): QrCodeViewHolder.QrCodeVisibility {
         val vaccinationData = data as? QrCodeData.European.Vaccination
         return when {
+            (data as? QrCodeData.European)?.isExpired == true -> QrCodeViewHolder.QrCodeVisibility.EXPIRED
             vaccinationData?.isDoseNumberSmallerThanTotalDose == true -> QrCodeViewHolder.QrCodeVisibility.HIDDEN
-            vaccinationData?.isExpired == true -> QrCodeViewHolder.QrCodeVisibility.EXPIRED
             else -> QrCodeViewHolder.QrCodeVisibility.VISIBLE
         }
     }
@@ -109,8 +110,13 @@ class QrCodeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         binding.overlayShowQrButton.setOnClickListener {
             onOverlayButtonClick.invoke()
         }
-        binding.overlayButton.setOnClickListener {
-            onOverlayExplanationClick.invoke(qrCodeVisibility)
+
+        if (qrCodeData is QrCodeData.European.NonVaccination && !qrCodeData.explanationNeeded) {
+            binding.overlayButton.isVisible = false
+        } else {
+            binding.overlayButton.setOnClickListener {
+                onOverlayExplanationClick.invoke(qrCodeVisibility)
+            }
         }
 
         // using View.INVISIBLE instead View.GONE cause the latter breaks

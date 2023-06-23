@@ -5,14 +5,13 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.shot)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.fladle)
 }
 
 def appVersionCode = 1000000
 if (System.getenv("GITHUB_REPOSITORY_OWNER") == "minvws") {
     appVersionCode = System.getenv("VERSION_NUMBER") != null ? System.getenv("VERSION_NUMBER").toInteger() : 1000000
 }
-version = "4.12"
+version = "5.0"
 archivesBaseName = "holder-v${version}-${appVersionCode}"
 
 android {
@@ -165,40 +164,6 @@ android {
     packagingOptions {
         exclude "META-INF/LICENSE**"
         pickFirst "MANIFEST.MF"
-    }
-
-    def end2endPassword = project.ext.has("android.testInstrumentationRunnerArguments.authPassword") ? project.ext.getProperty("android.testInstrumentationRunnerArguments.authPassword") : ""
-    fladle {
-        projectId = "coronatester-test"
-        variant = "accDebug"
-        maxTestShards = 1
-        testTargets = ["notPackage nl.rijksoverheid.ctr.holder.end2end"]
-        devices = [
-                ["model": "Pixel2.arm", "version": "29"]
-        ]
-        configs {
-            end2end {
-                resultsHistoryName.set("end2end")
-                testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
-                environmentVariables.set(["authPassword": end2endPassword, "clearPackageData": "true"])
-                devices.set([
-                        ["model": "panther", "version": "33", "locale": "nl"],
-                        ["model": "Nexus5", "version": "23", "locale": "nl"],
-                        ["model": "Nexus5X", "version": "24", "locale": "nl"],
-                        ["model": "Nexus6P", "version": "25", "locale": "nl"],
-                ])
-            }
-            onDemand {
-                resultsHistoryName.set("UI Tests on demand")
-                testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
-                testTargets.set(["annotation nl.rijksoverheid.ctr.holder.end2end.utils.RunFirebaseTestOnDemand"])
-                environmentVariables.set(["authPassword": end2endPassword, "clearPackageData": "true"])
-                devices.set([
-                        ["model": "panther", "version": "33", "locale": "nl"],
-                ])
-            }
-        }
-        flankVersion = "22.05.0"
     }
 }
 

@@ -36,7 +36,6 @@ val sharedModule = module {
         )
     }
     factory<WebsiteEnvironmentUtil> { WebsiteEnvironmentUtilImpl(androidContext()) }
-    factory<DebugDisclosurePolicyPersistenceManager> { DebugDisclosurePolicyPersistenceManagerImpl(get()) }
 }
 
 fun isHolderApp(applicationContext: Context): Boolean =

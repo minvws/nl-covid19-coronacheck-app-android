@@ -6,14 +6,10 @@ import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.GetDashboardItemsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.SortGreenCardItemsUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.SortGreenCardItemsUseCaseImpl
-import nl.rijksoverheid.ctr.holder.dashboard.usecases.SplitDomesticGreenCardsUseCase
-import nl.rijksoverheid.ctr.holder.dashboard.usecases.SplitDomesticGreenCardsUseCaseImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCase
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetDccFromEuropeanCredentialUseCaseImpl
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetPaperProofTypeUseCase
 import nl.rijksoverheid.ctr.holder.paper_proof.usecases.GetPaperProofTypeUseCaseImpl
-import nl.rijksoverheid.ctr.persistence.database.usecases.CreateDomesticGreenCardUseCase
-import nl.rijksoverheid.ctr.persistence.database.usecases.CreateDomesticGreenCardUseCaseImpl
 import nl.rijksoverheid.ctr.persistence.database.usecases.CreateEuGreenCardUseCase
 import nl.rijksoverheid.ctr.persistence.database.usecases.CreateEuGreenCardUseCaseImpl
 import nl.rijksoverheid.ctr.persistence.database.usecases.GetRemoteGreenCardsUseCase
@@ -36,25 +32,19 @@ val greenCardUseCasesModule = module {
         GetRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }
     factory<SyncRemoteGreenCardsUseCase> {
-        SyncRemoteGreenCardsUseCaseImpl(get(), get(), get(), get())
-    }
-    factory<CreateDomesticGreenCardUseCase> {
-        CreateDomesticGreenCardUseCaseImpl(get())
+        SyncRemoteGreenCardsUseCaseImpl(get(), get(), get())
     }
     factory<CreateEuGreenCardUseCase> {
         CreateEuGreenCardUseCaseImpl(get(), get())
     }
     factory<GetDashboardItemsUseCase> {
-        GetDashboardItemsUseCaseImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
-    }
-    factory<SplitDomesticGreenCardsUseCase> {
-        SplitDomesticGreenCardsUseCaseImpl(get(), get())
+        GetDashboardItemsUseCaseImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
     factory<SortGreenCardItemsUseCase> {
         SortGreenCardItemsUseCaseImpl(get(), get())
     }
     factory<RemoveExpiredGreenCardsUseCase> {
-        RemoveExpiredGreenCardsUseCaseImpl(get())
+        RemoveExpiredGreenCardsUseCaseImpl(get(), get())
     }
     factory<GetPaperProofTypeUseCase> {
         GetPaperProofTypeUseCaseImpl(get(), get(), get())

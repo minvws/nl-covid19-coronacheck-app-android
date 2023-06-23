@@ -31,12 +31,6 @@ class QrCodeUtilImplTest : AutoCloseKoinTest() {
         val qrCodeUtil = QrCodeUtilImpl()
 
         qrContents.forEach {
-            val domesticBitmap = qrCodeUtil.createQrCode(
-                qrCodeContent = it,
-                width = width,
-                height = width,
-                errorCorrectionLevel = ErrorCorrectionLevel.M
-            )
 
             val euBitmap = qrCodeUtil.createQrCode(
                 qrCodeContent = it,
@@ -45,7 +39,6 @@ class QrCodeUtilImplTest : AutoCloseKoinTest() {
                 errorCorrectionLevel = ErrorCorrectionLevel.Q
             )
 
-            assertEquals(width, domesticBitmap.width)
             assertEquals(width, euBitmap.width)
         }
     }

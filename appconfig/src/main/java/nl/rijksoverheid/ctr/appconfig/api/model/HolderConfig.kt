@@ -2,7 +2,8 @@ package nl.rijksoverheid.ctr.appconfig.api.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -48,12 +49,14 @@ data class HolderConfig(
     @Json(name = "configAlmostOutOfDateWarningSeconds") val holderConfigAlmostOutOfDateWarningSeconds: Int,
     @Json(name = "showNewValidityInfoCard") val showNewValidityInfoCard: Boolean,
     @Json(name = "androidEnableVerificationPolicyVersion") val holderEnableVerificationPolicyVersion: Int,
-    @Json(name = "visitorPassEnabled") val visitorPassEnabled: Boolean,
-    @Json(name = "vaccinationAssessmentEventValidityDays") val vaccinationAssessmentEventValidityDays: Int,
     @Json(name = "mijnCnEnabled") val mijnCnEnabled: Boolean,
-    @Json(name = "disclosurePolicies") val disclosurePolicy: DisclosurePolicy,
     @Json(name = "backendTLSCertificates") val backendTLSCertificates: List<String>,
     @Json(name = "papEnabled") val papEnabled: Boolean,
+    @Json(name = "priorityNotification") val priorityNotification: String?,
+    @Json(name = "addEventsButtonEnabled") val addEventsButtonEnabled: Boolean?,
+    @Json(name = "scanCertificateButtonEnabled") val scanCertificateButtonEnabled: Boolean?,
+    @Json(name = "migrateButtonEnabled") val migrateButtonEnabled: Boolean?,
+    @Json(name = "archiveOnlyDate") val archiveOnlyDate: OffsetDateTime?,
     @Json(name = "contactInformation") val contactInformation: ContactInformation
 ) : AppConfig(
     holderAppDeactivated,
@@ -105,10 +108,7 @@ data class HolderConfig(
             internationalQRRelevancyDays: Int = 28,
             holderConfigAlmostOutOfDateWarningSeconds: Int = 300,
             showNewValidityInfoCard: Boolean = false,
-            visitorPassEnabled: Boolean = false,
-            vaccinationAssessmentEventValidityDays: Int = 14,
             mijnCnEnabled: Boolean = false,
-            disclosurePolicy: DisclosurePolicy = DisclosurePolicy.ThreeG,
             backendTLSCertificates: List<String> = listOf()
         ) = HolderConfig(
             holderMinimumVersion = holderMinimumVersion,
@@ -146,12 +146,14 @@ data class HolderConfig(
             holderConfigAlmostOutOfDateWarningSeconds = holderConfigAlmostOutOfDateWarningSeconds,
             showNewValidityInfoCard = showNewValidityInfoCard,
             holderEnableVerificationPolicyVersion = 0,
-            visitorPassEnabled = visitorPassEnabled,
-            vaccinationAssessmentEventValidityDays = vaccinationAssessmentEventValidityDays,
             mijnCnEnabled = mijnCnEnabled,
-            disclosurePolicy = disclosurePolicy,
             backendTLSCertificates = backendTLSCertificates,
             papEnabled = false,
+            priorityNotification = "",
+            addEventsButtonEnabled = false,
+            scanCertificateButtonEnabled = false,
+            migrateButtonEnabled = false,
+            archiveOnlyDate = OffsetDateTime.parse("2023-07-01T23:00:00Z", DateTimeFormatter.ISO_OFFSET_DATE_TIME),
             contactInformation =
             ContactInformation("0800-1421", "+31 70 750 37 20", 1, "08:00", 7, "18:00")
         )

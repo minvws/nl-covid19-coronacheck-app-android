@@ -15,7 +15,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
 import nl.rijksoverheid.ctr.holder.saved_events.SavedEvents
 import nl.rijksoverheid.ctr.holder.your_events.utils.EventGroupEntityUtil
@@ -106,13 +105,6 @@ class GetSavedEventsUseCaseImpl(
                                     birthDate = birthDate,
                                     europeanCredential = europeanCredential,
                                     addExplanation = false
-                                )
-                            }
-                            is RemoteEventVaccinationAssessment -> {
-                                infoScreenUtil.getForVaccinationAssessment(
-                                    event = remoteEvent,
-                                    fullName = fullName,
-                                    birthDate = birthDate
                                 )
                             }
                             else -> {

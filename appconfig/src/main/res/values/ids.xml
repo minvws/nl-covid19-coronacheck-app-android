@@ -30,4 +30,8 @@
     <item name="appstatus_launchError_title" type="string" />
     <item name="appstatus_launchError_body" type="string" />
     <item name="appstatus_launchError_button" type="string" />
+    <item name="holder_archiveMode_title" type="string" />
+    <item name="holder_archiveMode_description" type="string" />
+    <item name="holder_archiveMode_button" type="string" />
+    <item name="holder_archiveMode_link" type="string" />
 </resources>

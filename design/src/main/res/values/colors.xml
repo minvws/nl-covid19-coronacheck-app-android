@@ -49,4 +49,6 @@
     <color name="html_secondary_text">@color/secondary_text</color>
     <color name="hidden_qr_eye_icon">@color/black</color>
     <color name="hidden_qr_eye_icon_line">@color/white</color>
+    <color name="drawable_background">#DCEEFD</color>
+    <color name="export_pdf_info_item_background">@color/blue_5_percent</color>
 </resources>

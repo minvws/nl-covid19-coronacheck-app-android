@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type = "text/javascript" src = "web_pdf_tools.js"></script>
+        <script>
+			function generatePdf(holderConfig, vaccination) {
+			    let proofs = pdfTools.parseProofData(vaccination, holderConfig, 'nl');
+                let options = {
+                    proofs,
+                    locale: 'en',
+                    qrSizeInCm: 8,
+                    createdAt: new Date(),
+                    internationalProofScanned: false,
+                };
+
+                pdfTools.getDocument(options).then( function(doc) {
+                    android.onData(doc.output('datauristring'));
+                }).catch( function(err) {
+                    console.error('Could not retrieve document:', err)
+                    android.onData(err);
+                });
+			}
+
+        </script>
+    </head>
+    <body>
+        <div id="page"></div>
+    </body>
+</html>

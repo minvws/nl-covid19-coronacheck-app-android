@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2023 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
+ *
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 package nl.rijksoverheid.ctr.shared.factories
 
 import android.content.ActivityNotFoundException
@@ -12,9 +19,19 @@ import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.SSLKeyException
 import javax.net.ssl.SSLPeerUnverifiedException
 import javax.net.ssl.SSLProtocolException
+import nl.rijksoverheid.ctr.shared.exceptions.AppConfigMissingException
 import nl.rijksoverheid.ctr.shared.exceptions.CreateCommitmentMessageException
+import nl.rijksoverheid.ctr.shared.exceptions.CreatePdfException
+import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationCompressionException
+import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationDecodingErrorException
+import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationInvalidNumberOfPackagesException
+import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationInvalidVersionException
+import nl.rijksoverheid.ctr.shared.exceptions.DataMigrationOtherException
+import nl.rijksoverheid.ctr.shared.exceptions.LoadFileException
+import nl.rijksoverheid.ctr.shared.exceptions.NoDccException
 import nl.rijksoverheid.ctr.shared.exceptions.NoProvidersException
 import nl.rijksoverheid.ctr.shared.exceptions.OpenIdAuthorizationException
+import nl.rijksoverheid.ctr.shared.exceptions.StorePdfException
 import nl.rijksoverheid.ctr.shared.models.BlockedEventException
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.Flow
@@ -69,6 +86,16 @@ class ErrorCodeStringFactoryImpl(private val isPlayStoreBuild: Boolean = true) :
                 is MissingOriginException -> "058"
                 is WeCouldntCreateCertificateException -> exception.errorCode
                 is BlockedEventException -> "0514"
+                is DataMigrationCompressionException -> "110"
+                is DataMigrationOtherException -> "111"
+                is DataMigrationInvalidVersionException -> "112"
+                is DataMigrationInvalidNumberOfPackagesException -> "113"
+                is DataMigrationDecodingErrorException -> "114"
+                is AppConfigMissingException -> "125"
+                is LoadFileException -> "121"
+                is CreatePdfException -> "122"
+                is NoDccException -> "124"
+                is StorePdfException -> "123"
                 else -> throw it.getException()
             }
 

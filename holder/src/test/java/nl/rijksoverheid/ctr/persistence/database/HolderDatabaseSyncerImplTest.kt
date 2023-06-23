@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.persistence.database
 
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import java.time.OffsetDateTime
 import kotlinx.coroutines.runBlocking
@@ -9,6 +10,7 @@ import nl.rijksoverheid.ctr.fakeGetRemoteGreenCardUseCase
 import nl.rijksoverheid.ctr.fakeGreenCardUtil
 import nl.rijksoverheid.ctr.fakeRemoveExpiredEventsUseCase
 import nl.rijksoverheid.ctr.fakeSyncRemoteGreenCardUseCase
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.your_events.models.RemoteGreenCards
 import nl.rijksoverheid.ctr.persistence.database.dao.EventGroupDao
 import nl.rijksoverheid.ctr.persistence.database.dao.GreenCardDao
@@ -69,6 +71,9 @@ class HolderDatabaseSyncerImplTest {
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper,
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             draftEventUseCase = mockk(relaxed = true)
         )
 
@@ -97,6 +102,9 @@ class HolderDatabaseSyncerImplTest {
             updateEventExpirationUseCase = mockk(relaxed = true),
             mobileCoreWrapper = mobileCoreWrapper,
             persistBlockedEventsUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             draftEventUseCase = draftEventUseCase
         )
 
@@ -107,132 +115,6 @@ class HolderDatabaseSyncerImplTest {
         coVerify { draftEventUseCase.finalise() }
 
         assertEquals(DatabaseSyncerResult.Success(), databaseSyncerResult)
-    }
-
-    @Test
-    fun `sync returns Success with missingOrigin if not 0G and expected origin is not in domestic and eu green cards`() = runBlocking {
-        coEvery { eventGroupDao.getAll() } answers { events }
-
-        val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
-            holderDatabase = holderDatabase,
-            workerManagerUtil = mockk(relaxed = true),
-            greenCardUtil = fakeGreenCardUtil(),
-            getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Success(
-                    remoteGreenCards = RemoteGreenCards(
-                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                            origins = listOf(
-                                RemoteGreenCards.Origin(
-                                type = OriginType.Vaccination,
-                                eventTime = OffsetDateTime.now(),
-                                expirationTime = OffsetDateTime.now(),
-                                validFrom = OffsetDateTime.now(),
-                                doseNumber = 1
-                            )),
-                            createCredentialMessages = "".toByteArray()
-                        ),
-                        euGreencards = null,
-                        blobExpireDates = listOf()
-                    )
-                )
-            ),
-            syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistBlockedEventsUseCase = mockk(relaxed = true),
-            draftEventUseCase = mockk(relaxed = true),
-            updateEventExpirationUseCase = mockk(relaxed = true),
-            mobileCoreWrapper = mobileCoreWrapper
-        )
-
-        val databaseSyncerResult = holderDatabaseSyncer.sync(
-            syncWithRemote = true
-        )
-
-        assertEquals(DatabaseSyncerResult.Success(listOf()), databaseSyncerResult)
-    }
-
-    @Test
-    fun `sync returns Success with missingOrigin if 0G and expected origin is not in eu green cards`() = runBlocking {
-        coEvery { eventGroupDao.getAll() } answers { events }
-
-        val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
-            holderDatabase = holderDatabase,
-            workerManagerUtil = mockk(relaxed = true),
-            greenCardUtil = fakeGreenCardUtil(),
-            getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Success(
-                    remoteGreenCards = RemoteGreenCards(
-                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                            origins = listOf(
-                                RemoteGreenCards.Origin(
-                                type = OriginType.Test,
-                                eventTime = OffsetDateTime.now(),
-                                expirationTime = OffsetDateTime.now(),
-                                validFrom = OffsetDateTime.now(),
-                                doseNumber = 1
-                            )),
-                            createCredentialMessages = "".toByteArray()
-                        ),
-                        euGreencards = null,
-                        blobExpireDates = listOf()
-                    )
-                )
-            ),
-            syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistBlockedEventsUseCase = mockk(relaxed = true),
-            draftEventUseCase = mockk(relaxed = true),
-            updateEventExpirationUseCase = mockk(relaxed = true),
-            mobileCoreWrapper = mobileCoreWrapper
-        )
-
-        val databaseSyncerResult = holderDatabaseSyncer.sync(
-            syncWithRemote = true
-        )
-
-        assertEquals(DatabaseSyncerResult.Success(listOf()), databaseSyncerResult)
-    }
-
-    @Test
-    fun `sync returns Success if returned origins is vaccination assessment and does not match`() = runBlocking {
-        coEvery { eventGroupDao.getAll() } answers { events }
-
-        val holderDatabaseSyncer = HolderDatabaseSyncerImpl(
-            holderDatabase = holderDatabase,
-            workerManagerUtil = mockk(relaxed = true),
-            greenCardUtil = fakeGreenCardUtil(),
-            getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
-                result = RemoteGreenCardsResult.Success(
-                    remoteGreenCards = RemoteGreenCards(
-                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                            origins = listOf(
-                                RemoteGreenCards.Origin(
-                                type = OriginType.VaccinationAssessment,
-                                eventTime = OffsetDateTime.now(),
-                                expirationTime = OffsetDateTime.now(),
-                                validFrom = OffsetDateTime.now(),
-                                doseNumber = 1
-                            )),
-                            createCredentialMessages = "".toByteArray()
-                        ),
-                        euGreencards = null,
-                        blobExpireDates = listOf()
-                    )
-                )
-            ),
-            syncRemoteGreenCardsUseCase = fakeSyncRemoteGreenCardUseCase(),
-            removeExpiredEventsUseCase = fakeRemoveExpiredEventsUseCase(),
-            persistBlockedEventsUseCase = mockk(relaxed = true),
-            draftEventUseCase = mockk(relaxed = true),
-            updateEventExpirationUseCase = mockk(relaxed = true),
-            mobileCoreWrapper = mobileCoreWrapper
-        )
-
-        val databaseSyncerResult = holderDatabaseSyncer.sync(
-            syncWithRemote = true
-        )
-
-        assertEquals(DatabaseSyncerResult.Success(listOf()), databaseSyncerResult)
     }
 
     @Test
@@ -253,6 +135,9 @@ class HolderDatabaseSyncerImplTest {
             persistBlockedEventsUseCase = mockk(relaxed = true),
             draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             mobileCoreWrapper = mobileCoreWrapper
         )
 
@@ -290,6 +175,9 @@ class HolderDatabaseSyncerImplTest {
             persistBlockedEventsUseCase = mockk(relaxed = true),
             draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             mobileCoreWrapper = mobileCoreWrapper
         )
 
@@ -320,6 +208,9 @@ class HolderDatabaseSyncerImplTest {
             persistBlockedEventsUseCase = mockk(relaxed = true),
             draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             mobileCoreWrapper = mobileCoreWrapper
         )
 
@@ -343,17 +234,6 @@ class HolderDatabaseSyncerImplTest {
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
                     remoteGreenCards = RemoteGreenCards(
-                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                            origins = listOf(
-                                RemoteGreenCards.Origin(
-                                type = OriginType.Test,
-                                eventTime = OffsetDateTime.now(),
-                                expirationTime = OffsetDateTime.now(),
-                                validFrom = OffsetDateTime.now(),
-                                doseNumber = 1
-                            )),
-                            createCredentialMessages = "".toByteArray()
-                        ),
                         euGreencards = null,
                         blobExpireDates = listOf()
                     )
@@ -366,6 +246,9 @@ class HolderDatabaseSyncerImplTest {
             persistBlockedEventsUseCase = mockk(relaxed = true),
             draftEventUseCase = draftEventUseCase,
             updateEventExpirationUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             mobileCoreWrapper = mobileCoreWrapper
         )
 
@@ -389,10 +272,6 @@ class HolderDatabaseSyncerImplTest {
             getRemoteGreenCardsUseCase = fakeGetRemoteGreenCardUseCase(
                 result = RemoteGreenCardsResult.Success(
                     remoteGreenCards = RemoteGreenCards(
-                        domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                            origins = listOf(),
-                            createCredentialMessages = "".toByteArray()
-                        ),
                         euGreencards = null,
                         blobExpireDates = listOf()
                     )
@@ -403,6 +282,9 @@ class HolderDatabaseSyncerImplTest {
             persistBlockedEventsUseCase = mockk(relaxed = true),
             draftEventUseCase = mockk(relaxed = true),
             updateEventExpirationUseCase = mockk(relaxed = true),
+            featureFlagUseCase = mockk<HolderFeatureFlagUseCase>(relaxed = true).apply {
+                every { isInArchiveMode() } returns false
+            },
             mobileCoreWrapper = mobileCoreWrapper
         )
 
@@ -415,17 +297,6 @@ class HolderDatabaseSyncerImplTest {
 
     private fun successResult(originType: OriginType): RemoteGreenCardsResult = RemoteGreenCardsResult.Success(
         remoteGreenCards = RemoteGreenCards(
-            domesticGreencard = RemoteGreenCards.DomesticGreenCard(
-                origins = listOf(
-                    RemoteGreenCards.Origin(
-                    type = originType,
-                    eventTime = OffsetDateTime.now(),
-                    expirationTime = OffsetDateTime.now(),
-                    validFrom = OffsetDateTime.now(),
-                    doseNumber = 1
-                )),
-                createCredentialMessages = "".toByteArray()
-            ),
             euGreencards = null,
             blobExpireDates = listOf()
         )

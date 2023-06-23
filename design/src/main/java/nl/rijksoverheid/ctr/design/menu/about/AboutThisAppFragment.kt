@@ -23,25 +23,19 @@ import androidx.fragment.app.Fragment
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import nl.rijksoverheid.ctr.design.BuildConfig
 import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppRowBinding
 import nl.rijksoverheid.ctr.design.databinding.AboutThisAppSectionBinding
 import nl.rijksoverheid.ctr.design.databinding.FragmentAboutAppBinding
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYearTimeNumerical
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
-import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
-import nl.rijksoverheid.ctr.shared.isHolderApp
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.Environment
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAsAccessibilityButton
 import org.koin.android.ext.android.inject
 
 class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
 
-    private val policyPersistenceManager: DebugDisclosurePolicyPersistenceManager by inject()
     private val intentUtil: IntentUtil by inject()
 
     companion object {
@@ -103,6 +97,8 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
             ).formatDayMonthYearTimeNumerical()
         )
 
+        binding.description.setHtmlText(aboutThisAppData.description)
+
         if (getString(R.string.general_menu_resetApp).isNotEmpty()) {
             // we have this button in the layout twice because of the design requirement
             // to align it to the bottom when the content is not scrollable
@@ -141,16 +137,6 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
                 url = aboutThisAppData.deeplinkScannerUrl
             )
         }
-
-        // On test and acceptance builds show buttons to set policy locally
-        if ((BuildConfig.DEBUG ||
-                    Environment.get(requireContext()) is Environment.Acc ||
-                    Environment.get(requireContext()) is Environment.Tst
-                    ) &&
-            isHolderApp(requireContext())
-        ) {
-            bindDebugPolicyButtons(binding)
-        }
     }
 
     private fun positionResetButton(binding: FragmentAboutAppBinding) {
@@ -171,32 +157,6 @@ class AboutThisAppFragment : Fragment(R.layout.fragment_about_app) {
         deeplinkScannerButton.visibility = View.VISIBLE
         deeplinkScannerButton.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW).apply { data = Uri.parse(url) })
-        }
-    }
-
-    private fun bindDebugPolicyButtons(binding: FragmentAboutAppBinding) {
-        with(binding) {
-            policyButtons.isVisible = true
-            zeroGPolicyButton.setOnClickListener {
-                policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.ZeroG)
-                restartApp()
-            }
-            oneGPolicyButton.setOnClickListener {
-                policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneG)
-                restartApp()
-            }
-            threeGPolicyButton.setOnClickListener {
-                policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.ThreeG)
-                restartApp()
-            }
-            oneGThreeGPolicyButton.setOnClickListener {
-                policyPersistenceManager.setDebugDisclosurePolicy(DisclosurePolicy.OneAndThreeG)
-                restartApp()
-            }
-            configPolicyButton.setOnClickListener {
-                policyPersistenceManager.setDebugDisclosurePolicy(null)
-                restartApp()
-            }
         }
     }
 

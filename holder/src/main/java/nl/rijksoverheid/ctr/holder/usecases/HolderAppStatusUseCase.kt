@@ -1,6 +1,5 @@
 package nl.rijksoverheid.ctr.holder.usecases
 
-import androidx.annotation.StringRes
 import com.squareup.moshi.Moshi
 import java.net.UnknownHostException
 import java.time.Clock
@@ -12,19 +11,16 @@ import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
 import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
-import nl.rijksoverheid.ctr.appconfig.models.NewFeatureItem
 import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
-import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
-import nl.rijksoverheid.ctr.persistence.PersistenceManager
+import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.shared.ext.toObject
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.factories.OnboardingFlow
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -40,11 +36,11 @@ class HolderAppStatusUseCaseImpl(
     private val appConfigPersistenceManager: AppConfigPersistenceManager,
     private val recommendedUpdatePersistenceManager: RecommendedUpdatePersistenceManager,
     private val moshi: Moshi,
-    private val showNewDisclosurePolicyUseCase: ShowNewDisclosurePolicyUseCase,
     private val appUpdateData: AppUpdateData,
-    private val persistenceManager: PersistenceManager,
     private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
     private val introductionPersistenceManager: IntroductionPersistenceManager,
+    private val featureFlagUseCase: HolderFeatureFlagUseCase,
+    private val holderDatabase: HolderDatabase,
     private val errorCodeStringFactory: ErrorCodeStringFactory
 ) : AppStatusUseCase {
 
@@ -52,11 +48,16 @@ class HolderAppStatusUseCaseImpl(
         withContext(Dispatchers.IO) {
             when (config) {
                 is ConfigResult.Success -> {
-                    checkIfActionRequired(
-                        currentVersionCode = currentVersionCode,
-                        appConfig = config.appConfig.toObject<HolderConfig>(moshi)
-                    )
+                    if (isArchived()) {
+                        AppStatus.Archived
+                    } else {
+                        checkIfActionRequired(
+                            currentVersionCode = currentVersionCode,
+                            appConfig = config.appConfig.toObject<HolderConfig>(moshi)
+                        )
+                    }
                 }
+
                 is ConfigResult.Error -> {
                     val cachedAppConfig = cachedAppConfigUseCase.getCachedAppConfigOrNull()
                     when {
@@ -66,19 +67,22 @@ class HolderAppStatusUseCaseImpl(
                                 currentVersionCode = currentVersionCode,
                                 appConfig = cachedAppConfig
                             )
-                                }
+                        }
+
                         config.error.e is UnknownHostException -> {
                             AppStatus.Error
                         }
+
                         else -> {
                             AppStatus.LaunchError(
                                 errorCodeStringFactory.get(
                                     OnboardingFlow,
                                     listOf(config.error)
                                 )
-                            ) }
+                            )
+                        }
                     }
-                    }
+                }
             }
         }
 
@@ -86,21 +90,26 @@ class HolderAppStatusUseCaseImpl(
         currentVersionCode < appConfig.minimumVersion
 
     override fun checkIfActionRequired(currentVersionCode: Int, appConfig: AppConfig): AppStatus {
-        val newPolicy = showNewDisclosurePolicyUseCase.get()
         return when {
             updateRequired(currentVersionCode, appConfig) -> AppStatus.UpdateRequired
             appConfig.appDeactivated -> AppStatus.Deactivated
-            shouldShowNewFeatures(newPolicy) -> getNewFeatures(newPolicy)
+            shouldShowNewFeatures() -> getNewFeatures()
             newTermsAvailable() -> AppStatus.ConsentNeeded(appUpdateData)
             currentVersionCode < appConfig.recommendedVersion -> getHolderRecommendUpdateStatus(
                 appConfig
             )
+
             else -> AppStatus.NoActionRequired
         }
     }
 
-    private fun shouldShowNewFeatures(newPolicy: DisclosurePolicy?) =
-        (newFeaturesAvailable() || newPolicy != null) && introductionPersistenceManager.getIntroductionFinished()
+    private suspend fun isArchived(): Boolean {
+        return featureFlagUseCase.isInArchiveMode() && holderDatabase.eventGroupDao().getAll()
+            .isEmpty()
+    }
+
+    private fun shouldShowNewFeatures() =
+        (newFeaturesAvailable()) && introductionPersistenceManager.getIntroductionFinished()
 
     private fun getHolderRecommendUpdateStatus(appConfig: AppConfig) =
         if (appConfig.recommendedVersion > recommendedUpdatePersistenceManager.getHolderVersionUpdateShown()) {
@@ -119,87 +128,28 @@ class HolderAppStatusUseCaseImpl(
         val newFeatureVersion = appUpdateData.newFeatureVersion
         return appUpdateData.newFeatures.isNotEmpty() &&
                 newFeatureVersion != null &&
-                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion)
+                !appUpdatePersistenceManager.getNewFeaturesSeen(newFeatureVersion) &&
+                featureFlagUseCase.isInArchiveMode()
     }
 
     /**
      * Get the new feature and/or new policy rules as new feature based on policy change
      *
-     * @param[newPolicy] New policy or null if policy is not changed
      * @return New features and/or policy change as new features
      */
-    private fun getNewFeatures(newPolicy: DisclosurePolicy?): AppStatus.NewFeatures {
+    private fun getNewFeatures(): AppStatus.NewFeatures {
         return when {
-            newFeaturesAvailable() && newPolicy != null -> AppStatus.NewFeatures(
+            newFeaturesAvailable() -> AppStatus.NewFeatures(
                 appUpdateData.copy(
-                    newFeatures = appUpdateData.newFeatures + getPolicyChangeItems(newPolicy)
-                ).apply {
-                    setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
-                })
-            !newFeaturesAvailable() && newPolicy != null -> AppStatus.NewFeatures(
-                appUpdateData.copy(
-                    newFeatures = getPolicyChangeItems(newPolicy)
-                ).apply {
-                    setSavePolicyChange { persistenceManager.setPolicyScreenSeen(newPolicy) }
-                })
+                    newFeatures = appUpdateData.newFeatures
+                )
+            )
+
             else -> AppStatus.NewFeatures(appUpdateData)
         }
-    }
-
-    private fun getPolicyChangeItems(newPolicy: DisclosurePolicy) =
-        listOfNotNull(getCtbActiveItem(newPolicy), getNewPolicyFeatureItem(newPolicy))
-
-    private fun getCtbActiveItem(newPolicy: DisclosurePolicy): NewFeatureItem? {
-        return if (persistenceManager.getPolicyScreenSeen() == DisclosurePolicy.ZeroG && newPolicy != DisclosurePolicy.ZeroG) {
-            NewFeatureItem(
-                imageResource = R.drawable.illustration_new_dutch_and_international_certificate,
-                titleResource = R.string.holder_newintheapp_content_dutchAndInternationalCertificates_title,
-                description = R.string.holder_newintheapp_content_dutchAndInternationalCertificates_body,
-                subTitleColor = R.color.link,
-                subtitleResource = R.string.new_in_app_subtitle,
-                buttonResource = R.string.onboarding_next
-            )
-        } else null
     }
 
     private fun newTermsAvailable() =
         !appUpdatePersistenceManager.getNewTermsSeen(appUpdateData.newTerms.version) &&
                 introductionPersistenceManager.getIntroductionFinished()
-
-    private fun getNewPolicyFeatureItem(newPolicy: DisclosurePolicy): NewFeatureItem {
-        return NewFeatureItem(
-            imageResource = R.drawable.illustration_new_disclosure_policy,
-            titleResource = getPolicyFeatureTitle(newPolicy),
-            description = getPolicyFeatureBody(newPolicy),
-            subTitleColor = R.color.link,
-            subtitleResource = getNewPolicySubtitle(newPolicy)
-        )
-    }
-
-    @StringRes
-    private fun getPolicyFeatureTitle(newPolicy: DisclosurePolicy): Int {
-        return when (newPolicy) {
-            DisclosurePolicy.ZeroG -> R.string.holder_newintheapp_content_onlyInternationalCertificates_0G_title
-            DisclosurePolicy.OneG -> R.string.holder_newintheapp_content_only1G_title
-            DisclosurePolicy.ThreeG -> R.string.holder_newintheapp_content_only3G_title
-            DisclosurePolicy.OneAndThreeG -> R.string.holder_newintheapp_content_3Gand1G_title
-        }
-    }
-
-    @StringRes
-    private fun getPolicyFeatureBody(newPolicy: DisclosurePolicy): Int {
-        return when (newPolicy) {
-            DisclosurePolicy.ZeroG -> R.string.holder_newintheapp_content_onlyInternationalCertificates_0G_body
-            DisclosurePolicy.OneG -> R.string.holder_newintheapp_content_only1G_body
-            DisclosurePolicy.ThreeG -> R.string.holder_newintheapp_content_only3G_body
-            DisclosurePolicy.OneAndThreeG -> R.string.holder_newintheapp_content_3Gand1G_body
-        }
-    }
-
-    private fun getNewPolicySubtitle(newPolicy: DisclosurePolicy) =
-        if (newPolicy == DisclosurePolicy.OneG || newPolicy == DisclosurePolicy.ThreeG) {
-            R.string.general_newpolicy
-        } else {
-            R.string.new_in_app_subtitle
-        }
 }

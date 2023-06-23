@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ *  Copyright (c) 2023 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  *   Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
  *
  *   SPDX-License-Identifier: EUPL-1.2
@@ -41,7 +41,7 @@ class TestInfoScreenUtilImpl(
     private val paperProofUtil: PaperProofUtil,
     private val countryUtil: CountryUtil,
     cachedAppConfigUseCase: HolderCachedAppConfigUseCase
-) : TestInfoScreenUtil {
+) : CreateInfoLineUtil(), TestInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
@@ -265,13 +265,5 @@ class TestInfoScreenUtilImpl(
             title = title,
             description = description
         )
-    }
-
-    private fun createdLine(
-        name: String,
-        nameAnswer: String,
-        isOptional: Boolean = false
-    ): String {
-        return if (isOptional && nameAnswer.isEmpty()) "" else "$name <b>$nameAnswer</b><br/>"
     }
 }

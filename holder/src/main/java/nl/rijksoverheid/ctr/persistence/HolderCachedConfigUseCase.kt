@@ -2,7 +2,6 @@ package nl.rijksoverheid.ctr.persistence
 
 import nl.rijksoverheid.ctr.appconfig.api.model.HolderConfig
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.shared.DebugDisclosurePolicyPersistenceManager
 
 interface HolderCachedAppConfigUseCase {
     fun getCachedAppConfig(): HolderConfig
@@ -17,9 +16,7 @@ interface HolderCachedAppConfigUseCase {
  *
  */
 class HolderCachedAppConfigUseCaseImpl constructor(
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase,
-    private val isDebugApp: Boolean,
-    private val debugDisclosurePolicyPersistenceManager: DebugDisclosurePolicyPersistenceManager
+    private val cachedAppConfigUseCase: CachedAppConfigUseCase
 ) : HolderCachedAppConfigUseCase {
 
     private val defaultConfig = HolderConfig.default()
@@ -29,14 +26,6 @@ class HolderCachedAppConfigUseCaseImpl constructor(
     }
 
     override fun getCachedAppConfigOrNull(): HolderConfig? {
-        val config = cachedAppConfigUseCase.getCachedAppConfigOrNull() as? HolderConfig
-
-        val debugPolicy = debugDisclosurePolicyPersistenceManager.getDebugDisclosurePolicy()
-
-        return if (isDebugApp && debugPolicy != null) {
-            config?.copy(disclosurePolicy = debugPolicy)
-        } else {
-            config
-        }
+        return cachedAppConfigUseCase.getCachedAppConfigOrNull() as? HolderConfig
     }
 }

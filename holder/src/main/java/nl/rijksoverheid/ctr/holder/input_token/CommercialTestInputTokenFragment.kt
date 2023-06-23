@@ -43,7 +43,7 @@ class CommercialTestInputTokenFragment : InputTokenFragment() {
                     remoteEvents = mapOf(result.remoteTestResult to result.signedResponseWithTestResult.rawResponse)
                 ),
                 flow = HolderFlow.CommercialTest,
-                toolbarTitle = getString(getYourEventsToolbarTitle(result.remoteTestResult))
+                toolbarTitle = getString(R.string.your_negative_test_results_toolbar)
             )
         )
     }

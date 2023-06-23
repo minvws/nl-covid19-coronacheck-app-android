@@ -20,34 +20,11 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
  */
 @JsonClass(generateAdapter = true)
 data class RemoteGreenCards(
-    val domesticGreencard: DomesticGreenCard?,
     val euGreencards: List<EuGreenCard>?,
     val blobExpireDates: List<BlobExpiry>?,
     val context: Context? = null,
     val hints: List<String>? = listOf()
 ) {
-    data class DomesticGreenCard(
-        val origins: List<Origin>,
-        val createCredentialMessages: ByteArray
-    ) {
-        override fun equals(other: Any?): Boolean {
-            if (this === other) return true
-            if (javaClass != other?.javaClass) return false
-
-            other as DomesticGreenCard
-
-            if (origins != other.origins) return false
-            if (!createCredentialMessages.contentEquals(other.createCredentialMessages)) return false
-
-            return true
-        }
-
-        override fun hashCode(): Int {
-            var result = origins.hashCode()
-            result = 31 * result + createCredentialMessages.contentHashCode()
-            return result
-        }
-    }
 
     data class EuGreenCard(
         val origins: List<Origin>,

@@ -8,6 +8,7 @@
 package nl.rijksoverheid.ctr.holder.dashboard.util
 
 import android.content.Context
+import androidx.core.text.HtmlCompat
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.design.ext.formatDateTime
 import nl.rijksoverheid.ctr.design.ext.formatDayMonthYear
@@ -21,7 +22,6 @@ import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventNegativeTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventPositiveTest
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccination
-import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventVaccinationAssessment
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetRemoteProtocolFromEventGroupUseCase
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
 import nl.rijksoverheid.ctr.holder.models.HolderStep
@@ -69,11 +69,6 @@ class RemovedEventsBottomSheetUtilImpl(
                 }"
                 RemoteEventRecovery::class.java -> "${context.getString(R.string.qr_card_recovery_title_eu)} ${
                     blockedEvent.eventTime?.toLocalDate()?.formatDayMonthYear()
-                }"
-                RemoteEventVaccinationAssessment::class.java -> "${context.getString(R.string.holder_event_vaccination_assessment_about_date)} ${
-                    blockedEvent.eventTime?.formatDateTime(
-                        context
-                    )
                 }"
                 else -> ""
             }
@@ -142,7 +137,7 @@ class RemovedEventsBottomSheetUtilImpl(
                 descriptionData = DescriptionData(
                     htmlTextString = context.getString(
                         R.string.holder_identityRemoved_moreinfo_body,
-                        name,
+                        HtmlCompat.fromHtml(name, HtmlCompat.FROM_HTML_MODE_LEGACY),
                         removedEventsHtml
                     ),
                     htmlLinksEnabled = true

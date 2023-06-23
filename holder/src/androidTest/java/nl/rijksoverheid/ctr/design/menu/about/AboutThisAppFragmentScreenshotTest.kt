@@ -26,6 +26,7 @@ class AboutThisAppFragmentScreenshotTest : ScreenshotTest {
         val fragmentScenario = launchFragmentInContainer<AboutThisAppFragment>(
             bundleOf(
                 "data" to AboutThisAppData(
+                    description = "",
                     versionCode = "1000",
                     versionName = "4.4-acc",
                     configVersionHash = "configVersionHash",

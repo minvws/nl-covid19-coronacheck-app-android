@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Copyright (c) 2023 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
  *
  * SPDX-License-Identifier: EUPL-1.2
@@ -14,7 +14,6 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteEventRecovery
 import nl.rijksoverheid.ctr.holder.paper_proof.utils.PaperProofUtil
 import nl.rijksoverheid.ctr.holder.utils.CountryUtil
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 
 interface RecoveryInfoScreenUtil {
 
@@ -30,10 +29,9 @@ interface RecoveryInfoScreenUtil {
 
 class RecoveryInfoScreenUtilImpl(
     val resources: Resources,
-    private val mobileCoreWrapper: MobileCoreWrapper,
     private val paperProofUtil: PaperProofUtil,
     private val countryUtil: CountryUtil
-) : RecoveryInfoScreenUtil {
+) : CreateInfoLineUtil(), RecoveryInfoScreenUtil {
 
     override fun getForRecovery(
         event: RemoteEventRecovery,
@@ -132,13 +130,5 @@ class RecoveryInfoScreenUtilImpl(
             title = title,
             description = description
         )
-    }
-
-    private fun createdLine(
-        name: String,
-        nameAnswer: String,
-        isOptional: Boolean = false
-    ): String {
-        return if (isOptional && nameAnswer.isEmpty()) "" else "$name <b>$nameAnswer</b><br/>"
     }
 }

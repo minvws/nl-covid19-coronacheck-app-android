@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
+ * Copyright (c) 2023 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
  * Licensed under the EUROPEAN UNION PUBLIC LICENCE v. 1.2
  *
  * SPDX-License-Identifier: EUPL-1.2
@@ -44,7 +44,7 @@ class VaccinationInfoScreenUtilImpl(
     private val countryUtil: CountryUtil,
     private val paperProofUtil: PaperProofUtil,
     cachedAppConfigUseCase: HolderCachedAppConfigUseCase
-) : VaccinationInfoScreenUtil {
+) : CreateInfoLineUtil(), VaccinationInfoScreenUtil {
 
     private val holderConfig = cachedAppConfigUseCase.getCachedAppConfig()
 
@@ -110,7 +110,7 @@ class VaccinationInfoScreenUtilImpl(
         val uniqueCode = resources.getString(R.string.your_vaccination_explanation_unique_code)
         val uniqueCodeAnswer = event.unique ?: ""
 
-        val header = if (europeanCredential != null) {
+        val header = if (europeanCredential != null || providerIdentifier.contains("dcc")) {
             resources.getString(R.string.paper_proof_event_explanation_header)
         } else {
             resources.getString(R.string.your_vaccination_explanation_header, providerIdentifier)
@@ -201,13 +201,5 @@ class VaccinationInfoScreenUtilImpl(
             brand.isNotEmpty() -> brand
             else -> ""
         }
-    }
-
-    private fun createdLine(
-        name: String,
-        nameAnswer: String,
-        isOptional: Boolean = false
-    ): String {
-        return if (isOptional && nameAnswer.isEmpty()) "" else "$name <b>$nameAnswer</b><br/>"
     }
 }

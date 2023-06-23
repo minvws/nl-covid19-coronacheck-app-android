@@ -6,6 +6,8 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.parcelize.Parcelize
 import nl.rijksoverheid.ctr.design.R
@@ -14,8 +16,9 @@ import nl.rijksoverheid.ctr.shared.ext.getParcelableCompat
 
 @Parcelize
 data class DialogFragmentData(
-    val title: Int,
-    val message: Int,
+    val title: Int? = null,
+    val message: Int? = null,
+    val text: String? = null,
     val messageArguments: List<String>? = null,
     val positiveButtonData: DialogButtonData,
     val negativeButtonData: DialogButtonData? = null
@@ -24,16 +27,33 @@ data class DialogFragmentData(
 class SharedDialogFragment : DialogFragment() {
     companion object {
         const val argumentsDataKey = "data"
+        private const val tag = "shared_dialog_fragment"
+
+        fun show(fragmentManager: FragmentManager, data: DialogFragmentData) {
+            val args = Bundle().apply {
+                putParcelable(argumentsDataKey, data)
+            }
+            SharedDialogFragment().apply { arguments = args }.show(fragmentManager, tag)
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         arguments?.getParcelableCompat<DialogFragmentData>(argumentsDataKey)?.let {
             val builder = MaterialAlertDialogBuilder(requireContext(), R.style.App_Dialog_DayNight)
-                .setTitle(it.title)
-                .setMessage(it.message)
 
-            it.messageArguments?.toTypedArray()?.let { args ->
-                builder.setMessage(getString(it.message, *args))
+            it.title?.let { title ->
+                builder.setTitle(title)
+            }
+
+            it.message?.let { message ->
+                builder.setMessage(message)
+                it.messageArguments?.toTypedArray()?.let { args ->
+                    builder.setMessage(getString(it.message, *args))
+                }
+            }
+
+            it.text?.let { text ->
+                builder.setMessage(text)
             }
 
             it.positiveButtonData.apply {
@@ -43,11 +63,17 @@ class SharedDialogFragment : DialogFragment() {
                             navigationActionId,
                             navigationArguments
                         )
+
                         is DialogButtonData.ResetApp -> {
                             (context?.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager)?.clearApplicationUserData()
                         }
+
                         is DialogButtonData.Dismiss -> {
                             dialog.dismiss()
+                        }
+
+                        is DialogButtonData.NavigateUp -> {
+                            findNavController().navigateUp()
                         }
                     }
                     dialog.dismiss()

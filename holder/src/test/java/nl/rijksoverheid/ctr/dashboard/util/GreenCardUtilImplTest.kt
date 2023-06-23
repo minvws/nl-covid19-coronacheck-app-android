@@ -93,7 +93,7 @@ class GreenCardUtilImplTest {
             greenCardEntity = GreenCardEntity(
                 id = 1,
                 walletId = 1,
-                type = GreenCardType.Domestic
+                type = GreenCardType.Eu
             ),
             origins = listOf(
                 OriginEntity(
@@ -128,7 +128,7 @@ class GreenCardUtilImplTest {
             greenCardEntity = GreenCardEntity(
                 id = 1,
                 walletId = 1,
-                type = GreenCardType.Domestic
+                type = GreenCardType.Eu
             ),
             origins = listOf(
                 OriginEntity(
@@ -163,7 +163,7 @@ class GreenCardUtilImplTest {
             greenCardEntity = GreenCardEntity(
                 id = 1,
                 walletId = 1,
-                type = GreenCardType.Domestic
+                type = GreenCardType.Eu
             ),
             origins = listOf(
                 OriginEntity(
@@ -198,7 +198,7 @@ class GreenCardUtilImplTest {
             greenCardEntity = GreenCardEntity(
                 id = 1,
                 walletId = 1,
-                type = GreenCardType.Domestic
+                type = GreenCardType.Eu
             ),
             origins = listOf(
                 OriginEntity(
@@ -225,14 +225,6 @@ class GreenCardUtilImplTest {
     }
 
     @Test
-    fun `getErrorCorrectionLevel returns correct levels for domestic green card type`() {
-        val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
-        val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
-
-        assertEquals(ErrorCorrectionLevel.M, greenCardUtil.getErrorCorrectionLevel(GreenCardType.Domestic))
-    }
-
-    @Test
     fun `getErrorCorrectionLevel returns correct levels for eu green card type`() {
         val clock = Clock.fixed(Instant.ofEpochSecond(50), ZoneId.of("UTC"))
         val greenCardUtil = GreenCardUtilImpl(holderDatabase, clock, credentialUtil, mockk())
@@ -251,7 +243,7 @@ class GreenCardUtilImplTest {
             greenCardEntity = GreenCardEntity(
                 id = 1,
                 walletId = 1,
-                type = GreenCardType.Domestic
+                type = GreenCardType.Eu
             ),
             origins = listOf(),
             credentialEntities = listOf()
@@ -280,7 +272,7 @@ class GreenCardUtilImplTest {
             greenCardEntity = GreenCardEntity(
                 id = 1,
                 walletId = 1,
-                type = GreenCardType.Domestic
+                type = GreenCardType.Eu
             ),
             origins = listOf(),
             credentialEntities = listOf()
@@ -345,7 +337,7 @@ class GreenCardUtilImplTest {
     )
 
     private fun getGreenCard(
-        type: GreenCardType = GreenCardType.Domestic,
+        type: GreenCardType = GreenCardType.Eu,
         origins: List<OriginEntity> = listOf()
     ) = GreenCard(
         greenCardEntity = GreenCardEntity(

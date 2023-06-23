@@ -21,6 +21,8 @@ import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.OriginUtilImpl
 import nl.rijksoverheid.ctr.holder.dashboard.util.RemovedEventsBottomSheetUtil
 import nl.rijksoverheid.ctr.holder.dashboard.util.RemovedEventsBottomSheetUtilImpl
+import nl.rijksoverheid.ctr.holder.data_migration.StringDataZipper
+import nl.rijksoverheid.ctr.holder.data_migration.StringDataZipperImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtilImpl
 import nl.rijksoverheid.ctr.holder.get_events.utils.ScopeUtil
@@ -97,7 +99,6 @@ val utilsModule = module {
             get(),
             get(),
             get(),
-            get(),
             get()
         )
     }
@@ -108,7 +109,6 @@ val utilsModule = module {
         DashboardPageInfoItemHandlerUtilImpl(
             get(),
             get(),
-            get(),
             get()
         )
     }
@@ -116,17 +116,18 @@ val utilsModule = module {
     factory<YourEventsFragmentUtil> { YourEventsFragmentUtilImpl(get()) }
     factory<YourEventWidgetUtil> { YourEventWidgetUtilImpl() }
     factory<DashboardInfoCardAdapterItemUtil> { DashboardInfoCardAdapterItemUtilImpl() }
-    factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl(get()) }
-    factory<AboutThisAppDataModel> { AboutThisAppDataModelImpl(get(), get()) }
+    factory<DashboardItemEmptyStateUtil> { DashboardItemEmptyStateUtilImpl() }
+    factory<AboutThisAppDataModel> { AboutThisAppDataModelImpl(get(), get(), get()) }
     factory<HelpMenuDataModel> { HelpMenuDataModelImpl(get(), get(), get()) }
     factory<ScopeUtil> { ScopeUtilImpl() }
     factory<LoginTypeUtil> { LoginTypeUtilImpl() }
-    factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl(get()) }
-    factory<CardItemUtil> { CardItemUtilImpl(get(), get()) }
+    factory<DashboardHeaderAdapterItemUtil> { DashboardHeaderAdapterItemUtilImpl() }
+    factory<CardItemUtil> { CardItemUtilImpl() }
     factory<EventGroupEntityUtil> { EventGroupEntityUtilImpl(get()) }
     factory<PaperProofUtil> { PaperProofUtilImpl(get(), get(), get()) }
     factory<NoDigidScreenDataUtil> { NoDigidScreenDataUtilImpl(get(), get(), get()) }
     factory<StringUtil> { StringUtilImpl(get()) }
     factory<YourEventsEndStateUtil> { YourEventsEndStateUtilImpl(get()) }
     factory<RemovedEventsBottomSheetUtil> { RemovedEventsBottomSheetUtilImpl(get(), get(), get(), get(), get(), get()) }
+    factory<StringDataZipper> { StringDataZipperImpl() }
 }

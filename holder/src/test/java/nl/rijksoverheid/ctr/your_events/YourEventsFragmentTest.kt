@@ -83,30 +83,6 @@ class YourEventsFragmentTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `When database synced and hints returned contain negativetest_without_vaccinationassessment navigate to info fragment with correct copy`() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-
-        startFragment(DatabaseSyncerResult.Success(listOf("negativetest_without_vaccinationassessment")))
-        assertEquals(navController.currentDestination?.id, R.id.nav_info_fragment)
-        val arguments = navController.backStack.last().arguments
-
-        assertEquals(context.getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_toolbar), arguments?.getString("toolbarTitle"))
-        val expectedData = InfoFragmentData.TitleDescriptionWithButton(
-            title = context.getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_title),
-            descriptionData = DescriptionData(
-                htmlText = R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_body,
-                htmlLinksEnabled = true
-            ),
-            primaryButtonData = ButtonData.NavigationButton(
-                text = context.getString(R.string.holder_event_negativeTestEndstate_addVaccinationAssessment_button_complete),
-                navigationActionId = R.id.action_visitor_pass_input_token
-            )
-        )
-        val returnedData = arguments?.getParcelableCompat<InfoFragmentData>("data")
-        assertEquals(expectedData, returnedData)
-    }
-
-    @Test
     fun `When database synced failed with client network error show dialog`() {
         startFragment(DatabaseSyncerResult.Failed.Error(errorResult = NetworkRequestResult.Failed.ClientNetworkError(HolderStep.GetCredentialsNetworkRequest)))
 

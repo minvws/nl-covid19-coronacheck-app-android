@@ -63,6 +63,11 @@ class HolderMainFragment : Fragment(R.layout.fragment_main) {
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                     return@setNavigationOnClickListener
                 }
+                R.id.nav_data_migration_instructions -> {
+                    // Trigger custom dispatcher in destination
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                    return@setNavigationOnClickListener
+                }
             }
 
             NavigationUI.navigateUp(navController, null)

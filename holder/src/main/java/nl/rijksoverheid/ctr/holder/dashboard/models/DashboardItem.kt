@@ -19,8 +19,6 @@ import nl.rijksoverheid.ctr.persistence.database.entities.OriginEntity
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.persistence.database.entities.RemovedEventEntity
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
-import nl.rijksoverheid.ctr.shared.models.DisclosurePolicy
-import nl.rijksoverheid.ctr.shared.models.GreenCardDisclosurePolicy
 
 sealed class DashboardItem {
 
@@ -45,8 +43,6 @@ sealed class DashboardItem {
             val originType: OriginType
         ) : InfoItem(isDismissible = false, hasButton = true)
 
-        object MissingDutchVaccinationItem : InfoItem(isDismissible = false, hasButton = true)
-
         object ClockDeviationItem : InfoItem(isDismissible = false, hasButton = true)
 
         data class GreenCardExpiredItem(
@@ -57,37 +53,11 @@ sealed class DashboardItem {
             hasButton = false
         )
 
-        data class DomesticVaccinationExpiredItem(val originEntity: OriginEntity) : InfoItem(
-            isDismissible = true,
-            hasButton = true
-        )
-
-        data class DomesticVaccinationAssessmentExpiredItem(val originEntity: OriginEntity) :
-            InfoItem(
-                isDismissible = true,
-                hasButton = true
-            )
-
         object AppUpdate : InfoItem(
             isDismissible = false,
             hasButton = true,
             buttonText = R.string.recommended_update_card_action
         )
-
-        object VisitorPassIncompleteItem : InfoItem(
-            isDismissible = false,
-            hasButton = true,
-            buttonText = R.string.holder_dashboard_visitorpassincompletebanner_button_makecomplete
-        )
-
-        data class DisclosurePolicyItem(
-            val disclosurePolicy: DisclosurePolicy,
-            @StringRes override val buttonText: Int = R.string.general_readmore
-        ) :
-            InfoItem(
-                isDismissible = true,
-                hasButton = true
-            )
 
         data class BlockedEvents(
             val blockedEvents: List<RemovedEventEntity>,
@@ -99,6 +69,10 @@ sealed class DashboardItem {
             val events: List<RemovedEventEntity>,
             @StringRes override val buttonText: Int = R.string.general_readmore
         ) : InfoItem(isDismissible = true, hasButton = true)
+
+        data class ExportPdf(
+            @StringRes override val buttonText: Int = R.string.holder_pdfExport_card_action
+        ) : InfoItem(isDismissible = false, hasButton = true)
     }
 
     data class CardsItem(val cards: List<CardItem>) : DashboardItem() {
@@ -114,7 +88,6 @@ sealed class DashboardItem {
             val originStates: List<OriginState>,
             val credentialState: CredentialState,
             val databaseSyncerResult: DatabaseSyncerResult,
-            val disclosurePolicy: GreenCardDisclosurePolicy,
             val greenCardEnabledState: GreenCardEnabledState
         )
     }

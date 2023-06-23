@@ -67,57 +67,12 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <FrameLayout
-                        android:id="@+id/domesticImageContainer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="visible"
-                        android:background="@drawable/shape_item_my_overview_green_card_background_left_corners"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="@id/title"
-                        app:layout_constraintTop_toTopOf="@id/title">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingHorizontal="20dp"
-                            android:paddingVertical="16dp">
-
-                            <ImageView
-                                android:id="@+id/domesticImage"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_dutch_card"
-                                android:layout_gravity="center_vertical"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                tools:ignore="ContentDescription" />
-
-                            <TextView
-                                style="@style/App.TextAppearance.MaterialComponents.Headline6.Montserrat"
-                                android:id="@+id/domesticPolicyLabel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:textColor="@color/link"
-                                android:layout_marginStart="16dp"
-                                android:includeFontPadding="false"
-                                android:textIsSelectable="true"
-                                tools:text="@string/holder_dashboard_domesticQRCard_1G_label" />
-
-                        </LinearLayout>
-
-                    </FrameLayout>
-
                     <androidx.constraintlayout.widget.Barrier
                         android:id="@+id/imageContainers"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:barrierDirection="start"
-                        app:constraint_referenced_ids="internationalImageContainer,domesticImageContainer" />
+                        app:constraint_referenced_ids="internationalImageContainer" />
 
                     <nl.rijksoverheid.ctr.design.widgets.AccessibilityHeaderWidget
                         android:id="@+id/title"

@@ -19,6 +19,7 @@ import nl.rijksoverheid.ctr.holder.databinding.FragmentSavedEventsBinding
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsHeaderAdapterItem
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsNoSavedEventsItem
 import nl.rijksoverheid.ctr.holder.saved_events.items.SavedEventsSectionAdapterItem
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import org.koin.android.ext.android.inject
@@ -30,6 +31,8 @@ class SavedEventsFragment : Fragment(R.layout.fragment_saved_events) {
     private val adapter = GroupAdapter<GroupieViewHolder>()
     private val savedEventsViewModel: SavedEventsViewModel by viewModel()
     private val dialogUtil: DialogUtil by inject()
+    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
+    private val isInArchiveMode: Boolean = featureFlagUseCase.isInArchiveMode()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,6 +68,7 @@ class SavedEventsFragment : Fragment(R.layout.fragment_saved_events) {
                 } else {
                     savedEvents.forEach {
                         val item = SavedEventsSectionAdapterItem(
+                            isNotInArchiveMode = !isInArchiveMode,
                             savedEvents = it,
                             onClickEvent = { toolbarTitle, infoScreen ->
                                 navigateSafety(

@@ -19,8 +19,6 @@ import nl.rijksoverheid.ctr.holder.your_events.utils.RecoveryInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.RecoveryInfoScreenUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.TestInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.TestInfoScreenUtilImpl
-import nl.rijksoverheid.ctr.holder.your_events.utils.VaccinationAssessmentInfoScreenUtil
-import nl.rijksoverheid.ctr.holder.your_events.utils.VaccinationAssessmentInfoScreenUtilImpl
 import nl.rijksoverheid.ctr.holder.your_events.utils.VaccinationInfoScreenUtil
 import nl.rijksoverheid.ctr.holder.your_events.utils.VaccinationInfoScreenUtilImpl
 import org.koin.android.ext.koin.androidContext
@@ -36,9 +34,9 @@ import org.koin.dsl.module
 val cardUtilsModule = module {
     factory<QrCodeUtil> { QrCodeUtilImpl() }
     factory<DashboardGreenCardAdapterItemExpiryUtil> { DashboardGreenCardAdapterItemExpiryUtilImpl(get(), androidContext()) }
-    factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get(), get()) }
+    factory<InfoScreenUtil> { InfoScreenUtilImpl(get(), get(), get()) }
     factory<TestInfoScreenUtil> { TestInfoScreenUtilImpl(androidContext().resources, get(), get(), get()) }
-    factory<RecoveryInfoScreenUtil> { RecoveryInfoScreenUtilImpl(androidContext().resources, get(), get(), get()) }
+    factory<RecoveryInfoScreenUtil> { RecoveryInfoScreenUtilImpl(androidContext().resources, get(), get()) }
     factory<QrInfoScreenUtil> { QrInfoScreenUtilImpl(get(), get(), get(), get(), get()) }
     factory<VaccinationInfoScreenUtil> {
         VaccinationInfoScreenUtilImpl(get(), androidContext().resources, get(), get(), get())
@@ -47,8 +45,5 @@ val cardUtilsModule = module {
     factory<GreenCardUtil> { GreenCardUtilImpl(get(), Clock.systemUTC(), get(), get()) }
     factory<GreenCardRefreshUtil> {
         GreenCardRefreshUtilImpl(get(), get(), get(), get(), get(), get())
-    }
-    factory<VaccinationAssessmentInfoScreenUtil> {
-        VaccinationAssessmentInfoScreenUtilImpl(get(), get())
     }
 }

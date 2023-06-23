@@ -2,6 +2,7 @@ package nl.rijksoverheid.ctr.holder.fuzzy_matching
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.text.HtmlCompat
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
@@ -67,7 +68,7 @@ class FuzzyMatchingSyncFragment : BaseFragment(R.layout.fragment_saved_events_sy
                                 descriptionData = DescriptionData(
                                     htmlTextString = getString(
                                         R.string.holder_identitySelection_success_body,
-                                        fuzzyMatchingSyncFragmentArgs.selectedName
+                                        HtmlCompat.fromHtml(fuzzyMatchingSyncFragmentArgs.selectedName, HtmlCompat.FROM_HTML_MODE_LEGACY)
                                     ),
                                     htmlLinksEnabled = true
                                 ),

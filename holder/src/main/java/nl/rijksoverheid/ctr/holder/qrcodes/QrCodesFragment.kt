@@ -33,15 +33,14 @@ import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.holder.databinding.FragmentQrCodesBinding
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeAnimation
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeData
-import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodeFragmentData
 import nl.rijksoverheid.ctr.holder.qrcodes.models.QrCodesResult
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrCodesFragmentUtil
 import nl.rijksoverheid.ctr.holder.qrcodes.utils.QrInfoScreenUtil
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.entities.OriginType
 import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.addAccessibilityAction
-import nl.rijksoverheid.ctr.shared.utils.PersonalDetailsUtil
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -63,8 +62,9 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private fun safeBindingBlock(block: (binding: FragmentQrCodesBinding) -> Unit) {
         _binding?.run(block)
     }
+
     private val args: QrCodesFragmentArgs by navArgs()
-    private val personalDetailsUtil: PersonalDetailsUtil by inject()
+    private val featureFlagUseCase: HolderFeatureFlagUseCase by inject()
     private val infoScreenUtil: QrInfoScreenUtil by inject()
     private val dialogUtil: DialogUtil by inject()
     private val infoFragmentUtil: InfoFragmentUtil by inject()
@@ -157,29 +157,45 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                 descriptionData = DescriptionData(
                     htmlTextString = getString(
                         if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
-                            R.string.holder_qr_code_expired_explanation_description
+                            if (featureFlagUseCase.isInArchiveMode()) {
+                                if (args.data.originType is OriginType.Vaccination) {
+                                    R.string.holder_qr_code_expired_explanation_description_archive_vaccination
+                                } else {
+                                    R.string.holder_qr_code_expired_explanation_description_archive_recovery
+                                }
+                            } else {
+                                R.string.holder_qr_code_expired_explanation_description
+                            }
                         } else {
-                            R.string.holder_qr_code_hidden_explanation_description
+                            if (featureFlagUseCase.isInArchiveMode()) {
+                                R.string.holder_qr_code_hidden_explanation_description_archive_vaccination
+                            } else {
+                                R.string.holder_qr_code_hidden_explanation_description
+                            }
                         }
                     ),
                     htmlLinksEnabled = true
                 ),
-                primaryButtonData = ButtonData.LinkButton(
-                    text = getString(
-                        if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
-                            R.string.holder_qr_code_expired_explanation_action
-                        } else {
-                            R.string.holder_qr_code_hidden_explanation_action
-                        }
-                    ),
-                    link = getString(
-                        if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
-                            R.string.holder_qr_code_expired_explanation_url
-                        } else {
-                            R.string.holder_qr_code_hidden_explanation_url
-                        }
+                primaryButtonData = if (featureFlagUseCase.isInArchiveMode()) {
+                    null
+                } else {
+                    ButtonData.LinkButton(
+                        text = getString(
+                            if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
+                                R.string.holder_qr_code_expired_explanation_action
+                            } else {
+                                R.string.holder_qr_code_hidden_explanation_action
+                            }
+                        ),
+                        link = getString(
+                            if (qrCodeVisibility == QrCodeViewHolder.QrCodeVisibility.EXPIRED) {
+                                R.string.holder_qr_code_expired_explanation_url
+                            } else {
+                                R.string.holder_qr_code_hidden_explanation_url
+                            }
+                        )
                     )
-                )
+                }
             )
         )
     }
@@ -187,7 +203,10 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
     private fun applyAnimation(qrCodeAnimation: QrCodeAnimation) {
         binding.animation.setWidget(qrCodeAnimation.animationResource)
         binding.animation.contentDescription = getString(qrCodeAnimation.contentDescription)
-        binding.animation.addAccessibilityAction(AccessibilityNodeInfoCompat.ACTION_CLICK, getString(R.string.holder_showqr_animation_voiceover_hint))
+        binding.animation.addAccessibilityAction(
+            AccessibilityNodeInfoCompat.ACTION_CLICK,
+            getString(R.string.holder_showqr_animation_voiceover_hint)
+        )
     }
 
     private fun returnToApp(externalReturnAppData: ExternalReturnAppData) {
@@ -243,20 +262,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                             qrCodePagerAdapter.qrCodeDataList.get(binding.viewPager.currentItem)
                         if (it.itemId == R.id.action_show_qr_explanation) {
                             val infoScreen = when (qrCodeData) {
-                                is QrCodeData.Domestic -> {
-                                    val personalDetails = personalDetailsUtil.getPersonalDetails(
-                                        firstNameInitial = qrCodeData.readDomesticCredential.firstNameInitial,
-                                        lastNameInitial = qrCodeData.readDomesticCredential.lastNameInitial,
-                                        birthDay = qrCodeData.readDomesticCredential.birthDay,
-                                        birthMonth = qrCodeData.readDomesticCredential.birthMonth
-                                    )
-
-                                    // TODO refactor the disclosurePolicy
-                                    infoScreenUtil.getForDomesticQr(
-                                        personalDetails = personalDetails,
-                                        disclosurePolicy = (args.data.shouldDisclose as QrCodeFragmentData.ShouldDisclose.Disclose).disclosurePolicy
-                                    )
-                                }
                                 is QrCodeData.European -> {
                                     when (args.data.originType) {
                                         is OriginType.Test -> {
@@ -271,11 +276,6 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
                                         }
                                         is OriginType.Recovery -> {
                                             infoScreenUtil.getForEuropeanRecoveryQr(
-                                                qrCodeData.readEuropeanCredential
-                                            )
-                                        }
-                                        is OriginType.VaccinationAssessment -> {
-                                            infoScreenUtil.getForEuropeanVaccinationQr(
                                                 qrCodeData.readEuropeanCredential
                                             )
                                         }
@@ -354,10 +354,15 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
         }
     }
 
-    private fun onPageSelectedPostAction(position: Int, europeanVaccinations: List<QrCodeData.European.Vaccination>) {
+    private fun onPageSelectedPostAction(
+        position: Int,
+        europeanVaccinations: List<QrCodeData.European.Vaccination>
+    ) {
         safeBindingBlock { binding ->
-            binding.nextQrButton.visibility = if (position == europeanVaccinations.size - 1) View.INVISIBLE else View.VISIBLE
-            binding.previousQrButton.visibility = if (position == 0) View.INVISIBLE else View.VISIBLE
+            binding.nextQrButton.visibility =
+                if (position == europeanVaccinations.size - 1) View.INVISIBLE else View.VISIBLE
+            binding.previousQrButton.visibility =
+                if (position == 0) View.INVISIBLE else View.VISIBLE
 
             val vaccination = europeanVaccinations[position]
             val doses = getString(
@@ -394,7 +399,10 @@ class QrCodesFragment : Fragment(R.layout.fragment_qr_codes) {
      * Checks if this fragment should automatically close
      */
     private fun checkShouldAutomaticallyClose() {
-        val shouldClose = qrCodesFragmentUtil.shouldClose(args.data.credentialsWithExpirationTime.last().second.toEpochSecond(), args.data.type)
+        val shouldClose = qrCodesFragmentUtil.shouldClose(
+            args.data.credentialsWithExpirationTime.last().second.toEpochSecond(),
+            args.data.type
+        )
         if (shouldClose) {
             findNavControllerSafety()?.popBackStack()
         }

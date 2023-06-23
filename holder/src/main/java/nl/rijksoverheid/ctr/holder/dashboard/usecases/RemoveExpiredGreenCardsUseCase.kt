@@ -7,6 +7,7 @@
 
 package nl.rijksoverheid.ctr.dashboard.usecases
 
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.models.GreenCard
 
@@ -22,10 +23,15 @@ interface RemoveExpiredGreenCardsUseCase {
 }
 
 class RemoveExpiredGreenCardsUseCaseImpl(
+    private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val holderDatabase: HolderDatabase
 ) : RemoveExpiredGreenCardsUseCase {
 
     override suspend fun execute(allGreenCards: List<GreenCard>) {
+        if (featureFlagUseCase.isInArchiveMode()) {
+            return
+        }
+
         val greenCardsToRemove = allGreenCards
             .filter {
                 it.origins.isEmpty()
