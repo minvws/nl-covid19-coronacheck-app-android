@@ -30,7 +30,7 @@ jobs:
       - name: Spotless
         run: ./gradlew spotlessCheck
       - name: Test
-        run: ./gradlew testDebug testAccDebug holder:lintAccDebug verifier:lintAccDebug holder:assemAccDebug holder:assemAccDebugAndroidTest
+        run: ./gradlew testDebug testAccDebug holder:lintAccDebug verifier:lintAccDebug holder:assemAccDebug holder:accDebugExecuteScreenshotTests
       - name: Archive test-results
         if: always()
         uses: actions/upload-artifact@v3
