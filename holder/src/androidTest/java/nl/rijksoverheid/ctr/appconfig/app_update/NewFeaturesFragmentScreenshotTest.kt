@@ -40,10 +40,10 @@ class NewFeaturesFragmentScreenshotTest : ScreenshotTest {
         val newFeatures = buildList<NewFeatureItem> {
             for (i in 0 until pagesSize) {
                 add(NewFeatureItem(
-                    imageResource = R.drawable.ic_paper_proof_international_qr,
+                    imageResource = R.drawable.illustration_new_in_the_app_archive_mode,
                     subTitleColor = R.color.link,
-                    titleResource = R.string.holder_newintheapp_foreignproofs_title,
-                    description = R.string.holder_newintheapp_foreignproofs_body
+                    titleResource = R.string.holder_newintheapp_archiveMode_title,
+                    description = R.string.holder_newintheapp_archiveMode_body
                 ))
             }
         }
