@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.shot)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.fladle)
 }
 
 def appVersionCode = 1000000
@@ -164,6 +165,29 @@ android {
     packagingOptions {
         exclude "META-INF/LICENSE**"
         pickFirst "MANIFEST.MF"
+    }
+
+    def end2endPassword = project.ext.has("android.testInstrumentationRunnerArguments.authPassword") ? project.ext.getProperty("android.testInstrumentationRunnerArguments.authPassword") : ""
+    fladle {
+        projectId = "coronatester-test"
+        variant = "accDebug"
+        maxTestShards = 1
+        testTargets = ["notPackage nl.rijksoverheid.ctr.holder.end2end"]
+        devices = [
+                ["model": "Pixel2.arm", "version": "29"]
+        ]
+        configs {
+            onDemand {
+                resultsHistoryName.set("UI Tests on demand")
+                testTargets.set(["package nl.rijksoverheid.ctr.holder.end2end"])
+                testTargets.set(["annotation nl.rijksoverheid.ctr.holder.end2end.utils.RunFirebaseTestOnDemand"])
+                environmentVariables.set(["authPassword": end2endPassword, "clearPackageData": "true"])
+                devices.set([
+                        ["model": "panther", "version": "33", "locale": "nl"],
+                ])
+            }
+        }
+        flankVersion = "22.05.0"
     }
 }
 

@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: macos-12
     steps:
       - uses: actions/checkout@v3
       - id: setup
@@ -30,7 +30,14 @@ jobs:
       - name: Spotless
         run: ./gradlew spotlessCheck
       - name: Test
-        run: ./gradlew testDebug testAccDebug holder:lintAccDebug verifier:lintAccDebug holder:assemAccDebug holder:accDebugExecuteScreenshotTests
+        run: ./gradlew testDebug testAccDebug holder:lintAccDebug verifier:lintAccDebug holder:assemAccDebug holder:assemAccDebugAndroidTest
+      - name: Emulator Test
+        if: "!contains(github.event.pull_request.labels.*.name, 'skip-screenshot-tests')"
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: ./gradlew accDebugExecuteScreenshotTests
+          profile: pixel
       - name: Archive test-results
         if: always()
         uses: actions/upload-artifact@v3
