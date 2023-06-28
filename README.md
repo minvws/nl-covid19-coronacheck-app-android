@@ -177,8 +177,6 @@ Dependencies management is handled with [Gradle's Version Catalog](https://docs.
 #### Continuous Integration only
 
 * [firebase-action](https://github.com/littlerobots/firebase-action) for sending builds to firebase for internal testing, setting up credentials via a service account and disabling firebase analytics
-* [fladle](https://runningcode.github.io/fladle/) gradle plugin for Firebase test lab and flank
-* [flank](https://github.com/Flank/flank) for massively running ui tests on Firebase test lab
 
 ### In house dependencies
 
