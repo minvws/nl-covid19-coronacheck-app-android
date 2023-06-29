@@ -165,6 +165,12 @@ android {
         exclude "META-INF/LICENSE**"
         pickFirst "MANIFEST.MF"
     }
+
+    shot {
+        // screenshots generated with arm emulators locally are not identical to x86
+        // emulator ones from the CI (github does not support yet apple silicon runners)
+        tolerance = 0.5
+    }
 }
 
 dependencies {
