@@ -9,6 +9,9 @@ import kotlinx.coroutines.withContext
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
+import nl.rijksoverheid.ctr.holder.models.HolderStep
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
+import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -21,15 +24,25 @@ open class ConfigFetchWorker(
     private val context: Context,
     params: WorkerParameters,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase,
     private val configResultUseCase: ConfigResultUseCase
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
-        when (configResultUseCase.fetch()) {
-            is ConfigResult.Error -> Result.retry()
+        val configResult = try {
+            configResultUseCase.fetch()
+        } catch (exception: Exception) {
+            ConfigResult.Error(NetworkRequestResult.Failed.ClientNetworkError(HolderStep.ConfigurationNetworkRequest))
+        }
+        when (configResult) {
+            is ConfigResult.Error -> {
+                WorkManager.getInstance(context).cancelAllWork()
+                Result.failure()
+            }
             is ConfigResult.Success -> {
                 val appDeactivated = cachedAppConfigUseCase.getCachedAppConfig().appDeactivated
-                if (appDeactivated) {
+                val appInArchiveMode = holderFeatureFlagUseCase.isInArchiveMode()
+                if (appDeactivated || appInArchiveMode) {
                     WorkManager.getInstance(context).cancelAllWork()
                     Result.failure()
                 } else {
