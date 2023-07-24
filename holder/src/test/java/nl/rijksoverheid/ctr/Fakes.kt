@@ -1,6 +1,7 @@
 package nl.rijksoverheid.ctr
 
 import android.graphics.Bitmap
+import android.net.ConnectivityManager
 import androidx.lifecycle.MutableLiveData
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import io.mockk.mockk
@@ -62,6 +63,7 @@ import nl.rijksoverheid.ctr.shared.models.Flow
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import nl.rijksoverheid.ctr.shared.models.VerificationPolicy
 import nl.rijksoverheid.ctr.shared.models.VerificationResult
+import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import nl.rijksoverheid.rdo.modules.luhncheck.TokenValidator
 import org.json.JSONArray
 import org.json.JSONObject
@@ -692,5 +694,29 @@ fun fakeYourEventsViewModel(
 
         override fun checkForConflictingEvents(remoteProtocols: Map<RemoteProtocol, ByteArray>) {
         }
+    }
+}
+
+fun fakeAndroidUtil(isSmallScreen: Boolean) = object : AndroidUtil {
+    override fun isSmallScreen() = isSmallScreen
+
+    override fun getMasterKeyAlias(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun isNetworkAvailable(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun getConnectivityManager(): ConnectivityManager {
+        TODO("Not yet implemented")
+    }
+
+    override fun generateRandomKey(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun getFirstInstallTime(): OffsetDateTime {
+        TODO("Not yet implemented")
     }
 }
