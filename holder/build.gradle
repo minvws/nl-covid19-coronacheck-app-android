@@ -180,7 +180,6 @@ dependencies {
     implementation project(":introduction")
     implementation project(":api")
     implementation project(':mobilecore')
-    implementation project(":qrscanner")
     implementation project(":modules:luhncheck")
     implementation project(":modules:qrgenerator")
     implementation project(":modules:openidconnect")

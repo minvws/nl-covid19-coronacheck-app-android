@@ -31,9 +31,7 @@ class MenuViewModelImpl(
     private fun menuSections(context: Context): Array<MenuSection> {
         val actionExportIntroduction = MenuFragmentDirections.actionExportIntroduction()
         val actionChooseProofType = MenuFragmentDirections.actionChooseProofType()
-        val actionPaperProof = MenuFragmentDirections.actionPaperProof()
         val actionSavedEvents = MenuFragmentDirections.actionSavedEvents()
-        val actionDataMigration = MenuFragmentDirections.actionDataMigration()
         val actionHelpInfo = MenuFragmentDirections.actionMenu(
             toolbarTitle = context.getString(R.string.holder_helpInfo_title),
             menuSections = helpMenuDataModel.get(context)
@@ -56,30 +54,11 @@ class MenuViewModelImpl(
             )
         )
 
-        val addPaperProofMenuItem = MenuSection.MenuItem(
-            icon = R.drawable.ic_menu_paper,
-            title = R.string.holder_menu_paperproof_title,
-            subtitle = R.string.holder_menu_paperproof_subTitle,
-            onClick = MenuSection.MenuItem.OnClick.Navigate(
-                navigationActionId = actionPaperProof.actionId,
-                navigationArguments = actionPaperProof.arguments
-            )
-        )
-
         val savedEventsMenuItem = MenuSection.MenuItem(
             icon = R.drawable.ic_menu_saved_events,
             title = R.string.holder_menu_storedEvents,
             onClick = MenuSection.MenuItem.OnClick.Navigate(
                 navigationActionId = actionSavedEvents.actionId
-            )
-        )
-
-        val dataMigrationMenuItem = MenuSection.MenuItem(
-            icon = R.drawable.ic_menu_data_migration,
-            iconColor = -1,
-            title = R.string.holder_menu_migration,
-            onClick = MenuSection.MenuItem.OnClick.Navigate(
-                navigationActionId = actionDataMigration.actionId
             )
         )
 
@@ -102,11 +81,6 @@ class MenuViewModelImpl(
                 addVaccinationOrTestMenuItem
             } else {
                 null
-            },
-            if (featureFlagUseCase.getScanCertificateButtonEnabled()) {
-                addPaperProofMenuItem
-            } else {
-                null
             }
         )
 
@@ -120,11 +94,6 @@ class MenuViewModelImpl(
                         null
                     } else {
                         savedEventsMenuItem
-                    },
-                    if (featureFlagUseCase.getMigrateButtonEnabled()) {
-                        dataMigrationMenuItem
-                    } else {
-                        null
                     }
                 )
             ),
