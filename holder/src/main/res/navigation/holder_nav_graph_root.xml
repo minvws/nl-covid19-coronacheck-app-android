@@ -48,40 +48,6 @@
 
     </action>
 
-    <action
-        android:id="@+id/action_paper_proof_qr_scanner"
-        app:destination="@id/nav_paper_proof_qr_scanner"
-        app:enterAnim="@animator/fragment_open_enter"
-        app:exitAnim="@animator/fragment_open_exit"
-        app:popEnterAnim="@animator/fragment_close_enter"
-        app:popExitAnim="@animator/fragment_close_exit" />
-
-    <fragment
-        android:id="@+id/nav_paper_proof_qr_scanner"
-        android:name="nl.rijksoverheid.ctr.holder.paper_proof.PaperProofQrScannerFragment">
-
-        <action
-            android:id="@+id/action_paper_proof_code"
-            app:destination="@id/nav_paper_proof_code"
-            app:enterAnim="@animator/slide_in_right"
-            app:exitAnim="@animator/slide_out_left"
-            app:popEnterAnim="@animator/slide_in_left"
-            app:popExitAnim="@animator/slide_out_right" />
-
-    </fragment>
-
-    <fragment android:id="@+id/nav_data_migration_scan_qr"
-        android:name="nl.rijksoverheid.ctr.holder.data_migration.DataMigrationScanQrFragment"
-        android:label="@string/add_paper_proof_qr_scanner_title" />
-
-    <action
-        android:id="@+id/action_data_migration_scan_qr"
-        app:destination="@id/nav_data_migration_scan_qr"
-        app:enterAnim="@animator/fragment_open_enter"
-        app:exitAnim="@animator/fragment_open_exit"
-        app:popEnterAnim="@animator/fragment_close_enter"
-        app:popExitAnim="@animator/fragment_close_exit" />
-
     <include app:graph="@navigation/introduction_nav_graph" />
     <include app:graph="@navigation/app_status_nav_graph" />
 

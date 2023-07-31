@@ -33,7 +33,6 @@ import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import nl.rijksoverheid.ctr.persistence.database.usecases.RemoveCTBUseCase
-import nl.rijksoverheid.ctr.qrscanner.qrScannerModule
 import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
@@ -77,7 +76,6 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
         errorsModule(BuildConfig.FLAVOR),
         retrofitModule(BuildConfig.BASE_API_URL, BuildConfig.CDN_API_URL),
         responsesModule,
-        qrScannerModule,
         fuzzyMatchingModule,
         dashboardModule
     ).toTypedArray()
