@@ -3,14 +3,6 @@ package nl.rijksoverheid.ctr.holder.modules
 import java.time.Clock
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUseCase
 import nl.rijksoverheid.ctr.holder.dashboard.usecases.ShowBlockedEventsDialogUseCaseImpl
-import nl.rijksoverheid.ctr.holder.data_migration.DataExportUseCase
-import nl.rijksoverheid.ctr.holder.data_migration.DataExportUseCaseImpl
-import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationImportUseCase
-import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationImportUseCaseImpl
-import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationPayloadUseCase
-import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationPayloadUseCaseImpl
-import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationUseCase
-import nl.rijksoverheid.ctr.holder.data_migration.DataMigrationUseCaseImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithTokensUseCase
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventProvidersWithTokensUseCaseImpl
 import nl.rijksoverheid.ctr.holder.get_events.usecases.GetEventsUseCase
@@ -95,10 +87,6 @@ val eventsUseCasesModule = module {
     factory<PersistBlockedEventsUseCase> { PersistBlockedEventsUseCaseImpl(get()) }
     factory<ShowBlockedEventsDialogUseCase> { ShowBlockedEventsDialogUseCaseImpl(get()) }
     factory<DraftEventUseCase> { DraftEventUseCaseImpl(get()) }
-    factory<DataMigrationUseCase> { DataMigrationUseCaseImpl(get()) }
-    factory<DataExportUseCase> { DataExportUseCaseImpl(get(), get(), get()) }
-    factory<DataMigrationImportUseCase> { DataMigrationImportUseCaseImpl(get(), get()) }
-    factory<DataMigrationPayloadUseCase> { DataMigrationPayloadUseCaseImpl(get(), get()) }
     factory<PrintExportDccUseCase> { PrintExportDccUseCaseImpl(get(), get(), get()) }
     factory<PreviewPdfUseCase> { PreviewPdfUseCaseImpl() }
 }

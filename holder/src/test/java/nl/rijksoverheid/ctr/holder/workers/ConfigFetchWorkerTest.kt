@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.holder.workers
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.ListenableWorker.Result.Failure
-import androidx.work.ListenableWorker.Result.Retry
 import androidx.work.ListenableWorker.Result.Success
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -11,6 +10,7 @@ import kotlinx.coroutines.runBlocking
 import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,8 +30,12 @@ class ConfigFetchWorkerTest : AutoCloseKoinTest() {
         ApplicationProvider.getApplicationContext()
     }
 
+    private val holderFeatureFlagUseCase = mockk<HolderFeatureFlagUseCase>().apply {
+        coEvery { isInArchiveMode() } returns false
+    }
+
     @Test
-    fun `when config fetch fails, config fetch worker should retry`() = runBlocking {
+    fun `when config fetch fails, config fetch worker fails`() = runBlocking {
         val configResultUseCase = mockk<ConfigResultUseCase>().apply {
             coEvery { fetch() } returns ConfigResult.Error(mockk(relaxed = true))
         }
@@ -44,10 +48,11 @@ class ConfigFetchWorkerTest : AutoCloseKoinTest() {
             context,
             mockk(relaxed = true),
             cachedAppConfigUseCase,
+            holderFeatureFlagUseCase,
             configResultUseCase
         )
 
-        assertTrue(worker.doWork() is Retry)
+        assertTrue(worker.doWork() is Failure)
     }
 
     @Test
@@ -64,6 +69,7 @@ class ConfigFetchWorkerTest : AutoCloseKoinTest() {
             context,
             mockk(relaxed = true),
             cachedAppConfigUseCase,
+            holderFeatureFlagUseCase,
             configResultUseCase
         )
 
@@ -84,6 +90,32 @@ class ConfigFetchWorkerTest : AutoCloseKoinTest() {
             context,
             mockk(relaxed = true),
             cachedAppConfigUseCase,
+            holderFeatureFlagUseCase,
+            configResultUseCase
+        )
+
+        assertTrue(worker.doWork() is Failure)
+    }
+
+    @Test
+    fun `when app is is archive mode, config fetch worker fails`() = runBlocking {
+        val configResultUseCase = mockk<ConfigResultUseCase>().apply {
+            coEvery { fetch() } returns ConfigResult.Success("", "")
+        }
+
+        val cachedAppConfigUseCase = mockk<CachedAppConfigUseCase>().apply {
+            coEvery { getCachedAppConfig().appDeactivated } returns false
+        }
+
+        val holderFeatureFlagUseCase = mockk<HolderFeatureFlagUseCase>().apply {
+            coEvery { isInArchiveMode() } returns true
+        }
+
+        val worker = ConfigFetchWorker(
+            context,
+            mockk(relaxed = true),
+            cachedAppConfigUseCase,
+            holderFeatureFlagUseCase,
             configResultUseCase
         )
 

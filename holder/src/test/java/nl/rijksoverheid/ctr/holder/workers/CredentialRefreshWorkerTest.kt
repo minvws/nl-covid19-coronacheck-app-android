@@ -12,6 +12,7 @@ import nl.rijksoverheid.ctr.appconfig.models.ConfigResult
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
 import nl.rijksoverheid.ctr.holder.models.HolderFlow
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.DatabaseSyncerResult
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
 import org.junit.Assert.assertTrue
@@ -37,8 +38,12 @@ class CredentialRefreshWorkerTest : AutoCloseKoinTest() {
         coEvery { getCachedAppConfig().appDeactivated } returns false
     }
 
+    private val holderFeatureFlagUseCase = mockk<HolderFeatureFlagUseCase>().apply {
+        coEvery { isInArchiveMode() } returns false
+    }
+
     @Test
-    fun `when config fetch fails, credentials refresh worker should retry`() = runBlocking {
+    fun `when config fetch fails, credentials refresh worker fails`() = runBlocking {
         val configResultUseCase = mockk<ConfigResultUseCase>().apply {
             coEvery { fetch() } returns ConfigResult.Error(mockk(relaxed = true))
         }
@@ -49,10 +54,11 @@ class CredentialRefreshWorkerTest : AutoCloseKoinTest() {
             mockk(relaxed = true),
             configResultUseCase,
             cachedAppConfigUseCase,
+            holderFeatureFlagUseCase,
             holderDatabaseSyncer
         )
 
-        assertTrue(worker.doWork() is Retry)
+        assertTrue(worker.doWork() is Failure)
     }
 
     @Test
@@ -69,6 +75,7 @@ class CredentialRefreshWorkerTest : AutoCloseKoinTest() {
             mockk<CachedAppConfigUseCase>().apply {
                 coEvery { getCachedAppConfig().appDeactivated } returns true
             },
+            holderFeatureFlagUseCase,
             holderDatabaseSyncer
         )
 
@@ -84,6 +91,7 @@ class CredentialRefreshWorkerTest : AutoCloseKoinTest() {
             coEvery { fetch() } returns ConfigResult.Success("", "")
         },
         cachedAppConfigUseCase,
+        holderFeatureFlagUseCase,
         mockk<HolderDatabaseSyncer>().apply {
             coEvery {
                 sync(

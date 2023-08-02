@@ -6,6 +6,7 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
+import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
 
 /*
@@ -18,6 +19,7 @@ import nl.rijksoverheid.ctr.persistence.database.HolderDatabaseSyncer
 class HolderWorkerFactory(
     private val configResultUseCase: ConfigResultUseCase,
     private val cachedAppConfigUseCase: CachedAppConfigUseCase,
+    private val holderFeatureFlagUseCase: HolderFeatureFlagUseCase,
     private val holderDatabaseSyncer: HolderDatabaseSyncer
 ) : WorkerFactory() {
     override fun createWorker(
@@ -30,6 +32,7 @@ class HolderWorkerFactory(
                 appContext,
                 workerParameters,
                 cachedAppConfigUseCase,
+                holderFeatureFlagUseCase,
                 configResultUseCase
             )
             CredentialRefreshWorker::class.java.name -> CredentialRefreshWorker(
@@ -37,6 +40,7 @@ class HolderWorkerFactory(
                 workerParameters,
                 configResultUseCase,
                 cachedAppConfigUseCase,
+                holderFeatureFlagUseCase,
                 holderDatabaseSyncer
             )
             else -> null

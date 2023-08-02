@@ -79,7 +79,7 @@ fun Fragment.navigateSafety(destinationId: Int) {
     }
 }
 
-fun Fragment.navigateSafety(destinationId: Int, args: Bundle) {
+fun Fragment.navigateSafety(destinationId: Int, args: Bundle?) {
     try {
         findNavControllerSafety()?.navigate(destinationId, args)
     } catch (e: Exception) {

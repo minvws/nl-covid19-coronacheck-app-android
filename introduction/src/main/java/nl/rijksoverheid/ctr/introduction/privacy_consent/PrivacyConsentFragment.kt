@@ -63,7 +63,6 @@ class PrivacyConsentFragment : Fragment(R.layout.fragment_privacy_consent) {
 
         checkboxButtonBinding.checkboxButton.setOnClickListener {
             if (args.introductionData.hideConsent || checkboxButtonBinding.checkbox.isChecked) {
-                appConfigViewModel.saveNewFeaturesFinished()
                 appConfigViewModel.saveNewTerms()
                 introductionViewModel.saveIntroductionFinished(args.introductionData)
 

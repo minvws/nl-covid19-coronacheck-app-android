@@ -102,7 +102,6 @@ groupie = [
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 firebase-crashlytics = "com.google.firebase.crashlytics:2.9.4"
-fladle = "com.osacky.fladle:0.17.4"
 googleServices = "com.google.gms.google-services:4.3.15"
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }

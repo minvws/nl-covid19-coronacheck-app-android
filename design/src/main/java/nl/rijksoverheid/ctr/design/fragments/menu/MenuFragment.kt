@@ -18,9 +18,9 @@ import nl.rijksoverheid.ctr.design.R
 import nl.rijksoverheid.ctr.design.databinding.FragmentMenuBinding
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.design.widgets.Toolbar
-import nl.rijksoverheid.ctr.shared.ext.findNavControllerSafety
 import nl.rijksoverheid.ctr.shared.ext.getNavigationIconView
 import nl.rijksoverheid.ctr.shared.ext.getParcelableArrayCompat
+import nl.rijksoverheid.ctr.shared.ext.navigateSafety
 import nl.rijksoverheid.ctr.shared.utils.Accessibility.setAccessibilityFocus
 import org.koin.android.ext.android.inject
 
@@ -77,7 +77,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu) {
     private fun handleMenuItemClick(onClick: MenuSection.MenuItem.OnClick) {
         when (onClick) {
             is MenuSection.MenuItem.OnClick.Navigate -> {
-                findNavControllerSafety()?.navigate(onClick.navigationActionId, onClick.navigationArguments)
+                navigateSafety(onClick.navigationActionId, onClick.navigationArguments)
             }
             is MenuSection.MenuItem.OnClick.OpenBrowser -> {
                 intentUtil.openUrl(
