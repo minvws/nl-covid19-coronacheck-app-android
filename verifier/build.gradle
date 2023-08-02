@@ -56,22 +56,9 @@ android {
         }
     }
 
-    flavorDimensions "environment"
+    flavorDimensions ('environment')
     productFlavors {
-        tst {
-            dimension "environment"
-            versionNameSuffix "-test"
-            applicationIdSuffix ".test"
-            manifestPlaceholders = [appLabel: "@string/app_name_test"]
-            buildConfigField "String", "BASE_API_URL", "\"https://verifier-api.test.coronacheck.nl/v8/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://verifier-api-cdn.test.coronacheck.nl/v8/\""
-            apply plugin: 'com.google.gms.google-services'
-            apply plugin: 'com.google.firebase.crashlytics'
-            manifestPlaceholders = [appLabel: "@string/app_name_test", deepLinkHost: "web.test.coronacheck.nl"]
-            matchingFallbacks = ['mlkit']
-        }
         acc {
-            dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
@@ -83,7 +70,6 @@ android {
             matchingFallbacks = ['mlkit']
         }
         fdroidAcc {
-            dimension "environment"
             versionNameSuffix "-fdroid"
             applicationIdSuffix ".fdroid.acc"
             manifestPlaceholders = [appLabel: "@string/app_name_acc"]
@@ -93,11 +79,9 @@ android {
             matchingFallbacks = ['zxing']
         }
         prod {
-            dimension "environment"
             matchingFallbacks = ['mlkit']
         }
         fdroidProd {
-            dimension "environment"
             matchingFallbacks = ['zxing']
         }
     }
@@ -106,7 +90,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            productFlavors.tst.signingConfig signingConfigs.release
             productFlavors.acc.signingConfig signingConfigs.release
             productFlavors.prod.signingConfig signingConfigs.release
         }

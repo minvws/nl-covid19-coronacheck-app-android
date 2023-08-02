@@ -21,7 +21,6 @@ sealed class Environment {
             return with(context.packageName) {
                 when {
                     contains(".test") || isRobolectricTest() -> InstrumentationTests
-                    contains(".tst") -> Tst
                     contains(".acc") -> Acc
                     else -> Prod
                 }
