@@ -77,13 +77,13 @@ jobs:
         with:
           web_pdf_tools_commit_hash: ${{ env.WEB_PDF_TOOLS_COMMIT_HASH }}
       - name: Build
-        run: ./gradlew :holder:assemTstRelease :holder:assemAccRelease :holder:assemProdRelease :holder:bundleProdRelease
+        run: ./gradlew :holder:assemAccRelease :holder:assemProdRelease :holder:bundleProdRelease
       - name: Build fdroid
         if: ${{ env.GENERATE_FDROID_BUILDS == 'true' }}
         run: ./gradlew assemFdroidAccRelease assemFdroidProdRelease
       - name: Build verifier
         if: ${{ env.GENERATE_VERIFIER_BUILDS == 'true' }}
-        run: ./gradlew :verifier:assemTstRelease :verifier:assemAccRelease :verifier:assemProdRelease :verifier:bundleProdRelease
+        run: ./gradlew :verifier:assemAccRelease :verifier:assemProdRelease :verifier:bundleProdRelease
       - name: Clean up key store
         run: rm keystore.jks
       - name: Archive apks
@@ -114,12 +114,6 @@ jobs:
         with:
           serviceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
 
-      - name: Distribute holder test variant
-        run: |
-          firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/tst/release/holder-*.apk` \
-          --app 1:168257592968:android:cbb6d05f4163e39026493d \
-          --groups testers
-
       - name: Distribute holder acc variant
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/acc/release/holder-*.apk` \
@@ -137,13 +131,6 @@ jobs:
         run: |
           firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/prod/release/holder-*.apk` \
           --app 1:168257592968:android:aaa5afb416536fdb26493d \
-          --groups testers
-
-      - name: Distribute verifier test variant
-        if: ${{ env.GENERATE_VERIFIER_BUILDS == 'true' }}
-        run: |
-          firebase appdistribution:distribute `ls apks/verifier/build/outputs/apk/tst/release/verifier-*.apk` \
-          --app 1:168257592968:android:ed609f228437d86f26493d \
           --groups testers
 
       - name: Distribute verifier acc variant

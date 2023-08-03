@@ -72,25 +72,6 @@ android {
 
     flavorDimensions "environment"
     productFlavors {
-        tst {
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.test.coronacheck.nl/v9/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://holder-api.test.coronacheck.nl/v9/\""
-            buildConfigField "String", "MAX_BASE_URL", "\"https://max.test.coronacheck.nl\""
-            buildConfigField "String", "OPEN_ID_CLIENT_ID", "\"cc_app\""
-            buildConfigField "String", "OPEN_ID_REDIRECT_URL", "\"https://web.test.coronacheck.nl/app/auth2\""
-            buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL", "\"https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.test.coronacheck.nl/app/open?returnUri=scanner-test\""
-            buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.test.coronacheck.nl\""
-            buildConfigField "String", "PAP_BASE_URL", "\"https://pap.bananenhalen.nl/\""
-            dimension "environment"
-            versionNameSuffix "-test"
-            applicationIdSuffix ".test"
-            manifestPlaceholders = [appLabel: "@string/app_name_test", deepLinkHost: "web.test.coronacheck.nl", digidSchema: "coronacheck-test"]
-            apply plugin: 'com.google.gms.google-services'
-            apply plugin: 'com.google.firebase.crashlytics'
-            matchingFallbacks = ['mlkit']
-            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
-            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "false"
-        }
         acc {
             buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v9/\""
             buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v9/\""
@@ -140,7 +121,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            productFlavors.tst.signingConfig signingConfigs.release
             productFlavors.acc.signingConfig signingConfigs.release
             productFlavors.prod.signingConfig signingConfigs.release
         }
