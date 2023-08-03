@@ -33,10 +33,6 @@ class WebsiteEnvironmentUtilImpl(
                 coronaCheckUrl,
                 "web.acc.coronacheck.nl/"
             )
-            Environment.Tst -> stripWwwFromCoronacheckLinks(url).replace(
-                coronaCheckUrl,
-                "web.test.coronacheck.nl/"
-            )
             else -> url
         }
     }

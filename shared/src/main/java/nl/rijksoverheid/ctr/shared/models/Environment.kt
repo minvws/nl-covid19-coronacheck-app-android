@@ -11,7 +11,6 @@ import android.os.Build
  *
  */
 sealed class Environment {
-    object Tst : Environment()
     object Acc : Environment()
     object Prod : Environment()
     object InstrumentationTests : Environment()
