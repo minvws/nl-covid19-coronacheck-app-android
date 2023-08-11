@@ -15,6 +15,10 @@ import com.google.zxing.common.HybridBinarizer
 import nl.rijksoverheid.ctr.qrscanner.databinding.FragmentScannerBinding
 import timber.log.Timber
 
+// This source file is based in part on the work of https://github.com/obfusk licensed under the EUPL
+// Original code: https://github.com/minvws/nl-covid19-coronacheck-app-android/compare/main...obfusk:nl-covid19-coronacheck-app-android:foss
+// Copyright 2021 (c) obfusk
+
 class QrCodeProcessorImpl : QrCodeProcessor {
 
     @SuppressLint("UnsafeOptInUsageError")
