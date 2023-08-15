@@ -26,13 +26,6 @@ class WebsiteEnvironmentUtilImplTest {
     }
 
     @Test
-    fun `given a coronacheck url, when test, then return test web url`() {
-        every { context.packageName } returns "nl.rijksoverheid.ctr.holder.tst"
-
-        assert(websiteEnvironmentUtil.adjust(url) == "https://web.test.coronacheck.nl/en/faq-in-app.html")
-    }
-
-    @Test
     fun `given a coronacheck url, when prod, then return prod web url`() {
         every { context.packageName } returns "nl.rijksoverheid.ctr.holder"
 

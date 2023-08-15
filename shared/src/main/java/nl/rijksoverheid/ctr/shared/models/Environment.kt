@@ -11,7 +11,6 @@ import android.os.Build
  *
  */
 sealed class Environment {
-    object Tst : Environment()
     object Acc : Environment()
     object Prod : Environment()
     object InstrumentationTests : Environment()
@@ -21,7 +20,6 @@ sealed class Environment {
             return with(context.packageName) {
                 when {
                     contains(".test") || isRobolectricTest() -> InstrumentationTests
-                    contains(".tst") -> Tst
                     contains(".acc") -> Acc
                     else -> Prod
                 }
