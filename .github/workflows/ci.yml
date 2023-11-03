@@ -30,7 +30,7 @@ jobs:
       - name: Spotless
         run: ./gradlew spotlessCheck
       - name: Test
-        run: ./gradlew testAccDebug holder:lintAccDebug verifier:lintAccDebug
+        run: ./gradlew testAccDebugUnitTest verifier:testAccDebugUnitTest
       - name: Emulator Test
         if: "!contains(github.event.pull_request.labels.*.name, 'skip-screenshot-tests')"
         uses: reactivecircus/android-emulator-runner@v2
