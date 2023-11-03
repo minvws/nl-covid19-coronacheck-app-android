@@ -108,7 +108,7 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 # @pin dependent on Kotlin version
 ksp = "com.google.devtools.ksp:1.8.10-1.0.9"
 navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidx-navigation" }
-shot = "shot:5.14.1"
+shot = "shot:6.0.0"
 spotless = "com.diffplug.spotless:5.10.1"
 versionCatalogUpdate = "nl.littlerobots.version-catalog-update:0.7.0"
 versions = "com.github.ben-manes.versions:0.46.0"
