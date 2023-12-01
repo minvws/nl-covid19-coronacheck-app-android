@@ -15,7 +15,6 @@ import nl.rijksoverheid.ctr.holder.modules.repositoriesModule
 import nl.rijksoverheid.ctr.holder.modules.storageModule
 import nl.rijksoverheid.ctr.holder.modules.utilsModule
 import nl.rijksoverheid.ctr.holder.modules.viewModels
-import nl.rijksoverheid.ctr.introduction.introductionModule
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import nl.rijksoverheid.ctr.shared.SharedApplication
@@ -67,7 +66,6 @@ open class HolderApplication : SharedApplication() {
                 ),
                 sharedModule,
                 appConfigModule(BuildConfig.CDN_API_URL, "holder", BuildConfig.VERSION_CODE),
-                introductionModule,
                 *getAdditionalModules().toTypedArray(),
                 designModule
             )

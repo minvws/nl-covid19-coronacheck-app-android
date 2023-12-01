@@ -15,7 +15,6 @@ import nl.rijksoverheid.ctr.appconfig.persistence.AppConfigPersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.AppUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.persistence.RecommendedUpdatePersistenceManager
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
-import nl.rijksoverheid.ctr.introduction.persistance.IntroductionPersistenceManager
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.shared.ext.toObject
@@ -38,7 +37,6 @@ class HolderAppStatusUseCaseImpl(
     private val moshi: Moshi,
     private val appUpdateData: AppUpdateData,
     private val appUpdatePersistenceManager: AppUpdatePersistenceManager,
-    private val introductionPersistenceManager: IntroductionPersistenceManager,
     private val featureFlagUseCase: HolderFeatureFlagUseCase,
     private val holderDatabase: HolderDatabase,
     private val errorCodeStringFactory: ErrorCodeStringFactory
@@ -93,7 +91,6 @@ class HolderAppStatusUseCaseImpl(
         return when {
             updateRequired(currentVersionCode, appConfig) -> AppStatus.UpdateRequired
             appConfig.appDeactivated -> AppStatus.Deactivated
-            shouldShowNewFeatures() -> getNewFeatures()
             newTermsAvailable() -> AppStatus.ConsentNeeded(appUpdateData)
             currentVersionCode < appConfig.recommendedVersion -> getHolderRecommendUpdateStatus(
                 appConfig
@@ -107,9 +104,6 @@ class HolderAppStatusUseCaseImpl(
         return featureFlagUseCase.isInArchiveMode() && holderDatabase.eventGroupDao().getAll()
             .isEmpty()
     }
-
-    private fun shouldShowNewFeatures() =
-        (newFeaturesAvailable()) && introductionPersistenceManager.getIntroductionFinished()
 
     private fun getHolderRecommendUpdateStatus(appConfig: AppConfig) =
         if (appConfig.recommendedVersion > recommendedUpdatePersistenceManager.getHolderVersionUpdateShown()) {
@@ -150,6 +144,5 @@ class HolderAppStatusUseCaseImpl(
     }
 
     private fun newTermsAvailable() =
-        !appUpdatePersistenceManager.getNewTermsSeen(appUpdateData.newTerms.version) &&
-                introductionPersistenceManager.getIntroductionFinished()
+        !appUpdatePersistenceManager.getNewTermsSeen(appUpdateData.newTerms.version)
 }

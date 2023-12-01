@@ -157,7 +157,6 @@ dependencies {
     implementation project(":shared")
     implementation project(":appconfig")
     implementation project(":design")
-    implementation project(":introduction")
     implementation project(":api")
     implementation project(':mobilecore')
     implementation project(":modules:luhncheck")
