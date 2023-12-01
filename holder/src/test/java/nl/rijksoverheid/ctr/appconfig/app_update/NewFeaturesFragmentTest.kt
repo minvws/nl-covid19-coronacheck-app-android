@@ -26,7 +26,7 @@ class NewFeaturesFragmentTest : AutoCloseKoinTest() {
         ApplicationProvider.getApplicationContext()
     ).also {
         it.setViewModelStore(ViewModelStore())
-        it.setGraph(R.navigation.holder_nav_graph_main)
+        it.setGraph(R.navigation.holder_nav_graph_root)
     }
 
     private fun featureItem() = NewFeatureItem(

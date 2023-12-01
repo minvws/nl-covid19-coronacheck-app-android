@@ -19,7 +19,6 @@ import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
 import nl.rijksoverheid.ctr.appconfig.models.NewTerms
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
 import nl.rijksoverheid.ctr.holder.R
-import nl.rijksoverheid.ctr.introduction.IntroductionViewModel
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -53,31 +52,14 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `If onboarding not finished navigate to introduction`() {
-        launchHolderMainActivity(
-            fakeIntroductionViewModel(
-                introductionRequired = true
-            )
-        )
-
-        scenario.onActivity {
-            assertEquals(
-                it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_setup
-            )
-        }
-    }
-
-    @Test
     fun `If consent needed navigate to app status`() {
         val scenario = launchHolderMainActivity(
-            fakeIntroductionViewModel(),
             appStatus = AppStatus.ConsentNeeded(AppUpdateData(listOf(), NewTerms(1, true)))
         )
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_new_terms
+                R.id.nav_app_locked
             )
         }
     }
@@ -85,28 +67,12 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If new features navigate to app status`() {
         val scenario = launchHolderMainActivity(
-            fakeIntroductionViewModel(),
             appStatus = AppStatus.NewFeatures(AppUpdateData(listOf(), NewTerms(1, true)))
         )
         scenario.onActivity {
             assertEquals(
                 it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_new_features
-            )
-        }
-    }
-
-    @Test
-    fun `If introduction finished navigate to main`() {
-        val scenario = launchHolderMainActivity(
-            fakeIntroductionViewModel(
-                introductionRequired = false
-            )
-        )
-        scenario.onActivity {
-            assertEquals(
-                it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_main
+                R.id.nav_app_locked
             )
         }
     }
@@ -114,7 +80,6 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     @Test
     fun `If app status is not NoActionRequired navigate to app status`() {
         val scenario = launchHolderMainActivity(
-            fakeIntroductionViewModel(),
             appStatus = AppStatus.Error
         )
         scenario.onActivity {
@@ -126,25 +91,15 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     }
 
     private fun launchHolderMainActivity(
-        introductionViewModel: IntroductionViewModel,
         appStatus: AppStatus = AppStatus.NoActionRequired
     ): ActivityScenario<HolderMainActivity> {
 
         loadKoinModules(
             module {
                 viewModel {
-                    introductionViewModel
-                }
-                viewModel {
                     fakeAppConfigViewModel(
                         appStatus = appStatus
                     )
-                }
-                viewModel {
-                    fakeDashboardViewModel()
-                }
-                viewModel {
-                    fakeSetupViewModel(updateConfig = false)
                 }
                 factory {
                     fakeCachedAppConfigUseCase()
