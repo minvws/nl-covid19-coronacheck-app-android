@@ -181,10 +181,6 @@ class PapFragment : DigiDFragment(R.layout.fragment_no_digid) {
                 }
             }
         }
-
-        digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
-            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
-        })
     }
 
     override fun getLoginType(): LoginType {

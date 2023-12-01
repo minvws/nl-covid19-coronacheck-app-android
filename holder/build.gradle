@@ -162,9 +162,7 @@ dependencies {
     implementation project(':mobilecore')
     implementation project(":modules:luhncheck")
     implementation project(":modules:qrgenerator")
-    implementation project(":modules:openidconnect")
 
-    implementation libs.openid.appauth
     implementation libs.bundles.groupie
     implementation libs.navigation.fragment
     implementation libs.navigation.ui

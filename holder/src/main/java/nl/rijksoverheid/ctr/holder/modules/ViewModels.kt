@@ -45,12 +45,6 @@ val viewModels = module {
     viewModel<QrCodesViewModel> { QrCodesViewModelImpl(get(), get(), get()) }
     viewModel<HolderMainActivityViewModel> { HolderMainActivityViewModelImpl() }
     viewModel<InputTokenViewModel> { InputTokenViewModelImpl(get(), get()) }
-    viewModel(named(LoginQualifier.DIGID)) {
-        LoginViewModel(get(named(LoginQualifier.DIGID)), get())
-    }
-    viewModel(named(LoginQualifier.MIJN_CN)) {
-        LoginViewModel(get(named(LoginQualifier.MIJN_CN)), get())
-    }
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<DeviceSecureViewModel> { DeviceSecureViewModelImpl(get(), get()) }
     viewModel<YourEventsViewModel> { YourEventsViewModelImpl(get(), get(), get()) }

@@ -9,13 +9,6 @@ package nl.rijksoverheid.ctr.holder.get_events
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
-import net.openid.appauth.AppAuthConfiguration
-import net.openid.appauth.AuthorizationService
-import net.openid.appauth.browser.BrowserAllowList
-import net.openid.appauth.browser.BrowserSelector
-import net.openid.appauth.browser.VersionRange
-import net.openid.appauth.browser.VersionedBrowserMatcher
 import nl.rijksoverheid.ctr.design.fragments.info.ButtonData
 import nl.rijksoverheid.ctr.design.fragments.info.DescriptionData
 import nl.rijksoverheid.ctr.design.fragments.info.InfoFragmentData
@@ -33,15 +26,12 @@ import nl.rijksoverheid.ctr.holder.get_events.models.LoginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteOriginType
 import nl.rijksoverheid.ctr.holder.get_events.models.RemoteProtocol
 import nl.rijksoverheid.ctr.holder.get_events.utils.LoginTypeUtil
-import nl.rijksoverheid.ctr.holder.modules.qualifier.LoginQualifier
 import nl.rijksoverheid.ctr.holder.your_events.YourEventsFragmentType
 import nl.rijksoverheid.ctr.shared.livedata.EventObserver
 import nl.rijksoverheid.ctr.shared.models.ErrorResult
 import nl.rijksoverheid.ctr.shared.models.ErrorResultFragmentData
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.qualifier.named
 
 /*
  *  Copyright (c) 2021 De Staat der Nederlanden, Ministerie van Volksgezondheid, Welzijn en Sport.
@@ -55,19 +45,6 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
     private val infoFragmentUtil: InfoFragmentUtil by inject()
     private val loginTypeUtil: LoginTypeUtil by inject()
     private val getEventsViewModel: GetEventsViewModel by viewModel()
-    protected val digidViewModel: LoginViewModel by sharedViewModel(named(LoginQualifier.DIGID))
-    protected val mijnCnViewModel: LoginViewModel by viewModel(named(LoginQualifier.MIJN_CN))
-    private val authService by lazy {
-        val appAuthConfig = AppAuthConfiguration.Builder()
-            .setBrowserMatcher(BrowserAllowList(*getSupportedBrowsers()))
-            .build()
-        AuthorizationService(requireActivity(), appAuthConfig)
-    }
-
-    private val loginResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            digidViewModel.handleActivityResult(getLoginType(), it, authService)
-        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -185,69 +162,13 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
             }
         })
 
-        digidViewModel.loading.observe(viewLifecycleOwner, EventObserver {
-            onDigidLoading(it)
-            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(it)
-        })
-
-        digidViewModel.loginResultLiveData.observe(viewLifecycleOwner, EventObserver {
-            when (it) {
-                is LoginResult.Success -> {
-                    getEventsViewModel.getDigidEvents(
-                        getLoginType(),
-                        it.jwt,
-                        getOriginTypes()
-                    )
-                }
-                is LoginResult.Failed -> {
-                    presentError(it.errorResult)
-                }
-                is LoginResult.Cancelled -> {
-                    openDialog(
-                        DialogFragmentData(
-                            title = loginTypeUtil.getCanceledDialogTitle(getLoginType()),
-                            message = loginTypeUtil.getCanceledDialogDescription(
-                                getLoginType(),
-                                getOriginTypes().first()
-                            ),
-                            positiveButtonData = DialogButtonData.Dismiss(
-                                textId = R.string.dialog_close
-                            )
-                        )
-                    )
-                    dialogPresented()
-                }
-                LoginResult.NoBrowserFound -> {
-                    openDialog(
-                        DialogFragmentData(
-                            title = R.string.dialog_no_browser_title,
-                            message = R.string.dialog_no_browser_message,
-                            messageArguments = listOf(
-                                getString(
-                                    loginTypeUtil.getNoBrowserDialogDescription(
-                                        getLoginType()
-                                    )
-                                )
-                            ),
-                            positiveButtonData = DialogButtonData.Dismiss(
-                                textId = R.string.ok
-                            )
-                        )
-                    )
-                    dialogPresented()
-                }
-            }
-            onDigidLoading(false)
-            (parentFragment?.parentFragment as HolderMainFragment).presentLoading(false)
-        })
-
         getEventsViewModel.loading.observe(viewLifecycleOwner, EventObserver {
             onGetEventsLoading(it)
         })
     }
 
     fun loginWithDigiD() {
-        digidViewModel.login(getLoginType(), loginResult, authService)
+
     }
 
     private fun getErrorCodes(errorResults: List<ErrorResult>): String {
@@ -264,25 +185,6 @@ abstract class DigiDFragment(contentLayoutId: Int) : BaseFragment(contentLayoutI
             RemoteOriginType.Vaccination -> R.string.error_get_events_missing_events_dialog_title_vaccines
         }
     }
-
-    /**
-     * Gets all supported browsers and filters out the custom tab browsers as those can cause
-     * issues with DigiD
-     *
-     * @return Array of browser matchers supported for the app auth config
-     */
-    private fun getSupportedBrowsers(): Array<VersionedBrowserMatcher> =
-        BrowserSelector.getAllBrowsers(context)
-            .filter { it.useCustomTab == false }
-            .filter { it.packageName != "android" }
-            .map {
-                VersionedBrowserMatcher(
-                    it.packageName,
-                    it.signatureHashes,
-                    false,
-                    VersionRange.ANY_VERSION
-                )
-            }.toTypedArray()
 
     protected fun getCopyForOriginType(): GetEventsFragmentCopy {
         when (getOriginTypes().first()) {
