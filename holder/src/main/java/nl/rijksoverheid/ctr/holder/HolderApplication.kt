@@ -1,7 +1,5 @@
 package nl.rijksoverheid.ctr.holder
 
-import android.util.Log
-import androidx.work.Configuration
 import androidx.work.WorkerFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,12 +47,9 @@ import org.koin.core.module.Module
  *   SPDX-License-Identifier: EUPL-1.2
  *
  */
-open class HolderApplication : SharedApplication(), Configuration.Provider {
+open class HolderApplication : SharedApplication() {
 
     private val holderDatabase: HolderDatabase by inject()
-    private val holderWorkerFactory: WorkerFactory by inject()
-    private val appConfigStorageManager: AppConfigStorageManager by inject()
-    private val mobileCoreWrapper: MobileCoreWrapper by inject()
     private val remoteCTBUseCase: RemoveCTBUseCase by inject()
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
@@ -115,26 +110,9 @@ open class HolderApplication : SharedApplication(), Configuration.Provider {
             }
             remoteCTBUseCase.execute()
         }
-
-        if (appConfigStorageManager.areConfigFilesPresentInFilesFolder()) {
-            mobileCoreWrapper.initializeHolder(applicationContext.filesDir.path)
-        }
     }
 
     override fun getAdditionalModules(): List<Module> {
         return listOf(holderPreferenceModule, holderMobileCoreModule)
-    }
-
-    override fun getWorkManagerConfiguration(): Configuration {
-        return Configuration.Builder().apply {
-            setMinimumLoggingLevel(
-                if (BuildConfig.DEBUG) {
-                    Log.DEBUG
-                } else {
-                    Log.ERROR
-                }
-            )
-            setWorkerFactory(holderWorkerFactory)
-        }.build()
     }
 }
