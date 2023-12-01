@@ -14,9 +14,6 @@ import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotification
 import nl.rijksoverheid.ctr.holder.usecases.BuildConfigUseCaseImpl
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCase
 import nl.rijksoverheid.ctr.holder.usecases.HolderFeatureFlagUseCaseImpl
-import nl.rijksoverheid.ctr.holder.workers.HolderWorkerFactory
-import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtil
-import nl.rijksoverheid.ctr.holder.workers.WorkerManagerUtilImpl
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCase
 import nl.rijksoverheid.ctr.persistence.HolderCachedAppConfigUseCaseImpl
 import nl.rijksoverheid.ctr.shared.BuildConfigUseCase
@@ -52,8 +49,6 @@ val appModule = module {
         HolderFeatureFlagUseCaseImpl(get(), get())
     }
 
-    factory<WorkerManagerUtil> { WorkerManagerUtilImpl(androidContext(), get(), get()) }
-    factory<WorkerFactory> { HolderWorkerFactory(get(), get(), get(), get()) }
 }
 
 private fun isDebugApp(androidContext: Context) =

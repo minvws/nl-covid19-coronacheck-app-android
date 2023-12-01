@@ -1,15 +1,5 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.holder.api.HolderApiClientUtil
-import nl.rijksoverheid.ctr.holder.api.HolderApiClientUtilImpl
-import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtil
-import nl.rijksoverheid.ctr.holder.api.TestProviderApiClientUtilImpl
-import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepository
-import nl.rijksoverheid.ctr.holder.api.repositories.CoronaCheckRepositoryImpl
-import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepository
-import nl.rijksoverheid.ctr.holder.api.repositories.EventProviderRepositoryImpl
-import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepository
-import nl.rijksoverheid.ctr.holder.api.repositories.TestProviderRepositoryImpl
 import nl.rijksoverheid.ctr.holder.modules.qualifier.ErrorResponseQualifier
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -22,37 +12,4 @@ import org.koin.dsl.module
  *
  */
 val repositoriesModule = module {
-    factory<HolderApiClientUtil> {
-        HolderApiClientUtilImpl(get(), get())
-    }
-    single<CoronaCheckRepository> {
-        CoronaCheckRepositoryImpl(
-            get(),
-            get(),
-            get(),
-            get(named(ErrorResponseQualifier.CORONA_CHECK)),
-            get(),
-            get()
-        )
-    }
-    factory<TestProviderRepository> {
-        TestProviderRepositoryImpl(
-            get(),
-            get(),
-            get(named("SignedResponseWithModel"))
-        )
-    }
-    factory<TestProviderApiClientUtil> {
-        TestProviderApiClientUtilImpl(
-            get(),
-            get(),
-            get()
-        )
-    }
-    factory<EventProviderRepository> {
-        EventProviderRepositoryImpl(
-            get(),
-            get()
-        )
-    }
 }
