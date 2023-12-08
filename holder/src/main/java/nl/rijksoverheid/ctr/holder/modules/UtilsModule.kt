@@ -6,8 +6,6 @@ import nl.rijksoverheid.ctr.holder.utils.LocalDateUtil
 import nl.rijksoverheid.ctr.holder.utils.LocalDateUtilImpl
 import nl.rijksoverheid.ctr.holder.utils.StringUtil
 import nl.rijksoverheid.ctr.holder.utils.StringUtilImpl
-import nl.rijksoverheid.rdo.modules.luhncheck.TokenValidator
-import nl.rijksoverheid.rdo.modules.luhncheck.TokenValidatorImpl
 import org.koin.dsl.module
 
 /*
@@ -18,7 +16,6 @@ import org.koin.dsl.module
  *
  */
 val utilsModule = module {
-    factory<TokenValidator> { TokenValidatorImpl() }
     factory<CountryUtil> { CountryUtilImpl() }
     factory<LocalDateUtil> { LocalDateUtilImpl(get(), get()) }
     factory<StringUtil> { StringUtilImpl(get()) }
