@@ -11,7 +11,9 @@
 
         <argument
             android:name="app_status"
-            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppStatus" />
+            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppStatus"
+            app:nullable="true"
+            android:defaultValue="@null"/>
 
         <action
             android:id="@+id/action_nav_new_features"

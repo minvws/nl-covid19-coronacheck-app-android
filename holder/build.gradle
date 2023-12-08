@@ -157,14 +157,8 @@ dependencies {
     implementation project(":shared")
     implementation project(":appconfig")
     implementation project(":design")
-    implementation project(":introduction")
     implementation project(":api")
-    implementation project(':mobilecore')
-    implementation project(":modules:luhncheck")
-    implementation project(":modules:qrgenerator")
-    implementation project(":modules:openidconnect")
 
-    implementation libs.openid.appauth
     implementation libs.bundles.groupie
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
@@ -175,7 +169,6 @@ dependencies {
     implementation libs.lottie
     debugImplementation libs.fragment.testing
     debugImplementation libs.androidx.test.monitor
-    implementation libs.zxing.core
     implementation(platform(libs.okhttp.bom))
     implementation libs.okhttp.logging.interceptor
     implementation libs.okhttp

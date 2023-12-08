@@ -20,7 +20,7 @@ class AppStatusFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        when (val status = args.appStatus) {
+        when (val status = args.appStatus ?: AppStatus.Deactivated) {
             is AppStatus.UpdateRequired,
             is AppStatus.Deactivated,
             is AppStatus.Archived,
