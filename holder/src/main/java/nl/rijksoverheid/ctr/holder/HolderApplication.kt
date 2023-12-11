@@ -48,7 +48,7 @@ open class HolderApplication : SharedApplication() {
             modules(
                 *holderModules,
                 sharedModule,
-                appConfigModule(BuildConfig.CDN_API_URL, "holder", BuildConfig.VERSION_CODE),
+                appConfigModule(),
                 *getAdditionalModules().toTypedArray(),
                 designModule
             )

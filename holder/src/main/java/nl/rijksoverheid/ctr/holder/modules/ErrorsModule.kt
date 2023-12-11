@@ -1,10 +1,7 @@
 package nl.rijksoverheid.ctr.holder.modules
 
-import nl.rijksoverheid.ctr.api.factory.NetworkRequestResultFactory
-import nl.rijksoverheid.ctr.holder.modules.qualifier.ErrorResponseQualifier
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactoryImpl
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 /*
@@ -15,13 +12,6 @@ import org.koin.dsl.module
  *
  */
 fun errorsModule(flavor: String) = module {
-    factory {
-        NetworkRequestResultFactory(
-            get(named(ErrorResponseQualifier.CORONA_CHECK)),
-            get(),
-            get(named(ErrorResponseQualifier.MIJN_CN))
-        )
-    }
 
     factory<ErrorCodeStringFactory> {
         ErrorCodeStringFactoryImpl(!flavor.contains("fdroid"))

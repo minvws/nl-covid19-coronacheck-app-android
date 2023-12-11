@@ -159,9 +159,7 @@ dependencies {
     testImplementation libs.mockk
     androidTestImplementation libs.mockk.android
     testImplementation libs.koin.test.junit4
-    testImplementation(libs.robolectric) {
-        exclude group: 'org.bouncycastle'
-    }
+    testImplementation libs.robolectric
     testImplementation libs.androidx.test.runner
     testImplementation libs.okhttp.mockWebServer
     testImplementation(libs.barista) {
