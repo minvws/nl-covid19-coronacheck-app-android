@@ -8,14 +8,11 @@ import nl.rijksoverheid.ctr.appconfig.appConfigModule
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.appModule
 import nl.rijksoverheid.ctr.holder.modules.errorsModule
-import nl.rijksoverheid.ctr.holder.modules.holderAppStatusModule
 import nl.rijksoverheid.ctr.holder.modules.holderPreferenceModule
-import nl.rijksoverheid.ctr.holder.modules.repositoriesModule
 import nl.rijksoverheid.ctr.holder.modules.storageModule
 import nl.rijksoverheid.ctr.holder.modules.utilsModule
 import nl.rijksoverheid.ctr.holder.modules.viewModels
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
-import nl.rijksoverheid.ctr.persistence.database.entities.WalletEntity
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -33,8 +30,6 @@ import org.koin.core.module.Module
  */
 open class HolderApplication : SharedApplication() {
 
-    private val holderDatabase: HolderDatabase by inject()
-
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     open fun coroutineScopeBlock(block: suspend () -> Unit) {
         coroutineScope.launch { block() }
@@ -44,7 +39,6 @@ open class HolderApplication : SharedApplication() {
         storageModule,
         utilsModule,
         viewModels,
-        repositoriesModule,
         appModule,
         errorsModule(BuildConfig.FLAVOR),
     ).toTypedArray()
@@ -56,12 +50,9 @@ open class HolderApplication : SharedApplication() {
             androidContext(this@HolderApplication)
             modules(
                 *holderModules,
-                holderAppStatusModule,
                 apiModule(
                     BuildConfig.BASE_API_URL.toHttpUrl(),
-                    BuildConfig.SIGNATURE_CERTIFICATE_CN_MATCH,
-                    BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS,
-                    BuildConfig.FEATURE_TEST_PROVIDER_API_CHECKS
+                    BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS
                 ),
                 sharedModule,
                 appConfigModule(BuildConfig.CDN_API_URL, "holder", BuildConfig.VERSION_CODE),

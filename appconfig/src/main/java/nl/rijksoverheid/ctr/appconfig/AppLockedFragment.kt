@@ -8,19 +8,13 @@
 
 package nl.rijksoverheid.ctr.appconfig
 
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import nl.rijksoverheid.ctr.appconfig.databinding.FragmentAppLockedBinding
-import nl.rijksoverheid.ctr.appconfig.models.AppStatus
-import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
-import nl.rijksoverheid.ctr.design.ext.enableHtmlLinks
 import nl.rijksoverheid.ctr.design.utils.IntentUtil
 import nl.rijksoverheid.ctr.shared.utils.AndroidUtil
 import org.koin.android.ext.android.inject
@@ -31,9 +25,7 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
 
     private val androidUtil: AndroidUtil by inject()
     private val intentUtil: IntentUtil by inject()
-    private val cachedAppConfigUseCase: CachedAppConfigUseCase by inject()
 
-    @SuppressLint("StringFormatInvalid")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -43,84 +35,15 @@ class AppLockedFragment : Fragment(R.layout.fragment_app_locked) {
             binding.illustration.visibility = View.GONE
         }
 
-        when (val appStatus = args.appStatus) {
-            is AppStatus.Deactivated -> {
-                binding.bind(
-                    R.string.app_status_deactivated_title,
-                    R.string.app_status_deactivated_message,
-                    R.string.app_status_deactivated_action,
-                    R.drawable.illustration_app_status_deactivated
-                ) {
-                    intentUtil.openUrl(
-                        requireContext(), getString(
-                            if (isVerifierApp(requireContext())) {
-                                R.string.verifier_deactivation_url
-                            } else {
-                                R.string.holder_deactivation_url
-                            }
-                        )
-                    )
-                }
-            }
-            is AppStatus.Archived -> {
-                binding.bind(
-                    R.string.holder_archiveMode_title,
-                    R.string.holder_archiveMode_description,
-                    R.string.holder_archiveMode_button,
-                    R.drawable.illustration_app_status_deactivated
-                ) {
-                    intentUtil.openUrl(
-                        requireContext(), getString(R.string.holder_archiveMode_link)
-                    )
-                }
-            }
-            is AppStatus.UpdateRequired -> {
-                binding.bind(
-                    R.string.app_status_update_required_title,
-                    R.string.app_status_update_required_message,
-                    R.string.app_status_update_required_action,
-                    R.drawable.illustration_app_status_update_required
-                ) {
-                    intentUtil.openPlayStore(requireContext())
-                }
-            }
-            is AppStatus.LaunchError -> {
-                val helpdeskPhoneNumber =
-                    cachedAppConfigUseCase.getCachedAppConfig().contactInfo.phoneNumber
-                binding.bind(
-                    R.string.appstatus_launchError_title,
-                    getString(
-                        R.string.appstatus_launchError_body,
-                        helpdeskPhoneNumber,
-                        helpdeskPhoneNumber,
-                        appStatus.errorMessage
-                    ),
-                    R.string.appstatus_launchError_button,
-                    R.drawable.illustration_app_status_launch_error
-                ) {
-                    activity?.finish()
-                }
-                binding.message
-            }
-            is AppStatus.Error -> {
-                binding.bind(
-                    R.string.app_status_internet_required_title,
-                    R.string.app_status_internet_required_message,
-                    R.string.app_status_internet_required_action,
-                    R.drawable.illustration_app_status_internet_required
-                ) {
-                    val launchIntent =
-                        requireContext().packageManager.getLaunchIntentForPackage(requireContext().packageName)
-                    launchIntent?.let {
-                        launchIntent.flags =
-                            Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        requireContext().startActivity(launchIntent)
-                    }
-                }
-            }
-            else -> {
-                /* nothing */
-            }
+        binding.bind(
+            R.string.app_status_deactivated_title,
+            R.string.app_status_deactivated_message,
+            R.string.app_status_deactivated_action,
+            R.drawable.illustration_app_status_deactivated
+        ) {
+            intentUtil.openUrl(
+                requireContext(), getString(R.string.holder_deactivation_url)
+            )
         }
     }
 }
@@ -134,27 +57,6 @@ private fun FragmentAppLockedBinding.bind(
 ) {
     this.title.setText(title)
     this.message.setText(message)
-    this.action.setText(action)
-    this.illustration.setImageResource(illustration)
-    this.action.setOnClickListener {
-        onClick()
-    }
-}
-
-private fun FragmentAppLockedBinding.bind(
-    @StringRes title: Int,
-    message: String,
-    @StringRes action: Int,
-    @DrawableRes illustration: Int,
-    onClick: () -> Unit
-) {
-    this.title.setText(title)
-    this.message.text = HtmlCompat.fromHtml(
-        message,
-        HtmlCompat.FROM_HTML_MODE_COMPACT
-    )
-    this.message.enableHtmlLinks()
-    this.message.textAlignment = View.TEXT_ALIGNMENT_CENTER
     this.action.setText(action)
     this.illustration.setImageResource(illustration)
     this.action.setOnClickListener {

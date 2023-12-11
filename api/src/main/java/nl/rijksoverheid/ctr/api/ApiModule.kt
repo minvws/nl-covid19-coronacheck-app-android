@@ -31,9 +31,7 @@ import timber.log.Timber
  */
 fun apiModule(
     baseUrl: HttpUrl,
-    signatureCertificateCnMatch: String,
-    coronaCheckApiChecks: Boolean,
-    testProviderApiChecks: Boolean
+    coronaCheckApiChecks: Boolean
 ) = module {
     single {
         OkHttpClient.Builder()

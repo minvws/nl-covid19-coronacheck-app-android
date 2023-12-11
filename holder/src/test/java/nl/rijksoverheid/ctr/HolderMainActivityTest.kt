@@ -15,8 +15,6 @@ import androidx.room.Room
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import nl.rijksoverheid.ctr.appconfig.models.AppStatus
-import nl.rijksoverheid.ctr.appconfig.models.AppUpdateData
-import nl.rijksoverheid.ctr.appconfig.models.NewTerms
 import nl.rijksoverheid.ctr.holder.HolderMainActivity
 import nl.rijksoverheid.ctr.holder.R
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
@@ -49,32 +47,6 @@ class HolderMainActivityTest : AutoCloseKoinTest() {
     @After
     fun tearDown() {
         scenario.close()
-    }
-
-    @Test
-    fun `If consent needed navigate to app status`() {
-        val scenario = launchHolderMainActivity(
-            appStatus = AppStatus.ConsentNeeded(AppUpdateData(listOf(), NewTerms(1, true)))
-        )
-        scenario.onActivity {
-            assertEquals(
-                it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_app_locked
-            )
-        }
-    }
-
-    @Test
-    fun `If new features navigate to app status`() {
-        val scenario = launchHolderMainActivity(
-            appStatus = AppStatus.NewFeatures(AppUpdateData(listOf(), NewTerms(1, true)))
-        )
-        scenario.onActivity {
-            assertEquals(
-                it.findNavController(R.id.main_nav_host_fragment).currentDestination?.id,
-                R.id.nav_app_locked
-            )
-        }
     }
 
     @Test

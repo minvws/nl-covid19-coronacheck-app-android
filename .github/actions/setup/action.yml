@@ -21,5 +21,3 @@ runs:
       with:
         # Cache results from main and release branches only per docs
         cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/release' }}
-    - name: Build mobile core
-      uses: ./.github/actions/build-core

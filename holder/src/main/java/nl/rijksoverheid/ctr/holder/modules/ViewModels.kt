@@ -4,8 +4,6 @@ import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_rooted.DeviceRootedViewModelImpl
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModel
 import nl.rijksoverheid.ctr.holder.ui.device_secure.DeviceSecureViewModelImpl
-import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotificationViewModel
-import nl.rijksoverheid.ctr.holder.ui.priority_notification.PriorityNotificationViewModelImpl
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -19,5 +17,4 @@ import org.koin.dsl.module
 val viewModels = module {
     viewModel<DeviceRootedViewModel> { DeviceRootedViewModelImpl(get(), get()) }
     viewModel<DeviceSecureViewModel> { DeviceSecureViewModelImpl(get(), get()) }
-    viewModel<PriorityNotificationViewModel> { PriorityNotificationViewModelImpl(get()) }
 }
