@@ -22,7 +22,6 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.factories.ErrorCodeStringFactory
 import nl.rijksoverheid.ctr.shared.factories.OnboardingFlow
 
@@ -30,7 +29,6 @@ abstract class AppConfigViewModel : ViewModel() {
     val appStatusLiveData = MutableLiveData<AppStatus>()
 
     abstract fun refresh(
-        mobileCoreWrapper: MobileCoreWrapper,
         force: Boolean = false,
         afterRefresh: () -> Unit = {}
     )
@@ -59,7 +57,6 @@ class AppConfigViewModelImpl(
     }
 
     override fun refresh(
-        mobileCoreWrapper: MobileCoreWrapper,
         force: Boolean,
         afterRefresh: () -> Unit
     ) {
@@ -96,16 +93,6 @@ class AppConfigViewModelImpl(
                 } else {
                     return@launch appStatusLiveData.postValue(AppStatus.Error)
                 }
-            }
-
-            val initializationError = if (isVerifierApp) {
-                mobileCoreWrapper.initializeVerifier(filesDirPath)
-            } else {
-                mobileCoreWrapper.initializeHolder(filesDirPath)
-            }
-
-            if (initializationError != null) {
-                return@launch appStatusLiveData.postValue(AppStatus.Error)
             }
 
             updateAppStatus(appStatus)

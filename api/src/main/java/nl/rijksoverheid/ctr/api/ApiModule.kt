@@ -8,18 +8,15 @@ import com.squareup.moshi.Moshi
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.X509TrustManager
 import nl.rijksoverheid.ctr.api.interceptors.CacheOverrideInterceptor
-import nl.rijksoverheid.ctr.api.interceptors.SignedResponseInterceptor
 import nl.rijksoverheid.ctr.api.json.Base64JsonAdapter
 import nl.rijksoverheid.ctr.api.json.JsonObjectJsonAdapter
 import nl.rijksoverheid.ctr.api.json.LocalDateJsonAdapter
 import nl.rijksoverheid.ctr.api.json.OffsetDateTimeJsonAdapter
-import nl.rijksoverheid.ctr.shared.models.Environment
 import okhttp3.ConnectionSpec
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.tls.HandshakeCertificates
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -63,14 +60,7 @@ fun apiModule(
                     connectionSpecs(listOf(ConnectionSpec.MODERN_TLS))
                 }
             }
-            .addInterceptor(
-                SignedResponseInterceptor(
-                    signatureCertificateCnMatch = signatureCertificateCnMatch,
-                    testProviderApiChecks = testProviderApiChecks,
-                    isAcc = Environment.get(androidContext()) == Environment.Acc,
-                    clock = get()
-                )
-            ).build()
+            .build()
     }
 
     single {

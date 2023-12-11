@@ -9,7 +9,6 @@ import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.appModule
 import nl.rijksoverheid.ctr.holder.modules.errorsModule
 import nl.rijksoverheid.ctr.holder.modules.holderAppStatusModule
-import nl.rijksoverheid.ctr.holder.modules.holderMobileCoreModule
 import nl.rijksoverheid.ctr.holder.modules.holderPreferenceModule
 import nl.rijksoverheid.ctr.holder.modules.repositoriesModule
 import nl.rijksoverheid.ctr.holder.modules.storageModule
@@ -71,20 +70,12 @@ open class HolderApplication : SharedApplication() {
             )
         }
 
-        // Create default wallet in database if empty
         coroutineScopeBlock {
-            if (holderDatabase.walletDao().getAll().isEmpty()) {
-                holderDatabase.walletDao().insert(
-                    WalletEntity(
-                        id = 1,
-                        label = "main"
-                    )
-                )
-            }
+            HolderDatabase.deleteDatabase(this)
         }
     }
 
     override fun getAdditionalModules(): List<Module> {
-        return listOf(holderPreferenceModule, holderMobileCoreModule)
+        return listOf(holderPreferenceModule)
     }
 }

@@ -48,7 +48,6 @@ kotlin {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(project(":modules:httpsecurity"))
 
     implementation libs.retrofit.moshi
     implementation libs.moshi.kotlin

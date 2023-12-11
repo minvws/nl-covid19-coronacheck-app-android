@@ -17,7 +17,6 @@ import nl.rijksoverheid.ctr.appconfig.usecases.AppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.AppStatusUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.CachedAppConfigUseCase
 import nl.rijksoverheid.ctr.appconfig.usecases.ConfigResultUseCase
-import nl.rijksoverheid.ctr.shared.MobileCoreWrapper
 import nl.rijksoverheid.ctr.shared.factories.SharedStep
 import nl.rijksoverheid.ctr.shared.models.NetworkRequestResult
 import okio.BufferedSource
@@ -63,8 +62,6 @@ class AppConfigViewModelTest {
         errorCodeStringFactory = mockk(relaxed = true)
     )
 
-    private val mobileCoreWrapper: MobileCoreWrapper = mockk(relaxed = true)
-
     @Before
     fun setup() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
@@ -86,14 +83,11 @@ class AppConfigViewModelTest {
         }
         coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns true
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
-        coEvery { mobileCoreWrapper.initializeHolder(filesDirPath) } returns null
         coEvery { cachedAppConfigUseCase.isCachedAppConfigValid() } returns true
 
-        appConfigViewModel().refresh(mobileCoreWrapper)
+        appConfigViewModel().refresh()
 
         coVerify { configResultUseCase.fetch() }
-        coVerify { mobileCoreWrapper.initializeHolder(filesDirPath) }
-        coVerify(exactly = 0) { mobileCoreWrapper.initializeVerifier(filesDirPath) }
     }
 
     @Test
@@ -112,14 +106,11 @@ class AppConfigViewModelTest {
         }
         coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns true
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.NoActionRequired }
-        coEvery { mobileCoreWrapper.initializeVerifier(filesDirPath) } returns null
         coEvery { cachedAppConfigUseCase.isCachedAppConfigValid() } returns true
 
-        appConfigViewModel(true).refresh(mobileCoreWrapper)
+        appConfigViewModel(true).refresh()
 
         coVerify { configResultUseCase.fetch() }
-        coVerify(exactly = 0) { mobileCoreWrapper.initializeHolder(any()) }
-        coVerify { mobileCoreWrapper.initializeVerifier(filesDirPath) }
     }
 
     @Test
@@ -140,7 +131,6 @@ class AppConfigViewModelTest {
         coEvery { appStatusUseCase.get(any(), any()) } answers { AppStatus.Error }
 
         val viewModel = appConfigViewModel()
-        viewModel.refresh(mobileCoreWrapper)
 
         assertTrue(viewModel.appStatusLiveData.value is AppStatus.LaunchError)
     }
@@ -165,7 +155,6 @@ class AppConfigViewModelTest {
             coEvery { appConfigStorageManager.areConfigFilesPresentInFilesFolder() } returns false
 
             val viewModel = appConfigViewModel(true)
-            viewModel.refresh(mobileCoreWrapper)
 
             assertTrue(viewModel.appStatusLiveData.value is AppStatus.LaunchError)
         }
