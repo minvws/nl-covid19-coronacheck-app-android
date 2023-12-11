@@ -48,7 +48,6 @@ dependencies {
     coreLibraryDesugaring libs.desugar
     implementation(project(":design"))
     implementation(project(":shared"))
-    implementation(project(":api"))
     api libs.lifecycle.viewmodel
     api libs.lifecycle.livedata
     api libs.retrofit

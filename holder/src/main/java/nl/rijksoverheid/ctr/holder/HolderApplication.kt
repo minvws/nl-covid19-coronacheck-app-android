@@ -3,7 +3,6 @@ package nl.rijksoverheid.ctr.holder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import nl.rijksoverheid.ctr.api.apiModule
 import nl.rijksoverheid.ctr.appconfig.appConfigModule
 import nl.rijksoverheid.ctr.design.designModule
 import nl.rijksoverheid.ctr.holder.modules.appModule
@@ -15,8 +14,6 @@ import nl.rijksoverheid.ctr.holder.modules.viewModels
 import nl.rijksoverheid.ctr.persistence.database.HolderDatabase
 import nl.rijksoverheid.ctr.shared.SharedApplication
 import nl.rijksoverheid.ctr.shared.sharedModule
-import okhttp3.HttpUrl.Companion.toHttpUrl
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
@@ -50,10 +47,6 @@ open class HolderApplication : SharedApplication() {
             androidContext(this@HolderApplication)
             modules(
                 *holderModules,
-                apiModule(
-                    BuildConfig.BASE_API_URL.toHttpUrl(),
-                    BuildConfig.FEATURE_CORONA_CHECK_API_CHECKS
-                ),
                 sharedModule,
                 appConfigModule(BuildConfig.CDN_API_URL, "holder", BuildConfig.VERSION_CODE),
                 *getAdditionalModules().toTypedArray(),

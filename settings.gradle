@@ -30,7 +30,6 @@ pluginManagement {
     }
 }
 
-include ':api'
 include ':design'
 include ':shared'
 include ':holder'
