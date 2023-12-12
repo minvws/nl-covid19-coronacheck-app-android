@@ -20,28 +20,10 @@ class AppStatusFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        when (val status = args.appStatus ?: AppStatus.Deactivated) {
-            is AppStatus.UpdateRequired,
-            is AppStatus.Deactivated,
-            is AppStatus.Archived,
-            is AppStatus.LaunchError -> navigateSafety(
-                AppStatusFragmentDirections.actionAppLocked(status)
-            )
-            is AppStatus.Error -> navigateSafety(
-                AppStatusFragmentDirections.actionAppLocked(status)
-            )
-            is AppStatus.NewFeatures -> {
-                navigateSafety(
-                    AppStatusFragmentDirections.actionNavNewFeatures(status.appUpdateData)
-                )
-            }
-            is AppStatus.ConsentNeeded -> {
-                navigateSafety(
-                    AppStatusFragmentDirections.actionNewTerms(status.appUpdateData)
-                )
-            }
-            is AppStatus.NoActionRequired,
-            is AppStatus.UpdateRecommended -> Unit
-        }
+        val status = args.appStatus ?: AppStatus.Deactivated
+
+        navigateSafety(
+            AppStatusFragmentDirections.actionAppLocked(status)
+        )
     }
 }

@@ -30,18 +30,10 @@ pluginManagement {
     }
 }
 
-include ':api'
 include ':design'
 include ':shared'
 include ':holder'
-include ':mobilecore'
 include ':appconfig'
-include ':modules'
-project(':modules').projectDir = new File('rdo/modules')
-include ':modules:luhncheck'
-include ':modules:qrgenerator'
-include ':modules:openidconnect'
-include ':modules:httpsecurity'
 
 rootProject.name = "CoronaTester"
 

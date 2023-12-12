@@ -1,9 +1,0 @@
-[submodule "nl-covid19-coronacheck-mobile-core"]
-	path = mobilecore-src
-	url = https://github.com/minvws/nl-covid19-coronacheck-mobile-core
-[submodule "mobilecore-src"]
-	path = mobilecore-src
-	url = https://github.com/minvws/nl-covid19-coronacheck-mobile-core.git
-[submodule "rdo"]
-	path = rdo
-	url = https://github.com/minvws/nl-rdo-app-android-modules.git

@@ -47,17 +47,6 @@ android {
         testInstrumentationRunner "com.karumi.shot.ShotTestRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'
 
-        buildConfigField "String", "SIGNATURE_CERTIFICATE_CN_MATCH", '".coronatester.nl"'
-        buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
-        buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
-        buildConfigField "String", "OPEN_ID_REDIRECT_URL", "\"https://coronacheck.nl/app/auth2\""
-        buildConfigField "String", "BASE_API_URL", "\"https://holder-api.coronacheck.nl/v9/\""
-        buildConfigField "String", "MAX_BASE_URL", "\"https://max.coronacheck.nl\""
-        buildConfigField "String", "OPEN_ID_CLIENT_ID", "\"cc_app\""
-        buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL", "\"\""
-        buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.coronacheck.nl\""
-        buildConfigField "String", "PAP_BASE_URL", "\"https://qrcodezonderdigid.ggdghor.nl\""
-        buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.coronacheck.nl/v9/\""
         manifestPlaceholders = [appLabel: "@string/app_name", deepLinkHost: "coronacheck.nl", digidSchema: "coronacheck"]
     }
 
@@ -73,14 +62,6 @@ android {
     flavorDimensions "environment"
     productFlavors {
         acc {
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v9/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v9/\""
-            buildConfigField "String", "MAX_BASE_URL", "\"https://max.acc.coronacheck.nl\""
-            buildConfigField "String", "OPEN_ID_CLIENT_ID", "\"cc_app\""
-            buildConfigField "String", "OPEN_ID_REDIRECT_URL", "\"https://web.acc.coronacheck.nl/app/auth2\""
-            buildConfigField "String", "DEEPLINK_SCANNER_TEST_URL", "\"https://web.acc.coronacheck.nl/verifier/scan?returnUri=https://web.acc.coronacheck.nl/app/open?returnUri=scanner-test\""
-            buildConfigField "String", "MIJNCN_BASEURL", "\"https://emax.acc.coronacheck.nl\""
-            buildConfigField "String", "PAP_BASE_URL", "\"https://acceptatie.qrcodezonderdigid.ggdghor.nl\""
             dimension "environment"
             versionNameSuffix "-acc"
             applicationIdSuffix ".acc"
@@ -88,16 +69,8 @@ android {
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
             matchingFallbacks = ['mlkit']
-            buildConfigField "boolean", "FEATURE_TEST_PROVIDER_API_CHECKS", "true"
-            buildConfigField "boolean", "FEATURE_CORONA_CHECK_API_CHECKS", "true"
         }
         fdroidAcc {
-            buildConfigField "String", "BASE_API_URL", "\"https://holder-api.acc.coronacheck.nl/v8/\""
-            buildConfigField "String", "CDN_API_URL", "\"https://holder-api-cdn.acc.coronacheck.nl/v8/\""
-            buildConfigField "String", "MAX_BASE_URL", "\"https://max.acc.coronacheck.nl\""
-            buildConfigField "String", "OPEN_ID_CLIENT_ID", "\"cc_app\""
-            buildConfigField "String", "OPEN_ID_REDIRECT_URL", "\"coronacheck-acc://auth/login\""
-            buildConfigField "String", "PAP_BASE_URL", "\"https://acceptatie.qrcodezonderdigid.ggdghor.nl\""
             dimension "environment"
             versionNameSuffix "-fdroid"
             applicationIdSuffix ".fdroid.acc"
@@ -157,7 +130,6 @@ dependencies {
     implementation project(":shared")
     implementation project(":appconfig")
     implementation project(":design")
-    implementation project(":api")
 
     implementation libs.bundles.groupie
     implementation libs.navigation.fragment
@@ -187,9 +159,7 @@ dependencies {
     testImplementation libs.mockk
     androidTestImplementation libs.mockk.android
     testImplementation libs.koin.test.junit4
-    testImplementation(libs.robolectric) {
-        exclude group: 'org.bouncycastle'
-    }
+    testImplementation libs.robolectric
     testImplementation libs.androidx.test.runner
     testImplementation libs.okhttp.mockWebServer
     testImplementation(libs.barista) {

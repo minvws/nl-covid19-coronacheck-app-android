@@ -15,14 +15,6 @@ import org.koin.dsl.module
  *
  */
 val storageModule = module {
-    single {
-        HolderDatabase.createInstance(
-            androidContext(),
-            get(),
-            get(),
-            Environment.get(androidContext())
-        )
-    }
 
     single<PersistenceManager> {
         SharedPreferencesPersistenceManager(
