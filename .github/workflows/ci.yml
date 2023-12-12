@@ -94,20 +94,20 @@ jobs:
 
       - name: Distribute holder acc variant
         run: |
-          firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/acc/release/holder-*.apk` \
+          firebase appdistribution:distribute `ls apks/acc/release/holder-*.apk` \
           --app 1:168257592968:android:5df6b2057b90a30826493d \
           --groups testers
 
       - name: Distribute holder fdroid acc variant
         if: ${{ env.GENERATE_FDROID_BUILDS == 'true' }}
         run: |
-          firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/fdroidAcc/release/holder-*.apk` \
+          firebase appdistribution:distribute `ls apks/fdroidAcc/release/holder-*.apk` \
           --app 1:168257592968:android:28c578809115867926493d \
           --groups testers
 
       - name: Distribute holder prod variant
         run: |
-          firebase appdistribution:distribute `ls apks/holder/build/outputs/apk/prod/release/holder-*.apk` \
+          firebase appdistribution:distribute `ls apks/prod/release/holder-*.apk` \
           --app 1:168257592968:android:aaa5afb416536fdb26493d \
           --groups testers
 
