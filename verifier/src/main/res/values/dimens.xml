@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="onboarding_item_indicator_spacing">6dp</dimen>
-    <dimen name="long_button_title_padding_horizontal">8dp</dimen>
-    <dimen name="scan_result_top_padding">32dp</dimen>
-    <dimen name="checkbox_padding">16dp</dimen>
-</resources>

@@ -33,8 +33,6 @@ class TestHolderApplication : HolderApplication() {
             factory {
                 PreferenceManager.getDefaultSharedPreferences(this@TestHolderApplication)
             }
-        }, module {
-            factory { fakeMobileCoreWrapper() }
         })
     }
 }

@@ -33,10 +33,4 @@ sealed class AppStatus : Parcelable {
 
     @Parcelize
     object NoActionRequired : AppStatus(), Parcelable
-
-    @Parcelize
-    data class NewFeatures(val appUpdateData: AppUpdateData) : AppStatus(), Parcelable
-
-    @Parcelize
-    data class ConsentNeeded(val appUpdateData: AppUpdateData) : AppStatus(), Parcelable
 }

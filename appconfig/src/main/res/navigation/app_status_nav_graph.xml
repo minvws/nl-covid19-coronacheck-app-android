@@ -11,19 +11,9 @@
 
         <argument
             android:name="app_status"
-            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppStatus" />
-
-        <action
-            android:id="@+id/action_nav_new_features"
-            app:destination="@id/nav_new_features"
-            app:popUpTo="@id/nav_app_status"
-            app:popUpToInclusive="true" />
-
-        <action
-            android:id="@+id/action_new_terms"
-            app:destination="@id/nav_new_terms"
-            app:popUpTo="@id/nav_app_status"
-            app:popUpToInclusive="true" />
+            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppStatus"
+            app:nullable="true"
+            android:defaultValue="@null"/>
 
         <action
             android:id="@+id/action_app_locked"
@@ -41,38 +31,6 @@
         <argument
             android:name="app_status"
             app:argType="nl.rijksoverheid.ctr.appconfig.models.AppStatus" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_new_features"
-        android:name="nl.rijksoverheid.ctr.appconfig.app_update.NewFeaturesFragment"
-        android:label="NewFeaturesFragment">
-
-        <argument
-            android:name="app_update_data"
-            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppUpdateData" />
-
-        <action
-            android:id="@+id/action_new_terms"
-            app:destination="@id/nav_new_terms"
-            app:enterAnim="@animator/fragment_open_enter"
-            app:exitAnim="@animator/fragment_open_exit"
-            app:popEnterAnim="@animator/fragment_close_enter"
-            app:popExitAnim="@animator/fragment_close_exit">
-
-        </action>
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_new_terms"
-        android:name="nl.rijksoverheid.ctr.appconfig.app_update.NewTermsFragment"
-        tools:layout="@layout/fragment_new_terms">
-
-        <argument
-            android:name="app_update_data"
-            app:argType="nl.rijksoverheid.ctr.appconfig.models.AppUpdateData" />
 
     </fragment>
 
