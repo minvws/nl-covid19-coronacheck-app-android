@@ -14,7 +14,7 @@ jobs:
   build-and-test:
     runs-on: macos-12
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - id: setup
         uses: ./.github/actions/setup
       - name: Spotless
@@ -30,7 +30,7 @@ jobs:
           profile: pixel
       - name: Archive test-results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: |
@@ -50,7 +50,7 @@ jobs:
     needs: [ "build-and-test" ]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - id: setup
         uses: ./.github/actions/setup
       - name: Write key store
@@ -67,14 +67,14 @@ jobs:
       - name: Clean up key store
         run: rm keystore.jks
       - name: Archive apks
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: apks
           path: |
             holder/build/outputs/apk
           retention-days: 5
       - name: Archive bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bundle
           path: |
@@ -82,7 +82,7 @@ jobs:
           retention-days: 5
 
       - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: apks
           path: apks
